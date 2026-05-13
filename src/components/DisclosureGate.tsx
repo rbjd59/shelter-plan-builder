@@ -42,7 +42,7 @@ const T = {
       "Ou responsab pou revize chak fòm, chwazi rezon legal pa w, siyen, epi depoze l nan tribinal la. Nou pa depoze pou ou.",
       "Kominikasyon avèk nou PA pwoteje pa privilèj avoka-kliyan.",
       "Tout frè se pou sèvis preparasyon dokiman epi pa ranbousab yon fwa fòm yo prepare.",
-      "Si w bezwen konsèy legal, konsilte yon avoka imigrasyon ki gen lisans.",
+      "Si w bezwen konsèy legal, konsilte yon avoka ki gen lisans.",
     ],
     accept: "Mwen li epi dakò ak tèm yo anwo a.",
     cont: "Mwen Dakò — Kontinye",
