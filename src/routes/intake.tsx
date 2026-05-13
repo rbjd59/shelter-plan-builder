@@ -69,7 +69,6 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       ht: "Enfòmasyon sou kenbe imigrasyon an.",
     },
     fields: [
-      { key: "detainer_date", type: "date", label: { en: "Date detainer was lodged", es: "Fecha de detención", ht: "Dat detainer la" } },
       { key: "ice_form_known", type: "checkbox", label: { en: "Do you have a copy of the I-247 form?", es: "¿Tiene copia del formulario I-247?", ht: "Èske w gen kopi fòm I-247?" } },
       { key: "prior_immigration_proceedings", type: "textarea", label: { en: "Briefly describe any prior immigration proceedings", es: "Describa procedimientos migratorios anteriores", ht: "Dekri pwosedi imigrasyon anvan" } },
     ],
