@@ -1,27 +1,24 @@
-import { createFileRoute, Navigate } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import SiteShell from "@/components/SiteShell";
 
 export const Route = createFileRoute("/")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    lang: typeof search.lang === "string" ? search.lang : undefined,
+  }),
+  beforeLoad: ({ search }) => {
+    if (!search.lang) {
+      throw redirect({ to: "/splash" });
+    }
+  },
   head: () => ({
     meta: [
       { title: "DetencionDefensa.com — Plan de Defensa Pre-Detención · $199" },
       {
         name: "description",
         content:
-          "A pre-detention defense plan for immigrant working families. $199 + $10/mo. NOT a law firm.",
+          "A pre-detention defense plan for immigrant working families. $199 today + $30/mo from month 3. NOT a law firm.",
       },
     ],
   }),
-  component: Index,
+  component: SiteShell,
 });
-
-function Index() {
-  // Always show the splash/language picker first unless ?lang= is in the URL.
-  if (typeof window !== "undefined") {
-    const url = new URLSearchParams(window.location.search).get("lang");
-    if (!url) {
-      return <Navigate to="/splash" />;
-    }
-  }
-  return <SiteShell />;
-}
