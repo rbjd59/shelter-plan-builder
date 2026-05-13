@@ -231,6 +231,12 @@ async function fillAO240(a: A): Promise<Uint8Array> {
   setText(form, "Applicant'sSignature", "");
   setText(form, "Date2", "");
 
+  for (const f of form.getFields()) {
+    if (f.constructor.name === "PDFButton") {
+      try { form.removeField(f); } catch { /* ignore */ }
+    }
+  }
+
   try {
     form.flatten();
   } catch {
