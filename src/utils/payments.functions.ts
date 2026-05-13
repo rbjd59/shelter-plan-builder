@@ -96,7 +96,6 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       ],
       subscription_data: {
         billing_cycle_anchor: billingCycleAnchor,
-        proration_behavior: "none",
         metadata: {
           language: data.language,
           ...(data.userId && { userId: data.userId }),
