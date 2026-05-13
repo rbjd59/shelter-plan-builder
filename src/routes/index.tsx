@@ -1,26 +1,28 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Navigate } from "@tanstack/react-router";
+import SiteShell from "@/components/SiteShell";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "DetencionDefensa.com — Plan de Defensa Pre-Detención · $199" },
+      {
+        name: "description",
+        content:
+          "A pre-detention defense plan for immigrant working families. $199 + $10/mo. NOT a law firm.",
+      },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
-
 function Index() {
-  return <PlaceholderIndex />;
+  // First-visit redirect: no ?lang= and no stored choice → /splash
+  if (typeof window !== "undefined") {
+    const url = new URLSearchParams(window.location.search).get("lang");
+    const stored = window.localStorage.getItem("dd_lang");
+    if (!url && !stored) {
+      return <Navigate to="/splash" />;
+    }
+  }
+  return <SiteShell />;
 }
