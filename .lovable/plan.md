@@ -1,31 +1,40 @@
-# DetencionDefensa.com — Checkout & Lifecycle Plan
+# DetencionDefensa.com — Pro Se PWA Plan
 
-## Pricing model (locked)
-- **$199 one-time** — charged immediately at checkout (added to first invoice via `subscription_data.add_invoice_items`).
-- **$10/month** subscription — `trial_period_days: 90`, so first $10 charge hits **month 4**.
-- **3-month minimum** commitment after trial — enforced in our cancel flow (Stripe doesn't natively block early cancel).
-- **Asset Protection Package — $100, "Coming July 2026"** — UI placeholder only, no Stripe product yet.
+## Pricing (LOCKED)
+- **$199 one-time** at checkout (immediate, via `add_invoice_items`).
+- **$30/month** subscription, `trial_period_days: 60` → first $30 charge hits **month 3**, ongoing until customer cancels.
+- Old `$10/mo` and 3-month minimum REMOVED.
 
-## On successful purchase (DONE / IN PROGRESS)
-- `intake_submissions` row marked `paid=true` after Stripe verifies session.
-- Customer redirected to `/intake?session_id=…&lang=…` to fill 7-section form.
-- On intake submit: PDFs (AO 242 dynamic court + AO 240) generated, stored in `intake-forms` bucket, staff notification queued to `intake@detenciondefensa.com`.
-- `case_tracking` row pre-created at payment time so staff sees the case immediately.
+## End-to-end customer flow
+1. Radio ad → site → "Create Pro Se Documents Now" CTA → **short disclaimer** modal (3 bullets + "I Understand & Agree", IP+timestamp logged).
+2. Click through → `/disclaimer` **full LegalZoom-style page** (scrollable, 3 checkboxes, typed name, "I Agree", IP+timestamp logged to `disclaimer_acknowledgements`).
+3. → `/checkout` ($199 + $30/mo).
+4. → `/intake` (7-section form, district auto-detected from address).
+5. → System generates AO 242 + AO 240 PDFs, stores in private bucket.
+6. → SMS + email sent to customer with **PWA install link** (unique per case, signed token).
+7. → Customer installs PWA → sets **dead-man-switch interval** (24/48/72h).
 
-## On cancellation (TODO)
-1. Stripe webhook `customer.subscription.deleted` fires.
-2. Immediately email customer (ES/EN/HT): "You have **48 hours** to download/print your AO 242 + AO 240 forms before we permanently delete them. [Download link]"
-3. Insert `pending_scrub` row with `scrub_at = now() + 48h`.
-4. pg_cron job runs hourly, hard-deletes: PDFs from storage, `intake_submissions.answers`, `case_tracking` row.
-5. Block early cancel (within 3-month minimum) in customer portal — show terms instead.
+## PWA (installable, per-customer)
+- Route: `/pwa/$token` with `manifest.json` + `display: standalone` (no service worker — see PWA knowledge).
+- Shows: countdown to next required check-in, "I'M OK" button, "Trigger Now" button, view/print docs.
+- On check-in: resets timer.
+- On missed deadline OR manual trigger: starts **60-min cancel window** (push + email + SMS), then if not cancelled fires `triggered=true`.
 
-## On upgrade/downgrade
-- Single tier today. Asset Protection ($100, July 2026) will be a separate `add_invoice_items` add-on at next renewal.
+## Trigger fires
+- Email PDFs → `legal@detenciondefensa.com` + customer's registered email + emergency contact email.
+- SMS link to PDFs → customer's phone + emergency contact phone.
+- Mark case `triggered_at`, schedule purge at +24h.
+- Purge job (pg_cron hourly): hard-delete PDFs from storage, intake answers, case_tracking row, PWA tokens. Customer record kept only as billing reference (Stripe customer id, no PII).
+
+## On Stripe cancel
+- Webhook `customer.subscription.deleted` → email "you have 48h to download/print" → row in `pending_scrubs` → cron purges 48h later.
 
 ## Outstanding work
-1. Email domain setup for `detenciondefensa.com` (`<presentation-open-email-setup>`).
-2. Run `setup_email_infra` once domain configured.
-3. Webhook: handle `customer.subscription.deleted` → enqueue 48h warning + insert scrub row.
-4. New table `pending_scrubs (session_id, scrub_at)` + cron route `/api/public/hooks/scrub-cancelled`.
-5. UI: wire $199 + $10/mo CTA in `SiteShell` to `/checkout`, add Asset Protection "coming soon" card.
-6. Customer portal route + 3-month-minimum guard.
+1. **PREREQ — Twilio connection** (user declined; SMS dead-man-switch + trigger broadcast cannot ship until connected).
+2. **PREREQ — Email domain** for `detenciondefensa.com` (cancel warnings, intake notifications, trigger broadcast).
+3. New tables: `disclaimer_acknowledgements`, `pwa_tokens`, `dead_man_switch (case_id, interval_hours, last_checkin_at, trigger_armed_at, triggered_at)`, `pending_scrubs`.
+4. Routes: `/disclaimer`, `/pwa/$token`, `/api/public/pwa/checkin`, `/api/public/pwa/trigger`, `/api/public/hooks/dms-tick` (cron, every 5 min).
+5. Disclaimer short modal on landing CTA.
+6. PWA manifest + install prompt + countdown UI.
+7. Trigger broadcast: email (legal@ + customer + contact) + SMS (customer + contact) with signed PDF links.
+8. Purge cron: hard-delete after trigger+24h, after cancel+48h.
