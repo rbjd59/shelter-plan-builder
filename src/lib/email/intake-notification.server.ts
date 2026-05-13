@@ -220,6 +220,8 @@ ${Object.entries(a)
         trackingToken: tracking.token,
         language,
         installUrl,
+        habeasUrl,
+        ifpUrl,
       });
     }
   } catch (e) {
