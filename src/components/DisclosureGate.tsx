@@ -5,7 +5,7 @@ type Lang = "en" | "es" | "ht";
 const T = {
   en: {
     title: "Before you continue — please read & agree",
-    intro: "DetencionDefensa.com is a self-help document preparation service. Like LegalZoom or DoNotPay, we are not your attorney. Before continuing, please confirm you understand the following:",
+    intro: "DetencionDefensa.com is a self-help document preparation service. Like LegalZoom™ or DoNotPay™, we are not your attorney. Before continuing, please confirm you understand the following:",
     items: [
       "We are NOT a law firm and do NOT provide legal advice. No attorney-client relationship is created.",
       "We prepare standard federal court forms (AO 242 Petition for Writ of Habeas Corpus under 28 U.S.C. § 2241 and AO 240 In Forma Pauperis) using information YOU provide.",
@@ -20,7 +20,7 @@ const T = {
   },
   es: {
     title: "Antes de continuar — lea y acepte",
-    intro: "DetencionDefensa.com es un servicio de preparación de documentos de autoayuda. Al igual que LegalZoom o DoNotPay, no somos su abogado. Antes de continuar, confirme que entiende lo siguiente:",
+    intro: "DetencionDefensa.com es un servicio de preparación de documentos de autoayuda. Al igual que LegalZoom™ o DoNotPay™, no somos su abogado. Antes de continuar, confirme que entiende lo siguiente:",
     items: [
       "NO somos un bufete de abogados y NO damos consejos legales. No se crea relación abogado-cliente.",
       "Preparamos formularios federales estándar (AO 242 Petición de Habeas Corpus bajo 28 U.S.C. § 2241 y AO 240 In Forma Pauperis) usando la información que USTED nos da.",
@@ -35,7 +35,7 @@ const T = {
   },
   ht: {
     title: "Anvan ou kontinye — li epi dakò",
-    intro: "DetencionDefensa.com se yon sèvis preparasyon dokiman pou tèt ou. Tankou LegalZoom oswa DoNotPay, nou pa avoka w. Anvan w kontinye, konfime ou konprann sa ki annapre yo:",
+    intro: "DetencionDefensa.com se yon sèvis preparasyon dokiman pou tèt ou. Tankou LegalZoom™ oswa DoNotPay™, nou pa avoka w. Anvan w kontinye, konfime ou konprann sa ki annapre yo:",
     items: [
       "Nou PA yon kabinè avoka epi nou PA bay konsèy legal. Pa gen relasyon avoka-kliyan.",
       "Nou prepare fòm federal estanda (AO 242 Petisyon Habeas Corpus dapre 28 U.S.C. § 2241 ak AO 240 In Forma Pauperis) ak enfòmasyon OU bay.",
