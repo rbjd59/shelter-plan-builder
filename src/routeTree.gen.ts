@@ -13,6 +13,7 @@ import { Route as SplashRouteImport } from './routes/splash'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IntakeRouteImport } from './routes/intake'
 import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as AppRouteImport } from './routes/app'
 import { Route as AltRouteImport } from './routes/alt'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
@@ -39,6 +40,11 @@ const IntakeRoute = IntakeRouteImport.update({
 const CheckoutRoute = CheckoutRouteImport.update({
   id: '/checkout',
   path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AltRoute = AltRouteImport.update({
@@ -80,6 +86,7 @@ const ApiPublicPaymentsWebhookRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/alt': typeof AltRoute
+  '/app': typeof AppRoute
   '/checkout': typeof CheckoutRoute
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
@@ -92,6 +99,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/alt': typeof AltRoute
+  '/app': typeof AppRoute
   '/checkout': typeof CheckoutRoute
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
@@ -106,6 +114,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/alt': typeof AltRoute
+  '/app': typeof AppRoute
   '/checkout': typeof CheckoutRoute
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
@@ -120,6 +129,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/alt'
+    | '/app'
     | '/checkout'
     | '/intake'
     | '/login'
@@ -132,6 +142,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/alt'
+    | '/app'
     | '/checkout'
     | '/intake'
     | '/login'
@@ -145,6 +156,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/alt'
+    | '/app'
     | '/checkout'
     | '/intake'
     | '/login'
@@ -159,6 +171,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AltRoute: typeof AltRoute
+  AppRoute: typeof AppRoute
   CheckoutRoute: typeof CheckoutRoute
   IntakeRoute: typeof IntakeRoute
   LoginRoute: typeof LoginRoute
@@ -196,6 +209,13 @@ declare module '@tanstack/react-router' {
       path: '/checkout'
       fullPath: '/checkout'
       preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/alt': {
@@ -266,6 +286,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AltRoute: AltRoute,
+  AppRoute: AppRoute,
   CheckoutRoute: CheckoutRoute,
   IntakeRoute: IntakeRoute,
   LoginRoute: LoginRoute,
@@ -277,3 +298,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
