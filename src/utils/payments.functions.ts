@@ -28,7 +28,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
 
     const [oneTime, monthly] = await Promise.all([
       stripe.prices.list({ lookup_keys: ["pretransfer_199"], limit: 1 }),
-      stripe.prices.list({ lookup_keys: ["pretransfer_10mo"], limit: 1 }),
+      stripe.prices.list({ lookup_keys: ["pretransfer_30mo"], limit: 1 }),
     ]);
     if (!oneTime.data.length || !monthly.data.length) throw new Error("Prices not found");
 
@@ -40,11 +40,9 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       subscription_data: {
         metadata: {
           language: data.language,
-          // 3-month minimum commitment — enforced in cancel flow.
-          minimum_term_months: "3",
         },
-        // First $10/mo charge hits after the 3-month trial.
-        trial_period_days: 90,
+        // Months 1-2 free, $30/mo starts month 3, ongoing until cancel.
+        trial_period_days: 60,
         // Bill the $199 one-time fee immediately on the first (trial-start) invoice.
         add_invoice_items: [{ price: oneTime.data[0].id, quantity: 1 }],
       } as any,
