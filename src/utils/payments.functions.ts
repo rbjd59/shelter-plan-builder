@@ -83,8 +83,6 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
           })
         : undefined;
 
-    const billingCycleAnchor = Math.floor(Date.now() / 1000) + 60 * 24 * 60 * 60;
-
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       ui_mode: "embedded_page",
@@ -95,7 +93,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
         { price: oneTime.data[0].id, quantity: 1 },
       ],
       subscription_data: {
-        billing_cycle_anchor: billingCycleAnchor,
+        trial_period_days: 60,
         metadata: {
           language: data.language,
           ...(data.userId && { userId: data.userId }),
