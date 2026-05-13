@@ -12,7 +12,7 @@ const T = {
       "You are responsible for reviewing every form, choosing your own legal grounds, signing, and filing with the proper court. We do not file on your behalf.",
       "Communications with us are NOT protected by attorney-client privilege.",
       "All fees are for document preparation services only and are non-refundable once forms are prepared.",
-      "If you need legal advice, you should consult a licensed immigration attorney.",
+      "If you need legal advice, you should consult a licensed attorney.",
     ],
     accept: "I have read and agree to the terms above.",
     cont: "I Agree — Continue",
