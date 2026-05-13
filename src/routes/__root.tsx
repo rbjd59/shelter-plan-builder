@@ -115,11 +115,13 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const isApp =
+    typeof window !== "undefined" && window.location.pathname.startsWith("/app");
 
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
-        <BetaBanner />
+        {!isApp && <BetaBanner />}
         <Outlet />
       </LanguageProvider>
     </QueryClientProvider>
