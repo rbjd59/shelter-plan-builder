@@ -187,18 +187,43 @@ export async function sendWelcomeEmail(params: {
   to: string;
   trackingToken: string;
   language: string;
+  installUrl?: string | null;
 }): Promise<void> {
   const lang = pickLang(params.language);
   const c = COPY.welcome[lang];
   const trackingUrl = `${SITE_BASE}/track/${params.trackingToken}`;
+  const installCta =
+    lang === "es"
+      ? "Instalar el botón EMERGENCIA en mi teléfono"
+      : lang === "ht"
+      ? "Enstale bouton ÈJANS sou telefòn mwen"
+      : "Install the EMERGENCY button on my phone";
+  const installNote =
+    lang === "es"
+      ? "Abra este enlace en el teléfono que llevará la persona en riesgo. Toque 'Compartir' y luego 'Añadir a pantalla de inicio'. Mantenga presionado 15 segundos en una emergencia para alertar a nuestro equipo legal."
+      : lang === "ht"
+      ? "Louvri lyen sa a sou telefòn moun ki an risk la. Tape 'Pataje' epi 'Add to Home Screen'. Kenbe peze pandan 15 segond nan yon ijans pou alète ekip legal nou."
+      : "Open this link on the phone the at-risk person will carry. Tap 'Share' then 'Add to Home Screen'. Press and hold for 15 seconds in an emergency to alert our legal team.";
+  const installSection = params.installUrl
+    ? `<div style="margin-top:18px;padding:18px;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;">
+        <p style="margin:0 0 10px;font-size:14px;font-weight:700;color:#991b1b;">${escapeHtml(installCta)}</p>
+        <p style="margin:0 0 12px;font-size:13px;color:#7f1d1d;line-height:1.5;">${escapeHtml(installNote)}</p>
+        <p style="text-align:center;margin:0;">
+          <a href="${params.installUrl}" style="display:inline-block;background:#dc2626;color:#fff;text-decoration:none;padding:12px 22px;border-radius:8px;font-weight:700;font-size:14px;">${escapeHtml(installCta)}</a>
+        </p>
+        <p style="margin:10px 0 0;font-size:11px;color:#a16207;">One-time link. Valid 30 days.</p>
+      </div>`
+    : "";
   const html = buildHtml({
     heading: c.heading,
     body: c.body,
     trackingUrl,
     cta: c.cta,
     note: c.note,
-  });
-  const text = `${c.heading}\n\n${c.body}\n\n${c.cta}: ${trackingUrl}\n\n${c.note}`;
+  }).replace("</div>\n      <p ", `${installSection}</div>\n      <p `);
+  const text = `${c.heading}\n\n${c.body}\n\n${c.cta}: ${trackingUrl}\n\n${
+    params.installUrl ? `${installCta}: ${params.installUrl}\n\n` : ""
+  }${c.note}`;
   await enqueueFamilyEmail({
     to: params.to,
     subject: c.subject,

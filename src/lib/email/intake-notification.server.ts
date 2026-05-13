@@ -212,10 +212,14 @@ ${Object.entries(a)
     const familyEmail =
       (typeof answers.contact_email === "string" && answers.contact_email) || contactEmail;
     if (tracking && familyEmail) {
+      const { issueAppInstallToken, buildAppInstallUrl } = await import("@/lib/app-install.server");
+      const installToken = await issueAppInstallToken(sessionId);
+      const installUrl = installToken ? buildAppInstallUrl(installToken) : null;
       await sendWelcomeEmail({
         to: familyEmail,
         trackingToken: tracking.token,
         language,
+        installUrl,
       });
     }
   } catch (e) {

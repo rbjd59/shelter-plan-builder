@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      app_install_tokens: {
+        Row: {
+          created_at: string
+          expires_at: string
+          intake_session_id: string
+          token: string
+          used_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string
+          intake_session_id: string
+          token?: string
+          used_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          intake_session_id?: string
+          token?: string
+          used_at?: string | null
+        }
+        Relationships: []
+      }
       case_tracking: {
         Row: {
           contact_email: string | null
