@@ -90,7 +90,7 @@ export default function SiteShell() {
       root.removeEventListener("click", onClick);
       io.disconnect();
     };
-  }, [navigate, setLang]);
+  }, [navigate, setLang, lang]);
 
   return (
     <div ref={ref} dangerouslySetInnerHTML={{ __html: SITE_HTML }} />
