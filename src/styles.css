@@ -2116,13 +2116,17 @@ body.splash-active {
     .footer-bottom { flex-direction: column; }
   }
 
-  /* Reveal animation */
+  /* Reveal animation — visible by default; subtle fade-in only when JS adds .in early */
   .reveal {
-    opacity: 0;
-    transform: translateY(20px);
+    opacity: 1;
+    transform: none;
     transition: opacity 0.8s, transform 0.8s;
   }
-  .reveal.in {
+  .js-reveal .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  .js-reveal .reveal.in {
     opacity: 1;
     transform: translateY(0);
   }
