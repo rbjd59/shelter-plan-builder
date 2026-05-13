@@ -14,7 +14,87 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      case_tracking: {
+        Row: {
+          contact_email: string | null
+          contact_name: string | null
+          contact_phone: string | null
+          created_at: string
+          id: string
+          inmate_name: string | null
+          intake_session_id: string
+          language: string
+          step1_received_at: string
+          step2_sent_to_inmate_at: string | null
+          step3_sent_to_family_at: string | null
+          tracking_token: string
+          updated_at: string
+        }
+        Insert: {
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          inmate_name?: string | null
+          intake_session_id: string
+          language?: string
+          step1_received_at?: string
+          step2_sent_to_inmate_at?: string | null
+          step3_sent_to_family_at?: string | null
+          tracking_token?: string
+          updated_at?: string
+        }
+        Update: {
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          inmate_name?: string | null
+          intake_session_id?: string
+          language?: string
+          step1_received_at?: string
+          step2_sent_to_inmate_at?: string | null
+          step3_sent_to_family_at?: string | null
+          tracking_token?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      intake_submissions: {
+        Row: {
+          answers: Json | null
+          created_at: string
+          email: string | null
+          id: string
+          language: string
+          paid: boolean
+          stripe_session_id: string
+          updated_at: string
+        }
+        Insert: {
+          answers?: Json | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          language?: string
+          paid?: boolean
+          stripe_session_id: string
+          updated_at?: string
+        }
+        Update: {
+          answers?: Json | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          language?: string
+          paid?: boolean
+          stripe_session_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
