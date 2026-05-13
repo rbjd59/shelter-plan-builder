@@ -16,11 +16,10 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  // First-visit redirect: no ?lang= and no stored choice → /splash
+  // Always show the splash/language picker first unless ?lang= is in the URL.
   if (typeof window !== "undefined") {
     const url = new URLSearchParams(window.location.search).get("lang");
-    const stored = window.localStorage.getItem("dd_lang");
-    if (!url && !stored) {
+    if (!url) {
       return <Navigate to="/splash" />;
     }
   }
