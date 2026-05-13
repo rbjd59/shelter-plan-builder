@@ -1,7 +1,8 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { SITE_HTML } from "@/lib/markup";
 import { useLang, type Lang } from "@/context/LanguageContext";
+import { supabase } from "@/integrations/supabase/client";
 
 /**
  * Renders the main marketing page from the reference HTML markup.
@@ -12,6 +13,13 @@ export default function SiteShell() {
   const ref = useRef<HTMLDivElement>(null);
   const { lang, setLang } = useLang();
   const navigate = useNavigate();
+  const [isAuthed, setIsAuthed] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setIsAuthed(!!data.session));
+    const sub = supabase.auth.onAuthStateChange((_e, session) => setIsAuthed(!!session));
+    return () => sub.data.subscription.unsubscribe();
+  }, []);
 
   // Sync active class on lang-toggle buttons whenever lang changes
   useEffect(() => {
@@ -21,6 +29,28 @@ export default function SiteShell() {
       b.classList.toggle("active", b.id === `btn-${lang}`);
     });
   }, [lang]);
+
+  // Inject account link into nav-right based on auth state
+  useEffect(() => {
+    const root = ref.current;
+    if (!root) return;
+    const navRight = root.querySelector(".nav-right");
+    if (!navRight) return;
+    let acct = navRight.querySelector<HTMLAnchorElement>("a.account-link");
+    if (!acct) {
+      acct = document.createElement("a");
+      acct.className = "account-link";
+      acct.style.cssText = "color:var(--gold,#e8a04a);font-size:13px;text-decoration:none;margin-right:12px;";
+      navRight.insertBefore(acct, navRight.firstChild);
+    }
+    if (isAuthed) {
+      acct.textContent = "My account";
+      acct.setAttribute("href", "/dashboard");
+    } else {
+      acct.textContent = "Sign in";
+      acct.setAttribute("href", "/login");
+    }
+  }, [isAuthed]);
 
   useEffect(() => {
     const root = ref.current;
