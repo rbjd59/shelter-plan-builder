@@ -44,7 +44,7 @@ async function resolveOrCreateCustomer(
 
 /**
  * Create the Embedded Checkout session.
- * Charges $199 today and starts the $30/month plan after a 60-day trial.
+ * Charges $199 today and starts the $10/month plan after a 60-day trial.
  *
  * Keep this checkout intentionally tax-neutral in test mode. Do not send
  * managed_payments, automatic_tax, billing_cycle_anchor, or proration_behavior
@@ -71,7 +71,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
 
     const [oneTime, monthly] = await Promise.all([
       stripe.prices.list({ lookup_keys: ["pretransfer_199"], limit: 1 }),
-      stripe.prices.list({ lookup_keys: ["pretransfer_30mo"], limit: 1 }),
+      stripe.prices.list({ lookup_keys: ["pretransfer_10mo"], limit: 1 }),
     ]);
     if (!oneTime.data.length || !monthly.data.length) throw new Error("Prices not found");
 

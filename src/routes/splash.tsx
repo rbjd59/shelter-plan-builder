@@ -10,7 +10,7 @@ export const Route = createFileRoute("/splash")({
       {
         name: "description",
         content:
-          "A pre-detention defense plan for immigrant working families. $199 + $30/mo from month 3. NOT a law firm.",
+          "A pre-detention defense plan for immigrant working families. $199 + $10/mo from month 3. NOT a law firm.",
       },
     ],
   }),
