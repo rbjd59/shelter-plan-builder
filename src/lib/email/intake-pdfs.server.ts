@@ -104,22 +104,51 @@ async function fillAO242(a: A): Promise<Uint8Array> {
   setText(form, "Date you were taken into immigration custody", s(a.date_taken_into_custody));
   setText(form, "Date of the removal or reinstatement order", s(a.detainer_date));
 
-  setCheckOption(form, "personal11", "No");
+  // Item 11: This IS an immigration habeas — Yes.
+  setCheckOption(form, "personal11", "Yes");
   setCheckOption(form, "personal11c", "No");
   setCheckOption(form, "personal11d", "No");
   setCheckOption(form, "personal12", "No");
 
-  const groundOneTitle = s(a.ground_one) || s(a.grounds_requested);
-  setText(form, "GROUND ONE", groundOneTitle);
-  const g1Lines = splitLines(s(a.prior_immigration_proceedings), 5);
-  for (let i = 0; i < 5; i++) {
-    setText(form, `a  Supporting facts Be brief  Do not cite cases or law ${i + 1}`, g1Lines[i]);
+  // Grounds: split each selected ground into its own Ground (1..4) with the
+  // petitioner's narrative facts as supporting facts.
+  const allGrounds: string[] = [];
+  const gOne = s(a.ground_one);
+  if (gOne) {
+    // ground_one comes from intake as labels joined by ". " — split back out.
+    allGrounds.push(...gOne.split(/(?<=\.)\s+/).map((g) => g.trim()).filter(Boolean));
   }
+  const gTwo = s(a.ground_two);
+  if (gTwo) allGrounds.push(gTwo);
 
-  const groundTwo = s(a.ground_two);
-  if (groundTwo) {
-    const g2 = splitLines(groundTwo, 4);
-    for (let i = 0; i < 4; i++) setText(form, `GROUND TWO ${i + 1}`, g2[i]);
+  const facts = s(a.prior_immigration_proceedings) ||
+    "Petitioner is held in immigration custody. See attached declaration and supporting documents.";
+
+  const groundFieldMap: Array<{ titleFields: string[]; factFields: string[] }> = [
+    {
+      titleFields: ["GROUND ONE"],
+      factFields: [1, 2, 3, 4, 5].map((i) => `a  Supporting facts Be brief  Do not cite cases or law ${i}`),
+    },
+    {
+      titleFields: ["GROUND TWO 1", "GROUND TWO 2", "GROUND TWO 3", "GROUND TWO 4"],
+      factFields: [1, 2, 3, 4, 5].map((i) => `a  Supporting facts Be brief  Do not cite cases or law ${i}_2`),
+    },
+    {
+      titleFields: ["GROUND THREE 1", "GROUND THREE 2", "GROUND THREE 3"],
+      factFields: [1, 2, 3, 4, 5].map((i) => `a  Supporting facts Be brief  Do not cite cases or law ${i}_3`),
+    },
+    {
+      titleFields: ["GROUND FOUR 1", "GROUND FOUR 2", "GROUND FOUR 3"],
+      factFields: [1, 2, 3, 4, 5].map((i) => `a  Supporting facts Be brief  Do not cite cases or law ${i}_4`),
+    },
+  ];
+
+  for (let g = 0; g < Math.min(allGrounds.length, 4); g++) {
+    const slot = groundFieldMap[g];
+    const titleParts = splitLines(allGrounds[g], slot.titleFields.length, 80);
+    slot.titleFields.forEach((f, i) => setText(form, f, titleParts[i] || ""));
+    const factParts = splitLines(facts, slot.factFields.length);
+    slot.factFields.forEach((f, i) => setText(form, f, factParts[i] || ""));
   }
 
   const relief = s(a.relief_requested);
@@ -132,16 +161,28 @@ async function fillAO242(a: A): Promise<Uint8Array> {
   setText(form, "Petitionersig", "");
   setText(form, "Date", "");
 
-  // District: dynamic per case, falls back to SDFL.
+  // District: match user input ("Florida Southern") against full option label
+  // ("        Southern District of Florida") by requiring all input tokens to appear.
   try {
     const dd = form.getDropdown("district");
     const opts = dd.getOptions();
-    const wanted = s(a.court_district) || "Florida Southern";
-    const re = new RegExp(wanted.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
-    const match = opts.find((o) => re.test(o));
+    const wanted = (s(a.court_district) || "Florida Southern").trim();
+    const tokens = wanted.split(/\s+/).filter(Boolean);
+    const match = opts.find((o) => {
+      const lower = o.toLowerCase();
+      return tokens.every((t) => lower.includes(t.toLowerCase()));
+    });
     if (match) dd.select(match);
   } catch {
     /* ignore */
+  }
+
+  // Remove interactive Print / SaveAs / Reset buttons before flatten so they
+  // do not render as red boxes in the final document.
+  for (const f of form.getFields()) {
+    if (f.constructor.name === "PDFButton") {
+      try { form.removeField(f); } catch { /* ignore */ }
+    }
   }
 
   try {
@@ -189,6 +230,12 @@ async function fillAO240(a: A): Promise<Uint8Array> {
 
   setText(form, "Applicant'sSignature", "");
   setText(form, "Date2", "");
+
+  for (const f of form.getFields()) {
+    if (f.constructor.name === "PDFButton") {
+      try { form.removeField(f); } catch { /* ignore */ }
+    }
+  }
 
   try {
     form.flatten();
