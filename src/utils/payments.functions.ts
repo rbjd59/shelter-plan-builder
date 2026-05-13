@@ -41,7 +41,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
         metadata: { language: data.language },
         // Bill the $199 one-time fee on the very first invoice alongside the $10/mo charge.
         add_invoice_items: [{ price: oneTime.data[0].id, quantity: 1 }],
-      },
+      } as any,
       ...(data.customerEmail && { customer_email: data.customerEmail }),
       metadata: { language: data.language },
     });
