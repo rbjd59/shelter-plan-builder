@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DetencionDefensa.com — Bienvenidos · Welcome · Byenvini</title>
+<meta name="description" content="A pre-detention defense plan for immigrant working families. $199 + $10/mo. NOT a law firm." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e1a2b;
+    --ink-deep: #060c16;
+    --ink-soft: #1a2940;
+    --paper: #f4efe6;
+    --paper-warm: #ebe3d4;
+    --accent: #b8551f;
+    --accent-deep: #8a3c11;
+    --gold: #c9a961;
+    --gold-soft: #b8973f;
+    --rule: rgba(244,239,230,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--ink-deep);
+    color: var(--paper);
+    font-family: 'Inter Tight', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    min-height: 100%;
+  }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* ============ ATMOSPHERIC BACKGROUND ============ */
+  .bg-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* gradient mesh */
+  .bg-layer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 20%, rgba(184,85,31,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 80% 80%, rgba(201,169,97,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 80% 60% at 50% 50%, rgba(14,26,43,0.4) 30%, var(--ink-deep) 80%);
+  }
+
+  /* paper grain */
+  .bg-layer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(244,239,230,0.025) 1px, transparent 0);
+    background-size: 4px 4px;
+    mix-blend-mode: screen;
+  }
+
+  /* faint document lines */
+  .bg-doc {
+    position: absolute;
+    width: 280px;
+    background: rgba(244,239,230,0.025);
+    border: 1px solid rgba(244,239,230,0.05);
+    padding: 2rem 1.5rem;
+    transform-origin: center;
+    z-index: 0;
+  }
+  .bg-doc-1 {
+    top: 8%;
+    left: -50px;
+    transform: rotate(-12deg);
+  }
+  .bg-doc-2 {
+    bottom: 5%;
+    right: -60px;
+    transform: rotate(8deg);
+  }
+  .bg-doc .line {
+    height: 4px;
+    background: rgba(244,239,230,0.08);
+    margin-bottom: 0.6rem;
+    border-radius: 2px;
+  }
+  .bg-doc .line.short { width: 50%; }
+  .bg-doc .line.med { width: 80%; }
+  .bg-doc .header {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: rgba(244,239,230,0.2);
+    border-bottom: 1px solid rgba(244,239,230,0.08);
+    padding-bottom: 0.6rem;
+    margin-bottom: 0.8rem;
+  }
+
+  /* ============ TOP BAR ============ */
+  .topbar {
+    background: var(--ink-deep);
+    border-bottom: 1px solid var(--gold);
+    padding: 0.65rem 1.5rem;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--paper);
+    position: relative;
+    z-index: 5;
+  }
+  .topbar strong { color: var(--gold); font-weight: 700; }
+  .topbar .sep { color: var(--gold); margin: 0 0.7rem; opacity: 0.6; }
+
+  /* ============ MAIN ============ */
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .brandmark {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 4rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.1s forwards;
+  }
+  .brand-logo-mark {
+    width: 32px;
+    height: 32px;
+    background: var(--paper);
+    position: relative;
+  }
+  .brand-logo-mark::after {
+    content: '';
+    position: absolute;
+    top: 9px; left: 9px;
+    width: 14px; height: 14px;
+    background: var(--accent);
+  }
+  .brand-logo-mark::before {
+    content: '';
+    position: absolute;
+    top: 4px; left: 4px;
+    width: 5px; height: 5px;
+    background: var(--gold);
+    z-index: 2;
+  }
+  .brandmark span {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.4rem;
+    letter-spacing: -0.01em;
+  }
+  .brandmark span em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 400;
+  }
+
+  .splash-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.2s forwards;
+  }
+  .splash-eyebrow::before, .splash-eyebrow::after {
+    content: '';
+    width: 28px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.5;
+  }
+
+  /* Urgency headlines */
+  .urgency-line {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-align: center;
+    max-width: 26ch;
+    margin: 0 auto;
+    opacity: 0;
+  }
+  .urgency-line .alt {
+    display: block;
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 0.42em;
+    letter-spacing: 0;
+    margin-top: 0.55em;
+    color: rgba(244,239,230,0.5);
+    line-height: 1.4;
+    max-width: 60ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .urgency-line em { font-style: italic; color: var(--accent); font-weight: 400; }
+
+  .urgency-1 {
+    font-size: clamp(2rem, 5.2vw, 4.4rem);
+    color: var(--paper);
+    margin-bottom: 1.6rem;
+    animation: fadeUp 0.8s 0.25s forwards;
+  }
+  .urgency-1 strong, .urgency-1 .nbr {
+    color: var(--accent);
+    font-weight: 400;
+  }
+
+  .urgency-2 {
+    font-size: clamp(1.5rem, 3.6vw, 2.8rem);
+    color: rgba(244,239,230,0.92);
+    margin-bottom: 2rem;
+    animation: fadeUp 0.8s 0.35s forwards;
+    font-weight: 300;
+  }
+
+  .urgency-price {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 0.85rem 1.6rem;
+    margin-bottom: 3rem;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.45s forwards;
+    background: rgba(201,169,97,0.04);
+  }
+  .urgency-price strong {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-style: normal;
+    color: var(--paper);
+    font-size: 1.4rem;
+    letter-spacing: -0.01em;
+  }
+  .urgency-price .plus {
+    color: var(--accent);
+    margin: 0 0.3rem;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+  }
+
+  .urgency-rule {
+    width: 80px;
+    height: 1px;
+    background: var(--accent);
+    margin: 0 auto 2.5rem;
+    opacity: 0;
+    animation: fadeIn 0.6s 0.55s forwards;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 0.6; }
+  }
+
+  h1.splash-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(1.4rem, 2.6vw, 2.2rem);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    max-width: 38ch;
+    color: rgba(244,239,230,0.85);
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+  h1.splash-title em {
+    font-style: italic;
+    color: var(--gold);
+    font-weight: 300;
+  }
+  h1.splash-title .alt {
+    display: block;
+    font-size: 0.7em;
+    margin-top: 0.5em;
+    color: rgba(244,239,230,0.45);
+    font-style: italic;
+    font-weight: 300;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+  }
+
+  .splash-lede {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: rgba(244,239,230,0.7);
+    text-align: center;
+    max-width: 36rem;
+    margin-bottom: 4rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .splash-lede em { color: var(--gold); font-style: italic; }
+
+  /* ============ LANGUAGE TILES ============ */
+  .lang-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    max-width: 980px;
+    width: 100%;
+    border: 1px solid var(--rule);
+    background: rgba(14,26,43,0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow:
+      0 30px 80px rgba(0,0,0,0.4),
+      inset 0 1px 0 rgba(244,239,230,0.05);
+    opacity: 0;
+    animation: fadeUp 0.9s 0.7s forwards;
+  }
+
+  .lang-tile {
+    padding: 3.5rem 2.5rem;
+    text-align: left;
+    text-decoration: none;
+    color: var(--paper);
+    position: relative;
+    overflow: hidden;
+    border-right: 1px solid var(--rule);
+    transition: background 0.4s ease, transform 0.4s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-height: 280px;
+    background: transparent;
+  }
+  .lang-tile:last-child { border-right: none; }
+
+  .lang-tile::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--accent-deep) 0%, var(--accent) 100%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    z-index: 0;
+  }
+  .lang-tile:hover::before { opacity: 1; }
+
+  .lang-tile > * { position: relative; z-index: 1; }
+
+  .lang-flag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.9rem;
+    transition: color 0.3s;
+  }
+  .lang-tile:hover .lang-flag { color: var(--paper); }
+
+  .lang-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 2.6rem;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+  .lang-name em {
+    display: block;
+    font-style: italic;
+    color: var(--gold);
+    font-size: 0.7em;
+    margin-top: 0.3em;
+    transition: color 0.3s;
+  }
+  .lang-tile:hover .lang-name em { color: rgba(244,239,230,0.85); }
+
+  .lang-desc {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: rgba(244,239,230,0.65);
+    margin-top: auto;
+    margin-bottom: 1.5rem;
+    transition: color 0.3s;
+  }
+  .lang-tile:hover .lang-desc { color: rgba(244,239,230,0.92); }
+
+  .lang-cta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--paper);
+    border-top: 1px solid var(--rule);
+    padding-top: 1.2rem;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  .lang-cta .arrow {
+    transition: transform 0.3s;
+    font-size: 1rem;
+  }
+  .lang-tile:hover .lang-cta { border-color: rgba(244,239,230,0.4); }
+  .lang-tile:hover .lang-cta .arrow { transform: translateX(6px); }
+
+  /* footer of splash */
+  .splash-footer {
+    margin-top: 4rem;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: rgba(244,239,230,0.4);
+    line-height: 1.7;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.7s forwards;
+    max-width: 60rem;
+  }
+  .splash-footer strong { color: var(--gold); font-weight: 600; }
+  .splash-footer .row {
+    margin-top: 0.6rem;
+    color: rgba(244,239,230,0.3);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 820px) {
+    main { padding: 3rem 1.5rem; }
+    .brandmark { margin-bottom: 2rem; }
+    .urgency-1 { font-size: 1.7rem; max-width: 100%; margin-bottom: 1.2rem; }
+    .urgency-2 { font-size: 1.2rem; margin-bottom: 1.5rem; }
+    .urgency-line .alt { font-size: 0.75rem; }
+    .urgency-price { font-size: 0.78rem; padding: 0.7rem 1.1rem; margin-bottom: 2rem; }
+    .urgency-price strong { font-size: 1.1rem; }
+    .urgency-rule { margin-bottom: 1.8rem; }
+    h1.splash-title { font-size: 1.05rem; max-width: 100%; margin-bottom: 2rem; }
+    h1.splash-title .alt { font-size: 0.62rem; }
+    .lang-grid {
+      grid-template-columns: 1fr;
+    }
+    .lang-tile {
+      border-right: none;
+      border-bottom: 1px solid var(--rule);
+      padding: 2.5rem 2rem;
+      min-height: auto;
+    }
+    .lang-tile:last-child { border-bottom: none; }
+    .lang-name { font-size: 2rem; }
+    .bg-doc { display: none; }
+    .topbar { font-size: 0.6rem; letter-spacing: 0.12em; }
+    .topbar .sep { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Atmospheric backdrop -->
+<div class="bg-layer"></div>
+<div class="bg-doc bg-doc-1" aria-hidden="true">
+  <div class="header">U.S. District Court · AO 242</div>
+  <div class="line"></div>
+  <div class="line med"></div>
+  <div class="line short"></div>
+  <div class="line"></div>
+  <div class="line med"></div>
+  <div class="line"></div>
+  <div class="line short"></div>
+</div>
+<div class="bg-doc bg-doc-2" aria-hidden="true">
+  <div class="header">28 U.S.C. § 2241 · Habeas</div>
+  <div class="line med"></div>
+  <div class="line"></div>
+  <div class="line short"></div>
+  <div class="line med"></div>
+  <div class="line"></div>
+</div>
+
+<!-- TOP BAR (NOT A LAW FIRM, in three languages) -->
+<div class="topbar">
+  <strong>NOT A LAW FIRM</strong>
+  <span class="sep">·</span>
+  NO somos un bufete de abogados
+  <span class="sep">·</span>
+  Nou pa yon kabinè avoka
+</div>
+
+<!-- MAIN -->
+<main>
+  <a href="#" class="brandmark" onclick="event.preventDefault();">
+    <span class="brand-logo-mark"></span>
+    <span>DetencionDefensa<em>.com</em></span>
+  </a>
+
+  <div class="splash-eyebrow">
+    Spring 2026 · Vol. I
+  </div>
+
+  <h2 class="urgency-line urgency-1">
+    ICE is arresting thousands every day.
+    <span class="alt">ICE está arrestando a miles cada día · ICE ap arete dè milye chak jou</span>
+  </h2>
+
+  <h2 class="urgency-line urgency-2">
+    Act <em>today</em> to protect your freedom and family <em>tomorrow</em>.
+    <span class="alt">Actúe hoy para proteger su libertad y su familia mañana · Aji jodi a pou pwoteje libète w ak fanmi w demen</span>
+  </h2>
+
+  <div class="urgency-price">
+    Protection Plan starting at <strong>$199</strong> <span class="plus">+</span> <strong>$10</strong>/month
+  </div>
+
+  <div class="urgency-rule"></div>
+
+  <h1 class="splash-title">
+    Choose your language for free information and services available.
+    <span class="alt">Elija su idioma · Chwazi lang ou</span>
+  </h1>
+
+  <!-- LANGUAGE TILES -->
+  <div class="lang-grid">
+    <a href="index.html?lang=es" class="lang-tile" data-lang="es">
+      <div class="lang-flag">Español · ES</div>
+      <div class="lang-name">
+        Bienvenidos
+        <em>Continuar en español</em>
+      </div>
+      <div class="lang-desc">
+        Si una mañana ICE viene por su familia, sus papeles federales ya están preparados — listos para que usted los firme y los presente.
+      </div>
+      <div class="lang-cta">
+        Empezar
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a href="index.html?lang=en" class="lang-tile" data-lang="en">
+      <div class="lang-flag">English · EN</div>
+      <div class="lang-name">
+        Welcome
+        <em>Continue in English</em>
+      </div>
+      <div class="lang-desc">
+        If ICE comes for your family one Tuesday morning, your federal papers are already prepared — ready for you to sign and file.
+      </div>
+      <div class="lang-cta">
+        Start
+        <span class="arrow">→</span>
+      </div>
+    </a>
+
+    <a href="index.html?lang=ht" class="lang-tile" data-lang="ht">
+      <div class="lang-flag">Kreyòl Ayisyen · HT</div>
+      <div class="lang-name">
+        Byenvini
+        <em>Kontinye an Kreyòl</em>
+      </div>
+      <div class="lang-desc">
+        Si yon maten ICE vini pou fanmi w, papye federal ou yo deja prepare — pare pou ou siyen yo epi depoze yo.
+      </div>
+      <div class="lang-cta">
+        Kòmanse
+        <span class="arrow">→</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="splash-footer">
+    <strong>NOT A LAW FIRM · NO LEGAL ADVICE · YOU SIGN · YOU FILE</strong>
+    <div class="row">
+      $199 setup · $10/mo · Federal Form AO 242 + IFP fee waiver only · Government-published forms · Your data lives on your phone
+    </div>
+  </div>
+</main>
+
+<script>
+  // Each tile auto-navigates via its href. This script just persists the choice.
+  document.querySelectorAll('.lang-tile').forEach(tile => {
+    tile.addEventListener('click', () => {
+      const lang = tile.getAttribute('data-lang');
+      try { sessionStorage.setItem('dd_lang', lang); } catch(_) {}
+      // Subtle UI feedback while navigating
+      tile.style.opacity = '0.7';
+    });
+  });
+</script>
+</body>
+</html>
