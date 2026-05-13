@@ -13,6 +13,7 @@ import { Route as SplashRouteImport } from './routes/splash'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as AltRouteImport } from './routes/alt'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 
 const SplashRoute = SplashRouteImport.update({
   id: '/splash',
@@ -34,18 +35,26 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicPaymentsWebhookRoute =
+  ApiPublicPaymentsWebhookRouteImport.update({
+    id: '/api/public/payments/webhook',
+    path: '/api/public/payments/webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/alt': typeof AltRoute
   '/checkout': typeof CheckoutRoute
   '/splash': typeof SplashRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/alt': typeof AltRoute
   '/checkout': typeof CheckoutRoute
   '/splash': typeof SplashRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +62,25 @@ export interface FileRoutesById {
   '/alt': typeof AltRoute
   '/checkout': typeof CheckoutRoute
   '/splash': typeof SplashRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/alt' | '/checkout' | '/splash'
+  fullPaths:
+    | '/'
+    | '/alt'
+    | '/checkout'
+    | '/splash'
+    | '/api/public/payments/webhook'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/alt' | '/checkout' | '/splash'
-  id: '__root__' | '/' | '/alt' | '/checkout' | '/splash'
+  to: '/' | '/alt' | '/checkout' | '/splash' | '/api/public/payments/webhook'
+  id:
+    | '__root__'
+    | '/'
+    | '/alt'
+    | '/checkout'
+    | '/splash'
+    | '/api/public/payments/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +88,7 @@ export interface RootRouteChildren {
   AltRoute: typeof AltRoute
   CheckoutRoute: typeof CheckoutRoute
   SplashRoute: typeof SplashRoute
+  ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -99,6 +121,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/payments/webhook': {
+      id: '/api/public/payments/webhook'
+      path: '/api/public/payments/webhook'
+      fullPath: '/api/public/payments/webhook'
+      preLoaderRoute: typeof ApiPublicPaymentsWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -107,6 +136,7 @@ const rootRouteChildren: RootRouteChildren = {
   AltRoute: AltRoute,
   CheckoutRoute: CheckoutRoute,
   SplashRoute: SplashRoute,
+  ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
