@@ -27,7 +27,7 @@ const T = {
       "Usted es responsable de revisar cada formulario, elegir sus propios motivos legales, firmar y presentarlo ante el tribunal. Nosotros no presentamos por usted.",
       "Las comunicaciones con nosotros NO están protegidas por el privilegio abogado-cliente.",
       "Todos los pagos son por servicios de preparación de documentos y no son reembolsables una vez preparados los formularios.",
-      "Si necesita consejo legal, debe consultar a un abogado de inmigración licenciado.",
+      "Si necesita consejo legal, debe consultar a un abogado licenciado.",
     ],
     accept: "He leído y acepto los términos anteriores.",
     cont: "Acepto — Continuar",
