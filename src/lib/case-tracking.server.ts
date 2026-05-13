@@ -188,42 +188,68 @@ export async function sendWelcomeEmail(params: {
   trackingToken: string;
   language: string;
   installUrl?: string | null;
+  habeasUrl?: string | null;
+  ifpUrl?: string | null;
 }): Promise<void> {
   const lang = pickLang(params.language);
   const c = COPY.welcome[lang];
   const trackingUrl = `${SITE_BASE}/track/${params.trackingToken}`;
   const installCta =
     lang === "es"
-      ? "Instalar el botón EMERGENCIA en mi teléfono"
+      ? "Instalar el botón AYUDA YA en mi teléfono"
       : lang === "ht"
-      ? "Enstale bouton ÈJANS sou telefòn mwen"
-      : "Install the EMERGENCY button on my phone";
+      ? "Enstale bouton AYÈ KOUNYE A sou telefòn mwen"
+      : "Install the HELP NOW button on my phone";
   const installNote =
     lang === "es"
-      ? "Abra este enlace en el teléfono que llevará la persona en riesgo. Toque 'Compartir' y luego 'Añadir a pantalla de inicio'. Mantenga presionado 15 segundos en una emergencia para alertar a nuestro equipo legal."
+      ? "Abra este enlace en el teléfono que llevará la persona en riesgo. En iPhone (Safari): toque el ícono Compartir y luego 'Añadir a pantalla de inicio'. En Android (Chrome): toque el menú ⋮ y luego 'Instalar app' o 'Añadir a pantalla de inicio'. Mantenga presionado el botón AYUDA YA durante 15 segundos en una emergencia para alertar a nuestro equipo legal y a su contacto de emergencia con copia de los formularios adjunta."
       : lang === "ht"
-      ? "Louvri lyen sa a sou telefòn moun ki an risk la. Tape 'Pataje' epi 'Add to Home Screen'. Kenbe peze pandan 15 segond nan yon ijans pou alète ekip legal nou."
-      : "Open this link on the phone the at-risk person will carry. Tap 'Share' then 'Add to Home Screen'. Press and hold for 15 seconds in an emergency to alert our legal team.";
+      ? "Louvri lyen sa a sou telefòn moun ki an risk la. Sou iPhone (Safari): tape ikon Pataje a epi 'Add to Home Screen'. Sou Android (Chrome): tape meni ⋮ a epi 'Install app' oswa 'Add to Home Screen'. Kenbe peze bouton AYÈ KOUNYE A pandan 15 segond nan yon ijans pou alète ekip legal nou ak kontak ijans ou ak yon kopi fòm yo."
+      : "Open this link on the phone the at-risk person will carry. On iPhone (Safari): tap the Share icon then 'Add to Home Screen'. On Android (Chrome): tap the ⋮ menu then 'Install app' or 'Add to Home Screen'. Press and hold the HELP NOW button for 15 seconds in an emergency to alert our legal team and your emergency contact with copies of the forms attached.";
   const installSection = params.installUrl
     ? `<div style="margin-top:18px;padding:18px;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;">
         <p style="margin:0 0 10px;font-size:14px;font-weight:700;color:#991b1b;">${escapeHtml(installCta)}</p>
         <p style="margin:0 0 12px;font-size:13px;color:#7f1d1d;line-height:1.5;">${escapeHtml(installNote)}</p>
         <p style="text-align:center;margin:0;">
-          <a href="${params.installUrl}" style="display:inline-block;background:#dc2626;color:#fff;text-decoration:none;padding:12px 22px;border-radius:8px;font-weight:700;font-size:14px;">${escapeHtml(installCta)}</a>
+          <a href="${params.installUrl}" style="display:inline-block;background:#dc2626;color:#fff;text-decoration:none;padding:14px 26px;border-radius:8px;font-weight:700;font-size:15px;">${escapeHtml(installCta)}</a>
         </p>
-        <p style="margin:10px 0 0;font-size:11px;color:#a16207;">One-time link. Valid 30 days.</p>
+        <p style="margin:10px 0 0;font-size:11px;color:#a16207;">One-time link. Valid 30 days. Open it on the phone that will carry the app.</p>
       </div>`
     : "";
+
+  const pdfHeading =
+    lang === "es"
+      ? "Sus formularios preparados (PDF)"
+      : lang === "ht"
+      ? "Fòm yo prepare pou ou (PDF)"
+      : "Your prepared forms (PDF)";
+  const pdfNote =
+    lang === "es"
+      ? "Descárguelos e imprímalos. Los enlaces seguros expiran en 14 días."
+      : lang === "ht"
+      ? "Telechaje epi enprime yo. Lyen sekirize yo ekspire nan 14 jou."
+      : "Download and print. Secure links expire in 14 days.";
+  const pdfSection = params.habeasUrl || params.ifpUrl
+    ? `<div style="margin-top:18px;padding:18px;background:#f6f8fa;border:1px solid #d0d7de;border-radius:10px;">
+        <p style="margin:0 0 10px;font-size:14px;font-weight:700;color:#0a1f44;">${escapeHtml(pdfHeading)}</p>
+        ${params.habeasUrl ? `<p style="margin:0 0 6px;"><a href="${params.habeasUrl}" style="color:#0a58ca;text-decoration:underline;font-size:14px;">AO 242 — Petition for Writ of Habeas Corpus (28 U.S.C. § 2241).pdf</a></p>` : ""}
+        ${params.ifpUrl ? `<p style="margin:0;"><a href="${params.ifpUrl}" style="color:#0a58ca;text-decoration:underline;font-size:14px;">AO 240 — Application to Proceed In Forma Pauperis.pdf</a></p>` : ""}
+        <p style="margin:10px 0 0;font-size:11px;color:#666;">${escapeHtml(pdfNote)}</p>
+      </div>`
+    : "";
+
   const html = buildHtml({
     heading: c.heading,
     body: c.body,
     trackingUrl,
     cta: c.cta,
     note: c.note,
-  }).replace("</div>\n      <p ", `${installSection}</div>\n      <p `);
+  }).replace("</div>\n      <p ", `${pdfSection}${installSection}</div>\n      <p `);
   const text = `${c.heading}\n\n${c.body}\n\n${c.cta}: ${trackingUrl}\n\n${
-    params.installUrl ? `${installCta}: ${params.installUrl}\n\n` : ""
-  }${c.note}`;
+    params.habeasUrl ? `AO 242 Habeas: ${params.habeasUrl}\n` : ""
+  }${params.ifpUrl ? `AO 240 IFP: ${params.ifpUrl}\n` : ""}${
+    params.installUrl ? `\n${installCta}: ${params.installUrl}\n` : ""
+  }\n${c.note}`;
   await enqueueFamilyEmail({
     to: params.to,
     subject: c.subject,
