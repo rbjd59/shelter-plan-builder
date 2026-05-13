@@ -89,7 +89,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       mode: "subscription",
       ui_mode: "embedded_page",
       return_url: data.returnUrl,
-      managed_payments: { enabled: true },
+      automatic_tax: { enabled: true },
       line_items: [
         { price: monthly.data[0].id, quantity: 1 },
         { price: oneTime.data[0].id, quantity: 1 },
