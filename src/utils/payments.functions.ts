@@ -39,30 +39,12 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       line_items: [{ price: monthly.data[0].id, quantity: 1 }],
       subscription_data: {
         metadata: { language: data.language },
+        // Bill the $199 one-time fee on the very first invoice alongside the $10/mo charge.
+        add_invoice_items: [{ price: oneTime.data[0].id, quantity: 1 }],
       },
-      // Add the $199 one-time charge to the first invoice.
-      invoice_creation: undefined,
       ...(data.customerEmail && { customer_email: data.customerEmail }),
       metadata: { language: data.language },
-      // The first invoice will include the $199 one-time charge alongside the $10 subscription.
-      // Stripe accepts `subscription_data.invoice_settings` only in some flows; the canonical
-      // path for one-off + subscription is `subscription_data.add_invoice_items` (sandbox API).
-      // If the SDK in use rejects it, fall back to a separate invoice item created post-hoc.
-    } as any);
-
-    // Add the one-time $199 charge to the subscription's first invoice.
-    // We do this via the helper field `add_invoice_items` on the embedded session.
-    // If the embedded API doesn't accept it, this is a no-op and we bill it separately.
-    try {
-      await stripe.checkout.sessions.update(session.id, {
-        // @ts-expect-error — `add_invoice_items` is supported on subscription sessions.
-        subscription_data: {
-          metadata: { language: data.language },
-        },
-      });
-    } catch {
-      /* ignore — non-fatal */
-    }
+    });
 
     return session.client_secret;
   });
