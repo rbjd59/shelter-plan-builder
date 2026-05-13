@@ -38,8 +38,14 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       return_url: data.returnUrl,
       line_items: [{ price: monthly.data[0].id, quantity: 1 }],
       subscription_data: {
-        metadata: { language: data.language },
-        // Bill the $199 one-time fee on the very first invoice alongside the $10/mo charge.
+        metadata: {
+          language: data.language,
+          // 3-month minimum commitment — enforced in cancel flow.
+          minimum_term_months: "3",
+        },
+        // First $10/mo charge hits after the 3-month trial.
+        trial_period_days: 90,
+        // Bill the $199 one-time fee immediately on the first (trial-start) invoice.
         add_invoice_items: [{ price: oneTime.data[0].id, quantity: 1 }],
       } as any,
       ...(data.customerEmail && { customer_email: data.customerEmail }),
