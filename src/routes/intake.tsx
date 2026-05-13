@@ -4,6 +4,7 @@ import { z } from "zod";
 import { useServerFn } from "@tanstack/react-start";
 import { verifyAndCreateIntake, submitIntakeAnswers } from "@/utils/payments.functions";
 import { getStripeEnvironment } from "@/lib/stripe";
+import { DisclosureGate } from "@/components/DisclosureGate";
 
 const searchSchema = z.object({
   session_id: z.string().optional(),
