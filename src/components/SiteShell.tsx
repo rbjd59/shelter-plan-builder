@@ -59,7 +59,7 @@ export default function SiteShell() {
         }
         if (href === "/checkout") {
           e.preventDefault();
-          navigate({ to: "/checkout" });
+          navigate({ to: "/checkout", search: { lang } as never });
           return;
         }
         if (href === "/" || href.startsWith("/?")) {
