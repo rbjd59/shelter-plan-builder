@@ -112,8 +112,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
 
 export const verifyAndCreateIntake = createServerFn({ method: "POST" })
   .inputValidator((data: { sessionId: string; environment: StripeEnv }) => {
-    if (!data.sessionId || typeof data.sessionId !== "string")
-      throw new Error("Invalid sessionId");
+    if (!data.sessionId || typeof data.sessionId !== "string") throw new Error("Invalid sessionId");
     return data;
   })
   .handler(async ({ data }) => {
