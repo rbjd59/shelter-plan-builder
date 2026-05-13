@@ -56,7 +56,7 @@ export function StripeEmbeddedCheckoutBox({ language, customerEmail, returnUrl }
       </div>
     );
   }
-  if (!stripePromise) return <div style={{ padding: 16, color: "#666" }}>Loading payment form…</div>;
+  if (!stripePromise || userInfo === null) return <div style={{ padding: 16, color: "#666" }}>Loading payment form…</div>;
 
   return (
     <div id="checkout">
