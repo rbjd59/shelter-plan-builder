@@ -44,12 +44,12 @@ async function resolveOrCreateCustomer(
 
 /**
  * Create the Embedded Checkout session.
- * Charges $199 today + starts a $30/month subscription whose first $30
- * invoice posts ~60 days out (months 1-2 free, $30/mo from month 3).
+ * Charges $199 today and starts the $30/month plan after a 60-day trial.
  *
- * Implementation: subscription mode + billing_cycle_anchor = now+60d +
- * proration_behavior 'none'. The one-time $199 line item bills today;
- * the recurring $30 starts on the anchor.
+ * Keep this checkout intentionally tax-neutral in test mode. Do not send
+ * managed_payments, automatic_tax, billing_cycle_anchor, or proration_behavior
+ * here: this product is a one-time + subscription bundle and those options
+ * caused Stripe session creation failures in sandbox checkout.
  */
 export const createCheckoutSession = createServerFn({ method: "POST" })
   .inputValidator(
@@ -83,11 +83,10 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
           })
         : undefined;
 
-    const session = await stripe.checkout.sessions.create({
+    const sessionParams = {
       mode: "subscription",
       ui_mode: "embedded_page",
       return_url: data.returnUrl,
-      
       line_items: [
         { price: monthly.data[0].id, quantity: 1 },
         { price: oneTime.data[0].id, quantity: 1 },
@@ -104,15 +103,16 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
         language: data.language,
         ...(data.userId && { userId: data.userId }),
       },
-    } as Stripe.Checkout.SessionCreateParams);
+    } satisfies Stripe.Checkout.SessionCreateParams;
+
+    const session = await stripe.checkout.sessions.create(sessionParams);
 
     return session.client_secret;
   });
 
 export const verifyAndCreateIntake = createServerFn({ method: "POST" })
   .inputValidator((data: { sessionId: string; environment: StripeEnv }) => {
-    if (!data.sessionId || typeof data.sessionId !== "string")
-      throw new Error("Invalid sessionId");
+    if (!data.sessionId || typeof data.sessionId !== "string") throw new Error("Invalid sessionId");
     return data;
   })
   .handler(async ({ data }) => {
