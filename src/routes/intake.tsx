@@ -104,17 +104,23 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
   },
   {
     id: "mailto",
-    title: { en: "6. Where To Mail Forms", es: "6. Dónde Enviar los Formularios", ht: "6. Kote pou Voye Fòm yo" },
+    title: {
+      en: "6. Emergency Contact for the HELP NOW App + Mailing Address if Detained",
+      es: "6. Contacto de Emergencia para la App AYUDA YA + Dirección Postal si está Detenido",
+      ht: "6. Kontak Ijans pou App AYÈ KOUNYE A + Adrès Postal si Detni",
+    },
     intro: {
-      en: "Tell us where the inmate is RIGHT NOW so we can mail the prepared forms.",
-      es: "Díganos dónde está el recluso AHORA MISMO para enviar los formularios.",
-      ht: "Di nou kote prizonye a ye KOUNYE A pou nou ka voye fòm yo.",
+      en: "If the petitioner is detained, this is where we'll mail a printed copy of the File Now Packet (AO 242 + AO 240). The same person is also notified by email — with a copy of the forms attached — the moment the petitioner activates the HELP NOW button on the mobile app.",
+      es: "Si el peticionario es detenido, aquí enviaremos por correo una copia impresa del Paquete File Now (AO 242 + AO 240). Esta misma persona recibe un aviso por correo electrónico — con copia de los formularios adjunta — en el momento en que el peticionario active el botón AYUDA YA en la app móvil.",
+      ht: "Si yo detni petisyonè a, se la nou pral voye yon kopi enprime nan File Now Packet la (AO 242 + AO 240). Menm moun sa a resevwa yon notifikasyon imèl — ak yon kopi fòm yo — lè petisyonè a aktive bouton AYÈ KOUNYE A nan app la.",
     },
     fields: [
+      { key: "emergency_contact_name", label: { en: "Emergency contact full name (notified by the app)", es: "Nombre completo del contacto de emergencia (notificado por la app)", ht: "Non konplè kontak ijans (app la notifye)" } },
+      { key: "emergency_contact_email", label: { en: "Emergency contact email — receives the activation alert + form copies", es: "Correo del contacto de emergencia — recibe la alerta + copia de los formularios", ht: "Imèl kontak ijans — resevwa alèt la + kopi fòm yo" } },
       { key: "mail_inmate_name", label: { en: "Inmate full name (as on mail)", es: "Nombre completo del recluso", ht: "Non konplè prizonye a" } },
       { key: "mail_current_location", label: { en: "Where is inmate located now (facility name)", es: "¿Dónde está el recluso ahora?", ht: "Kote prizonye a ye kounye a" } },
       { key: "mail_inmate_number", label: { en: "Inmate / booking number", es: "Número de recluso", ht: "Nimewo prizonye" } },
-      { key: "mail_facility_address", type: "textarea", label: { en: "Facility mailing address", es: "Dirección postal del centro", ht: "Adrès postal sant lan" } },
+      { key: "mail_facility_address", type: "textarea", label: { en: "Facility mailing address (for printed File Now Packet)", es: "Dirección postal del centro (para el Paquete File Now impreso)", ht: "Adrès postal sant lan (pou File Now Packet enprime)" } },
     ],
   },
   {
