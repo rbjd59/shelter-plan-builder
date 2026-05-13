@@ -7,7 +7,7 @@ const searchSchema = z.object({ lang: z.enum(["en", "es", "ht"]).catch("es") });
 
 export const Route = createFileRoute("/checkout")({
   validateSearch: searchSchema,
-  head: () => ({ meta: [{ title: "Checkout · $199 + $30/mo — DetencionDefensa.com" }] }),
+  head: () => ({ meta: [{ title: "Checkout · $199 + $10/mo — DetencionDefensa.com" }] }),
   component: CheckoutPage,
 });
 
@@ -16,19 +16,19 @@ const T = {
     title: "Pre-Detention Defense Plan",
     sub: "Form preparation only. We are NOT a law firm. After payment, you will fill out an intake form so we can prepare your AO 242 (28 U.S.C. § 2241) petition and AO 240 (In Forma Pauperis) application.",
     back: "← Back",
-    flat: "$199 today + $30/month starting month 3",
+    flat: "$199 today + $10/month starting month 3",
   },
   es: {
     title: "Plan de Defensa Pre-Detención",
     sub: "Solo preparamos formularios. NO somos un bufete de abogados. Después del pago, completará un formulario para preparar su petición AO 242 (28 U.S.C. § 2241) y solicitud AO 240 (In Forma Pauperis).",
     back: "← Volver",
-    flat: "$199 hoy + $30/mes a partir del mes 3",
+    flat: "$199 hoy + $10/mes a partir del mes 3",
   },
   ht: {
     title: "Plan Defans Anvan-Detansyon",
     sub: "Nou prepare fòm sèlman. Nou PA yon kabinè avoka. Apre peman, ou pral ranpli yon fòm pou nou prepare petisyon AO 242 (28 U.S.C. § 2241) ou ak aplikasyon AO 240 (In Forma Pauperis).",
     back: "← Tounen",
-    flat: "$199 jodi a + $30/mwa kòmanse mwa 3",
+    flat: "$199 jodi a + $10/mwa kòmanse mwa 3",
   },
 } as const;
 

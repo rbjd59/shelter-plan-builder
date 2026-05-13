@@ -67,10 +67,10 @@ function DashboardPage() {
           <div style={{ background: "#1a2436", padding: 24, borderRadius: 8 }}>
             <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>Pre-Detention Defense Plan</h2>
             <Row label="Status" value={prettyStatus(sub.status, sub.cancel_at_period_end)} />
-            <Row label="Next bill" value={sub.current_period_end ? `${new Date(sub.current_period_end).toLocaleDateString()} · $30.00` : "—"} />
-            <Row label="Plan" value="$199 today + $30/mo from month 3" />
+            <Row label="Next bill" value={sub.current_period_end ? `${new Date(sub.current_period_end).toLocaleDateString()} · $10.00` : "—"} />
+            <Row label="Plan" value="$199 today + $10/mo from month 3" />
             <div style={{ marginTop: 24, fontSize: 13, color: "#cfc8b8", borderLeft: "3px solid #e8a04a", paddingLeft: 14 }}>
-              To cancel the $30/month, email <a href="mailto:intake@detenciondefensa.com" style={{ color: "#e8a04a" }}>intake@detenciondefensa.com</a>.
+              To cancel the $10/month, email <a href="mailto:intake@detenciondefensa.com" style={{ color: "#e8a04a" }}>intake@detenciondefensa.com</a>.
             </div>
           </div>
         ) : (
