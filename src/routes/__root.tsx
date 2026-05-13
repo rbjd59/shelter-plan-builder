@@ -10,6 +10,7 @@ import {
 
 import appCss from "../styles.css?url";
 import { LanguageProvider } from "@/context/LanguageContext";
+import { BetaBanner } from "@/components/BetaBanner";
 
 function NotFoundComponent() {
   return (
