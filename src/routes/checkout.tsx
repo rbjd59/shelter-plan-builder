@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { z } from "zod";
 import { StripeEmbeddedCheckoutBox } from "@/components/StripeEmbeddedCheckout";
-import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 const searchSchema = z.object({ lang: z.enum(["en", "es", "ht"]).catch("es") });
 
