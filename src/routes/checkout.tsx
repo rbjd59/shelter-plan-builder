@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { z } from "zod";
 import { StripeEmbeddedCheckoutBox } from "@/components/StripeEmbeddedCheckout";
-import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 const searchSchema = z.object({ lang: z.enum(["en", "es", "ht"]).catch("es") });
 
@@ -42,7 +41,7 @@ function CheckoutPage() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#0b1220", color: "#f6efe1", fontFamily: "Inter Tight, system-ui, sans-serif" }}>
-      <PaymentTestModeBanner />
+      
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "32px 24px 64px" }}>
         <Link to="/" search={{ lang } as never} style={{ color: "#e8a04a", textDecoration: "none", fontSize: 14 }}>
           {t.back}

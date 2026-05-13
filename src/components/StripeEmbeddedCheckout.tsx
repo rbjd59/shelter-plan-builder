@@ -3,6 +3,7 @@ import { EmbeddedCheckoutProvider, EmbeddedCheckout } from "@stripe/react-stripe
 import type { Stripe } from "@stripe/stripe-js";
 import { getStripe, getStripeEnvironment } from "@/lib/stripe";
 import { createCheckoutSession } from "@/utils/payments.functions";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Props {
   language: string;
@@ -13,6 +14,7 @@ interface Props {
 export function StripeEmbeddedCheckoutBox({ language, customerEmail, returnUrl }: Props) {
   const [stripePromise, setStripePromise] = useState<Promise<Stripe | null> | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [userInfo, setUserInfo] = useState<{ userId?: string; email?: string } | null>(null);
 
   useEffect(() => {
     try {
@@ -20,11 +22,20 @@ export function StripeEmbeddedCheckoutBox({ language, customerEmail, returnUrl }
     } catch (e) {
       setError((e as Error).message);
     }
-  }, []);
+    supabase.auth.getUser().then(({ data }) => {
+      setUserInfo({ userId: data.user?.id, email: data.user?.email || customerEmail });
+    });
+  }, [customerEmail]);
 
   const fetchClientSecret = async (): Promise<string> => {
     const secret = await createCheckoutSession({
-      data: { language, customerEmail, returnUrl, environment: getStripeEnvironment() },
+      data: {
+        language,
+        customerEmail: userInfo?.email || customerEmail,
+        userId: userInfo?.userId,
+        returnUrl,
+        environment: getStripeEnvironment(),
+      },
     });
     if (!secret) throw new Error("Failed to create checkout session");
     return secret;
@@ -45,7 +56,7 @@ export function StripeEmbeddedCheckoutBox({ language, customerEmail, returnUrl }
       </div>
     );
   }
-  if (!stripePromise) return <div style={{ padding: 16, color: "#666" }}>Loading payment form…</div>;
+  if (!stripePromise || userInfo === null) return <div style={{ padding: 16, color: "#666" }}>Loading payment form…</div>;
 
   return (
     <div id="checkout">

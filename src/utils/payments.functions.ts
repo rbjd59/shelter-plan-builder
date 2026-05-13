@@ -1,13 +1,55 @@
 import { createServerFn } from "@tanstack/react-start";
+import Stripe from "stripe";
 import { type StripeEnv, createStripeClient } from "@/lib/stripe.server";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { enqueueIntakeNotification } from "@/lib/email/intake-notification.server";
 
 /**
- * Create a Stripe Embedded Checkout session that bills:
- *   - $199 one-time (priceId: pretransfer_199)  → added as a one-time invoice item
- *   - $10/month subscription (priceId: pretransfer_10mo) → as the recurring line
- * Returns the session client_secret.
+ * Find an existing Stripe Customer by userId metadata, then by email,
+ * otherwise create one. Putting userId on the Customer makes later
+ * lookups via customers.search reliable across sandbox/live.
+ */
+async function resolveOrCreateCustomer(
+  stripe: Stripe,
+  options: { email?: string | null; userId?: string | null },
+): Promise<string> {
+  if (options.userId && !/^[a-zA-Z0-9_-]+$/.test(options.userId)) {
+    throw new Error("Invalid userId");
+  }
+  if (options.userId) {
+    const found = await stripe.customers.search({
+      query: `metadata['userId']:'${options.userId}'`,
+      limit: 1,
+    });
+    if (found.data.length) return found.data[0].id;
+  }
+  if (options.email) {
+    const existing = await stripe.customers.list({ email: options.email, limit: 1 });
+    if (existing.data.length) {
+      const customer = existing.data[0];
+      if (options.userId && customer.metadata?.userId !== options.userId) {
+        await stripe.customers.update(customer.id, {
+          metadata: { ...customer.metadata, userId: options.userId },
+        });
+      }
+      return customer.id;
+    }
+  }
+  const created = await stripe.customers.create({
+    ...(options.email && { email: options.email }),
+    ...(options.userId && { metadata: { userId: options.userId } }),
+  });
+  return created.id;
+}
+
+/**
+ * Create the Embedded Checkout session.
+ * Charges $199 today + starts a $30/month subscription whose first $30
+ * invoice posts ~60 days out (months 1-2 free, $30/mo from month 3).
+ *
+ * Implementation: subscription mode + billing_cycle_anchor = now+60d +
+ * proration_behavior 'none'. The one-time $199 line item bills today;
+ * the recurring $30 starts on the anchor.
  */
 export const createCheckoutSession = createServerFn({ method: "POST" })
   .inputValidator(
@@ -16,6 +58,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       returnUrl: string;
       environment: StripeEnv;
       customerEmail?: string;
+      userId?: string;
     }) => {
       if (!["en", "es", "ht"].includes(data.language)) throw new Error("Invalid language");
       if (typeof data.returnUrl !== "string" || !data.returnUrl.startsWith("http"))
@@ -32,24 +75,39 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
     ]);
     if (!oneTime.data.length || !monthly.data.length) throw new Error("Prices not found");
 
+    const customerId =
+      data.customerEmail || data.userId
+        ? await resolveOrCreateCustomer(stripe, {
+            email: data.customerEmail,
+            userId: data.userId,
+          })
+        : undefined;
+
+    const billingCycleAnchor = Math.floor(Date.now() / 1000) + 60 * 24 * 60 * 60;
+
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       ui_mode: "embedded_page",
       return_url: data.returnUrl,
-      // $199 one-time setup fee + $30/mo subscription. Stripe automatically
-      // adds the one-time price as an invoice item on the first invoice.
+      managed_payments: { enabled: true },
       line_items: [
         { price: monthly.data[0].id, quantity: 1 },
         { price: oneTime.data[0].id, quantity: 1 },
       ],
       subscription_data: {
-        metadata: { language: data.language },
-        // Months 1-2 free, $30/mo starts month 3, ongoing until cancel.
-        trial_period_days: 60,
+        billing_cycle_anchor: billingCycleAnchor,
+        proration_behavior: "none",
+        metadata: {
+          language: data.language,
+          ...(data.userId && { userId: data.userId }),
+        },
       },
-      ...(data.customerEmail && { customer_email: data.customerEmail }),
-      metadata: { language: data.language },
-    });
+      ...(customerId && { customer: customerId }),
+      metadata: {
+        language: data.language,
+        ...(data.userId && { userId: data.userId }),
+      },
+    } as Stripe.Checkout.SessionCreateParams);
 
     return session.client_secret;
   });
@@ -64,13 +122,8 @@ export const verifyAndCreateIntake = createServerFn({ method: "POST" })
     const stripe = createStripeClient(data.environment);
     const session = await stripe.checkout.sessions.retrieve(data.sessionId);
 
-    // For subscription mode, `payment_status` may be `no_payment_required` until
-    // the first invoice is paid. Treat `paid` OR an active subscription as success.
-    const paid =
-      session.payment_status === "paid" ||
-      session.status === "complete" ||
-      !!session.subscription;
-
+    // Real gate: $199 must have been collected today.
+    const paid = session.payment_status === "paid";
     if (!paid) return { paid: false as const };
 
     const language = (session.metadata?.language as string) || "en";
@@ -104,11 +157,7 @@ export const submitIntakeAnswers = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const stripe = createStripeClient(data.environment);
     const session = await stripe.checkout.sessions.retrieve(data.sessionId);
-    const paid =
-      session.payment_status === "paid" ||
-      session.status === "complete" ||
-      !!session.subscription;
-    if (!paid) throw new Error("Payment not completed");
+    if (session.payment_status !== "paid") throw new Error("Payment not completed");
 
     const { error } = await supabaseAdmin
       .from("intake_submissions")
