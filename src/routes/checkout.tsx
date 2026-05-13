@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { z } from "zod";
 import { StripeEmbeddedCheckoutBox } from "@/components/StripeEmbeddedCheckout";
+import { DisclosureGate } from "@/components/DisclosureGate";
 
 const searchSchema = z.object({ lang: z.enum(["en", "es", "ht"]).catch("es") });
 
@@ -40,23 +41,25 @@ function CheckoutPage() {
       : `https://detenciondefensa.com/intake?session_id={CHECKOUT_SESSION_ID}&lang=${lang}`;
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0b1220", color: "#f6efe1", fontFamily: "Inter Tight, system-ui, sans-serif" }}>
-      
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "32px 24px 64px" }}>
-        <Link to="/" search={{ lang } as never} style={{ color: "#e8a04a", textDecoration: "none", fontSize: 14 }}>
-          {t.back}
-        </Link>
-        <h1 style={{ fontSize: 36, marginTop: 24, marginBottom: 8, fontWeight: 700, letterSpacing: "-0.02em", fontFamily: "Fraunces, serif" }}>
-          {t.title}
-        </h1>
-        <p style={{ fontSize: 18, color: "#e8a04a", marginBottom: 8, fontWeight: 600 }}>{t.flat}</p>
-        <p style={{ fontSize: 14, color: "#cfc8b8", lineHeight: 1.6, marginBottom: 32, borderLeft: "3px solid #e8a04a", paddingLeft: 14 }}>
-          {t.sub}
-        </p>
-        <div style={{ background: "#fff", borderRadius: 8, padding: 16, boxShadow: "0 2px 12px rgba(0,0,0,0.2)" }}>
-          <StripeEmbeddedCheckoutBox language={lang} returnUrl={returnUrl} />
+    <DisclosureGate lang={lang as "en" | "es" | "ht"} storageKey="dd_disclosure_checkout_v1">
+      <div style={{ minHeight: "100vh", background: "#0b1220", color: "#f6efe1", fontFamily: "Inter Tight, system-ui, sans-serif" }}>
+
+        <div style={{ maxWidth: 760, margin: "0 auto", padding: "32px 24px 64px" }}>
+          <Link to="/" search={{ lang } as never} style={{ color: "#e8a04a", textDecoration: "none", fontSize: 14 }}>
+            {t.back}
+          </Link>
+          <h1 style={{ fontSize: 36, marginTop: 24, marginBottom: 8, fontWeight: 700, letterSpacing: "-0.02em", fontFamily: "Fraunces, serif" }}>
+            {t.title}
+          </h1>
+          <p style={{ fontSize: 18, color: "#e8a04a", marginBottom: 8, fontWeight: 600 }}>{t.flat}</p>
+          <p style={{ fontSize: 14, color: "#cfc8b8", lineHeight: 1.6, marginBottom: 32, borderLeft: "3px solid #e8a04a", paddingLeft: 14 }}>
+            {t.sub}
+          </p>
+          <div style={{ background: "#fff", borderRadius: 8, padding: 16, boxShadow: "0 2px 12px rgba(0,0,0,0.2)" }}>
+            <StripeEmbeddedCheckoutBox language={lang} returnUrl={returnUrl} />
+          </div>
         </div>
       </div>
-    </div>
+    </DisclosureGate>
   );
 }
