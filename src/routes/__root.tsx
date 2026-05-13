@@ -120,6 +120,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
+        <BetaBanner />
         <Outlet />
       </LanguageProvider>
     </QueryClientProvider>
