@@ -7,7 +7,7 @@ const searchSchema = z.object({ lang: z.enum(["en", "es", "ht"]).catch("es") });
 
 export const Route = createFileRoute("/checkout")({
   validateSearch: searchSchema,
-  head: () => ({ meta: [{ title: "Checkout · $199 + $10/mo — DetencionDefensa.com" }] }),
+  head: () => ({ meta: [{ title: "Checkout · $199 + $30/mo — DetencionDefensa.com" }] }),
   component: CheckoutPage,
 });
 

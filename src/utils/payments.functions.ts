@@ -36,16 +36,17 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       mode: "subscription",
       ui_mode: "embedded_page",
       return_url: data.returnUrl,
-      line_items: [{ price: monthly.data[0].id, quantity: 1 }],
+      // $199 one-time setup fee + $30/mo subscription. Stripe automatically
+      // adds the one-time price as an invoice item on the first invoice.
+      line_items: [
+        { price: monthly.data[0].id, quantity: 1 },
+        { price: oneTime.data[0].id, quantity: 1 },
+      ],
       subscription_data: {
-        metadata: {
-          language: data.language,
-        },
+        metadata: { language: data.language },
         // Months 1-2 free, $30/mo starts month 3, ongoing until cancel.
         trial_period_days: 60,
-        // Bill the $199 one-time fee immediately on the first (trial-start) invoice.
-        add_invoice_items: [{ price: oneTime.data[0].id, quantity: 1 }],
-      } as any,
+      },
       ...(data.customerEmail && { customer_email: data.customerEmail }),
       metadata: { language: data.language },
     });
