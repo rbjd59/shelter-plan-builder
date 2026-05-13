@@ -92,6 +92,16 @@ export default function SiteShell() {
           navigate({ to: "/checkout", search: { lang } as never });
           return;
         }
+        if (href === "/login") {
+          e.preventDefault();
+          navigate({ to: "/login" });
+          return;
+        }
+        if (href === "/dashboard") {
+          e.preventDefault();
+          navigate({ to: "/dashboard" });
+          return;
+        }
         if (href === "/" || href.startsWith("/?")) {
           e.preventDefault();
           navigate({ to: "/" });
