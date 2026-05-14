@@ -129,6 +129,7 @@ function EmergencyApp() {
   const [firedAt, setFiredAt] = useState<number | null>(null);
   const [now, setNow] = useState<number>(() => Date.now());
   const [cancelled, setCancelled] = useState(false);
+  const [activationId, setActivationId] = useState<string | null>(null);
 
   // Cancel-hold state (15-second hold while in cancel window)
   const [holding, setHolding] = useState(false);
