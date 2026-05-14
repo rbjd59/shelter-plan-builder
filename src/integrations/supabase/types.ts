@@ -326,49 +326,64 @@ export type Database = {
         Row: {
           created_at: string
           delivered_at: string | null
+          delivery_mode: string | null
           designated_recipient: Json | null
           form_answers: Json | null
+          generated_pdf_paths: string[] | null
           id: string
           intake_session_id: string
           language: string
+          recipient_sent_at: string | null
+          recipient_sent_message_id: string | null
           signing_token: string | null
           signing_token_expires_at: string | null
           status: string
           stripe_session_id: string | null
           updated_at: string
           vault_storage_paths: string[] | null
+          vault_subscription_id: string | null
           vaulted_at: string | null
         }
         Insert: {
           created_at?: string
           delivered_at?: string | null
+          delivery_mode?: string | null
           designated_recipient?: Json | null
           form_answers?: Json | null
+          generated_pdf_paths?: string[] | null
           id?: string
           intake_session_id: string
           language?: string
+          recipient_sent_at?: string | null
+          recipient_sent_message_id?: string | null
           signing_token?: string | null
           signing_token_expires_at?: string | null
           status?: string
           stripe_session_id?: string | null
           updated_at?: string
           vault_storage_paths?: string[] | null
+          vault_subscription_id?: string | null
           vaulted_at?: string | null
         }
         Update: {
           created_at?: string
           delivered_at?: string | null
+          delivery_mode?: string | null
           designated_recipient?: Json | null
           form_answers?: Json | null
+          generated_pdf_paths?: string[] | null
           id?: string
           intake_session_id?: string
           language?: string
+          recipient_sent_at?: string | null
+          recipient_sent_message_id?: string | null
           signing_token?: string | null
           signing_token_expires_at?: string | null
           status?: string
           stripe_session_id?: string | null
           updated_at?: string
           vault_storage_paths?: string[] | null
+          vault_subscription_id?: string | null
           vaulted_at?: string | null
         }
         Relationships: []
