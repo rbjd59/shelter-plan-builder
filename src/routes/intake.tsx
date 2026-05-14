@@ -150,6 +150,11 @@ const UI = {
     submit: "Submit answers",
     submitting: "Submitting…",
     done: "Check your email. We just sent you your prepared AO 242 + AO 240 PDFs and a one-tap link to install the HELP NOW button on the at-risk person's phone, with step-by-step instructions in your chosen language.",
+    spamTitle: "IMPORTANT — don't let our emails go to spam",
+    spamBody: "If you don't see our email, check your spam/junk folder. To make sure future emergency emails reach you, tap the button below to send us a quick test email. This trains your phone to trust intake@gohomesooner.com so our alerts always arrive.",
+    spamBtn: "Send test email now",
+    spamSubject: "Test — please whitelist this address",
+    spamMailBody: "Hi, I am sending this so my phone recognizes your address and does not send your emails to spam. No reply needed.",
     notpaid: "We could not verify your payment. Please return to checkout.",
     backToSite: "Return to home",
     verifying: "Verifying payment…",
@@ -161,6 +166,11 @@ const UI = {
     submit: "Enviar respuestas",
     submitting: "Enviando…",
     done: "Revise su correo electrónico. Acabamos de enviarle sus formularios AO 242 + AO 240 en PDF y un enlace de un solo toque para instalar el botón AYUDA YA en el teléfono de la persona en riesgo, con instrucciones paso a paso en su idioma.",
+    spamTitle: "IMPORTANTE — no deje que nuestros correos vayan a spam",
+    spamBody: "Si no ve nuestro correo, revise la carpeta de spam/correo no deseado. Para asegurarse de recibir nuestros correos de emergencia, toque el botón abajo para enviarnos un correo de prueba. Esto le enseña a su teléfono a confiar en intake@gohomesooner.com.",
+    spamBtn: "Enviar correo de prueba ahora",
+    spamSubject: "Prueba — por favor agregue esta dirección a contactos",
+    spamMailBody: "Hola, envío este correo para que mi teléfono reconozca su dirección y no envíe sus correos a spam. No es necesario responder.",
     notpaid: "No pudimos verificar su pago. Vuelva al pago.",
     backToSite: "Volver al inicio",
     verifying: "Verificando pago…",
@@ -172,6 +182,11 @@ const UI = {
     submit: "Voye repons",
     submitting: "K ap voye…",
     done: "Tcheke imèl ou. Nou fenk voye fòm AO 242 + AO 240 PDF ou yo ak yon lyen yon-tap pou enstale bouton AYÈ KOUNYE A sou telefòn moun ki an risk la, ak enstriksyon etap-pa-etap nan lang ou chwazi a.",
+    spamTitle: "ENPÒTAN — pa kite imèl nou yo ale nan spam",
+    spamBody: "Si ou pa wè imèl nou an, tcheke katab spam/junk lan. Pou asire imèl ijans rive jwenn ou, peze bouton anba a pou voye yon imèl tès ba nou. Sa montre telefòn ou pou l fè konfyans intake@gohomesooner.com.",
+    spamBtn: "Voye imèl tès la kounye a",
+    spamSubject: "Tès — tanpri ajoute adrès sa a",
+    spamMailBody: "Bonjou, m ap voye sa pou telefòn mwen rekonèt adrès ou epi pa voye imèl ou yo nan spam. Pa bezwen reponn.",
     notpaid: "Nou pa kapab verifye peman ou.",
     backToSite: "Tounen lakay",
     verifying: "K ap verifye peman…",
@@ -236,16 +251,23 @@ function IntakeInner({ sessionId: session_id, L, ui }: { sessionId: string | und
         <Link to="/checkout" search={{ lang: L } as never} style={{ color: "#e8a04a" }}>→ /checkout</Link>
       </div></div>
     );
-  if (status === "done")
+  if (status === "done") {
+    const mailHref = `mailto:intake@gohomesooner.com?subject=${encodeURIComponent(ui.spamSubject)}&body=${encodeURIComponent(ui.spamMailBody)}`;
     return (
       <div style={wrap}><div style={container}>
         <div style={{ background: "#1a2436", padding: 32, borderRadius: 8, borderLeft: "4px solid #2d6a4f" }}>
           <h1 style={{ fontSize: 28, marginBottom: 16 }}>✓</h1>
           <p style={{ fontSize: 18, lineHeight: 1.6 }}>{ui.done}</p>
-          <Link to="/" search={{ lang: L } as never} style={{ display: "inline-block", marginTop: 24, color: "#e8a04a" }}>{ui.backToSite}</Link>
         </div>
+        <div style={{ background: "#3a2a00", border: "2px solid #e8a04a", padding: 24, borderRadius: 8, marginTop: 24 }}>
+          <h2 style={{ fontSize: 20, fontWeight: 700, color: "#fff5d6", marginBottom: 12 }}>⚠ {ui.spamTitle}</h2>
+          <p style={{ fontSize: 15, lineHeight: 1.6, color: "#fff5d6", marginBottom: 20 }}>{ui.spamBody}</p>
+          <a href={mailHref} style={{ display: "inline-block", background: "#e8a04a", color: "#0b1220", padding: "16px 28px", borderRadius: 6, fontSize: 17, fontWeight: 700, textDecoration: "none" }}>{ui.spamBtn}</a>
+        </div>
+        <Link to="/" search={{ lang: L } as never} style={{ display: "inline-block", marginTop: 24, color: "#e8a04a" }}>{ui.backToSite}</Link>
       </div></div>
     );
+  }
 
   return (
     <div style={wrap}>
