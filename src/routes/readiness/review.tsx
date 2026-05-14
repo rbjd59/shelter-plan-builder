@@ -115,7 +115,7 @@ function ReviewPage() {
     if (!packet) return;
     setSendStatus("sending");
     try {
-      await sendNow({ data: { packetId: packet.id } });
+      await sendNow({ data: { packetId: packet.id, signingToken: token } });
       setSendStatus("sent");
     } catch {
       setSendStatus("error");
