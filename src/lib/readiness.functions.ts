@@ -319,7 +319,7 @@ export const generatePacketPDFs = createServerFn({ method: "POST" })
 
 // ---------- Send packet to designated family member NOW (not after emergency) ----------
 export const sendPacketNow = createServerFn({ method: "POST" })
-  .inputValidator((data: { packetId: string; recipientEmail?: string }) => {
+  .inputValidator((data: { packetId: string }) => {
     if (!data.packetId) throw new Error("Invalid packetId");
     return data;
   })
@@ -337,7 +337,9 @@ export const sendPacketNow = createServerFn({ method: "POST" })
       vault_storage_paths: string[] | null;
       status: string;
     };
-    const email = data.recipientEmail || p.designated_recipient?.email;
+    // Always use the designated recipient email recorded at intake — never accept
+    // a caller-supplied override (would allow redirecting sealed vault docs).
+    const email = p.designated_recipient?.email;
     if (!email) throw new Error("No recipient email");
     if (!p.vault_storage_paths?.length) throw new Error("No documents generated yet");
 
