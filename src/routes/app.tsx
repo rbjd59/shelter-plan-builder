@@ -36,6 +36,9 @@ interface CaseRecord {
   contactEmail: string;
   language: string;
   installedAt: string;
+  // Setup-only fields (stored after one-time setup):
+  alertEmail?: string;     // where the EMERGENCY alert goes
+  setupCompleted?: boolean;
 }
 
 function openDb(): Promise<IDBDatabase> {
@@ -72,15 +75,15 @@ function b64ToBlobUrl(b64: string): string {
   return URL.createObjectURL(new Blob([bytes], { type: "application/pdf" }));
 }
 
-const HOLD_MS = 7000; // 7 seconds to arm
-const CANCEL_WINDOW_MS = 60 * 60 * 1000; // 60 minutes to cancel after firing
+const CANCEL_WINDOW_MS = 2 * 60 * 60 * 1000; // 2 hours
+const CANCEL_HOLD_MS = 15000; // 15 seconds to cancel
+
+const LEGAL_EMAIL = "legal@detenciondefensa.com";
 
 function isStandalone(): boolean {
   if (typeof window === "undefined") return false;
-  // iOS Safari
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if ((window.navigator as any).standalone === true) return true;
-  // Android / desktop PWAs
   return window.matchMedia?.("(display-mode: standalone)").matches === true;
 }
 
@@ -92,25 +95,44 @@ function detectPlatform(): "ios" | "android" | "other" {
   return "other";
 }
 
+function getCoords(timeoutMs = 5000): Promise<string> {
+  return new Promise((resolve) => {
+    if (!navigator.geolocation) {
+      resolve("(location unavailable)");
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => resolve(`${pos.coords.latitude.toFixed(6)}, ${pos.coords.longitude.toFixed(6)}`),
+      () => resolve("(location unavailable)"),
+      { timeout: timeoutMs, maximumAge: 60000, enableHighAccuracy: true },
+    );
+  });
+}
+
 function EmergencyApp() {
   const navigate = useNavigate();
   const bootstrap = useServerFn(bootstrapAppFromToken);
   const [status, setStatus] = useState<"loading" | "needs-token" | "ready" | "error">("loading");
   const [errorMsg, setErrorMsg] = useState("");
   const [record, setRecord] = useState<CaseRecord | null>(null);
-  const [standalone, setStandalone] = useState<boolean>(false);
+  const [standalone, setStandalone] = useState(false);
   const [platform, setPlatform] = useState<"ios" | "android" | "other">("other");
 
-  // Hold-to-arm state.
-  const [holding, setHolding] = useState(false);
-  const [progress, setProgress] = useState(0); // 0..1
-  const holdStart = useRef<number | null>(null);
-  const rafRef = useRef<number | null>(null);
+  // Setup form state
+  const [emailInput, setEmailInput] = useState("");
+  const [gpsState, setGpsState] = useState<"idle" | "asking" | "granted" | "denied">("idle");
+  const [savingSetup, setSavingSetup] = useState(false);
 
-  // Post-fire cancellation countdown state.
+  // Cancel-window state
   const [firedAt, setFiredAt] = useState<number | null>(null);
   const [now, setNow] = useState<number>(() => Date.now());
   const [cancelled, setCancelled] = useState(false);
+
+  // Cancel-hold state (15-second hold while in cancel window)
+  const [holding, setHolding] = useState(false);
+  const [holdProgress, setHoldProgress] = useState(0);
+  const holdStart = useRef<number | null>(null);
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     setStandalone(isStandalone());
@@ -128,6 +150,7 @@ function EmergencyApp() {
         const existing = await dbGet();
         if (existing) {
           setRecord(existing);
+          setEmailInput(existing.alertEmail || existing.contactEmail || "");
           setStatus("ready");
           return;
         }
@@ -141,6 +164,7 @@ function EmergencyApp() {
         const rec: CaseRecord = { ...payload, installedAt: new Date().toISOString() };
         await dbPut(rec);
         setRecord(rec);
+        setEmailInput(rec.contactEmail || "");
         setStatus("ready");
         url.searchParams.delete("bootstrap");
         window.history.replaceState({}, "", url.pathname + url.search);
@@ -152,36 +176,47 @@ function EmergencyApp() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Tick once a second when the cancel window is active.
+  // Tick during the 2h window.
   useEffect(() => {
     if (firedAt == null || cancelled) return;
     const id = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
   }, [firedAt, cancelled]);
 
-  const cancelHold = useCallback(() => {
-    setHolding(false);
-    setProgress(0);
-    holdStart.current = null;
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    rafRef.current = null;
-    if (navigator.vibrate) navigator.vibrate(0);
+  const requestGps = useCallback(async () => {
+    setGpsState("asking");
+    if (!navigator.geolocation) {
+      setGpsState("denied");
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      () => setGpsState("granted"),
+      () => setGpsState("denied"),
+      { timeout: 10000, enableHighAccuracy: true },
+    );
   }, []);
 
-  const fireEmergency = useCallback(async (rec: CaseRecord) => {
-    if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 400]);
-    let coords = "";
-    try {
-      const pos = await new Promise<GeolocationPosition>((res, rej) =>
-        navigator.geolocation.getCurrentPosition(res, rej, { timeout: 8000, maximumAge: 60000 }),
-      );
-      coords = `${pos.coords.latitude.toFixed(6)}, ${pos.coords.longitude.toFixed(6)}`;
-    } catch {
-      coords = "(location unavailable)";
-    }
+  const saveSetup = useCallback(async () => {
+    if (!record) return;
+    if (!emailInput || !emailInput.includes("@")) return;
+    setSavingSetup(true);
+    const updated: CaseRecord = {
+      ...record,
+      alertEmail: emailInput.trim(),
+      setupCompleted: true,
+    };
+    await dbPut(updated);
+    setRecord(updated);
+    setSavingSetup(false);
+  }, [record, emailInput]);
+
+  // Fire the alert. Single tap — no hold required.
+  const fireAlert = useCallback(async (rec: CaseRecord) => {
+    if (navigator.vibrate) navigator.vibrate([300, 100, 300, 100, 600]);
+    const coords = await getCoords();
     const ts = new Date().toISOString();
     const subject = `EMERGENCY — ${rec.fullName} — Case ${rec.caseId.slice(0, 12)}`;
-    const bodyLines = [
+    const body = [
       "EMERGENCY ALERT — DetencionDefensa client needs immediate help.",
       "",
       `Name: ${rec.fullName}`,
@@ -194,17 +229,14 @@ function EmergencyApp() {
       "",
       "AO 242 Habeas + AO 240 IFP for this case are already on file.",
       "Please activate the response protocol immediately.",
-    ];
-    const body = bodyLines.join("\n");
+    ].join("\n");
     const cc = rec.contactEmail ? `&cc=${encodeURIComponent(rec.contactEmail)}` : "";
-    const mailto = `mailto:legal@detenciondefensa.com?subject=${encodeURIComponent(subject)}${cc}&body=${encodeURIComponent(body)}`;
+    const recipient = rec.alertEmail || LEGAL_EMAIL;
+    const mailto = `mailto:${recipient}?subject=${encodeURIComponent(subject)}${cc}&body=${encodeURIComponent(body)}`;
     setFiredAt(Date.now());
     setCancelled(false);
-    cancelHold();
-    // Open the user's mail app to send. Returning here keeps our /app screen
-    // mounted so the cancel countdown is visible when they come back.
     window.location.href = mailto;
-  }, [cancelHold]);
+  }, []);
 
   const sendCancellation = useCallback(async (rec: CaseRecord) => {
     setCancelled(true);
@@ -215,40 +247,45 @@ function EmergencyApp() {
       `Name: ${rec.fullName}`,
       `Case ID: ${rec.caseId}`,
       `Cancelled at (UTC): ${new Date().toISOString()}`,
-      "",
-      "The HELP button was triggered by mistake. No emergency response is needed.",
     ].join("\n");
     const cc = rec.contactEmail ? `&cc=${encodeURIComponent(rec.contactEmail)}` : "";
-    const mailto = `mailto:legal@detenciondefensa.com?subject=${encodeURIComponent(subject)}${cc}&body=${encodeURIComponent(body)}`;
+    const recipient = rec.alertEmail || LEGAL_EMAIL;
+    const mailto = `mailto:${recipient}?subject=${encodeURIComponent(subject)}${cc}&body=${encodeURIComponent(body)}`;
     window.location.href = mailto;
   }, []);
 
-  const startHold = useCallback(() => {
-    if (!record || holding || firedAt != null) return;
+  const cancelHoldRelease = useCallback(() => {
+    setHolding(false);
+    setHoldProgress(0);
+    holdStart.current = null;
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = null;
+    if (navigator.vibrate) navigator.vibrate(0);
+  }, []);
+
+  const startCancelHold = useCallback((rec: CaseRecord) => {
+    if (holding) return;
     setHolding(true);
     holdStart.current = performance.now();
-    if (navigator.vibrate) navigator.vibrate(50);
+    if (navigator.vibrate) navigator.vibrate(30);
     const tick = () => {
       if (holdStart.current == null) return;
       const elapsed = performance.now() - holdStart.current;
-      const p = Math.min(elapsed / HOLD_MS, 1);
-      setProgress(p);
+      const p = Math.min(elapsed / CANCEL_HOLD_MS, 1);
+      setHoldProgress(p);
       if (p >= 1) {
-        fireEmergency(record);
+        cancelHoldRelease();
+        sendCancellation(rec);
         return;
       }
       rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
-  }, [record, holding, firedAt, fireEmergency]);
+  }, [holding, cancelHoldRelease, sendCancellation]);
 
-  // ---- UI ----
+  // ---- UI states ----
   if (status === "loading") {
-    return (
-      <Shell>
-        <p className="text-white/80">Loading…</p>
-      </Shell>
-    );
+    return <Shell><p className="text-white/80">Loading…</p></Shell>;
   }
 
   if (status === "needs-token") {
@@ -257,8 +294,7 @@ function EmergencyApp() {
         <div className="max-w-md text-center text-white">
           <h1 className="text-3xl font-black tracking-tight">Emergency App</h1>
           <p className="mt-4 text-white/80">
-            Open the install link from the email we sent you on this phone, then follow the
-            install steps below.
+            Open the install link from the email we sent you on this phone.
           </p>
           <button
             onClick={() => navigate({ to: "/" })}
@@ -285,97 +321,150 @@ function EmergencyApp() {
   if (!record) return null;
 
   // ---- Install gate ----
-  // If the page is open inside a regular browser (not the standalone PWA),
-  // show clear "Add to Home Screen" instructions instead of the HELP button.
   if (!standalone) {
     return (
       <Shell>
         <div className="w-full max-w-md text-white">
           <header className="text-center">
             <p className="text-xs uppercase tracking-[0.2em] text-white/60">DetencionDefensa</p>
-            <h1 className="mt-2 text-2xl font-black">Install the HELP NOW button</h1>
+            <h1 className="mt-2 text-2xl font-black">Step 1 — Install the app</h1>
             <p className="mt-3 text-sm text-white/70">
-              This needs to live on your home screen as a small app icon — that way it's always
-              one tap away and doesn't take over your phone like a web page.
+              Put the red <strong>HELP NOW</strong> icon on your home screen so it's always one
+              tap away.
             </p>
           </header>
 
           <div className="mt-6 rounded-2xl border border-white/15 bg-white/5 p-5 text-sm leading-relaxed">
             {platform === "ios" && (
               <>
-                <p className="font-semibold text-white">On iPhone (Safari):</p>
+                <p className="font-semibold text-white">iPhone (Safari):</p>
                 <ol className="mt-3 list-decimal space-y-2 pl-5 text-white/85">
-                  <li>
-                    Tap the <strong>Share</strong> icon at the bottom (square with an arrow up).
-                  </li>
-                  <li>
-                    Scroll and tap <strong>Add to Home Screen</strong>.
-                  </li>
-                  <li>
-                    Tap <strong>Add</strong>. A red <strong>HELP NOW</strong> icon appears on
-                    your home screen.
-                  </li>
-                  <li>Open it from the home screen — not from Safari.</li>
+                  <li>Tap the <strong>Share</strong> icon at the bottom.</li>
+                  <li>Tap <strong>Add to Home Screen</strong>.</li>
+                  <li>Tap <strong>Add</strong>. Open the red <strong>HELP NOW</strong> icon from your home screen.</li>
                 </ol>
               </>
             )}
             {platform === "android" && (
               <>
-                <p className="font-semibold text-white">On Android (Chrome):</p>
+                <p className="font-semibold text-white">Android (Chrome):</p>
                 <ol className="mt-3 list-decimal space-y-2 pl-5 text-white/85">
-                  <li>
-                    Tap the <strong>⋮</strong> menu (top right of Chrome).
-                  </li>
-                  <li>
-                    Tap <strong>Install app</strong> or <strong>Add to Home screen</strong>.
-                  </li>
-                  <li>
-                    Confirm <strong>Install</strong>. A red <strong>HELP NOW</strong> icon
-                    appears on your home screen.
-                  </li>
-                  <li>Open it from the home screen — not from Chrome.</li>
+                  <li>Tap the <strong>⋮</strong> menu (top right).</li>
+                  <li>Tap <strong>Install app</strong> or <strong>Add to Home screen</strong>.</li>
+                  <li>Open the red <strong>HELP NOW</strong> icon from your home screen.</li>
                 </ol>
               </>
             )}
             {platform === "other" && (
-              <>
-                <p className="font-semibold text-white">Install on your phone:</p>
-                <p className="mt-3 text-white/85">
-                  Open this same link on your iPhone or Android phone, then use{" "}
-                  <strong>Add to Home Screen</strong> (iPhone Safari) or{" "}
-                  <strong>Install app</strong> (Android Chrome) so the HELP button lives on your
-                  home screen as an icon.
-                </p>
-              </>
+              <p className="text-white/85">
+                Open this link on your phone, then use <strong>Add to Home Screen</strong> (iPhone)
+                or <strong>Install app</strong> (Android).
+              </p>
             )}
           </div>
-
-          <p className="mt-5 text-center text-xs text-white/50">
-            Once installed, your phone keeps working normally. The HELP button just sits there
-            waiting until you need it.
-          </p>
         </div>
       </Shell>
     );
   }
 
-  // ---- Post-fire 60-minute cancel countdown ----
+  // ---- One-time setup gate ----
+  if (!record.setupCompleted) {
+    const emailValid = emailInput.includes("@") && emailInput.length > 4;
+    const canSave = emailValid && gpsState === "granted";
+    return (
+      <Shell>
+        <div className="w-full max-w-md text-white">
+          <header className="text-center">
+            <p className="text-xs uppercase tracking-[0.2em] text-white/60">Step 2 — Set up</p>
+            <h1 className="mt-2 text-2xl font-black">Two quick things</h1>
+            <p className="mt-2 text-sm text-white/70">
+              Do this once now, in a safe place. The HELP button will work instantly later — no
+              questions, no permission pop-ups.
+            </p>
+          </header>
+
+          {/* Email */}
+          <div className="mt-6 rounded-2xl border border-white/15 bg-white/5 p-5">
+            <p className="text-base font-bold text-white">1. Where should the alert go?</p>
+            <p className="mt-1 text-xs text-white/60">
+              Your lawyer or family contact. We'll auto-send to your legal team too.
+            </p>
+            <input
+              type="email"
+              value={emailInput}
+              onChange={(e) => setEmailInput(e.target.value)}
+              placeholder="email@example.com"
+              autoComplete="email"
+              inputMode="email"
+              className="mt-3 w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-base text-white placeholder:text-white/30 focus:border-red-400 focus:outline-none"
+            />
+          </div>
+
+          {/* GPS */}
+          <div className="mt-4 rounded-2xl border border-white/15 bg-white/5 p-5">
+            <p className="text-base font-bold text-white">2. Allow location</p>
+            <p className="mt-1 text-xs text-white/60">
+              So we can find you fast if you press HELP.
+            </p>
+            {gpsState === "granted" ? (
+              <p className="mt-3 rounded-lg bg-green-600/20 px-4 py-3 text-sm font-semibold text-green-300">
+                ✓ Location allowed
+              </p>
+            ) : gpsState === "denied" ? (
+              <>
+                <p className="mt-3 rounded-lg bg-yellow-600/20 px-4 py-3 text-sm text-yellow-200">
+                  Location blocked. Open phone Settings → this app → Location → Allow, then come back.
+                </p>
+                <button
+                  onClick={requestGps}
+                  className="mt-3 w-full rounded-xl bg-white/10 px-4 py-3 text-sm font-semibold"
+                >
+                  Try again
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={requestGps}
+                disabled={gpsState === "asking"}
+                className="mt-3 w-full rounded-xl bg-red-600 px-4 py-3 text-base font-bold text-white active:scale-95 transition-transform disabled:opacity-60"
+              >
+                {gpsState === "asking" ? "Asking…" : "Allow location"}
+              </button>
+            )}
+          </div>
+
+          <button
+            onClick={saveSetup}
+            disabled={!canSave || savingSetup}
+            className="mt-6 w-full rounded-2xl bg-white px-6 py-4 text-base font-black uppercase tracking-wider text-red-700 disabled:opacity-40"
+          >
+            {savingSetup ? "Saving…" : "Done — show HELP button"}
+          </button>
+        </div>
+      </Shell>
+    );
+  }
+
+  // ---- Post-fire 2-hour cancel window with 15s hold-to-cancel ----
   if (firedAt != null) {
     const elapsed = now - firedAt;
     const remainingMs = Math.max(0, CANCEL_WINDOW_MS - elapsed);
-    const mm = Math.floor(remainingMs / 60000);
+    const hh = Math.floor(remainingMs / 3600000);
+    const mm = Math.floor((remainingMs % 3600000) / 60000);
     const ss = Math.floor((remainingMs % 60000) / 1000);
-    const clock = `${String(mm).padStart(2, "0")}:${String(ss).padStart(2, "0")}`;
+    const clock = `${String(hh).padStart(1, "0")}:${String(mm).padStart(2, "0")}:${String(ss).padStart(2, "0")}`;
     const expired = remainingMs <= 0;
+    const holdPct = Math.round(holdProgress * 100);
+    const holdRemaining = Math.max(0, Math.ceil(CANCEL_HOLD_MS / 1000 - (holdProgress * CANCEL_HOLD_MS) / 1000));
 
     return (
       <Shell>
         <div className="flex w-full max-w-md flex-1 flex-col items-center justify-center py-6 text-white">
           <p className="text-xs uppercase tracking-[0.3em] text-white/60">
-            {cancelled ? "Cancelled" : expired ? "Alert sent" : "Alert sent — cancel window"}
+            {cancelled ? "Cancelled" : expired ? "Response activated" : "Alert sent"}
           </p>
           <div
-            className="mt-6 rounded-3xl bg-black/60 px-10 py-8 font-mono text-7xl font-black tracking-widest tabular-nums shadow-[inset_0_0_40px_rgba(220,38,38,0.4)]"
+            className="mt-5 rounded-3xl bg-black/60 px-8 py-6 font-mono text-6xl font-black tabular-nums shadow-[inset_0_0_40px_rgba(220,38,38,0.4)]"
             style={{
               color: cancelled ? "#9ca3af" : expired ? "#f87171" : "#fca5a5",
               textShadow: cancelled ? "none" : "0 0 24px rgba(220,38,38,0.6)",
@@ -384,93 +473,78 @@ function EmergencyApp() {
           >
             {clock}
           </div>
-          <p className="mt-6 max-w-xs text-center text-sm text-white/80">
+          <p className="mt-4 max-w-xs text-center text-sm text-white/80">
             {cancelled
-              ? "Cancellation sent to your legal team. You can close this app."
+              ? "Cancellation sent. Your team has been notified it was a false alarm."
               : expired
-                ? "Cancel window closed. Your legal team is responding."
-                : "Your emergency alert was sent. If this was NOT a real detention emergency, tap CANCEL within 60 minutes to notify your legal team it was a false alarm."}
+                ? "Two hours passed without cancellation. Your team is locating you, notifying contacts, and preparing your packet."
+                : "False alarm? Press AND HOLD the button below for 15 seconds to cancel. Otherwise, in 2 hours we begin locating you, notifying contacts, and preparing your packet to mail."}
           </p>
 
           {!cancelled && !expired && (
             <button
-              onClick={() => sendCancellation(record)}
-              className="mt-8 w-full max-w-xs rounded-2xl bg-white px-6 py-4 text-base font-bold uppercase tracking-wider text-red-700 shadow-lg active:scale-95 transition-transform"
+              type="button"
+              onPointerDown={(e) => { e.preventDefault(); startCancelHold(record); }}
+              onPointerUp={cancelHoldRelease}
+              onPointerLeave={cancelHoldRelease}
+              onPointerCancel={cancelHoldRelease}
+              onContextMenu={(e) => e.preventDefault()}
+              className="relative mt-8 flex h-56 w-56 select-none items-center justify-center rounded-full bg-gradient-to-b from-slate-200 to-slate-400 text-red-700 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.6)] active:scale-95 transition-transform"
+              style={{ touchAction: "none", WebkitUserSelect: "none", userSelect: "none" }}
             >
-              Cancel — false alarm
+              <svg className="absolute inset-0 -rotate-90" viewBox="0 0 100 100" aria-hidden="true">
+                <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(0,0,0,0.15)" strokeWidth="4" />
+                <circle
+                  cx="50" cy="50" r="46"
+                  fill="none" stroke="#dc2626" strokeWidth="4"
+                  strokeDasharray={`${2 * Math.PI * 46}`}
+                  strokeDashoffset={`${2 * Math.PI * 46 * (1 - holdProgress)}`}
+                  strokeLinecap="round"
+                  style={{ transition: holding ? "none" : "stroke-dashoffset 0.3s" }}
+                />
+              </svg>
+              <div className="text-center">
+                <div className="text-4xl font-black tracking-tight">
+                  {holding ? holdRemaining : "CANCEL"}
+                </div>
+                <div className="mt-1 text-[10px] font-semibold uppercase tracking-widest opacity-70">
+                  {holding ? `hold ${holdPct}%` : "hold 15 sec"}
+                </div>
+              </div>
             </button>
           )}
-
-          <button
-            onClick={() => {
-              setFiredAt(null);
-              setCancelled(false);
-            }}
-            className="mt-4 text-xs uppercase tracking-widest text-white/50 underline"
-          >
-            Back to HELP button
-          </button>
         </div>
       </Shell>
     );
   }
 
-  // ---- Normal HELP button ----
-  const pct = Math.round(progress * 100);
-  const remaining = Math.max(0, Math.ceil(HOLD_MS / 1000 - (progress * HOLD_MS) / 1000));
-
+  // ---- Main HELP button — single tap fires ----
   return (
     <Shell>
       <div className="flex w-full max-w-md flex-1 flex-col items-center justify-between py-6 text-white">
         <header className="text-center">
           <p className="text-xs uppercase tracking-[0.2em] text-white/60">DetencionDefensa</p>
           <h1 className="mt-1 text-xl font-bold">{record.fullName}</h1>
-          <p className="text-xs text-white/50">Case {record.caseId.slice(0, 12)}…</p>
+          <p className="text-xs text-white/50">Ready</p>
         </header>
 
-        <div className="relative my-8 flex flex-col items-center">
+        <div className="my-8 flex flex-col items-center">
           <button
             type="button"
-            onPointerDown={(e) => {
-              e.preventDefault();
-              startHold();
-            }}
-            onPointerUp={cancelHold}
-            onPointerLeave={cancelHold}
-            onPointerCancel={cancelHold}
-            onContextMenu={(e) => e.preventDefault()}
-            className="relative flex h-72 w-72 select-none items-center justify-center rounded-full bg-gradient-to-b from-red-500 to-red-800 shadow-[0_30px_60px_-15px_rgba(220,38,38,0.7)] active:scale-95 transition-transform"
-            style={{ touchAction: "none", WebkitUserSelect: "none", userSelect: "none" }}
+            onClick={() => fireAlert(record)}
+            className="flex h-72 w-72 select-none items-center justify-center rounded-full bg-gradient-to-b from-red-500 to-red-800 shadow-[0_30px_60px_-15px_rgba(220,38,38,0.7)] active:scale-95 transition-transform"
+            style={{ touchAction: "manipulation", WebkitUserSelect: "none", userSelect: "none" }}
           >
-            <svg className="absolute inset-0 -rotate-90" viewBox="0 0 100 100" aria-hidden="true">
-              <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="4" />
-              <circle
-                cx="50"
-                cy="50"
-                r="46"
-                fill="none"
-                stroke="white"
-                strokeWidth="4"
-                strokeDasharray={`${2 * Math.PI * 46}`}
-                strokeDashoffset={`${2 * Math.PI * 46 * (1 - progress)}`}
-                strokeLinecap="round"
-                style={{ transition: holding ? "none" : "stroke-dashoffset 0.3s" }}
-              />
-            </svg>
             <div className="text-center">
-              <div className="text-5xl font-black tracking-tight">
-                {holding ? remaining : "HELP"}
-              </div>
-              <div className="mt-1 text-xs font-semibold uppercase tracking-widest text-white/80">
-                {holding ? `hold ${pct}%` : "hold 7 sec"}
+              <div className="text-6xl font-black tracking-tight text-white">HELP</div>
+              <div className="mt-2 text-xs font-semibold uppercase tracking-widest text-white/85">
+                tap if in danger
               </div>
             </div>
           </button>
           <p className="mt-6 max-w-xs text-center text-xs text-white/60">
-            Press and hold for 7 seconds. Release to cancel. When the timer reaches zero we open
-            your email app pre-addressed to <strong>legal@detenciondefensa.com</strong> with your
-            case ID, GPS location, and emergency contact — then a 60-minute cancel window
-            appears in case it was an accident.
+            One tap sends your name, GPS location, case ID, and emergency contact. You'll have
+            <strong> 2 hours </strong>to cancel by holding the button for 15 seconds.
           </p>
         </div>
 
@@ -488,8 +562,8 @@ function EmergencyApp() {
             View AO 240 IFP
           </button>
         </div>
-        <p className="mt-4 text-[11px] text-white/40">
-          PDFs are stored only on this phone. They are never sent through our servers.
+        <p className="mt-3 text-[11px] text-white/40">
+          Alerts go to <strong>{record.alertEmail}</strong>. PDFs are stored only on this phone.
         </p>
       </div>
     </Shell>
