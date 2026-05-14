@@ -104,6 +104,7 @@ export const Route = createFileRoute("/api/public/test-intake-email")({
               label: "intake-submission-test",
               idempotency_key: `test-intake-${sessionId}`,
               message_id: messageId,
+              unsubscribe_token: crypto.randomUUID(),
             },
             { apiKey },
           );
