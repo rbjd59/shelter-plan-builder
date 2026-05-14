@@ -19,6 +19,7 @@ export type Database = {
           created_at: string
           expires_at: string
           intake_session_id: string
+          role: string
           token: string
           used_at: string | null
         }
@@ -26,6 +27,7 @@ export type Database = {
           created_at?: string
           expires_at?: string
           intake_session_id: string
+          role?: string
           token?: string
           used_at?: string | null
         }
@@ -33,6 +35,7 @@ export type Database = {
           created_at?: string
           expires_at?: string
           intake_session_id?: string
+          role?: string
           token?: string
           used_at?: string | null
         }
