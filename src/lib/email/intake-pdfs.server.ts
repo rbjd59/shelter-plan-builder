@@ -120,6 +120,13 @@ async function fillAO242(a: A): Promise<Uint8Array> {
   }
   const gTwo = s(a.ground_two);
   if (gTwo) allGrounds.push(gTwo);
+  if (allGrounds.length === 0) {
+    // Safe default so the petition is never filed with empty grounds.
+    allGrounds.push(
+      "Petitioner's continued immigration detention violates the Due Process Clause of the Fifth Amendment and 8 U.S.C. § 1226 because Petitioner has been held without an individualized bond hearing and without a constitutionally adequate justification for continued confinement.",
+      "Petitioner is not subject to mandatory detention, is not a danger to the community, and is not a flight risk; therefore continued detention is not reasonably related to any legitimate immigration purpose under Zadvydas v. Davis, 533 U.S. 678 (2001).",
+    );
+  }
 
   const facts = s(a.prior_immigration_proceedings) ||
     "Petitioner is held in immigration custody. See attached declaration and supporting documents.";
@@ -151,7 +158,8 @@ async function fillAO242(a: A): Promise<Uint8Array> {
     slot.factFields.forEach((f, i) => setText(form, f, factParts[i] || ""));
   }
 
-  const relief = s(a.relief_requested);
+  const relief = s(a.relief_requested) ||
+    "Petitioner respectfully requests that this Court: (1) issue a writ of habeas corpus; (2) order Petitioner's immediate release from custody, or in the alternative order an individualized bond hearing before an immigration judge at which the government bears the burden of justifying continued detention; (3) declare Petitioner's continued detention unlawful; and (4) grant any other relief the Court deems just and proper.";
   const rLines = splitLines(relief, 4);
   setText(form, "Request for Relief", rLines[0]);
   for (let i = 0; i < 4; i++) {
