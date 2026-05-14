@@ -10,6 +10,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { triggerVaultRelease } from "@/lib/readiness.server";
 
 const ActivateSchema = z.object({
   intake_session_id: z.string().min(8).max(128),
