@@ -186,3 +186,47 @@ export const submitIntakeAnswers = createServerFn({ method: "POST" })
 
     return { ok: true };
   });
+
+/**
+ * DEMO submit: skip Stripe, persist intake under a synthetic session id, and
+ * fire the intake notification + welcome emails to BOTH the family contact
+ * (section 7) and the at-risk person's emergency contact (section 6) with
+ * an "Asset Protection Activated" demo banner. Insider/investor preview only.
+ */
+export const submitDemoIntake = createServerFn({ method: "POST" })
+  .inputValidator(
+    (data: { answers: Record<string, unknown>; language: string }) => {
+      if (!data.answers || typeof data.answers !== "object") throw new Error("Invalid answers");
+      if (!["en", "es", "ht"].includes(data.language)) throw new Error("Invalid language");
+      return data;
+    },
+  )
+  .handler(async ({ data }) => {
+    const sessionId = `demo-${crypto.randomUUID()}`;
+    const a = data.answers as Record<string, unknown>;
+    const contactEmail =
+      (typeof a.contact_email === "string" && a.contact_email) || null;
+
+    const { error } = await supabaseAdmin.from("intake_submissions").insert({
+      stripe_session_id: sessionId,
+      language: data.language,
+      email: contactEmail,
+      paid: true,
+      answers: a as never,
+    } as never);
+    if (error) throw new Error(error.message);
+
+    try {
+      await enqueueIntakeNotification({
+        sessionId,
+        answers: a,
+        language: data.language,
+        contactEmail,
+        demoMode: true,
+      });
+    } catch (e) {
+      console.error("Demo intake notification failed:", e);
+    }
+
+    return { ok: true, sessionId };
+  });
