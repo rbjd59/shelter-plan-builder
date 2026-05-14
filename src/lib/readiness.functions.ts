@@ -6,10 +6,13 @@ import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import {
   encryptForVault,
   notifyStaffPacketReady,
+  sendPacketToRecipient,
   VAULT_BUCKET_NAME,
 } from "@/lib/readiness.server";
+import { generateAllDocs, type Lang } from "@/lib/readiness-pdf";
 
-const READINESS_PRICE_LOOKUP_KEY = "readiness_packet_100";
+const READINESS_PRICE_LOOKUP_KEY = "readiness_packet_99";
+const VAULT_PRICE_LOOKUP_KEY = "readiness_vault_monthly";
 
 // ---------- Create the $100 checkout session ----------
 export const createReadinessCheckout = createServerFn({ method: "POST" })
@@ -228,4 +231,154 @@ export const uploadSignedPacketFile = createServerFn({ method: "POST" })
       } as never)
       .eq("id", p.id);
     return { ok: true, path };
+  });
+
+// ---------- $5/month vault subscription checkout ----------
+export const createVaultSubscriptionCheckout = createServerFn({ method: "POST" })
+  .inputValidator(
+    (data: {
+      packetId: string;
+      customerEmail?: string;
+      returnUrl: string;
+      environment: StripeEnv;
+    }) => {
+      if (!data.packetId) throw new Error("Invalid packetId");
+      if (!data.returnUrl?.startsWith("http")) throw new Error("Invalid returnUrl");
+      return data;
+    },
+  )
+  .handler(async ({ data }) => {
+    const stripe = createStripeClient(data.environment);
+    const prices = await stripe.prices.list({ lookup_keys: [VAULT_PRICE_LOOKUP_KEY], limit: 1 });
+    if (!prices.data.length) throw new Error("Vault price not found");
+
+    const session = await stripe.checkout.sessions.create({
+      mode: "subscription",
+      ui_mode: "embedded_page",
+      return_url: data.returnUrl,
+      line_items: [{ price: prices.data[0].id, quantity: 1 }],
+      ...(data.customerEmail && { customer_email: data.customerEmail }),
+      metadata: { product: "readiness_vault", packet_id: data.packetId },
+      subscription_data: { metadata: { product: "readiness_vault", packet_id: data.packetId } },
+    } satisfies Stripe.Checkout.SessionCreateParams);
+
+    return session.client_secret;
+  });
+
+// ---------- Generate all 8 PDFs and stage them in the vault ----------
+export const generatePacketPDFs = createServerFn({ method: "POST" })
+  .inputValidator((data: { packetId: string }) => {
+    if (!data.packetId) throw new Error("Invalid packetId");
+    return data;
+  })
+  .handler(async ({ data }) => {
+    const { data: row } = await supabaseAdmin
+      .from("readiness_packets" as never)
+      .select("id,language,form_answers,designated_recipient,status")
+      .eq("id", data.packetId)
+      .maybeSingle();
+    if (!row) throw new Error("Packet not found");
+    const p = row as {
+      id: string;
+      language: Lang;
+      form_answers: Record<string, unknown> | null;
+      designated_recipient: { name?: string; email?: string; phone?: string; relationship?: string } | null;
+      status: string;
+    };
+    if (!p.form_answers) throw new Error("Form answers missing");
+
+    const docs = await generateAllDocs(p.form_answers, (p.language as Lang) || "en", p.designated_recipient ?? {});
+    const paths: string[] = [];
+    for (const doc of docs) {
+      const encrypted = await encryptForVault(p.id, doc.bytes);
+      const path = `${p.id}/generated/${doc.filename}.enc`;
+      const { error } = await supabaseAdmin.storage
+        .from(VAULT_BUCKET_NAME)
+        .upload(path, encrypted, { contentType: "application/octet-stream", upsert: true });
+      if (error) throw new Error(error.message);
+      paths.push(path);
+    }
+
+    // Generate signing token + 14d expiry so the customer can access the docs.
+    const signingToken = crypto.randomUUID();
+    const expires = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString();
+    await supabaseAdmin
+      .from("readiness_packets" as never)
+      .update({
+        generated_pdf_paths: paths,
+        vault_storage_paths: paths, // initial vault contents = generated PDFs
+        signing_token: signingToken,
+        signing_token_expires_at: expires,
+        status: "ready_to_sign",
+        updated_at: new Date().toISOString(),
+      } as never)
+      .eq("id", p.id);
+
+    return { ok: true as const, signingToken, count: paths.length };
+  });
+
+// ---------- Send packet to designated family member NOW (not after emergency) ----------
+export const sendPacketNow = createServerFn({ method: "POST" })
+  .inputValidator((data: { packetId: string; recipientEmail?: string }) => {
+    if (!data.packetId) throw new Error("Invalid packetId");
+    return data;
+  })
+  .handler(async ({ data }) => {
+    const { data: row } = await supabaseAdmin
+      .from("readiness_packets" as never)
+      .select("id,language,designated_recipient,vault_storage_paths,status")
+      .eq("id", data.packetId)
+      .maybeSingle();
+    if (!row) throw new Error("Packet not found");
+    const p = row as {
+      id: string;
+      language: string;
+      designated_recipient: { name?: string; email?: string } | null;
+      vault_storage_paths: string[] | null;
+      status: string;
+    };
+    const email = data.recipientEmail || p.designated_recipient?.email;
+    if (!email) throw new Error("No recipient email");
+    if (!p.vault_storage_paths?.length) throw new Error("No documents generated yet");
+
+    const messageId = await sendPacketToRecipient({
+      packetId: p.id,
+      recipientEmail: email,
+      recipientName: p.designated_recipient?.name ?? "your family member",
+      language: p.language,
+      vaultPaths: p.vault_storage_paths,
+      mode: "send_now",
+    });
+
+    await supabaseAdmin
+      .from("readiness_packets" as never)
+      .update({
+        recipient_sent_at: new Date().toISOString(),
+        recipient_sent_message_id: messageId,
+        delivery_mode: p.status === "vaulted" ? "send_now_and_vault" : "send_now",
+        updated_at: new Date().toISOString(),
+      } as never)
+      .eq("id", p.id);
+
+    return { ok: true as const, deliveredTo: email };
+  });
+
+// ---------- Mark packet as vaulted-only (after $5/mo subscription) ----------
+export const markPacketVaulted = createServerFn({ method: "POST" })
+  .inputValidator((data: { packetId: string; subscriptionId?: string }) => {
+    if (!data.packetId) throw new Error("Invalid packetId");
+    return data;
+  })
+  .handler(async ({ data }) => {
+    await supabaseAdmin
+      .from("readiness_packets" as never)
+      .update({
+        delivery_mode: "vault_until_emergency",
+        vault_subscription_id: data.subscriptionId ?? null,
+        status: "vaulted",
+        vaulted_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      } as never)
+      .eq("id", data.packetId);
+    return { ok: true as const };
   });

@@ -1,10 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { useServerFn } from "@tanstack/react-start";
 import {
   verifyReadinessPayment,
   submitReadinessIntake,
+  generatePacketPDFs,
 } from "@/lib/readiness.functions";
 import { getStripeEnvironment } from "@/lib/stripe";
 
@@ -127,6 +128,8 @@ function IntakePage() {
   const ui = UI[L];
   const verifyFn = useServerFn(verifyReadinessPayment);
   const submitFn = useServerFn(submitReadinessIntake);
+  const generateFn = useServerFn(generatePacketPDFs);
+  const navigate = useNavigate();
 
   const [status, setStatus] = useState<"verifying" | "ready" | "notpaid" | "submitting" | "done">("verifying");
   const [packetId, setPacketId] = useState<string | null>(null);
@@ -162,7 +165,8 @@ function IntakePage() {
           formAnswers: answers,
         },
       });
-      setStatus("done");
+      const gen = await generateFn({ data: { packetId } });
+      navigate({ to: "/readiness/review", search: { token: gen.signingToken, lang: L } });
     } catch {
       setStatus("ready");
     }

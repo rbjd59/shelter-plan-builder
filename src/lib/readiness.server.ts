@@ -256,3 +256,82 @@ If this is a false alarm, no further action is required.`;
 }
 
 export const VAULT_BUCKET_NAME = VAULT_BUCKET;
+
+/**
+ * Send the Readiness Packet to the designated family member NOW (not after
+ * emergency). Used by the "Send to family now" button on /readiness/review.
+ * Generates 7-day signed URLs (longer than the 24h emergency release).
+ */
+export async function sendPacketToRecipient(opts: {
+  packetId: string;
+  recipientEmail: string;
+  recipientName: string;
+  language: string;
+  vaultPaths: string[];
+  mode: "send_now";
+}): Promise<string> {
+  const links: Array<{ name: string; url: string }> = [];
+  for (const path of opts.vaultPaths) {
+    const { data, error } = await supabaseAdmin.storage
+      .from(VAULT_BUCKET)
+      .createSignedUrl(path, 60 * 60 * 24 * 7);
+    if (error || !data) continue;
+    const name = (path.split("/").pop() ?? path).replace(/\.enc$/, "");
+    links.push({ name, url: data.signedUrl });
+  }
+  if (!links.length) throw new Error("No downloadable documents");
+
+  const messageId = crypto.randomUUID();
+  const subjectByLang: Record<string, string> = {
+    en: `Sentinel Readiness packet shared with you by ${opts.recipientName}`,
+    es: `Paquete Sentinel Readiness compartido con usted`,
+    ht: `Pake Sentinel Readiness pataje avèk ou`,
+  };
+  const introByLang: Record<string, string> = {
+    en: `A family member has prepared a Sentinel Readiness packet and chose to share it with you now. These documents (power of attorney, guardianship, medical/HIPAA, school pickup, financial inventory, contact tree, and document locator) are what you would need to act on their behalf if they are ever detained or unable to care for their family. Please print, hold them somewhere safe, and keep this email.`,
+    es: `Un miembro de la familia ha preparado un paquete Sentinel Readiness y ha decidido compartirlo con usted ahora. Estos documentos (poder notarial, tutela, médico/HIPAA, recogida escolar, inventario financiero, árbol de contactos y mapa de documentos) son los que usted necesitaría para actuar en su nombre si alguna vez son detenidos o no pueden cuidar de su familia. Por favor imprímalos, guárdelos en un lugar seguro y conserve este correo.`,
+    ht: `Yon manm fanmi te prepare yon pake Sentinel Readiness epi li chwazi pataje l avèk ou kounye a. Dokiman sa yo (pouvwa notè, gad timoun, medikal/HIPAA, chache lekòl, envantè finansye, kontak ijans, ak kat dokiman) se sa ou ta bezwen pou aji nan non yo si yo ta detni yo oswa yo pa ka pran swen fanmi yo. Tanpri enprime yo, kenbe yo nan yon kote ki an sekirite, epi konsève imèl sa a.`,
+  };
+  const subject = subjectByLang[opts.language] ?? subjectByLang.en;
+  const intro = introByLang[opts.language] ?? introByLang.en;
+  const linksHtml = links.map((l) => `<li><a href="${l.url}">${l.name}</a></li>`).join("");
+  const linksText = links.map((l) => `- ${l.name}: ${l.url}`).join("\n");
+  const text = `${intro}\n\nDocuments (links expire in 7 days — print them now):\n${linksText}`;
+  const html = `<div style="font:15px/1.6 Arial,sans-serif;color:#0e1a2b;max-width:600px;padding:24px">
+    <h1 style="color:#b8551f;font:700 22px Georgia,serif;margin:0 0 12px">Sentinel Readiness</h1>
+    <p>${intro}</p>
+    <ul>${linksHtml}</ul>
+    <p style="color:#666;font-size:12px">Links expire in 7 days. Print and store these documents in a safe place.</p>
+  </div>`;
+
+  await supabaseAdmin.from("email_send_log" as never).insert({
+    message_id: messageId,
+    template_name: "readiness-send-now",
+    recipient_email: opts.recipientEmail,
+    status: "pending",
+  } as never);
+  await supabaseAdmin.rpc("enqueue_email" as never, {
+    queue_name: "transactional_emails",
+    payload: {
+      to: opts.recipientEmail,
+      from: FROM,
+      sender_domain: SENDER_DOMAIN,
+      subject,
+      html,
+      text,
+      purpose: "transactional",
+      label: "readiness-send-now",
+      idempotency_key: `readiness-send-now-${opts.packetId}-${messageId}`,
+      message_id: messageId,
+      queued_at: new Date().toISOString(),
+    } as never,
+  } as never);
+
+  await supabaseAdmin.from("readiness_deliveries" as never).insert({
+    packet_id: opts.packetId,
+    delivered_to_email: opts.recipientEmail,
+    message_id: messageId,
+  } as never);
+
+  return messageId;
+}
