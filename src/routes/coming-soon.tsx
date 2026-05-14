@@ -19,8 +19,17 @@ export const Route = createFileRoute("/coming-soon")({
         property: "og:description",
         content: "Asset protection for families facing removal. Launching Spring 2027.",
       },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://defendermicasa.com/" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Sentinel Trust — Coming Spring 2027" },
+      {
+        name: "twitter:description",
+        content: "Asset protection for families facing removal. Launching Spring 2027.",
+      },
     ],
     links: [
+      { rel: "canonical", href: "https://defendermicasa.com/" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {

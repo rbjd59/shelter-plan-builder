@@ -37,7 +37,22 @@ export const Route = createFileRoute("/")({
         content:
           "A pre-detention defense plan for immigrant working families. $199 today + $10/mo from month 3. NOT a law firm.",
       },
+      { property: "og:title", content: "DetencionDefensa.com — Plan de Defensa Pre-Detención · $199" },
+      {
+        property: "og:description",
+        content:
+          "Pre-detention defense plan for immigrant working families. $199 today + $10/mo from month 3.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://detenciondefensa.com/" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "DetencionDefensa.com — Plan de Defensa Pre-Detención · $199" },
+      {
+        name: "twitter:description",
+        content: "Pre-detention defense plan for immigrant working families. $199 today.",
+      },
     ],
+    links: [{ rel: "canonical", href: "https://detenciondefensa.com/" }],
   }),
   component: SiteShell,
 });
