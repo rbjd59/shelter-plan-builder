@@ -751,9 +751,9 @@ body.splash-active {
   .hero h1 {
     font-family: 'Fraunces', serif;
     font-weight: 400;
-    font-size: clamp(3.2rem, 6.5vw, 6.4rem);
-    line-height: 0.96;
-    letter-spacing: -0.028em;
+    font-size: clamp(2rem, 3.6vw, 3.4rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
     margin-bottom: 2rem;
   }
   .hero h1 em {
