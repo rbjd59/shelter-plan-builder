@@ -5,6 +5,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { verifyAndCreateIntake, submitIntakeAnswers } from "@/utils/payments.functions";
 import { getStripeEnvironment } from "@/lib/stripe";
 import { DisclosureGate } from "@/components/DisclosureGate";
+import { SentinelUpsellCards } from "@/components/SentinelUpsellCards";
 
 const searchSchema = z.object({
   session_id: z.string().optional(),
@@ -263,6 +264,9 @@ function IntakeInner({ sessionId: session_id, L, ui }: { sessionId: string | und
           <h2 style={{ fontSize: 20, fontWeight: 700, color: "#fff5d6", marginBottom: 12 }}>⚠ {ui.spamTitle}</h2>
           <p style={{ fontSize: 15, lineHeight: 1.6, color: "#fff5d6", marginBottom: 20 }}>{ui.spamBody}</p>
           <a href={mailHref} style={{ display: "inline-block", background: "#e8a04a", color: "#0b1220", padding: "16px 28px", borderRadius: 6, fontSize: 17, fontWeight: 700, textDecoration: "none" }}>{ui.spamBtn}</a>
+        </div>
+        <div style={{ marginTop: 32 }}>
+          <SentinelUpsellCards intakeSessionId={session_id ?? ""} lang={L} />
         </div>
         <Link to="/" search={{ lang: L } as never} style={{ display: "inline-block", marginTop: 24, color: "#e8a04a" }}>{ui.backToSite}</Link>
       </div></div>

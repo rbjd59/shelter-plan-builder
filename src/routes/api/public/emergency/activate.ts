@@ -10,6 +10,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { triggerVaultRelease } from "@/lib/readiness.server";
 
 const ActivateSchema = z.object({
   intake_session_id: z.string().min(8).max(128),
@@ -226,6 +227,16 @@ ACTION: If not cancelled by ${actAfter.toISOString()}, begin locating, notify co
             label: "emergency-activation",
             idempotencyKey: `fire-${activationId}-alt`,
           });
+        }
+
+        // Sentinel Readiness Packet vault release — fire-and-log, never block alert.
+        try {
+          await triggerVaultRelease({
+            intakeSessionId: d.intake_session_id,
+            emergencyActivationId: activationId,
+          });
+        } catch (e) {
+          console.error("[activate] vault release failed", e);
         }
 
         return new Response(
