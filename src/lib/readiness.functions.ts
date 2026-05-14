@@ -6,10 +6,13 @@ import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import {
   encryptForVault,
   notifyStaffPacketReady,
+  sendPacketToRecipient,
   VAULT_BUCKET_NAME,
 } from "@/lib/readiness.server";
+import { generateAllDocs, type Lang } from "@/lib/readiness-pdf";
 
-const READINESS_PRICE_LOOKUP_KEY = "readiness_packet_100";
+const READINESS_PRICE_LOOKUP_KEY = "readiness_packet_99";
+const VAULT_PRICE_LOOKUP_KEY = "readiness_vault_monthly";
 
 // ---------- Create the $100 checkout session ----------
 export const createReadinessCheckout = createServerFn({ method: "POST" })
