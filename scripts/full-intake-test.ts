@@ -100,6 +100,17 @@ async function main() {
   const installUrl = `${SITE_BASE}/app?install=${installToken}`;
   const trackingUrl = trackingToken ? `${SITE_BASE}/track/${trackingToken}` : SITE_BASE;
 
+
+  // Ensure unsubscribe token for TO
+  let unsubToken: string;
+  const ex = await supabase.from('email_unsubscribe_tokens' as never).select('token').eq('email', TO).maybeSingle();
+  if (ex.data && (ex.data as { token: string }).token) {
+    unsubToken = (ex.data as { token: string }).token;
+  } else {
+    unsubToken = crypto.randomUUID();
+    await supabase.from('email_unsubscribe_tokens' as never).insert({ email: TO, token: unsubToken } as never);
+  }
+
   // 4. Send INTAKE summary email
   const intakeSubject = `New Intake Submission — ${String(answers.mail_inmate_name)}`;
   const answersRows = Object.entries(answers)
@@ -124,7 +135,7 @@ async function main() {
     subject: intakeSubject, html: intakeHtml,
     text: `New intake. AO242: ${habeasUrl}\nAO240: ${ifpUrl}`,
     purpose: "transactional", label: "intake-submission",
-    idempotency_key: `intake-${sessionId}`,
+    idempotency_key: `intake-${sessionId}`, unsubscribe_token: unsubToken,
   } as never, { apiKey: LOVABLE_API_KEY });
   console.log("  intake msg id:", (r1 as { message_id?: string }).message_id);
 
@@ -171,7 +182,7 @@ async function main() {
     html: familyHtml,
     text: `${heading}\n\n${body}\n\n${cta}: ${trackingUrl}\n\n${installCta}: ${installUrl}\n\nAO 242: ${habeasUrl}\nAO 240: ${ifpUrl}`,
     purpose: "transactional", label: "case-tracking-welcome",
-    idempotency_key: `welcome-${sessionId}`,
+    idempotency_key: `welcome-${sessionId}`, unsubscribe_token: unsubToken,
   } as never, { apiKey: LOVABLE_API_KEY });
   console.log("  family msg id:", (r2 as { message_id?: string }).message_id);
 
