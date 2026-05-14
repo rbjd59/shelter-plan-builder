@@ -1,10 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { useServerFn } from "@tanstack/react-start";
 import {
   verifyReadinessPayment,
   submitReadinessIntake,
+  generatePacketPDFs,
 } from "@/lib/readiness.functions";
 import { getStripeEnvironment } from "@/lib/stripe";
 
