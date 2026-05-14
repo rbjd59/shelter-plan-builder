@@ -10,8 +10,8 @@ const FORMS_BUCKET = "intake-forms";
 const SIGNED_URL_TTL_SECONDS = 60 * 60 * 24 * 14;
 
 const RECIPIENTS = ["intake@detenciondefensa.com"];
-const FROM = "intake@detenciondefensa.com";
-const SENDER_DOMAIN = "notify.detenciondefensa.com";
+const FROM = "intake@gohomesooner.com";
+const SENDER_DOMAIN = "notify.gohomesooner.com";
 
 function escapeHtml(s: unknown): string {
   return String(s ?? "")
