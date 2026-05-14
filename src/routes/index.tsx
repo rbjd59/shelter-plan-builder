@@ -1,38 +1,32 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { getRequestHeader } from "@tanstack/react-start/server";
 import SiteShell from "@/components/SiteShell";
 
-/**
- * Hosts that should be redirected to the Defender Mi Casa coming-soon page
- * instead of seeing the DetencionDefensa marketing site. Both apex and www
- * variants are matched.
- */
 const DEFENDER_HOSTS = new Set([
   "defendermicasa.com",
   "www.defendermicasa.com",
 ]);
 
-function isDefenderHost(): boolean {
-  // Client navigation
-  if (typeof window !== "undefined") {
-    return DEFENDER_HOSTS.has(window.location.hostname.toLowerCase());
-  }
-  // SSR — read Host header
-  try {
-    const host = (getRequestHeader("host") || "").toLowerCase();
-    return DEFENDER_HOSTS.has(host);
-  } catch {
-    return false;
-  }
-}
-
 export const Route = createFileRoute("/")({
   validateSearch: (search: Record<string, unknown>) => ({
     lang: typeof search.lang === "string" ? search.lang : undefined,
   }),
-  beforeLoad: () => {
-    if (isDefenderHost()) {
-      throw redirect({ to: "/coming-soon" });
+  beforeLoad: ({ location }) => {
+    // Client-side: check window.location.hostname
+    if (typeof window !== "undefined") {
+      const host = window.location.hostname.toLowerCase();
+      if (DEFENDER_HOSTS.has(host)) {
+        throw redirect({ to: "/coming-soon" });
+      }
+    }
+    // SSR: location.href contains the full URL including host
+    try {
+      const url = new URL(location.href, "http://localhost");
+      const host = url.hostname.toLowerCase();
+      if (DEFENDER_HOSTS.has(host)) {
+        throw redirect({ to: "/coming-soon" });
+      }
+    } catch {
+      // ignore
     }
   },
   head: () => ({
