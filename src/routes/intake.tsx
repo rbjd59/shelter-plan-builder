@@ -227,19 +227,14 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
   const wrap: React.CSSProperties = { minHeight: "100vh", background: "#0b1220", color: "#f6efe1", fontFamily: "Inter Tight, system-ui, sans-serif" };
   const container: React.CSSProperties = { maxWidth: 760, margin: "0 auto", padding: "32px 24px 96px" };
 
-  if (status === "verifying") return <div style={wrap}><div style={container}><p>{ui.verifying}</p></div></div>;
-  if (status === "notpaid")
-    return (
-      <div style={wrap}><div style={container}>
-        <h1 style={{ fontSize: 24, marginBottom: 12 }}>{ui.notpaid}</h1>
-        {errMsg && <p style={{ color: "#ff8080", fontSize: 13 }}>{errMsg}</p>}
-        <Link to="/checkout" search={{ lang: L } as never} style={{ color: "#e8a04a" }}>→ /checkout</Link>
-      </div></div>
-    );
   if (status === "done") {
     const mailHref = `mailto:intake@gohomesooner.com?subject=${encodeURIComponent(ui.spamSubject)}&body=${encodeURIComponent(ui.spamMailBody)}`;
     return (
       <div style={wrap}><div style={container}>
+        <div style={{ background: "#0b1220", border: "2px solid #e8a04a", padding: 20, borderRadius: 8, marginBottom: 20, textAlign: "center" }}>
+          <p style={{ margin: "0 0 4px", fontSize: 11, letterSpacing: 2, color: "#e8a04a", fontWeight: 700 }}>DEMO · INVESTOR PREVIEW</p>
+          <p style={{ margin: 0, fontSize: 22, fontWeight: 800, color: "#fff5d6" }}>ASSET PROTECTION ACTIVATED</p>
+        </div>
         <div style={{ background: "#1a2436", padding: 32, borderRadius: 8, borderLeft: "4px solid #2d6a4f" }}>
           <h1 style={{ fontSize: 28, marginBottom: 16 }}>✓</h1>
           <p style={{ fontSize: 18, lineHeight: 1.6 }}>{ui.done}</p>
@@ -250,7 +245,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
           <a href={mailHref} style={{ display: "inline-block", background: "#e8a04a", color: "#0b1220", padding: "16px 28px", borderRadius: 6, fontSize: 17, fontWeight: 700, textDecoration: "none" }}>{ui.spamBtn}</a>
         </div>
         <div style={{ marginTop: 32 }}>
-          <SentinelUpsellCards intakeSessionId={session_id ?? ""} lang={L} />
+          <SentinelUpsellCards intakeSessionId={_session_id ?? ""} lang={L} />
         </div>
         <Link to="/" search={{ lang: L } as never} style={{ display: "inline-block", marginTop: 24, color: "#e8a04a" }}>{ui.backToSite}</Link>
       </div></div>
