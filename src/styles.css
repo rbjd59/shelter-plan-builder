@@ -742,10 +742,8 @@ body.splash-active {
     font-style: italic;
     color: var(--accent);
   }
-  .hero-price-banner span { display: none; }
-  html[lang="es"] .hero-price-banner span[data-es],
-  html[lang="en"] .hero-price-banner span[data-en],
-  html[lang="ht"] .hero-price-banner span[data-ht] { display: inline; }
+
+
 
   .hero h1 {
     font-family: 'Fraunces', serif;
