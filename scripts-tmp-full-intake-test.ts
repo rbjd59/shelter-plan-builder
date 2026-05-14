@@ -97,6 +97,7 @@ for (let i = 0; i < 10; i++) {
           label: m.label,
           message_id: m.message_id,
           unsubscribe_token: m.unsubscribe_token,
+          idempotency_key: m.idempotency_key,
         } as any,
         { apiKey } as any,
       );
