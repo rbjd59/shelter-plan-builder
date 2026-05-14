@@ -49,7 +49,7 @@ export const createReadinessCheckout = createServerFn({ method: "POST" })
       if (!data.intakeSessionId || data.intakeSessionId.length < 6)
         throw new Error("Invalid intakeSessionId");
       if (!["en", "es", "ht"].includes(data.language)) throw new Error("Invalid language");
-      if (!data.returnUrl?.startsWith("http")) throw new Error("Invalid returnUrl");
+      data.returnUrl = assertSafeReturnUrl(data.returnUrl);
       return data;
     },
   )
