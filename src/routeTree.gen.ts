@@ -21,6 +21,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as TrackTokenRouteImport } from './routes/track.$token'
 import { Route as ReadinessStartRouteImport } from './routes/readiness/start'
 import { Route as ReadinessSignRouteImport } from './routes/readiness/sign'
+import { Route as ReadinessReviewRouteImport } from './routes/readiness/review'
 import { Route as ReadinessIntakeRouteImport } from './routes/readiness/intake'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -87,6 +88,11 @@ const ReadinessSignRoute = ReadinessSignRouteImport.update({
   path: '/readiness/sign',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReadinessReviewRoute = ReadinessReviewRouteImport.update({
+  id: '/readiness/review',
+  path: '/readiness/review',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReadinessIntakeRoute = ReadinessIntakeRouteImport.update({
   id: '/readiness/intake',
   path: '/readiness/intake',
@@ -133,6 +139,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/readiness/intake': typeof ReadinessIntakeRoute
+  '/readiness/review': typeof ReadinessReviewRoute
   '/readiness/sign': typeof ReadinessSignRoute
   '/readiness/start': typeof ReadinessStartRoute
   '/track/$token': typeof TrackTokenRoute
@@ -152,6 +159,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/readiness/intake': typeof ReadinessIntakeRoute
+  '/readiness/review': typeof ReadinessReviewRoute
   '/readiness/sign': typeof ReadinessSignRoute
   '/readiness/start': typeof ReadinessStartRoute
   '/track/$token': typeof TrackTokenRoute
@@ -173,6 +181,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/readiness/intake': typeof ReadinessIntakeRoute
+  '/readiness/review': typeof ReadinessReviewRoute
   '/readiness/sign': typeof ReadinessSignRoute
   '/readiness/start': typeof ReadinessStartRoute
   '/track/$token': typeof TrackTokenRoute
@@ -194,6 +203,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/auth/callback'
     | '/readiness/intake'
+    | '/readiness/review'
     | '/readiness/sign'
     | '/readiness/start'
     | '/track/$token'
@@ -213,6 +223,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/auth/callback'
     | '/readiness/intake'
+    | '/readiness/review'
     | '/readiness/sign'
     | '/readiness/start'
     | '/track/$token'
@@ -233,6 +244,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/auth/callback'
     | '/readiness/intake'
+    | '/readiness/review'
     | '/readiness/sign'
     | '/readiness/start'
     | '/track/$token'
@@ -253,6 +265,7 @@ export interface RootRouteChildren {
   SplashRoute: typeof SplashRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
   ReadinessIntakeRoute: typeof ReadinessIntakeRoute
+  ReadinessReviewRoute: typeof ReadinessReviewRoute
   ReadinessSignRoute: typeof ReadinessSignRoute
   ReadinessStartRoute: typeof ReadinessStartRoute
   TrackTokenRoute: typeof TrackTokenRoute
@@ -347,6 +360,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReadinessSignRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/readiness/review': {
+      id: '/readiness/review'
+      path: '/readiness/review'
+      fullPath: '/readiness/review'
+      preLoaderRoute: typeof ReadinessReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/readiness/intake': {
       id: '/readiness/intake'
       path: '/readiness/intake'
@@ -416,6 +436,7 @@ const rootRouteChildren: RootRouteChildren = {
   SplashRoute: SplashRoute,
   AuthCallbackRoute: AuthCallbackRoute,
   ReadinessIntakeRoute: ReadinessIntakeRoute,
+  ReadinessReviewRoute: ReadinessReviewRoute,
   ReadinessSignRoute: ReadinessSignRoute,
   ReadinessStartRoute: ReadinessStartRoute,
   TrackTokenRoute: TrackTokenRoute,
