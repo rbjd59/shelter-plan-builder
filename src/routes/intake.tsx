@@ -14,7 +14,25 @@ const searchSchema = z.object({
 export const Route = createFileRoute("/intake")({
   validateSearch: searchSchema,
   component: IntakePage,
-  head: () => ({ meta: [{ title: "Intake — DetencionDefensa.com" }] }),
+  head: () => ({
+    meta: [
+      { title: "Intake — DetencionDefensa.com" },
+      {
+        name: "description",
+        content:
+          "Complete your DetencionDefensa.com intake: emergency contacts, asset designations, and family protection plan.",
+      },
+      { property: "og:title", content: "Intake — DetencionDefensa.com" },
+      {
+        property: "og:description",
+        content: "Complete your defense plan intake — emergency contacts and asset designations.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://detenciondefensa.com/intake" },
+      { name: "robots", content: "noindex" },
+    ],
+    links: [{ rel: "canonical", href: "https://detenciondefensa.com/intake" }],
+  }),
 });
 
 type Lang = "en" | "es" | "ht";
