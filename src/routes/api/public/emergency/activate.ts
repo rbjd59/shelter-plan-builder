@@ -100,7 +100,8 @@ export const Route = createFileRoute("/api/public/emergency/activate")({
           await supabaseAdmin
             .from("emergency_activations" as never)
             .update({ cancelled_at: new Date().toISOString() } as never)
-            .eq("id", d.cancel_of);
+            .eq("id", d.cancel_of)
+            .eq("intake_session_id", d.intake_session_id);
 
           const subject = `CANCEL EMERGENCY [${d.role.toUpperCase()}] — ${d.full_name ?? d.intake_session_id.slice(0, 12)}`;
           const text = `FALSE ALARM — please disregard the previous emergency alert.
