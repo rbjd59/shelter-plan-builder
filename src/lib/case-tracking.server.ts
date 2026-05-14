@@ -2,8 +2,8 @@
 
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
-const FROM = "intake@detenciondefensa.com";
-const SENDER_DOMAIN = "notify.detenciondefensa.com";
+const FROM = "intake@gohomesooner.com";
+const SENDER_DOMAIN = "notify.gohomesooner.com";
 const SITE_BASE = "https://detenciondefensa.com";
 
 interface FamilyEmailParams {
