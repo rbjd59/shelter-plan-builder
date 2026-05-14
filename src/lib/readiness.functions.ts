@@ -265,16 +265,31 @@ export const createVaultSubscriptionCheckout = createServerFn({ method: "POST" }
   .inputValidator(
     (data: {
       packetId: string;
+      signingToken: string;
       customerEmail?: string;
       returnUrl: string;
       environment: StripeEnv;
     }) => {
       if (!data.packetId) throw new Error("Invalid packetId");
-      if (!data.returnUrl?.startsWith("http")) throw new Error("Invalid returnUrl");
+      if (!data.signingToken || data.signingToken.length < 8)
+        throw new Error("Invalid signingToken");
+      data.returnUrl = assertSafeReturnUrl(data.returnUrl);
       return data;
     },
   )
   .handler(async ({ data }) => {
+    // Ownership check: the signing token must match this packet.
+    const { data: row } = await supabaseAdmin
+      .from("readiness_packets" as never)
+      .select("id,signing_token_expires_at")
+      .eq("id", data.packetId)
+      .eq("signing_token", data.signingToken)
+      .maybeSingle();
+    if (!row) throw new Error("Packet not found or token mismatch");
+    const p = row as { id: string; signing_token_expires_at: string | null };
+    if (p.signing_token_expires_at && new Date(p.signing_token_expires_at) < new Date())
+      throw new Error("Signing token expired");
+
     const stripe = createStripeClient(data.environment);
     const prices = await stripe.prices.list({ lookup_keys: [VAULT_PRICE_LOOKUP_KEY], limit: 1 });
     if (!prices.data.length) throw new Error("Vault price not found");
@@ -291,6 +306,89 @@ export const createVaultSubscriptionCheckout = createServerFn({ method: "POST" }
 
     return session.client_secret;
   });
+
+// ---------- Generate all 8 PDFs and stage them in the vault ----------
+export const generatePacketPDFs = createServerFn({ method: "POST" })
+  .inputValidator((data: { packetId: string; packetSessionId: string }) => {
+    if (!data.packetId) throw new Error("Invalid packetId");
+    if (!data.packetSessionId || data.packetSessionId.length < 6)
+      throw new Error("Invalid packetSessionId");
+    return data;
+  })
+  .handler(async ({ data }) => {
+    const { data: row } = await supabaseAdmin
+      .from("readiness_packets" as never)
+      .select("id,language,form_answers,designated_recipient,status,stripe_session_id")
+      .eq("id", data.packetId)
+      .eq("stripe_session_id", data.packetSessionId)
+      .maybeSingle();
+    if (!row) throw new Error("Packet not found");
+    const p = row as {
+      id: string;
+      language: Lang;
+      form_answers: Record<string, unknown> | null;
+      designated_recipient: { name?: string; email?: string; phone?: string; relationship?: string } | null;
+      status: string;
+    };
+    if (!p.form_answers) throw new Error("Form answers missing");
+
+    const docs = await generateAllDocs(p.form_answers, (p.language as Lang) || "en", p.designated_recipient ?? {});
+    const paths: string[] = [];
+    for (const doc of docs) {
+      const encrypted = await encryptForVault(p.id, doc.bytes);
+      const path = `${p.id}/generated/${doc.filename}.enc`;
+      const { error } = await supabaseAdmin.storage
+        .from(VAULT_BUCKET_NAME)
+        .upload(path, encrypted, { contentType: "application/octet-stream", upsert: true });
+      if (error) throw new Error(error.message);
+      paths.push(path);
+    }
+
+    // Generate signing token + 14d expiry so the customer can access the docs.
+    const signingToken = crypto.randomUUID();
+    const expires = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString();
+    await supabaseAdmin
+      .from("readiness_packets" as never)
+      .update({
+        generated_pdf_paths: paths,
+        vault_storage_paths: paths, // initial vault contents = generated PDFs
+        signing_token: signingToken,
+        signing_token_expires_at: expires,
+        status: "ready_to_sign",
+        updated_at: new Date().toISOString(),
+      } as never)
+      .eq("id", p.id);
+
+    return { ok: true as const, signingToken, count: paths.length };
+  });
+
+// ---------- Send packet to designated family member NOW (not after emergency) ----------
+export const sendPacketNow = createServerFn({ method: "POST" })
+  .inputValidator((data: { packetId: string; signingToken: string }) => {
+    if (!data.packetId) throw new Error("Invalid packetId");
+    if (!data.signingToken || data.signingToken.length < 8)
+      throw new Error("Invalid signingToken");
+    return data;
+  })
+  .handler(async ({ data }) => {
+    const { data: row } = await supabaseAdmin
+      .from("readiness_packets" as never)
+      .select("id,language,designated_recipient,vault_storage_paths,status,signing_token_expires_at")
+      .eq("id", data.packetId)
+      .eq("signing_token", data.signingToken)
+      .maybeSingle();
+    if (!row) throw new Error("Packet not found or token mismatch");
+    const p = row as {
+      id: string;
+      language: string;
+      designated_recipient: { name?: string; email?: string } | null;
+      vault_storage_paths: string[] | null;
+      status: string;
+      signing_token_expires_at: string | null;
+    };
+    if (p.signing_token_expires_at && new Date(p.signing_token_expires_at) < new Date())
+      throw new Error("Signing token expired");
+
 
 // ---------- Generate all 8 PDFs and stage them in the vault ----------
 export const generatePacketPDFs = createServerFn({ method: "POST" })
