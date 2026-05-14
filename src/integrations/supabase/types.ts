@@ -176,6 +176,63 @@ export type Database = {
         }
         Relationships: []
       }
+      emergency_activations: {
+        Row: {
+          act_after: string
+          alert_email: string | null
+          cancelled_at: string | null
+          contact_email: string | null
+          created_at: string
+          fired_at: string
+          full_name: string | null
+          gps_lat: number | null
+          gps_lng: number | null
+          gps_raw: string | null
+          id: string
+          intake_session_id: string
+          ip: string | null
+          notes: string | null
+          role: string
+          user_agent: string | null
+        }
+        Insert: {
+          act_after: string
+          alert_email?: string | null
+          cancelled_at?: string | null
+          contact_email?: string | null
+          created_at?: string
+          fired_at?: string
+          full_name?: string | null
+          gps_lat?: number | null
+          gps_lng?: number | null
+          gps_raw?: string | null
+          id?: string
+          intake_session_id: string
+          ip?: string | null
+          notes?: string | null
+          role: string
+          user_agent?: string | null
+        }
+        Update: {
+          act_after?: string
+          alert_email?: string | null
+          cancelled_at?: string | null
+          contact_email?: string | null
+          created_at?: string
+          fired_at?: string
+          full_name?: string | null
+          gps_lat?: number | null
+          gps_lng?: number | null
+          gps_raw?: string | null
+          id?: string
+          intake_session_id?: string
+          ip?: string | null
+          notes?: string | null
+          role?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       intake_submissions: {
         Row: {
           answers: Json | null

@@ -22,6 +22,7 @@ import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
+import { Route as ApiPublicEmergencyActivateRouteImport } from './routes/api/public/emergency/activate'
 
 const SplashRoute = SplashRouteImport.update({
   id: '/splash',
@@ -89,6 +90,12 @@ const ApiPublicPaymentsWebhookRoute =
     path: '/api/public/payments/webhook',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicEmergencyActivateRoute =
+  ApiPublicEmergencyActivateRouteImport.update({
+    id: '/api/public/emergency/activate',
+    path: '/api/public/emergency/activate',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -101,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/track/$token': typeof TrackTokenRoute
+  '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
@@ -115,6 +123,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/track/$token': typeof TrackTokenRoute
+  '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
@@ -131,6 +140,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/track/$token': typeof TrackTokenRoute
+  '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
@@ -147,6 +157,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/auth/callback'
     | '/track/$token'
+    | '/api/public/emergency/activate'
     | '/api/public/payments/webhook'
     | '/lovable/email/queue/process'
   fileRoutesByTo: FileRoutesByTo
@@ -161,6 +172,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/auth/callback'
     | '/track/$token'
+    | '/api/public/emergency/activate'
     | '/api/public/payments/webhook'
     | '/lovable/email/queue/process'
   id:
@@ -176,6 +188,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/auth/callback'
     | '/track/$token'
+    | '/api/public/emergency/activate'
     | '/api/public/payments/webhook'
     | '/lovable/email/queue/process'
   fileRoutesById: FileRoutesById
@@ -191,6 +204,7 @@ export interface RootRouteChildren {
   SplashRoute: typeof SplashRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
   TrackTokenRoute: typeof TrackTokenRoute
+  ApiPublicEmergencyActivateRoute: typeof ApiPublicEmergencyActivateRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
 }
@@ -288,6 +302,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicPaymentsWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/emergency/activate': {
+      id: '/api/public/emergency/activate'
+      path: '/api/public/emergency/activate'
+      fullPath: '/api/public/emergency/activate'
+      preLoaderRoute: typeof ApiPublicEmergencyActivateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -314,6 +335,7 @@ const rootRouteChildren: RootRouteChildren = {
   SplashRoute: SplashRoute,
   AuthCallbackRoute: AuthCallbackRoute,
   TrackTokenRoute: TrackTokenRoute,
+  ApiPublicEmergencyActivateRoute: ApiPublicEmergencyActivateRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
 }
