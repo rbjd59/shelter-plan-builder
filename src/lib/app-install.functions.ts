@@ -21,6 +21,7 @@ export interface AppBootstrapPayload {
   contactName: string;
   contactEmail: string;
   language: string;
+  role: "client" | "family";
 }
 
 export const bootstrapAppFromToken = createServerFn({ method: "POST" })
