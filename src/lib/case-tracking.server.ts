@@ -309,10 +309,16 @@ export async function sendWelcomeEmail(params: {
     trackingUrl,
     cta: c.cta,
     note: c.note,
-  }).replace(
-    "</div>\n      <p ",
-    `${serviceSection}${pdfSection}${familyActivationSection}</div>\n      <p `,
-  );
+  })
+    .replace(
+      `<div style="background:#fff;`,
+      `${demoBanner}<div style="background:#fff;`,
+    )
+    .replace(
+      "</div>\n      <p ",
+      `${serviceSection}${pdfSection}${familyActivationSection}</div>\n      <p `,
+    );
+  const subjectFinal = params.demoMode ? `[DEMO] ${c.subject}` : c.subject;
   const text = `${c.heading}\n\n${c.body}\n\n${c.cta}: ${trackingUrl}\n\n${
     sc.serviceTitle
   }\n${sc.servicePoints.map((p) => `- ${p}`).join("\n")}\n\n${sc.familyTitle}\n${sc.familyBody}\n${sc.whyTwoButtons}\n${
