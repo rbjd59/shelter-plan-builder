@@ -14,6 +14,7 @@ import { Route as SentinelTrustRouteImport } from './routes/sentinel-trust'
 import { Route as OwnPropertyRouteImport } from './routes/own-property'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IntakeRouteImport } from './routes/intake'
+import { Route as ComingSoonRouteImport } from './routes/coming-soon'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AltRouteImport } from './routes/alt'
@@ -53,6 +54,11 @@ const LoginRoute = LoginRouteImport.update({
 const IntakeRoute = IntakeRouteImport.update({
   id: '/intake',
   path: '/intake',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComingSoonRoute = ComingSoonRouteImport.update({
+  id: '/coming-soon',
+  path: '/coming-soon',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CheckoutRoute = CheckoutRouteImport.update({
@@ -138,6 +144,7 @@ export interface FileRoutesByFullPath {
   '/alt': typeof AltRoute
   '/app': typeof AppRoute
   '/checkout': typeof CheckoutRoute
+  '/coming-soon': typeof ComingSoonRoute
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
   '/own-property': typeof OwnPropertyRoute
@@ -159,6 +166,7 @@ export interface FileRoutesByTo {
   '/alt': typeof AltRoute
   '/app': typeof AppRoute
   '/checkout': typeof CheckoutRoute
+  '/coming-soon': typeof ComingSoonRoute
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
   '/own-property': typeof OwnPropertyRoute
@@ -182,6 +190,7 @@ export interface FileRoutesById {
   '/alt': typeof AltRoute
   '/app': typeof AppRoute
   '/checkout': typeof CheckoutRoute
+  '/coming-soon': typeof ComingSoonRoute
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
   '/own-property': typeof OwnPropertyRoute
@@ -205,6 +214,7 @@ export interface FileRouteTypes {
     | '/alt'
     | '/app'
     | '/checkout'
+    | '/coming-soon'
     | '/intake'
     | '/login'
     | '/own-property'
@@ -226,6 +236,7 @@ export interface FileRouteTypes {
     | '/alt'
     | '/app'
     | '/checkout'
+    | '/coming-soon'
     | '/intake'
     | '/login'
     | '/own-property'
@@ -248,6 +259,7 @@ export interface FileRouteTypes {
     | '/alt'
     | '/app'
     | '/checkout'
+    | '/coming-soon'
     | '/intake'
     | '/login'
     | '/own-property'
@@ -271,6 +283,7 @@ export interface RootRouteChildren {
   AltRoute: typeof AltRoute
   AppRoute: typeof AppRoute
   CheckoutRoute: typeof CheckoutRoute
+  ComingSoonRoute: typeof ComingSoonRoute
   IntakeRoute: typeof IntakeRoute
   LoginRoute: typeof LoginRoute
   OwnPropertyRoute: typeof OwnPropertyRoute
@@ -322,6 +335,13 @@ declare module '@tanstack/react-router' {
       path: '/intake'
       fullPath: '/intake'
       preLoaderRoute: typeof IntakeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/coming-soon': {
+      id: '/coming-soon'
+      path: '/coming-soon'
+      fullPath: '/coming-soon'
+      preLoaderRoute: typeof ComingSoonRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/checkout': {
@@ -450,6 +470,7 @@ const rootRouteChildren: RootRouteChildren = {
   AltRoute: AltRoute,
   AppRoute: AppRoute,
   CheckoutRoute: CheckoutRoute,
+  ComingSoonRoute: ComingSoonRoute,
   IntakeRoute: IntakeRoute,
   LoginRoute: LoginRoute,
   OwnPropertyRoute: OwnPropertyRoute,
@@ -468,3 +489,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
