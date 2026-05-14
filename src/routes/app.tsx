@@ -97,18 +97,43 @@ function detectPlatform(): "ios" | "android" | "other" {
   return "other";
 }
 
-function getCoords(timeoutMs = 5000): Promise<string> {
+interface GpsFix {
+  lat: number | null;
+  lng: number | null;
+  raw: string;
+}
+function getCoords(timeoutMs = 5000): Promise<GpsFix> {
   return new Promise((resolve) => {
     if (!navigator.geolocation) {
-      resolve("(location unavailable)");
+      resolve({ lat: null, lng: null, raw: "(location unavailable)" });
       return;
     }
     navigator.geolocation.getCurrentPosition(
-      (pos) => resolve(`${pos.coords.latitude.toFixed(6)}, ${pos.coords.longitude.toFixed(6)}`),
-      () => resolve("(location unavailable)"),
+      (pos) =>
+        resolve({
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+          raw: `${pos.coords.latitude.toFixed(6)}, ${pos.coords.longitude.toFixed(6)}`,
+        }),
+      () => resolve({ lat: null, lng: null, raw: "(location unavailable)" }),
       { timeout: timeoutMs, maximumAge: 60000, enableHighAccuracy: true },
     );
   });
+}
+
+async function postEmergency(body: Record<string, unknown>): Promise<{ activation_id?: string }> {
+  try {
+    const res = await fetch("/api/public/emergency/activate", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(body),
+      keepalive: true,
+    });
+    if (!res.ok) return {};
+    return (await res.json()) as { activation_id?: string };
+  } catch {
+    return {};
+  }
 }
 
 function EmergencyApp() {
