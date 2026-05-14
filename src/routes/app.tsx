@@ -36,6 +36,7 @@ interface CaseRecord {
   contactEmail: string;
   language: string;
   installedAt: string;
+  role: "client" | "family";
   // Setup-only fields (stored after one-time setup):
   alertEmail?: string;     // where the EMERGENCY alert goes
   setupCompleted?: boolean;
@@ -75,7 +76,8 @@ function b64ToBlobUrl(b64: string): string {
   return URL.createObjectURL(new Blob([bytes], { type: "application/pdf" }));
 }
 
-const CANCEL_WINDOW_MS = 2 * 60 * 60 * 1000; // 2 hours
+const CLIENT_CANCEL_WINDOW_MS = 2 * 60 * 60 * 1000; // 2 hours — client phone is at the scene
+const FAMILY_CANCEL_WINDOW_MS = 12 * 60 * 60 * 1000; // 12 hours — family confirms detention
 const CANCEL_HOLD_MS = 15000; // 15 seconds to cancel
 
 const LEGAL_EMAIL = "legal@detenciondefensa.com";
