@@ -1,4 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import { getRequestHeader } from "@tanstack/react-start/server";
 import SiteShell from "@/components/SiteShell";
 
 /**
@@ -11,15 +12,17 @@ const DEFENDER_HOSTS = new Set([
   "www.defendermicasa.com",
 ]);
 
-function getHost(): string | null {
-  if (typeof window !== "undefined") return window.location.hostname.toLowerCase();
-  // SSR: read from request headers via the global event context if available.
+function isDefenderHost(): boolean {
+  // Client navigation
+  if (typeof window !== "undefined") {
+    return DEFENDER_HOSTS.has(window.location.hostname.toLowerCase());
+  }
+  // SSR — read Host header
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const headers = (globalThis as any)?.process?.env ? null : null;
-    return headers;
+    const host = (getRequestHeader("host") || "").toLowerCase();
+    return DEFENDER_HOSTS.has(host);
   } catch {
-    return null;
+    return false;
   }
 }
 
@@ -28,8 +31,7 @@ export const Route = createFileRoute("/")({
     lang: typeof search.lang === "string" ? search.lang : undefined,
   }),
   beforeLoad: () => {
-    const host = getHost();
-    if (host && DEFENDER_HOSTS.has(host)) {
+    if (isDefenderHost()) {
       throw redirect({ to: "/coming-soon" });
     }
   },
