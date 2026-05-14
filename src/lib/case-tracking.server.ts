@@ -328,7 +328,7 @@ export async function sendWelcomeEmail(params: {
   }${params.ifpUrl ? `AO 240 IFP: ${params.ifpUrl}\n` : ""}\n${c.note}`;
   await enqueueFamilyEmail({
     to: params.to,
-    subject: c.subject,
+    subject: subjectFinal,
     html,
     text,
     template: "case-tracking-welcome",
