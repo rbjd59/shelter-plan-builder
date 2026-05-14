@@ -239,16 +239,39 @@ function EmergencyApp() {
   }, [record, emailInput]);
 
   // Fire the alert. Single tap — no hold required.
+  // Step 1: server POST (fail-safe — sent through our verified domain, not the user's mail app).
+  // Step 2: open mailto from the user's phone (redundant — also reaches us via their mail).
   const fireAlert = useCallback(async (rec: CaseRecord) => {
     if (navigator.vibrate) navigator.vibrate([300, 100, 300, 100, 600]);
-    const coords = await getCoords();
+    setFiredAt(Date.now());
+    setCancelled(false);
+
+    const fix = await getCoords();
     const ts = new Date().toISOString();
     const isFamily = rec.role === "family";
+    const recipient = rec.alertEmail || LEGAL_EMAIL;
+
+    // 1) Server-side fail-safe.
+    const serverRes = await postEmergency({
+      intake_session_id: rec.caseId,
+      role: rec.role,
+      full_name: rec.fullName || undefined,
+      alert_email: rec.alertEmail || undefined,
+      contact_email: rec.contactEmail || undefined,
+      gps_lat: fix.lat ?? undefined,
+      gps_lng: fix.lng ?? undefined,
+      gps_raw: fix.raw,
+    });
+    if (serverRes.activation_id) setActivationId(serverRes.activation_id);
+
+    // 2) Mailto from user's phone — second channel.
     const roleTag = isFamily ? "FAMILY" : "CLIENT";
     const windowLabel = isFamily
       ? "12-HOUR confirmation window (family-triggered — wait before locating)"
       : "2-HOUR window (client-triggered — at-scene alert)";
     const subject = `EMERGENCY [${roleTag}] — ${rec.fullName} — Case ${rec.caseId.slice(0, 12)}`;
+    const mapsLink =
+      fix.lat != null && fix.lng != null ? `https://maps.google.com/?q=${fix.lat},${fix.lng}` : "(unavailable)";
     const body = [
       `EMERGENCY ALERT — Triggered from ${isFamily ? "FAMILY CONTACT PHONE" : "CLIENT PHONE"}.`,
       `Response window: ${windowLabel}.`,
@@ -256,8 +279,8 @@ function EmergencyApp() {
       `Detainee/Client name: ${rec.fullName}`,
       `Case ID: ${rec.caseId}`,
       `Time (UTC): ${ts}`,
-      `GPS of triggering phone: ${coords}`,
-      `Maps: https://maps.google.com/?q=${encodeURIComponent(coords)}`,
+      `GPS of triggering phone: ${fix.raw}`,
+      `Maps: ${mapsLink}`,
       "",
       `Family contact on file: ${rec.contactName} <${rec.contactEmail}>`,
       "",
@@ -267,15 +290,20 @@ function EmergencyApp() {
         : "ACTION: Wait the 2-hour cancel window. If not cancelled, begin locating, notify contacts, prepare packet.",
     ].join("\n");
     const cc = rec.contactEmail ? `&cc=${encodeURIComponent(rec.contactEmail)}` : "";
-    const recipient = rec.alertEmail || LEGAL_EMAIL;
     const mailto = `mailto:${recipient}?subject=${encodeURIComponent(subject)}${cc}&body=${encodeURIComponent(body)}`;
-    setFiredAt(Date.now());
-    setCancelled(false);
     window.location.href = mailto;
   }, []);
 
   const sendCancellation = useCallback(async (rec: CaseRecord) => {
     setCancelled(true);
+    await postEmergency({
+      intake_session_id: rec.caseId,
+      role: rec.role,
+      full_name: rec.fullName || undefined,
+      alert_email: rec.alertEmail || undefined,
+      contact_email: rec.contactEmail || undefined,
+      cancel_of: activationId || undefined,
+    });
     const roleTag = rec.role === "family" ? "FAMILY" : "CLIENT";
     const subject = `CANCEL EMERGENCY [${roleTag}] — ${rec.fullName} — Case ${rec.caseId.slice(0, 12)}`;
     const body = [
@@ -289,7 +317,7 @@ function EmergencyApp() {
     const recipient = rec.alertEmail || LEGAL_EMAIL;
     const mailto = `mailto:${recipient}?subject=${encodeURIComponent(subject)}${cc}&body=${encodeURIComponent(body)}`;
     window.location.href = mailto;
-  }, []);
+  }, [activationId]);
 
   const cancelHoldRelease = useCallback(() => {
     setHolding(false);
