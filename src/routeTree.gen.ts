@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SplashRouteImport } from './routes/splash'
+import { Route as SentinelTrustRouteImport } from './routes/sentinel-trust'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IntakeRouteImport } from './routes/intake'
 import { Route as CheckoutRouteImport } from './routes/checkout'
@@ -18,6 +19,9 @@ import { Route as AltRouteImport } from './routes/alt'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TrackTokenRouteImport } from './routes/track.$token'
+import { Route as ReadinessStartRouteImport } from './routes/readiness/start'
+import { Route as ReadinessSignRouteImport } from './routes/readiness/sign'
+import { Route as ReadinessIntakeRouteImport } from './routes/readiness/intake'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
@@ -27,6 +31,11 @@ import { Route as ApiPublicEmergencyActivateRouteImport } from './routes/api/pub
 const SplashRoute = SplashRouteImport.update({
   id: '/splash',
   path: '/splash',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SentinelTrustRoute = SentinelTrustRouteImport.update({
+  id: '/sentinel-trust',
+  path: '/sentinel-trust',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -68,6 +77,21 @@ const TrackTokenRoute = TrackTokenRouteImport.update({
   path: '/track/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReadinessStartRoute = ReadinessStartRouteImport.update({
+  id: '/readiness/start',
+  path: '/readiness/start',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReadinessSignRoute = ReadinessSignRouteImport.update({
+  id: '/readiness/sign',
+  path: '/readiness/sign',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReadinessIntakeRoute = ReadinessIntakeRouteImport.update({
+  id: '/readiness/intake',
+  path: '/readiness/intake',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthCallbackRoute = AuthCallbackRouteImport.update({
   id: '/auth/callback',
   path: '/auth/callback',
@@ -104,9 +128,13 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRoute
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
+  '/sentinel-trust': typeof SentinelTrustRoute
   '/splash': typeof SplashRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/readiness/intake': typeof ReadinessIntakeRoute
+  '/readiness/sign': typeof ReadinessSignRoute
+  '/readiness/start': typeof ReadinessStartRoute
   '/track/$token': typeof TrackTokenRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
@@ -119,9 +147,13 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRoute
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
+  '/sentinel-trust': typeof SentinelTrustRoute
   '/splash': typeof SplashRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/readiness/intake': typeof ReadinessIntakeRoute
+  '/readiness/sign': typeof ReadinessSignRoute
+  '/readiness/start': typeof ReadinessStartRoute
   '/track/$token': typeof TrackTokenRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
@@ -136,9 +168,13 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRoute
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
+  '/sentinel-trust': typeof SentinelTrustRoute
   '/splash': typeof SplashRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/readiness/intake': typeof ReadinessIntakeRoute
+  '/readiness/sign': typeof ReadinessSignRoute
+  '/readiness/start': typeof ReadinessStartRoute
   '/track/$token': typeof TrackTokenRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
@@ -153,9 +189,13 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/intake'
     | '/login'
+    | '/sentinel-trust'
     | '/splash'
     | '/dashboard'
     | '/auth/callback'
+    | '/readiness/intake'
+    | '/readiness/sign'
+    | '/readiness/start'
     | '/track/$token'
     | '/api/public/emergency/activate'
     | '/api/public/payments/webhook'
@@ -168,9 +208,13 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/intake'
     | '/login'
+    | '/sentinel-trust'
     | '/splash'
     | '/dashboard'
     | '/auth/callback'
+    | '/readiness/intake'
+    | '/readiness/sign'
+    | '/readiness/start'
     | '/track/$token'
     | '/api/public/emergency/activate'
     | '/api/public/payments/webhook'
@@ -184,9 +228,13 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/intake'
     | '/login'
+    | '/sentinel-trust'
     | '/splash'
     | '/_authenticated/dashboard'
     | '/auth/callback'
+    | '/readiness/intake'
+    | '/readiness/sign'
+    | '/readiness/start'
     | '/track/$token'
     | '/api/public/emergency/activate'
     | '/api/public/payments/webhook'
@@ -201,8 +249,12 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRoute
   IntakeRoute: typeof IntakeRoute
   LoginRoute: typeof LoginRoute
+  SentinelTrustRoute: typeof SentinelTrustRoute
   SplashRoute: typeof SplashRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
+  ReadinessIntakeRoute: typeof ReadinessIntakeRoute
+  ReadinessSignRoute: typeof ReadinessSignRoute
+  ReadinessStartRoute: typeof ReadinessStartRoute
   TrackTokenRoute: typeof TrackTokenRoute
   ApiPublicEmergencyActivateRoute: typeof ApiPublicEmergencyActivateRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
@@ -216,6 +268,13 @@ declare module '@tanstack/react-router' {
       path: '/splash'
       fullPath: '/splash'
       preLoaderRoute: typeof SplashRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sentinel-trust': {
+      id: '/sentinel-trust'
+      path: '/sentinel-trust'
+      fullPath: '/sentinel-trust'
+      preLoaderRoute: typeof SentinelTrustRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -272,6 +331,27 @@ declare module '@tanstack/react-router' {
       path: '/track/$token'
       fullPath: '/track/$token'
       preLoaderRoute: typeof TrackTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/readiness/start': {
+      id: '/readiness/start'
+      path: '/readiness/start'
+      fullPath: '/readiness/start'
+      preLoaderRoute: typeof ReadinessStartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/readiness/sign': {
+      id: '/readiness/sign'
+      path: '/readiness/sign'
+      fullPath: '/readiness/sign'
+      preLoaderRoute: typeof ReadinessSignRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/readiness/intake': {
+      id: '/readiness/intake'
+      path: '/readiness/intake'
+      fullPath: '/readiness/intake'
+      preLoaderRoute: typeof ReadinessIntakeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/callback': {
@@ -332,8 +412,12 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRoute,
   IntakeRoute: IntakeRoute,
   LoginRoute: LoginRoute,
+  SentinelTrustRoute: SentinelTrustRoute,
   SplashRoute: SplashRoute,
   AuthCallbackRoute: AuthCallbackRoute,
+  ReadinessIntakeRoute: ReadinessIntakeRoute,
+  ReadinessSignRoute: ReadinessSignRoute,
+  ReadinessStartRoute: ReadinessStartRoute,
   TrackTokenRoute: TrackTokenRoute,
   ApiPublicEmergencyActivateRoute: ApiPublicEmergencyActivateRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
