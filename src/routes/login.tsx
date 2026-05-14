@@ -3,7 +3,23 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/login")({
-  head: () => ({ meta: [{ title: "Sign in — DetencionDefensa.com" }] }),
+  head: () => ({
+    meta: [
+      { title: "Sign in — DetencionDefensa.com" },
+      {
+        name: "description",
+        content: "Sign in to your DetencionDefensa.com account to manage your defense plan.",
+      },
+      { property: "og:title", content: "Sign in — DetencionDefensa.com" },
+      {
+        property: "og:description",
+        content: "Sign in to manage your DetencionDefensa.com defense plan.",
+      },
+      { property: "og:url", content: "https://detenciondefensa.com/login" },
+      { name: "robots", content: "noindex" },
+    ],
+    links: [{ rel: "canonical", href: "https://detenciondefensa.com/login" }],
+  }),
   component: LoginPage,
 });
 
