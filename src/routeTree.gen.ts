@@ -20,7 +20,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as TrackTokenRouteImport } from './routes/track.$token'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
-import { Route as ApiPublicTestFullIntakeRouteImport } from './routes/api/public/test-full-intake'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 
@@ -78,11 +77,6 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const ApiPublicTestFullIntakeRoute = ApiPublicTestFullIntakeRouteImport.update({
-  id: '/api/public/test-full-intake',
-  path: '/api/public/test-full-intake',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const LovableEmailQueueProcessRoute =
   LovableEmailQueueProcessRouteImport.update({
     id: '/lovable/email/queue/process',
@@ -107,7 +101,6 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/track/$token': typeof TrackTokenRoute
-  '/api/public/test-full-intake': typeof ApiPublicTestFullIntakeRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
@@ -122,7 +115,6 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/track/$token': typeof TrackTokenRoute
-  '/api/public/test-full-intake': typeof ApiPublicTestFullIntakeRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
@@ -139,7 +131,6 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/track/$token': typeof TrackTokenRoute
-  '/api/public/test-full-intake': typeof ApiPublicTestFullIntakeRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
@@ -156,7 +147,6 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/auth/callback'
     | '/track/$token'
-    | '/api/public/test-full-intake'
     | '/api/public/payments/webhook'
     | '/lovable/email/queue/process'
   fileRoutesByTo: FileRoutesByTo
@@ -171,7 +161,6 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/auth/callback'
     | '/track/$token'
-    | '/api/public/test-full-intake'
     | '/api/public/payments/webhook'
     | '/lovable/email/queue/process'
   id:
@@ -187,7 +176,6 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/auth/callback'
     | '/track/$token'
-    | '/api/public/test-full-intake'
     | '/api/public/payments/webhook'
     | '/lovable/email/queue/process'
   fileRoutesById: FileRoutesById
@@ -203,7 +191,6 @@ export interface RootRouteChildren {
   SplashRoute: typeof SplashRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
   TrackTokenRoute: typeof TrackTokenRoute
-  ApiPublicTestFullIntakeRoute: typeof ApiPublicTestFullIntakeRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
 }
@@ -287,13 +274,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/api/public/test-full-intake': {
-      id: '/api/public/test-full-intake'
-      path: '/api/public/test-full-intake'
-      fullPath: '/api/public/test-full-intake'
-      preLoaderRoute: typeof ApiPublicTestFullIntakeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/lovable/email/queue/process': {
       id: '/lovable/email/queue/process'
       path: '/lovable/email/queue/process'
@@ -334,10 +314,19 @@ const rootRouteChildren: RootRouteChildren = {
   SplashRoute: SplashRoute,
   AuthCallbackRoute: AuthCallbackRoute,
   TrackTokenRoute: TrackTokenRoute,
-  ApiPublicTestFullIntakeRoute: ApiPublicTestFullIntakeRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
