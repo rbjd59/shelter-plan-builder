@@ -42,7 +42,7 @@ export async function encryptForVault(packetId: string, plaintext: Uint8Array): 
   const key = await derivePacketKey(packetId);
   const iv = crypto.getRandomValues(new Uint8Array(12));
   const ciphertext = new Uint8Array(
-    await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, plaintext),
+    await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, plaintext as BufferSource),
   );
   // [iv(12)][ciphertext]
   const out = new Uint8Array(iv.length + ciphertext.length);
@@ -56,7 +56,7 @@ export async function decryptFromVault(packetId: string, blob: Uint8Array): Prom
   const iv = blob.slice(0, 12);
   const ciphertext = blob.slice(12);
   return new Uint8Array(
-    await crypto.subtle.decrypt({ name: "AES-GCM", iv }, key, ciphertext),
+    await crypto.subtle.decrypt({ name: "AES-GCM", iv as BufferSource }, key, ciphertext as BufferSource),
   );
 }
 
