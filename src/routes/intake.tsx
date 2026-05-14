@@ -204,34 +204,19 @@ function IntakePage() {
   );
 }
 
-function IntakeInner({ sessionId: session_id, L, ui }: { sessionId: string | undefined; L: Lang; ui: typeof UI[Lang] }) {
+function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | undefined; L: Lang; ui: typeof UI[Lang] }) {
 
-  const verifyFn = useServerFn(verifyAndCreateIntake);
-  const submitFn = useServerFn(submitIntakeAnswers);
+  const submitFn = useServerFn(submitDemoIntake);
 
-  const [status, setStatus] = useState<"verifying" | "ready" | "notpaid" | "submitting" | "done" | "error">("verifying");
+  const [status, setStatus] = useState<"ready" | "submitting" | "done" | "error">("ready");
   const [errMsg, setErrMsg] = useState("");
   const [answers, setAnswers] = useState<Record<string, string | boolean>>({});
 
-  useEffect(() => {
-    if (!session_id) {
-      setStatus("notpaid");
-      return;
-    }
-    verifyFn({ data: { sessionId: session_id, environment: getStripeEnvironment() } })
-      .then((res) => setStatus(res.paid ? "ready" : "notpaid"))
-      .catch((e) => {
-        setErrMsg(e.message);
-        setStatus("notpaid");
-      });
-  }, [session_id, verifyFn]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!session_id) return;
     setStatus("submitting");
     try {
-      await submitFn({ data: { sessionId: session_id, answers, environment: getStripeEnvironment() } });
+      await submitFn({ data: { answers, language: L } });
       setStatus("done");
     } catch (err) {
       setErrMsg((err as Error).message);
