@@ -1,15 +1,10 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import SiteShell from "@/components/SiteShell";
 
 export const Route = createFileRoute("/")({
   validateSearch: (search: Record<string, unknown>) => ({
     lang: typeof search.lang === "string" ? search.lang : undefined,
   }),
-  beforeLoad: ({ search }) => {
-    if (!search.lang) {
-      throw redirect({ to: "/splash" });
-    }
-  },
   head: () => ({
     meta: [
       { title: "DetencionDefensa.com — Plan de Defensa Pre-Detención · $199" },

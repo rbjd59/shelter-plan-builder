@@ -652,24 +652,35 @@ body.splash-active {
 
   .lang-toggle {
     display: flex;
-    border: 1px solid var(--ink);
+    border: 2px solid var(--accent);
+    border-radius: 4px;
+    overflow: hidden;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
   }
   .lang-toggle button {
     background: var(--paper);
-    color: var(--ink);
+    color: var(--accent);
     border: none;
-    padding: 0.4rem 0.7rem;
+    padding: 0.55rem 0.95rem;
     cursor: pointer;
     font-family: inherit;
     font-size: inherit;
+    font-weight: inherit;
     letter-spacing: inherit;
     transition: all 0.15s;
   }
+  .lang-toggle button + button {
+    border-left: 1px solid var(--accent);
+  }
+  .lang-toggle button:hover {
+    background: color-mix(in oklab, var(--accent) 12%, var(--paper));
+  }
   .lang-toggle button.active {
-    background: var(--ink);
+    background: var(--accent);
     color: var(--paper);
   }
 
@@ -715,6 +726,24 @@ body.splash-active {
     height: 1px;
     background: var(--accent-deep);
   }
+
+  .hero-price-banner {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.85rem 1.4rem;
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.4rem, 2.4vw, 2rem);
+    line-height: 1.15;
+    margin-bottom: 1.6rem;
+    border-left: 4px solid var(--accent);
+  }
+  .hero-price-banner em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+
 
   .hero h1 {
     font-family: 'Fraunces', serif;
