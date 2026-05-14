@@ -727,6 +727,26 @@ body.splash-active {
     background: var(--accent-deep);
   }
 
+  .hero-price-banner {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.85rem 1.4rem;
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.4rem, 2.4vw, 2rem);
+    line-height: 1.15;
+    margin-bottom: 1.6rem;
+    border-left: 4px solid var(--accent);
+  }
+  .hero-price-banner em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero-price-banner span { display: none; }
+  html[lang="es"] .hero-price-banner span[data-es],
+  html[lang="en"] .hero-price-banner span[data-en],
+  html[lang="ht"] .hero-price-banner span[data-ht] { display: inline; }
+
   .hero h1 {
     font-family: 'Fraunces', serif;
     font-weight: 400;
