@@ -192,11 +192,15 @@ export async function sendWelcomeEmail(params: {
   habeasUrl?: string | null;
   ifpUrl?: string | null;
   inmateName?: string;
+  demoMode?: boolean;
 }): Promise<void> {
   const lang = pickLang(params.language);
   const c = COPY.welcome[lang];
   const trackingUrl = `${SITE_BASE}/track/${params.trackingToken}`;
   const inmate = escapeHtml(params.inmateName || "");
+  const demoBanner = params.demoMode
+    ? `<div style="margin:0 0 18px;padding:16px 18px;background:#0b1220;border:2px solid #e8a04a;border-radius:10px;text-align:center;"><p style="margin:0 0 4px;font-size:11px;letter-spacing:2px;color:#e8a04a;font-weight:700;">DEMO · INVESTOR PREVIEW</p><p style="margin:0;font-size:18px;font-weight:800;color:#fff5d6;">ASSET PROTECTION ACTIVATED</p><p style="margin:6px 0 0;font-size:12px;color:#fff5d6;line-height:1.4;">This is a preview of what the HELP NOW app will deliver to both phones the moment activation fires.</p></div>`
+    : "";
 
   // ---------- Service description + family-activation copy ----------
   const serviceCopy = {
@@ -305,10 +309,16 @@ export async function sendWelcomeEmail(params: {
     trackingUrl,
     cta: c.cta,
     note: c.note,
-  }).replace(
-    "</div>\n      <p ",
-    `${serviceSection}${pdfSection}${familyActivationSection}</div>\n      <p `,
-  );
+  })
+    .replace(
+      `<div style="background:#fff;`,
+      `${demoBanner}<div style="background:#fff;`,
+    )
+    .replace(
+      "</div>\n      <p ",
+      `${serviceSection}${pdfSection}${familyActivationSection}</div>\n      <p `,
+    );
+  const subjectFinal = params.demoMode ? `[DEMO] ${c.subject}` : c.subject;
   const text = `${c.heading}\n\n${c.body}\n\n${c.cta}: ${trackingUrl}\n\n${
     sc.serviceTitle
   }\n${sc.servicePoints.map((p) => `- ${p}`).join("\n")}\n\n${sc.familyTitle}\n${sc.familyBody}\n${sc.whyTwoButtons}\n${
@@ -318,7 +328,7 @@ export async function sendWelcomeEmail(params: {
   }${params.ifpUrl ? `AO 240 IFP: ${params.ifpUrl}\n` : ""}\n${c.note}`;
   await enqueueFamilyEmail({
     to: params.to,
-    subject: c.subject,
+    subject: subjectFinal,
     html,
     text,
     template: "case-tracking-welcome",

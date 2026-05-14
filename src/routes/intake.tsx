@@ -1,9 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { z } from "zod";
 import { useServerFn } from "@tanstack/react-start";
-import { verifyAndCreateIntake, submitIntakeAnswers } from "@/utils/payments.functions";
-import { getStripeEnvironment } from "@/lib/stripe";
+import { submitDemoIntake } from "@/utils/payments.functions";
 import { DisclosureGate } from "@/components/DisclosureGate";
 import { SentinelUpsellCards } from "@/components/SentinelUpsellCards";
 
@@ -205,34 +204,19 @@ function IntakePage() {
   );
 }
 
-function IntakeInner({ sessionId: session_id, L, ui }: { sessionId: string | undefined; L: Lang; ui: typeof UI[Lang] }) {
+function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | undefined; L: Lang; ui: typeof UI[Lang] }) {
 
-  const verifyFn = useServerFn(verifyAndCreateIntake);
-  const submitFn = useServerFn(submitIntakeAnswers);
+  const submitFn = useServerFn(submitDemoIntake);
 
-  const [status, setStatus] = useState<"verifying" | "ready" | "notpaid" | "submitting" | "done" | "error">("verifying");
+  const [status, setStatus] = useState<"ready" | "submitting" | "done" | "error">("ready");
   const [errMsg, setErrMsg] = useState("");
   const [answers, setAnswers] = useState<Record<string, string | boolean>>({});
 
-  useEffect(() => {
-    if (!session_id) {
-      setStatus("notpaid");
-      return;
-    }
-    verifyFn({ data: { sessionId: session_id, environment: getStripeEnvironment() } })
-      .then((res) => setStatus(res.paid ? "ready" : "notpaid"))
-      .catch((e) => {
-        setErrMsg(e.message);
-        setStatus("notpaid");
-      });
-  }, [session_id, verifyFn]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!session_id) return;
     setStatus("submitting");
     try {
-      await submitFn({ data: { sessionId: session_id, answers, environment: getStripeEnvironment() } });
+      await submitFn({ data: { answers, language: L } });
       setStatus("done");
     } catch (err) {
       setErrMsg((err as Error).message);
@@ -243,19 +227,14 @@ function IntakeInner({ sessionId: session_id, L, ui }: { sessionId: string | und
   const wrap: React.CSSProperties = { minHeight: "100vh", background: "#0b1220", color: "#f6efe1", fontFamily: "Inter Tight, system-ui, sans-serif" };
   const container: React.CSSProperties = { maxWidth: 760, margin: "0 auto", padding: "32px 24px 96px" };
 
-  if (status === "verifying") return <div style={wrap}><div style={container}><p>{ui.verifying}</p></div></div>;
-  if (status === "notpaid")
-    return (
-      <div style={wrap}><div style={container}>
-        <h1 style={{ fontSize: 24, marginBottom: 12 }}>{ui.notpaid}</h1>
-        {errMsg && <p style={{ color: "#ff8080", fontSize: 13 }}>{errMsg}</p>}
-        <Link to="/checkout" search={{ lang: L } as never} style={{ color: "#e8a04a" }}>→ /checkout</Link>
-      </div></div>
-    );
   if (status === "done") {
     const mailHref = `mailto:intake@gohomesooner.com?subject=${encodeURIComponent(ui.spamSubject)}&body=${encodeURIComponent(ui.spamMailBody)}`;
     return (
       <div style={wrap}><div style={container}>
+        <div style={{ background: "#0b1220", border: "2px solid #e8a04a", padding: 20, borderRadius: 8, marginBottom: 20, textAlign: "center" }}>
+          <p style={{ margin: "0 0 4px", fontSize: 11, letterSpacing: 2, color: "#e8a04a", fontWeight: 700 }}>DEMO · INVESTOR PREVIEW</p>
+          <p style={{ margin: 0, fontSize: 22, fontWeight: 800, color: "#fff5d6" }}>ASSET PROTECTION ACTIVATED</p>
+        </div>
         <div style={{ background: "#1a2436", padding: 32, borderRadius: 8, borderLeft: "4px solid #2d6a4f" }}>
           <h1 style={{ fontSize: 28, marginBottom: 16 }}>✓</h1>
           <p style={{ fontSize: 18, lineHeight: 1.6 }}>{ui.done}</p>
@@ -266,7 +245,7 @@ function IntakeInner({ sessionId: session_id, L, ui }: { sessionId: string | und
           <a href={mailHref} style={{ display: "inline-block", background: "#e8a04a", color: "#0b1220", padding: "16px 28px", borderRadius: 6, fontSize: 17, fontWeight: 700, textDecoration: "none" }}>{ui.spamBtn}</a>
         </div>
         <div style={{ marginTop: 32 }}>
-          <SentinelUpsellCards intakeSessionId={session_id ?? ""} lang={L} />
+          <SentinelUpsellCards intakeSessionId={_session_id ?? ""} lang={L} />
         </div>
         <Link to="/" search={{ lang: L } as never} style={{ display: "inline-block", marginTop: 24, color: "#e8a04a" }}>{ui.backToSite}</Link>
       </div></div>
@@ -276,6 +255,11 @@ function IntakeInner({ sessionId: session_id, L, ui }: { sessionId: string | und
   return (
     <div style={wrap}>
       <div style={container}>
+        <div style={{ background: "#0b1220", border: "2px solid #e8a04a", padding: 16, borderRadius: 6, marginBottom: 16, textAlign: "center" }}>
+          <p style={{ margin: "0 0 4px", fontSize: 11, letterSpacing: 2, color: "#e8a04a", fontWeight: 700 }}>DEMO · INVESTOR PREVIEW</p>
+          <p style={{ margin: 0, fontSize: 18, fontWeight: 800, color: "#fff5d6", lineHeight: 1.3 }}>DO NOT LEAVE YOUR FAMILY OR YOUR PROPERTY UNPROTECTED</p>
+          <p style={{ margin: "6px 0 0", fontSize: 13, color: "#fff5d6" }}>Activate Asset Protection Today — finish the form and both phones receive the install link + completed PDFs.</p>
+        </div>
         <h1 style={{ fontSize: 32, fontWeight: 700, marginBottom: 8, fontFamily: "Fraunces, serif" }}>{ui.title}</h1>
         <p style={{ color: "#a8a59a", marginBottom: 16 }}>{ui.sub}</p>
         <div style={{ background: "#3a2a00", border: "1px solid #e8a04a", padding: 14, borderRadius: 4, marginBottom: 32, fontSize: 14, lineHeight: 1.5, color: "#fff5d6" }}>
