@@ -287,6 +287,92 @@ export type Database = {
         }
         Relationships: []
       }
+      readiness_deliveries: {
+        Row: {
+          delivered_at: string
+          delivered_to_email: string
+          emergency_activation_id: string | null
+          id: string
+          message_id: string | null
+          packet_id: string | null
+        }
+        Insert: {
+          delivered_at?: string
+          delivered_to_email: string
+          emergency_activation_id?: string | null
+          id?: string
+          message_id?: string | null
+          packet_id?: string | null
+        }
+        Update: {
+          delivered_at?: string
+          delivered_to_email?: string
+          emergency_activation_id?: string | null
+          id?: string
+          message_id?: string | null
+          packet_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "readiness_deliveries_packet_id_fkey"
+            columns: ["packet_id"]
+            isOneToOne: false
+            referencedRelation: "readiness_packets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      readiness_packets: {
+        Row: {
+          created_at: string
+          delivered_at: string | null
+          designated_recipient: Json | null
+          form_answers: Json | null
+          id: string
+          intake_session_id: string
+          language: string
+          signing_token: string | null
+          signing_token_expires_at: string | null
+          status: string
+          stripe_session_id: string | null
+          updated_at: string
+          vault_storage_paths: string[] | null
+          vaulted_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          delivered_at?: string | null
+          designated_recipient?: Json | null
+          form_answers?: Json | null
+          id?: string
+          intake_session_id: string
+          language?: string
+          signing_token?: string | null
+          signing_token_expires_at?: string | null
+          status?: string
+          stripe_session_id?: string | null
+          updated_at?: string
+          vault_storage_paths?: string[] | null
+          vaulted_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          delivered_at?: string | null
+          designated_recipient?: Json | null
+          form_answers?: Json | null
+          id?: string
+          intake_session_id?: string
+          language?: string
+          signing_token?: string | null
+          signing_token_expires_at?: string | null
+          status?: string
+          stripe_session_id?: string | null
+          updated_at?: string
+          vault_storage_paths?: string[] | null
+          vaulted_at?: string | null
+        }
+        Relationships: []
+      }
       subscriptions: {
         Row: {
           cancel_at_period_end: boolean | null

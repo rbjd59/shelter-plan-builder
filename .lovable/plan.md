@@ -1,90 +1,166 @@
-# Plan — Fix payments, add accounts, sync subscription state
 
-## Decisions captured
-- Billing: **$199 charged today** + $30/mo starting month 3
-- Auth: **Magic-link login** (passwordless email)
-- Self-service portal: **No** — staff cancels manually
-- Tax: **Stripe full compliance handling** (+3.5%) on every checkout
+# Plan — Sentinel Asset Protection (two-stage upsell)
 
-## What changes
+## What we're building
 
-### 1. Fix the billing model so $199 is actually charged today
-Replace the current `trial_period_days: 60` (which defers everything to month 3) with:
-- `subscription_data.billing_cycle_anchor` = now + 60 days
-- `subscription_data.proration_behavior: "none"`
-- Line items stay: `pretransfer_30mo` (recurring) + `pretransfer_199` (one-time)
+After a family completes intake + payment for the $199 Detention Defense Plan, the success screen offers **two add-ons** powered by a "Sentinel" subsidiary brand (visual language pulled from the uploaded Sentinel Strategic Frame v1.2 + Sentinel Trust HTML mockups).
 
-Result: first Stripe invoice today contains only the $199; the $30/mo starts on day 60 and bills monthly thereafter.
+### Stage 1 — "Sentinel Readiness Packet" — $100 add-on (this build)
+Modeled on Immigrant Defense Project's *ReadyNow* family-preparedness workbook, but:
+- Delivered in client's chosen language (ES/EN/HT), with **we-translate-and-type** service
+- Documents stay **locked in the on-device encrypted vault**
+- Auto-released to the designated person **only when the lock-screen panic trigger fires** (reuses existing emergency_activations workflow with the 2h/12h confirmation windows)
 
-Also add `managed_payments: { enabled: true }` (full tax/fraud/dispute handling). Confirm `pretransfer_199` and `pretransfer_30mo` exist in Stripe; create them if missing with the correct tax code (`txcd_30060000` — legal services / form preparation).
+Packet contents (the ReadyNow checklist, adapted):
+1. **Power of Attorney** (general + childcare-specific, state-appropriate template)
+2. **Standby/Temporary Guardianship designation** for minor children
+3. **School pickup authorization** (per-school, per-child)
+4. **Medical authorization / HIPAA release** for designated caregiver
+5. **Bank account access letter** + list of accounts/balances (no passwords stored)
+6. **Property & vehicle inventory** with title locations
+7. **Lease/mortgage info sheet** + landlord contact
+8. **Emergency contact tree** (3 tiers: immediate, extended, attorney)
+9. **Children's information sheet** (DOB, SSN, school, doctor, allergies, meds)
+10. **A-number, alien registration, court info** if applicable
+11. **Document locator map** (where birth certs, passports, deeds physically live)
+12. **Letter to children** (optional, family writes; we type/translate)
 
-### 2. Resolve a Stripe Customer per user
-Add `resolveOrCreateCustomer` (search by `metadata.userId`, fall back to email, otherwise create) and pass `customer: customerId`. No more duplicate Customers on repeat checkout.
+### Stage 2 — "Sentinel Trust" — premium tier (NOT built this turn, just teased)
+Irrevocable spendthrift trust + LLC structure for asset protection during removal proceedings. CTA card on success page: *"Learn about Sentinel Trust →"* linking to a marketing page. Actual trust formation is a separate $1,500–5,000 product handled by attorney referral.
 
-### 3. Make `verifyAndCreateIntake` actually mean "they paid"
-Stop treating "subscription exists" as success. Require `session.payment_status === "paid"`. The new billing config guarantees the $199 is collected at checkout, so this is the right gate.
+## User flow
 
-### 4. Magic-link login
-- Auth pages: `/login` (enter email → send magic link) and `/auth/callback` (Supabase recovery).
-- A logged-in user is **optional for buying** (we still capture email at checkout); but if a user is logged in, we attach `userId` to the Stripe Customer + Subscription metadata so they can see their case in `/dashboard` later.
-- Add a small "Sign in" button in the SiteShell topbar.
+```text
+checkout ($199)  →  intake form  →  intake success
+                                     │
+                                     ├─[card] Add Sentinel Readiness Packet — $100
+                                     │   click → /readiness/start
+                                     │
+                                     └─[card] Sentinel Trust (premium) → /sentinel-trust (marketing only)
 
-### 5. Real webhook handler + `subscriptions` table
-Replace the no-op handler with the standard one:
-- Tables: `subscriptions` (per `stripe-webhooks` schema) + `profiles` (id → auth.users, email).
-- Handle `customer.subscription.created/updated/deleted`, `checkout.session.completed`, `invoice.payment_failed`.
-- Even an anonymous (no-userId) checkout writes a row keyed by `stripe_subscription_id` so staff can audit.
+/readiness/start
+  → Stripe checkout for $100 add-on (one-time, lookup_key: readiness_packet_100)
+  → on success: /readiness/intake
+       multi-step form (client fills in their language):
+         Step 1: Designated trigger recipient (name, email, phone, relationship)
+         Step 2: Children info
+         Step 3: Financial accounts (no passwords)
+         Step 4: Property & documents locator
+         Step 5: Emergency contact tree
+         Step 6: POA / guardianship designees + state
+         Step 7: Optional letter to children (free text)
+       → submits to readiness_packets table (status='pending_translation')
+  → success screen: "Our team will translate, type, and deliver your packet
+     to your secure vault within 48 hours. You'll be notified by email."
 
-### 6. Family dashboard (logged-in only)
-`/_authenticated/dashboard` lists the user's subscription (status, next bill date, $ amount, tracking link to their case). No "Cancel" button — copy says "To cancel, email intake@detenciondefensa.com".
+[STAFF — manual, off-app] translator types up forms in EN + client lang,
+generates PDF bundle, uploads to private storage bucket, marks packet
+status='ready_to_sign'. System emails client a one-time link.
 
-### 7. Cleanup
-- Remove the `PaymentTestModeBanner` from `/checkout` (the new yellow Beta banner already covers this site-wide).
-- Add a `Sign in` link in the SiteShell nav (right side, next to language toggle).
+Client receives email → /readiness/sign?token=…
+  → downloads each PDF, prints, signs, gets notarized
+  → uploads scanned signed copies back via same page
+  → status='vaulted'  (encrypted-at-rest, AES-256, in private bucket; key
+     derived from token + intake_session_id)
 
-## Technical implementation notes
+VAULT IS DORMANT. Files exist but are unreachable to anyone — including
+the client — until emergency trigger fires.
 
-**Files touched**
-- `src/utils/payments.functions.ts` — new checkout payload, `resolveOrCreateCustomer`, stricter verify gate
-- `src/routes/api/public/payments/webhook.ts` — full handler from the webhooks knowledge
-- `src/routes/login.tsx`, `src/routes/auth.callback.tsx`, `src/routes/_authenticated.tsx`, `src/routes/_authenticated/dashboard.tsx` — magic-link auth + dashboard
-- `src/components/SiteShell.tsx` — add Sign-in button, pass `userId` when navigating to checkout if signed in
-- `src/components/StripeEmbeddedCheckout.tsx` — pass `userId` to server fn
-- `src/routes/checkout.tsx` — drop duplicate test banner, read current user
+[TRIGGER] existing /api/public/emergency/activate fires →
+  after 2h (client) or 12h (family) confirmation window expires without
+  cancel → background job:
+    1. decrypt vaulted PDFs
+    2. email signed packet to designated trigger recipient (Step 1)
+    3. log delivery in readiness_deliveries
+```
 
-**Database (migrations)**
-- `profiles (id uuid pk → auth.users, email text, created_at)` + insert trigger from `auth.users`
-- `subscriptions (...)` per the canonical schema, with RLS (owner-read, service_role write)
-- `has_active_subscription(user_uuid, env)` security-definer function
+## Technical implementation
 
-**Stripe**
-- Verify or create products `pretransfer_199` (one-time, $199) and `pretransfer_30mo` (recurring monthly, $30) with tax code `txcd_30060000`.
-- `managed_payments: { enabled: true }` on every session.
+### Database (one migration)
+```sql
+-- new product/packet record
+create table public.readiness_packets (
+  id uuid primary key default gen_random_uuid(),
+  intake_session_id text not null,
+  stripe_session_id text,
+  language text not null default 'es',
+  status text not null default 'pending_payment',
+    -- pending_payment | paid | pending_translation | ready_to_sign | vaulted | delivered | cancelled
+  designated_recipient jsonb,         -- {name,email,phone,relationship}
+  form_answers jsonb,                 -- raw client input
+  signing_token text unique,          -- one-time URL token
+  signing_token_expires_at timestamptz,
+  vault_storage_paths text[],         -- paths in 'readiness-vault' bucket
+  vaulted_at timestamptz,
+  delivered_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+alter table public.readiness_packets enable row level security;
+-- no public SELECT — all access via server functions w/ service role
 
-**Auth config**
-- `configure_auth`: keep `disable_signup: false`, no auto-confirm (magic links self-verify).
-- Configure auth email templates so the magic-link email is branded (optional follow-up).
+create table public.readiness_deliveries (
+  id uuid primary key default gen_random_uuid(),
+  packet_id uuid references public.readiness_packets(id),
+  emergency_activation_id uuid,
+  delivered_to_email text,
+  delivered_at timestamptz not null default now(),
+  message_id text
+);
+alter table public.readiness_deliveries enable row level security;
 
-## How to test in preview
+-- private storage bucket
+insert into storage.buckets (id, name, public) values
+  ('readiness-vault', 'readiness-vault', false)
+  on conflict do nothing;
+```
 
-A yellow Beta banner is already site-wide. Stripe is in **sandbox/test** mode in preview, so no real money moves.
+### Stripe
+- New product `readiness_packet` with one-time price `$100` (lookup_key `readiness_packet_100`, tax code `txcd_30060000` to match existing form-prep classification).
 
-1. **Buy as guest**
-   1. Open the preview, choose a language on `/splash`.
-   2. Click any "Empezar — $199" / "Start — $199" button.
-   3. On checkout, fill in any email; card `4242 4242 4242 4242`, any future expiry (e.g. `12/34`), any 3-digit CVC, any ZIP.
-   4. Submit. You should be redirected to `/intake?session_id=…`. The page must show the form (not "We could not verify your payment").
-   5. Open Stripe test dashboard via Lovable Cloud → Payments. The **first invoice** should be **$199** (paid today), and the subscription should show "Next invoice: in ~60 days, $30.00".
-   6. Fill the intake form and submit. Confirm the family welcome email arrives and a row exists in `case_tracking`.
+### Files
+- `src/routes/readiness/start.tsx` — add-on offer page (Stripe embedded checkout for $100)
+- `src/routes/readiness/success.tsx` — post-payment redirect → links to intake
+- `src/routes/readiness/intake.tsx` — 7-step packet intake form (i18n via existing LanguageContext)
+- `src/routes/readiness/sign.tsx` — token-gated download/upload page for signed PDFs
+- `src/routes/sentinel-trust.tsx` — marketing page, Sentinel Trust visual language
+- `src/components/SentinelUpsellCards.tsx` — two cards rendered on `/intake` success
+- `src/lib/readiness.functions.ts` — `createReadinessCheckout`, `submitReadinessIntake`, `getPacketByToken`, `uploadSignedPacket`, `triggerVaultRelease` (called by emergency activate handler)
+- `src/lib/readiness.server.ts` — encryption helpers (AES-GCM via Web Crypto), PDF templating list, staff notification email
+- Modify `src/routes/api/public/emergency/activate.ts` — after the 2h/12h window expires, call `triggerVaultRelease(intake_session_id)` to email packet to designated recipient
+- Modify `src/routes/intake.tsx` — render `<SentinelUpsellCards />` after submission
+- Modify `src/routes/api/public/payments/webhook.ts` — recognize `readiness_packet` line item and mark `readiness_packets.status='paid'`
 
-2. **Buy while logged in** (after auth ships)
-   1. Click "Sign in" in the topbar → enter your email → click the magic link from your inbox.
-   2. Repeat the buy flow. In `/dashboard` you should see the subscription appear within ~10 s of completing checkout (webhook-driven).
+### Encryption model
+- Each packet's PDFs encrypted at rest with a per-packet AES-256-GCM key.
+- Key wrapped by HKDF(intake_session_id ‖ signing_token, server_secret).
+- Server-only — never exposed to client. Decrypt only inside `triggerVaultRelease` server fn after emergency confirmation expires.
 
-3. **Decline path** — re-run with card `4000 0000 0000 0002`. Checkout should refuse the card and you should NOT be redirected to `/intake`.
+### Translation workflow (manual MVP)
+First version: staff gets an email when `status='pending_translation'`, types up PDFs locally using a Word/Google Doc template library, uploads to vault via an internal staff route (`/admin/readiness/:id` — gated by `has_role(admin)`, future). For this build, the staff upload page can be a simple authenticated TanStack route — or skipped entirely and replaced by a Supabase storage upload via the dashboard. **Recommend skipping the admin UI in this first cut** — staff uploads directly via Cloud storage and runs an SQL update; we'll build the admin page in a follow-up once volume justifies it.
 
-4. **3D-Secure** — card `4000 0025 0000 3155` triggers the bank-prompt flow; complete it, then verify the rest behaves like #1.
+### Visual design
+- Sentinel pages use the palette + typography from the uploaded HTML mockups:
+  - Fraunces serif headings, Inter Tight body, JetBrains Mono captions
+  - Paper `#f4efe6`, ink `#0e1a2b`, accent `#b8551f`, gold `#c9a961`
+- Lives as a sibling visual identity to the main red/black detenciondefensa look — clearly "premium subsidiary."
 
-5. **Webhook sanity** — after each successful purchase, check `subscriptions` table: `status` is `active` (or `trialing` between purchase and the day-60 anchor depending on Stripe behavior), `current_period_end` is roughly 60 days out, `environment = 'sandbox'`.
+## Out of scope this turn
+- Sentinel Trust formation product (only marketing page)
+- Admin staff UI for translators (manual SQL + Cloud storage upload for now)
+- Per-state POA template library — V1 ships generic POA + a "verify with local notary" disclaimer
+- Notarization scheduling integration
 
-If any test card fails with "Prices not found", that means the `pretransfer_199` / `pretransfer_30mo` lookup keys aren't registered yet — I'll create them as part of step 1.
+## Test plan
+1. Buy $199 → intake → see two upsell cards
+2. Click "Add Readiness Packet" → Stripe sandbox $100 checkout → success
+3. Fill 7-step intake → submit → row in `readiness_packets` w/ status `pending_translation`
+4. Manually upload a test PDF to `readiness-vault/{packet_id}/poa.pdf`, set status `vaulted`
+5. Trigger emergency activation for that intake_session_id → wait window → verify designated recipient receives email with packet attached, `readiness_deliveries` row written
+6. Verify vault PDFs are unreachable via direct Supabase URL (private bucket)
+
+---
+
+**Risk note:** The packet is document-prep + translation only — UPL-safe under the same scrivener framing as the existing $199 product. Add a disclaimer on `/readiness/start`: *"Sentinel Readiness is a document preparation and translation service. We do not provide legal advice. POA, guardianship, and trust documents should be reviewed by a licensed attorney in your state before signing."*
+
+Approve to proceed, or tell me what to change.
