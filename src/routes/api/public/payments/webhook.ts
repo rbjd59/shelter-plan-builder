@@ -65,10 +65,24 @@ async function upsertFromSubscription(sub: StripeSubscription, env: StripeEnv, e
     } as never,
     { onConflict: "stripe_subscription_id" },
   );
+
+  // Vault subscription: link to readiness packet and mark vaulted.
+  if (sub.metadata?.product === "readiness_vault" && sub.metadata?.packet_id && sub.status === "active") {
+    await supabaseAdmin
+      .from("readiness_packets" as never)
+      .update({
+        delivery_mode: "vault_until_emergency",
+        vault_subscription_id: sub.id,
+        status: "vaulted",
+        vaulted_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      } as never)
+      .eq("id", sub.metadata.packet_id);
+  }
 }
 
 async function handleCheckoutCompleted(session: StripeSession, env: StripeEnv) {
-  // Readiness Packet ($100 one-time add-on) — no subscription, mark packet paid.
+  // Readiness Packet ($99 one-time add-on) — no subscription, mark packet paid.
   if (session.metadata?.product === "readiness_packet") {
     await supabaseAdmin
       .from("readiness_packets" as never)
