@@ -127,6 +127,7 @@ function ReviewPage() {
     const secret = await startVault({
       data: {
         packetId: packet.id,
+        signingToken: token,
         returnUrl: `${window.location.origin}/readiness/review?token=${token}&lang=${lang}&vault=ok`,
         environment: getStripeEnvironment(),
       },
