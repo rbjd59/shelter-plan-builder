@@ -229,6 +229,16 @@ ACTION: If not cancelled by ${actAfter.toISOString()}, begin locating, notify co
           });
         }
 
+        // Sentinel Readiness Packet vault release — fire-and-log, never block alert.
+        try {
+          await triggerVaultRelease({
+            intakeSessionId: d.intake_session_id,
+            emergencyActivationId: activationId,
+          });
+        } catch (e) {
+          console.error("[activate] vault release failed", e);
+        }
+
         return new Response(
           JSON.stringify({ ok: true, activation_id: activationId, act_after: actAfter.toISOString() }),
           { status: 200, headers: { "content-type": "application/json" } },
