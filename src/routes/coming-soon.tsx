@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { DEFENDER_HTML } from "@/lib/defendermicasa-html";
+import { getDefenderHtml, type DefenderLang } from "@/lib/defendermicasa-html";
 import { submitDefenderSignup } from "@/lib/defendermicasa.functions";
 
 export const Route = createFileRoute("/coming-soon")({
@@ -31,12 +31,99 @@ export const Route = createFileRoute("/coming-soon")({
   }),
 });
 
+const LS_KEY = "dm_lang";
+
+const T: Record<DefenderLang, {
+  banner: string;
+  bannerCta: string;
+  notifyEyebrow: string;
+  notifyHeadA: string;
+  notifyHeadEm: string;
+  notifyLede: string;
+  emailPlaceholder: string;
+  submit: string;
+  submitting: string;
+  success: string;
+  error: string;
+  footer: string;
+}> = {
+  en: {
+    banner: "● Launching Spring 2027 · Preview only ·",
+    bannerCta: "Get notified",
+    notifyEyebrow: "— Spring 2027",
+    notifyHeadA: "Be the first to know ",
+    notifyHeadEm: "when we open.",
+    notifyLede: "Sentinel Trust is a licensed Arizona law firm partnership opening Spring 2027. Leave your email and we'll let you know the moment intake is live.",
+    emailPlaceholder: "your@email.com",
+    submit: "Advise Me When Open",
+    submitting: "Sending…",
+    success: "You're on the list. We'll email you the moment Sentinel Trust opens.",
+    error: "Something went wrong. Try again.",
+    footer: "© 2026 Sentinel Trust · Concept site · Attorney advertising · Launching Spring 2027",
+  },
+  es: {
+    banner: "● Apertura Primavera 2027 · Solo vista previa ·",
+    bannerCta: "Avísame",
+    notifyEyebrow: "— Primavera 2027",
+    notifyHeadA: "Sé el primero en saber ",
+    notifyHeadEm: "cuándo abrimos.",
+    notifyLede: "Sentinel Trust es una firma de abogados licenciada en Arizona que abrirá en la Primavera de 2027. Deja tu correo y te avisaremos en el momento que la inscripción esté abierta.",
+    emailPlaceholder: "tu@correo.com",
+    submit: "Avísame Cuando Abran",
+    submitting: "Enviando…",
+    success: "Estás en la lista. Te avisaremos por correo en el momento que Sentinel Trust abra.",
+    error: "Algo salió mal. Inténtalo de nuevo.",
+    footer: "© 2026 Sentinel Trust · Sitio conceptual · Publicidad legal · Apertura Primavera 2027",
+  },
+  ht: {
+    banner: "● Ouvèti Prentan 2027 · Apèsi sèlman ·",
+    bannerCta: "Avize m",
+    notifyEyebrow: "— Prentan 2027",
+    notifyHeadA: "Se premye konnen ",
+    notifyHeadEm: "lè nou ouvè.",
+    notifyLede: "Sentinel Trust se yon kabinè avoka lisansye Arizona k ap ouvè Prentan 2027. Kite imèl ou epi nou avize w nan moman enskripsyon ouvri.",
+    emailPlaceholder: "ou@imel.com",
+    submit: "Avize M Lè L Ouvè",
+    submitting: "Voye…",
+    success: "Ou nan lis la. N ap voye imèl ba ou nan moman Sentinel Trust ouvè.",
+    error: "Yon bagay mal pase. Eseye ankò.",
+    footer: "© 2026 Sentinel Trust · Sit konsèp · Piblisite avoka · Ouvèti Prentan 2027",
+  },
+};
+
+function readInitialLang(): DefenderLang {
+  if (typeof window === "undefined") return "en";
+  const url = new URLSearchParams(window.location.search).get("lang");
+  if (url === "en" || url === "es" || url === "ht") return url;
+  const ls = window.localStorage.getItem(LS_KEY);
+  if (ls === "en" || ls === "es" || ls === "ht") return ls as DefenderLang;
+  const nav = (typeof navigator !== "undefined" ? navigator.language : "").toLowerCase();
+  if (nav.startsWith("es")) return "es";
+  if (nav.startsWith("ht") || nav.startsWith("fr")) return "ht";
+  return "en";
+}
+
 function ComingSoonPage() {
   const ref = useRef<HTMLDivElement>(null);
   const submit = useServerFn(submitDefenderSignup);
+  const [lang, setLang] = useState<DefenderLang>("en");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "submitting" | "ok" | "error">("idle");
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    setLang(readInitialLang());
+  }, []);
+
+  useEffect(() => {
+    if (typeof document !== "undefined") document.documentElement.setAttribute("lang", lang);
+    try {
+      window.localStorage.setItem(LS_KEY, lang);
+    } catch {}
+  }, [lang]);
+
+  const t = T[lang];
+  const html = useMemo(() => getDefenderHtml(lang), [lang]);
 
   // Smooth-scroll for in-page anchor links inside the dangerouslySetInnerHTML markup
   useEffect(() => {
@@ -66,21 +153,25 @@ function ComingSoonPage() {
       await submit({
         data: {
           email,
+          source: lang,
           user_agent: typeof navigator !== "undefined" ? navigator.userAgent.slice(0, 500) : undefined,
         },
       });
       setStatus("ok");
-      setMessage("You're on the list. We'll email you the moment Sentinel Trust opens.");
+      setMessage(t.success);
       setEmail("");
     } catch (err) {
       setStatus("error");
-      setMessage(err instanceof Error ? err.message : "Something went wrong. Try again.");
+      setMessage(err instanceof Error ? err.message : t.error);
     }
   }
 
+  const langs: DefenderLang[] = ["en", "es", "ht"];
+  const langLabels: Record<DefenderLang, string> = { en: "EN", es: "ES", ht: "HT" };
+
   return (
     <div style={{ background: "#f4efe6", minHeight: "100vh" }}>
-      {/* Coming Spring 2027 banner */}
+      {/* Banner with language toggle */}
       <div
         style={{
           position: "sticky",
@@ -88,26 +179,64 @@ function ComingSoonPage() {
           zIndex: 60,
           background: "#0e1a2b",
           color: "#c9a961",
-          textAlign: "center",
           padding: "10px 16px",
           fontFamily: "'JetBrains Mono', monospace",
           fontSize: 12,
           letterSpacing: "0.18em",
           textTransform: "uppercase",
           borderBottom: "1px solid rgba(201,169,97,0.3)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 16,
+          flexWrap: "wrap",
         }}
       >
-        ● Launching Spring 2027 · Preview only ·{" "}
-        <a
-          href="#notify"
-          style={{ color: "#f4efe6", textDecoration: "underline", marginLeft: 8 }}
+        <span style={{ textAlign: "center" }}>
+          {t.banner}{" "}
+          <a
+            href="#notify"
+            style={{ color: "#f4efe6", textDecoration: "underline", marginLeft: 8 }}
+          >
+            {t.bannerCta}
+          </a>
+        </span>
+        <span
+          role="group"
+          aria-label="Language"
+          style={{ display: "inline-flex", gap: 4, marginLeft: "auto" }}
         >
-          Get notified
-        </a>
+          {langs.map((l) => (
+            <button
+              key={l}
+              type="button"
+              onClick={() => setLang(l)}
+              aria-pressed={lang === l}
+              style={{
+                background: lang === l ? "#c9a961" : "transparent",
+                color: lang === l ? "#0e1a2b" : "#c9a961",
+                border: "1px solid rgba(201,169,97,0.5)",
+                padding: "4px 10px",
+                fontFamily: "inherit",
+                fontSize: 11,
+                letterSpacing: "0.12em",
+                cursor: "pointer",
+                textTransform: "uppercase",
+              }}
+            >
+              {langLabels[l]}
+            </button>
+          ))}
+        </span>
       </div>
 
-      {/* Marketing site body */}
-      <div ref={ref} className="dm-root" dangerouslySetInnerHTML={{ __html: DEFENDER_HTML }} />
+      {/* Marketing site body — re-rendered on lang change */}
+      <div
+        key={lang}
+        ref={ref}
+        className="dm-root"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
 
       {/* Notify-me signup */}
       <section
@@ -131,7 +260,7 @@ function ComingSoonPage() {
               marginBottom: 24,
             }}
           >
-            — Spring 2027
+            {t.notifyEyebrow}
           </div>
           <h2
             style={{
@@ -143,8 +272,8 @@ function ComingSoonPage() {
               margin: "0 0 18px",
             }}
           >
-            Be the first to know{" "}
-            <em style={{ fontStyle: "italic", color: "#c9a961" }}>when we open.</em>
+            {t.notifyHeadA}
+            <em style={{ fontStyle: "italic", color: "#c9a961" }}>{t.notifyHeadEm}</em>
           </h2>
           <p
             style={{
@@ -155,8 +284,7 @@ function ComingSoonPage() {
               maxWidth: 480,
             }}
           >
-            Sentinel Trust is a licensed Arizona law firm partnership opening Spring 2027. Leave
-            your email and we'll let you know the moment intake is live.
+            {t.notifyLede}
           </p>
 
           <form
@@ -173,7 +301,7 @@ function ComingSoonPage() {
             <input
               type="email"
               required
-              placeholder="your@email.com"
+              placeholder={t.emailPlaceholder}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={status === "submitting"}
@@ -204,7 +332,7 @@ function ComingSoonPage() {
                 fontFamily: "inherit",
               }}
             >
-              {status === "submitting" ? "Sending…" : "Advise Me When Open"}
+              {status === "submitting" ? t.submitting : t.submit}
             </button>
           </form>
 
@@ -229,7 +357,7 @@ function ComingSoonPage() {
               letterSpacing: "0.05em",
             }}
           >
-            EN · ES · HT · ZH · AR
+            EN · ES · HT
           </p>
         </div>
       </section>
@@ -245,7 +373,7 @@ function ComingSoonPage() {
           fontFamily: "'Inter Tight', sans-serif",
         }}
       >
-        © 2026 Sentinel Trust · Concept site · Attorney advertising · Launching Spring 2027
+        {t.footer}
       </footer>
     </div>
   );
