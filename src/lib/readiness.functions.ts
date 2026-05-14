@@ -14,6 +14,28 @@ import { generateAllDocs, type Lang } from "@/lib/readiness-pdf";
 const READINESS_PRICE_LOOKUP_KEY = "readiness_packet_99";
 const VAULT_PRICE_LOOKUP_KEY = "readiness_vault_monthly";
 
+// Return URL must point at our own surfaces — prevents Stripe-laundered open redirects.
+const ALLOWED_RETURN_HOSTS = new Set([
+  "detenciondefensa.com",
+  "www.detenciondefensa.com",
+  "shelter-plan-builder.lovable.app",
+  "localhost",
+  "127.0.0.1",
+]);
+function assertSafeReturnUrl(raw: string): string {
+  let u: URL;
+  try { u = new URL(raw); } catch { throw new Error("Invalid returnUrl"); }
+  if (u.protocol !== "https:" && u.protocol !== "http:") throw new Error("Invalid returnUrl");
+  const host = u.hostname.toLowerCase();
+  const ok =
+    ALLOWED_RETURN_HOSTS.has(host) ||
+    host.endsWith(".lovable.app") ||
+    host.endsWith(".detenciondefensa.com");
+  if (!ok) throw new Error("returnUrl host not allowed");
+  return u.toString();
+}
+
+
 // ---------- Create the $100 checkout session ----------
 export const createReadinessCheckout = createServerFn({ method: "POST" })
   .inputValidator(
@@ -27,7 +49,7 @@ export const createReadinessCheckout = createServerFn({ method: "POST" })
       if (!data.intakeSessionId || data.intakeSessionId.length < 6)
         throw new Error("Invalid intakeSessionId");
       if (!["en", "es", "ht"].includes(data.language)) throw new Error("Invalid language");
-      if (!data.returnUrl?.startsWith("http")) throw new Error("Invalid returnUrl");
+      data.returnUrl = assertSafeReturnUrl(data.returnUrl);
       return data;
     },
   )
@@ -104,10 +126,13 @@ export const submitReadinessIntake = createServerFn({ method: "POST" })
   .inputValidator(
     (data: {
       packetId: string;
+      packetSessionId: string;
       designatedRecipient: { name: string; email: string; phone: string; relationship: string };
       formAnswers: Record<string, unknown>;
     }) => {
       if (!data.packetId) throw new Error("Invalid packetId");
+      if (!data.packetSessionId || data.packetSessionId.length < 6)
+        throw new Error("Invalid packetSessionId");
       RecipientSchema.parse(data.designatedRecipient);
       if (!data.formAnswers || typeof data.formAnswers !== "object")
         throw new Error("Invalid formAnswers");
@@ -117,12 +142,14 @@ export const submitReadinessIntake = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { data: packet, error: fetchErr } = await supabaseAdmin
       .from("readiness_packets" as never)
-      .select("id,status,language")
+      .select("id,status,language,stripe_session_id")
       .eq("id", data.packetId)
+      .eq("stripe_session_id", data.packetSessionId)
       .maybeSingle();
     if (fetchErr || !packet) throw new Error("Packet not found");
     const p = packet as { id: string; status: string; language: string };
     if (p.status !== "paid") throw new Error("Packet not in paid state");
+
 
     await supabaseAdmin
       .from("readiness_packets" as never)
@@ -238,16 +265,31 @@ export const createVaultSubscriptionCheckout = createServerFn({ method: "POST" }
   .inputValidator(
     (data: {
       packetId: string;
+      signingToken: string;
       customerEmail?: string;
       returnUrl: string;
       environment: StripeEnv;
     }) => {
       if (!data.packetId) throw new Error("Invalid packetId");
-      if (!data.returnUrl?.startsWith("http")) throw new Error("Invalid returnUrl");
+      if (!data.signingToken || data.signingToken.length < 8)
+        throw new Error("Invalid signingToken");
+      data.returnUrl = assertSafeReturnUrl(data.returnUrl);
       return data;
     },
   )
   .handler(async ({ data }) => {
+    // Ownership check: the signing token must match this packet.
+    const { data: row } = await supabaseAdmin
+      .from("readiness_packets" as never)
+      .select("id,signing_token_expires_at")
+      .eq("id", data.packetId)
+      .eq("signing_token", data.signingToken)
+      .maybeSingle();
+    if (!row) throw new Error("Packet not found or token mismatch");
+    const p = row as { id: string; signing_token_expires_at: string | null };
+    if (p.signing_token_expires_at && new Date(p.signing_token_expires_at) < new Date())
+      throw new Error("Signing token expired");
+
     const stripe = createStripeClient(data.environment);
     const prices = await stripe.prices.list({ lookup_keys: [VAULT_PRICE_LOOKUP_KEY], limit: 1 });
     if (!prices.data.length) throw new Error("Vault price not found");
@@ -267,15 +309,18 @@ export const createVaultSubscriptionCheckout = createServerFn({ method: "POST" }
 
 // ---------- Generate all 8 PDFs and stage them in the vault ----------
 export const generatePacketPDFs = createServerFn({ method: "POST" })
-  .inputValidator((data: { packetId: string }) => {
+  .inputValidator((data: { packetId: string; packetSessionId: string }) => {
     if (!data.packetId) throw new Error("Invalid packetId");
+    if (!data.packetSessionId || data.packetSessionId.length < 6)
+      throw new Error("Invalid packetSessionId");
     return data;
   })
   .handler(async ({ data }) => {
     const { data: row } = await supabaseAdmin
       .from("readiness_packets" as never)
-      .select("id,language,form_answers,designated_recipient,status")
+      .select("id,language,form_answers,designated_recipient,status,stripe_session_id")
       .eq("id", data.packetId)
+      .eq("stripe_session_id", data.packetSessionId)
       .maybeSingle();
     if (!row) throw new Error("Packet not found");
     const p = row as {
@@ -319,24 +364,32 @@ export const generatePacketPDFs = createServerFn({ method: "POST" })
 
 // ---------- Send packet to designated family member NOW (not after emergency) ----------
 export const sendPacketNow = createServerFn({ method: "POST" })
-  .inputValidator((data: { packetId: string }) => {
+  .inputValidator((data: { packetId: string; signingToken: string }) => {
     if (!data.packetId) throw new Error("Invalid packetId");
+    if (!data.signingToken || data.signingToken.length < 8)
+      throw new Error("Invalid signingToken");
     return data;
   })
   .handler(async ({ data }) => {
     const { data: row } = await supabaseAdmin
       .from("readiness_packets" as never)
-      .select("id,language,designated_recipient,vault_storage_paths,status")
+      .select("id,language,designated_recipient,vault_storage_paths,status,signing_token_expires_at")
       .eq("id", data.packetId)
+      .eq("signing_token", data.signingToken)
       .maybeSingle();
-    if (!row) throw new Error("Packet not found");
+    if (!row) throw new Error("Packet not found or token mismatch");
     const p = row as {
       id: string;
       language: string;
       designated_recipient: { name?: string; email?: string } | null;
       vault_storage_paths: string[] | null;
       status: string;
+      signing_token_expires_at: string | null;
     };
+    if (p.signing_token_expires_at && new Date(p.signing_token_expires_at) < new Date())
+      throw new Error("Signing token expired");
+
+
     // Always use the designated recipient email recorded at intake — never accept
     // a caller-supplied override (would allow redirecting sealed vault docs).
     const email = p.designated_recipient?.email;
@@ -367,12 +420,14 @@ export const sendPacketNow = createServerFn({ method: "POST" })
 
 // ---------- Mark packet as vaulted-only (after $5/mo subscription) ----------
 export const markPacketVaulted = createServerFn({ method: "POST" })
-  .inputValidator((data: { packetId: string; subscriptionId?: string }) => {
+  .inputValidator((data: { packetId: string; signingToken: string; subscriptionId?: string }) => {
     if (!data.packetId) throw new Error("Invalid packetId");
+    if (!data.signingToken || data.signingToken.length < 8)
+      throw new Error("Invalid signingToken");
     return data;
   })
   .handler(async ({ data }) => {
-    await supabaseAdmin
+    const { error, count } = await supabaseAdmin
       .from("readiness_packets" as never)
       .update({
         delivery_mode: "vault_until_emergency",
@@ -380,7 +435,10 @@ export const markPacketVaulted = createServerFn({ method: "POST" })
         status: "vaulted",
         vaulted_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
-      } as never)
-      .eq("id", data.packetId);
+      } as never, { count: "exact" })
+      .eq("id", data.packetId)
+      .eq("signing_token", data.signingToken);
+    if (error) throw new Error(error.message);
+    if (!count) throw new Error("Packet not found or token mismatch");
     return { ok: true as const };
   });

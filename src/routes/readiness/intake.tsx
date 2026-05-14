@@ -150,12 +150,13 @@ function IntakePage() {
   const handleBack = () => setStep((s) => Math.max(0, s - 1));
 
   const handleSubmit = async () => {
-    if (!packetId) return;
+    if (!packetId || !packet_session) return;
     setStatus("submitting");
     try {
       await submitFn({
         data: {
           packetId,
+          packetSessionId: packet_session,
           designatedRecipient: {
             name: answers.recipient_name || "",
             email: answers.recipient_email || "",
@@ -165,8 +166,9 @@ function IntakePage() {
           formAnswers: answers,
         },
       });
-      const gen = await generateFn({ data: { packetId } });
+      const gen = await generateFn({ data: { packetId, packetSessionId: packet_session } });
       navigate({ to: "/readiness/review", search: { token: gen.signingToken, lang: L } });
+
     } catch {
       setStatus("ready");
     }
