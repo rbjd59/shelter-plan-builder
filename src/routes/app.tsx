@@ -217,20 +217,28 @@ function EmergencyApp() {
     if (navigator.vibrate) navigator.vibrate([300, 100, 300, 100, 600]);
     const coords = await getCoords();
     const ts = new Date().toISOString();
-    const subject = `EMERGENCY — ${rec.fullName} — Case ${rec.caseId.slice(0, 12)}`;
+    const isFamily = rec.role === "family";
+    const roleTag = isFamily ? "FAMILY" : "CLIENT";
+    const windowLabel = isFamily
+      ? "12-HOUR confirmation window (family-triggered — wait before locating)"
+      : "2-HOUR window (client-triggered — at-scene alert)";
+    const subject = `EMERGENCY [${roleTag}] — ${rec.fullName} — Case ${rec.caseId.slice(0, 12)}`;
     const body = [
-      "EMERGENCY ALERT — DetencionDefensa client needs immediate help.",
+      `EMERGENCY ALERT — Triggered from ${isFamily ? "FAMILY CONTACT PHONE" : "CLIENT PHONE"}.`,
+      `Response window: ${windowLabel}.`,
       "",
-      `Name: ${rec.fullName}`,
+      `Detainee/Client name: ${rec.fullName}`,
       `Case ID: ${rec.caseId}`,
       `Time (UTC): ${ts}`,
-      `GPS: ${coords}`,
+      `GPS of triggering phone: ${coords}`,
       `Maps: https://maps.google.com/?q=${encodeURIComponent(coords)}`,
       "",
-      `Emergency contact: ${rec.contactName} <${rec.contactEmail}>`,
+      `Family contact on file: ${rec.contactName} <${rec.contactEmail}>`,
       "",
       "AO 242 Habeas + AO 240 IFP for this case are already on file.",
-      "Please activate the response protocol immediately.",
+      isFamily
+        ? "ACTION: Wait the 12-hour cancel window. If not cancelled, begin locating, notify contacts, prepare packet."
+        : "ACTION: Wait the 2-hour cancel window. If not cancelled, begin locating, notify contacts, prepare packet.",
     ].join("\n");
     const cc = rec.contactEmail ? `&cc=${encodeURIComponent(rec.contactEmail)}` : "";
     const recipient = rec.alertEmail || LEGAL_EMAIL;
@@ -242,9 +250,10 @@ function EmergencyApp() {
 
   const sendCancellation = useCallback(async (rec: CaseRecord) => {
     setCancelled(true);
-    const subject = `CANCEL EMERGENCY — ${rec.fullName} — Case ${rec.caseId.slice(0, 12)}`;
+    const roleTag = rec.role === "family" ? "FAMILY" : "CLIENT";
+    const subject = `CANCEL EMERGENCY [${roleTag}] — ${rec.fullName} — Case ${rec.caseId.slice(0, 12)}`;
     const body = [
-      "FALSE ALARM — please disregard the previous emergency alert.",
+      `FALSE ALARM — please disregard the previous emergency alert (triggered from ${rec.role === "family" ? "family contact phone" : "client phone"}).`,
       "",
       `Name: ${rec.fullName}`,
       `Case ID: ${rec.caseId}`,
