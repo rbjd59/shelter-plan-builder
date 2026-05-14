@@ -68,6 +68,15 @@ async function upsertFromSubscription(sub: StripeSubscription, env: StripeEnv, e
 }
 
 async function handleCheckoutCompleted(session: StripeSession, env: StripeEnv) {
+  // Readiness Packet ($100 one-time add-on) — no subscription, mark packet paid.
+  if (session.metadata?.product === "readiness_packet") {
+    await supabaseAdmin
+      .from("readiness_packets" as never)
+      .update({ status: "paid", updated_at: new Date().toISOString() } as never)
+      .eq("stripe_session_id", session.id)
+      .eq("status", "pending_payment");
+    return;
+  }
   if (!session.subscription) return;
   // Stamp the email + session id on the subscription row when the row exists.
   const email = session.customer_details?.email || session.customer_email || null;
