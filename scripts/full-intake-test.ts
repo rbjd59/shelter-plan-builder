@@ -7,7 +7,7 @@
 
 import { createClient } from "@supabase/supabase-js";
 import { sendLovableEmail } from "@lovable.dev/email-js";
-import { buildIntakePdfs } from "./src/lib/email/intake-pdfs.server";
+import { buildIntakePdfs } from "../src/lib/email/intake-pdfs.server";
 
 const SUPABASE_URL = process.env.SUPABASE_URL!;
 const SR = process.env.SUPABASE_SERVICE_ROLE_KEY!;
