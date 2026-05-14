@@ -36,6 +36,7 @@ interface CaseRecord {
   contactEmail: string;
   language: string;
   installedAt: string;
+  role: "client" | "family";
   // Setup-only fields (stored after one-time setup):
   alertEmail?: string;     // where the EMERGENCY alert goes
   setupCompleted?: boolean;
@@ -75,7 +76,8 @@ function b64ToBlobUrl(b64: string): string {
   return URL.createObjectURL(new Blob([bytes], { type: "application/pdf" }));
 }
 
-const CANCEL_WINDOW_MS = 2 * 60 * 60 * 1000; // 2 hours
+const CLIENT_CANCEL_WINDOW_MS = 2 * 60 * 60 * 1000; // 2 hours — client phone is at the scene
+const FAMILY_CANCEL_WINDOW_MS = 12 * 60 * 60 * 1000; // 12 hours — family confirms detention
 const CANCEL_HOLD_MS = 15000; // 15 seconds to cancel
 
 const LEGAL_EMAIL = "legal@detenciondefensa.com";
@@ -215,20 +217,28 @@ function EmergencyApp() {
     if (navigator.vibrate) navigator.vibrate([300, 100, 300, 100, 600]);
     const coords = await getCoords();
     const ts = new Date().toISOString();
-    const subject = `EMERGENCY — ${rec.fullName} — Case ${rec.caseId.slice(0, 12)}`;
+    const isFamily = rec.role === "family";
+    const roleTag = isFamily ? "FAMILY" : "CLIENT";
+    const windowLabel = isFamily
+      ? "12-HOUR confirmation window (family-triggered — wait before locating)"
+      : "2-HOUR window (client-triggered — at-scene alert)";
+    const subject = `EMERGENCY [${roleTag}] — ${rec.fullName} — Case ${rec.caseId.slice(0, 12)}`;
     const body = [
-      "EMERGENCY ALERT — DetencionDefensa client needs immediate help.",
+      `EMERGENCY ALERT — Triggered from ${isFamily ? "FAMILY CONTACT PHONE" : "CLIENT PHONE"}.`,
+      `Response window: ${windowLabel}.`,
       "",
-      `Name: ${rec.fullName}`,
+      `Detainee/Client name: ${rec.fullName}`,
       `Case ID: ${rec.caseId}`,
       `Time (UTC): ${ts}`,
-      `GPS: ${coords}`,
+      `GPS of triggering phone: ${coords}`,
       `Maps: https://maps.google.com/?q=${encodeURIComponent(coords)}`,
       "",
-      `Emergency contact: ${rec.contactName} <${rec.contactEmail}>`,
+      `Family contact on file: ${rec.contactName} <${rec.contactEmail}>`,
       "",
       "AO 242 Habeas + AO 240 IFP for this case are already on file.",
-      "Please activate the response protocol immediately.",
+      isFamily
+        ? "ACTION: Wait the 12-hour cancel window. If not cancelled, begin locating, notify contacts, prepare packet."
+        : "ACTION: Wait the 2-hour cancel window. If not cancelled, begin locating, notify contacts, prepare packet.",
     ].join("\n");
     const cc = rec.contactEmail ? `&cc=${encodeURIComponent(rec.contactEmail)}` : "";
     const recipient = rec.alertEmail || LEGAL_EMAIL;
@@ -240,9 +250,10 @@ function EmergencyApp() {
 
   const sendCancellation = useCallback(async (rec: CaseRecord) => {
     setCancelled(true);
-    const subject = `CANCEL EMERGENCY — ${rec.fullName} — Case ${rec.caseId.slice(0, 12)}`;
+    const roleTag = rec.role === "family" ? "FAMILY" : "CLIENT";
+    const subject = `CANCEL EMERGENCY [${roleTag}] — ${rec.fullName} — Case ${rec.caseId.slice(0, 12)}`;
     const body = [
-      "FALSE ALARM — please disregard the previous emergency alert.",
+      `FALSE ALARM — please disregard the previous emergency alert (triggered from ${rec.role === "family" ? "family contact phone" : "client phone"}).`,
       "",
       `Name: ${rec.fullName}`,
       `Case ID: ${rec.caseId}`,
@@ -445,14 +456,17 @@ function EmergencyApp() {
     );
   }
 
-  // ---- Post-fire 2-hour cancel window with 15s hold-to-cancel ----
+  // ---- Post-fire cancel window with 15s hold-to-cancel ----
   if (firedAt != null) {
+    const isFamily = record.role === "family";
+    const cancelWindowMs = isFamily ? FAMILY_CANCEL_WINDOW_MS : CLIENT_CANCEL_WINDOW_MS;
+    const windowHours = isFamily ? 12 : 2;
     const elapsed = now - firedAt;
-    const remainingMs = Math.max(0, CANCEL_WINDOW_MS - elapsed);
+    const remainingMs = Math.max(0, cancelWindowMs - elapsed);
     const hh = Math.floor(remainingMs / 3600000);
     const mm = Math.floor((remainingMs % 3600000) / 60000);
     const ss = Math.floor((remainingMs % 60000) / 1000);
-    const clock = `${String(hh).padStart(1, "0")}:${String(mm).padStart(2, "0")}:${String(ss).padStart(2, "0")}`;
+    const clock = `${String(hh).padStart(2, "0")}:${String(mm).padStart(2, "0")}:${String(ss).padStart(2, "0")}`;
     const expired = remainingMs <= 0;
     const holdPct = Math.round(holdProgress * 100);
     const holdRemaining = Math.max(0, Math.ceil(CANCEL_HOLD_MS / 1000 - (holdProgress * CANCEL_HOLD_MS) / 1000));
@@ -461,7 +475,7 @@ function EmergencyApp() {
       <Shell>
         <div className="flex w-full max-w-md flex-1 flex-col items-center justify-center py-6 text-white">
           <p className="text-xs uppercase tracking-[0.3em] text-white/60">
-            {cancelled ? "Cancelled" : expired ? "Response activated" : "Alert sent"}
+            {cancelled ? "Cancelled" : expired ? "Response activated" : `Alert sent (${isFamily ? "family" : "client"})`}
           </p>
           <div
             className="mt-5 rounded-3xl bg-black/60 px-8 py-6 font-mono text-6xl font-black tabular-nums shadow-[inset_0_0_40px_rgba(220,38,38,0.4)]"
@@ -477,8 +491,8 @@ function EmergencyApp() {
             {cancelled
               ? "Cancellation sent. Your team has been notified it was a false alarm."
               : expired
-                ? "Two hours passed without cancellation. Your team is locating you, notifying contacts, and preparing your packet."
-                : "False alarm? Press AND HOLD the button below for 15 seconds to cancel. Otherwise, in 2 hours we begin locating you, notifying contacts, and preparing your packet to mail."}
+                ? `${windowHours} hours passed without cancellation. Your team is locating, notifying contacts, and preparing the packet.`
+                : `False alarm? Press AND HOLD the button below for 15 seconds to cancel. Otherwise, in ${windowHours} hours we begin locating, notifying contacts, and preparing the packet to mail.`}
           </p>
 
           {!cancelled && !expired && (
@@ -525,7 +539,9 @@ function EmergencyApp() {
         <header className="text-center">
           <p className="text-xs uppercase tracking-[0.2em] text-white/60">DetencionDefensa</p>
           <h1 className="mt-1 text-xl font-bold">{record.fullName}</h1>
-          <p className="text-xs text-white/50">Ready</p>
+          <p className="text-xs text-white/50">
+            {record.role === "family" ? "Family contact phone — Ready" : "Client phone — Ready"}
+          </p>
         </header>
 
         <div className="my-8 flex flex-col items-center">
@@ -538,13 +554,14 @@ function EmergencyApp() {
             <div className="text-center">
               <div className="text-6xl font-black tracking-tight text-white">HELP</div>
               <div className="mt-2 text-xs font-semibold uppercase tracking-widest text-white/85">
-                tap if in danger
+                {record.role === "family" ? "tap if detention confirmed" : "tap if in danger"}
               </div>
             </div>
           </button>
           <p className="mt-6 max-w-xs text-center text-xs text-white/60">
-            One tap sends your name, GPS location, case ID, and emergency contact. You'll have
-            <strong> 2 hours </strong>to cancel by holding the button for 15 seconds.
+            One tap sends name, GPS, case ID and emergency contact. You'll have
+            <strong> {record.role === "family" ? "12 hours" : "2 hours"} </strong>
+            to cancel by holding the button for 15 seconds.
           </p>
         </div>
 

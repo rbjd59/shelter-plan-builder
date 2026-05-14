@@ -3,10 +3,15 @@ import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
 const SITE_BASE = "https://detenciondefensa.com";
 
-export async function issueAppInstallToken(intakeSessionId: string): Promise<string | null> {
+export type InstallRole = "client" | "family";
+
+export async function issueAppInstallToken(
+  intakeSessionId: string,
+  role: InstallRole = "client",
+): Promise<string | null> {
   const { data, error } = await supabaseAdmin
     .from("app_install_tokens" as never)
-    .insert({ intake_session_id: intakeSessionId } as never)
+    .insert({ intake_session_id: intakeSessionId, role } as never)
     .select("token")
     .single();
   if (error || !data) {

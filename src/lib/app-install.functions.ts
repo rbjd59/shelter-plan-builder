@@ -21,6 +21,7 @@ export interface AppBootstrapPayload {
   contactName: string;
   contactEmail: string;
   language: string;
+  role: "client" | "family";
 }
 
 export const bootstrapAppFromToken = createServerFn({ method: "POST" })
@@ -33,7 +34,7 @@ export const bootstrapAppFromToken = createServerFn({ method: "POST" })
   .handler(async ({ data }): Promise<AppBootstrapPayload> => {
     const { data: row, error } = await supabaseAdmin
       .from("app_install_tokens" as never)
-      .select("token, intake_session_id, used_at, expires_at")
+      .select("token, intake_session_id, used_at, expires_at, role")
       .eq("token", data.token)
       .maybeSingle();
 
@@ -43,6 +44,7 @@ export const bootstrapAppFromToken = createServerFn({ method: "POST" })
       intake_session_id: string;
       used_at: string | null;
       expires_at: string;
+      role: "client" | "family" | null;
     };
     if (r.used_at) throw new Error("This install link has already been used.");
     if (new Date(r.expires_at).getTime() < Date.now()) throw new Error("Install link expired.");
@@ -92,5 +94,6 @@ export const bootstrapAppFromToken = createServerFn({ method: "POST" })
       contactName: String(ans.contact_name ?? ""),
       contactEmail: String(ans.contact_email ?? (intake as { email: string | null }).email ?? ""),
       language: (intake as { language: string }).language ?? "es",
+      role: r.role === "family" ? "family" : "client",
     };
   });

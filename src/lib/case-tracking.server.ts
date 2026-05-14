@@ -187,33 +187,94 @@ export async function sendWelcomeEmail(params: {
   to: string;
   trackingToken: string;
   language: string;
-  installUrl?: string | null;
+  clientInstallUrl?: string | null;
+  familyInstallUrl?: string | null;
   habeasUrl?: string | null;
   ifpUrl?: string | null;
+  inmateName?: string;
 }): Promise<void> {
   const lang = pickLang(params.language);
   const c = COPY.welcome[lang];
   const trackingUrl = `${SITE_BASE}/track/${params.trackingToken}`;
-  const installCta =
-    lang === "es"
-      ? "Instalar el botón AYUDA YA en mi teléfono"
-      : lang === "ht"
-      ? "Enstale bouton AYÈ KOUNYE A sou telefòn mwen"
-      : "Install the HELP NOW button on my phone";
-  const installNote =
-    lang === "es"
-      ? "Abra este enlace en el teléfono que llevará la persona en riesgo. En iPhone (Safari): toque el ícono Compartir y luego 'Añadir a pantalla de inicio'. En Android (Chrome): toque el menú ⋮ y luego 'Instalar app' o 'Añadir a pantalla de inicio'. Mantenga presionado el botón AYUDA YA durante 15 segundos en una emergencia para alertar a nuestro equipo legal y a su contacto de emergencia con copia de los formularios adjunta."
-      : lang === "ht"
-      ? "Louvri lyen sa a sou telefòn moun ki an risk la. Sou iPhone (Safari): tape ikon Pataje a epi 'Add to Home Screen'. Sou Android (Chrome): tape meni ⋮ a epi 'Install app' oswa 'Add to Home Screen'. Kenbe peze bouton AYÈ KOUNYE A pandan 15 segond nan yon ijans pou alète ekip legal nou ak kontak ijans ou ak yon kopi fòm yo."
-      : "Open this link on the phone the at-risk person will carry. On iPhone (Safari): tap the Share icon then 'Add to Home Screen'. On Android (Chrome): tap the ⋮ menu then 'Install app' or 'Add to Home Screen'. Press and hold the HELP NOW button for 15 seconds in an emergency to alert our legal team and your emergency contact with copies of the forms attached.";
-  const installSection = params.installUrl
+  const inmate = escapeHtml(params.inmateName || "");
+
+  // ---------- Service description + family-activation copy ----------
+  const serviceCopy = {
+    es: {
+      serviceTitle: "Cómo funciona DetencionDefensa",
+      servicePoints: [
+        "Preparamos los formularios federales (Habeas AO 242 + IFP AO 240) listos para presentar.",
+        "Instalamos un botón AYUDA YA en el teléfono de la persona en riesgo.",
+        "Si se activa, alertamos al equipo legal con su nombre, ubicación GPS y formularios — y comenzamos a localizarlo, notificar a sus contactos y preparar el paquete para enviarle.",
+      ],
+      familyTitle: `Si le informan que ${inmate || "su ser querido"} fue detenido`,
+      familyBody:
+        "Active el servicio desde SU teléfono usando el botón de abajo. Tendrá 12 horas para cancelar (manteniendo presionado 15 segundos) si fue una falsa alarma. Si no cancela, comenzamos el protocolo: localización, notificación a contactos y envío del paquete.",
+      whyTwoButtons:
+        "Hay DOS botones: uno para el teléfono de la persona en riesgo (cancelación de 2 horas — porque está cerca del peligro) y uno para SU teléfono como contacto familiar (cancelación de 12 horas — para confirmar la detención).",
+      clientCta: "Instalar en el teléfono de la persona en riesgo (cancelación 2h)",
+      familyCta: "Instalar en MI teléfono como contacto familiar (cancelación 12h)",
+    },
+    en: {
+      serviceTitle: "How DetencionDefensa works",
+      servicePoints: [
+        "We prepare federal forms (Habeas AO 242 + IFP AO 240) ready to file.",
+        "We install a HELP NOW button on the at-risk person's phone.",
+        "If triggered, we alert the legal team with name, GPS, and forms — and begin locating them, notifying contacts, and preparing the mail packet.",
+      ],
+      familyTitle: `If you are told ${inmate || "your loved one"} has been detained`,
+      familyBody:
+        "Activate the service from YOUR phone using the button below. You will have 12 hours to cancel (hold the button 15 seconds) if it was a false alarm. Otherwise we begin: locating, contact notification, and packet mailing.",
+      whyTwoButtons:
+        "There are TWO buttons: one for the at-risk person's phone (2-hour cancel window — they are close to the danger) and one for YOUR phone as family contact (12-hour cancel window — to confirm the detention).",
+      clientCta: "Install on the at-risk person's phone (2h cancel)",
+      familyCta: "Install on MY phone as family contact (12h cancel)",
+    },
+    ht: {
+      serviceTitle: "Ki jan DetencionDefensa fonksyone",
+      servicePoints: [
+        "Nou prepare fòm federal yo (Habeas AO 242 + IFP AO 240) pare pou depoze.",
+        "Nou enstale yon bouton AYÈ KOUNYE A sou telefòn moun ki an risk la.",
+        "Si w aktive li, nou alète ekip legal la ak non, GPS, ak fòm yo — epi nou kòmanse jwenn li, alète kontak yo, epi prepare pakè a.",
+      ],
+      familyTitle: `Si yo di ou ${inmate || "moun ou renmen an"} arete`,
+      familyBody:
+        "Aktive sèvis la depi telefòn PA OU avèk bouton anba a. W ap gen 12 èdtan pou anile (kenbe peze 15 segond) si li te yon fo alam. Si w pa anile, nou kòmanse pwotokòl la.",
+      whyTwoButtons:
+        "Genyen DE bouton: youn pou telefòn moun ki an risk la (anilasyon 2 èdtan) ak youn pou telefòn PA OU kòm kontak fanmi (anilasyon 12 èdtan).",
+      clientCta: "Enstale sou telefòn moun ki an risk la (anile 2è)",
+      familyCta: "Enstale sou telefòn PA M kòm kontak fanmi (anile 12è)",
+    },
+  } as const;
+  const sc = serviceCopy[lang];
+
+  const installButton = (url: string, label: string, color: string) =>
+    `<p style="text-align:center;margin:10px 0;">
+      <a href="${url}" style="display:inline-block;background:${color};color:#fff;text-decoration:none;padding:14px 22px;border-radius:8px;font-weight:700;font-size:14px;">${escapeHtml(label)}</a>
+    </p>`;
+
+  const clientInstallSection = params.clientInstallUrl
+    ? installButton(params.clientInstallUrl, sc.clientCta, "#dc2626")
+    : "";
+  const familyInstallSection = params.familyInstallUrl
+    ? installButton(params.familyInstallUrl, sc.familyCta, "#0b1220")
+    : "";
+
+  const serviceSection = `<div style="margin-top:18px;padding:18px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;">
+      <p style="margin:0 0 10px;font-size:14px;font-weight:700;color:#0b1220;">${escapeHtml(sc.serviceTitle)}</p>
+      <ul style="margin:0;padding-left:20px;font-size:13px;color:#334155;line-height:1.6;">
+        ${sc.servicePoints.map((p) => `<li>${escapeHtml(p)}</li>`).join("")}
+      </ul>
+    </div>`;
+
+  const familyActivationSection = (params.clientInstallUrl || params.familyInstallUrl)
     ? `<div style="margin-top:18px;padding:18px;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;">
-        <p style="margin:0 0 10px;font-size:14px;font-weight:700;color:#991b1b;">${escapeHtml(installCta)}</p>
-        <p style="margin:0 0 12px;font-size:13px;color:#7f1d1d;line-height:1.5;">${escapeHtml(installNote)}</p>
-        <p style="text-align:center;margin:0;">
-          <a href="${params.installUrl}" style="display:inline-block;background:#dc2626;color:#fff;text-decoration:none;padding:14px 26px;border-radius:8px;font-weight:700;font-size:15px;">${escapeHtml(installCta)}</a>
-        </p>
-        <p style="margin:10px 0 0;font-size:11px;color:#a16207;">One-time link. Valid 30 days. Open it on the phone that will carry the app.</p>
+        <p style="margin:0 0 8px;font-size:15px;font-weight:800;color:#991b1b;">${escapeHtml(sc.familyTitle)}</p>
+        <p style="margin:0 0 12px;font-size:13px;color:#7f1d1d;line-height:1.55;">${escapeHtml(sc.familyBody)}</p>
+        <p style="margin:0 0 14px;font-size:12px;color:#7f1d1d;line-height:1.5;font-style:italic;">${escapeHtml(sc.whyTwoButtons)}</p>
+        ${clientInstallSection}
+        ${familyInstallSection}
+        <p style="margin:12px 0 0;font-size:11px;color:#a16207;">One-time links. Valid 30 days. Open each link on the matching phone.</p>
       </div>`
     : "";
 
@@ -244,12 +305,17 @@ export async function sendWelcomeEmail(params: {
     trackingUrl,
     cta: c.cta,
     note: c.note,
-  }).replace("</div>\n      <p ", `${pdfSection}${installSection}</div>\n      <p `);
+  }).replace(
+    "</div>\n      <p ",
+    `${serviceSection}${pdfSection}${familyActivationSection}</div>\n      <p `,
+  );
   const text = `${c.heading}\n\n${c.body}\n\n${c.cta}: ${trackingUrl}\n\n${
+    sc.serviceTitle
+  }\n${sc.servicePoints.map((p) => `- ${p}`).join("\n")}\n\n${sc.familyTitle}\n${sc.familyBody}\n${sc.whyTwoButtons}\n${
+    params.clientInstallUrl ? `\n${sc.clientCta}: ${params.clientInstallUrl}` : ""
+  }${params.familyInstallUrl ? `\n${sc.familyCta}: ${params.familyInstallUrl}` : ""}\n\n${
     params.habeasUrl ? `AO 242 Habeas: ${params.habeasUrl}\n` : ""
-  }${params.ifpUrl ? `AO 240 IFP: ${params.ifpUrl}\n` : ""}${
-    params.installUrl ? `\n${installCta}: ${params.installUrl}\n` : ""
-  }\n${c.note}`;
+  }${params.ifpUrl ? `AO 240 IFP: ${params.ifpUrl}\n` : ""}\n${c.note}`;
   await enqueueFamilyEmail({
     to: params.to,
     subject: c.subject,

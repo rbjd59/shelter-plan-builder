@@ -213,15 +213,24 @@ ${Object.entries(a)
       (typeof answers.contact_email === "string" && answers.contact_email) || contactEmail;
     if (tracking && familyEmail) {
       const { issueAppInstallToken, buildAppInstallUrl } = await import("@/lib/app-install.server");
-      const installToken = await issueAppInstallToken(sessionId);
-      const installUrl = installToken ? buildAppInstallUrl(installToken) : null;
+      const [clientToken, familyToken] = await Promise.all([
+        issueAppInstallToken(sessionId, "client"),
+        issueAppInstallToken(sessionId, "family"),
+      ]);
+      const clientInstallUrl = clientToken ? buildAppInstallUrl(clientToken) : null;
+      const familyInstallUrl = familyToken ? buildAppInstallUrl(familyToken) : null;
       await sendWelcomeEmail({
         to: familyEmail,
         trackingToken: tracking.token,
         language,
-        installUrl,
+        clientInstallUrl,
+        familyInstallUrl,
         habeasUrl,
         ifpUrl,
+        inmateName:
+          (typeof answers.mail_inmate_name === "string" && answers.mail_inmate_name) ||
+          (typeof answers.full_name === "string" && answers.full_name) ||
+          "su ser querido",
       });
     }
   } catch (e) {
