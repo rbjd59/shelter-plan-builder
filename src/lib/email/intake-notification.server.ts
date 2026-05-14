@@ -95,8 +95,9 @@ export async function enqueueIntakeNotification(params: {
   answers: Record<string, unknown>;
   language: string;
   contactEmail?: string | null;
+  demoMode?: boolean;
 }): Promise<void> {
-  const { sessionId, answers, language, contactEmail } = params;
+  const { sessionId, answers, language, contactEmail, demoMode } = params;
   const a = answers;
 
   const subject = `New Intake Submission — ${String(a.mail_inmate_name || a.contact_name || sessionId)}`;
