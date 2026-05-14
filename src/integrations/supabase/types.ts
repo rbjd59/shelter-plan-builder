@@ -89,6 +89,30 @@ export type Database = {
         }
         Relationships: []
       }
+      defendermicasa_signups: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          source: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          source?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          source?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       email_send_log: {
         Row: {
           created_at: string
