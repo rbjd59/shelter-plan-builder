@@ -14,6 +14,28 @@ import { generateAllDocs, type Lang } from "@/lib/readiness-pdf";
 const READINESS_PRICE_LOOKUP_KEY = "readiness_packet_99";
 const VAULT_PRICE_LOOKUP_KEY = "readiness_vault_monthly";
 
+// Return URL must point at our own surfaces — prevents Stripe-laundered open redirects.
+const ALLOWED_RETURN_HOSTS = new Set([
+  "detenciondefensa.com",
+  "www.detenciondefensa.com",
+  "shelter-plan-builder.lovable.app",
+  "localhost",
+  "127.0.0.1",
+]);
+function assertSafeReturnUrl(raw: string): string {
+  let u: URL;
+  try { u = new URL(raw); } catch { throw new Error("Invalid returnUrl"); }
+  if (u.protocol !== "https:" && u.protocol !== "http:") throw new Error("Invalid returnUrl");
+  const host = u.hostname.toLowerCase();
+  const ok =
+    ALLOWED_RETURN_HOSTS.has(host) ||
+    host.endsWith(".lovable.app") ||
+    host.endsWith(".detenciondefensa.com");
+  if (!ok) throw new Error("returnUrl host not allowed");
+  return u.toString();
+}
+
+
 // ---------- Create the $100 checkout session ----------
 export const createReadinessCheckout = createServerFn({ method: "POST" })
   .inputValidator(
