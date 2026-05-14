@@ -251,16 +251,23 @@ function IntakeInner({ sessionId: session_id, L, ui }: { sessionId: string | und
         <Link to="/checkout" search={{ lang: L } as never} style={{ color: "#e8a04a" }}>→ /checkout</Link>
       </div></div>
     );
-  if (status === "done")
+  if (status === "done") {
+    const mailHref = `mailto:intake@gohomesooner.com?subject=${encodeURIComponent(ui.spamSubject)}&body=${encodeURIComponent(ui.spamMailBody)}`;
     return (
       <div style={wrap}><div style={container}>
         <div style={{ background: "#1a2436", padding: 32, borderRadius: 8, borderLeft: "4px solid #2d6a4f" }}>
           <h1 style={{ fontSize: 28, marginBottom: 16 }}>✓</h1>
           <p style={{ fontSize: 18, lineHeight: 1.6 }}>{ui.done}</p>
-          <Link to="/" search={{ lang: L } as never} style={{ display: "inline-block", marginTop: 24, color: "#e8a04a" }}>{ui.backToSite}</Link>
         </div>
+        <div style={{ background: "#3a2a00", border: "2px solid #e8a04a", padding: 24, borderRadius: 8, marginTop: 24 }}>
+          <h2 style={{ fontSize: 20, fontWeight: 700, color: "#fff5d6", marginBottom: 12 }}>⚠ {ui.spamTitle}</h2>
+          <p style={{ fontSize: 15, lineHeight: 1.6, color: "#fff5d6", marginBottom: 20 }}>{ui.spamBody}</p>
+          <a href={mailHref} style={{ display: "inline-block", background: "#e8a04a", color: "#0b1220", padding: "16px 28px", borderRadius: 6, fontSize: 17, fontWeight: 700, textDecoration: "none" }}>{ui.spamBtn}</a>
+        </div>
+        <Link to="/" search={{ lang: L } as never} style={{ display: "inline-block", marginTop: 24, color: "#e8a04a" }}>{ui.backToSite}</Link>
       </div></div>
     );
+  }
 
   return (
     <div style={wrap}>
