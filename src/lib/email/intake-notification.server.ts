@@ -212,7 +212,15 @@ ${Object.entries(a)
     });
     const familyEmail =
       (typeof answers.contact_email === "string" && answers.contact_email) || contactEmail;
-    if (tracking && familyEmail) {
+    const emergencyEmail =
+      typeof answers.emergency_contact_email === "string" && answers.emergency_contact_email
+        ? answers.emergency_contact_email
+        : null;
+    const recipientsSet = new Set<string>();
+    if (familyEmail) recipientsSet.add(String(familyEmail).toLowerCase());
+    if (emergencyEmail) recipientsSet.add(String(emergencyEmail).toLowerCase());
+
+    if (tracking && recipientsSet.size > 0) {
       const { issueAppInstallToken, buildAppInstallUrl } = await import("@/lib/app-install.server");
       const [clientToken, familyToken] = await Promise.all([
         issueAppInstallToken(sessionId, "client"),
@@ -220,19 +228,23 @@ ${Object.entries(a)
       ]);
       const clientInstallUrl = clientToken ? buildAppInstallUrl(clientToken) : null;
       const familyInstallUrl = familyToken ? buildAppInstallUrl(familyToken) : null;
-      await sendWelcomeEmail({
-        to: familyEmail,
-        trackingToken: tracking.token,
-        language,
-        clientInstallUrl,
-        familyInstallUrl,
-        habeasUrl,
-        ifpUrl,
-        inmateName:
-          (typeof answers.mail_inmate_name === "string" && answers.mail_inmate_name) ||
-          (typeof answers.full_name === "string" && answers.full_name) ||
-          "su ser querido",
-      });
+      const inmateName =
+        (typeof answers.mail_inmate_name === "string" && answers.mail_inmate_name) ||
+        (typeof answers.full_name === "string" && answers.full_name) ||
+        "su ser querido";
+      for (const to of recipientsSet) {
+        await sendWelcomeEmail({
+          to,
+          trackingToken: tracking.token,
+          language,
+          clientInstallUrl,
+          familyInstallUrl,
+          habeasUrl,
+          ifpUrl,
+          inmateName,
+          demoMode,
+        });
+      }
     }
   } catch (e) {
     console.error("Family welcome / case tracking failed:", e);
