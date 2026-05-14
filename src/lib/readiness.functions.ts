@@ -126,10 +126,13 @@ export const submitReadinessIntake = createServerFn({ method: "POST" })
   .inputValidator(
     (data: {
       packetId: string;
+      packetSessionId: string;
       designatedRecipient: { name: string; email: string; phone: string; relationship: string };
       formAnswers: Record<string, unknown>;
     }) => {
       if (!data.packetId) throw new Error("Invalid packetId");
+      if (!data.packetSessionId || data.packetSessionId.length < 6)
+        throw new Error("Invalid packetSessionId");
       RecipientSchema.parse(data.designatedRecipient);
       if (!data.formAnswers || typeof data.formAnswers !== "object")
         throw new Error("Invalid formAnswers");
@@ -139,12 +142,14 @@ export const submitReadinessIntake = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { data: packet, error: fetchErr } = await supabaseAdmin
       .from("readiness_packets" as never)
-      .select("id,status,language")
+      .select("id,status,language,stripe_session_id")
       .eq("id", data.packetId)
+      .eq("stripe_session_id", data.packetSessionId)
       .maybeSingle();
     if (fetchErr || !packet) throw new Error("Packet not found");
     const p = packet as { id: string; status: string; language: string };
     if (p.status !== "paid") throw new Error("Packet not in paid state");
+
 
     await supabaseAdmin
       .from("readiness_packets" as never)
