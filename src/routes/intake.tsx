@@ -1,9 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { z } from "zod";
 import { useServerFn } from "@tanstack/react-start";
-import { verifyAndCreateIntake, submitIntakeAnswers } from "@/utils/payments.functions";
-import { getStripeEnvironment } from "@/lib/stripe";
+import { submitDemoIntake } from "@/utils/payments.functions";
 import { DisclosureGate } from "@/components/DisclosureGate";
 import { SentinelUpsellCards } from "@/components/SentinelUpsellCards";
 
