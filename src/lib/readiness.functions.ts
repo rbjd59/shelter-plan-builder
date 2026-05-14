@@ -420,12 +420,14 @@ export const sendPacketNow = createServerFn({ method: "POST" })
 
 // ---------- Mark packet as vaulted-only (after $5/mo subscription) ----------
 export const markPacketVaulted = createServerFn({ method: "POST" })
-  .inputValidator((data: { packetId: string; subscriptionId?: string }) => {
+  .inputValidator((data: { packetId: string; signingToken: string; subscriptionId?: string }) => {
     if (!data.packetId) throw new Error("Invalid packetId");
+    if (!data.signingToken || data.signingToken.length < 8)
+      throw new Error("Invalid signingToken");
     return data;
   })
   .handler(async ({ data }) => {
-    await supabaseAdmin
+    const { error, count } = await supabaseAdmin
       .from("readiness_packets" as never)
       .update({
         delivery_mode: "vault_until_emergency",
@@ -433,7 +435,10 @@ export const markPacketVaulted = createServerFn({ method: "POST" })
         status: "vaulted",
         vaulted_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
-      } as never)
-      .eq("id", data.packetId);
+      } as never, { count: "exact" })
+      .eq("id", data.packetId)
+      .eq("signing_token", data.signingToken);
+    if (error) throw new Error(error.message);
+    if (!count) throw new Error("Packet not found or token mismatch");
     return { ok: true as const };
   });
