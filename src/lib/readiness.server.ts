@@ -56,7 +56,7 @@ export async function decryptFromVault(packetId: string, blob: Uint8Array): Prom
   const iv = blob.slice(0, 12);
   const ciphertext = blob.slice(12);
   return new Uint8Array(
-    await crypto.subtle.decrypt({ name: "AES-GCM", iv as BufferSource }, key, ciphertext as BufferSource),
+    await crypto.subtle.decrypt({ name: "AES-GCM", iv: iv as BufferSource }, key, ciphertext as BufferSource),
   );
 }
 
