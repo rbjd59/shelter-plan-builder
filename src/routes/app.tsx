@@ -539,7 +539,9 @@ function EmergencyApp() {
         <header className="text-center">
           <p className="text-xs uppercase tracking-[0.2em] text-white/60">DetencionDefensa</p>
           <h1 className="mt-1 text-xl font-bold">{record.fullName}</h1>
-          <p className="text-xs text-white/50">Ready</p>
+          <p className="text-xs text-white/50">
+            {record.role === "family" ? "Family contact phone — Ready" : "Client phone — Ready"}
+          </p>
         </header>
 
         <div className="my-8 flex flex-col items-center">
@@ -552,13 +554,14 @@ function EmergencyApp() {
             <div className="text-center">
               <div className="text-6xl font-black tracking-tight text-white">HELP</div>
               <div className="mt-2 text-xs font-semibold uppercase tracking-widest text-white/85">
-                tap if in danger
+                {record.role === "family" ? "tap if detention confirmed" : "tap if in danger"}
               </div>
             </div>
           </button>
           <p className="mt-6 max-w-xs text-center text-xs text-white/60">
-            One tap sends your name, GPS location, case ID, and emergency contact. You'll have
-            <strong> 2 hours </strong>to cancel by holding the button for 15 seconds.
+            One tap sends name, GPS, case ID and emergency contact. You'll have
+            <strong> {record.role === "family" ? "12 hours" : "2 hours"} </strong>
+            to cancel by holding the button for 15 seconds.
           </p>
         </div>
 
