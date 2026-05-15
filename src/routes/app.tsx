@@ -238,6 +238,8 @@ function EmergencyApp() {
   const [now, setNow] = useState<number>(() => Date.now());
   const [cancelled, setCancelled] = useState(false);
   const [activationId, setActivationId] = useState<string | null>(null);
+  const [queuedOffline, setQueuedOffline] = useState(false);
+  const [pendingCount, setPendingCount] = useState(0);
 
   // Cancel-hold state (15-second hold while in cancel window)
   const [holding, setHolding] = useState(false);
@@ -252,6 +254,27 @@ function EmergencyApp() {
     const onChange = () => setStandalone(isStandalone());
     m?.addEventListener?.("change", onChange);
     return () => m?.removeEventListener?.("change", onChange);
+  }, []);
+
+  // Offline outbox: drain on mount, on reconnect, and when app comes to foreground.
+  useEffect(() => {
+    const refresh = async () => setPendingCount(await outboxCount().catch(() => 0));
+    const drain = async () => {
+      const sent = await flushOutbox();
+      if (sent > 0) setQueuedOffline(false);
+      await refresh();
+    };
+    drain();
+    const onOnline = () => { drain(); };
+    const onVis = () => { if (document.visibilityState === "visible") drain(); };
+    window.addEventListener("online", onOnline);
+    document.addEventListener("visibilitychange", onVis);
+    const id = setInterval(drain, 60_000);
+    return () => {
+      window.removeEventListener("online", onOnline);
+      document.removeEventListener("visibilitychange", onVis);
+      clearInterval(id);
+    };
   }, []);
 
   // Bootstrap on mount.
