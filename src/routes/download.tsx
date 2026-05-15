@@ -27,6 +27,15 @@ function detectPlatform(): "ios" | "android" | "other" {
   return "other";
 }
 
+function isIOSSafari(): boolean {
+  if (typeof navigator === "undefined") return false;
+  const ua = navigator.userAgent || "";
+  const isIOS = /iPad|iPhone|iPod/.test(ua);
+  if (!isIOS) return false;
+  // Chrome on iOS = "CriOS", Firefox = "FxiOS", Edge = "EdgiOS", in-app browsers vary
+  return !/CriOS|FxiOS|EdgiOS|GSA\//.test(ua);
+}
+
 // ---------------- i18n ----------------
 
 type Tab = "ios" | "android";
