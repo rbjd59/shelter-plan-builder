@@ -186,9 +186,20 @@ function StartPage() {
         </section>
 
         <div style={{ background: "#fff", border: "1px solid rgba(14,26,43,0.15)", borderRadius: 6, padding: 16, marginBottom: 18 }}>
-          <EmbeddedCheckoutProvider stripe={stripePromise} options={{ fetchClientSecret }}>
-            <EmbeddedCheckout />
-          </EmbeddedCheckoutProvider>
+          {isStripeConfigured() ? (
+            <EmbeddedCheckoutProvider stripe={stripePromise} options={{ fetchClientSecret }}>
+              <EmbeddedCheckout />
+            </EmbeddedCheckoutProvider>
+          ) : (
+            <div style={{ padding: "16px 8px", textAlign: "center", color: "#1a2940" }}>
+              <p style={{ margin: "0 0 8px", fontWeight: 600 }}>Checkout opens at beta launch.</p>
+              <p style={{ margin: 0, fontSize: 13, color: "#6b6b6b" }}>
+                Payments are not yet enabled on this preview. Email{" "}
+                <a href="mailto:info@detenciondefensa.com" style={{ color: "#b8551f" }}>info@detenciondefensa.com</a>{" "}
+                to reserve your $99 Sentinel Readiness Packet.
+              </p>
+            </div>
+          )}
         </div>
 
         <p style={{ fontSize: 12, color: "#6b6b6b", lineHeight: 1.5 }}>{c.disclaimer}</p>
