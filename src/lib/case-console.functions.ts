@@ -10,6 +10,7 @@ import { buildMailingLabelPdf } from "@/lib/mailing-label-pdf.server";
 
 const SIGNED_TTL = 60 * 60 * 24; // 1 day
 
+export type AnswerValue = string | number | boolean | null;
 export interface CaseDetail {
   activation: {
     id: string;
@@ -34,7 +35,7 @@ export interface CaseDetail {
     mailing_label_generated_at: string | null;
   };
   intake: {
-    answers: Record<string, unknown>;
+    answers: Record<string, AnswerValue>;
     language: string;
   } | null;
   contacts: {
@@ -45,6 +46,17 @@ export interface CaseDetail {
     tracking_token: string | null;
   } | null;
   pdfs: { habeasUrl: string | null; ifpUrl: string | null };
+}
+
+function flattenAnswers(raw: unknown): Record<string, AnswerValue> {
+  if (!raw || typeof raw !== "object") return {};
+  const out: Record<string, AnswerValue> = {};
+  for (const [k, v] of Object.entries(raw as Record<string, unknown>)) {
+    if (v == null) out[k] = null;
+    else if (typeof v === "string" || typeof v === "number" || typeof v === "boolean") out[k] = v;
+    else out[k] = JSON.stringify(v);
+  }
+  return out;
 }
 
 export const getCaseDetail = createServerFn({ method: "POST" })
@@ -59,8 +71,7 @@ export const getCaseDetail = createServerFn({ method: "POST" })
       .eq("id", data.activation_id)
       .single();
     if (error || !act) throw new Error("Activation not found");
-    const a = act as Record<string, never>;
-    const sessionId = (a as { intake_session_id: string }).intake_session_id;
+    const sessionId = (act as { intake_session_id: string }).intake_session_id;
 
     const [{ data: intake }, { data: tracking }] = await Promise.all([
       supabaseAdmin
@@ -87,7 +98,7 @@ export const getCaseDetail = createServerFn({ method: "POST" })
       activation: act as CaseDetail["activation"],
       intake: intake
         ? {
-            answers: ((intake as { answers: Record<string, unknown> | null }).answers ?? {}) as Record<string, unknown>,
+            answers: flattenAnswers((intake as { answers: unknown }).answers),
             language: (intake as { language: string }).language,
           }
         : null,

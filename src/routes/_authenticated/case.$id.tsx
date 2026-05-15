@@ -48,7 +48,7 @@ function CaseConsole() {
       facility_name: a.facility_name ?? "",
       facility_address: a.facility_address ?? "",
       date_of_arrest: a.date_of_arrest ?? "",
-      a_number: a.a_number ?? detail.data?.intake?.answers?.["a_number"] as string ?? "",
+      a_number: a.a_number ?? (detail.data?.intake?.answers?.["a_number"] as string | undefined) ?? "",
       office_notes: a.office_notes ?? "",
     });
   }, [detail.data]);

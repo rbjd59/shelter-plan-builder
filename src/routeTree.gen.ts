@@ -27,9 +27,12 @@ import { Route as ReadinessReviewRouteImport } from './routes/readiness/review'
 import { Route as ReadinessIntakeRouteImport } from './routes/readiness/intake'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedCasesRouteImport } from './routes/_authenticated/cases'
+import { Route as AuthenticatedCaseIdRouteImport } from './routes/_authenticated/case.$id'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 import { Route as ApiPublicEmergencyActivateRouteImport } from './routes/api/public/emergency/activate'
+import { Route as ApiPublicCronProcessDueActivationsRouteImport } from './routes/api/public/cron/process-due-activations'
 
 const SplashRoute = SplashRouteImport.update({
   id: '/splash',
@@ -120,6 +123,16 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedCasesRoute = AuthenticatedCasesRouteImport.update({
+  id: '/cases',
+  path: '/cases',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedCaseIdRoute = AuthenticatedCaseIdRouteImport.update({
+  id: '/case/$id',
+  path: '/case/$id',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const LovableEmailQueueProcessRoute =
   LovableEmailQueueProcessRouteImport.update({
     id: '/lovable/email/queue/process',
@@ -138,6 +151,12 @@ const ApiPublicEmergencyActivateRoute =
     path: '/api/public/emergency/activate',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicCronProcessDueActivationsRoute =
+  ApiPublicCronProcessDueActivationsRouteImport.update({
+    id: '/api/public/cron/process-due-activations',
+    path: '/api/public/cron/process-due-activations',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -150,6 +169,7 @@ export interface FileRoutesByFullPath {
   '/own-property': typeof OwnPropertyRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/splash': typeof SplashRoute
+  '/cases': typeof AuthenticatedCasesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/readiness/intake': typeof ReadinessIntakeRoute
@@ -157,6 +177,8 @@ export interface FileRoutesByFullPath {
   '/readiness/sign': typeof ReadinessSignRoute
   '/readiness/start': typeof ReadinessStartRoute
   '/track/$token': typeof TrackTokenRoute
+  '/case/$id': typeof AuthenticatedCaseIdRoute
+  '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -172,6 +194,7 @@ export interface FileRoutesByTo {
   '/own-property': typeof OwnPropertyRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/splash': typeof SplashRoute
+  '/cases': typeof AuthenticatedCasesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/readiness/intake': typeof ReadinessIntakeRoute
@@ -179,6 +202,8 @@ export interface FileRoutesByTo {
   '/readiness/sign': typeof ReadinessSignRoute
   '/readiness/start': typeof ReadinessStartRoute
   '/track/$token': typeof TrackTokenRoute
+  '/case/$id': typeof AuthenticatedCaseIdRoute
+  '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -196,6 +221,7 @@ export interface FileRoutesById {
   '/own-property': typeof OwnPropertyRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/splash': typeof SplashRoute
+  '/_authenticated/cases': typeof AuthenticatedCasesRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/readiness/intake': typeof ReadinessIntakeRoute
@@ -203,6 +229,8 @@ export interface FileRoutesById {
   '/readiness/sign': typeof ReadinessSignRoute
   '/readiness/start': typeof ReadinessStartRoute
   '/track/$token': typeof TrackTokenRoute
+  '/_authenticated/case/$id': typeof AuthenticatedCaseIdRoute
+  '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -220,6 +248,7 @@ export interface FileRouteTypes {
     | '/own-property'
     | '/sentinel-trust'
     | '/splash'
+    | '/cases'
     | '/dashboard'
     | '/auth/callback'
     | '/readiness/intake'
@@ -227,6 +256,8 @@ export interface FileRouteTypes {
     | '/readiness/sign'
     | '/readiness/start'
     | '/track/$token'
+    | '/case/$id'
+    | '/api/public/cron/process-due-activations'
     | '/api/public/emergency/activate'
     | '/api/public/payments/webhook'
     | '/lovable/email/queue/process'
@@ -242,6 +273,7 @@ export interface FileRouteTypes {
     | '/own-property'
     | '/sentinel-trust'
     | '/splash'
+    | '/cases'
     | '/dashboard'
     | '/auth/callback'
     | '/readiness/intake'
@@ -249,6 +281,8 @@ export interface FileRouteTypes {
     | '/readiness/sign'
     | '/readiness/start'
     | '/track/$token'
+    | '/case/$id'
+    | '/api/public/cron/process-due-activations'
     | '/api/public/emergency/activate'
     | '/api/public/payments/webhook'
     | '/lovable/email/queue/process'
@@ -265,6 +299,7 @@ export interface FileRouteTypes {
     | '/own-property'
     | '/sentinel-trust'
     | '/splash'
+    | '/_authenticated/cases'
     | '/_authenticated/dashboard'
     | '/auth/callback'
     | '/readiness/intake'
@@ -272,6 +307,8 @@ export interface FileRouteTypes {
     | '/readiness/sign'
     | '/readiness/start'
     | '/track/$token'
+    | '/_authenticated/case/$id'
+    | '/api/public/cron/process-due-activations'
     | '/api/public/emergency/activate'
     | '/api/public/payments/webhook'
     | '/lovable/email/queue/process'
@@ -295,6 +332,7 @@ export interface RootRouteChildren {
   ReadinessSignRoute: typeof ReadinessSignRoute
   ReadinessStartRoute: typeof ReadinessStartRoute
   TrackTokenRoute: typeof TrackTokenRoute
+  ApiPublicCronProcessDueActivationsRoute: typeof ApiPublicCronProcessDueActivationsRoute
   ApiPublicEmergencyActivateRoute: typeof ApiPublicEmergencyActivateRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
@@ -428,6 +466,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/cases': {
+      id: '/_authenticated/cases'
+      path: '/cases'
+      fullPath: '/cases'
+      preLoaderRoute: typeof AuthenticatedCasesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/case/$id': {
+      id: '/_authenticated/case/$id'
+      path: '/case/$id'
+      fullPath: '/case/$id'
+      preLoaderRoute: typeof AuthenticatedCaseIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/lovable/email/queue/process': {
       id: '/lovable/email/queue/process'
       path: '/lovable/email/queue/process'
@@ -449,15 +501,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicEmergencyActivateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/cron/process-due-activations': {
+      id: '/api/public/cron/process-due-activations'
+      path: '/api/public/cron/process-due-activations'
+      fullPath: '/api/public/cron/process-due-activations'
+      preLoaderRoute: typeof ApiPublicCronProcessDueActivationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedCasesRoute: typeof AuthenticatedCasesRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedCaseIdRoute: typeof AuthenticatedCaseIdRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedCasesRoute: AuthenticatedCasesRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedCaseIdRoute: AuthenticatedCaseIdRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
@@ -482,6 +545,8 @@ const rootRouteChildren: RootRouteChildren = {
   ReadinessSignRoute: ReadinessSignRoute,
   ReadinessStartRoute: ReadinessStartRoute,
   TrackTokenRoute: TrackTokenRoute,
+  ApiPublicCronProcessDueActivationsRoute:
+    ApiPublicCronProcessDueActivationsRoute,
   ApiPublicEmergencyActivateRoute: ApiPublicEmergencyActivateRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
