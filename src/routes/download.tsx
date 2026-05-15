@@ -316,7 +316,24 @@ function DownloadPage() {
     const p = detectPlatform();
     setPlatform(p);
     setTab(p === "ios" ? "ios" : "android");
+    setIosSafari(p !== "ios" || isIOSSafari());
   }, []);
+
+  const installUrl =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/download`
+      : "https://detenciondefensa.com/download";
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(installUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      // fallback
+      window.prompt(t.iosCopyLink, installUrl);
+    }
+  };
 
   useEffect(() => {
     fetchApk()
