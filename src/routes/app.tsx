@@ -25,6 +25,7 @@ export const Route = createFileRoute("/app")({
 
 const DB_NAME = "dd_emergency";
 const STORE = "case";
+const OUTBOX_STORE = "outbox";
 const KEY = "v1";
 
 interface CaseRecord {
@@ -44,11 +45,56 @@ interface CaseRecord {
 
 function openDb(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, 1);
-    req.onupgradeneeded = () => req.result.createObjectStore(STORE);
+    const req = indexedDB.open(DB_NAME, 2);
+    req.onupgradeneeded = () => {
+      const db = req.result;
+      if (!db.objectStoreNames.contains(STORE)) db.createObjectStore(STORE);
+      if (!db.objectStoreNames.contains(OUTBOX_STORE)) {
+        db.createObjectStore(OUTBOX_STORE, { keyPath: "id", autoIncrement: true });
+      }
+    };
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.error);
   });
+}
+
+interface OutboxItem {
+  id?: number;
+  body: Record<string, unknown>;
+  queuedAt: string;
+  attempts: number;
+}
+
+async function outboxAdd(body: Record<string, unknown>): Promise<void> {
+  const db = await openDb();
+  await new Promise<void>((resolve, reject) => {
+    const tx = db.transaction(OUTBOX_STORE, "readwrite");
+    tx.objectStore(OUTBOX_STORE).add({ body, queuedAt: new Date().toISOString(), attempts: 0 } as OutboxItem);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+async function outboxAll(): Promise<OutboxItem[]> {
+  const db = await openDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(OUTBOX_STORE, "readonly");
+    const r = tx.objectStore(OUTBOX_STORE).getAll();
+    r.onsuccess = () => resolve((r.result as OutboxItem[]) ?? []);
+    r.onerror = () => reject(r.error);
+  });
+}
+async function outboxDelete(id: number): Promise<void> {
+  const db = await openDb();
+  await new Promise<void>((resolve, reject) => {
+    const tx = db.transaction(OUTBOX_STORE, "readwrite");
+    tx.objectStore(OUTBOX_STORE).delete(id);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+async function outboxCount(): Promise<number> {
+  const items = await outboxAll();
+  return items.length;
 }
 async function dbGet(): Promise<CaseRecord | null> {
   const db = await openDb();
@@ -121,7 +167,9 @@ function getCoords(timeoutMs = 5000): Promise<GpsFix> {
   });
 }
 
-async function postEmergency(body: Record<string, unknown>): Promise<{ activation_id?: string }> {
+async function postEmergency(
+  body: Record<string, unknown>,
+): Promise<{ activation_id?: string; queued?: boolean }> {
   try {
     const res = await fetch("/api/public/emergency/activate", {
       method: "POST",
@@ -129,11 +177,46 @@ async function postEmergency(body: Record<string, unknown>): Promise<{ activatio
       body: JSON.stringify(body),
       keepalive: true,
     });
-    if (!res.ok) return {};
+    if (!res.ok) {
+      // 5xx — server reachable but failing. Queue for retry.
+      if (res.status >= 500) {
+        await outboxAdd(body).catch(() => undefined);
+        return { queued: true };
+      }
+      return {};
+    }
     return (await res.json()) as { activation_id?: string };
   } catch {
-    return {};
+    // Network failure (offline, DNS, TLS). Queue for retry.
+    await outboxAdd(body).catch(() => undefined);
+    return { queued: true };
   }
+}
+
+async function flushOutbox(): Promise<number> {
+  if (typeof navigator !== "undefined" && navigator.onLine === false) return 0;
+  const items = await outboxAll().catch(() => [] as OutboxItem[]);
+  let sent = 0;
+  for (const item of items) {
+    try {
+      const res = await fetch("/api/public/emergency/activate", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(item.body),
+      });
+      if (res.ok && item.id != null) {
+        await outboxDelete(item.id);
+        sent++;
+      } else if (!res.ok && res.status < 500 && item.id != null) {
+        // Permanent client error — drop so it doesn't retry forever.
+        await outboxDelete(item.id);
+      }
+    } catch {
+      // Still offline — stop and try again later.
+      break;
+    }
+  }
+  return sent;
 }
 
 function EmergencyApp() {
@@ -155,6 +238,8 @@ function EmergencyApp() {
   const [now, setNow] = useState<number>(() => Date.now());
   const [cancelled, setCancelled] = useState(false);
   const [activationId, setActivationId] = useState<string | null>(null);
+  const [queuedOffline, setQueuedOffline] = useState(false);
+  const [pendingCount, setPendingCount] = useState(0);
 
   // Cancel-hold state (15-second hold while in cancel window)
   const [holding, setHolding] = useState(false);
@@ -169,6 +254,27 @@ function EmergencyApp() {
     const onChange = () => setStandalone(isStandalone());
     m?.addEventListener?.("change", onChange);
     return () => m?.removeEventListener?.("change", onChange);
+  }, []);
+
+  // Offline outbox: drain on mount, on reconnect, and when app comes to foreground.
+  useEffect(() => {
+    const refresh = async () => setPendingCount(await outboxCount().catch(() => 0));
+    const drain = async () => {
+      const sent = await flushOutbox();
+      if (sent > 0) setQueuedOffline(false);
+      await refresh();
+    };
+    drain();
+    const onOnline = () => { drain(); };
+    const onVis = () => { if (document.visibilityState === "visible") drain(); };
+    window.addEventListener("online", onOnline);
+    document.addEventListener("visibilitychange", onVis);
+    const id = setInterval(drain, 60_000);
+    return () => {
+      window.removeEventListener("online", onOnline);
+      document.removeEventListener("visibilitychange", onVis);
+      clearInterval(id);
+    };
   }, []);
 
   // Bootstrap on mount.
@@ -263,6 +369,10 @@ function EmergencyApp() {
       gps_raw: fix.raw,
     });
     if (serverRes.activation_id) setActivationId(serverRes.activation_id);
+    if (serverRes.queued) {
+      setQueuedOffline(true);
+      setPendingCount(await outboxCount().catch(() => 0));
+    }
 
     // 2) Mailto from user's phone — second channel.
     const roleTag = isFamily ? "FAMILY" : "CLIENT";
@@ -541,6 +651,12 @@ function EmergencyApp() {
           >
             {clock}
           </div>
+          {queuedOffline && pendingCount > 0 && !cancelled && (
+            <p className="mt-3 max-w-xs rounded-lg bg-yellow-500/15 px-3 py-2 text-center text-xs text-yellow-200">
+              No signal — alert saved on this phone and will send the moment you're back online.
+              Mailto was also opened as a backup.
+            </p>
+          )}
           <p className="mt-4 max-w-xs text-center text-sm text-white/80">
             {cancelled
               ? "Cancellation sent. Your team has been notified it was a false alarm."
