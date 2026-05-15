@@ -202,11 +202,16 @@ export type Database = {
       }
       emergency_activations: {
         Row: {
+          a_number: string | null
           act_after: string
           alert_email: string | null
           cancelled_at: string | null
           contact_email: string | null
           created_at: string
+          date_of_arrest: string | null
+          facility_address: string | null
+          facility_name: string | null
+          family_notified_at: string | null
           fired_at: string
           full_name: string | null
           gps_lat: number | null
@@ -215,16 +220,24 @@ export type Database = {
           id: string
           intake_session_id: string
           ip: string | null
+          mailing_label_generated_at: string | null
           notes: string | null
+          office_notes: string | null
           role: string
           user_agent: string | null
+          warden_name: string | null
         }
         Insert: {
+          a_number?: string | null
           act_after: string
           alert_email?: string | null
           cancelled_at?: string | null
           contact_email?: string | null
           created_at?: string
+          date_of_arrest?: string | null
+          facility_address?: string | null
+          facility_name?: string | null
+          family_notified_at?: string | null
           fired_at?: string
           full_name?: string | null
           gps_lat?: number | null
@@ -233,16 +246,24 @@ export type Database = {
           id?: string
           intake_session_id: string
           ip?: string | null
+          mailing_label_generated_at?: string | null
           notes?: string | null
+          office_notes?: string | null
           role: string
           user_agent?: string | null
+          warden_name?: string | null
         }
         Update: {
+          a_number?: string | null
           act_after?: string
           alert_email?: string | null
           cancelled_at?: string | null
           contact_email?: string | null
           created_at?: string
+          date_of_arrest?: string | null
+          facility_address?: string | null
+          facility_name?: string | null
+          family_notified_at?: string | null
           fired_at?: string
           full_name?: string | null
           gps_lat?: number | null
@@ -251,9 +272,12 @@ export type Database = {
           id?: string
           intake_session_id?: string
           ip?: string | null
+          mailing_label_generated_at?: string | null
           notes?: string | null
+          office_notes?: string | null
           role?: string
           user_agent?: string | null
+          warden_name?: string | null
         }
         Relationships: []
       }
