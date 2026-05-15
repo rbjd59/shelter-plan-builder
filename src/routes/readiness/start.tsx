@@ -6,10 +6,14 @@ import { getStripe, getStripeEnvironment } from "@/lib/stripe";
 import { createReadinessCheckout } from "@/lib/readiness.functions";
 
 const search = z.object({
-  session: z.string().min(6),
+  session: z.string().min(6).optional(),
   lang: z.enum(["en", "es", "ht"]).catch("es"),
   email: z.string().email().optional(),
 });
+
+function generateStandaloneSessionId() {
+  return `standalone_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
+}
 
 export const Route = createFileRoute("/readiness/start")({
   validateSearch: search,
