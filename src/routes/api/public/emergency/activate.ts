@@ -38,6 +38,22 @@ function esc(s: unknown): string {
     .replace(/'/g, "&#39;");
 }
 
+async function getOrCreateUnsubscribeToken(email: string): Promise<string> {
+  const { data: existing } = await supabaseAdmin
+    .from("email_unsubscribe_tokens" as never)
+    .select("token")
+    .eq("email", email)
+    .maybeSingle();
+  if (existing && (existing as { token: string }).token) {
+    return (existing as { token: string }).token;
+  }
+  const token = crypto.randomUUID();
+  await supabaseAdmin
+    .from("email_unsubscribe_tokens" as never)
+    .insert({ email, token } as never);
+  return token;
+}
+
 async function enqueueAlertEmail(opts: {
   to: string;
   subject: string;
@@ -47,6 +63,7 @@ async function enqueueAlertEmail(opts: {
   idempotencyKey: string;
 }) {
   const messageId = crypto.randomUUID();
+  const unsubscribeToken = await getOrCreateUnsubscribeToken(opts.to);
   await supabaseAdmin.from("email_send_log" as never).insert({
     message_id: messageId,
     template_name: opts.label,
@@ -66,6 +83,7 @@ async function enqueueAlertEmail(opts: {
       label: opts.label,
       idempotency_key: opts.idempotencyKey,
       message_id: messageId,
+      unsubscribe_token: unsubscribeToken,
       queued_at: new Date().toISOString(),
     } as never,
   } as never);
