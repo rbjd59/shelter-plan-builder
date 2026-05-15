@@ -369,6 +369,10 @@ function EmergencyApp() {
       gps_raw: fix.raw,
     });
     if (serverRes.activation_id) setActivationId(serverRes.activation_id);
+    if (serverRes.queued) {
+      setQueuedOffline(true);
+      setPendingCount(await outboxCount().catch(() => 0));
+    }
 
     // 2) Mailto from user's phone — second channel.
     const roleTag = isFamily ? "FAMILY" : "CLIENT";
