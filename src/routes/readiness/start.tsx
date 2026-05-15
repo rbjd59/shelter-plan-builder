@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { z } from "zod";
 import { EmbeddedCheckoutProvider, EmbeddedCheckout } from "@stripe/react-stripe-js";
-import { getStripe, getStripeEnvironment } from "@/lib/stripe";
+import { getStripe, getStripeEnvironment, isStripeConfigured } from "@/lib/stripe";
 import { createReadinessCheckout } from "@/lib/readiness.functions";
 
 const search = z.object({
