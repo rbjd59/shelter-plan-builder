@@ -27,6 +27,15 @@ function detectPlatform(): "ios" | "android" | "other" {
   return "other";
 }
 
+function isIOSSafari(): boolean {
+  if (typeof navigator === "undefined") return false;
+  const ua = navigator.userAgent || "";
+  const isIOS = /iPad|iPhone|iPod/.test(ua);
+  if (!isIOS) return false;
+  // Chrome on iOS = "CriOS", Firefox = "FxiOS", Edge = "EdgiOS", in-app browsers vary
+  return !/CriOS|FxiOS|EdgiOS|GSA\//.test(ua);
+}
+
 // ---------------- i18n ----------------
 
 type Tab = "ios" | "android";
@@ -53,6 +62,12 @@ const T = {
     ],
     iosWarn:
       "⚠️ El enlace de instalación del correo de confirmación debe abrirse en Safari para que la configuración cargue.",
+    iosNotSafariTitle: "Abra esta página en Safari",
+    iosNotSafariBody:
+      "Está usando Chrome (u otro navegador). En iPhone, «Agregar a pantalla de inicio» solo funciona en Safari. Copie el enlace y péguelo en Safari.",
+    iosCopyLink: "Copiar enlace",
+    iosCopied: "¡Copiado! Abra Safari y pegue.",
+    iosOpenSafari: "Abrir en Safari",
     // Android — Step 1
     aStep1Heading: "Android — Paso 1 de 2: Descargar",
     aStep1Body:
@@ -98,6 +113,12 @@ const T = {
     ],
     iosWarn:
       "⚠️ The install link from your confirmation email must be opened in Safari for setup to load.",
+    iosNotSafariTitle: "Open this page in Safari",
+    iosNotSafariBody:
+      "You're using Chrome (or another browser). On iPhone, “Add to Home Screen” only works in Safari. Copy the link and paste it into Safari.",
+    iosCopyLink: "Copy link",
+    iosCopied: "Copied! Open Safari and paste.",
+    iosOpenSafari: "Open in Safari",
     aStep1Heading: "Android — Step 1 of 2: Download",
     aStep1Body:
       "Tap the red button below to download the app (.apk). It will save to your Downloads folder.",
@@ -140,6 +161,12 @@ const T = {
     ],
     iosWarn:
       "⚠️ Lyen enstalasyon nan imèl konfimasyon an dwe ouvri nan Safari pou konfigirasyon an chaje.",
+    iosNotSafariTitle: "Ouvri paj sa nan Safari",
+    iosNotSafariBody:
+      "W ap sèvi ak Chrome (oswa yon lòt navigatè). Sou iPhone, «Ajoute sou Ekran Prensipal» mache sèlman nan Safari. Kopi lyen an epi kole li nan Safari.",
+    iosCopyLink: "Kopi lyen",
+    iosCopied: "Kopye! Ouvri Safari epi kole.",
+    iosOpenSafari: "Ouvri nan Safari",
     aStep1Heading: "Android — Etap 1 sou 2: Telechaje",
     aStep1Body:
       "Peze bouton wouj la anba pou telechaje aplikasyon an (.apk). L ap sove nan dosye Downloads ou.",
@@ -282,12 +309,31 @@ function DownloadPage() {
   const [platform, setPlatform] = useState<"ios" | "android" | "other">("other");
   const [tab, setTab] = useState<Tab>("android");
   const [androidStep, setAndroidStep] = useState<1 | 2>(1);
+  const [iosSafari, setIosSafari] = useState(true);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const p = detectPlatform();
     setPlatform(p);
     setTab(p === "ios" ? "ios" : "android");
+    setIosSafari(p !== "ios" || isIOSSafari());
   }, []);
+
+  const installUrl =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/download`
+      : "https://detenciondefensa.com/download";
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(installUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      // fallback
+      window.prompt(t.iosCopyLink, installUrl);
+    }
+  };
 
   useEffect(() => {
     fetchApk()
@@ -332,6 +378,37 @@ function DownloadPage() {
         {/* iPhone — single page */}
         {tab === "ios" && (
           <>
+            {!iosSafari && (
+              <div
+                style={{
+                  background: "#7f1d1d",
+                  border: "1px solid #fca5a5",
+                  borderRadius: 10,
+                  padding: 14,
+                  marginBottom: 18,
+                  textAlign: "left",
+                }}
+              >
+                <p style={{ margin: "0 0 6px", fontWeight: 700, color: "#fff", fontSize: 15 }}>
+                  ⚠️ {t.iosNotSafariTitle}
+                </p>
+                <p style={{ margin: "0 0 10px", color: "#fee2e2", fontSize: 13, lineHeight: 1.5 }}>
+                  {t.iosNotSafariBody}
+                </p>
+                <button
+                  onClick={handleCopy}
+                  style={{
+                    ...styles.primaryBtn,
+                    fontSize: 14,
+                    padding: "10px 18px",
+                    background: "#fff",
+                    color: "#7f1d1d",
+                  }}
+                >
+                  {copied ? t.iosCopied : `📋 ${t.iosCopyLink}`}
+                </button>
+              </div>
+            )}
             <h2 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 8px" }}>{t.iosHeading}</h2>
             <p style={styles.intro}>{t.iosIntro}</p>
             <a href="/app" style={styles.primaryBtn}>
