@@ -32,6 +32,7 @@ import { Route as AuthenticatedCasesRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedCaseIdRouteImport } from './routes/_authenticated/case.$id'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
+import { Route as ApiPublicEmergencyTestMirrorRouteImport } from './routes/api/public/emergency/test-mirror'
 import { Route as ApiPublicEmergencyActivateRouteImport } from './routes/api/public/emergency/activate'
 import { Route as ApiPublicCronProcessDueActivationsRouteImport } from './routes/api/public/cron/process-due-activations'
 
@@ -151,6 +152,12 @@ const ApiPublicPaymentsWebhookRoute =
     path: '/api/public/payments/webhook',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicEmergencyTestMirrorRoute =
+  ApiPublicEmergencyTestMirrorRouteImport.update({
+    id: '/api/public/emergency/test-mirror',
+    path: '/api/public/emergency/test-mirror',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicEmergencyActivateRoute =
   ApiPublicEmergencyActivateRouteImport.update({
     id: '/api/public/emergency/activate',
@@ -187,6 +194,7 @@ export interface FileRoutesByFullPath {
   '/case/$id': typeof AuthenticatedCaseIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
+  '/api/public/emergency/test-mirror': typeof ApiPublicEmergencyTestMirrorRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
@@ -213,6 +221,7 @@ export interface FileRoutesByTo {
   '/case/$id': typeof AuthenticatedCaseIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
+  '/api/public/emergency/test-mirror': typeof ApiPublicEmergencyTestMirrorRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
@@ -241,6 +250,7 @@ export interface FileRoutesById {
   '/_authenticated/case/$id': typeof AuthenticatedCaseIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
+  '/api/public/emergency/test-mirror': typeof ApiPublicEmergencyTestMirrorRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
@@ -269,6 +279,7 @@ export interface FileRouteTypes {
     | '/case/$id'
     | '/api/public/cron/process-due-activations'
     | '/api/public/emergency/activate'
+    | '/api/public/emergency/test-mirror'
     | '/api/public/payments/webhook'
     | '/lovable/email/queue/process'
   fileRoutesByTo: FileRoutesByTo
@@ -295,6 +306,7 @@ export interface FileRouteTypes {
     | '/case/$id'
     | '/api/public/cron/process-due-activations'
     | '/api/public/emergency/activate'
+    | '/api/public/emergency/test-mirror'
     | '/api/public/payments/webhook'
     | '/lovable/email/queue/process'
   id:
@@ -322,6 +334,7 @@ export interface FileRouteTypes {
     | '/_authenticated/case/$id'
     | '/api/public/cron/process-due-activations'
     | '/api/public/emergency/activate'
+    | '/api/public/emergency/test-mirror'
     | '/api/public/payments/webhook'
     | '/lovable/email/queue/process'
   fileRoutesById: FileRoutesById
@@ -347,6 +360,7 @@ export interface RootRouteChildren {
   TrackTokenRoute: typeof TrackTokenRoute
   ApiPublicCronProcessDueActivationsRoute: typeof ApiPublicCronProcessDueActivationsRoute
   ApiPublicEmergencyActivateRoute: typeof ApiPublicEmergencyActivateRoute
+  ApiPublicEmergencyTestMirrorRoute: typeof ApiPublicEmergencyTestMirrorRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
 }
@@ -514,6 +528,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicPaymentsWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/emergency/test-mirror': {
+      id: '/api/public/emergency/test-mirror'
+      path: '/api/public/emergency/test-mirror'
+      fullPath: '/api/public/emergency/test-mirror'
+      preLoaderRoute: typeof ApiPublicEmergencyTestMirrorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/emergency/activate': {
       id: '/api/public/emergency/activate'
       path: '/api/public/emergency/activate'
@@ -569,6 +590,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicCronProcessDueActivationsRoute:
     ApiPublicCronProcessDueActivationsRoute,
   ApiPublicEmergencyActivateRoute: ApiPublicEmergencyActivateRoute,
+  ApiPublicEmergencyTestMirrorRoute: ApiPublicEmergencyTestMirrorRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
 }
