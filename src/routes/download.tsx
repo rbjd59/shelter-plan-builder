@@ -378,6 +378,37 @@ function DownloadPage() {
         {/* iPhone — single page */}
         {tab === "ios" && (
           <>
+            {!iosSafari && (
+              <div
+                style={{
+                  background: "#7f1d1d",
+                  border: "1px solid #fca5a5",
+                  borderRadius: 10,
+                  padding: 14,
+                  marginBottom: 18,
+                  textAlign: "left",
+                }}
+              >
+                <p style={{ margin: "0 0 6px", fontWeight: 700, color: "#fff", fontSize: 15 }}>
+                  ⚠️ {t.iosNotSafariTitle}
+                </p>
+                <p style={{ margin: "0 0 10px", color: "#fee2e2", fontSize: 13, lineHeight: 1.5 }}>
+                  {t.iosNotSafariBody}
+                </p>
+                <button
+                  onClick={handleCopy}
+                  style={{
+                    ...styles.primaryBtn,
+                    fontSize: 14,
+                    padding: "10px 18px",
+                    background: "#fff",
+                    color: "#7f1d1d",
+                  }}
+                >
+                  {copied ? t.iosCopied : `📋 ${t.iosCopyLink}`}
+                </button>
+              </div>
+            )}
             <h2 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 8px" }}>{t.iosHeading}</h2>
             <p style={styles.intro}>{t.iosIntro}</p>
             <a href="/app" style={styles.primaryBtn}>
