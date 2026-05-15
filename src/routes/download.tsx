@@ -113,6 +113,12 @@ const T = {
     ],
     iosWarn:
       "⚠️ The install link from your confirmation email must be opened in Safari for setup to load.",
+    iosNotSafariTitle: "Open this page in Safari",
+    iosNotSafariBody:
+      "You're using Chrome (or another browser). On iPhone, “Add to Home Screen” only works in Safari. Copy the link and paste it into Safari.",
+    iosCopyLink: "Copy link",
+    iosCopied: "Copied! Open Safari and paste.",
+    iosOpenSafari: "Open in Safari",
     aStep1Heading: "Android — Step 1 of 2: Download",
     aStep1Body:
       "Tap the red button below to download the app (.apk). It will save to your Downloads folder.",
