@@ -14,6 +14,7 @@ import { Route as SentinelTrustRouteImport } from './routes/sentinel-trust'
 import { Route as OwnPropertyRouteImport } from './routes/own-property'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IntakeRouteImport } from './routes/intake'
+import { Route as DownloadRouteImport } from './routes/download'
 import { Route as ComingSoonRouteImport } from './routes/coming-soon'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as AppRouteImport } from './routes/app'
@@ -57,6 +58,11 @@ const LoginRoute = LoginRouteImport.update({
 const IntakeRoute = IntakeRouteImport.update({
   id: '/intake',
   path: '/intake',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DownloadRoute = DownloadRouteImport.update({
+  id: '/download',
+  path: '/download',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ComingSoonRoute = ComingSoonRouteImport.update({
@@ -164,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRoute
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
+  '/download': typeof DownloadRoute
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
   '/own-property': typeof OwnPropertyRoute
@@ -189,6 +196,7 @@ export interface FileRoutesByTo {
   '/app': typeof AppRoute
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
+  '/download': typeof DownloadRoute
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
   '/own-property': typeof OwnPropertyRoute
@@ -216,6 +224,7 @@ export interface FileRoutesById {
   '/app': typeof AppRoute
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
+  '/download': typeof DownloadRoute
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
   '/own-property': typeof OwnPropertyRoute
@@ -243,6 +252,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/checkout'
     | '/coming-soon'
+    | '/download'
     | '/intake'
     | '/login'
     | '/own-property'
@@ -268,6 +278,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/checkout'
     | '/coming-soon'
+    | '/download'
     | '/intake'
     | '/login'
     | '/own-property'
@@ -294,6 +305,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/checkout'
     | '/coming-soon'
+    | '/download'
     | '/intake'
     | '/login'
     | '/own-property'
@@ -321,6 +333,7 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRoute
   CheckoutRoute: typeof CheckoutRoute
   ComingSoonRoute: typeof ComingSoonRoute
+  DownloadRoute: typeof DownloadRoute
   IntakeRoute: typeof IntakeRoute
   LoginRoute: typeof LoginRoute
   OwnPropertyRoute: typeof OwnPropertyRoute
@@ -373,6 +386,13 @@ declare module '@tanstack/react-router' {
       path: '/intake'
       fullPath: '/intake'
       preLoaderRoute: typeof IntakeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/download': {
+      id: '/download'
+      path: '/download'
+      fullPath: '/download'
+      preLoaderRoute: typeof DownloadRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/coming-soon': {
@@ -534,6 +554,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRoute,
   CheckoutRoute: CheckoutRoute,
   ComingSoonRoute: ComingSoonRoute,
+  DownloadRoute: DownloadRoute,
   IntakeRoute: IntakeRoute,
   LoginRoute: LoginRoute,
   OwnPropertyRoute: OwnPropertyRoute,
@@ -554,13 +575,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
