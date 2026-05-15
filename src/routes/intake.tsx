@@ -270,8 +270,8 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
             textAlign: "center",
           }}
         >
-          <div style={{ fontSize: 13, letterSpacing: 1.5, opacity: 0.85, fontWeight: 700 }}>📱 ANDROID APP</div>
-          <div style={{ fontSize: 20, fontWeight: 800, marginTop: 4 }}>Download HELP NOW</div>
+          <div style={{ fontSize: 13, letterSpacing: 1.5, opacity: 0.85, fontWeight: 700 }}>📱 INSTALL THE APP</div>
+          <div style={{ fontSize: 20, fontWeight: 800, marginTop: 4 }}>Get HELP NOW (iPhone & Android)</div>
           <div style={{ fontSize: 13, opacity: 0.9, marginTop: 4 }}>One-tap emergency alert. Install on the detainee's phone now.</div>
         </a>
         <div style={{ background: "#3a2a00", border: "2px solid #e8a04a", padding: 24, borderRadius: 8, marginTop: 24 }}>
