@@ -240,6 +240,43 @@ ACTION: If not cancelled by ${actAfter.toISOString()}, begin locating, notify co
           console.error("[activate] vault release failed", e);
         }
 
+        // Replit backend mirror — redundant alert path. Fire-and-forget; failures
+        // here must NEVER block the primary Resend send above.
+        const replitUrl = process.env.REPLIT_TRIGGER_URL?.trim();
+        const replitSecret = process.env.REPLIT_TRIGGER_SECRET?.trim();
+        if (replitUrl && replitSecret) {
+          try {
+            const resp = await fetch(replitUrl, {
+              method: "POST",
+              headers: {
+                "content-type": "application/json",
+                "x-trigger-secret": replitSecret,
+              },
+              body: JSON.stringify({
+                source: "detenciondefensa-site",
+                event: "fire",
+                activation_id: activationId,
+                intake_session_id: d.intake_session_id,
+                role: d.role,
+                full_name: d.full_name ?? null,
+                contact_email: d.contact_email ?? null,
+                alert_email: d.alert_email ?? null,
+                gps_lat: d.gps_lat ?? null,
+                gps_lng: d.gps_lng ?? null,
+                gps_raw: d.gps_raw ?? null,
+                fired_at: firedAt.toISOString(),
+                act_after: actAfter.toISOString(),
+                notes: d.notes ?? null,
+              }),
+            });
+            if (!resp.ok) {
+              console.error("[activate] replit mirror non-ok", resp.status);
+            }
+          } catch (e) {
+            console.error("[activate] replit mirror failed", e);
+          }
+        }
+
         return new Response(
           JSON.stringify({ ok: true, activation_id: activationId, act_after: actAfter.toISOString() }),
           { status: 200, headers: { "content-type": "application/json" } },
