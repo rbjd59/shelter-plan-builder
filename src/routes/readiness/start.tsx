@@ -112,11 +112,14 @@ function StartPage() {
   const { session, lang, email } = Route.useSearch();
   const c = COPY[lang as keyof typeof COPY];
   const [stripePromise] = useState(() => getStripe());
+  const [sessionId] = useState(() => session ?? generateStandaloneSessionId());
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [openDoc, setOpenDoc] = useState<number | null>(null);
 
   const fetchClientSecret = async () => {
     const secret = await createReadinessCheckout({
       data: {
-        intakeSessionId: session,
+        intakeSessionId: sessionId,
         language: lang,
         customerEmail: email,
         returnUrl: `${window.location.origin}/readiness/intake?packet_session={CHECKOUT_SESSION_ID}&lang=${lang}`,
@@ -129,11 +132,58 @@ function StartPage() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#f4efe6", color: "#0e1a2b", fontFamily: "Inter Tight, system-ui, sans-serif", padding: "32px 20px" }}>
-      <div style={{ maxWidth: 720, margin: "0 auto" }}>
+      <div style={{ maxWidth: 760, margin: "0 auto" }}>
         <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: "#8a3c11", marginBottom: 8 }}>Sentinel — Asset & Family Protection</div>
         <h1 style={{ fontFamily: "Fraunces, Georgia, serif", fontSize: 36, fontWeight: 600, margin: "0 0 6px" }}>{c.title}</h1>
         <div style={{ fontSize: 18, fontWeight: 600, color: "#b8551f", marginBottom: 18 }}>{c.price}</div>
         <p style={{ fontSize: 16, lineHeight: 1.6, marginBottom: 26, color: "#1a2940" }}>{c.body}</p>
+
+        <section style={{ background: "#fff", border: "1px solid rgba(14,26,43,0.15)", borderTop: "3px solid #b8551f", borderRadius: 6, padding: "22px 24px", marginBottom: 18 }}>
+          <h2 style={{ fontFamily: "Fraunces, Georgia, serif", fontSize: 22, fontWeight: 600, margin: "0 0 14px" }}>{c.docsTitle}</h2>
+          <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+            {c.docs.map((d, i) => {
+              const open = openDoc === i;
+              return (
+                <li key={d.name} style={{ borderTop: i === 0 ? "none" : "1px solid rgba(14,26,43,0.08)", padding: "10px 0" }}>
+                  <button type="button" onClick={() => setOpenDoc(open ? null : i)} aria-expanded={open}
+                    style={{ background: "transparent", border: 0, padding: 0, width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer", textAlign: "left", color: "#0e1a2b", fontSize: 15 }}>
+                    <span style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      <span style={{ display: "inline-flex", width: 18, height: 18, borderRadius: "50%", background: "#b8551f", color: "#fff", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700 }}>✓</span>
+                      <span style={{ fontWeight: 500 }}>{d.name}</span>
+                    </span>
+                    <span aria-hidden style={{ display: "inline-flex", width: 22, height: 22, borderRadius: "50%", border: "1px solid #8a3c11", color: "#8a3c11", alignItems: "center", justifyContent: "center", fontSize: 12, fontFamily: "Georgia, serif", fontStyle: "italic", flexShrink: 0 }}>?</span>
+                  </button>
+                  {open && (
+                    <div role="region" style={{ marginTop: 8, marginLeft: 28, padding: "10px 14px", background: "#faf6ee", border: "1px solid rgba(184,85,31,0.2)", borderRadius: 4, fontSize: 13.5, lineHeight: 1.55, color: "#1a2940" }}>{d.info}</div>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+
+        <section style={{ background: "#0e1a2b", color: "#f4efe6", borderRadius: 6, borderTop: "3px solid #c9a961", padding: "20px 24px", marginBottom: 18 }}>
+          <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: "#c9a961", marginBottom: 6 }}>+ $5/mo</div>
+          <h3 style={{ fontFamily: "Fraunces, Georgia, serif", fontSize: 20, fontWeight: 600, margin: "0 0 8px" }}>{c.vaultTitle}</h3>
+          <p style={{ margin: 0, fontSize: 14.5, lineHeight: 1.6, color: "#e6e0d2" }}>{c.vaultBody}</p>
+        </section>
+
+        <section style={{ background: "#fff", border: "1px solid rgba(14,26,43,0.12)", borderRadius: 6, padding: "20px 24px", marginBottom: 18 }}>
+          <h2 style={{ fontFamily: "Fraunces, Georgia, serif", fontSize: 20, fontWeight: 600, margin: "0 0 12px" }}>{c.faqTitle}</h2>
+          {c.faq.map((f, i) => {
+            const open = openFaq === i;
+            return (
+              <div key={f.q} style={{ borderTop: i === 0 ? "none" : "1px solid rgba(14,26,43,0.08)" }}>
+                <button type="button" onClick={() => setOpenFaq(open ? null : i)} aria-expanded={open}
+                  style={{ background: "transparent", border: 0, padding: "12px 0", width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer", textAlign: "left", color: "#0e1a2b", fontSize: 14.5, fontWeight: 600 }}>
+                  <span>{f.q}</span>
+                  <span aria-hidden style={{ color: "#b8551f", fontSize: 18, lineHeight: 1 }}>{open ? "−" : "+"}</span>
+                </button>
+                {open && <p style={{ margin: "0 0 14px", fontSize: 14, lineHeight: 1.6, color: "#1a2940" }}>{f.a}</p>}
+              </div>
+            );
+          })}
+        </section>
 
         <div style={{ background: "#fff", border: "1px solid rgba(14,26,43,0.15)", borderRadius: 6, padding: 16, marginBottom: 18 }}>
           <EmbeddedCheckoutProvider stripe={stripePromise} options={{ fetchClientSecret }}>
