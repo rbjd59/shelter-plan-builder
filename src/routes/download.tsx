@@ -309,6 +309,8 @@ function DownloadPage() {
   const [platform, setPlatform] = useState<"ios" | "android" | "other">("other");
   const [tab, setTab] = useState<Tab>("android");
   const [androidStep, setAndroidStep] = useState<1 | 2>(1);
+  const [iosSafari, setIosSafari] = useState(true);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const p = detectPlatform();
