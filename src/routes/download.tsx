@@ -161,6 +161,12 @@ const T = {
     ],
     iosWarn:
       "⚠️ Lyen enstalasyon nan imèl konfimasyon an dwe ouvri nan Safari pou konfigirasyon an chaje.",
+    iosNotSafariTitle: "Ouvri paj sa nan Safari",
+    iosNotSafariBody:
+      "W ap sèvi ak Chrome (oswa yon lòt navigatè). Sou iPhone, «Ajoute sou Ekran Prensipal» mache sèlman nan Safari. Kopi lyen an epi kole li nan Safari.",
+    iosCopyLink: "Kopi lyen",
+    iosCopied: "Kopye! Ouvri Safari epi kole.",
+    iosOpenSafari: "Ouvri nan Safari",
     aStep1Heading: "Android — Etap 1 sou 2: Telechaje",
     aStep1Body:
       "Peze bouton wouj la anba pou telechaje aplikasyon an (.apk). L ap sove nan dosye Downloads ou.",
