@@ -62,6 +62,12 @@ const T = {
     ],
     iosWarn:
       "⚠️ El enlace de instalación del correo de confirmación debe abrirse en Safari para que la configuración cargue.",
+    iosNotSafariTitle: "Abra esta página en Safari",
+    iosNotSafariBody:
+      "Está usando Chrome (u otro navegador). En iPhone, «Agregar a pantalla de inicio» solo funciona en Safari. Copie el enlace y péguelo en Safari.",
+    iosCopyLink: "Copiar enlace",
+    iosCopied: "¡Copiado! Abra Safari y pegue.",
+    iosOpenSafari: "Abrir en Safari",
     // Android — Step 1
     aStep1Heading: "Android — Paso 1 de 2: Descargar",
     aStep1Body:
