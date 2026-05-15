@@ -25,6 +25,7 @@ export const Route = createFileRoute("/app")({
 
 const DB_NAME = "dd_emergency";
 const STORE = "case";
+const OUTBOX_STORE = "outbox";
 const KEY = "v1";
 
 interface CaseRecord {
@@ -44,11 +45,56 @@ interface CaseRecord {
 
 function openDb(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, 1);
-    req.onupgradeneeded = () => req.result.createObjectStore(STORE);
+    const req = indexedDB.open(DB_NAME, 2);
+    req.onupgradeneeded = () => {
+      const db = req.result;
+      if (!db.objectStoreNames.contains(STORE)) db.createObjectStore(STORE);
+      if (!db.objectStoreNames.contains(OUTBOX_STORE)) {
+        db.createObjectStore(OUTBOX_STORE, { keyPath: "id", autoIncrement: true });
+      }
+    };
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.error);
   });
+}
+
+interface OutboxItem {
+  id?: number;
+  body: Record<string, unknown>;
+  queuedAt: string;
+  attempts: number;
+}
+
+async function outboxAdd(body: Record<string, unknown>): Promise<void> {
+  const db = await openDb();
+  await new Promise<void>((resolve, reject) => {
+    const tx = db.transaction(OUTBOX_STORE, "readwrite");
+    tx.objectStore(OUTBOX_STORE).add({ body, queuedAt: new Date().toISOString(), attempts: 0 } as OutboxItem);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+async function outboxAll(): Promise<OutboxItem[]> {
+  const db = await openDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(OUTBOX_STORE, "readonly");
+    const r = tx.objectStore(OUTBOX_STORE).getAll();
+    r.onsuccess = () => resolve((r.result as OutboxItem[]) ?? []);
+    r.onerror = () => reject(r.error);
+  });
+}
+async function outboxDelete(id: number): Promise<void> {
+  const db = await openDb();
+  await new Promise<void>((resolve, reject) => {
+    const tx = db.transaction(OUTBOX_STORE, "readwrite");
+    tx.objectStore(OUTBOX_STORE).delete(id);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+async function outboxCount(): Promise<number> {
+  const items = await outboxAll();
+  return items.length;
 }
 async function dbGet(): Promise<CaseRecord | null> {
   const db = await openDb();
@@ -121,7 +167,9 @@ function getCoords(timeoutMs = 5000): Promise<GpsFix> {
   });
 }
 
-async function postEmergency(body: Record<string, unknown>): Promise<{ activation_id?: string }> {
+async function postEmergency(
+  body: Record<string, unknown>,
+): Promise<{ activation_id?: string; queued?: boolean }> {
   try {
     const res = await fetch("/api/public/emergency/activate", {
       method: "POST",
@@ -129,11 +177,46 @@ async function postEmergency(body: Record<string, unknown>): Promise<{ activatio
       body: JSON.stringify(body),
       keepalive: true,
     });
-    if (!res.ok) return {};
+    if (!res.ok) {
+      // 5xx — server reachable but failing. Queue for retry.
+      if (res.status >= 500) {
+        await outboxAdd(body).catch(() => undefined);
+        return { queued: true };
+      }
+      return {};
+    }
     return (await res.json()) as { activation_id?: string };
   } catch {
-    return {};
+    // Network failure (offline, DNS, TLS). Queue for retry.
+    await outboxAdd(body).catch(() => undefined);
+    return { queued: true };
   }
+}
+
+async function flushOutbox(): Promise<number> {
+  if (typeof navigator !== "undefined" && navigator.onLine === false) return 0;
+  const items = await outboxAll().catch(() => [] as OutboxItem[]);
+  let sent = 0;
+  for (const item of items) {
+    try {
+      const res = await fetch("/api/public/emergency/activate", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(item.body),
+      });
+      if (res.ok && item.id != null) {
+        await outboxDelete(item.id);
+        sent++;
+      } else if (!res.ok && res.status < 500 && item.id != null) {
+        // Permanent client error — drop so it doesn't retry forever.
+        await outboxDelete(item.id);
+      }
+    } catch {
+      // Still offline — stop and try again later.
+      break;
+    }
+  }
+  return sent;
 }
 
 function EmergencyApp() {
