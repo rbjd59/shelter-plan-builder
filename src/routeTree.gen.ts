@@ -34,6 +34,7 @@ import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/e
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 import { Route as ApiPublicEmergencyTestMirrorRouteImport } from './routes/api/public/emergency/test-mirror'
 import { Route as ApiPublicEmergencyActivateRouteImport } from './routes/api/public/emergency/activate'
+import { Route as ApiPublicDevSendInstallRouteImport } from './routes/api/public/dev/send-install'
 import { Route as ApiPublicCronProcessDueActivationsRouteImport } from './routes/api/public/cron/process-due-activations'
 
 const SplashRoute = SplashRouteImport.update({
@@ -164,6 +165,11 @@ const ApiPublicEmergencyActivateRoute =
     path: '/api/public/emergency/activate',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicDevSendInstallRoute = ApiPublicDevSendInstallRouteImport.update({
+  id: '/api/public/dev/send-install',
+  path: '/api/public/dev/send-install',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicCronProcessDueActivationsRoute =
   ApiPublicCronProcessDueActivationsRouteImport.update({
     id: '/api/public/cron/process-due-activations',
@@ -193,6 +199,7 @@ export interface FileRoutesByFullPath {
   '/track/$token': typeof TrackTokenRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
+  '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
   '/api/public/emergency/test-mirror': typeof ApiPublicEmergencyTestMirrorRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
@@ -220,6 +227,7 @@ export interface FileRoutesByTo {
   '/track/$token': typeof TrackTokenRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
+  '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
   '/api/public/emergency/test-mirror': typeof ApiPublicEmergencyTestMirrorRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
@@ -249,6 +257,7 @@ export interface FileRoutesById {
   '/track/$token': typeof TrackTokenRoute
   '/_authenticated/case/$id': typeof AuthenticatedCaseIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
+  '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
   '/api/public/emergency/test-mirror': typeof ApiPublicEmergencyTestMirrorRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
@@ -278,6 +287,7 @@ export interface FileRouteTypes {
     | '/track/$token'
     | '/case/$id'
     | '/api/public/cron/process-due-activations'
+    | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
     | '/api/public/emergency/test-mirror'
     | '/api/public/payments/webhook'
@@ -305,6 +315,7 @@ export interface FileRouteTypes {
     | '/track/$token'
     | '/case/$id'
     | '/api/public/cron/process-due-activations'
+    | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
     | '/api/public/emergency/test-mirror'
     | '/api/public/payments/webhook'
@@ -333,6 +344,7 @@ export interface FileRouteTypes {
     | '/track/$token'
     | '/_authenticated/case/$id'
     | '/api/public/cron/process-due-activations'
+    | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
     | '/api/public/emergency/test-mirror'
     | '/api/public/payments/webhook'
@@ -359,6 +371,7 @@ export interface RootRouteChildren {
   ReadinessStartRoute: typeof ReadinessStartRoute
   TrackTokenRoute: typeof TrackTokenRoute
   ApiPublicCronProcessDueActivationsRoute: typeof ApiPublicCronProcessDueActivationsRoute
+  ApiPublicDevSendInstallRoute: typeof ApiPublicDevSendInstallRoute
   ApiPublicEmergencyActivateRoute: typeof ApiPublicEmergencyActivateRoute
   ApiPublicEmergencyTestMirrorRoute: typeof ApiPublicEmergencyTestMirrorRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
@@ -542,6 +555,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicEmergencyActivateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/dev/send-install': {
+      id: '/api/public/dev/send-install'
+      path: '/api/public/dev/send-install'
+      fullPath: '/api/public/dev/send-install'
+      preLoaderRoute: typeof ApiPublicDevSendInstallRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/cron/process-due-activations': {
       id: '/api/public/cron/process-due-activations'
       path: '/api/public/cron/process-due-activations'
@@ -589,6 +609,7 @@ const rootRouteChildren: RootRouteChildren = {
   TrackTokenRoute: TrackTokenRoute,
   ApiPublicCronProcessDueActivationsRoute:
     ApiPublicCronProcessDueActivationsRoute,
+  ApiPublicDevSendInstallRoute: ApiPublicDevSendInstallRoute,
   ApiPublicEmergencyActivateRoute: ApiPublicEmergencyActivateRoute,
   ApiPublicEmergencyTestMirrorRoute: ApiPublicEmergencyTestMirrorRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
