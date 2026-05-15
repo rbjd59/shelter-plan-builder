@@ -18,6 +18,14 @@ export const Route = createFileRoute("/download")({
   }),
 });
 
+function detectPlatform(): "ios" | "android" | "other" {
+  if (typeof navigator === "undefined") return "other";
+  const ua = navigator.userAgent || "";
+  if (/iPad|iPhone|iPod/.test(ua)) return "ios";
+  if (/Android/.test(ua)) return "android";
+  return "other";
+}
+
 function DownloadPage() {
   const fetchApk = useServerFn(getApkInfo);
   const [state, setState] = useState<{ loading: boolean; url: string | null; version: string | null }>({
@@ -26,6 +34,14 @@ function DownloadPage() {
     version: null,
   });
   const [autoStarted, setAutoStarted] = useState(false);
+  const [platform, setPlatform] = useState<"ios" | "android" | "other">("other");
+  const [tab, setTab] = useState<"ios" | "android">("android");
+
+  useEffect(() => {
+    const p = detectPlatform();
+    setPlatform(p);
+    setTab(p === "ios" ? "ios" : "android");
+  }, []);
 
   useEffect(() => {
     fetchApk()
@@ -33,16 +49,16 @@ function DownloadPage() {
       .catch(() => setState({ loading: false, url: null, version: null }));
   }, [fetchApk]);
 
-  // If URL is set, auto-start the download after 1.5s so the user sees what's happening.
+  // Auto-start APK download only on Android — never on iPhone (the .apk won't install).
   useEffect(() => {
-    if (state.url && !autoStarted) {
+    if (state.url && !autoStarted && platform === "android") {
       const t = setTimeout(() => {
         setAutoStarted(true);
         window.location.href = state.url!;
       }, 1500);
       return () => clearTimeout(t);
     }
-  }, [state.url, autoStarted]);
+  }, [state.url, autoStarted, platform]);
 
   return (
     <div
