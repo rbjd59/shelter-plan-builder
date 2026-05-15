@@ -651,6 +651,12 @@ function EmergencyApp() {
           >
             {clock}
           </div>
+          {queuedOffline && pendingCount > 0 && !cancelled && (
+            <p className="mt-3 max-w-xs rounded-lg bg-yellow-500/15 px-3 py-2 text-center text-xs text-yellow-200">
+              No signal — alert saved on this phone and will send the moment you're back online.
+              Mailto was also opened as a backup.
+            </p>
+          )}
           <p className="mt-4 max-w-xs text-center text-sm text-white/80">
             {cancelled
               ? "Cancellation sent. Your team has been notified it was a false alarm."
