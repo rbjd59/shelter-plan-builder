@@ -7,6 +7,8 @@ import {
   updateCaseFields,
   generateMailingLabel,
   checkOfficeAccess,
+  markCaseStep,
+  getCaseTrackingStatus,
 } from "@/lib/case-console.functions";
 
 export const Route = createFileRoute("/_authenticated/case/$id")({
