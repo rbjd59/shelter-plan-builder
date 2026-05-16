@@ -138,6 +138,40 @@ function CaseConsole() {
           link={c?.contact_email ? `mailto:${c.contact_email}` : undefined} />
       </Section>
 
+      <Section title="Family tracking page (what the family sees)">
+        {tracking.data?.token ? (
+          <p style={{ fontSize: 12, marginBottom: 12 }}>
+            <a href={`/track/${tracking.data.token}`} target="_blank" rel="noreferrer" style={{ color: "#e8a04a" }}>
+              ↗ Open family tracking page
+            </a>
+          </p>
+        ) : (
+          <p style={{ fontSize: 12, color: "#a8a59a", marginBottom: 12 }}>No tracking row yet — mark Step 1 to create one.</p>
+        )}
+        <StepRow
+          label="Step 1 — Information received"
+          at={tracking.data?.step1At}
+          onMark={() => stepMut.mutate({ step: 1 })}
+          onClear={() => stepMut.mutate({ step: 1, clear: true })}
+          pending={stepMut.isPending}
+        />
+        <StepRow
+          label="Step 2 — Forms mailed to detainee"
+          at={tracking.data?.step2At}
+          onMark={() => stepMut.mutate({ step: 2 })}
+          onClear={() => stepMut.mutate({ step: 2, clear: true })}
+          pending={stepMut.isPending}
+          hint="Auto-stamped when you generate the mailing label."
+        />
+        <StepRow
+          label="Step 3 — Family package sent"
+          at={tracking.data?.step3At}
+          onMark={() => stepMut.mutate({ step: 3 })}
+          onClear={() => stepMut.mutate({ step: 3, clear: true })}
+          pending={stepMut.isPending}
+        />
+      </Section>
+
       <Section title="Triggering phone">
         <Row label="GPS" value={a.gps_raw}
           link={a.gps_lat != null && a.gps_lng != null ? `https://maps.google.com/?q=${a.gps_lat},${a.gps_lng}` : undefined} />
