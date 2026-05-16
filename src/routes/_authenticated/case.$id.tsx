@@ -79,7 +79,23 @@ function CaseConsole() {
       await save.mutateAsync();
       return genLabel({ data: { activation_id: id } });
     },
-    onSuccess: (res) => setLabelUrl(res.url),
+    onSuccess: (res) => {
+      setLabelUrl(res.url);
+      qc.invalidateQueries({ queryKey: ["case-tracking", id] });
+    },
+  });
+
+  const fetchTracking = useServerFn(getCaseTrackingStatus);
+  const tracking = useQuery({
+    queryKey: ["case-tracking", id],
+    queryFn: () => fetchTracking({ data: { activation_id: id } }),
+    enabled: access.data?.isOffice === true,
+  });
+  const markStep = useServerFn(markCaseStep);
+  const stepMut = useMutation({
+    mutationFn: (vars: { step: 1 | 2 | 3; clear?: boolean }) =>
+      markStep({ data: { activation_id: id, step: vars.step, clear: vars.clear } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["case-tracking", id] }),
   });
 
   if (access.isLoading || detail.isLoading) return <Wrap><p>Loading…</p></Wrap>;
