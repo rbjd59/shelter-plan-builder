@@ -260,6 +260,29 @@ function Row({ label, value, link }: { label: string; value?: string | null; lin
   );
 }
 
+function StepRow({ label, at, onMark, onClear, pending, hint }: {
+  label: string; at: string | null | undefined;
+  onMark: () => void; onClear: () => void; pending: boolean; hint?: string;
+}) {
+  const done = !!at;
+  return (
+    <div style={{ padding: "10px 0", borderBottom: "1px solid #2a3346" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
+        <span style={{ color: done ? "#7fdba0" : "#cfc8b8", fontSize: 14 }}>
+          {done ? "✓ " : "○ "}{label}
+          {done && <span style={{ color: "#a8a59a", fontSize: 11, marginLeft: 8 }}>{new Date(at!).toLocaleString()}</span>}
+        </span>
+        {done ? (
+          <button onClick={onClear} disabled={pending} style={{ background: "transparent", color: "#a8a59a", border: "1px solid #3a4458", padding: "4px 10px", borderRadius: 4, fontSize: 11, cursor: "pointer" }}>Undo</button>
+        ) : (
+          <button onClick={onMark} disabled={pending} style={{ background: "#0d7a5f", color: "#fff", border: "none", padding: "6px 12px", borderRadius: 4, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>Mark done</button>
+        )}
+      </div>
+      {hint && <p style={{ margin: "4px 0 0", fontSize: 11, color: "#a8a59a" }}>{hint}</p>}
+    </div>
+  );
+}
+
 function Field({ label, value, onChange, type = "text", multiline = false }: {
   label: string; value: string; onChange: (v: string) => void; type?: string; multiline?: boolean;
 }) {
