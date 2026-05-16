@@ -162,15 +162,102 @@ export const generateMailingLabel = createServerFn({ method: "POST" })
       .upload(path, pdf, { contentType: "application/pdf", upsert: true });
     if (up.error) throw new Error(up.error.message);
 
+    const nowIso = new Date().toISOString();
     await supabaseAdmin
       .from("emergency_activations" as never)
-      .update({ mailing_label_generated_at: new Date().toISOString() } as never)
+      .update({ mailing_label_generated_at: nowIso } as never)
       .eq("id", data.activation_id);
+
+    // Auto-stamp tracking step 2 (forms mailed to detainee) when label generated.
+    if (a.intake_session_id) {
+      await supabaseAdmin
+        .from("case_tracking")
+        .update({ step2_sent_to_inmate_at: nowIso } as never)
+        .eq("intake_session_id", a.intake_session_id)
+        .is("step2_sent_to_inmate_at", null);
+    }
 
     const sig = await supabaseAdmin.storage
       .from("intake-forms")
       .createSignedUrl(path, SIGNED_TTL);
     return { url: sig.data?.signedUrl ?? null };
+  });
+
+export const markCaseStep = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) =>
+    z.object({
+      activation_id: z.string().uuid(),
+      step: z.union([z.literal(1), z.literal(2), z.literal(3)]),
+      clear: z.boolean().optional(),
+    }).parse(input),
+  )
+  .handler(async ({ data, context }) => {
+    assertOfficeStaff(context.claims.email as string | undefined);
+    const { data: act, error: aerr } = await supabaseAdmin
+      .from("emergency_activations" as never)
+      .select("intake_session_id")
+      .eq("id", data.activation_id)
+      .single();
+    if (aerr || !act) throw new Error("Activation not found");
+    const sessionId = (act as { intake_session_id: string }).intake_session_id;
+
+    const col =
+      data.step === 1 ? "step1_received_at" :
+      data.step === 2 ? "step2_sent_to_inmate_at" :
+      "step3_sent_to_family_at";
+    const value = data.clear ? null : new Date().toISOString();
+
+    // Ensure tracking row exists
+    const { data: existing } = await supabaseAdmin
+      .from("case_tracking")
+      .select("id")
+      .eq("intake_session_id", sessionId)
+      .maybeSingle();
+    if (!existing) {
+      await supabaseAdmin.from("case_tracking").insert({
+        intake_session_id: sessionId,
+        language: "es",
+        [col]: value,
+      } as never);
+    } else {
+      await supabaseAdmin
+        .from("case_tracking")
+        .update({ [col]: value } as never)
+        .eq("intake_session_id", sessionId);
+    }
+    return { ok: true as const };
+  });
+
+export const getCaseTrackingStatus = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => z.object({ activation_id: z.string().uuid() }).parse(input))
+  .handler(async ({ data, context }) => {
+    assertOfficeStaff(context.claims.email as string | undefined);
+    const { data: act } = await supabaseAdmin
+      .from("emergency_activations" as never)
+      .select("intake_session_id")
+      .eq("id", data.activation_id)
+      .single();
+    if (!act) return { step1At: null, step2At: null, step3At: null, token: null as string | null };
+    const sessionId = (act as { intake_session_id: string }).intake_session_id;
+    const { data: row } = await supabaseAdmin
+      .from("case_tracking")
+      .select("tracking_token,step1_received_at,step2_sent_to_inmate_at,step3_sent_to_family_at")
+      .eq("intake_session_id", sessionId)
+      .maybeSingle();
+    const r = row as {
+      tracking_token: string | null;
+      step1_received_at: string | null;
+      step2_sent_to_inmate_at: string | null;
+      step3_sent_to_family_at: string | null;
+    } | null;
+    return {
+      step1At: r?.step1_received_at ?? null,
+      step2At: r?.step2_sent_to_inmate_at ?? null,
+      step3At: r?.step3_sent_to_family_at ?? null,
+      token: r?.tracking_token ?? null,
+    };
   });
 
 export interface CaseListItem {

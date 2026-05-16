@@ -7,6 +7,8 @@ import {
   updateCaseFields,
   generateMailingLabel,
   checkOfficeAccess,
+  markCaseStep,
+  getCaseTrackingStatus,
 } from "@/lib/case-console.functions";
 
 export const Route = createFileRoute("/_authenticated/case/$id")({
@@ -77,7 +79,23 @@ function CaseConsole() {
       await save.mutateAsync();
       return genLabel({ data: { activation_id: id } });
     },
-    onSuccess: (res) => setLabelUrl(res.url),
+    onSuccess: (res) => {
+      setLabelUrl(res.url);
+      qc.invalidateQueries({ queryKey: ["case-tracking", id] });
+    },
+  });
+
+  const fetchTracking = useServerFn(getCaseTrackingStatus);
+  const tracking = useQuery({
+    queryKey: ["case-tracking", id],
+    queryFn: () => fetchTracking({ data: { activation_id: id } }),
+    enabled: access.data?.isOffice === true,
+  });
+  const markStep = useServerFn(markCaseStep);
+  const stepMut = useMutation({
+    mutationFn: (vars: { step: 1 | 2 | 3; clear?: boolean }) =>
+      markStep({ data: { activation_id: id, step: vars.step, clear: vars.clear } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["case-tracking", id] }),
   });
 
   if (access.isLoading || detail.isLoading) return <Wrap><p>Loading…</p></Wrap>;
@@ -118,6 +136,40 @@ function CaseConsole() {
           link={c?.contact_phone ? `tel:${c.contact_phone}` : undefined} />
         <Row label="Email" value={c?.contact_email}
           link={c?.contact_email ? `mailto:${c.contact_email}` : undefined} />
+      </Section>
+
+      <Section title="Family tracking page (what the family sees)">
+        {tracking.data?.token ? (
+          <p style={{ fontSize: 12, marginBottom: 12 }}>
+            <a href={`/track/${tracking.data.token}`} target="_blank" rel="noreferrer" style={{ color: "#e8a04a" }}>
+              ↗ Open family tracking page
+            </a>
+          </p>
+        ) : (
+          <p style={{ fontSize: 12, color: "#a8a59a", marginBottom: 12 }}>No tracking row yet — mark Step 1 to create one.</p>
+        )}
+        <StepRow
+          label="Step 1 — Information received"
+          at={tracking.data?.step1At}
+          onMark={() => stepMut.mutate({ step: 1 })}
+          onClear={() => stepMut.mutate({ step: 1, clear: true })}
+          pending={stepMut.isPending}
+        />
+        <StepRow
+          label="Step 2 — Forms mailed to detainee"
+          at={tracking.data?.step2At}
+          onMark={() => stepMut.mutate({ step: 2 })}
+          onClear={() => stepMut.mutate({ step: 2, clear: true })}
+          pending={stepMut.isPending}
+          hint="Auto-stamped when you generate the mailing label."
+        />
+        <StepRow
+          label="Step 3 — Family package sent"
+          at={tracking.data?.step3At}
+          onMark={() => stepMut.mutate({ step: 3 })}
+          onClear={() => stepMut.mutate({ step: 3, clear: true })}
+          pending={stepMut.isPending}
+        />
       </Section>
 
       <Section title="Triggering phone">
@@ -204,6 +256,29 @@ function Row({ label, value, link }: { label: string; value?: string | null; lin
       ) : (
         <span>{value || "—"}</span>
       )}
+    </div>
+  );
+}
+
+function StepRow({ label, at, onMark, onClear, pending, hint }: {
+  label: string; at: string | null | undefined;
+  onMark: () => void; onClear: () => void; pending: boolean; hint?: string;
+}) {
+  const done = !!at;
+  return (
+    <div style={{ padding: "10px 0", borderBottom: "1px solid #2a3346" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
+        <span style={{ color: done ? "#7fdba0" : "#cfc8b8", fontSize: 14 }}>
+          {done ? "✓ " : "○ "}{label}
+          {done && <span style={{ color: "#a8a59a", fontSize: 11, marginLeft: 8 }}>{new Date(at!).toLocaleString()}</span>}
+        </span>
+        {done ? (
+          <button onClick={onClear} disabled={pending} style={{ background: "transparent", color: "#a8a59a", border: "1px solid #3a4458", padding: "4px 10px", borderRadius: 4, fontSize: 11, cursor: "pointer" }}>Undo</button>
+        ) : (
+          <button onClick={onMark} disabled={pending} style={{ background: "#0d7a5f", color: "#fff", border: "none", padding: "6px 12px", borderRadius: 4, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>Mark done</button>
+        )}
+      </div>
+      {hint && <p style={{ margin: "4px 0 0", fontSize: 11, color: "#a8a59a" }}>{hint}</p>}
     </div>
   );
 }

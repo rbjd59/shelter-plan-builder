@@ -102,11 +102,27 @@ export const Route = createFileRoute("/api/public/cron/process-due-activations")
         let notified = 0;
 
         for (const r of list) {
-          const { data: trk } = await supabaseAdmin
+          let { data: trk } = await supabaseAdmin
             .from("case_tracking")
             .select("contact_email,contact_name,tracking_token")
             .eq("intake_session_id", r.intake_session_id)
             .maybeSingle();
+          // Auto-create a tracking row if missing so the email link always
+          // resolves to a real /track/<token> page.
+          if (!trk) {
+            const ins = await supabaseAdmin
+              .from("case_tracking")
+              .insert({
+                intake_session_id: r.intake_session_id,
+                contact_email: r.contact_email,
+                contact_name: r.full_name,
+                inmate_name: r.full_name,
+                language: "es",
+              } as never)
+              .select("contact_email,contact_name,tracking_token")
+              .single();
+            trk = ins.data ?? null;
+          }
           const tracking = (trk as TrackingRow | null) ?? null;
           const recipients = new Set<string>();
           if (r.contact_email) recipients.add(r.contact_email.toLowerCase());
