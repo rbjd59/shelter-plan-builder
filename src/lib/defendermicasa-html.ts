@@ -98,14 +98,20 @@ const STYLE = `
     z-index: 2;
   }
   .dm-root .hero-eyebrow {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase;
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 500;
+    letter-spacing: 0.02em;
     color: var(--accent-deep);
-    margin-bottom: 2rem;
-    display: flex; align-items: center; gap: 0.8rem;
+    margin-bottom: 1.5rem;
+    display: inline-flex; align-items: center; gap: 0.9rem;
+    padding: 0.5rem 1.1rem;
+    border: 1px solid var(--accent-deep);
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--accent-deep) 8%, transparent);
   }
   .dm-root .hero-eyebrow::before {
-    content: ''; width: 32px; height: 1px; background: var(--accent-deep);
+    content: '●'; font-size: 0.7em; line-height: 1;
   }
   .dm-root .hero h1 {
     font-family: 'Fraunces', serif; font-weight: 400;
