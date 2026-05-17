@@ -36,11 +36,11 @@ export function ComingSoonGate({ children }: { children: React.ReactNode }) {
     try {
       const url = new URL(window.location.href);
       if (url.searchParams.get("dev") === PIN) {
-        localStorage.setItem(STORAGE_KEY, "1");
+        setUnlockedCookie();
         setUnlocked(true);
         return;
       }
-      setUnlocked(localStorage.getItem(STORAGE_KEY) === "1");
+      setUnlocked(hasUnlockedCookie());
     } catch {
       setUnlocked(false);
     }
