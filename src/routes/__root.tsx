@@ -11,6 +11,7 @@ import {
 import appCss from "../styles.css?url";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { BetaBanner } from "@/components/BetaBanner";
+import { ComingSoonGate } from "@/components/ComingSoonGate";
 
 function NotFoundComponent() {
   return (
@@ -121,8 +122,10 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
-        {!isApp && <BetaBanner />}
-        <Outlet />
+        <ComingSoonGate>
+          {!isApp && <BetaBanner />}
+          <Outlet />
+        </ComingSoonGate>
       </LanguageProvider>
     </QueryClientProvider>
   );
