@@ -1,7 +1,31 @@
 import { useEffect, useState } from "react";
 
 const PIN = "0000";
-const STORAGE_KEY = "dd_dev_access";
+const COOKIE = "dd_dev_access";
+const MAX_AGE = 60 * 60 * 24 * 90; // 90 days
+
+function setUnlockedCookie() {
+  try {
+    const host = window.location.hostname;
+    // Strip leading "www." so cookie is shared across www and apex
+    const domain = host.startsWith("www.") ? host.slice(4) : host;
+    const secure = window.location.protocol === "https:" ? "; Secure" : "";
+    const domainAttr = host === "localhost" ? "" : `; Domain=.${domain}`;
+    document.cookie = `${COOKIE}=1; Max-Age=${MAX_AGE}; Path=/; SameSite=Lax${secure}${domainAttr}`;
+    localStorage.setItem(COOKIE, "1"); // belt-and-suspenders
+  } catch {
+    /* ignore */
+  }
+}
+
+function hasUnlockedCookie(): boolean {
+  try {
+    if (document.cookie.split("; ").some((c) => c.startsWith(`${COOKIE}=1`))) return true;
+    return localStorage.getItem(COOKIE) === "1";
+  } catch {
+    return false;
+  }
+}
 
 export function ComingSoonGate({ children }: { children: React.ReactNode }) {
   const [unlocked, setUnlocked] = useState<boolean | null>(null);
