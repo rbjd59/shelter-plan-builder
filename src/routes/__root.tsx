@@ -11,6 +11,7 @@ import {
 import appCss from "../styles.css?url";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { BetaBanner } from "@/components/BetaBanner";
+import { ComingSoonGate } from "@/components/ComingSoonGate";
 
 function NotFoundComponent() {
   return (
