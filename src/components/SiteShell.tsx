@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { SITE_HTML } from "@/lib/markup";
 import { useLang, type Lang } from "@/context/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
+import { PARTNERS } from "@/lib/partners-content";
 
 /**
  * Renders the main marketing page from the reference HTML markup.
