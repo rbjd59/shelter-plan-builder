@@ -436,7 +436,7 @@ const BODY = `
 
 <section class="hero">
   <div class="hero-text reveal in">
-    <div class="hero-eyebrow">A legal shield for uncertain times</div>
+    <div class="hero-eyebrow">Coming 2027</div>
     <h1>When you can't be there to <em>protect what you built</em>, the law can.</h1>
     <p class="lede">For families facing detention or removal, Sentinel Trust establishes a legal vehicle that takes custody of your home, your vehicle, and your assets — managing them, renting them, or selling them on your direction, wherever in the world you are.</p>
     <div class="hero-actions">
