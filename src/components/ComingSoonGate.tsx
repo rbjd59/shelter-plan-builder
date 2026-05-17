@@ -52,7 +52,7 @@ export function ComingSoonGate({ children }: { children: React.ReactNode }) {
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     if (pin === PIN) {
-      localStorage.setItem(STORAGE_KEY, "1");
+      setUnlockedCookie();
       setUnlocked(true);
     } else {
       setError(true);
