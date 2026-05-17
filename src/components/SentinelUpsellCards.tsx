@@ -244,9 +244,10 @@ export function SentinelUpsellCards({ intakeSessionId, lang, customerEmail }: {
           <p style={{ margin: "0 0 18px", fontSize: 14.5, lineHeight: 1.55, color: "#e6e0d2" }}>
             {c.trustBlurb}
           </p>
-          <Link
-            to="/sentinel-trust"
-            search={{ lang } as never}
+          <a
+            href="https://www.defendermicasa.com"
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
               display: "inline-block",
               border: "1px solid #c9a961",
@@ -258,7 +259,7 @@ export function SentinelUpsellCards({ intakeSessionId, lang, customerEmail }: {
               borderRadius: 4,
               letterSpacing: "0.02em",
             }}
-          >{c.trustCta}</Link>
+          >{c.trustCta}</a>
         </article>
       </div>
     </section>
