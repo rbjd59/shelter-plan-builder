@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { SITE_HTML } from "@/lib/markup";
 import { useLang, type Lang } from "@/context/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
+import { PARTNERS } from "@/lib/partners-content";
 
 /**
  * Renders the main marketing page from the reference HTML markup.
@@ -133,6 +134,14 @@ export default function SiteShell() {
   }, [navigate, setLang, lang]);
 
   return (
-    <div ref={ref} dangerouslySetInnerHTML={{ __html: SITE_HTML }} />
+    <>
+      <Link
+        to="/partners"
+        className="fixed top-3 left-1/2 -translate-x-1/2 z-[100] bg-[#e8a04a] text-[#0b0b0e] text-xs sm:text-sm font-medium px-4 sm:px-5 py-2 sm:py-2.5 rounded-full shadow-lg hover:scale-[1.03] transition no-underline whitespace-nowrap"
+      >
+        {PARTNERS[lang].cta.churches}
+      </Link>
+      <div ref={ref} dangerouslySetInnerHTML={{ __html: SITE_HTML }} />
+    </>
   );
 }

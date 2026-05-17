@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SplashRouteImport } from './routes/splash'
 import { Route as SentinelTrustRouteImport } from './routes/sentinel-trust'
+import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as OwnPropertyRouteImport } from './routes/own-property'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IntakeRouteImport } from './routes/intake'
@@ -45,6 +46,11 @@ const SplashRoute = SplashRouteImport.update({
 const SentinelTrustRoute = SentinelTrustRouteImport.update({
   id: '/sentinel-trust',
   path: '/sentinel-trust',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PartnersRoute = PartnersRouteImport.update({
+  id: '/partners',
+  path: '/partners',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OwnPropertyRoute = OwnPropertyRouteImport.update({
@@ -187,6 +193,7 @@ export interface FileRoutesByFullPath {
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
   '/own-property': typeof OwnPropertyRoute
+  '/partners': typeof PartnersRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/splash': typeof SplashRoute
   '/cases': typeof AuthenticatedCasesRoute
@@ -215,6 +222,7 @@ export interface FileRoutesByTo {
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
   '/own-property': typeof OwnPropertyRoute
+  '/partners': typeof PartnersRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/splash': typeof SplashRoute
   '/cases': typeof AuthenticatedCasesRoute
@@ -245,6 +253,7 @@ export interface FileRoutesById {
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
   '/own-property': typeof OwnPropertyRoute
+  '/partners': typeof PartnersRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/splash': typeof SplashRoute
   '/_authenticated/cases': typeof AuthenticatedCasesRoute
@@ -275,6 +284,7 @@ export interface FileRouteTypes {
     | '/intake'
     | '/login'
     | '/own-property'
+    | '/partners'
     | '/sentinel-trust'
     | '/splash'
     | '/cases'
@@ -303,6 +313,7 @@ export interface FileRouteTypes {
     | '/intake'
     | '/login'
     | '/own-property'
+    | '/partners'
     | '/sentinel-trust'
     | '/splash'
     | '/cases'
@@ -332,6 +343,7 @@ export interface FileRouteTypes {
     | '/intake'
     | '/login'
     | '/own-property'
+    | '/partners'
     | '/sentinel-trust'
     | '/splash'
     | '/_authenticated/cases'
@@ -362,6 +374,7 @@ export interface RootRouteChildren {
   IntakeRoute: typeof IntakeRoute
   LoginRoute: typeof LoginRoute
   OwnPropertyRoute: typeof OwnPropertyRoute
+  PartnersRoute: typeof PartnersRoute
   SentinelTrustRoute: typeof SentinelTrustRoute
   SplashRoute: typeof SplashRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
@@ -392,6 +405,13 @@ declare module '@tanstack/react-router' {
       path: '/sentinel-trust'
       fullPath: '/sentinel-trust'
       preLoaderRoute: typeof SentinelTrustRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/partners': {
+      id: '/partners'
+      path: '/partners'
+      fullPath: '/partners'
+      preLoaderRoute: typeof PartnersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/own-property': {
@@ -599,6 +619,7 @@ const rootRouteChildren: RootRouteChildren = {
   IntakeRoute: IntakeRoute,
   LoginRoute: LoginRoute,
   OwnPropertyRoute: OwnPropertyRoute,
+  PartnersRoute: PartnersRoute,
   SentinelTrustRoute: SentinelTrustRoute,
   SplashRoute: SplashRoute,
   AuthCallbackRoute: AuthCallbackRoute,
