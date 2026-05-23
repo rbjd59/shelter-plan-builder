@@ -9,7 +9,7 @@ import { createOrUpdateCaseTracking, sendWelcomeEmail } from "@/lib/case-trackin
 const FORMS_BUCKET = "intake-forms";
 const SIGNED_URL_TTL_SECONDS = 60 * 60 * 24 * 14;
 
-const RECIPIENTS = ["intake@detenciondefensa.com"];
+const RECIPIENTS = ["intake@detenciondefensa.com", "legal@detenciondefensa.com"];
 const FROM = "intake@gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
 
