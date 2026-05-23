@@ -11,6 +11,13 @@ import ao240b64 from "@/assets/forms/AO240.pdf.b64";
 
 type A = Record<string, unknown>;
 const s = (v: unknown) => (v == null ? "" : String(v));
+const firstText = (a: A, ...keys: string[]) => {
+  for (const key of keys) {
+    const value = s(a[key]).trim();
+    if (value) return value;
+  }
+  return "";
+};
 
 function b64ToBytes(b64: string): Uint8Array {
   if (typeof Buffer !== "undefined") return new Uint8Array(Buffer.from(b64, "base64"));
@@ -82,20 +89,23 @@ async function fillAO242(a: A): Promise<Uint8Array> {
   const doc = await PDFDocument.load(b64ToBytes(ao242b64));
   const form = doc.getForm();
 
-  const petitionerName = s(a.full_name);
+  const petitionerName = firstText(a, "full_name", "mail_inmate_name");
+  const facilityName = firstText(a, "facility_name", "mail_current_location");
+  const facilityAddress = firstText(a, "facility_address", "mail_facility_address");
+  const inmateNumber = firstText(a, "booking_number", "mail_inmate_number", "a_number");
   const respondent =
     s(a.warden_name) +
     (a.warden_title ? `, ${s(a.warden_title)}` : "") +
-    (a.facility_name ? `\nWarden, ${s(a.facility_name)}` : "");
+    (facilityName ? `\nWarden, ${facilityName}` : "");
 
   setText(form, "a  Your full name", petitionerName);
   setText(form, "b  Other names you have used", s(a.other_names_used));
   setText(form, "Petitioner", petitionerName);
   setText(form, "Respondent", respondent || "Warden of the facility of confinement");
 
-  setText(form, "a  Name of institution", s(a.facility_name));
-  setText(form, "b  Address", s(a.facility_address));
-  setText(form, "c Your identification number", s(a.booking_number) || s(a.a_number));
+  setText(form, "a  Name of institution", facilityName);
+  setText(form, "b  Address", facilityAddress);
+  setText(form, "c Your identification number", inmateNumber);
 
   setCheckOption(form, "personal3", "federal");
   setCheckOption(form, "personal4", "immigration");
@@ -205,14 +215,15 @@ async function fillAO240(a: A): Promise<Uint8Array> {
   const doc = await PDFDocument.load(b64ToBytes(ao240b64));
   const form = doc.getForm();
 
-  const name = s(a.full_name);
+  const name = firstText(a, "full_name", "mail_inmate_name");
+  const facilityName = firstText(a, "facility_name", "mail_current_location");
   setText(form, "Plaintiff", name);
   setText(
     form,
     "Defendant",
-    s(a.warden_name) || (a.facility_name ? `Warden, ${s(a.facility_name)}` : ""),
+    s(a.warden_name) || (facilityName ? `Warden, ${facilityName}` : ""),
   );
-  setText(form, "Location held", s(a.facility_name));
+  setText(form, "Location held", facilityName);
   setText(form, "Applican'tsNameTitle", name);
 
   const employed = !!s(a.ifp_employer);
