@@ -93,6 +93,11 @@ export default function SiteShell() {
           navigate({ to: "/checkout", search: { lang } as never });
           return;
         }
+        if (href === "/intake" || href.startsWith("/intake?")) {
+          e.preventDefault();
+          navigate({ to: "/intake", search: { lang } as never });
+          return;
+        }
         if (href === "/login") {
           e.preventDefault();
           navigate({ to: "/login" });
