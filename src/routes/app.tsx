@@ -31,6 +31,9 @@ const KEY = "v1";
 interface CaseRecord {
   habeasPdfB64: string;
   ifpPdfB64: string;
+  motionPdfB64?: string | null;
+  js44PdfB64?: string | null;
+  brochurePdfB64?: string;
   caseId: string;
   fullName: string;
   contactName: string;
@@ -42,6 +45,7 @@ interface CaseRecord {
   alertEmail?: string;     // where the EMERGENCY alert goes
   setupCompleted?: boolean;
 }
+
 
 function openDb(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
@@ -740,15 +744,40 @@ function EmergencyApp() {
             onClick={() => window.open(b64ToBlobUrl(record.habeasPdfB64), "_blank")}
             className="rounded-xl bg-white/10 px-4 py-3 text-sm font-semibold backdrop-blur hover:bg-white/15"
           >
-            View AO 242 Habeas
+            AO 242 Habeas
           </button>
           <button
             onClick={() => window.open(b64ToBlobUrl(record.ifpPdfB64), "_blank")}
             className="rounded-xl bg-white/10 px-4 py-3 text-sm font-semibold backdrop-blur hover:bg-white/15"
           >
-            View AO 240 IFP
+            AO 240 IFP
           </button>
+          {record.js44PdfB64 ? (
+            <button
+              onClick={() => window.open(b64ToBlobUrl(record.js44PdfB64!), "_blank")}
+              className="rounded-xl bg-white/10 px-4 py-3 text-sm font-semibold backdrop-blur hover:bg-white/15"
+            >
+              JS-44 Cover Sheet
+            </button>
+          ) : null}
+          {record.motionPdfB64 ? (
+            <button
+              onClick={() => window.open(b64ToBlobUrl(record.motionPdfB64!), "_blank")}
+              className="rounded-xl bg-white/10 px-4 py-3 text-sm font-semibold backdrop-blur hover:bg-white/15"
+            >
+              Attorney Referral
+            </button>
+          ) : null}
+          {record.brochurePdfB64 ? (
+            <button
+              onClick={() => window.open(b64ToBlobUrl(record.brochurePdfB64!), "_blank")}
+              className="col-span-2 rounded-xl bg-white/10 px-4 py-3 text-sm font-semibold backdrop-blur hover:bg-white/15"
+            >
+              SDFL Pro Se Guidebook
+            </button>
+          ) : null}
         </div>
+
         <p className="mt-3 text-[11px] text-white/40">
           Alerts go to <strong>{record.alertEmail}</strong>. PDFs are stored only on this phone.
         </p>

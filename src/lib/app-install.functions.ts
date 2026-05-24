@@ -1,8 +1,11 @@
 // Client-callable server function: redeem a one-time install token, returns
-// the two PDFs (base64) plus case metadata. Token is invalidated after use.
+// all intake PDFs (base64) plus case metadata. Token is invalidated after use.
 import { createServerFn } from "@tanstack/react-start";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { buildIntakePdfs } from "@/lib/email/intake-pdfs.server";
+import { buildMotionReferralPdf } from "@/lib/email/motion-referral.server";
+import { buildJs44Pdf } from "@/lib/email/js44.server";
+import brochureB64Asset from "@/assets/forms/SDFL-ProSeBrochure.pdf.b64";
 
 const FORMS_BUCKET = "intake-forms";
 
@@ -16,12 +19,23 @@ function bytesToB64(bytes: Uint8Array): string {
 export interface AppBootstrapPayload {
   habeasPdfB64: string;
   ifpPdfB64: string;
+  motionPdfB64: string | null;
+  js44PdfB64: string | null;
+  brochurePdfB64: string;
   caseId: string;
   fullName: string;
   contactName: string;
   contactEmail: string;
   language: string;
   role: "client" | "family";
+}
+
+async function tryDownload(path: string): Promise<Uint8Array | null> {
+  try {
+    const r = await supabaseAdmin.storage.from(FORMS_BUCKET).download(path);
+    if (r.data) return new Uint8Array(await r.data.arrayBuffer());
+  } catch { /* ignore */ }
+  return null;
 }
 
 export const bootstrapAppFromToken = createServerFn({ method: "POST" })
@@ -49,7 +63,6 @@ export const bootstrapAppFromToken = createServerFn({ method: "POST" })
     if (r.used_at) throw new Error("This install link has already been used.");
     if (new Date(r.expires_at).getTime() < Date.now()) throw new Error("Install link expired.");
 
-    // Load intake to build PDFs + metadata.
     const { data: intake, error: ie } = await supabaseAdmin
       .from("intake_submissions")
       .select("answers, language, email")
@@ -59,25 +72,22 @@ export const bootstrapAppFromToken = createServerFn({ method: "POST" })
     const ans = ((intake as { answers: Record<string, unknown> | null }).answers ??
       {}) as Record<string, unknown>;
 
-    // Try to fetch already-uploaded PDFs from storage; fall back to rebuilding.
-    let habeas: Uint8Array | null = null;
-    let ifp: Uint8Array | null = null;
-    try {
-      const h = await supabaseAdmin.storage
-        .from(FORMS_BUCKET)
-        .download(`${r.intake_session_id}/AO242-habeas-2241.pdf`);
-      const i = await supabaseAdmin.storage
-        .from(FORMS_BUCKET)
-        .download(`${r.intake_session_id}/AO240-in-forma-pauperis.pdf`);
-      if (h.data) habeas = new Uint8Array(await h.data.arrayBuffer());
-      if (i.data) ifp = new Uint8Array(await i.data.arrayBuffer());
-    } catch {
-      /* fallback below */
-    }
+    // Try to fetch uploaded PDFs from storage; fall back to building.
+    let habeas = await tryDownload(`${r.intake_session_id}/AO242-habeas-2241.pdf`);
+    let ifp = await tryDownload(`${r.intake_session_id}/AO240-in-forma-pauperis.pdf`);
+    let motion = await tryDownload(`${r.intake_session_id}/SDFL-Motion-Referral-Volunteer-Attorney.pdf`);
+    let js44 = await tryDownload(`${r.intake_session_id}/JS44-Civil-Cover-Sheet.pdf`);
+
     if (!habeas || !ifp) {
       const built = await buildIntakePdfs(ans);
-      habeas = built.habeas;
-      ifp = built.ifp;
+      habeas = habeas ?? built.habeas;
+      ifp = ifp ?? built.ifp;
+    }
+    if (!motion) {
+      try { motion = await buildMotionReferralPdf(ans); } catch { /* keep null */ }
+    }
+    if (!js44) {
+      try { js44 = await buildJs44Pdf(ans); } catch { /* keep null */ }
     }
 
     // Mark token as used (single-use).
@@ -87,8 +97,11 @@ export const bootstrapAppFromToken = createServerFn({ method: "POST" })
       .eq("token", r.token);
 
     return {
-      habeasPdfB64: bytesToB64(habeas),
-      ifpPdfB64: bytesToB64(ifp),
+      habeasPdfB64: bytesToB64(habeas!),
+      ifpPdfB64: bytesToB64(ifp!),
+      motionPdfB64: motion ? bytesToB64(motion) : null,
+      js44PdfB64: js44 ? bytesToB64(js44) : null,
+      brochurePdfB64: brochureB64Asset,
       caseId: r.intake_session_id,
       fullName: String(ans.full_name ?? ans.mail_inmate_name ?? ""),
       contactName: String(ans.contact_name ?? ""),
