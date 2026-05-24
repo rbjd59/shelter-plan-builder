@@ -132,13 +132,14 @@ export async function enqueueIntakeNotification(params: {
   const a = answers;
 
   const subject = `New Intake Submission — ${String(a.mail_inmate_name || a.contact_name || sessionId)}`;
-  const { habeasUrl, ifpUrl, brochureUrl, errors: pdfErrors } = await uploadFormsAndSign(sessionId, a);
+  const { habeasUrl, ifpUrl, brochureUrl, referralUrl, errors: pdfErrors } = await uploadFormsAndSign(sessionId, a);
   if (pdfErrors.length) console.error("Intake PDF generation issues:", pdfErrors);
 
   const formsHtml = `<div style="border:1px solid #d0d7de;border-radius:8px;padding:16px;background:#f6f8fa;margin-top:8px;">
     <p style="margin:0 0 10px;font-size:13px;color:#1a1a1a;"><strong>Completed forms (download &amp; print):</strong></p>
     ${habeasUrl ? `<p style="margin:0 0 6px;"><a href="${habeasUrl}" style="color:#0a58ca;text-decoration:underline;font-size:14px;">AO 242 — Petition for Writ of Habeas Corpus (28 U.S.C. § 2241).pdf</a></p>` : `<p style="margin:0 0 6px;color:#a40000;font-size:13px;">AO 242 PDF unavailable.</p>`}
     ${ifpUrl ? `<p style="margin:0 0 6px;"><a href="${ifpUrl}" style="color:#0a58ca;text-decoration:underline;font-size:14px;">AO 240 — Application to Proceed In Forma Pauperis.pdf</a></p>` : `<p style="margin:0 0 6px;color:#a40000;font-size:13px;">AO 240 PDF unavailable.</p>`}
+    ${referralUrl ? `<p style="margin:0 0 6px;"><a href="${referralUrl}" style="color:#0a58ca;text-decoration:underline;font-size:14px;">SDFL Motion for Referral to Volunteer Attorney Program.pdf</a></p>` : ""}
     ${brochureUrl ? `<p style="margin:0;"><a href="${brochureUrl}" style="color:#0a58ca;text-decoration:underline;font-size:14px;">SDFL Pro Se Filers — Important Information (brochure).pdf</a></p>` : ""}
     <p style="margin:10px 0 0;font-size:11px;color:#666;">Secure download links expire in 14 days.</p>
   </div>`;
