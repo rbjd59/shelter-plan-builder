@@ -148,7 +148,7 @@ async function fillAO242(a: A): Promise<Uint8Array> {
   }
 
   const facts = s(a.prior_immigration_proceedings) ||
-    "Petitioner is held in immigration custody. See attached declaration and supporting documents.";
+    "Petitioner is held in immigration custody.";
 
   const groundFieldMap: Array<{ titleFields: string[]; factFields: string[] }> = [
     {
