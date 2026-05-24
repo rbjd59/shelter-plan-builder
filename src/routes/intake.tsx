@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { z } from "zod";
 import { useServerFn } from "@tanstack/react-start";
 import { submitDemoIntake } from "@/utils/payments.functions";
 import { DisclosureGate } from "@/components/DisclosureGate";
 import { SentinelUpsellCards } from "@/components/SentinelUpsellCards";
+import { BilingualField } from "@/components/intake/BilingualField";
 
 const searchSchema = z.object({
   session_id: z.string().optional(),
