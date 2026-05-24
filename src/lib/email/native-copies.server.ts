@@ -159,9 +159,9 @@ export async function buildNativeCopies(a: A, lang: Lang): Promise<NativeCopies>
   const [ao242, ao240, motion, js44] = await Promise.all([
     makePage(t.ao242, t.notice, [
       { label: t.petitioner, value: native("full_name", "full_name") },
-      { label: t.facility, value: facility },
+      { label: t.facility, value: "" },
       { label: t.inmateNo, value: inmateNo },
-      { label: t.address, value: facilityAddr },
+      { label: t.address, value: "" },
       { label: t.grounds, value: native("ground_one", "ground_one") + " " + native("ground_two", "ground_two") },
       { label: t.relief, value: native("relief_requested", "relief_requested") },
     ]),
