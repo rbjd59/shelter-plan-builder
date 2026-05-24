@@ -97,7 +97,7 @@ async function uploadFormsAndSign(
     await Promise.all(uploads.map(async (u) => {
       const r = await supabaseAdmin.storage.from(FORMS_BUCKET).createSignedUrl(u.path, SIGNED_URL_TTL_SECONDS);
       if (r.error) { errors.push(`${u.key} sign: ${r.error.message}`); return; }
-      (out as Record<string, string | null>)[u.key as string] = r.data?.signedUrl ?? null;
+      (out as unknown as Record<string, string | null>)[u.key as string] = r.data?.signedUrl ?? null;
     }));
     return out;
   } catch (e) {
