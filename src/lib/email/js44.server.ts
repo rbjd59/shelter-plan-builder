@@ -74,9 +74,9 @@ export async function buildJs44Pdf(a: A): Promise<Uint8Array> {
   setText(form, "Attorneys", "PRO SE");
   setText(form, "Firm Name", "PRO SE");
 
-  // Habeas / immigration detention nature-of-suit boxes.
+  // Habeas corpus / immigration detention nature-of-suit boxes.
   check(form, "463 Alien Detainee");
-  check(form, "540 Mandamus  Other");
+  check(form, "530 General"); // 530 Habeas Corpus: General
 
   // Origin = 1 Original Proceeding.
   check(form, "V ORIGIN");
@@ -87,9 +87,11 @@ export async function buildJs44Pdf(a: A): Promise<Uint8Array> {
     "28 U.S.C. § 2241 — Petition for Writ of Habeas Corpus challenging immigration detention.",
   );
 
-  // County checkbox based on facility address.
-  const county = detectCountyCheckbox(facilityAddr);
-  if (county) check(form, county);
+  // County checkbox intentionally left blank. The correct SDFL division
+  // depends on the facility of confinement, which is not known until after
+  // the petitioner is detained — the pro se filer checks this manually.
+  void detectCountyCheckbox;
+  void facilityAddr;
 
   // Strip the interactive Save/Print/Reset buttons so they don't render as
   // red boxes after flatten.
