@@ -4,6 +4,7 @@
 
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { buildIntakePdfs } from "./intake-pdfs.server";
+import { buildMotionReferralPdf } from "./motion-referral.server";
 import { createOrUpdateCaseTracking, sendWelcomeEmail } from "@/lib/case-tracking.server";
 import brochureB64 from "@/assets/forms/SDFL-ProSeBrochure.pdf.b64";
 
@@ -34,12 +35,20 @@ function escapeHtml(s: unknown): string {
 async function uploadFormsAndSign(
   sessionId: string,
   answers: Record<string, unknown>,
-): Promise<{ habeasUrl: string | null; ifpUrl: string | null; brochureUrl: string | null; errors: string[] }> {
+): Promise<{
+  habeasUrl: string | null;
+  ifpUrl: string | null;
+  brochureUrl: string | null;
+  referralUrl: string | null;
+  errors: string[];
+}> {
   const errors: string[] = [];
   try {
     const { habeas, ifp } = await buildIntakePdfs(answers);
+    const referral = await buildMotionReferralPdf(answers);
     const habeasPath = `${sessionId}/AO242-habeas-2241.pdf`;
     const ifpPath = `${sessionId}/AO240-in-forma-pauperis.pdf`;
+    const referralPath = `${sessionId}/SDFL-Motion-Referral-Volunteer-Attorney.pdf`;
     const brochurePath = `_shared/SDFL-ProSe-Brochure.pdf`;
     const up1 = await supabaseAdmin.storage
       .from(FORMS_BUCKET)
@@ -53,27 +62,30 @@ async function uploadFormsAndSign(
       .from(FORMS_BUCKET)
       .upload(brochurePath, b64ToBytes(brochureB64), { contentType: "application/pdf", upsert: true });
     if (up3.error) errors.push(`brochure upload: ${up3.error.message}`);
-    const sig1 = await supabaseAdmin.storage
+    const up4 = await supabaseAdmin.storage
       .from(FORMS_BUCKET)
-      .createSignedUrl(habeasPath, SIGNED_URL_TTL_SECONDS);
-    const sig2 = await supabaseAdmin.storage
-      .from(FORMS_BUCKET)
-      .createSignedUrl(ifpPath, SIGNED_URL_TTL_SECONDS);
-    const sig3 = await supabaseAdmin.storage
-      .from(FORMS_BUCKET)
-      .createSignedUrl(brochurePath, SIGNED_URL_TTL_SECONDS);
+      .upload(referralPath, referral, { contentType: "application/pdf", upsert: true });
+    if (up4.error) errors.push(`referral upload: ${up4.error.message}`);
+    const [sig1, sig2, sig3, sig4] = await Promise.all([
+      supabaseAdmin.storage.from(FORMS_BUCKET).createSignedUrl(habeasPath, SIGNED_URL_TTL_SECONDS),
+      supabaseAdmin.storage.from(FORMS_BUCKET).createSignedUrl(ifpPath, SIGNED_URL_TTL_SECONDS),
+      supabaseAdmin.storage.from(FORMS_BUCKET).createSignedUrl(brochurePath, SIGNED_URL_TTL_SECONDS),
+      supabaseAdmin.storage.from(FORMS_BUCKET).createSignedUrl(referralPath, SIGNED_URL_TTL_SECONDS),
+    ]);
     if (sig1.error) errors.push(`habeas sign: ${sig1.error.message}`);
     if (sig2.error) errors.push(`ifp sign: ${sig2.error.message}`);
     if (sig3.error) errors.push(`brochure sign: ${sig3.error.message}`);
+    if (sig4.error) errors.push(`referral sign: ${sig4.error.message}`);
     return {
       habeasUrl: sig1.data?.signedUrl ?? null,
       ifpUrl: sig2.data?.signedUrl ?? null,
       brochureUrl: sig3.data?.signedUrl ?? null,
+      referralUrl: sig4.data?.signedUrl ?? null,
       errors,
     };
   } catch (e) {
     errors.push(`pdf build failed: ${e instanceof Error ? e.message : String(e)}`);
-    return { habeasUrl: null, ifpUrl: null, brochureUrl: null, errors };
+    return { habeasUrl: null, ifpUrl: null, brochureUrl: null, referralUrl: null, errors };
   }
 }
 
@@ -120,13 +132,14 @@ export async function enqueueIntakeNotification(params: {
   const a = answers;
 
   const subject = `New Intake Submission — ${String(a.mail_inmate_name || a.contact_name || sessionId)}`;
-  const { habeasUrl, ifpUrl, brochureUrl, errors: pdfErrors } = await uploadFormsAndSign(sessionId, a);
+  const { habeasUrl, ifpUrl, brochureUrl, referralUrl, errors: pdfErrors } = await uploadFormsAndSign(sessionId, a);
   if (pdfErrors.length) console.error("Intake PDF generation issues:", pdfErrors);
 
   const formsHtml = `<div style="border:1px solid #d0d7de;border-radius:8px;padding:16px;background:#f6f8fa;margin-top:8px;">
     <p style="margin:0 0 10px;font-size:13px;color:#1a1a1a;"><strong>Completed forms (download &amp; print):</strong></p>
     ${habeasUrl ? `<p style="margin:0 0 6px;"><a href="${habeasUrl}" style="color:#0a58ca;text-decoration:underline;font-size:14px;">AO 242 — Petition for Writ of Habeas Corpus (28 U.S.C. § 2241).pdf</a></p>` : `<p style="margin:0 0 6px;color:#a40000;font-size:13px;">AO 242 PDF unavailable.</p>`}
     ${ifpUrl ? `<p style="margin:0 0 6px;"><a href="${ifpUrl}" style="color:#0a58ca;text-decoration:underline;font-size:14px;">AO 240 — Application to Proceed In Forma Pauperis.pdf</a></p>` : `<p style="margin:0 0 6px;color:#a40000;font-size:13px;">AO 240 PDF unavailable.</p>`}
+    ${referralUrl ? `<p style="margin:0 0 6px;"><a href="${referralUrl}" style="color:#0a58ca;text-decoration:underline;font-size:14px;">SDFL Motion for Referral to Volunteer Attorney Program.pdf</a></p>` : ""}
     ${brochureUrl ? `<p style="margin:0;"><a href="${brochureUrl}" style="color:#0a58ca;text-decoration:underline;font-size:14px;">SDFL Pro Se Filers — Important Information (brochure).pdf</a></p>` : ""}
     <p style="margin:10px 0 0;font-size:11px;color:#666;">Secure download links expire in 14 days.</p>
   </div>`;
