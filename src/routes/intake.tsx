@@ -330,8 +330,39 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
         </div>
         <h1 style={{ fontSize: 32, fontWeight: 700, marginBottom: 8, fontFamily: "Fraunces, serif" }}>{ui.title}</h1>
         <p style={{ color: "#a8a59a", marginBottom: 16 }}>{ui.sub}</p>
-        <div style={{ background: "#3a2a00", border: "1px solid #e8a04a", padding: 14, borderRadius: 4, marginBottom: 32, fontSize: 14, lineHeight: 1.5, color: "#fff5d6" }}>
+        <div style={{ background: "#3a2a00", border: "1px solid #e8a04a", padding: 14, borderRadius: 4, marginBottom: 16, fontSize: 14, lineHeight: 1.5, color: "#fff5d6" }}>
           <strong>⚠ {ui.upl}</strong>
+        </div>
+        <div style={{ background: "#0f2436", border: "1px solid #4a9eff", padding: 14, borderRadius: 4, marginBottom: 32, fontSize: 14, lineHeight: 1.5, color: "#e6f1ff" }}>
+          <strong style={{ display: "block", marginBottom: 6 }}>
+            {L === "es" ? "📘 LECTURA OBLIGATORIA antes de continuar" : L === "ht" ? "📘 LEKTI OBLIGATWA anvan ou kontinye" : "📘 REQUIRED READING before you continue"}
+          </strong>
+          <p style={{ margin: "0 0 8px" }}>
+            {L === "es"
+              ? "Toda persona que presenta sus propios documentos en el Tribunal Federal del Distrito Sur de Florida DEBE revisar esta guía oficial. Explica plazos, formalidades y reglas que el tribunal aplica estrictamente."
+              : L === "ht"
+              ? "Tout moun ki depoze pwòp dokiman li nan Tribinal Federal Distri Sid Florid la DWE revize gid ofisyèl sa a. Li eksplike dat limit, fòmalite, ak règ tribinal la aplike estriktèman."
+              : "Every person filing their own papers in the U.S. District Court for the Southern District of Florida MUST review this official guidebook. It explains deadlines, formalities, and rules the court strictly enforces."}
+          </p>
+          <a
+            href="/forms/SDFL-ProSe-Brochure.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display: "inline-block", background: "#4a9eff", color: "#0b1220", padding: "8px 14px", borderRadius: 4, textDecoration: "none", fontWeight: 700, fontSize: 13 }}
+          >
+            {L === "es"
+              ? "Abrir guía: Información Importante para Litigantes Pro Se del SDFL (PDF) →"
+              : L === "ht"
+              ? "Louvri gid la: Enfòmasyon Enpòtan pou Litigan Pro Se SDFL (PDF) →"
+              : "Open guidebook: SDFL Pro Se Filers — Important Information (PDF) →"}
+          </a>
+          <p style={{ margin: "8px 0 0", fontSize: 12, color: "#a8c4e6" }}>
+            {L === "es"
+              ? "Esta guía se adjunta automáticamente a su paquete de formularios cuando lo imprimimos y enviamos."
+              : L === "ht"
+              ? "Gid sa a ap atache otomatikman nan pakè fòm ou yo lè nou enprime epi voye yo."
+              : "This guidebook is automatically attached to your printed forms packet when we send it."}
+          </p>
         </div>
         <form onSubmit={handleSubmit}>
           {sections.map((s) => (
