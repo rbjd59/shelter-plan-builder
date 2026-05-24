@@ -346,15 +346,14 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
           </p>
           <a
             href="/forms/SDFL-ProSe-Brochure.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
+            download="SDFL-ProSe-Brochure.pdf"
             style={{ display: "inline-block", background: "#4a9eff", color: "#0b1220", padding: "8px 14px", borderRadius: 4, textDecoration: "none", fontWeight: 700, fontSize: 13 }}
           >
             {L === "es"
-              ? "Abrir guía: Información Importante para Litigantes Pro Se del SDFL (PDF) →"
+              ? "Descargar guía: Información Importante para Litigantes Pro Se del SDFL (PDF) ↓"
               : L === "ht"
-              ? "Louvri gid la: Enfòmasyon Enpòtan pou Litigan Pro Se SDFL (PDF) →"
-              : "Open guidebook: SDFL Pro Se Filers — Important Information (PDF) →"}
+              ? "Telechaje gid la: Enfòmasyon Enpòtan pou Litigan Pro Se SDFL (PDF) ↓"
+              : "Download guidebook: SDFL Pro Se Filers — Important Information (PDF) ↓"}
           </a>
           <p style={{ margin: "8px 0 0", fontSize: 12, color: "#a8c4e6" }}>
             {L === "es"
