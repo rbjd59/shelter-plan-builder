@@ -8,6 +8,7 @@ import { buildIntakePdfs } from "./intake-pdfs.server";
 import { buildMotionReferralPdf } from "./motion-referral.server";
 import { buildJs44Pdf } from "./js44.server";
 import { buildNativeCopies } from "./native-copies.server";
+import { buildBilingualForms } from "./bilingual-forms.server";
 import { createOrUpdateCaseTracking, sendWelcomeEmail } from "@/lib/case-tracking.server";
 import brochureB64 from "@/assets/forms/SDFL-ProSeBrochure.pdf.b64";
 
@@ -45,6 +46,10 @@ interface UploadedUrls {
   nativeIfpUrl: string | null;
   nativeMotionUrl: string | null;
   nativeJs44Url: string | null;
+  bilingualHabeasUrl: string | null;
+  bilingualIfpUrl: string | null;
+  bilingualMotionUrl: string | null;
+  bilingualJs44Url: string | null;
   errors: string[];
 }
 
@@ -59,6 +64,7 @@ async function uploadFormsAndSign(
   const out: UploadedUrls = {
     habeasUrl: null, ifpUrl: null, brochureUrl: null, referralUrl: null, js44Url: null,
     nativeHabeasUrl: null, nativeIfpUrl: null, nativeMotionUrl: null, nativeJs44Url: null,
+    bilingualHabeasUrl: null, bilingualIfpUrl: null, bilingualMotionUrl: null, bilingualJs44Url: null,
     errors,
   };
 
@@ -71,6 +77,12 @@ async function uploadFormsAndSign(
     if (lang !== "en") {
       try { native = await buildNativeCopies(answers, lang); }
       catch (e) { errors.push(`native copies build: ${e instanceof Error ? e.message : String(e)}`); }
+    }
+    let bilingual: Awaited<ReturnType<typeof buildBilingualForms>> | null = null;
+    if (lang !== "en") {
+      try {
+        bilingual = await buildBilingualForms(answers, lang, { ao242: habeas, ao240: ifp, motion: referral, js44 });
+      } catch (e) { errors.push(`bilingual build: ${e instanceof Error ? e.message : String(e)}`); }
     }
 
     type Up = { key: keyof UploadedUrls; path: string; bytes: Uint8Array };
@@ -88,6 +100,12 @@ async function uploadFormsAndSign(
         { key: "nativeMotionUrl", path: `${sessionId}/SDFL-Motion-${lang}-copy.pdf`, bytes: native.motion },
         { key: "nativeJs44Url", path: `${sessionId}/JS44-${lang}-copy.pdf`, bytes: native.js44 },
       );
+    }
+    if (bilingual) {
+      if (bilingual.ao242) uploads.push({ key: "bilingualHabeasUrl", path: `${sessionId}/AO242-bilingual-${lang}.pdf`, bytes: bilingual.ao242 });
+      if (bilingual.ao240) uploads.push({ key: "bilingualIfpUrl", path: `${sessionId}/AO240-bilingual-${lang}.pdf`, bytes: bilingual.ao240 });
+      if (bilingual.motion) uploads.push({ key: "bilingualMotionUrl", path: `${sessionId}/SDFL-Motion-bilingual-${lang}.pdf`, bytes: bilingual.motion });
+      if (bilingual.js44) uploads.push({ key: "bilingualJs44Url", path: `${sessionId}/JS44-bilingual-${lang}.pdf`, bytes: bilingual.js44 });
     }
 
     await Promise.all(uploads.map(async (u) => {
@@ -153,6 +171,7 @@ export async function enqueueIntakeNotification(params: {
   if (urls.errors.length) console.error("Intake PDF generation issues:", urls.errors);
   const { habeasUrl, ifpUrl, brochureUrl, referralUrl, js44Url } = urls;
   const { nativeHabeasUrl, nativeIfpUrl, nativeMotionUrl, nativeJs44Url } = urls;
+  const { bilingualHabeasUrl, bilingualIfpUrl, bilingualMotionUrl, bilingualJs44Url } = urls;
 
   const link = (url: string | null, label: string) =>
     url
@@ -166,8 +185,15 @@ export async function enqueueIntakeNotification(params: {
     ${link(referralUrl, "SDFL Motion for Referral to Volunteer Attorney Program.pdf")}
     ${link(js44Url, "JS-44 — Civil Cover Sheet.pdf")}
     ${brochureUrl ? `<p style="margin:0 0 6px;"><a href="${brochureUrl}" style="color:#0a58ca;text-decoration:underline;font-size:14px;">SDFL Pro Se Filers — Important Information (brochure).pdf</a></p>` : ""}
+    ${(bilingualHabeasUrl || bilingualIfpUrl || bilingualMotionUrl || bilingualJs44Url) ? `
+      <p style="margin:14px 0 8px;font-size:13px;color:#1a1a1a;"><strong>Side-by-side bilingual forms (English left / ${escapeHtml(language)} right — for petitioner reference, NOT for filing):</strong></p>
+      ${link(bilingualHabeasUrl, `AO 242 — bilingual (EN / ${language}).pdf`)}
+      ${link(bilingualIfpUrl, `AO 240 — bilingual (EN / ${language}).pdf`)}
+      ${link(bilingualMotionUrl, `SDFL Motion — bilingual (EN / ${language}).pdf`)}
+      ${link(bilingualJs44Url, `JS-44 — bilingual (EN / ${language}).pdf`)}
+    ` : ""}
     ${(nativeHabeasUrl || nativeIfpUrl || nativeMotionUrl || nativeJs44Url) ? `
-      <p style="margin:14px 0 8px;font-size:13px;color:#1a1a1a;"><strong>Native-language copies (${escapeHtml(language)} — for petitioner's records, NOT for filing):</strong></p>
+      <p style="margin:14px 0 8px;font-size:13px;color:#1a1a1a;"><strong>Native-language summary copies (${escapeHtml(language)} — for petitioner's records, NOT for filing):</strong></p>
       ${link(nativeHabeasUrl, `AO 242 — ${language} copy.pdf`)}
       ${link(nativeIfpUrl, `AO 240 — ${language} copy.pdf`)}
       ${link(nativeMotionUrl, `SDFL Motion — ${language} copy.pdf`)}
@@ -175,6 +201,7 @@ export async function enqueueIntakeNotification(params: {
     ` : ""}
     <p style="margin:10px 0 0;font-size:11px;color:#666;">Secure download links expire in 14 days.</p>
   </div>`;
+
 
   const inmateLabel = mailingLabelHtml({
     title: "USPS — FIRST CLASS MAIL — INMATE",
