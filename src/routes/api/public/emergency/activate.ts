@@ -212,7 +212,10 @@ Family contact on file: ${d.contact_email ?? "(none)"}
 Alert email on phone: ${d.alert_email ?? "(none)"}
 
 AO 242 Habeas + AO 240 IFP for this case are already on file (intake-forms bucket).
-ACTION: If not cancelled by ${actAfter.toISOString()}, begin locating, notify contacts, prepare and mail packet.`;
+ACTION: If not cancelled by ${actAfter.toISOString()}, begin locating, notify contacts, prepare and mail packet.
+
+Download the responder app: https://detenciondefensa.com/download`;
+
         const html = `<div style="font:14px/1.55 Arial,sans-serif;color:#111;max-width:640px">
           <h1 style="color:#b91c1c;margin:0 0 8px;font-size:20px">EMERGENCY [${roleTag}]</h1>
           <p style="margin:0 0 12px"><strong>${esc(windowLabel)}</strong></p>
