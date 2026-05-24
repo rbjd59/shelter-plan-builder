@@ -230,7 +230,10 @@ Download the responder app: https://detenciondefensa.com/download`;
           <hr style="border:none;border-top:1px solid #ddd;margin:14px 0">
           <p style="margin:0">AO 242 Habeas + AO 240 IFP are on file in the intake-forms bucket under <code>${esc(d.intake_session_id)}</code>.</p>
           <p style="margin:12px 0 0;color:#7f1d1d"><strong>ACTION:</strong> If not cancelled by ${esc(actAfter.toISOString())}, begin locating, notify contacts, prepare and mail packet.</p>
+          <p style="margin:14px 0 0"><a href="https://detenciondefensa.com/download" style="display:inline-block;background:#b91c1c;color:#fff;padding:10px 16px;border-radius:6px;text-decoration:none;font-weight:600">Download the responder app</a></p>
+          <p style="margin:6px 0 0;font-size:12px;color:#666">Or open: https://detenciondefensa.com/download</p>
         </div>`;
+
 
         await enqueueAlertEmail({
           to: LEGAL_INBOX,
