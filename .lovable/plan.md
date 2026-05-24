@@ -1,105 +1,86 @@
-
-# Plan — Activate Sentinel Readiness Packet end-to-end
+# Bilingual Court-Form Intake
 
 ## Goal
-Ship the Readiness Packet so a paying customer can: (1) buy $99 add-on, optionally (2) subscribe $5/mo vault, (3) fill a guided multi-step intake in their language, (4) we auto-generate court-grade PDFs (POA, guardianship, school pickup, medical/HIPAA, financial inventory, contact tree, children's info, document locator) — bilingual, ready to print + notarize, (5) choose "send to family now" OR "vault until HELP NOW fires."
 
-## Document templates — source strategy
-Use only **public-domain / open-source** form text. LegalZoom forms are proprietary; do not copy. Use:
-- **Uniform Power of Attorney Act (UPOAA)** — model statutory POA text, public domain (adopted by 30+ states)
-- **Standby Guardianship**: state statutory short forms (NY DSS-7, FL Form 12.982, CA GC-211 etc.) — public records
-- **HIPAA Authorization** — model form from HHS.gov (public domain)
-- **School pickup** — generic notarized authorization letter (no statutory form required)
-- **Financial inventory / contact tree / document locator / children's info** — our own templates (no statutory form exists)
+Replace the current question-style intake with the four official SDFL forms reproduced field-by-field. The user fills the left column in their language (Spanish or Haitian Creole); the right column shows live English translation they can review and approve. On submit, generate both the official English PDFs (for filing) and a native-language copy (for their records).
 
-V1 ships **one general UPOAA-based template** with a "verify with your state's notary" disclaimer. Per-state templates land in V2.
+## Forms to mirror
 
-All templates rendered server-side via `pdfkit` (already Worker-compatible, no native deps), bilingual two-column layout (English left, client language right) so notaries can read English while the signer reads their language.
+1. **AO 242** — Petition for Writ of Habeas Corpus, 28 U.S.C. § 2241
+2. **AO 240** — Application to Proceed In Forma Pauperis
+3. **SDFL Motion for Referral to Volunteer Attorney Program**
+4. **JS-44 Civil Cover Sheet** (from the PDF you uploaded)
 
-## What gets built
+Each form rendered as a structured schema (sections → fields with type, label, court-position) so we can swap layouts later without rewriting.
 
-### A. Database (one migration)
-- Add `delivery_mode` to `readiness_packets`: `'send_now' | 'vault_until_emergency'`
-- Add `vault_subscription_id` (text, nullable) → links to `subscriptions.stripe_subscription_id`
-- Add `recipient_sent_at`, `recipient_sent_message_id` columns
-- Add `generated_pdf_paths text[]` (separate from signed `vault_storage_paths`)
-- New product/price records via Stripe tools: `readiness_packet_99` ($99 one-time, replaces $100), `readiness_vault_monthly` ($5/mo recurring)
+## Architecture
 
-### B. Stripe products
-- Create `readiness_packet` product → price `readiness_packet_99` ($99 one-time)
-- Create `readiness_vault` product → price `readiness_vault_monthly` ($5/month recurring)
-- Tax code `txcd_99999999` (mixed service)
+```
+src/lib/forms/
+  schema.ts                 # FormSchema, FieldSchema types (text/textarea/check/select/date)
+  ao242.ts                  # field definitions matching official PDF
+  ao240.ts
+  sdfl-motion.ts
+  js44.ts
+  translations.ts           # static UI strings (es/en/ht) for labels & instructions
 
-### C. Server functions (new in `src/lib/readiness.functions.ts`)
-- `createReadinessCheckout` (already exists) — switch to $99 lookup key
-- `createVaultSubscriptionCheckout` — $5/mo Stripe subscription, links to packet
-- `generatePacketPDFs` — takes packet_id, renders 8 PDFs from form_answers using pdfkit, returns storage paths
-- `sendPacketToRecipientNow` — emails the bundle directly to designated recipient with download links
-- `triggerVaultRelease` (exists) — keep, fires on emergency
+src/lib/translate.functions.ts
+  translateFields()         # createServerFn → Lovable AI (Gemini), batch translates
+                            # {fieldId: nativeText} → {fieldId: englishText}
+                            # debounced from UI, cached per-field
 
-### D. PDF templates (`src/lib/readiness-pdf/`)
-One file per document, each exports `renderXxxPDF(answers, lang): Uint8Array`:
-- `power-of-attorney.ts` (UPOAA general POA)
-- `standby-guardianship.ts`
-- `school-pickup.ts`
-- `hipaa-authorization.ts`
-- `financial-inventory.ts`
-- `emergency-contact-tree.ts`
-- `children-info.ts`
-- `document-locator.ts`
+src/components/intake/
+  BilingualForm.tsx         # renders one form: two-column grid (native | English)
+  BilingualField.tsx        # single row: label + native input + english readonly + approve checkbox
+  FormShell.tsx             # stepper across the 4 forms
+  ReviewSummary.tsx         # final approve-all screen before submit
 
-Bilingual two-column. Notary block at bottom. Signature lines. State field. Auto-fills from intake answers.
+src/routes/intake.tsx       # rewritten — replaces the current question flow
+```
 
-### E. Frontend
-- **`/readiness/intake`** (exists, 7-step form) → on submit: call `generatePacketPDFs` → route to **`/readiness/review`** (new)
-- **`/readiness/review`** (new): preview generated PDFs, choose:
-  - **[A] Send to family now** — collect recipient email, fire `sendPacketToRecipientNow`, show "delivered" confirmation. Customer still prints + notarizes physically; recipient gets PDFs to print and hold.
-  - **[B] Vault for emergency only** — gate on $5/mo subscription. If not subscribed, show inline `<VaultSubscriptionUpsell>` → Stripe embedded checkout → on success, mark packet `delivery_mode='vault_until_emergency'`.
-  - **[C] Both** — send now AND vault.
-- **`<SentinelUpsellCards>`** — already updated, no change
+## UX flow
 
-### F. App-side bundle
-The existing `/api/public/emergency/activate` already calls `triggerVaultRelease`. After this build, vaulted packets get released alongside the existing AO 242 (habeas) + AO 240 (IFP) PDFs that are already attached to the emergency alert. Update `triggerVaultRelease` to attach generated PDFs (not just signed scans) so families get usable docs even if the client never uploaded notarized copies.
+1. Language picker (already exists) → es / en / ht.
+2. Stepper: Form 1 of 4 → Form 4 of 4 (AO 242, AO 240, SDFL Motion, JS-44).
+3. For each field:
+   - Native input on the left (their language).
+   - English translation appears on the right ~700ms after they stop typing.
+   - "✓ Approve translation" checkbox per field (auto-checked if user types directly in English mode).
+4. Cannot advance to next form until all required fields are approved.
+5. Final review: scrollable summary of all four forms in English; one big "Submit & Generate PDFs" button.
+6. On submit: existing PDF generators run with the approved English text; a new native-language PDF set is generated alongside; both attached to the intake email.
 
-## File changes
-**New:**
-- `src/lib/readiness-pdf/index.ts` (registry)
-- `src/lib/readiness-pdf/power-of-attorney.ts`
-- `src/lib/readiness-pdf/standby-guardianship.ts`
-- `src/lib/readiness-pdf/school-pickup.ts`
-- `src/lib/readiness-pdf/hipaa-authorization.ts`
-- `src/lib/readiness-pdf/financial-inventory.ts`
-- `src/lib/readiness-pdf/emergency-contact-tree.ts`
-- `src/lib/readiness-pdf/children-info.ts`
-- `src/lib/readiness-pdf/document-locator.ts`
-- `src/lib/readiness-pdf/shared.ts` (bilingual two-column helpers, notary block)
-- `src/routes/readiness/review.tsx`
-- `src/components/VaultSubscriptionUpsell.tsx`
-- One migration
+## Translation
 
-**Edited:**
-- `src/lib/readiness.functions.ts` — add `generatePacketPDFs`, `sendPacketToRecipientNow`, `createVaultSubscriptionCheckout`; switch lookup key to `readiness_packet_99`
-- `src/lib/readiness.server.ts` — `triggerVaultRelease` attaches generated PDFs
-- `src/routes/readiness/intake.tsx` — on submit redirect to `/readiness/review` instead of "wait 48 hours" message
-- `src/routes/readiness/start.tsx` — copy update to $99
-- `src/components/SentinelUpsellCards.tsx` — already says $99, no change
-- `src/routes/api/public/payments/webhook.ts` — handle `readiness_vault_monthly` subscription events
+- `translateFields` server function calls Lovable AI (`google/gemini-3-flash-preview`) with a system prompt: *"You are a legal translator. Translate the following field values from {sourceLang} to English. Preserve legal terminology. Return JSON {fieldId: englishValue}."*
+- Batches fields per request (debounced, ~500ms).
+- Reverse direction (en→es/ht) used only on the final review screen so user sees their native version one last time.
+- Failures: field shows "Translation unavailable — retry" with a button; never blocks the user.
 
-## Out of scope this turn
-- Per-state POA template library (V1 = generic UPOAA + disclaimer)
-- Notarization scheduling integration (recommend Notarize.com / OneNotary externally)
-- Admin staff translator UI (auto-generation removes the manual step entirely for V1)
-- Client-side PDF preview (just download links)
+## PDF generation
 
-## Risk + UPL
-Auto-generated POA from a public statutory model is document-prep — same UPL framing as the existing habeas/IFP product. Disclaimer on `/readiness/review`: *"Sentinel Readiness generates documents from public statutory models. Sentinel is not a law firm. POA, guardianship, and HIPAA authorizations should be reviewed by a licensed attorney in your state and notarized before they take effect."*
+- Existing `intake-pdfs.server.ts` (AO 242 + AO 240) and `motion-referral.server.ts` keep working — they consume the approved English answers map.
+- Add `js44.server.ts` that fills the JS-44 (AcroForm fields from the uploaded PDF).
+- Add `native-copies.server.ts` that renders the same four forms in the user's native language using pdf-lib (text layout, not AcroForm) for their records.
+- Email attaches 8 PDF links (4 English official + 4 native copies) instead of the current 4.
 
-## Test plan
-1. Buy $199 → intake → see Sentinel cards
-2. Click Add Packet → $99 Stripe sandbox checkout
-3. Fill 7-step intake → click Generate → see 8 PDF download links on `/readiness/review`
-4. Choose "Send to family now" → enter recipient email → confirm delivery (Resend log row)
-5. Choose "Vault" → $5/mo subscription checkout → packet marked vaulted
-6. Trigger emergency → verify recipient gets generated PDFs attached
+## Out of scope (this turn)
 
-Approve to proceed.
+- Marking sections "not fillable" — you said we'll do that pass-by-pass later.
+- Saving partial progress to the DB between forms — current intake is single-session; we keep that.
+- Civil Cover Sheet PDF field mapping requires me to parse `Civil_Cover_Sheet.pdf` first to extract field names; I'll do that as the first step before writing `js44.ts`.
+
+## Technical notes
+
+- All four form schemas are pure data — no JSX — so the renderer is one component.
+- Field IDs in schemas match the existing answer keys where possible (`full_name`, `facility_name`, etc.) so PDF fillers keep working unchanged.
+- Translation cache keyed by `{lang}:{fieldId}:{nativeText}` to avoid re-translating unchanged values.
+- "Approve" state stored in a separate `approvals: Set<string>` alongside `answers`.
+
+## Estimated impact
+
+- New files: ~10
+- Rewritten: `src/routes/intake.tsx` (large), `src/lib/email/intake-notification.server.ts` (attach native copies)
+- Net new dependency: none (pdf-lib + Lovable AI already in project)
+
+Reply with approval (or tweaks) and I'll build it.
