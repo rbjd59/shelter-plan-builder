@@ -276,7 +276,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
   };
 
   const wrap: React.CSSProperties = { minHeight: "100vh", background: "#0b1220", color: "#f6efe1", fontFamily: "Inter Tight, system-ui, sans-serif" };
-  const container: React.CSSProperties = { maxWidth: 760, margin: "0 auto", padding: "32px 24px 96px" };
+  const container: React.CSSProperties = { maxWidth: isBilingual ? 1100 : 760, margin: "0 auto", padding: "32px 24px 96px" };
 
   if (status === "done") {
     const mailHref = `mailto:intake@gohomesooner.com?subject=${encodeURIComponent(ui.spamSubject)}&body=${encodeURIComponent(ui.spamMailBody)}`;
