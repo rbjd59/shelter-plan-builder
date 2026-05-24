@@ -117,8 +117,14 @@ async function fillAO242(a: A): Promise<Uint8Array> {
   setText(form, "Date you were taken into immigration custody", s(a.date_taken_into_custody));
   setText(form, "Date of the removal or reinstatement order", s(a.detainer_date));
 
-  // Item 11: This IS an immigration habeas — Yes.
-  setCheckOption(form, "personal11", "Yes");
+  // Item 11: "Are you challenging a decision in immigration proceedings?"
+  // Answer = No. A 28 U.S.C. § 2241 petition challenges the legality of
+  // DHS/ICE custody itself, not the underlying removal proceedings.
+  // Under the REAL ID Act, 8 U.S.C. § 1252(a)(5), challenges to removal
+  // orders go to the Court of Appeals via petition for review; what
+  // survives in district court is the detention challenge (Zadvydas,
+  // Demore, Jennings).
+  setCheckOption(form, "personal11", "No");
   setCheckOption(form, "personal11c", "No");
   setCheckOption(form, "personal11d", "No");
   setCheckOption(form, "personal12", "No");
