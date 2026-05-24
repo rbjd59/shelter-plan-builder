@@ -10,15 +10,8 @@ import { buildJs44Pdf } from "./js44.server";
 import { buildNativeCopies } from "./native-copies.server";
 import { buildBilingualForms } from "./bilingual-forms.server";
 import { createOrUpdateCaseTracking, sendWelcomeEmail } from "@/lib/case-tracking.server";
-import brochureB64 from "@/assets/forms/SDFL-ProSeBrochure.pdf.b64";
 
-function b64ToBytes(b64: string): Uint8Array {
-  if (typeof Buffer !== "undefined") return new Uint8Array(Buffer.from(b64, "base64"));
-  const bin = atob(b64);
-  const bytes = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-  return bytes;
-}
+
 
 const FORMS_BUCKET = "intake-forms";
 const SIGNED_URL_TTL_SECONDS = 60 * 60 * 24 * 14;
@@ -86,11 +79,15 @@ async function uploadFormsAndSign(
     }
 
     type Up = { key: keyof UploadedUrls; path: string; bytes: Uint8Array };
+    // Habeas Explainer guide is pre-uploaded under _shared/ in two languages;
+    // sign the appropriate one (Spanish for es; English for en/ht).
+    const brochurePath = lang === "es"
+      ? `_shared/Habeas-Explainer-ES.pdf`
+      : `_shared/Habeas-Explainer-EN.pdf`;
     const uploads: Up[] = [
       { key: "habeasUrl", path: `${sessionId}/AO242-habeas-2241.pdf`, bytes: habeas },
       { key: "ifpUrl", path: `${sessionId}/AO240-in-forma-pauperis.pdf`, bytes: ifp },
       { key: "referralUrl", path: `${sessionId}/SDFL-Motion-Referral-Volunteer-Attorney.pdf`, bytes: referral },
-      { key: "brochureUrl", path: `_shared/SDFL-ProSe-Brochure.pdf`, bytes: b64ToBytes(brochureB64) },
     ];
     if (js44) uploads.push({ key: "js44Url", path: `${sessionId}/JS44-Civil-Cover-Sheet.pdf`, bytes: js44 });
     if (native) {
@@ -117,6 +114,12 @@ async function uploadFormsAndSign(
       if (r.error) { errors.push(`${u.key} sign: ${r.error.message}`); return; }
       (out as unknown as Record<string, string | null>)[u.key as string] = r.data?.signedUrl ?? null;
     }));
+    // Sign the shared Habeas Explainer (already pre-uploaded) for the email.
+    {
+      const r = await supabaseAdmin.storage.from(FORMS_BUCKET).createSignedUrl(brochurePath, SIGNED_URL_TTL_SECONDS);
+      if (r.error) errors.push(`brochureUrl sign: ${r.error.message}`);
+      else out.brochureUrl = r.data?.signedUrl ?? null;
+    }
     return out;
   } catch (e) {
     errors.push(`pdf build failed: ${e instanceof Error ? e.message : String(e)}`);
@@ -184,7 +187,7 @@ export async function enqueueIntakeNotification(params: {
     ${link(ifpUrl, "AO 240 — Application to Proceed In Forma Pauperis.pdf")}
     ${link(referralUrl, "SDFL Motion for Referral to Volunteer Attorney Program.pdf")}
     ${link(js44Url, "JS-44 — Civil Cover Sheet.pdf")}
-    ${brochureUrl ? `<p style="margin:0 0 6px;"><a href="${brochureUrl}" style="color:#0a58ca;text-decoration:underline;font-size:14px;">SDFL Pro Se Filers — Important Information (brochure).pdf</a></p>` : ""}
+    ${brochureUrl ? `<p style="margin:8px 0 6px;"><a href="${brochureUrl}" style="color:#0a58ca;text-decoration:underline;font-size:14px;font-weight:600;">📘 INCLUDE WITH MAILED PACKAGE — Habeas Explainer (${language === "es" ? "Español" : "English"}, NIP guide).pdf</a></p>` : ""}
     ${(bilingualHabeasUrl || bilingualIfpUrl || bilingualMotionUrl || bilingualJs44Url) ? `
       <p style="margin:14px 0 8px;font-size:13px;color:#1a1a1a;"><strong>Side-by-side bilingual forms (English left / ${escapeHtml(language)} right — for petitioner reference, NOT for filing):</strong></p>
       ${link(bilingualHabeasUrl, `AO 242 — bilingual (EN / ${language}).pdf`)}

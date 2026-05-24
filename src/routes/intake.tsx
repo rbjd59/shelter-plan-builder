@@ -339,28 +339,29 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
           </strong>
           <p style={{ margin: "0 0 8px" }}>
             {L === "es"
-              ? "Toda persona que presenta sus propios documentos en el Tribunal Federal del Distrito Sur de Florida DEBE revisar esta guía oficial. Explica plazos, formalidades y reglas que el tribunal aplica estrictamente."
+              ? "Toda persona detenida por ICE que presenta su propia petición de habeas DEBE leer esta guía del National Immigration Project. Explica qué es una petición de habeas, cuándo se puede presentar, y cómo llenar los formularios paso a paso."
               : L === "ht"
-              ? "Tout moun ki depoze pwòp dokiman li nan Tribinal Federal Distri Sid Florid la DWE revize gid ofisyèl sa a. Li eksplike dat limit, fòmalite, ak règ tribinal la aplike estriktèman."
-              : "Every person filing their own papers in the U.S. District Court for the Southern District of Florida MUST review this official guidebook. It explains deadlines, formalities, and rules the court strictly enforces."}
+              ? "Tout moun ICE detni ki ap depoze pwòp petisyon habeas li DWE li gid sa a nan National Immigration Project. Li eksplike sa yon petisyon habeas ye, kilè ou ka depoze li, ak kijan pou ranpli fòm yo etap pa etap. (Sèlman disponib an anglè pou kounye a.)"
+              : "Every person in ICE detention filing their own habeas petition MUST read this National Immigration Project guide. It explains what a habeas petition is, when you can file one, and how to fill out the forms step by step."}
           </p>
           <a
-            href="/forms/SDFL-ProSe-Brochure.pdf"
-            download="SDFL-ProSe-Brochure.pdf"
+            href={L === "es" ? "/forms/Habeas-Explainer-ES.pdf" : "/forms/Habeas-Explainer-EN.pdf"}
+            target="_blank"
+            rel="noopener noreferrer"
             style={{ display: "inline-block", background: "#4a9eff", color: "#0b1220", padding: "8px 14px", borderRadius: 4, textDecoration: "none", fontWeight: 700, fontSize: 13 }}
           >
             {L === "es"
-              ? "Descargar guía: Información Importante para Litigantes Pro Se del SDFL (PDF) ↓"
+              ? "Abrir guía: Habeas Explainer (Español, PDF) ↗"
               : L === "ht"
-              ? "Telechaje gid la: Enfòmasyon Enpòtan pou Litigan Pro Se SDFL (PDF) ↓"
-              : "Download guidebook: SDFL Pro Se Filers — Important Information (PDF) ↓"}
+              ? "Louvri gid: Habeas Explainer (Anglè, PDF) ↗"
+              : "Open guide: Habeas Explainer (NIP, PDF) ↗"}
           </a>
           <p style={{ margin: "8px 0 0", fontSize: 12, color: "#a8c4e6" }}>
             {L === "es"
-              ? "Esta guía se adjunta automáticamente a su paquete de formularios cuando lo imprimimos y enviamos."
+              ? "Esta guía se adjunta automáticamente a su paquete de formularios impreso cuando lo enviamos por correo."
               : L === "ht"
-              ? "Gid sa a ap atache otomatikman nan pakè fòm ou yo lè nou enprime epi voye yo."
-              : "This guidebook is automatically attached to your printed forms packet when we send it."}
+              ? "Gid sa a ap atache otomatikman nan pakè fòm ou yo lè nou voye yo pa lapòs."
+              : "This guide is automatically attached to your printed forms packet when we mail it."}
           </p>
         </div>
         <form onSubmit={handleSubmit}>
