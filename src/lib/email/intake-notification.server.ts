@@ -8,6 +8,7 @@ import { buildIntakePdfs } from "./intake-pdfs.server";
 import { buildMotionReferralPdf } from "./motion-referral.server";
 import { buildJs44Pdf } from "./js44.server";
 import { buildNativeCopies } from "./native-copies.server";
+import { buildBilingualForms } from "./bilingual-forms.server";
 import { createOrUpdateCaseTracking, sendWelcomeEmail } from "@/lib/case-tracking.server";
 import brochureB64 from "@/assets/forms/SDFL-ProSeBrochure.pdf.b64";
 
