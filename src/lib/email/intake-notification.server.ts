@@ -86,11 +86,15 @@ async function uploadFormsAndSign(
     }
 
     type Up = { key: keyof UploadedUrls; path: string; bytes: Uint8Array };
+    // Habeas Explainer guide is pre-uploaded under _shared/ in two languages;
+    // sign the appropriate one (Spanish for es; English for en/ht).
+    const brochurePath = lang === "es"
+      ? `_shared/Habeas-Explainer-ES.pdf`
+      : `_shared/Habeas-Explainer-EN.pdf`;
     const uploads: Up[] = [
       { key: "habeasUrl", path: `${sessionId}/AO242-habeas-2241.pdf`, bytes: habeas },
       { key: "ifpUrl", path: `${sessionId}/AO240-in-forma-pauperis.pdf`, bytes: ifp },
       { key: "referralUrl", path: `${sessionId}/SDFL-Motion-Referral-Volunteer-Attorney.pdf`, bytes: referral },
-      { key: "brochureUrl", path: `_shared/SDFL-ProSe-Brochure.pdf`, bytes: b64ToBytes(brochureB64) },
     ];
     if (js44) uploads.push({ key: "js44Url", path: `${sessionId}/JS44-Civil-Cover-Sheet.pdf`, bytes: js44 });
     if (native) {
