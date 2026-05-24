@@ -46,6 +46,10 @@ interface UploadedUrls {
   nativeIfpUrl: string | null;
   nativeMotionUrl: string | null;
   nativeJs44Url: string | null;
+  bilingualHabeasUrl: string | null;
+  bilingualIfpUrl: string | null;
+  bilingualMotionUrl: string | null;
+  bilingualJs44Url: string | null;
   errors: string[];
 }
 
