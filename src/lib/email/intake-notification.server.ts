@@ -187,7 +187,7 @@ export async function enqueueIntakeNotification(params: {
     ${link(ifpUrl, "AO 240 — Application to Proceed In Forma Pauperis.pdf")}
     ${link(referralUrl, "SDFL Motion for Referral to Volunteer Attorney Program.pdf")}
     ${link(js44Url, "JS-44 — Civil Cover Sheet.pdf")}
-    ${brochureUrl ? `<p style="margin:0 0 6px;"><a href="${brochureUrl}" style="color:#0a58ca;text-decoration:underline;font-size:14px;">SDFL Pro Se Filers — Important Information (brochure).pdf</a></p>` : ""}
+    ${brochureUrl ? `<p style="margin:8px 0 6px;"><a href="${brochureUrl}" style="color:#0a58ca;text-decoration:underline;font-size:14px;font-weight:600;">📘 INCLUDE WITH MAILED PACKAGE — Habeas Explainer (${language === "es" ? "Español" : "English"}, NIP guide).pdf</a></p>` : ""}
     ${(bilingualHabeasUrl || bilingualIfpUrl || bilingualMotionUrl || bilingualJs44Url) ? `
       <p style="margin:14px 0 8px;font-size:13px;color:#1a1a1a;"><strong>Side-by-side bilingual forms (English left / ${escapeHtml(language)} right — for petitioner reference, NOT for filing):</strong></p>
       ${link(bilingualHabeasUrl, `AO 242 — bilingual (EN / ${language}).pdf`)}
