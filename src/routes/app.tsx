@@ -31,6 +31,9 @@ const KEY = "v1";
 interface CaseRecord {
   habeasPdfB64: string;
   ifpPdfB64: string;
+  motionPdfB64?: string | null;
+  js44PdfB64?: string | null;
+  brochurePdfB64?: string;
   caseId: string;
   fullName: string;
   contactName: string;
@@ -42,6 +45,7 @@ interface CaseRecord {
   alertEmail?: string;     // where the EMERGENCY alert goes
   setupCompleted?: boolean;
 }
+
 
 function openDb(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
