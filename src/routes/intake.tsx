@@ -230,12 +230,44 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
   const [status, setStatus] = useState<"ready" | "submitting" | "done" | "error">("ready");
   const [errMsg, setErrMsg] = useState("");
   const [answers, setAnswers] = useState<Record<string, string | boolean>>({});
+  const [englishAnswers, setEnglishAnswers] = useState<Record<string, string>>({});
+  const [approvals, setApprovals] = useState<Record<string, boolean>>({});
+
+  const isBilingual = L !== "en";
+
+  const requiredApprovals = useMemo(() => {
+    const keys: string[] = [];
+    for (const s of sections) for (const f of s.fields) {
+      if (f.disabled) continue;
+      if (f.type === "checkbox" || f.type === "number" || f.type === "date") continue;
+      const v = (answers[f.key] as string) || "";
+      if (v.trim()) keys.push(f.key);
+    }
+    return keys;
+  }, [answers]);
+  const allApproved = !isBilingual || requiredApprovals.every((k) => approvals[k]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!allApproved) {
+      setErrMsg(L === "es" ? "Apruebe todas las traducciones al inglés antes de enviar." : L === "ht" ? "Apwouve tout tradiksyon Angle yo anvan w voye." : "Approve all English translations before submitting.");
+      setStatus("error");
+      return;
+    }
     setStatus("submitting");
     try {
-      await submitFn({ data: { answers, language: L } });
+      // Merge: English-approved values overwrite native values for PDF filling;
+      // preserve the native originals under "<key>__native" for record copies.
+      const merged: Record<string, string | boolean> = { ...answers };
+      if (isBilingual) {
+        for (const [k, v] of Object.entries(answers)) {
+          if (typeof v === "string" && englishAnswers[k]) {
+            merged[`${k}__native`] = v;
+            merged[k] = englishAnswers[k];
+          }
+        }
+      }
+      await submitFn({ data: { answers: merged, language: L } });
       setStatus("done");
     } catch (err) {
       setErrMsg((err as Error).message);
@@ -312,19 +344,42 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
                   <ReliefChecklist lang={L} answers={answers} setAnswers={setAnswers} />
                 </>
               )}
-              {s.fields.map((f) => (
-                <div key={f.key} style={{ marginBottom: 16 }}>
-                  <label style={{ display: "block", fontSize: 14, fontWeight: 600, marginBottom: 4 }}>{f.label[L]}</label>
-                  {f.hint && <div style={{ fontSize: 12, color: "#888", marginBottom: 4 }}>{f.hint[L]}</div>}
-                  {f.type === "textarea" ? (
-                    <textarea value={(answers[f.key] as string) || ""} onChange={(e) => setAnswers((a) => ({ ...a, [f.key]: e.target.value }))} rows={3} disabled={f.disabled} style={{ ...inputStyle, ...(f.disabled ? disabledStyle : null) }} />
-                  ) : f.type === "checkbox" ? (
-                    <input type="checkbox" checked={!!answers[f.key]} onChange={(e) => setAnswers((a) => ({ ...a, [f.key]: e.target.checked }))} disabled={f.disabled} />
-                  ) : (
-                    <input type={f.type || "text"} value={(answers[f.key] as string) || ""} onChange={(e) => setAnswers((a) => ({ ...a, [f.key]: e.target.value }))} disabled={f.disabled} style={{ ...inputStyle, ...(f.disabled ? disabledStyle : null) }} />
-                  )}
-                </div>
-              ))}
+              {s.fields.map((f) => {
+                const isTextish = !f.type || f.type === "text" || f.type === "textarea";
+                if (isTextish && !f.disabled) {
+                  return (
+                    <BilingualField
+                      key={f.key}
+                      fieldKey={f.key}
+                      label={f.label[L]}
+                      hint={f.hint?.[L]}
+                      type={f.type === "textarea" ? "textarea" : "text"}
+                      lang={L}
+                      nativeValue={(answers[f.key] as string) || ""}
+                      englishValue={englishAnswers[f.key] || ""}
+                      approved={!!approvals[f.key]}
+                      onChange={({ native, english, approved }) => {
+                        setAnswers((a) => ({ ...a, [f.key]: native }));
+                        setEnglishAnswers((a) => ({ ...a, [f.key]: english }));
+                        setApprovals((a) => ({ ...a, [f.key]: approved }));
+                      }}
+                    />
+                  );
+                }
+                return (
+                  <div key={f.key} style={{ marginBottom: 16 }}>
+                    <label style={{ display: "block", fontSize: 14, fontWeight: 600, marginBottom: 4 }}>{f.label[L]}</label>
+                    {f.hint && <div style={{ fontSize: 12, color: "#888", marginBottom: 4 }}>{f.hint[L]}</div>}
+                    {f.type === "textarea" ? (
+                      <textarea value={(answers[f.key] as string) || ""} onChange={(e) => setAnswers((a) => ({ ...a, [f.key]: e.target.value }))} rows={3} disabled={f.disabled} style={{ ...inputStyle, ...(f.disabled ? disabledStyle : null) }} />
+                    ) : f.type === "checkbox" ? (
+                      <input type="checkbox" checked={!!answers[f.key]} onChange={(e) => setAnswers((a) => ({ ...a, [f.key]: e.target.checked }))} disabled={f.disabled} />
+                    ) : (
+                      <input type={f.type || "text"} value={(answers[f.key] as string) || ""} onChange={(e) => setAnswers((a) => ({ ...a, [f.key]: e.target.value }))} disabled={f.disabled} style={{ ...inputStyle, ...(f.disabled ? disabledStyle : null) }} />
+                    )}
+                  </div>
+                );
+              })}
             </section>
           ))}
           <button type="submit" disabled={status === "submitting"} style={{ background: "#e8a04a", color: "#0b1220", padding: "16px 32px", fontSize: 16, fontWeight: 700, border: "none", borderRadius: 4, cursor: "pointer", width: "100%" }}>
