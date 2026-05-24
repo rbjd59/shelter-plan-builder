@@ -64,6 +64,7 @@ async function uploadFormsAndSign(
   const out: UploadedUrls = {
     habeasUrl: null, ifpUrl: null, brochureUrl: null, referralUrl: null, js44Url: null,
     nativeHabeasUrl: null, nativeIfpUrl: null, nativeMotionUrl: null, nativeJs44Url: null,
+    bilingualHabeasUrl: null, bilingualIfpUrl: null, bilingualMotionUrl: null, bilingualJs44Url: null,
     errors,
   };
 
@@ -76,6 +77,12 @@ async function uploadFormsAndSign(
     if (lang !== "en") {
       try { native = await buildNativeCopies(answers, lang); }
       catch (e) { errors.push(`native copies build: ${e instanceof Error ? e.message : String(e)}`); }
+    }
+    let bilingual: Awaited<ReturnType<typeof buildBilingualForms>> | null = null;
+    if (lang !== "en") {
+      try {
+        bilingual = await buildBilingualForms(answers, lang, { ao242: habeas, ao240: ifp, motion: referral, js44 });
+      } catch (e) { errors.push(`bilingual build: ${e instanceof Error ? e.message : String(e)}`); }
     }
 
     type Up = { key: keyof UploadedUrls; path: string; bytes: Uint8Array };
@@ -93,6 +100,12 @@ async function uploadFormsAndSign(
         { key: "nativeMotionUrl", path: `${sessionId}/SDFL-Motion-${lang}-copy.pdf`, bytes: native.motion },
         { key: "nativeJs44Url", path: `${sessionId}/JS44-${lang}-copy.pdf`, bytes: native.js44 },
       );
+    }
+    if (bilingual) {
+      if (bilingual.ao242) uploads.push({ key: "bilingualHabeasUrl", path: `${sessionId}/AO242-bilingual-${lang}.pdf`, bytes: bilingual.ao242 });
+      if (bilingual.ao240) uploads.push({ key: "bilingualIfpUrl", path: `${sessionId}/AO240-bilingual-${lang}.pdf`, bytes: bilingual.ao240 });
+      if (bilingual.motion) uploads.push({ key: "bilingualMotionUrl", path: `${sessionId}/SDFL-Motion-bilingual-${lang}.pdf`, bytes: bilingual.motion });
+      if (bilingual.js44) uploads.push({ key: "bilingualJs44Url", path: `${sessionId}/JS44-bilingual-${lang}.pdf`, bytes: bilingual.js44 });
     }
 
     await Promise.all(uploads.map(async (u) => {
