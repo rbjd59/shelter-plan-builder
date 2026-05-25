@@ -295,6 +295,19 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
     const mailHref = `mailto:intake@gohomesooner.com?subject=${encodeURIComponent(ui.spamSubject)}&body=${encodeURIComponent(ui.spamMailBody)}`;
     return (
       <div style={wrap}><div style={container}>
+        {pairCode && (
+          <div style={{ background: "linear-gradient(135deg, #e8a04a 0%, #d4882c 100%)", color: "#0b1220", padding: 28, borderRadius: 12, marginBottom: 20, textAlign: "center", boxShadow: "0 8px 30px rgba(232,160,74,0.3)" }}>
+            <p style={{ margin: "0 0 8px", fontSize: 12, letterSpacing: 2, fontWeight: 700, opacity: 0.85 }}>
+              {L === "es" ? "ABRA LA APP DETENCIONDEFENSA E INGRESE ESTE CÓDIGO" : L === "ht" ? "LOUVRI APP DETENCIONDEFENSA EPI ANTRE KÒD SA A" : "OPEN THE DETENCIONDEFENSA PHONE APP AND ENTER THIS CODE"}
+            </p>
+            <p style={{ margin: "8px 0 0", fontSize: 56, fontWeight: 900, letterSpacing: 12, fontVariantNumeric: "tabular-nums", fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}>
+              {pairCode}
+            </p>
+            <p style={{ margin: "12px 0 0", fontSize: 13, opacity: 0.8 }}>
+              {L === "es" ? "Este código vincula su intake con la app HELP NOW." : L === "ht" ? "Kòd sa a koneksyon antre w lan ak app HELP NOW lan." : "This code links your intake to the HELP NOW app."}
+            </p>
+          </div>
+        )}
         <div style={{ background: "#0b1220", border: "2px solid #e8a04a", padding: 20, borderRadius: 8, marginBottom: 20, textAlign: "center" }}>
           <p style={{ margin: "0 0 4px", fontSize: 11, letterSpacing: 2, color: "#e8a04a", fontWeight: 700 }}>DEMO · INVESTOR PREVIEW</p>
           <p style={{ margin: 0, fontSize: 22, fontWeight: 800, color: "#fff5d6" }}>ASSET PROTECTION ACTIVATED</p>
