@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { bootstrapAppFromToken, type AppBootstrapPayload } from "@/lib/app-install.functions";
+import { backfillAppPdfs } from "@/lib/app-backfill.functions";
 
 export const Route = createFileRoute("/app")({
   component: EmergencyApp,
@@ -226,6 +227,7 @@ async function flushOutbox(): Promise<number> {
 function EmergencyApp() {
   const navigate = useNavigate();
   const bootstrap = useServerFn(bootstrapAppFromToken);
+  const backfill = useServerFn(backfillAppPdfs);
   const [status, setStatus] = useState<"loading" | "needs-token" | "ready" | "error">("loading");
   const [errorMsg, setErrorMsg] = useState("");
   const [record, setRecord] = useState<CaseRecord | null>(null);
@@ -287,8 +289,23 @@ function EmergencyApp() {
       try {
         const existing = await dbGet();
         if (existing) {
-          setRecord(existing);
-          setEmailInput(existing.alertEmail || existing.contactEmail || "");
+          let rec = existing;
+          // Back-fill secondary PDFs added after this install (JS-44 cover
+          // sheet, attorney referral motion, pro se brochure).
+          if (rec.caseId && (!rec.js44PdfB64 || !rec.motionPdfB64 || !rec.brochurePdfB64)) {
+            try {
+              const extra = await backfill({ data: { caseId: rec.caseId } });
+              rec = {
+                ...rec,
+                js44PdfB64: rec.js44PdfB64 ?? extra.js44PdfB64,
+                motionPdfB64: rec.motionPdfB64 ?? extra.motionPdfB64,
+                brochurePdfB64: rec.brochurePdfB64 ?? extra.brochurePdfB64,
+              };
+              await dbPut(rec);
+            } catch { /* offline or case missing — keep existing record */ }
+          }
+          setRecord(rec);
+          setEmailInput(rec.alertEmail || rec.contactEmail || "");
           setStatus("ready");
           return;
         }
