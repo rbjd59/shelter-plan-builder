@@ -3,6 +3,7 @@ import { useState, useMemo } from "react";
 import { z } from "zod";
 import { useServerFn } from "@tanstack/react-start";
 import { submitDemoIntake } from "@/utils/payments.functions";
+import { pairIntakeWithApp } from "@/lib/intake-pair.functions";
 import { DisclosureGate } from "@/components/DisclosureGate";
 import { SentinelUpsellCards } from "@/components/SentinelUpsellCards";
 import { BilingualField } from "@/components/intake/BilingualField";
@@ -226,9 +227,11 @@ function IntakePage() {
 function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | undefined; L: Lang; ui: typeof UI[Lang] }) {
 
   const submitFn = useServerFn(submitDemoIntake);
+  const pairFn = useServerFn(pairIntakeWithApp);
 
   const [status, setStatus] = useState<"ready" | "submitting" | "done" | "error">("ready");
   const [errMsg, setErrMsg] = useState("");
+  const [pairCode, setPairCode] = useState<string | null>(null);
   const [answers, setAnswers] = useState<Record<string, string | boolean>>({});
   const [englishAnswers, setEnglishAnswers] = useState<Record<string, string>>({});
   const [approvals, setApprovals] = useState<Record<string, boolean>>({});
@@ -268,7 +271,16 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
           }
         }
       }
-      await submitFn({ data: { answers: merged, language: L } });
+      // Fire intake email/PDFs and pairing in parallel.
+      // Pairing failure is non-fatal — we still mark done so PDFs go out.
+      const [, pairResult] = await Promise.all([
+        submitFn({ data: { answers: merged, language: L } }),
+        pairFn({ data: { answers: merged } }).catch((err) => {
+          console.error("Pairing failed:", err);
+          return null;
+        }),
+      ]);
+      if (pairResult?.code) setPairCode(pairResult.code);
       setStatus("done");
     } catch (err) {
       setErrMsg((err as Error).message);
