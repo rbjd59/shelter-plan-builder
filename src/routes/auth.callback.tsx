@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { getMyAdminStatus } from "@/lib/admin.functions";
 
 export const Route = createFileRoute("/auth/callback")({
   head: () => ({ meta: [{ title: "Signing in… — DetencionDefensa.com" }] }),
@@ -12,19 +13,26 @@ function AuthCallbackPage() {
   const [errMsg, setErrMsg] = useState("");
 
   useEffect(() => {
-    // Supabase auto-handles the URL hash via detectSessionInUrl.
+    const routeAfterAuth = async () => {
+      try {
+        const status = await getMyAdminStatus();
+        navigate({ to: status.isAdmin ? "/admin" : "/dashboard" });
+      } catch {
+        navigate({ to: "/dashboard" });
+      }
+    };
     const sub = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) navigate({ to: "/dashboard" });
+      if (session) routeAfterAuth();
     });
-    // Fallback: if there's already a session, redirect now.
     supabase.auth.getSession().then(({ data, error }) => {
       if (error) setErrMsg(error.message);
-      if (data.session) navigate({ to: "/dashboard" });
+      if (data.session) routeAfterAuth();
     });
     return () => {
       sub.data.subscription.unsubscribe();
     };
   }, [navigate]);
+
 
   return (
     <div style={{ minHeight: "100vh", background: "#0b1220", color: "#f6efe1", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Inter Tight, system-ui, sans-serif" }}>
