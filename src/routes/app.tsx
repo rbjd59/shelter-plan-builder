@@ -289,8 +289,23 @@ function EmergencyApp() {
       try {
         const existing = await dbGet();
         if (existing) {
-          setRecord(existing);
-          setEmailInput(existing.alertEmail || existing.contactEmail || "");
+          let rec = existing;
+          // Back-fill secondary PDFs added after this install (JS-44 cover
+          // sheet, attorney referral motion, pro se brochure).
+          if (rec.caseId && (!rec.js44PdfB64 || !rec.motionPdfB64 || !rec.brochurePdfB64)) {
+            try {
+              const extra = await backfill({ data: { caseId: rec.caseId } });
+              rec = {
+                ...rec,
+                js44PdfB64: rec.js44PdfB64 ?? extra.js44PdfB64,
+                motionPdfB64: rec.motionPdfB64 ?? extra.motionPdfB64,
+                brochurePdfB64: rec.brochurePdfB64 ?? extra.brochurePdfB64,
+              };
+              await dbPut(rec);
+            } catch { /* offline or case missing — keep existing record */ }
+          }
+          setRecord(rec);
+          setEmailInput(rec.alertEmail || rec.contactEmail || "");
           setStatus("ready");
           return;
         }
