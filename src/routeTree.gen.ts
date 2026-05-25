@@ -31,6 +31,7 @@ import { Route as ReadinessIntakeRouteImport } from './routes/readiness/intake'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCasesRouteImport } from './routes/_authenticated/cases'
+import { Route as ApiPublicMailFromCheckRouteImport } from './routes/api/public/mail-from-check'
 import { Route as AuthenticatedCaseIdRouteImport } from './routes/_authenticated/case.$id'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
@@ -148,6 +149,11 @@ const AuthenticatedCasesRoute = AuthenticatedCasesRouteImport.update({
   path: '/cases',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const ApiPublicMailFromCheckRoute = ApiPublicMailFromCheckRouteImport.update({
+  id: '/api/public/mail-from-check',
+  path: '/api/public/mail-from-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedCaseIdRoute = AuthenticatedCaseIdRouteImport.update({
   id: '/case/$id',
   path: '/case/$id',
@@ -212,6 +218,7 @@ export interface FileRoutesByFullPath {
   '/readiness/start': typeof ReadinessStartRoute
   '/track/$token': typeof TrackTokenRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
+  '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
@@ -242,6 +249,7 @@ export interface FileRoutesByTo {
   '/readiness/start': typeof ReadinessStartRoute
   '/track/$token': typeof TrackTokenRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
+  '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
@@ -274,6 +282,7 @@ export interface FileRoutesById {
   '/readiness/start': typeof ReadinessStartRoute
   '/track/$token': typeof TrackTokenRoute
   '/_authenticated/case/$id': typeof AuthenticatedCaseIdRoute
+  '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
@@ -306,6 +315,7 @@ export interface FileRouteTypes {
     | '/readiness/start'
     | '/track/$token'
     | '/case/$id'
+    | '/api/public/mail-from-check'
     | '/api/public/cron/process-due-activations'
     | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
@@ -336,6 +346,7 @@ export interface FileRouteTypes {
     | '/readiness/start'
     | '/track/$token'
     | '/case/$id'
+    | '/api/public/mail-from-check'
     | '/api/public/cron/process-due-activations'
     | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
@@ -367,6 +378,7 @@ export interface FileRouteTypes {
     | '/readiness/start'
     | '/track/$token'
     | '/_authenticated/case/$id'
+    | '/api/public/mail-from-check'
     | '/api/public/cron/process-due-activations'
     | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
@@ -396,6 +408,7 @@ export interface RootRouteChildren {
   ReadinessSignRoute: typeof ReadinessSignRoute
   ReadinessStartRoute: typeof ReadinessStartRoute
   TrackTokenRoute: typeof TrackTokenRoute
+  ApiPublicMailFromCheckRoute: typeof ApiPublicMailFromCheckRoute
   ApiPublicCronProcessDueActivationsRoute: typeof ApiPublicCronProcessDueActivationsRoute
   ApiPublicDevSendInstallRoute: typeof ApiPublicDevSendInstallRoute
   ApiPublicEmergencyActivateRoute: typeof ApiPublicEmergencyActivateRoute
@@ -560,6 +573,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCasesRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/api/public/mail-from-check': {
+      id: '/api/public/mail-from-check'
+      path: '/api/public/mail-from-check'
+      fullPath: '/api/public/mail-from-check'
+      preLoaderRoute: typeof ApiPublicMailFromCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/case/$id': {
       id: '/_authenticated/case/$id'
       path: '/case/$id'
@@ -649,6 +669,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReadinessSignRoute: ReadinessSignRoute,
   ReadinessStartRoute: ReadinessStartRoute,
   TrackTokenRoute: TrackTokenRoute,
+  ApiPublicMailFromCheckRoute: ApiPublicMailFromCheckRoute,
   ApiPublicCronProcessDueActivationsRoute:
     ApiPublicCronProcessDueActivationsRoute,
   ApiPublicDevSendInstallRoute: ApiPublicDevSendInstallRoute,
