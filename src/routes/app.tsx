@@ -44,6 +44,7 @@ interface CaseRecord {
   role: "client" | "family";
   // Setup-only fields (stored after one-time setup):
   alertEmail?: string;     // where the EMERGENCY alert goes
+  cancelPin?: string;      // 4-digit PIN required to cancel after fire
   setupCompleted?: boolean;
 }
 
@@ -129,7 +130,7 @@ function b64ToBlobUrl(b64: string): string {
 
 const CLIENT_CANCEL_WINDOW_MS = 2 * 60 * 60 * 1000; // 2 hours — client phone is at the scene
 const FAMILY_CANCEL_WINDOW_MS = 12 * 60 * 60 * 1000; // 12 hours — family confirms detention
-const CANCEL_HOLD_MS = 15000; // 15 seconds to cancel
+const FIRE_HOLD_MS = 4000; // 4 seconds to fire the alert
 
 const LEGAL_EMAIL = "legal@detenciondefensa.com";
 
@@ -236,6 +237,8 @@ function EmergencyApp() {
 
   // Setup form state
   const [emailInput, setEmailInput] = useState("");
+  const [pinInput, setPinInput] = useState("");
+  const [pinConfirm, setPinConfirm] = useState("");
   const [gpsState, setGpsState] = useState<"idle" | "asking" | "granted" | "denied">("idle");
   const [savingSetup, setSavingSetup] = useState(false);
 
@@ -246,8 +249,10 @@ function EmergencyApp() {
   const [activationId, setActivationId] = useState<string | null>(null);
   const [queuedOffline, setQueuedOffline] = useState(false);
   const [pendingCount, setPendingCount] = useState(0);
+  const [pinEntry, setPinEntry] = useState("");
+  const [pinError, setPinError] = useState(false);
 
-  // Cancel-hold state (15-second hold while in cancel window)
+  // Hold-to-fire state (4-second hold on HELP button)
   const [holding, setHolding] = useState(false);
   const [holdProgress, setHoldProgress] = useState(0);
   const holdStart = useRef<number | null>(null);
@@ -354,24 +359,29 @@ function EmergencyApp() {
   const saveSetup = useCallback(async () => {
     if (!record) return;
     if (!emailInput || !emailInput.includes("@")) return;
+    if (!/^\d{4}$/.test(pinInput)) return;
+    if (pinInput !== pinConfirm) return;
     setSavingSetup(true);
     const updated: CaseRecord = {
       ...record,
       alertEmail: emailInput.trim(),
+      cancelPin: pinInput,
       setupCompleted: true,
     };
     await dbPut(updated);
     setRecord(updated);
     setSavingSetup(false);
-  }, [record, emailInput]);
+  }, [record, emailInput, pinInput, pinConfirm]);
 
-  // Fire the alert. Single tap — no hold required.
-  // Step 1: server POST (fail-safe — sent through our verified domain, not the user's mail app).
-  // Step 2: open mailto from the user's phone (redundant — also reaches us via their mail).
+  // Fire the alert. Triggered after a 4-second hold on HELP NOW.
+  // Step 1: server POST (fail-safe — sent through our verified domain).
+  // Step 2: open mailto from the user's phone (redundant — also reaches us).
   const fireAlert = useCallback(async (rec: CaseRecord) => {
     if (navigator.vibrate) navigator.vibrate([300, 100, 300, 100, 600]);
     setFiredAt(Date.now());
     setCancelled(false);
+    setPinEntry("");
+    setPinError(false);
 
     const fix = await getCoords();
     const ts = new Date().toISOString();
@@ -415,7 +425,7 @@ function EmergencyApp() {
       "",
       `Family contact on file: ${rec.contactName} <${rec.contactEmail}>`,
       "",
-      "AO 242 Habeas + AO 240 IFP for this case are already on file.",
+      "Court packet (AO 242 Habeas, AO 240 IFP, JS-44 Civil Cover Sheet, Motion for Volunteer Attorney) is on file — secure download links were emailed separately to legal@detenciondefensa.com.",
       isFamily
         ? "ACTION: Wait the 12-hour cancel window. If not cancelled, begin locating, notify contacts, prepare packet."
         : "ACTION: Wait the 2-hour cancel window. If not cancelled, begin locating, notify contacts, prepare packet.",
@@ -435,22 +445,22 @@ function EmergencyApp() {
       contact_email: rec.contactEmail || undefined,
       cancel_of: activationId || undefined,
     });
-    const roleTag = rec.role === "family" ? "FAMILY" : "CLIENT";
-    const subject = `CANCEL EMERGENCY [${roleTag}] — ${rec.fullName} — Case ${rec.caseId.slice(0, 12)}`;
-    const body = [
-      `FALSE ALARM — please disregard the previous emergency alert (triggered from ${rec.role === "family" ? "family contact phone" : "client phone"}).`,
-      "",
-      `Name: ${rec.fullName}`,
-      `Case ID: ${rec.caseId}`,
-      `Cancelled at (UTC): ${new Date().toISOString()}`,
-    ].join("\n");
-    const cc = rec.contactEmail ? `&cc=${encodeURIComponent(rec.contactEmail)}` : "";
-    const recipient = rec.alertEmail || LEGAL_EMAIL;
-    const mailto = `mailto:${recipient}?subject=${encodeURIComponent(subject)}${cc}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailto;
   }, [activationId]);
 
-  const cancelHoldRelease = useCallback(() => {
+  const tryPinCancel = useCallback(
+    (rec: CaseRecord, entered: string) => {
+      if (rec.cancelPin && entered === rec.cancelPin) {
+        setPinError(false);
+        sendCancellation(rec);
+      } else {
+        setPinError(true);
+        if (navigator.vibrate) navigator.vibrate([80, 60, 80]);
+      }
+    },
+    [sendCancellation],
+  );
+
+  const holdRelease = useCallback(() => {
     setHolding(false);
     setHoldProgress(0);
     holdStart.current = null;
@@ -459,25 +469,28 @@ function EmergencyApp() {
     if (navigator.vibrate) navigator.vibrate(0);
   }, []);
 
-  const startCancelHold = useCallback((rec: CaseRecord) => {
-    if (holding) return;
-    setHolding(true);
-    holdStart.current = performance.now();
-    if (navigator.vibrate) navigator.vibrate(30);
-    const tick = () => {
-      if (holdStart.current == null) return;
-      const elapsed = performance.now() - holdStart.current;
-      const p = Math.min(elapsed / CANCEL_HOLD_MS, 1);
-      setHoldProgress(p);
-      if (p >= 1) {
-        cancelHoldRelease();
-        sendCancellation(rec);
-        return;
-      }
+  const startFireHold = useCallback(
+    (rec: CaseRecord) => {
+      if (holding) return;
+      setHolding(true);
+      holdStart.current = performance.now();
+      if (navigator.vibrate) navigator.vibrate(30);
+      const tick = () => {
+        if (holdStart.current == null) return;
+        const elapsed = performance.now() - holdStart.current;
+        const p = Math.min(elapsed / FIRE_HOLD_MS, 1);
+        setHoldProgress(p);
+        if (p >= 1) {
+          holdRelease();
+          fireAlert(rec);
+          return;
+        }
+        rafRef.current = requestAnimationFrame(tick);
+      };
       rafRef.current = requestAnimationFrame(tick);
-    };
-    rafRef.current = requestAnimationFrame(tick);
-  }, [holding, cancelHoldRelease, sendCancellation]);
+    },
+    [holding, holdRelease, fireAlert],
+  );
 
   // ---- UI states ----
   if (status === "loading") {
@@ -566,15 +579,17 @@ function EmergencyApp() {
   // ---- One-time setup gate ----
   if (!record.setupCompleted) {
     const emailValid = emailInput.includes("@") && emailInput.length > 4;
-    const canSave = emailValid && gpsState === "granted";
+    const pinValid = /^\d{4}$/.test(pinInput);
+    const pinMatches = pinInput.length > 0 && pinInput === pinConfirm;
+    const canSave = emailValid && gpsState === "granted" && pinValid && pinMatches;
     return (
       <Shell>
         <div className="w-full max-w-md text-white">
           <header className="text-center">
             <p className="text-xs uppercase tracking-[0.2em] text-white/60">Step 2 — Set up</p>
-            <h1 className="mt-2 text-2xl font-black">Two quick things</h1>
+            <h1 className="mt-2 text-2xl font-black">Three quick things</h1>
             <p className="mt-2 text-sm text-white/70">
-              Do this once now, in a safe place. The HELP button will work instantly later — no
+              Do this once now, in a safe place. Then HELP will fire after a 4-second hold — no
               questions, no permission pop-ups.
             </p>
           </header>
@@ -583,7 +598,7 @@ function EmergencyApp() {
           <div className="mt-6 rounded-2xl border border-white/15 bg-white/5 p-5">
             <p className="text-base font-bold text-white">1. Where should the alert go?</p>
             <p className="mt-1 text-xs text-white/60">
-              Your lawyer or family contact. We'll auto-send to your legal team too.
+              Your lawyer or family contact. We'll auto-send to legal@detenciondefensa.com too.
             </p>
             <input
               type="email"
@@ -629,6 +644,37 @@ function EmergencyApp() {
             )}
           </div>
 
+          {/* PIN */}
+          <div className="mt-4 rounded-2xl border border-white/15 bg-white/5 p-5">
+            <p className="text-base font-bold text-white">3. Pick a 4-digit cancel PIN</p>
+            <p className="mt-1 text-xs text-white/60">
+              This is the ONLY way to cancel an alert. Memorize it. Don't write it on your phone.
+            </p>
+            <input
+              type="password"
+              value={pinInput}
+              onChange={(e) => setPinInput(e.target.value.replace(/\D/g, "").slice(0, 4))}
+              placeholder="• • • •"
+              inputMode="numeric"
+              autoComplete="off"
+              maxLength={4}
+              className="mt-3 w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-center text-2xl tracking-[0.6em] text-white placeholder:text-white/30 focus:border-red-400 focus:outline-none"
+            />
+            <input
+              type="password"
+              value={pinConfirm}
+              onChange={(e) => setPinConfirm(e.target.value.replace(/\D/g, "").slice(0, 4))}
+              placeholder="confirm PIN"
+              inputMode="numeric"
+              autoComplete="off"
+              maxLength={4}
+              className="mt-2 w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-center text-2xl tracking-[0.6em] text-white placeholder:text-white/30 focus:border-red-400 focus:outline-none"
+            />
+            {pinInput.length > 0 && pinConfirm.length === 4 && pinInput !== pinConfirm && (
+              <p className="mt-2 text-xs text-yellow-300">PINs don't match.</p>
+            )}
+          </div>
+
           <button
             onClick={saveSetup}
             disabled={!canSave || savingSetup}
@@ -641,7 +687,7 @@ function EmergencyApp() {
     );
   }
 
-  // ---- Post-fire cancel window with 15s hold-to-cancel ----
+  // ---- Post-fire PIN-locked cancel screen ----
   if (firedAt != null) {
     const isFamily = record.role === "family";
     const cancelWindowMs = isFamily ? FAMILY_CANCEL_WINDOW_MS : CLIENT_CANCEL_WINDOW_MS;
@@ -653,77 +699,81 @@ function EmergencyApp() {
     const ss = Math.floor((remainingMs % 60000) / 1000);
     const clock = `${String(hh).padStart(2, "0")}:${String(mm).padStart(2, "0")}:${String(ss).padStart(2, "0")}`;
     const expired = remainingMs <= 0;
-    const holdPct = Math.round(holdProgress * 100);
-    const holdRemaining = Math.max(0, Math.ceil(CANCEL_HOLD_MS / 1000 - (holdProgress * CANCEL_HOLD_MS) / 1000));
 
     return (
-      <Shell>
-        <div className="flex w-full max-w-md flex-1 flex-col items-center justify-center py-6 text-white">
-          <p className="text-xs uppercase tracking-[0.3em] text-white/60">
-            {cancelled ? "Cancelled" : expired ? "Response activated" : `Alert sent (${isFamily ? "family" : "client"})`}
-          </p>
-          <div
-            className="mt-5 rounded-3xl bg-black/60 px-8 py-6 font-mono text-6xl font-black tabular-nums shadow-[inset_0_0_40px_rgba(220,38,38,0.4)]"
-            style={{
-              color: cancelled ? "#9ca3af" : expired ? "#f87171" : "#fca5a5",
-              textShadow: cancelled ? "none" : "0 0 24px rgba(220,38,38,0.6)",
-            }}
-            aria-live="polite"
-          >
-            {clock}
-          </div>
-          {queuedOffline && pendingCount > 0 && !cancelled && (
-            <p className="mt-3 max-w-xs rounded-lg bg-yellow-500/15 px-3 py-2 text-center text-xs text-yellow-200">
-              No signal — alert saved on this phone and will send the moment you're back online.
-              Mailto was also opened as a backup.
-            </p>
-          )}
-          <p className="mt-4 max-w-xs text-center text-sm text-white/80">
-            {cancelled
-              ? "Cancellation sent. Your team has been notified it was a false alarm."
-              : expired
-                ? `${windowHours} hours passed without cancellation. Your team is locating, notifying contacts, and preparing the packet.`
-                : `False alarm? Press AND HOLD the button below for 15 seconds to cancel. Otherwise, in ${windowHours} hours we begin locating, notifying contacts, and preparing the packet to mail.`}
-          </p>
-
-          {!cancelled && !expired && (
-            <button
-              type="button"
-              onPointerDown={(e) => { e.preventDefault(); startCancelHold(record); }}
-              onPointerUp={cancelHoldRelease}
-              onPointerLeave={cancelHoldRelease}
-              onPointerCancel={cancelHoldRelease}
-              onContextMenu={(e) => e.preventDefault()}
-              className="relative mt-8 flex h-56 w-56 select-none items-center justify-center rounded-full bg-gradient-to-b from-slate-200 to-slate-400 text-red-700 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.6)] active:scale-95 transition-transform"
-              style={{ touchAction: "none", WebkitUserSelect: "none", userSelect: "none" }}
-            >
-              <svg className="absolute inset-0 -rotate-90" viewBox="0 0 100 100" aria-hidden="true">
-                <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(0,0,0,0.15)" strokeWidth="4" />
-                <circle
-                  cx="50" cy="50" r="46"
-                  fill="none" stroke="#dc2626" strokeWidth="4"
-                  strokeDasharray={`${2 * Math.PI * 46}`}
-                  strokeDashoffset={`${2 * Math.PI * 46 * (1 - holdProgress)}`}
-                  strokeLinecap="round"
-                  style={{ transition: holding ? "none" : "stroke-dashoffset 0.3s" }}
-                />
-              </svg>
-              <div className="text-center">
-                <div className="text-4xl font-black tracking-tight">
-                  {holding ? holdRemaining : "CANCEL"}
-                </div>
-                <div className="mt-1 text-[10px] font-semibold uppercase tracking-widest opacity-70">
-                  {holding ? `hold ${holdPct}%` : "hold 15 sec"}
-                </div>
-              </div>
-            </button>
-          )}
+      <div
+        className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-red-700 px-6 text-white"
+        style={{
+          paddingTop: "env(safe-area-inset-top)",
+          paddingBottom: "env(safe-area-inset-bottom)",
+        }}
+      >
+        <p className="text-xs uppercase tracking-[0.3em] text-white/80">
+          {cancelled ? "Cancelled" : expired ? "Response activated" : "ALERT SENT"}
+        </p>
+        <div
+          className="mt-4 rounded-3xl bg-black/30 px-8 py-5 font-mono text-5xl font-black tabular-nums"
+          aria-live="polite"
+        >
+          {clock}
         </div>
-      </Shell>
+        {queuedOffline && pendingCount > 0 && !cancelled && (
+          <p className="mt-3 max-w-xs rounded-lg bg-black/30 px-3 py-2 text-center text-xs">
+            No signal — alert saved on this phone and will send the moment you're back online.
+          </p>
+        )}
+
+        {cancelled ? (
+          <p className="mt-6 max-w-xs text-center text-base font-semibold">
+            Cancellation sent. Your team has been notified it was a false alarm.
+          </p>
+        ) : expired ? (
+          <p className="mt-6 max-w-xs text-center text-base font-semibold">
+            {windowHours} hours passed without the cancel PIN. Your team is locating, notifying contacts, and preparing the packet.
+          </p>
+        ) : (
+          <>
+            <h1 className="mt-8 text-3xl font-black tracking-tight text-center">
+              Enter PIN to cancel
+            </h1>
+            <p className="mt-2 max-w-xs text-center text-sm text-white/85">
+              The only way to stop this alert is your 4-digit PIN. If you don't enter it within
+              {" "}{windowHours} hours, the response begins automatically.
+            </p>
+            <input
+              type="password"
+              value={pinEntry}
+              onChange={(e) => {
+                const v = e.target.value.replace(/\D/g, "").slice(0, 4);
+                setPinEntry(v);
+                setPinError(false);
+                if (v.length === 4) tryPinCancel(record, v);
+              }}
+              placeholder="• • • •"
+              inputMode="numeric"
+              autoComplete="off"
+              maxLength={4}
+              autoFocus
+              className="mt-6 w-56 rounded-2xl border-2 border-white/40 bg-black/30 px-4 py-5 text-center text-4xl tracking-[0.6em] text-white placeholder:text-white/40 focus:border-white focus:outline-none"
+            />
+            {pinError && (
+              <p className="mt-3 text-sm font-semibold text-yellow-200">
+                Wrong PIN. Try again.
+              </p>
+            )}
+          </>
+        )}
+      </div>
     );
   }
 
-  // ---- Main HELP button — single tap fires ----
+  // ---- Main HELP button — 4-second hold to fire ----
+  const holdPct = Math.round(holdProgress * 100);
+  const holdRemaining = Math.max(
+    0,
+    Math.ceil(FIRE_HOLD_MS / 1000 - (holdProgress * FIRE_HOLD_MS) / 1000),
+  );
+
   return (
     <Shell>
       <div className="flex w-full max-w-md flex-1 flex-col items-center justify-between py-6 text-white">
@@ -738,21 +788,38 @@ function EmergencyApp() {
         <div className="my-8 flex flex-col items-center">
           <button
             type="button"
-            onClick={() => fireAlert(record)}
-            className="flex h-72 w-72 select-none items-center justify-center rounded-full bg-gradient-to-b from-red-500 to-red-800 shadow-[0_30px_60px_-15px_rgba(220,38,38,0.7)] active:scale-95 transition-transform"
-            style={{ touchAction: "manipulation", WebkitUserSelect: "none", userSelect: "none" }}
+            onPointerDown={(e) => { e.preventDefault(); startFireHold(record); }}
+            onPointerUp={holdRelease}
+            onPointerLeave={holdRelease}
+            onPointerCancel={holdRelease}
+            onContextMenu={(e) => e.preventDefault()}
+            className="relative flex h-72 w-72 select-none items-center justify-center rounded-full bg-gradient-to-b from-red-500 to-red-800 shadow-[0_30px_60px_-15px_rgba(220,38,38,0.7)] active:scale-95 transition-transform"
+            style={{ touchAction: "none", WebkitUserSelect: "none", userSelect: "none" }}
           >
+            <svg className="absolute inset-0 -rotate-90" viewBox="0 0 100 100" aria-hidden="true">
+              <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="3" />
+              <circle
+                cx="50" cy="50" r="46"
+                fill="none" stroke="#ffffff" strokeWidth="3"
+                strokeDasharray={`${2 * Math.PI * 46}`}
+                strokeDashoffset={`${2 * Math.PI * 46 * (1 - holdProgress)}`}
+                strokeLinecap="round"
+                style={{ transition: holding ? "none" : "stroke-dashoffset 0.3s" }}
+              />
+            </svg>
             <div className="text-center">
-              <div className="text-6xl font-black tracking-tight text-white">HELP</div>
+              <div className="text-6xl font-black tracking-tight text-white">
+                {holding ? holdRemaining : "HELP"}
+              </div>
               <div className="mt-2 text-xs font-semibold uppercase tracking-widest text-white/85">
-                {record.role === "family" ? "tap if detention confirmed" : "tap if in danger"}
+                {holding ? `hold ${holdPct}%` : "hold 4 sec to fire"}
               </div>
             </div>
           </button>
           <p className="mt-6 max-w-xs text-center text-xs text-white/60">
-            One tap sends name, GPS, case ID and emergency contact. You'll have
-            <strong> {record.role === "family" ? "12 hours" : "2 hours"} </strong>
-            to cancel by holding the button for 15 seconds.
+            Hold for 4 seconds to send name, GPS, case ID and the full court packet to
+            {" "}<strong>legal@detenciondefensa.com</strong> and your emergency contact. You'll
+            then need your 4-digit PIN to cancel within {record.role === "family" ? "12" : "2"} hours.
           </p>
         </div>
 

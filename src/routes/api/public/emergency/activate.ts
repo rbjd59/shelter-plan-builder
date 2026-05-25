@@ -27,7 +27,27 @@ const ActivateSchema = z.object({
 
 const FROM = "intake@gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
-const LEGAL_INBOX = "intake@detenciondefensa.com";
+const LEGAL_INBOX = "legal@detenciondefensa.com";
+const FORMS_BUCKET = "intake-forms";
+
+async function signedPacketLinks(caseId: string): Promise<{ name: string; url: string }[]> {
+  const files = [
+    { name: "AO 242 — Habeas Petition", path: `${caseId}/AO242-habeas-2241.pdf` },
+    { name: "AO 240 — In Forma Pauperis", path: `${caseId}/AO240-in-forma-pauperis.pdf` },
+    { name: "JS-44 — Civil Cover Sheet", path: `${caseId}/JS44-Civil-Cover-Sheet.pdf` },
+    { name: "Motion — Request for Volunteer Attorney", path: `${caseId}/SDFL-Motion-Referral-Volunteer-Attorney.pdf` },
+  ];
+  const out: { name: string; url: string }[] = [];
+  for (const f of files) {
+    try {
+      const { data } = await supabaseAdmin.storage
+        .from(FORMS_BUCKET)
+        .createSignedUrl(f.path, 60 * 60 * 24 * 14);
+      if (data?.signedUrl) out.push({ name: f.name, url: data.signedUrl });
+    } catch { /* ignore missing files */ }
+  }
+  return out;
+}
 
 function esc(s: unknown): string {
   return String(s ?? "")
@@ -197,6 +217,21 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
           ? "12-HOUR confirmation window (family-triggered — wait before locating)"
           : "2-HOUR window (client-triggered — at-scene alert)";
         const subject = `EMERGENCY [${roleTag}] — ${d.full_name ?? "case"} — ${d.intake_session_id.slice(0, 12)}`;
+        const packet = await signedPacketLinks(d.intake_session_id);
+        const packetText = packet.length
+          ? "\n\nCOURT PACKET (download links — valid 14 days):\n" +
+            packet.map((p) => `• ${p.name}: ${p.url}`).join("\n")
+          : "\n\nCourt packet on file in intake-forms bucket.";
+        const packetHtml = packet.length
+          ? `<h3 style="margin:18px 0 6px;font-size:14px">Court packet (download links — valid 14 days)</h3>
+             <ul style="margin:0;padding-left:18px">${packet
+               .map(
+                 (p) =>
+                   `<li style="margin:4px 0"><a href="${esc(p.url)}">${esc(p.name)}</a></li>`,
+               )
+               .join("")}</ul>`
+          : `<p style="margin:0">Court packet on file under <code>${esc(d.intake_session_id)}</code>.</p>`;
+
         const text = `EMERGENCY ALERT — Triggered from ${isFamily ? "FAMILY CONTACT PHONE" : "CLIENT PHONE"}.
 Response window: ${windowLabel}.
 Begin response at (UTC): ${actAfter.toISOString()}
@@ -210,8 +245,8 @@ ${mapsUrl ? `Maps: ${mapsUrl}` : ""}
 
 Family contact on file: ${d.contact_email ?? "(none)"}
 Alert email on phone: ${d.alert_email ?? "(none)"}
+${packetText}
 
-AO 242 Habeas + AO 240 IFP for this case are already on file (intake-forms bucket).
 ACTION: If not cancelled by ${actAfter.toISOString()}, begin locating, notify contacts, prepare and mail packet.
 
 Download the responder app: https://detenciondefensa.com/download`;
@@ -228,7 +263,7 @@ Download the responder app: https://detenciondefensa.com/download`;
           <p style="margin:0 0 4px"><strong>GPS:</strong> ${esc(gps)} ${mapsUrl ? `&mdash; <a href="${mapsUrl}">open in Maps</a>` : ""}</p>
           <p style="margin:0 0 4px"><strong>Family contact:</strong> ${esc(d.contact_email ?? "(none)")}</p>
           <hr style="border:none;border-top:1px solid #ddd;margin:14px 0">
-          <p style="margin:0">AO 242 Habeas + AO 240 IFP are on file in the intake-forms bucket under <code>${esc(d.intake_session_id)}</code>.</p>
+          ${packetHtml}
           <p style="margin:12px 0 0;color:#7f1d1d"><strong>ACTION:</strong> If not cancelled by ${esc(actAfter.toISOString())}, begin locating, notify contacts, prepare and mail packet.</p>
           <p style="margin:14px 0 0"><a href="https://detenciondefensa.com/download" style="display:inline-block;background:#b91c1c;color:#fff;padding:10px 16px;border-radius:6px;text-decoration:none;font-weight:600">Download the responder app</a></p>
           <p style="margin:6px 0 0;font-size:12px;color:#666">Or open: https://detenciondefensa.com/download</p>
@@ -251,6 +286,20 @@ Download the responder app: https://detenciondefensa.com/download`;
             text,
             label: "emergency-activation",
             idempotencyKey: `fire-${activationId}-alt`,
+          });
+        }
+        if (
+          d.contact_email &&
+          d.contact_email !== LEGAL_INBOX &&
+          d.contact_email !== d.alert_email
+        ) {
+          await enqueueAlertEmail({
+            to: d.contact_email,
+            subject,
+            html,
+            text,
+            label: "emergency-activation",
+            idempotencyKey: `fire-${activationId}-contact`,
           });
         }
 
