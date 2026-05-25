@@ -281,6 +281,39 @@ export type Database = {
         }
         Relationships: []
       }
+      intake_pair_logs: {
+        Row: {
+          code: string | null
+          created_at: string
+          error_message: string | null
+          expires_at: string | null
+          http_status: number | null
+          id: string
+          intake_session_id: string | null
+          payload: Json
+        }
+        Insert: {
+          code?: string | null
+          created_at?: string
+          error_message?: string | null
+          expires_at?: string | null
+          http_status?: number | null
+          id?: string
+          intake_session_id?: string | null
+          payload: Json
+        }
+        Update: {
+          code?: string | null
+          created_at?: string
+          error_message?: string | null
+          expires_at?: string | null
+          http_status?: number | null
+          id?: string
+          intake_session_id?: string | null
+          payload?: Json
+        }
+        Relationships: []
+      }
       intake_submissions: {
         Row: {
           answers: Json | null
