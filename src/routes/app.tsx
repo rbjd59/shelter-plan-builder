@@ -579,15 +579,17 @@ function EmergencyApp() {
   // ---- One-time setup gate ----
   if (!record.setupCompleted) {
     const emailValid = emailInput.includes("@") && emailInput.length > 4;
-    const canSave = emailValid && gpsState === "granted";
+    const pinValid = /^\d{4}$/.test(pinInput);
+    const pinMatches = pinInput.length > 0 && pinInput === pinConfirm;
+    const canSave = emailValid && gpsState === "granted" && pinValid && pinMatches;
     return (
       <Shell>
         <div className="w-full max-w-md text-white">
           <header className="text-center">
             <p className="text-xs uppercase tracking-[0.2em] text-white/60">Step 2 — Set up</p>
-            <h1 className="mt-2 text-2xl font-black">Two quick things</h1>
+            <h1 className="mt-2 text-2xl font-black">Three quick things</h1>
             <p className="mt-2 text-sm text-white/70">
-              Do this once now, in a safe place. The HELP button will work instantly later — no
+              Do this once now, in a safe place. Then HELP will fire after a 4-second hold — no
               questions, no permission pop-ups.
             </p>
           </header>
@@ -596,7 +598,7 @@ function EmergencyApp() {
           <div className="mt-6 rounded-2xl border border-white/15 bg-white/5 p-5">
             <p className="text-base font-bold text-white">1. Where should the alert go?</p>
             <p className="mt-1 text-xs text-white/60">
-              Your lawyer or family contact. We'll auto-send to your legal team too.
+              Your lawyer or family contact. We'll auto-send to legal@detenciondefensa.com too.
             </p>
             <input
               type="email"
@@ -642,6 +644,37 @@ function EmergencyApp() {
             )}
           </div>
 
+          {/* PIN */}
+          <div className="mt-4 rounded-2xl border border-white/15 bg-white/5 p-5">
+            <p className="text-base font-bold text-white">3. Pick a 4-digit cancel PIN</p>
+            <p className="mt-1 text-xs text-white/60">
+              This is the ONLY way to cancel an alert. Memorize it. Don't write it on your phone.
+            </p>
+            <input
+              type="password"
+              value={pinInput}
+              onChange={(e) => setPinInput(e.target.value.replace(/\D/g, "").slice(0, 4))}
+              placeholder="• • • •"
+              inputMode="numeric"
+              autoComplete="off"
+              maxLength={4}
+              className="mt-3 w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-center text-2xl tracking-[0.6em] text-white placeholder:text-white/30 focus:border-red-400 focus:outline-none"
+            />
+            <input
+              type="password"
+              value={pinConfirm}
+              onChange={(e) => setPinConfirm(e.target.value.replace(/\D/g, "").slice(0, 4))}
+              placeholder="confirm PIN"
+              inputMode="numeric"
+              autoComplete="off"
+              maxLength={4}
+              className="mt-2 w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-center text-2xl tracking-[0.6em] text-white placeholder:text-white/30 focus:border-red-400 focus:outline-none"
+            />
+            {pinInput.length > 0 && pinConfirm.length === 4 && pinInput !== pinConfirm && (
+              <p className="mt-2 text-xs text-yellow-300">PINs don't match.</p>
+            )}
+          </div>
+
           <button
             onClick={saveSetup}
             disabled={!canSave || savingSetup}
@@ -653,6 +686,93 @@ function EmergencyApp() {
       </Shell>
     );
   }
+
+  // ---- Post-fire PIN-locked cancel screen ----
+  if (firedAt != null) {
+    const isFamily = record.role === "family";
+    const cancelWindowMs = isFamily ? FAMILY_CANCEL_WINDOW_MS : CLIENT_CANCEL_WINDOW_MS;
+    const windowHours = isFamily ? 12 : 2;
+    const elapsed = now - firedAt;
+    const remainingMs = Math.max(0, cancelWindowMs - elapsed);
+    const hh = Math.floor(remainingMs / 3600000);
+    const mm = Math.floor((remainingMs % 3600000) / 60000);
+    const ss = Math.floor((remainingMs % 60000) / 1000);
+    const clock = `${String(hh).padStart(2, "0")}:${String(mm).padStart(2, "0")}:${String(ss).padStart(2, "0")}`;
+    const expired = remainingMs <= 0;
+
+    return (
+      <div
+        className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-red-700 px-6 text-white"
+        style={{
+          paddingTop: "env(safe-area-inset-top)",
+          paddingBottom: "env(safe-area-inset-bottom)",
+        }}
+      >
+        <p className="text-xs uppercase tracking-[0.3em] text-white/80">
+          {cancelled ? "Cancelled" : expired ? "Response activated" : "ALERT SENT"}
+        </p>
+        <div
+          className="mt-4 rounded-3xl bg-black/30 px-8 py-5 font-mono text-5xl font-black tabular-nums"
+          aria-live="polite"
+        >
+          {clock}
+        </div>
+        {queuedOffline && pendingCount > 0 && !cancelled && (
+          <p className="mt-3 max-w-xs rounded-lg bg-black/30 px-3 py-2 text-center text-xs">
+            No signal — alert saved on this phone and will send the moment you're back online.
+          </p>
+        )}
+
+        {cancelled ? (
+          <p className="mt-6 max-w-xs text-center text-base font-semibold">
+            Cancellation sent. Your team has been notified it was a false alarm.
+          </p>
+        ) : expired ? (
+          <p className="mt-6 max-w-xs text-center text-base font-semibold">
+            {windowHours} hours passed without the cancel PIN. Your team is locating, notifying contacts, and preparing the packet.
+          </p>
+        ) : (
+          <>
+            <h1 className="mt-8 text-3xl font-black tracking-tight text-center">
+              Enter PIN to cancel
+            </h1>
+            <p className="mt-2 max-w-xs text-center text-sm text-white/85">
+              The only way to stop this alert is your 4-digit PIN. If you don't enter it within
+              {" "}{windowHours} hours, the response begins automatically.
+            </p>
+            <input
+              type="password"
+              value={pinEntry}
+              onChange={(e) => {
+                const v = e.target.value.replace(/\D/g, "").slice(0, 4);
+                setPinEntry(v);
+                setPinError(false);
+                if (v.length === 4) tryPinCancel(record, v);
+              }}
+              placeholder="• • • •"
+              inputMode="numeric"
+              autoComplete="off"
+              maxLength={4}
+              autoFocus
+              className="mt-6 w-56 rounded-2xl border-2 border-white/40 bg-black/30 px-4 py-5 text-center text-4xl tracking-[0.6em] text-white placeholder:text-white/40 focus:border-white focus:outline-none"
+            />
+            {pinError && (
+              <p className="mt-3 text-sm font-semibold text-yellow-200">
+                Wrong PIN. Try again.
+              </p>
+            )}
+          </>
+        )}
+      </div>
+    );
+  }
+
+  // ---- Main HELP button — 4-second hold to fire ----
+  const holdPct = Math.round(holdProgress * 100);
+  const holdRemaining = Math.max(
+    0,
+    Math.ceil(FIRE_HOLD_MS / 1000 - (holdProgress * FIRE_HOLD_MS) / 1000),
+  );
 
   // ---- Post-fire cancel window with 15s hold-to-cancel ----
   if (firedAt != null) {
