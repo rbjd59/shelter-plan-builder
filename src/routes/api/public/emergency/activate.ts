@@ -27,7 +27,27 @@ const ActivateSchema = z.object({
 
 const FROM = "intake@gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
-const LEGAL_INBOX = "intake@detenciondefensa.com";
+const LEGAL_INBOX = "legal@detenciondefensa.com";
+const FORMS_BUCKET = "intake-forms";
+
+async function signedPacketLinks(caseId: string): Promise<{ name: string; url: string }[]> {
+  const files = [
+    { name: "AO 242 — Habeas Petition", path: `${caseId}/AO242-habeas-2241.pdf` },
+    { name: "AO 240 — In Forma Pauperis", path: `${caseId}/AO240-in-forma-pauperis.pdf` },
+    { name: "JS-44 — Civil Cover Sheet", path: `${caseId}/JS44-Civil-Cover-Sheet.pdf` },
+    { name: "Motion — Request for Volunteer Attorney", path: `${caseId}/SDFL-Motion-Referral-Volunteer-Attorney.pdf` },
+  ];
+  const out: { name: string; url: string }[] = [];
+  for (const f of files) {
+    try {
+      const { data } = await supabaseAdmin.storage
+        .from(FORMS_BUCKET)
+        .createSignedUrl(f.path, 60 * 60 * 24 * 14);
+      if (data?.signedUrl) out.push({ name: f.name, url: data.signedUrl });
+    } catch { /* ignore missing files */ }
+  }
+  return out;
+}
 
 function esc(s: unknown): string {
   return String(s ?? "")
