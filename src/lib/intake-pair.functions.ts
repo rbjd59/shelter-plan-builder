@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
 const PAIR_URL = "https://ice-defense-plan.replit.app/api/intake/pair";
 
@@ -7,6 +8,7 @@ const AnswersSchema = z.record(z.string(), z.union([z.string(), z.boolean()]));
 
 const InputSchema = z.object({
   answers: AnswersSchema,
+  intakeSessionId: z.string().optional(),
 });
 
 function s(v: unknown): string {
@@ -74,6 +76,28 @@ const ResponseSchema = z.object({
   expiresAt: z.union([z.string(), z.number()]).optional(),
 });
 
+async function logBackup(row: {
+  intake_session_id?: string;
+  payload: unknown;
+  code?: string | null;
+  expires_at?: string | null;
+  http_status?: number | null;
+  error_message?: string | null;
+}) {
+  try {
+    await supabaseAdmin.from("intake_pair_logs").insert({
+      intake_session_id: row.intake_session_id ?? null,
+      payload: row.payload as never,
+      code: row.code ?? null,
+      expires_at: row.expires_at ?? null,
+      http_status: row.http_status ?? null,
+      error_message: row.error_message ?? null,
+    });
+  } catch (e) {
+    console.error("[intake-pair] backup log failed", e);
+  }
+}
+
 export const pairIntakeWithApp = createServerFn({ method: "POST" })
   .inputValidator((input) => InputSchema.parse(input))
   .handler(async ({ data }) => {
@@ -87,13 +111,23 @@ export const pairIntakeWithApp = createServerFn({ method: "POST" })
         body: JSON.stringify(payload),
       });
     } catch (err) {
-      throw new Error(
-        `Could not reach pairing service: ${(err as Error).message}`,
-      );
+      const msg = (err as Error).message;
+      await logBackup({
+        intake_session_id: data.intakeSessionId,
+        payload,
+        error_message: `network: ${msg}`,
+      });
+      throw new Error(`Could not reach pairing service: ${msg}`);
     }
 
     const text = await res.text();
     if (!res.ok) {
+      await logBackup({
+        intake_session_id: data.intakeSessionId,
+        payload,
+        http_status: res.status,
+        error_message: text.slice(0, 500),
+      });
       throw new Error(
         `Pairing service returned ${res.status}: ${text.slice(0, 300)}`,
       );
@@ -103,18 +137,41 @@ export const pairIntakeWithApp = createServerFn({ method: "POST" })
     try {
       json = JSON.parse(text);
     } catch {
+      await logBackup({
+        intake_session_id: data.intakeSessionId,
+        payload,
+        http_status: res.status,
+        error_message: `non-JSON: ${text.slice(0, 300)}`,
+      });
       throw new Error(`Pairing service returned non-JSON: ${text.slice(0, 200)}`);
     }
 
     const parsed = ResponseSchema.safeParse(json);
     if (!parsed.success) {
+      await logBackup({
+        intake_session_id: data.intakeSessionId,
+        payload,
+        http_status: res.status,
+        error_message: `bad shape: ${text.slice(0, 300)}`,
+      });
       throw new Error(
         `Unexpected response shape from pairing service: ${text.slice(0, 200)}`,
       );
     }
 
+    const expiresAt =
+      parsed.data.expiresAt != null ? String(parsed.data.expiresAt) : null;
+
+    await logBackup({
+      intake_session_id: data.intakeSessionId,
+      payload,
+      code: parsed.data.code,
+      expires_at: expiresAt,
+      http_status: res.status,
+    });
+
     return {
       code: parsed.data.code,
-      expiresAt: parsed.data.expiresAt ?? null,
+      expiresAt,
     };
   });
