@@ -44,6 +44,7 @@ interface CaseRecord {
   role: "client" | "family";
   // Setup-only fields (stored after one-time setup):
   alertEmail?: string;     // where the EMERGENCY alert goes
+  cancelPin?: string;      // 4-digit PIN required to cancel after fire
   setupCompleted?: boolean;
 }
 
