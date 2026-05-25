@@ -4,14 +4,17 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 import appCss from "../styles.css?url";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { BetaBanner } from "@/components/BetaBanner";
 import { ComingSoonGate } from "@/components/ComingSoonGate";
+import { trackView } from "@/lib/track-view.functions";
 
 function NotFoundComponent() {
   return (
@@ -116,8 +119,15 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isApp =
     typeof window !== "undefined" && window.location.pathname.startsWith("/app");
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (pathname.startsWith("/admin") || pathname.startsWith("/api/")) return;
+    trackView({ data: { path: pathname, referrer: document.referrer || null } }).catch(() => {});
+  }, [pathname]);
 
   return (
     <QueryClientProvider client={queryClient}>

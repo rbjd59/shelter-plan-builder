@@ -22,6 +22,7 @@ import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AltRouteImport } from './routes/alt'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as AdminRouteImport } from './routes/_admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TrackTokenRouteImport } from './routes/track.$token'
 import { Route as ReadinessStartRouteImport } from './routes/readiness/start'
@@ -31,14 +32,19 @@ import { Route as ReadinessIntakeRouteImport } from './routes/readiness/intake'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCasesRouteImport } from './routes/_authenticated/cases'
+import { Route as AdminAdminRouteImport } from './routes/_admin/admin'
 import { Route as ApiPublicMailFromCheckRouteImport } from './routes/api/public/mail-from-check'
 import { Route as AuthenticatedCaseIdRouteImport } from './routes/_authenticated/case.$id'
+import { Route as AdminAdminTriggersRouteImport } from './routes/_admin/admin.triggers'
+import { Route as AdminAdminRemindersRouteImport } from './routes/_admin/admin.reminders'
+import { Route as AdminAdminClientsRouteImport } from './routes/_admin/admin.clients'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 import { Route as ApiPublicEmergencyTestMirrorRouteImport } from './routes/api/public/emergency/test-mirror'
 import { Route as ApiPublicEmergencyActivateRouteImport } from './routes/api/public/emergency/activate'
 import { Route as ApiPublicDevSendInstallRouteImport } from './routes/api/public/dev/send-install'
 import { Route as ApiPublicCronProcessDueActivationsRouteImport } from './routes/api/public/cron/process-due-activations'
+import { Route as AdminAdminClientsIdRouteImport } from './routes/_admin/admin.clients.$id'
 
 const SplashRoute = SplashRouteImport.update({
   id: '/splash',
@@ -104,6 +110,10 @@ const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/_admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -149,6 +159,11 @@ const AuthenticatedCasesRoute = AuthenticatedCasesRouteImport.update({
   path: '/cases',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AdminAdminRoute = AdminAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AdminRoute,
+} as any)
 const ApiPublicMailFromCheckRoute = ApiPublicMailFromCheckRouteImport.update({
   id: '/api/public/mail-from-check',
   path: '/api/public/mail-from-check',
@@ -158,6 +173,21 @@ const AuthenticatedCaseIdRoute = AuthenticatedCaseIdRouteImport.update({
   id: '/case/$id',
   path: '/case/$id',
   getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AdminAdminTriggersRoute = AdminAdminTriggersRouteImport.update({
+  id: '/triggers',
+  path: '/triggers',
+  getParentRoute: () => AdminAdminRoute,
+} as any)
+const AdminAdminRemindersRoute = AdminAdminRemindersRouteImport.update({
+  id: '/reminders',
+  path: '/reminders',
+  getParentRoute: () => AdminAdminRoute,
+} as any)
+const AdminAdminClientsRoute = AdminAdminClientsRouteImport.update({
+  id: '/clients',
+  path: '/clients',
+  getParentRoute: () => AdminAdminRoute,
 } as any)
 const LovableEmailQueueProcessRoute =
   LovableEmailQueueProcessRouteImport.update({
@@ -194,6 +224,11 @@ const ApiPublicCronProcessDueActivationsRoute =
     path: '/api/public/cron/process-due-activations',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AdminAdminClientsIdRoute = AdminAdminClientsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminAdminClientsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -209,6 +244,7 @@ export interface FileRoutesByFullPath {
   '/pastors': typeof PastorsRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/splash': typeof SplashRoute
+  '/admin': typeof AdminAdminRouteWithChildren
   '/cases': typeof AuthenticatedCasesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -217,8 +253,12 @@ export interface FileRoutesByFullPath {
   '/readiness/sign': typeof ReadinessSignRoute
   '/readiness/start': typeof ReadinessStartRoute
   '/track/$token': typeof TrackTokenRoute
+  '/admin/clients': typeof AdminAdminClientsRouteWithChildren
+  '/admin/reminders': typeof AdminAdminRemindersRoute
+  '/admin/triggers': typeof AdminAdminTriggersRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
+  '/admin/clients/$id': typeof AdminAdminClientsIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
@@ -240,6 +280,7 @@ export interface FileRoutesByTo {
   '/pastors': typeof PastorsRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/splash': typeof SplashRoute
+  '/admin': typeof AdminAdminRouteWithChildren
   '/cases': typeof AuthenticatedCasesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -248,8 +289,12 @@ export interface FileRoutesByTo {
   '/readiness/sign': typeof ReadinessSignRoute
   '/readiness/start': typeof ReadinessStartRoute
   '/track/$token': typeof TrackTokenRoute
+  '/admin/clients': typeof AdminAdminClientsRouteWithChildren
+  '/admin/reminders': typeof AdminAdminRemindersRoute
+  '/admin/triggers': typeof AdminAdminTriggersRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
+  '/admin/clients/$id': typeof AdminAdminClientsIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
@@ -260,6 +305,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_admin': typeof AdminRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/alt': typeof AltRoute
   '/app': typeof AppRoute
@@ -273,6 +319,7 @@ export interface FileRoutesById {
   '/pastors': typeof PastorsRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/splash': typeof SplashRoute
+  '/_admin/admin': typeof AdminAdminRouteWithChildren
   '/_authenticated/cases': typeof AuthenticatedCasesRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -281,8 +328,12 @@ export interface FileRoutesById {
   '/readiness/sign': typeof ReadinessSignRoute
   '/readiness/start': typeof ReadinessStartRoute
   '/track/$token': typeof TrackTokenRoute
+  '/_admin/admin/clients': typeof AdminAdminClientsRouteWithChildren
+  '/_admin/admin/reminders': typeof AdminAdminRemindersRoute
+  '/_admin/admin/triggers': typeof AdminAdminTriggersRoute
   '/_authenticated/case/$id': typeof AuthenticatedCaseIdRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
+  '/_admin/admin/clients/$id': typeof AdminAdminClientsIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
@@ -306,6 +357,7 @@ export interface FileRouteTypes {
     | '/pastors'
     | '/sentinel-trust'
     | '/splash'
+    | '/admin'
     | '/cases'
     | '/dashboard'
     | '/auth/callback'
@@ -314,8 +366,12 @@ export interface FileRouteTypes {
     | '/readiness/sign'
     | '/readiness/start'
     | '/track/$token'
+    | '/admin/clients'
+    | '/admin/reminders'
+    | '/admin/triggers'
     | '/case/$id'
     | '/api/public/mail-from-check'
+    | '/admin/clients/$id'
     | '/api/public/cron/process-due-activations'
     | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
@@ -337,6 +393,7 @@ export interface FileRouteTypes {
     | '/pastors'
     | '/sentinel-trust'
     | '/splash'
+    | '/admin'
     | '/cases'
     | '/dashboard'
     | '/auth/callback'
@@ -345,8 +402,12 @@ export interface FileRouteTypes {
     | '/readiness/sign'
     | '/readiness/start'
     | '/track/$token'
+    | '/admin/clients'
+    | '/admin/reminders'
+    | '/admin/triggers'
     | '/case/$id'
     | '/api/public/mail-from-check'
+    | '/admin/clients/$id'
     | '/api/public/cron/process-due-activations'
     | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
@@ -356,6 +417,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_admin'
     | '/_authenticated'
     | '/alt'
     | '/app'
@@ -369,6 +431,7 @@ export interface FileRouteTypes {
     | '/pastors'
     | '/sentinel-trust'
     | '/splash'
+    | '/_admin/admin'
     | '/_authenticated/cases'
     | '/_authenticated/dashboard'
     | '/auth/callback'
@@ -377,8 +440,12 @@ export interface FileRouteTypes {
     | '/readiness/sign'
     | '/readiness/start'
     | '/track/$token'
+    | '/_admin/admin/clients'
+    | '/_admin/admin/reminders'
+    | '/_admin/admin/triggers'
     | '/_authenticated/case/$id'
     | '/api/public/mail-from-check'
+    | '/_admin/admin/clients/$id'
     | '/api/public/cron/process-due-activations'
     | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
@@ -389,6 +456,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AltRoute: typeof AltRoute
   AppRoute: typeof AppRoute
@@ -510,6 +578,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_admin': {
+      id: '/_admin'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -573,6 +648,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCasesRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_admin/admin': {
+      id: '/_admin/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminAdminRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/api/public/mail-from-check': {
       id: '/api/public/mail-from-check'
       path: '/api/public/mail-from-check'
@@ -586,6 +668,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/case/$id'
       preLoaderRoute: typeof AuthenticatedCaseIdRouteImport
       parentRoute: typeof AuthenticatedRoute
+    }
+    '/_admin/admin/triggers': {
+      id: '/_admin/admin/triggers'
+      path: '/triggers'
+      fullPath: '/admin/triggers'
+      preLoaderRoute: typeof AdminAdminTriggersRouteImport
+      parentRoute: typeof AdminAdminRoute
+    }
+    '/_admin/admin/reminders': {
+      id: '/_admin/admin/reminders'
+      path: '/reminders'
+      fullPath: '/admin/reminders'
+      preLoaderRoute: typeof AdminAdminRemindersRouteImport
+      parentRoute: typeof AdminAdminRoute
+    }
+    '/_admin/admin/clients': {
+      id: '/_admin/admin/clients'
+      path: '/clients'
+      fullPath: '/admin/clients'
+      preLoaderRoute: typeof AdminAdminClientsRouteImport
+      parentRoute: typeof AdminAdminRoute
     }
     '/lovable/email/queue/process': {
       id: '/lovable/email/queue/process'
@@ -629,8 +732,52 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicCronProcessDueActivationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_admin/admin/clients/$id': {
+      id: '/_admin/admin/clients/$id'
+      path: '/$id'
+      fullPath: '/admin/clients/$id'
+      preLoaderRoute: typeof AdminAdminClientsIdRouteImport
+      parentRoute: typeof AdminAdminClientsRoute
+    }
   }
 }
+
+interface AdminAdminClientsRouteChildren {
+  AdminAdminClientsIdRoute: typeof AdminAdminClientsIdRoute
+}
+
+const AdminAdminClientsRouteChildren: AdminAdminClientsRouteChildren = {
+  AdminAdminClientsIdRoute: AdminAdminClientsIdRoute,
+}
+
+const AdminAdminClientsRouteWithChildren =
+  AdminAdminClientsRoute._addFileChildren(AdminAdminClientsRouteChildren)
+
+interface AdminAdminRouteChildren {
+  AdminAdminClientsRoute: typeof AdminAdminClientsRouteWithChildren
+  AdminAdminRemindersRoute: typeof AdminAdminRemindersRoute
+  AdminAdminTriggersRoute: typeof AdminAdminTriggersRoute
+}
+
+const AdminAdminRouteChildren: AdminAdminRouteChildren = {
+  AdminAdminClientsRoute: AdminAdminClientsRouteWithChildren,
+  AdminAdminRemindersRoute: AdminAdminRemindersRoute,
+  AdminAdminTriggersRoute: AdminAdminTriggersRoute,
+}
+
+const AdminAdminRouteWithChildren = AdminAdminRoute._addFileChildren(
+  AdminAdminRouteChildren,
+)
+
+interface AdminRouteChildren {
+  AdminAdminRoute: typeof AdminAdminRouteWithChildren
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminAdminRoute: AdminAdminRouteWithChildren,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface AuthenticatedRouteChildren {
   AuthenticatedCasesRoute: typeof AuthenticatedCasesRoute
@@ -650,6 +797,7 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AltRoute: AltRoute,
   AppRoute: AppRoute,
