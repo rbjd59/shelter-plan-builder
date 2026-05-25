@@ -227,6 +227,7 @@ async function flushOutbox(): Promise<number> {
 function EmergencyApp() {
   const navigate = useNavigate();
   const bootstrap = useServerFn(bootstrapAppFromToken);
+  const backfill = useServerFn(backfillAppPdfs);
   const [status, setStatus] = useState<"loading" | "needs-token" | "ready" | "error">("loading");
   const [errorMsg, setErrorMsg] = useState("");
   const [record, setRecord] = useState<CaseRecord | null>(null);
