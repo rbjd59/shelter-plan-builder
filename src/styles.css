@@ -744,7 +744,30 @@ body.splash-active {
     font-style: italic;
     color: var(--accent);
   }
+  .hero-price-line {
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 4.5vw, 3.8rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 1.2rem;
+  }
+  .hero-price-line strong {
+    font-weight: 700;
+    color: var(--accent);
+  }
 
+  .hero-subline {
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin-bottom: 2rem;
+    max-width: 42ch;
+  }
 
 
   .hero h1 {
