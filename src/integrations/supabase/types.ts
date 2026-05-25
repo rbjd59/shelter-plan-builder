@@ -14,6 +14,21 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_email_whitelist: {
+        Row: {
+          created_at: string
+          email: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+        }
+        Relationships: []
+      }
       app_install_tokens: {
         Row: {
           created_at: string
