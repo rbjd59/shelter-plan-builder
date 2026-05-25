@@ -345,18 +345,38 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
               ? "Tout moun ICE detni ki ap depoze pwòp petisyon habeas li DWE li gid sa a nan National Immigration Project. Li eksplike sa yon petisyon habeas ye, kilè ou ka depoze li, ak kijan pou ranpli fòm yo etap pa etap. (Sèlman disponib an anglè pou kounye a.)"
               : "Every person in ICE detention filing their own habeas petition MUST read this National Immigration Project guide. It explains what a habeas petition is, when you can file one, and how to fill out the forms step by step."}
           </p>
-          <a
-            href={L === "es" ? "/forms/Habeas-Explainer-ES.pdf" : "/forms/Habeas-Explainer-EN.pdf"}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ display: "inline-block", background: "#4a9eff", color: "#0b1220", padding: "8px 14px", borderRadius: 4, textDecoration: "none", fontWeight: 700, fontSize: 13 }}
-          >
-            {L === "es"
+          {(() => {
+            const pdfHref = L === "es" ? "/forms/Habeas-Explainer-ES.pdf" : "/forms/Habeas-Explainer-EN.pdf";
+            const openLabel = L === "es"
               ? "Abrir guía: Habeas Explainer (Español, PDF) ↗"
               : L === "ht"
               ? "Louvri gid: Habeas Explainer (Anglè, PDF) ↗"
-              : "Open guide: Habeas Explainer (NIP, PDF) ↗"}
-          </a>
+              : "Open guide: Habeas Explainer (NIP, PDF) ↗";
+            const viewerLabel = L === "es"
+              ? "Ver aquí mismo (si Chrome bloquea la pestaña nueva)"
+              : L === "ht"
+              ? "Gade la a (si Chrome bloke nouvo tab la)"
+              : "View here instead (if Chrome blocks the new tab)";
+            return (
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                <a
+                  href={pdfHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ display: "inline-block", background: "#4a9eff", color: "#0b1220", padding: "8px 14px", borderRadius: 4, textDecoration: "none", fontWeight: 700, fontSize: 13 }}
+                >
+                  {openLabel}
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setShowGuide(true)}
+                  style={{ display: "inline-block", background: "transparent", color: "#4a9eff", padding: "8px 14px", borderRadius: 4, border: "1px solid #4a9eff", fontWeight: 600, fontSize: 13, cursor: "pointer" }}
+                >
+                  {viewerLabel}
+                </button>
+              </div>
+            );
+          })()}
           <p style={{ margin: "8px 0 0", fontSize: 12, color: "#a8c4e6" }}>
             {L === "es"
               ? "Esta guía se adjunta automáticamente a su paquete de formularios impreso cuando lo enviamos por correo."
