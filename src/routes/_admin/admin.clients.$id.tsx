@@ -32,7 +32,11 @@ function ClientDetail() {
   const t = data.trigger;
   const sessionId = data.submission.stripe_session_id as string;
   const actionsByStep = new Map<string, { created_at: string; completed_by: string | null; metadata: Record<string, unknown> }>();
-  for (const a of data.actions) actionsByStep.set(a.step, a);
+  for (const a of data.actions) actionsByStep.set(a.step, {
+    created_at: a.created_at,
+    completed_by: a.completed_by,
+    metadata: (a.metadata && typeof a.metadata === "object" && !Array.isArray(a.metadata)) ? a.metadata as Record<string, unknown> : {},
+  });
 
   const recordStep = async (step: ActionStep, metadata?: Record<string, unknown>) => {
     setBusy(step);
