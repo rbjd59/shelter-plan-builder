@@ -135,6 +135,12 @@ function RootComponent() {
         <ComingSoonGate>
           {!isApp && <BetaBanner />}
           <Outlet />
+          <Link
+            to="/admin"
+            className="fixed bottom-3 right-3 z-50 rounded-full bg-foreground/80 px-3 py-1 text-xs font-medium text-background shadow-md backdrop-blur hover:bg-foreground"
+          >
+            Admin
+          </Link>
         </ComingSoonGate>
       </LanguageProvider>
     </QueryClientProvider>
