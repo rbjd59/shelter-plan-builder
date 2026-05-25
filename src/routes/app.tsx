@@ -237,6 +237,8 @@ function EmergencyApp() {
 
   // Setup form state
   const [emailInput, setEmailInput] = useState("");
+  const [pinInput, setPinInput] = useState("");
+  const [pinConfirm, setPinConfirm] = useState("");
   const [gpsState, setGpsState] = useState<"idle" | "asking" | "granted" | "denied">("idle");
   const [savingSetup, setSavingSetup] = useState(false);
 
@@ -247,8 +249,10 @@ function EmergencyApp() {
   const [activationId, setActivationId] = useState<string | null>(null);
   const [queuedOffline, setQueuedOffline] = useState(false);
   const [pendingCount, setPendingCount] = useState(0);
+  const [pinEntry, setPinEntry] = useState("");
+  const [pinError, setPinError] = useState(false);
 
-  // Cancel-hold state (15-second hold while in cancel window)
+  // Hold-to-fire state (4-second hold on HELP button)
   const [holding, setHolding] = useState(false);
   const [holdProgress, setHoldProgress] = useState(0);
   const holdStart = useRef<number | null>(null);
