@@ -1,22 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
 @import "tailwindcss" source(none);
 @source "../src";
 
 /* ===== ROOT ===== */
 :root {
-  --ink: #0e1a2b;
-  --ink-deep: #060c16;
-  --ink-soft: #1a2940;
-  --paper: #f4efe6;
-  --paper-warm: #ebe3d4;
-  --accent: #b8551f;
-  --accent-deep: #8a3c11;
-  --gold: #c9a961;
-  --gold-soft: #b8973f;
+  --ink: #0C1221;
+  --ink-deep: #050811;
+  --ink-soft: #1a2138;
+  --paper: #FCFAF7;
+  --paper-warm: #F2EDE3;
+  --accent: #A34A2E;
+  --accent-deep: #7d3620;
+  --gold: #F2D06B;
+  --gold-soft: #d9b34a;
   --alert: #9a2415;
-  --rule: rgba(14, 26, 43, 0.15);
-  --rule-strong: rgba(14, 26, 43, 0.4);
+  --rule: rgba(12, 18, 33, 0.10);
+  --rule-strong: rgba(12, 18, 33, 0.35);
 }
+
 
 /* Global resets */
 * { box-sizing: border-box; margin: 0; padding: 0; }
