@@ -87,7 +87,7 @@ async function logBackup(row: {
   try {
     await supabaseAdmin.from("intake_pair_logs").insert({
       intake_session_id: row.intake_session_id ?? null,
-      payload: row.payload as object,
+      payload: row.payload as never,
       code: row.code ?? null,
       expires_at: row.expires_at ?? null,
       http_status: row.http_status ?? null,
