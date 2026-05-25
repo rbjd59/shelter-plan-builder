@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { bootstrapAppFromToken, type AppBootstrapPayload } from "@/lib/app-install.functions";
+import { backfillAppPdfs } from "@/lib/app-backfill.functions";
 
 export const Route = createFileRoute("/app")({
   component: EmergencyApp,
