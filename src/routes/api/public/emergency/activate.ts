@@ -288,6 +288,20 @@ Download the responder app: https://detenciondefensa.com/download`;
             idempotencyKey: `fire-${activationId}-alt`,
           });
         }
+        if (
+          d.contact_email &&
+          d.contact_email !== LEGAL_INBOX &&
+          d.contact_email !== d.alert_email
+        ) {
+          await enqueueAlertEmail({
+            to: d.contact_email,
+            subject,
+            html,
+            text,
+            label: "emergency-activation",
+            idempotencyKey: `fire-${activationId}-contact`,
+          });
+        }
 
         // Sentinel Readiness Packet vault release — fire-and-log, never block alert.
         try {
