@@ -349,11 +349,6 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
         </div>
       )}
       <div style={container}>
-        <div style={{ background: "#0b1220", border: "2px solid #e8a04a", padding: 16, borderRadius: 6, marginBottom: 16, textAlign: "center" }}>
-          <p style={{ margin: "0 0 4px", fontSize: 11, letterSpacing: 2, color: "#e8a04a", fontWeight: 700 }}>DEMO · INVESTOR PREVIEW</p>
-          <p style={{ margin: 0, fontSize: 18, fontWeight: 800, color: "#fff5d6", lineHeight: 1.3 }}>DO NOT LEAVE YOUR FAMILY OR YOUR PROPERTY UNPROTECTED</p>
-          <p style={{ margin: "6px 0 0", fontSize: 13, color: "#fff5d6" }}>Activate Asset Protection Today — finish the form and both phones receive the install link + completed PDFs.</p>
-        </div>
         <h1 style={{ fontSize: 32, fontWeight: 700, marginBottom: 8, fontFamily: "Fraunces, serif" }}>{ui.title}</h1>
         <p style={{ color: "#a8a59a", marginBottom: 16 }}>{ui.sub}</p>
         <div style={{ background: "#3a2a00", border: "1px solid #e8a04a", padding: 14, borderRadius: 4, marginBottom: 16, fontSize: 14, lineHeight: 1.5, color: "#fff5d6" }}>
