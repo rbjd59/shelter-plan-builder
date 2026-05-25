@@ -359,24 +359,29 @@ function EmergencyApp() {
   const saveSetup = useCallback(async () => {
     if (!record) return;
     if (!emailInput || !emailInput.includes("@")) return;
+    if (!/^\d{4}$/.test(pinInput)) return;
+    if (pinInput !== pinConfirm) return;
     setSavingSetup(true);
     const updated: CaseRecord = {
       ...record,
       alertEmail: emailInput.trim(),
+      cancelPin: pinInput,
       setupCompleted: true,
     };
     await dbPut(updated);
     setRecord(updated);
     setSavingSetup(false);
-  }, [record, emailInput]);
+  }, [record, emailInput, pinInput, pinConfirm]);
 
-  // Fire the alert. Single tap — no hold required.
-  // Step 1: server POST (fail-safe — sent through our verified domain, not the user's mail app).
-  // Step 2: open mailto from the user's phone (redundant — also reaches us via their mail).
+  // Fire the alert. Triggered after a 4-second hold on HELP NOW.
+  // Step 1: server POST (fail-safe — sent through our verified domain).
+  // Step 2: open mailto from the user's phone (redundant — also reaches us).
   const fireAlert = useCallback(async (rec: CaseRecord) => {
     if (navigator.vibrate) navigator.vibrate([300, 100, 300, 100, 600]);
     setFiredAt(Date.now());
     setCancelled(false);
+    setPinEntry("");
+    setPinError(false);
 
     const fix = await getCoords();
     const ts = new Date().toISOString();
@@ -420,7 +425,7 @@ function EmergencyApp() {
       "",
       `Family contact on file: ${rec.contactName} <${rec.contactEmail}>`,
       "",
-      "AO 242 Habeas + AO 240 IFP for this case are already on file.",
+      "Court packet (AO 242 Habeas, AO 240 IFP, JS-44 Civil Cover Sheet, Motion for Volunteer Attorney) is on file — secure download links were emailed separately to legal@detenciondefensa.com.",
       isFamily
         ? "ACTION: Wait the 12-hour cancel window. If not cancelled, begin locating, notify contacts, prepare packet."
         : "ACTION: Wait the 2-hour cancel window. If not cancelled, begin locating, notify contacts, prepare packet.",
@@ -440,22 +445,22 @@ function EmergencyApp() {
       contact_email: rec.contactEmail || undefined,
       cancel_of: activationId || undefined,
     });
-    const roleTag = rec.role === "family" ? "FAMILY" : "CLIENT";
-    const subject = `CANCEL EMERGENCY [${roleTag}] — ${rec.fullName} — Case ${rec.caseId.slice(0, 12)}`;
-    const body = [
-      `FALSE ALARM — please disregard the previous emergency alert (triggered from ${rec.role === "family" ? "family contact phone" : "client phone"}).`,
-      "",
-      `Name: ${rec.fullName}`,
-      `Case ID: ${rec.caseId}`,
-      `Cancelled at (UTC): ${new Date().toISOString()}`,
-    ].join("\n");
-    const cc = rec.contactEmail ? `&cc=${encodeURIComponent(rec.contactEmail)}` : "";
-    const recipient = rec.alertEmail || LEGAL_EMAIL;
-    const mailto = `mailto:${recipient}?subject=${encodeURIComponent(subject)}${cc}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailto;
   }, [activationId]);
 
-  const cancelHoldRelease = useCallback(() => {
+  const tryPinCancel = useCallback(
+    (rec: CaseRecord, entered: string) => {
+      if (rec.cancelPin && entered === rec.cancelPin) {
+        setPinError(false);
+        sendCancellation(rec);
+      } else {
+        setPinError(true);
+        if (navigator.vibrate) navigator.vibrate([80, 60, 80]);
+      }
+    },
+    [sendCancellation],
+  );
+
+  const holdRelease = useCallback(() => {
     setHolding(false);
     setHoldProgress(0);
     holdStart.current = null;
@@ -464,25 +469,28 @@ function EmergencyApp() {
     if (navigator.vibrate) navigator.vibrate(0);
   }, []);
 
-  const startCancelHold = useCallback((rec: CaseRecord) => {
-    if (holding) return;
-    setHolding(true);
-    holdStart.current = performance.now();
-    if (navigator.vibrate) navigator.vibrate(30);
-    const tick = () => {
-      if (holdStart.current == null) return;
-      const elapsed = performance.now() - holdStart.current;
-      const p = Math.min(elapsed / CANCEL_HOLD_MS, 1);
-      setHoldProgress(p);
-      if (p >= 1) {
-        cancelHoldRelease();
-        sendCancellation(rec);
-        return;
-      }
+  const startFireHold = useCallback(
+    (rec: CaseRecord) => {
+      if (holding) return;
+      setHolding(true);
+      holdStart.current = performance.now();
+      if (navigator.vibrate) navigator.vibrate(30);
+      const tick = () => {
+        if (holdStart.current == null) return;
+        const elapsed = performance.now() - holdStart.current;
+        const p = Math.min(elapsed / FIRE_HOLD_MS, 1);
+        setHoldProgress(p);
+        if (p >= 1) {
+          holdRelease();
+          fireAlert(rec);
+          return;
+        }
+        rafRef.current = requestAnimationFrame(tick);
+      };
       rafRef.current = requestAnimationFrame(tick);
-    };
-    rafRef.current = requestAnimationFrame(tick);
-  }, [holding, cancelHoldRelease, sendCancellation]);
+    },
+    [holding, holdRelease, fireAlert],
+  );
 
   // ---- UI states ----
   if (status === "loading") {
