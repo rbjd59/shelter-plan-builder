@@ -774,89 +774,6 @@ function EmergencyApp() {
     Math.ceil(FIRE_HOLD_MS / 1000 - (holdProgress * FIRE_HOLD_MS) / 1000),
   );
 
-  // ---- Post-fire cancel window with 15s hold-to-cancel ----
-  if (firedAt != null) {
-    const isFamily = record.role === "family";
-    const cancelWindowMs = isFamily ? FAMILY_CANCEL_WINDOW_MS : CLIENT_CANCEL_WINDOW_MS;
-    const windowHours = isFamily ? 12 : 2;
-    const elapsed = now - firedAt;
-    const remainingMs = Math.max(0, cancelWindowMs - elapsed);
-    const hh = Math.floor(remainingMs / 3600000);
-    const mm = Math.floor((remainingMs % 3600000) / 60000);
-    const ss = Math.floor((remainingMs % 60000) / 1000);
-    const clock = `${String(hh).padStart(2, "0")}:${String(mm).padStart(2, "0")}:${String(ss).padStart(2, "0")}`;
-    const expired = remainingMs <= 0;
-    const holdPct = Math.round(holdProgress * 100);
-    const holdRemaining = Math.max(0, Math.ceil(CANCEL_HOLD_MS / 1000 - (holdProgress * CANCEL_HOLD_MS) / 1000));
-
-    return (
-      <Shell>
-        <div className="flex w-full max-w-md flex-1 flex-col items-center justify-center py-6 text-white">
-          <p className="text-xs uppercase tracking-[0.3em] text-white/60">
-            {cancelled ? "Cancelled" : expired ? "Response activated" : `Alert sent (${isFamily ? "family" : "client"})`}
-          </p>
-          <div
-            className="mt-5 rounded-3xl bg-black/60 px-8 py-6 font-mono text-6xl font-black tabular-nums shadow-[inset_0_0_40px_rgba(220,38,38,0.4)]"
-            style={{
-              color: cancelled ? "#9ca3af" : expired ? "#f87171" : "#fca5a5",
-              textShadow: cancelled ? "none" : "0 0 24px rgba(220,38,38,0.6)",
-            }}
-            aria-live="polite"
-          >
-            {clock}
-          </div>
-          {queuedOffline && pendingCount > 0 && !cancelled && (
-            <p className="mt-3 max-w-xs rounded-lg bg-yellow-500/15 px-3 py-2 text-center text-xs text-yellow-200">
-              No signal — alert saved on this phone and will send the moment you're back online.
-              Mailto was also opened as a backup.
-            </p>
-          )}
-          <p className="mt-4 max-w-xs text-center text-sm text-white/80">
-            {cancelled
-              ? "Cancellation sent. Your team has been notified it was a false alarm."
-              : expired
-                ? `${windowHours} hours passed without cancellation. Your team is locating, notifying contacts, and preparing the packet.`
-                : `False alarm? Press AND HOLD the button below for 15 seconds to cancel. Otherwise, in ${windowHours} hours we begin locating, notifying contacts, and preparing the packet to mail.`}
-          </p>
-
-          {!cancelled && !expired && (
-            <button
-              type="button"
-              onPointerDown={(e) => { e.preventDefault(); startCancelHold(record); }}
-              onPointerUp={cancelHoldRelease}
-              onPointerLeave={cancelHoldRelease}
-              onPointerCancel={cancelHoldRelease}
-              onContextMenu={(e) => e.preventDefault()}
-              className="relative mt-8 flex h-56 w-56 select-none items-center justify-center rounded-full bg-gradient-to-b from-slate-200 to-slate-400 text-red-700 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.6)] active:scale-95 transition-transform"
-              style={{ touchAction: "none", WebkitUserSelect: "none", userSelect: "none" }}
-            >
-              <svg className="absolute inset-0 -rotate-90" viewBox="0 0 100 100" aria-hidden="true">
-                <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(0,0,0,0.15)" strokeWidth="4" />
-                <circle
-                  cx="50" cy="50" r="46"
-                  fill="none" stroke="#dc2626" strokeWidth="4"
-                  strokeDasharray={`${2 * Math.PI * 46}`}
-                  strokeDashoffset={`${2 * Math.PI * 46 * (1 - holdProgress)}`}
-                  strokeLinecap="round"
-                  style={{ transition: holding ? "none" : "stroke-dashoffset 0.3s" }}
-                />
-              </svg>
-              <div className="text-center">
-                <div className="text-4xl font-black tracking-tight">
-                  {holding ? holdRemaining : "CANCEL"}
-                </div>
-                <div className="mt-1 text-[10px] font-semibold uppercase tracking-widest opacity-70">
-                  {holding ? `hold ${holdPct}%` : "hold 15 sec"}
-                </div>
-              </div>
-            </button>
-          )}
-        </div>
-      </Shell>
-    );
-  }
-
-  // ---- Main HELP button — single tap fires ----
   return (
     <Shell>
       <div className="flex w-full max-w-md flex-1 flex-col items-center justify-between py-6 text-white">
@@ -871,21 +788,38 @@ function EmergencyApp() {
         <div className="my-8 flex flex-col items-center">
           <button
             type="button"
-            onClick={() => fireAlert(record)}
-            className="flex h-72 w-72 select-none items-center justify-center rounded-full bg-gradient-to-b from-red-500 to-red-800 shadow-[0_30px_60px_-15px_rgba(220,38,38,0.7)] active:scale-95 transition-transform"
-            style={{ touchAction: "manipulation", WebkitUserSelect: "none", userSelect: "none" }}
+            onPointerDown={(e) => { e.preventDefault(); startFireHold(record); }}
+            onPointerUp={holdRelease}
+            onPointerLeave={holdRelease}
+            onPointerCancel={holdRelease}
+            onContextMenu={(e) => e.preventDefault()}
+            className="relative flex h-72 w-72 select-none items-center justify-center rounded-full bg-gradient-to-b from-red-500 to-red-800 shadow-[0_30px_60px_-15px_rgba(220,38,38,0.7)] active:scale-95 transition-transform"
+            style={{ touchAction: "none", WebkitUserSelect: "none", userSelect: "none" }}
           >
+            <svg className="absolute inset-0 -rotate-90" viewBox="0 0 100 100" aria-hidden="true">
+              <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="3" />
+              <circle
+                cx="50" cy="50" r="46"
+                fill="none" stroke="#ffffff" strokeWidth="3"
+                strokeDasharray={`${2 * Math.PI * 46}`}
+                strokeDashoffset={`${2 * Math.PI * 46 * (1 - holdProgress)}`}
+                strokeLinecap="round"
+                style={{ transition: holding ? "none" : "stroke-dashoffset 0.3s" }}
+              />
+            </svg>
             <div className="text-center">
-              <div className="text-6xl font-black tracking-tight text-white">HELP</div>
+              <div className="text-6xl font-black tracking-tight text-white">
+                {holding ? holdRemaining : "HELP"}
+              </div>
               <div className="mt-2 text-xs font-semibold uppercase tracking-widest text-white/85">
-                {record.role === "family" ? "tap if detention confirmed" : "tap if in danger"}
+                {holding ? `hold ${holdPct}%` : "hold 4 sec to fire"}
               </div>
             </div>
           </button>
           <p className="mt-6 max-w-xs text-center text-xs text-white/60">
-            One tap sends name, GPS, case ID and emergency contact. You'll have
-            <strong> {record.role === "family" ? "12 hours" : "2 hours"} </strong>
-            to cancel by holding the button for 15 seconds.
+            Hold for 4 seconds to send name, GPS, case ID and the full court packet to
+            {" "}<strong>legal@detenciondefensa.com</strong> and your emergency contact. You'll
+            then need your 4-digit PIN to cancel within {record.role === "family" ? "12" : "2"} hours.
           </p>
         </div>
 
