@@ -234,6 +234,7 @@ function EmergencyApp() {
   const [record, setRecord] = useState<CaseRecord | null>(null);
   const [standalone, setStandalone] = useState(false);
   const [platform, setPlatform] = useState<"ios" | "android" | "other">("other");
+  const [installPrompt, setInstallPrompt] = useState<{ prompt: () => Promise<void> } | null>(null);
 
   // Setup form state
   const [emailInput, setEmailInput] = useState("");
@@ -264,8 +265,17 @@ function EmergencyApp() {
     const m = window.matchMedia?.("(display-mode: standalone)");
     const onChange = () => setStandalone(isStandalone());
     m?.addEventListener?.("change", onChange);
-    return () => m?.removeEventListener?.("change", onChange);
+    const onBeforeInstall = (e: Event) => {
+      e.preventDefault();
+      setInstallPrompt(e as unknown as { prompt: () => Promise<void> });
+    };
+    window.addEventListener("beforeinstallprompt", onBeforeInstall);
+    return () => {
+      m?.removeEventListener?.("change", onChange);
+      window.removeEventListener("beforeinstallprompt", onBeforeInstall);
+    };
   }, []);
+
 
   // Offline outbox: drain on mount, on reconnect, and when app comes to foreground.
   useEffect(() => {
@@ -557,9 +567,26 @@ function EmergencyApp() {
             {platform === "android" && (
               <>
                 <p className="font-semibold text-white">Android (Chrome):</p>
+                {installPrompt && (
+                  <button
+                    onClick={async () => {
+                      try { await installPrompt.prompt(); } catch { /* user dismissed */ }
+                      setInstallPrompt(null);
+                    }}
+                    className="mt-3 w-full rounded-xl bg-red-600 px-5 py-3 text-base font-bold text-white shadow hover:bg-red-700"
+                  >
+                    📲 Install HELP NOW app (one tap)
+                  </button>
+                )}
                 <ol className="mt-3 list-decimal space-y-2 pl-5 text-white/85">
-                  <li>Tap the <strong>⋮</strong> menu (top right).</li>
-                  <li>Tap <strong>Install app</strong> or <strong>Add to Home screen</strong>.</li>
+                  {installPrompt ? (
+                    <li>Tap the red button above, then tap <strong>Install</strong>.</li>
+                  ) : (
+                    <>
+                      <li>Tap the <strong>⋮</strong> menu (top right).</li>
+                      <li>Tap <strong>Install app</strong> or <strong>Add to Home screen</strong>.</li>
+                    </>
+                  )}
                   <li>Open the red <strong>HELP NOW</strong> icon from your home screen.</li>
                 </ol>
               </>
