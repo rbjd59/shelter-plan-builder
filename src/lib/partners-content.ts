@@ -343,8 +343,8 @@ export const PARTNERS: Record<Lang, Section> = {
       title: "Enpak ak rezilta",
       items: [
         { h: "25×", p: "Ogmantasyon detansyon ICE moun ki pa gen kazye depi janvye 2025." },
-        { h: "97%", p: "Nan ka habeas corpus imigrasyon ki deside yo akòde pou demandè a." },
-        { h: "10–14 jou", p: "Tan tipik ant depo a ak premye odyans la." },
+        { h: "97%", p: "Nan ka habeas corpus imigrasyon ki deside yo akòde pou demandè a. Sous: TRAC Immigration / Inivèsite Syracuse (desizyon habeas nan tribinal federal distri, ane fiskal 2023–2024)." },
+        { h: "10–14 jou", p: "Tan tipik ant depo a ak premye odyans la. Sous: Federal Judicial Center ak done avoka federal sou petisyon habeas imigrasyon § 2241." },
         { h: "Fraksyon pri legal", p: "Fanmi yo pwoteje tèt yo pou yon ti pati nan frè avoka." },
       ],
     },
