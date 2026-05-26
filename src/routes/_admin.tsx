@@ -7,7 +7,9 @@ export const Route = createFileRoute("/_admin")({
     const { data, error } = await supabase.auth.getUser();
     if (error || !data.user) throw redirect({ to: "/login" });
     const status = await getMyAdminStatus();
-    if (!status.isAdmin) throw redirect({ to: "/" });
+    if (!status.isAdmin) {
+      throw redirect({ to: "/login", search: { reason: "not-admin", email: data.user.email } as never });
+    }
   },
   component: AdminShell,
 });
