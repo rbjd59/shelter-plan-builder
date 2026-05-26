@@ -567,9 +567,26 @@ function EmergencyApp() {
             {platform === "android" && (
               <>
                 <p className="font-semibold text-white">Android (Chrome):</p>
+                {installPrompt && (
+                  <button
+                    onClick={async () => {
+                      try { await installPrompt.prompt(); } catch { /* user dismissed */ }
+                      setInstallPrompt(null);
+                    }}
+                    className="mt-3 w-full rounded-xl bg-red-600 px-5 py-3 text-base font-bold text-white shadow hover:bg-red-700"
+                  >
+                    📲 Install HELP NOW app (one tap)
+                  </button>
+                )}
                 <ol className="mt-3 list-decimal space-y-2 pl-5 text-white/85">
-                  <li>Tap the <strong>⋮</strong> menu (top right).</li>
-                  <li>Tap <strong>Install app</strong> or <strong>Add to Home screen</strong>.</li>
+                  {installPrompt ? (
+                    <li>Tap the red button above, then tap <strong>Install</strong>.</li>
+                  ) : (
+                    <>
+                      <li>Tap the <strong>⋮</strong> menu (top right).</li>
+                      <li>Tap <strong>Install app</strong> or <strong>Add to Home screen</strong>.</li>
+                    </>
+                  )}
                   <li>Open the red <strong>HELP NOW</strong> icon from your home screen.</li>
                 </ol>
               </>
