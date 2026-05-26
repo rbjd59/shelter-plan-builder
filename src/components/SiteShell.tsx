@@ -146,6 +146,20 @@ export default function SiteShell() {
       >
         {PARTNERS[lang].cta.churches}
       </Link>
+      <button
+        onClick={() => {
+          const pin = window.prompt("Enter admin PIN");
+          if (pin === null) return;
+          if (pin.trim() === "0000") {
+            window.location.href = "/login";
+          } else {
+            window.alert("Invalid PIN");
+          }
+        }}
+        className="fixed top-3 right-3 z-[100] text-white/30 hover:text-[#e8a04a] text-[10px] font-mono underline underline-offset-4 transition"
+      >
+        Staff access
+      </button>
       <div ref={ref} dangerouslySetInnerHTML={{ __html: SITE_HTML }} />
     </>
   );

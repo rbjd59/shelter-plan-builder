@@ -202,20 +202,6 @@ function PartnersPage() {
 
       <footer className="border-t border-white/8 py-10 text-center text-xs text-white/40 font-mono">
         <div>DetencionDefensa · NOT a law firm · Pre-detention preparation only</div>
-        <button
-          onClick={() => {
-            const pin = window.prompt("Enter admin PIN");
-            if (pin === null) return;
-            if (pin.trim() === "8421") {
-              window.location.href = "/login";
-            } else {
-              window.alert("Invalid PIN");
-            }
-          }}
-          className="mt-4 text-white/30 hover:text-[#e8a04a] underline underline-offset-4 transition"
-        >
-          Staff access
-        </button>
       </footer>
     </div>
   );
