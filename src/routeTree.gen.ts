@@ -13,6 +13,7 @@ import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as SupportRouteImport } from './routes/support'
 import { Route as SplashRouteImport } from './routes/splash'
 import { Route as SentinelTrustRouteImport } from './routes/sentinel-trust'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PastorsRouteImport } from './routes/pastors'
 import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as OwnPropertyRouteImport } from './routes/own-property'
@@ -71,6 +72,11 @@ const SplashRoute = SplashRouteImport.update({
 const SentinelTrustRoute = SentinelTrustRouteImport.update({
   id: '/sentinel-trust',
   path: '/sentinel-trust',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PastorsRoute = PastorsRouteImport.update({
@@ -287,6 +293,7 @@ export interface FileRoutesByFullPath {
   '/own-property': typeof OwnPropertyRoute
   '/partners': typeof PartnersRoute
   '/pastors': typeof PastorsRoute
+  '/privacy': typeof PrivacyRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/splash': typeof SplashRoute
   '/support': typeof SupportRoute
@@ -330,6 +337,7 @@ export interface FileRoutesByTo {
   '/own-property': typeof OwnPropertyRoute
   '/partners': typeof PartnersRoute
   '/pastors': typeof PastorsRoute
+  '/privacy': typeof PrivacyRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/splash': typeof SplashRoute
   '/support': typeof SupportRoute
@@ -376,6 +384,7 @@ export interface FileRoutesById {
   '/own-property': typeof OwnPropertyRoute
   '/partners': typeof PartnersRoute
   '/pastors': typeof PastorsRoute
+  '/privacy': typeof PrivacyRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/splash': typeof SplashRoute
   '/support': typeof SupportRoute
@@ -421,6 +430,7 @@ export interface FileRouteTypes {
     | '/own-property'
     | '/partners'
     | '/pastors'
+    | '/privacy'
     | '/sentinel-trust'
     | '/splash'
     | '/support'
@@ -464,6 +474,7 @@ export interface FileRouteTypes {
     | '/own-property'
     | '/partners'
     | '/pastors'
+    | '/privacy'
     | '/sentinel-trust'
     | '/splash'
     | '/support'
@@ -509,6 +520,7 @@ export interface FileRouteTypes {
     | '/own-property'
     | '/partners'
     | '/pastors'
+    | '/privacy'
     | '/sentinel-trust'
     | '/splash'
     | '/support'
@@ -555,6 +567,7 @@ export interface RootRouteChildren {
   OwnPropertyRoute: typeof OwnPropertyRoute
   PartnersRoute: typeof PartnersRoute
   PastorsRoute: typeof PastorsRoute
+  PrivacyRoute: typeof PrivacyRoute
   SentinelTrustRoute: typeof SentinelTrustRoute
   SplashRoute: typeof SplashRoute
   SupportRoute: typeof SupportRoute
@@ -607,6 +620,13 @@ declare module '@tanstack/react-router' {
       path: '/sentinel-trust'
       fullPath: '/sentinel-trust'
       preLoaderRoute: typeof SentinelTrustRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pastors': {
@@ -952,6 +972,7 @@ const rootRouteChildren: RootRouteChildren = {
   OwnPropertyRoute: OwnPropertyRoute,
   PartnersRoute: PartnersRoute,
   PastorsRoute: PastorsRoute,
+  PrivacyRoute: PrivacyRoute,
   SentinelTrustRoute: SentinelTrustRoute,
   SplashRoute: SplashRoute,
   SupportRoute: SupportRoute,
