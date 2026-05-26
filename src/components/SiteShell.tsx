@@ -153,6 +153,7 @@ export default function SiteShell() {
 }
 
 function AdminPinBox() {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -169,8 +170,11 @@ function AdminPinBox() {
       setStatus("error");
       return;
     }
-    window.location.href = "/admin";
+    // Wait a tick for session to persist, then client-side navigate
+    await supabase.auth.getSession();
+    navigate({ to: "/admin" });
   };
+
 
   if (!open) {
     return (
