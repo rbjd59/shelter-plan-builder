@@ -234,6 +234,7 @@ function EmergencyApp() {
   const [record, setRecord] = useState<CaseRecord | null>(null);
   const [standalone, setStandalone] = useState(false);
   const [platform, setPlatform] = useState<"ios" | "android" | "other">("other");
+  const [installPrompt, setInstallPrompt] = useState<{ prompt: () => Promise<void> } | null>(null);
 
   // Setup form state
   const [emailInput, setEmailInput] = useState("");
