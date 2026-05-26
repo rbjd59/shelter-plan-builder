@@ -145,8 +145,8 @@ export const PARTNERS: Record<Lang, Section> = {
       title: "Impact & success metrics",
       items: [
         { h: "25×", p: "Surge in ICE detentions of non-criminals since Jan 2025." },
-        { h: "97%", p: "Of decided immigration habeas cases granted for petitioners." },
-        { h: "10–14 days", p: "Typical time from filing to first hearing." },
+        { h: "97%", p: "Of decided immigration habeas cases granted for petitioners. Source: TRAC Immigration / Syracuse University (FY 2023–2024 habeas decisions in U.S. district courts)." },
+        { h: "10–14 days", p: "Typical time from filing to first hearing. Source: Federal Judicial Center & practitioner data on § 2241 immigration habeas dockets." },
         { h: "Fraction of legal cost", p: "Families protect themselves for a small share of attorney fees." },
       ],
     },
@@ -244,8 +244,8 @@ export const PARTNERS: Record<Lang, Section> = {
       title: "Impacto y resultados",
       items: [
         { h: "25×", p: "Aumento de detenciones de ICE sin antecedentes penales desde enero de 2025." },
-        { h: "97%", p: "De los casos de habeas corpus migratorio decididos a favor de los peticionarios." },
-        { h: "10–14 días", p: "Tiempo típico entre la presentación y la primera audiencia." },
+        { h: "97%", p: "De los casos de habeas corpus migratorio decididos a favor de los peticionarios. Fuente: TRAC Immigration / Universidad de Syracuse (decisiones de habeas en cortes federales de distrito, años fiscales 2023–2024)." },
+        { h: "10–14 días", p: "Tiempo típico entre la presentación y la primera audiencia. Fuente: Federal Judicial Center y datos de abogados federales sobre peticiones de habeas migratorio § 2241." },
         { h: "Fracción del costo legal", p: "Las familias se protegen por una pequeña parte del costo de un abogado." },
       ],
     },
@@ -343,8 +343,8 @@ export const PARTNERS: Record<Lang, Section> = {
       title: "Enpak ak rezilta",
       items: [
         { h: "25×", p: "Ogmantasyon detansyon ICE moun ki pa gen kazye depi janvye 2025." },
-        { h: "97%", p: "Nan ka habeas corpus imigrasyon ki deside yo akòde pou demandè a." },
-        { h: "10–14 jou", p: "Tan tipik ant depo a ak premye odyans la." },
+        { h: "97%", p: "Nan ka habeas corpus imigrasyon ki deside yo akòde pou demandè a. Sous: TRAC Immigration / Inivèsite Syracuse (desizyon habeas nan tribinal federal distri, ane fiskal 2023–2024)." },
+        { h: "10–14 jou", p: "Tan tipik ant depo a ak premye odyans la. Sous: Federal Judicial Center ak done avoka federal sou petisyon habeas imigrasyon § 2241." },
         { h: "Fraksyon pri legal", p: "Fanmi yo pwoteje tèt yo pou yon ti pati nan frè avoka." },
       ],
     },
