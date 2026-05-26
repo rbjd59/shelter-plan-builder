@@ -146,21 +146,86 @@ export default function SiteShell() {
       >
         {PARTNERS[lang].cta.churches}
       </Link>
-      <button
-        onClick={() => {
-          const pin = window.prompt("Enter admin PIN");
-          if (pin === null) return;
-          if (pin.trim() === "0000") {
-            window.location.href = "/login";
-          } else {
-            window.alert("Invalid PIN");
-          }
-        }}
-        className="fixed top-3 right-3 z-[100] text-white/30 hover:text-[#e8a04a] text-[10px] font-mono underline underline-offset-4 transition"
-      >
-        Staff access
-      </button>
+      <AdminPinBox />
       <div ref={ref} dangerouslySetInnerHTML={{ __html: SITE_HTML }} />
     </>
+  );
+}
+
+function AdminPinBox() {
+  const [pin, setPin] = useState("");
+  const [error, setError] = useState(false);
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (pin.trim() === "0000") {
+      window.location.href = "/login";
+    } else {
+      setError(true);
+      setPin("");
+      setTimeout(() => setError(false), 1500);
+    }
+  };
+
+  return (
+    <form
+      onSubmit={submit}
+      style={{
+        position: "fixed",
+        bottom: 16,
+        right: 16,
+        zIndex: 1000,
+        display: "flex",
+        gap: 6,
+        alignItems: "center",
+        background: "rgba(0,0,0,0.75)",
+        backdropFilter: "blur(8px)",
+        border: `1px solid ${error ? "#ef4444" : "rgba(232,160,74,0.4)"}`,
+        borderRadius: 10,
+        padding: "8px 10px",
+        fontFamily: "system-ui, sans-serif",
+      }}
+    >
+      <label style={{ color: "#e8a04a", fontSize: 11, fontWeight: 600, letterSpacing: 1 }}>
+        ADMIN PIN
+      </label>
+      <input
+        type="password"
+        inputMode="numeric"
+        pattern="[0-9]*"
+        autoComplete="off"
+        value={pin}
+        onChange={(e) => setPin(e.target.value)}
+        placeholder="••••"
+        maxLength={8}
+        style={{
+          width: 70,
+          padding: "6px 8px",
+          borderRadius: 6,
+          border: "1px solid rgba(255,255,255,0.2)",
+          background: "rgba(0,0,0,0.4)",
+          color: "#fff",
+          fontSize: 14,
+          fontFamily: "monospace",
+          textAlign: "center",
+          outline: "none",
+        }}
+      />
+      <button
+        type="submit"
+        style={{
+          padding: "6px 12px",
+          borderRadius: 6,
+          border: "none",
+          background: "#e8a04a",
+          color: "#0b0b0e",
+          fontSize: 12,
+          fontWeight: 700,
+          cursor: "pointer",
+        }}
+      >
+        Enter
+      </button>
+    </form>
   );
 }
