@@ -363,7 +363,36 @@ function DownloadPage() {
 
         <div style={{ fontSize: 56, lineHeight: 1, marginBottom: 12 }}>📱</div>
         <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 8px" }}>{t.title}</h1>
-        <p style={{ color: "#a1a1aa", fontSize: 14, margin: "0 0 20px" }}>{t.subtitle}</p>
+        <p style={{ color: "#a1a1aa", fontSize: 14, margin: "0 0 16px" }}>{t.subtitle}</p>
+
+        {/* Universal "not an auto-install" explainer */}
+        <div
+          style={{
+            background: "#1c1917",
+            border: "1px solid #f59e0b",
+            borderRadius: 10,
+            padding: "12px 14px",
+            marginBottom: 20,
+            textAlign: "left",
+            fontSize: 13,
+            color: "#fde68a",
+            lineHeight: 1.55,
+          }}
+        >
+          <strong style={{ color: "#fbbf24" }}>
+            {lang === "es"
+              ? "Esto no se instala automáticamente."
+              : lang === "ht"
+              ? "Sa pa enstale otomatikman."
+              : "This does not install automatically."}
+          </strong>{" "}
+          {lang === "es"
+            ? "iPhone guarda un acceso directo en la pantalla de inicio (debe usar Safari). Android descarga un archivo .apk. Elija su teléfono abajo y siga los pasos — toma menos de 1 minuto."
+            : lang === "ht"
+            ? "iPhone sove yon rakousi sou ekran prensipal (fòk ou itilize Safari). Android telechaje yon fichye .apk. Chwazi telefòn ou anba a epi swiv etap yo — li pran mwens pase 1 minit."
+            : "iPhone saves a shortcut to your home screen (you must use Safari). Android downloads an .apk file. Pick your phone below and follow the steps — under 1 minute."}
+        </div>
+
 
         {/* Platform tabs */}
         <div style={styles.tabs}>
