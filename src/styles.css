@@ -710,7 +710,8 @@ body.splash-active {
   .nav-cta:hover { background: var(--accent-deep); }
 
   .churches-bar {
-    display: inline-block;
+    display: block;
+    width: fit-content;
     background: var(--gold);
     color: var(--ink-deep);
     font-size: 12px;
@@ -718,7 +719,7 @@ body.splash-active {
     padding: 6px 14px;
     border-radius: 999px;
     text-decoration: none;
-    margin: 8px 0 0;
+    margin: 8px 3rem 0 auto;
     text-align: center;
   }
 
