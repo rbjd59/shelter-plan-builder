@@ -31,7 +31,7 @@ export default function SiteShell() {
     });
   }, [lang]);
 
-  // Style and populate churches-bar + lang-label
+  // Populate churches-bar text
   useEffect(() => {
     const root = ref.current;
     if (!root) return;
@@ -39,14 +39,6 @@ export default function SiteShell() {
     const churchesBar = root.querySelector<HTMLAnchorElement>(".churches-bar");
     if (churchesBar) {
       churchesBar.textContent = PARTNERS[lang].cta.churches;
-      churchesBar.style.cssText =
-        "display:inline-block;background:#e8a04a;color:#0b0b0e;font-size:12px;font-weight:600;padding:6px 14px;border-radius:999px;text-decoration:none;margin:8px 0 0;text-align:center;";
-    }
-
-    const langLabel = root.querySelector<HTMLDivElement>(".lang-label");
-    if (langLabel) {
-      langLabel.style.cssText =
-        "font-size:10px;color:var(--muted,#888);text-align:center;margin-top:4px;letter-spacing:0.3px;";
     }
   }, [lang]);
 
