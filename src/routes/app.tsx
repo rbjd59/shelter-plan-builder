@@ -265,8 +265,17 @@ function EmergencyApp() {
     const m = window.matchMedia?.("(display-mode: standalone)");
     const onChange = () => setStandalone(isStandalone());
     m?.addEventListener?.("change", onChange);
-    return () => m?.removeEventListener?.("change", onChange);
+    const onBeforeInstall = (e: Event) => {
+      e.preventDefault();
+      setInstallPrompt(e as unknown as { prompt: () => Promise<void> });
+    };
+    window.addEventListener("beforeinstallprompt", onBeforeInstall);
+    return () => {
+      m?.removeEventListener?.("change", onChange);
+      window.removeEventListener("beforeinstallprompt", onBeforeInstall);
+    };
   }, []);
+
 
   // Offline outbox: drain on mount, on reconnect, and when app comes to foreground.
   useEffect(() => {
