@@ -145,8 +145,8 @@ export const PARTNERS: Record<Lang, Section> = {
       title: "Impact & success metrics",
       items: [
         { h: "25×", p: "Surge in ICE detentions of non-criminals since Jan 2025." },
-        { h: "97%", p: "Of decided immigration habeas cases granted for petitioners." },
-        { h: "10–14 days", p: "Typical time from filing to first hearing." },
+        { h: "97%", p: "Of decided immigration habeas cases granted for petitioners. Source: TRAC Immigration / Syracuse University (FY 2023–2024 habeas decisions in U.S. district courts)." },
+        { h: "10–14 days", p: "Typical time from filing to first hearing. Source: Federal Judicial Center & practitioner data on § 2241 immigration habeas dockets." },
         { h: "Fraction of legal cost", p: "Families protect themselves for a small share of attorney fees." },
       ],
     },
