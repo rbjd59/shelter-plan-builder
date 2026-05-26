@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as SupportRouteImport } from './routes/support'
 import { Route as SplashRouteImport } from './routes/splash'
 import { Route as SentinelTrustRouteImport } from './routes/sentinel-trust'
@@ -36,6 +37,7 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedCasesRouteImport } from './routes/_authenticated/cases'
 import { Route as AdminAdminRouteImport } from './routes/_admin/admin'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
+import { Route as ApiPublicSendAdminInviteRouteImport } from './routes/api/public/send-admin-invite'
 import { Route as ApiPublicMailFromCheckRouteImport } from './routes/api/public/mail-from-check'
 import { Route as AuthenticatedCaseIdRouteImport } from './routes/_authenticated/case.$id'
 import { Route as AdminAdminTriggersRouteImport } from './routes/_admin/admin.triggers'
@@ -51,6 +53,11 @@ import { Route as ApiPublicDevSendInstallRouteImport } from './routes/api/public
 import { Route as ApiPublicCronProcessDueActivationsRouteImport } from './routes/api/public/cron/process-due-activations'
 import { Route as AdminAdminClientsIdRouteImport } from './routes/_admin/admin.clients.$id'
 
+const UnsubscribeRoute = UnsubscribeRouteImport.update({
+  id: '/unsubscribe',
+  path: '/unsubscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SupportRoute = SupportRouteImport.update({
   id: '/support',
   path: '/support',
@@ -184,6 +191,12 @@ const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   path: '/lovable/email/suppression',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicSendAdminInviteRoute =
+  ApiPublicSendAdminInviteRouteImport.update({
+    id: '/api/public/send-admin-invite',
+    path: '/api/public/send-admin-invite',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicMailFromCheckRoute = ApiPublicMailFromCheckRouteImport.update({
   id: '/api/public/mail-from-check',
   path: '/api/public/mail-from-check',
@@ -277,6 +290,7 @@ export interface FileRoutesByFullPath {
   '/sentinel-trust': typeof SentinelTrustRoute
   '/splash': typeof SplashRoute
   '/support': typeof SupportRoute
+  '/unsubscribe': typeof UnsubscribeRoute
   '/admin': typeof AdminAdminRouteWithChildren
   '/cases': typeof AuthenticatedCasesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -292,6 +306,7 @@ export interface FileRoutesByFullPath {
   '/admin/triggers': typeof AdminAdminTriggersRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
+  '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/admin/clients/$id': typeof AdminAdminClientsIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
@@ -318,6 +333,7 @@ export interface FileRoutesByTo {
   '/sentinel-trust': typeof SentinelTrustRoute
   '/splash': typeof SplashRoute
   '/support': typeof SupportRoute
+  '/unsubscribe': typeof UnsubscribeRoute
   '/admin': typeof AdminAdminRouteWithChildren
   '/cases': typeof AuthenticatedCasesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -333,6 +349,7 @@ export interface FileRoutesByTo {
   '/admin/triggers': typeof AdminAdminTriggersRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
+  '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/admin/clients/$id': typeof AdminAdminClientsIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
@@ -362,6 +379,7 @@ export interface FileRoutesById {
   '/sentinel-trust': typeof SentinelTrustRoute
   '/splash': typeof SplashRoute
   '/support': typeof SupportRoute
+  '/unsubscribe': typeof UnsubscribeRoute
   '/_admin/admin': typeof AdminAdminRouteWithChildren
   '/_authenticated/cases': typeof AuthenticatedCasesRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
@@ -377,6 +395,7 @@ export interface FileRoutesById {
   '/_admin/admin/triggers': typeof AdminAdminTriggersRoute
   '/_authenticated/case/$id': typeof AuthenticatedCaseIdRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
+  '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/_admin/admin/clients/$id': typeof AdminAdminClientsIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
@@ -405,6 +424,7 @@ export interface FileRouteTypes {
     | '/sentinel-trust'
     | '/splash'
     | '/support'
+    | '/unsubscribe'
     | '/admin'
     | '/cases'
     | '/dashboard'
@@ -420,6 +440,7 @@ export interface FileRouteTypes {
     | '/admin/triggers'
     | '/case/$id'
     | '/api/public/mail-from-check'
+    | '/api/public/send-admin-invite'
     | '/lovable/email/suppression'
     | '/admin/clients/$id'
     | '/api/public/cron/process-due-activations'
@@ -446,6 +467,7 @@ export interface FileRouteTypes {
     | '/sentinel-trust'
     | '/splash'
     | '/support'
+    | '/unsubscribe'
     | '/admin'
     | '/cases'
     | '/dashboard'
@@ -461,6 +483,7 @@ export interface FileRouteTypes {
     | '/admin/triggers'
     | '/case/$id'
     | '/api/public/mail-from-check'
+    | '/api/public/send-admin-invite'
     | '/lovable/email/suppression'
     | '/admin/clients/$id'
     | '/api/public/cron/process-due-activations'
@@ -489,6 +512,7 @@ export interface FileRouteTypes {
     | '/sentinel-trust'
     | '/splash'
     | '/support'
+    | '/unsubscribe'
     | '/_admin/admin'
     | '/_authenticated/cases'
     | '/_authenticated/dashboard'
@@ -504,6 +528,7 @@ export interface FileRouteTypes {
     | '/_admin/admin/triggers'
     | '/_authenticated/case/$id'
     | '/api/public/mail-from-check'
+    | '/api/public/send-admin-invite'
     | '/lovable/email/suppression'
     | '/_admin/admin/clients/$id'
     | '/api/public/cron/process-due-activations'
@@ -533,6 +558,7 @@ export interface RootRouteChildren {
   SentinelTrustRoute: typeof SentinelTrustRoute
   SplashRoute: typeof SplashRoute
   SupportRoute: typeof SupportRoute
+  UnsubscribeRoute: typeof UnsubscribeRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   ReadinessIntakeRoute: typeof ReadinessIntakeRoute
@@ -541,6 +567,7 @@ export interface RootRouteChildren {
   ReadinessStartRoute: typeof ReadinessStartRoute
   TrackTokenRoute: typeof TrackTokenRoute
   ApiPublicMailFromCheckRoute: typeof ApiPublicMailFromCheckRoute
+  ApiPublicSendAdminInviteRoute: typeof ApiPublicSendAdminInviteRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
   ApiPublicCronProcessDueActivationsRoute: typeof ApiPublicCronProcessDueActivationsRoute
   ApiPublicDevSendInstallRoute: typeof ApiPublicDevSendInstallRoute
@@ -554,6 +581,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/unsubscribe': {
+      id: '/unsubscribe'
+      path: '/unsubscribe'
+      fullPath: '/unsubscribe'
+      preLoaderRoute: typeof UnsubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/support': {
       id: '/support'
       path: '/support'
@@ -743,6 +777,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LovableEmailSuppressionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/send-admin-invite': {
+      id: '/api/public/send-admin-invite'
+      path: '/api/public/send-admin-invite'
+      fullPath: '/api/public/send-admin-invite'
+      preLoaderRoute: typeof ApiPublicSendAdminInviteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/mail-from-check': {
       id: '/api/public/mail-from-check'
       path: '/api/public/mail-from-check'
@@ -914,6 +955,7 @@ const rootRouteChildren: RootRouteChildren = {
   SentinelTrustRoute: SentinelTrustRoute,
   SplashRoute: SplashRoute,
   SupportRoute: SupportRoute,
+  UnsubscribeRoute: UnsubscribeRoute,
   AuthCallbackRoute: AuthCallbackRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   ReadinessIntakeRoute: ReadinessIntakeRoute,
@@ -922,6 +964,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReadinessStartRoute: ReadinessStartRoute,
   TrackTokenRoute: TrackTokenRoute,
   ApiPublicMailFromCheckRoute: ApiPublicMailFromCheckRoute,
+  ApiPublicSendAdminInviteRoute: ApiPublicSendAdminInviteRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
   ApiPublicCronProcessDueActivationsRoute:
     ApiPublicCronProcessDueActivationsRoute,
