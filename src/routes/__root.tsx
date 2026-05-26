@@ -78,6 +78,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "google-site-verification", content: "apAyMowSM-4tPIwLyaBKur_HpJcCAUUSMqOmP1cQmQc" },
       { title: "ICE DETENTION DEFENSE PLAN" },
       { name: "description", content: "ICE IS DETAINING THOUSAND PLAN NOW WITH DETENCIONDEFENSA.COM LEGAL DEFENSE PLAN ONLY $199 AND PROTECT YOUR ASSETS" },
       { name: "author", content: "Lovable" },
