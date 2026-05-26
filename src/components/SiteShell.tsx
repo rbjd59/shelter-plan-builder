@@ -108,6 +108,11 @@ export default function SiteShell() {
           navigate({ to: "/dashboard" });
           return;
         }
+        if (href === "/partners") {
+          e.preventDefault();
+          navigate({ to: "/partners" });
+          return;
+        }
         if (href === "/" || href.startsWith("/?")) {
           e.preventDefault();
           navigate({ to: "/" });
