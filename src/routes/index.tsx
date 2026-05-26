@@ -7,9 +7,10 @@ const DEFENDER_HOSTS = new Set([
 ]);
 
 export const Route = createFileRoute("/")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    lang: typeof search.lang === "string" ? search.lang : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): { lang?: string } => {
+    const lang = typeof search.lang === "string" ? search.lang : undefined;
+    return lang ? { lang } : {};
+  },
   beforeLoad: ({ location, search }) => {
     // Client-side: check window.location.hostname
     if (typeof window !== "undefined") {
