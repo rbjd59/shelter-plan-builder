@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SPLASH_HTML } from "@/lib/markup";
 import { useLang, type Lang } from "@/context/LanguageContext";
 
