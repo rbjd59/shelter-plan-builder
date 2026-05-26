@@ -9,6 +9,8 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
+import { Route as SupportRouteImport } from './routes/support'
 import { Route as SplashRouteImport } from './routes/splash'
 import { Route as SentinelTrustRouteImport } from './routes/sentinel-trust'
 import { Route as PastorsRouteImport } from './routes/pastors'
@@ -29,15 +31,20 @@ import { Route as ReadinessStartRouteImport } from './routes/readiness/start'
 import { Route as ReadinessSignRouteImport } from './routes/readiness/sign'
 import { Route as ReadinessReviewRouteImport } from './routes/readiness/review'
 import { Route as ReadinessIntakeRouteImport } from './routes/readiness/intake'
+import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCasesRouteImport } from './routes/_authenticated/cases'
 import { Route as AdminAdminRouteImport } from './routes/_admin/admin'
+import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
+import { Route as ApiPublicSendAdminInviteRouteImport } from './routes/api/public/send-admin-invite'
 import { Route as ApiPublicMailFromCheckRouteImport } from './routes/api/public/mail-from-check'
 import { Route as AuthenticatedCaseIdRouteImport } from './routes/_authenticated/case.$id'
 import { Route as AdminAdminTriggersRouteImport } from './routes/_admin/admin.triggers'
 import { Route as AdminAdminRemindersRouteImport } from './routes/_admin/admin.reminders'
 import { Route as AdminAdminClientsRouteImport } from './routes/_admin/admin.clients'
+import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
+import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 import { Route as ApiPublicEmergencyTestMirrorRouteImport } from './routes/api/public/emergency/test-mirror'
@@ -46,6 +53,16 @@ import { Route as ApiPublicDevSendInstallRouteImport } from './routes/api/public
 import { Route as ApiPublicCronProcessDueActivationsRouteImport } from './routes/api/public/cron/process-due-activations'
 import { Route as AdminAdminClientsIdRouteImport } from './routes/_admin/admin.clients.$id'
 
+const UnsubscribeRoute = UnsubscribeRouteImport.update({
+  id: '/unsubscribe',
+  path: '/unsubscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SupportRoute = SupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SplashRoute = SplashRouteImport.update({
   id: '/splash',
   path: '/splash',
@@ -144,6 +161,11 @@ const ReadinessIntakeRoute = ReadinessIntakeRouteImport.update({
   path: '/readiness/intake',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
+  id: '/email/unsubscribe',
+  path: '/email/unsubscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthCallbackRoute = AuthCallbackRouteImport.update({
   id: '/auth/callback',
   path: '/auth/callback',
@@ -164,6 +186,17 @@ const AdminAdminRoute = AdminAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AdminRoute,
 } as any)
+const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
+  id: '/lovable/email/suppression',
+  path: '/lovable/email/suppression',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicSendAdminInviteRoute =
+  ApiPublicSendAdminInviteRouteImport.update({
+    id: '/api/public/send-admin-invite',
+    path: '/api/public/send-admin-invite',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicMailFromCheckRoute = ApiPublicMailFromCheckRouteImport.update({
   id: '/api/public/mail-from-check',
   path: '/api/public/mail-from-check',
@@ -189,6 +222,18 @@ const AdminAdminClientsRoute = AdminAdminClientsRouteImport.update({
   path: '/clients',
   getParentRoute: () => AdminAdminRoute,
 } as any)
+const LovableEmailTransactionalSendRoute =
+  LovableEmailTransactionalSendRouteImport.update({
+    id: '/lovable/email/transactional/send',
+    path: '/lovable/email/transactional/send',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const LovableEmailTransactionalPreviewRoute =
+  LovableEmailTransactionalPreviewRouteImport.update({
+    id: '/lovable/email/transactional/preview',
+    path: '/lovable/email/transactional/preview',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const LovableEmailQueueProcessRoute =
   LovableEmailQueueProcessRouteImport.update({
     id: '/lovable/email/queue/process',
@@ -244,10 +289,13 @@ export interface FileRoutesByFullPath {
   '/pastors': typeof PastorsRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/splash': typeof SplashRoute
+  '/support': typeof SupportRoute
+  '/unsubscribe': typeof UnsubscribeRoute
   '/admin': typeof AdminAdminRouteWithChildren
   '/cases': typeof AuthenticatedCasesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/readiness/intake': typeof ReadinessIntakeRoute
   '/readiness/review': typeof ReadinessReviewRoute
   '/readiness/sign': typeof ReadinessSignRoute
@@ -258,6 +306,8 @@ export interface FileRoutesByFullPath {
   '/admin/triggers': typeof AdminAdminTriggersRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
+  '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
+  '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/admin/clients/$id': typeof AdminAdminClientsIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
@@ -265,6 +315,8 @@ export interface FileRoutesByFullPath {
   '/api/public/emergency/test-mirror': typeof ApiPublicEmergencyTestMirrorRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
+  '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -280,10 +332,13 @@ export interface FileRoutesByTo {
   '/pastors': typeof PastorsRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/splash': typeof SplashRoute
+  '/support': typeof SupportRoute
+  '/unsubscribe': typeof UnsubscribeRoute
   '/admin': typeof AdminAdminRouteWithChildren
   '/cases': typeof AuthenticatedCasesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/readiness/intake': typeof ReadinessIntakeRoute
   '/readiness/review': typeof ReadinessReviewRoute
   '/readiness/sign': typeof ReadinessSignRoute
@@ -294,6 +349,8 @@ export interface FileRoutesByTo {
   '/admin/triggers': typeof AdminAdminTriggersRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
+  '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
+  '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/admin/clients/$id': typeof AdminAdminClientsIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
@@ -301,6 +358,8 @@ export interface FileRoutesByTo {
   '/api/public/emergency/test-mirror': typeof ApiPublicEmergencyTestMirrorRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
+  '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -319,10 +378,13 @@ export interface FileRoutesById {
   '/pastors': typeof PastorsRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/splash': typeof SplashRoute
+  '/support': typeof SupportRoute
+  '/unsubscribe': typeof UnsubscribeRoute
   '/_admin/admin': typeof AdminAdminRouteWithChildren
   '/_authenticated/cases': typeof AuthenticatedCasesRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/readiness/intake': typeof ReadinessIntakeRoute
   '/readiness/review': typeof ReadinessReviewRoute
   '/readiness/sign': typeof ReadinessSignRoute
@@ -333,6 +395,8 @@ export interface FileRoutesById {
   '/_admin/admin/triggers': typeof AdminAdminTriggersRoute
   '/_authenticated/case/$id': typeof AuthenticatedCaseIdRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
+  '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
+  '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/_admin/admin/clients/$id': typeof AdminAdminClientsIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
@@ -340,6 +404,8 @@ export interface FileRoutesById {
   '/api/public/emergency/test-mirror': typeof ApiPublicEmergencyTestMirrorRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
+  '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -357,10 +423,13 @@ export interface FileRouteTypes {
     | '/pastors'
     | '/sentinel-trust'
     | '/splash'
+    | '/support'
+    | '/unsubscribe'
     | '/admin'
     | '/cases'
     | '/dashboard'
     | '/auth/callback'
+    | '/email/unsubscribe'
     | '/readiness/intake'
     | '/readiness/review'
     | '/readiness/sign'
@@ -371,6 +440,8 @@ export interface FileRouteTypes {
     | '/admin/triggers'
     | '/case/$id'
     | '/api/public/mail-from-check'
+    | '/api/public/send-admin-invite'
+    | '/lovable/email/suppression'
     | '/admin/clients/$id'
     | '/api/public/cron/process-due-activations'
     | '/api/public/dev/send-install'
@@ -378,6 +449,8 @@ export interface FileRouteTypes {
     | '/api/public/emergency/test-mirror'
     | '/api/public/payments/webhook'
     | '/lovable/email/queue/process'
+    | '/lovable/email/transactional/preview'
+    | '/lovable/email/transactional/send'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -393,10 +466,13 @@ export interface FileRouteTypes {
     | '/pastors'
     | '/sentinel-trust'
     | '/splash'
+    | '/support'
+    | '/unsubscribe'
     | '/admin'
     | '/cases'
     | '/dashboard'
     | '/auth/callback'
+    | '/email/unsubscribe'
     | '/readiness/intake'
     | '/readiness/review'
     | '/readiness/sign'
@@ -407,6 +483,8 @@ export interface FileRouteTypes {
     | '/admin/triggers'
     | '/case/$id'
     | '/api/public/mail-from-check'
+    | '/api/public/send-admin-invite'
+    | '/lovable/email/suppression'
     | '/admin/clients/$id'
     | '/api/public/cron/process-due-activations'
     | '/api/public/dev/send-install'
@@ -414,6 +492,8 @@ export interface FileRouteTypes {
     | '/api/public/emergency/test-mirror'
     | '/api/public/payments/webhook'
     | '/lovable/email/queue/process'
+    | '/lovable/email/transactional/preview'
+    | '/lovable/email/transactional/send'
   id:
     | '__root__'
     | '/'
@@ -431,10 +511,13 @@ export interface FileRouteTypes {
     | '/pastors'
     | '/sentinel-trust'
     | '/splash'
+    | '/support'
+    | '/unsubscribe'
     | '/_admin/admin'
     | '/_authenticated/cases'
     | '/_authenticated/dashboard'
     | '/auth/callback'
+    | '/email/unsubscribe'
     | '/readiness/intake'
     | '/readiness/review'
     | '/readiness/sign'
@@ -445,6 +528,8 @@ export interface FileRouteTypes {
     | '/_admin/admin/triggers'
     | '/_authenticated/case/$id'
     | '/api/public/mail-from-check'
+    | '/api/public/send-admin-invite'
+    | '/lovable/email/suppression'
     | '/_admin/admin/clients/$id'
     | '/api/public/cron/process-due-activations'
     | '/api/public/dev/send-install'
@@ -452,6 +537,8 @@ export interface FileRouteTypes {
     | '/api/public/emergency/test-mirror'
     | '/api/public/payments/webhook'
     | '/lovable/email/queue/process'
+    | '/lovable/email/transactional/preview'
+    | '/lovable/email/transactional/send'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -470,23 +557,44 @@ export interface RootRouteChildren {
   PastorsRoute: typeof PastorsRoute
   SentinelTrustRoute: typeof SentinelTrustRoute
   SplashRoute: typeof SplashRoute
+  SupportRoute: typeof SupportRoute
+  UnsubscribeRoute: typeof UnsubscribeRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
+  EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   ReadinessIntakeRoute: typeof ReadinessIntakeRoute
   ReadinessReviewRoute: typeof ReadinessReviewRoute
   ReadinessSignRoute: typeof ReadinessSignRoute
   ReadinessStartRoute: typeof ReadinessStartRoute
   TrackTokenRoute: typeof TrackTokenRoute
   ApiPublicMailFromCheckRoute: typeof ApiPublicMailFromCheckRoute
+  ApiPublicSendAdminInviteRoute: typeof ApiPublicSendAdminInviteRoute
+  LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
   ApiPublicCronProcessDueActivationsRoute: typeof ApiPublicCronProcessDueActivationsRoute
   ApiPublicDevSendInstallRoute: typeof ApiPublicDevSendInstallRoute
   ApiPublicEmergencyActivateRoute: typeof ApiPublicEmergencyActivateRoute
   ApiPublicEmergencyTestMirrorRoute: typeof ApiPublicEmergencyTestMirrorRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
+  LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
+  LovableEmailTransactionalSendRoute: typeof LovableEmailTransactionalSendRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/unsubscribe': {
+      id: '/unsubscribe'
+      path: '/unsubscribe'
+      fullPath: '/unsubscribe'
+      preLoaderRoute: typeof UnsubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/support': {
+      id: '/support'
+      path: '/support'
+      fullPath: '/support'
+      preLoaderRoute: typeof SupportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/splash': {
       id: '/splash'
       path: '/splash'
@@ -627,6 +735,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReadinessIntakeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/email/unsubscribe': {
+      id: '/email/unsubscribe'
+      path: '/email/unsubscribe'
+      fullPath: '/email/unsubscribe'
+      preLoaderRoute: typeof EmailUnsubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth/callback': {
       id: '/auth/callback'
       path: '/auth/callback'
@@ -654,6 +769,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin'
       preLoaderRoute: typeof AdminAdminRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/lovable/email/suppression': {
+      id: '/lovable/email/suppression'
+      path: '/lovable/email/suppression'
+      fullPath: '/lovable/email/suppression'
+      preLoaderRoute: typeof LovableEmailSuppressionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/send-admin-invite': {
+      id: '/api/public/send-admin-invite'
+      path: '/api/public/send-admin-invite'
+      fullPath: '/api/public/send-admin-invite'
+      preLoaderRoute: typeof ApiPublicSendAdminInviteRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/public/mail-from-check': {
       id: '/api/public/mail-from-check'
@@ -689,6 +818,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/clients'
       preLoaderRoute: typeof AdminAdminClientsRouteImport
       parentRoute: typeof AdminAdminRoute
+    }
+    '/lovable/email/transactional/send': {
+      id: '/lovable/email/transactional/send'
+      path: '/lovable/email/transactional/send'
+      fullPath: '/lovable/email/transactional/send'
+      preLoaderRoute: typeof LovableEmailTransactionalSendRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lovable/email/transactional/preview': {
+      id: '/lovable/email/transactional/preview'
+      path: '/lovable/email/transactional/preview'
+      fullPath: '/lovable/email/transactional/preview'
+      preLoaderRoute: typeof LovableEmailTransactionalPreviewRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/lovable/email/queue/process': {
       id: '/lovable/email/queue/process'
@@ -811,13 +954,18 @@ const rootRouteChildren: RootRouteChildren = {
   PastorsRoute: PastorsRoute,
   SentinelTrustRoute: SentinelTrustRoute,
   SplashRoute: SplashRoute,
+  SupportRoute: SupportRoute,
+  UnsubscribeRoute: UnsubscribeRoute,
   AuthCallbackRoute: AuthCallbackRoute,
+  EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   ReadinessIntakeRoute: ReadinessIntakeRoute,
   ReadinessReviewRoute: ReadinessReviewRoute,
   ReadinessSignRoute: ReadinessSignRoute,
   ReadinessStartRoute: ReadinessStartRoute,
   TrackTokenRoute: TrackTokenRoute,
   ApiPublicMailFromCheckRoute: ApiPublicMailFromCheckRoute,
+  ApiPublicSendAdminInviteRoute: ApiPublicSendAdminInviteRoute,
+  LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
   ApiPublicCronProcessDueActivationsRoute:
     ApiPublicCronProcessDueActivationsRoute,
   ApiPublicDevSendInstallRoute: ApiPublicDevSendInstallRoute,
@@ -825,6 +973,8 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicEmergencyTestMirrorRoute: ApiPublicEmergencyTestMirrorRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
+  LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
+  LovableEmailTransactionalSendRoute: LovableEmailTransactionalSendRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
