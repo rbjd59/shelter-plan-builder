@@ -10,12 +10,25 @@ export const Route = createFileRoute("/")({
   validateSearch: (search: Record<string, unknown>) => ({
     lang: typeof search.lang === "string" ? search.lang : undefined,
   }),
-  beforeLoad: ({ location }) => {
+  beforeLoad: ({ location, search }) => {
     // Client-side: check window.location.hostname
     if (typeof window !== "undefined") {
       const host = window.location.hostname.toLowerCase();
       if (DEFENDER_HOSTS.has(host)) {
         throw redirect({ to: "/coming-soon" });
+      }
+      // First-time visitors (no lang in URL, no stored preference) → splash
+      const hasUrlLang =
+        search?.lang === "es" || search?.lang === "en" || search?.lang === "ht";
+      let hasStoredLang = false;
+      try {
+        const ls = window.localStorage.getItem("dd_lang");
+        hasStoredLang = ls === "es" || ls === "en" || ls === "ht";
+      } catch {
+        // ignore storage errors
+      }
+      if (!hasUrlLang && !hasStoredLang) {
+        throw redirect({ to: "/splash" });
       }
     }
     // SSR: location.href contains the full URL including host
@@ -29,6 +42,7 @@ export const Route = createFileRoute("/")({
       // ignore
     }
   },
+
   head: () => ({
     meta: [
       { title: "DetencionDefensa.com — Plan de Defensa Pre-Detención · $199" },
