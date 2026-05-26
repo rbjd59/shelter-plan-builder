@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as SupportRouteImport } from './routes/support'
 import { Route as SplashRouteImport } from './routes/splash'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SentinelTrustRouteImport } from './routes/sentinel-trust'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PastorsRouteImport } from './routes/pastors'
@@ -67,6 +68,11 @@ const SupportRoute = SupportRouteImport.update({
 const SplashRoute = SplashRouteImport.update({
   id: '/splash',
   path: '/splash',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SentinelTrustRoute = SentinelTrustRouteImport.update({
@@ -295,6 +301,7 @@ export interface FileRoutesByFullPath {
   '/pastors': typeof PastorsRoute
   '/privacy': typeof PrivacyRoute
   '/sentinel-trust': typeof SentinelTrustRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/splash': typeof SplashRoute
   '/support': typeof SupportRoute
   '/unsubscribe': typeof UnsubscribeRoute
@@ -339,6 +346,7 @@ export interface FileRoutesByTo {
   '/pastors': typeof PastorsRoute
   '/privacy': typeof PrivacyRoute
   '/sentinel-trust': typeof SentinelTrustRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/splash': typeof SplashRoute
   '/support': typeof SupportRoute
   '/unsubscribe': typeof UnsubscribeRoute
@@ -386,6 +394,7 @@ export interface FileRoutesById {
   '/pastors': typeof PastorsRoute
   '/privacy': typeof PrivacyRoute
   '/sentinel-trust': typeof SentinelTrustRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/splash': typeof SplashRoute
   '/support': typeof SupportRoute
   '/unsubscribe': typeof UnsubscribeRoute
@@ -432,6 +441,7 @@ export interface FileRouteTypes {
     | '/pastors'
     | '/privacy'
     | '/sentinel-trust'
+    | '/sitemap.xml'
     | '/splash'
     | '/support'
     | '/unsubscribe'
@@ -476,6 +486,7 @@ export interface FileRouteTypes {
     | '/pastors'
     | '/privacy'
     | '/sentinel-trust'
+    | '/sitemap.xml'
     | '/splash'
     | '/support'
     | '/unsubscribe'
@@ -522,6 +533,7 @@ export interface FileRouteTypes {
     | '/pastors'
     | '/privacy'
     | '/sentinel-trust'
+    | '/sitemap.xml'
     | '/splash'
     | '/support'
     | '/unsubscribe'
@@ -569,6 +581,7 @@ export interface RootRouteChildren {
   PastorsRoute: typeof PastorsRoute
   PrivacyRoute: typeof PrivacyRoute
   SentinelTrustRoute: typeof SentinelTrustRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SplashRoute: typeof SplashRoute
   SupportRoute: typeof SupportRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
@@ -613,6 +626,13 @@ declare module '@tanstack/react-router' {
       path: '/splash'
       fullPath: '/splash'
       preLoaderRoute: typeof SplashRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sentinel-trust': {
@@ -974,6 +994,7 @@ const rootRouteChildren: RootRouteChildren = {
   PastorsRoute: PastorsRoute,
   PrivacyRoute: PrivacyRoute,
   SentinelTrustRoute: SentinelTrustRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   SplashRoute: SplashRoute,
   SupportRoute: SupportRoute,
   UnsubscribeRoute: UnsubscribeRoute,
