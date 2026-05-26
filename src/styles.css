@@ -2139,12 +2139,17 @@ body.splash-active {
 
   /* ============ RESPONSIVE ============ */
   @media (max-width: 980px) {
-    .nav { padding: 1rem 1.5rem; }
+    .nav { 
+      padding: 1rem 1.5rem;
+      flex-wrap: wrap;
+    }
     .nav-links { display: none; }
     .nav-right {
       gap: 0.6rem;
       flex-wrap: wrap;
       justify-content: flex-end;
+      width: 100%;
+      margin-top: 0.5rem;
     }
     .lang-toggle {
       font-size: 0.7rem;
