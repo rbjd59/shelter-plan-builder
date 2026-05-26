@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { SITE_HTML } from "@/lib/markup";
 import { useLang, type Lang } from "@/context/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -29,6 +29,25 @@ export default function SiteShell() {
     root.querySelectorAll<HTMLButtonElement>(".lang-toggle button").forEach((b) => {
       b.classList.toggle("active", b.id === `btn-${lang}`);
     });
+  }, [lang]);
+
+  // Style and populate churches-bar + lang-label
+  useEffect(() => {
+    const root = ref.current;
+    if (!root) return;
+
+    const churchesBar = root.querySelector<HTMLAnchorElement>(".churches-bar");
+    if (churchesBar) {
+      churchesBar.textContent = PARTNERS[lang].cta.churches;
+      churchesBar.style.cssText =
+        "display:inline-block;background:#e8a04a;color:#0b0b0e;font-size:12px;font-weight:600;padding:6px 14px;border-radius:999px;text-decoration:none;margin:8px 0 0;text-align:center;";
+    }
+
+    const langLabel = root.querySelector<HTMLDivElement>(".lang-label");
+    if (langLabel) {
+      langLabel.style.cssText =
+        "font-size:10px;color:var(--muted,#888);text-align:center;margin-top:4px;letter-spacing:0.3px;";
+    }
   }, [lang]);
 
   // Inject account link into nav-right based on auth state
@@ -108,6 +127,11 @@ export default function SiteShell() {
           navigate({ to: "/dashboard" });
           return;
         }
+        if (href === "/partners") {
+          e.preventDefault();
+          navigate({ to: "/partners" });
+          return;
+        }
         if (href === "/" || href.startsWith("/?")) {
           e.preventDefault();
           navigate({ to: "/" });
@@ -140,12 +164,6 @@ export default function SiteShell() {
 
   return (
     <>
-      <Link
-        to="/partners"
-        className="fixed top-3 left-1/2 -translate-x-1/2 z-[100] bg-[#e8a04a] text-[#0b0b0e] text-xs sm:text-sm font-medium px-4 sm:px-5 py-2 sm:py-2.5 rounded-full shadow-lg hover:scale-[1.03] transition no-underline whitespace-nowrap"
-      >
-        {PARTNERS[lang].cta.churches}
-      </Link>
       <AdminPinBox />
       <div ref={ref} dangerouslySetInnerHTML={{ __html: SITE_HTML }} />
     </>
