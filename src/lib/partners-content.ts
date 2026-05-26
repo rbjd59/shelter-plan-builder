@@ -244,8 +244,8 @@ export const PARTNERS: Record<Lang, Section> = {
       title: "Impacto y resultados",
       items: [
         { h: "25×", p: "Aumento de detenciones de ICE sin antecedentes penales desde enero de 2025." },
-        { h: "97%", p: "De los casos de habeas corpus migratorio decididos a favor de los peticionarios." },
-        { h: "10–14 días", p: "Tiempo típico entre la presentación y la primera audiencia." },
+        { h: "97%", p: "De los casos de habeas corpus migratorio decididos a favor de los peticionarios. Fuente: TRAC Immigration / Universidad de Syracuse (decisiones de habeas en cortes federales de distrito, años fiscales 2023–2024)." },
+        { h: "10–14 días", p: "Tiempo típico entre la presentación y la primera audiencia. Fuente: Federal Judicial Center y datos de abogados federales sobre peticiones de habeas migratorio § 2241." },
         { h: "Fracción del costo legal", p: "Las familias se protegen por una pequeña parte del costo de un abogado." },
       ],
     },
