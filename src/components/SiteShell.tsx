@@ -153,19 +153,51 @@ export default function SiteShell() {
 }
 
 function AdminPinBox() {
-  const [pin, setPin] = useState("");
-  const [error, setError] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [status, setStatus] = useState<"idle" | "working" | "error">("idle");
+  const [errMsg, setErrMsg] = useState("");
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (pin.trim() === "0000") {
-      window.location.href = "/login";
-    } else {
-      setError(true);
-      setPin("");
-      setTimeout(() => setError(false), 1500);
+    setStatus("working");
+    setErrMsg("");
+    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+    if (error) {
+      setErrMsg(error.message);
+      setStatus("error");
+      return;
     }
+    window.location.href = "/admin";
   };
+
+  if (!open) {
+    return (
+      <button
+        onClick={() => setOpen(true)}
+        style={{
+          position: "fixed",
+          bottom: 16,
+          right: 16,
+          zIndex: 1000,
+          background: "rgba(0,0,0,0.75)",
+          backdropFilter: "blur(8px)",
+          border: "1px solid rgba(232,160,74,0.4)",
+          borderRadius: 10,
+          padding: "8px 14px",
+          color: "#e8a04a",
+          fontSize: 11,
+          fontWeight: 700,
+          letterSpacing: 1.5,
+          cursor: "pointer",
+          fontFamily: "system-ui, sans-serif",
+        }}
+      >
+        ADMIN SIGN IN
+      </button>
+    );
+  }
 
   return (
     <form
@@ -176,56 +208,86 @@ function AdminPinBox() {
         right: 16,
         zIndex: 1000,
         display: "flex",
+        flexDirection: "column",
         gap: 6,
-        alignItems: "center",
-        background: "rgba(0,0,0,0.75)",
+        width: 260,
+        background: "rgba(0,0,0,0.85)",
         backdropFilter: "blur(8px)",
-        border: `1px solid ${error ? "#ef4444" : "rgba(232,160,74,0.4)"}`,
+        border: `1px solid ${status === "error" ? "#ef4444" : "rgba(232,160,74,0.4)"}`,
         borderRadius: 10,
-        padding: "8px 10px",
+        padding: 12,
         fontFamily: "system-ui, sans-serif",
       }}
     >
-      <label style={{ color: "#e8a04a", fontSize: 11, fontWeight: 600, letterSpacing: 1 }}>
-        ADMIN PIN
-      </label>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <span style={{ color: "#e8a04a", fontSize: 11, fontWeight: 700, letterSpacing: 1.5 }}>
+          ADMIN SIGN IN
+        </span>
+        <button
+          type="button"
+          onClick={() => { setOpen(false); setErrMsg(""); setStatus("idle"); }}
+          style={{ background: "none", border: "none", color: "#a1a1aa", fontSize: 16, cursor: "pointer", padding: 0, lineHeight: 1 }}
+        >×</button>
+      </div>
       <input
-        type="password"
-        inputMode="numeric"
-        pattern="[0-9]*"
-        autoComplete="off"
-        value={pin}
-        onChange={(e) => setPin(e.target.value)}
-        placeholder="••••"
-        maxLength={8}
+        type="email"
+        required
+        autoComplete="email"
+        placeholder="admin email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
         style={{
-          width: 70,
-          padding: "6px 8px",
+          padding: "8px 10px",
           borderRadius: 6,
           border: "1px solid rgba(255,255,255,0.2)",
           background: "rgba(0,0,0,0.4)",
           color: "#fff",
-          fontSize: 14,
-          fontFamily: "monospace",
-          textAlign: "center",
+          fontSize: 13,
+          outline: "none",
+        }}
+      />
+      <input
+        type="password"
+        required
+        autoComplete="current-password"
+        placeholder="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        style={{
+          padding: "8px 10px",
+          borderRadius: 6,
+          border: "1px solid rgba(255,255,255,0.2)",
+          background: "rgba(0,0,0,0.4)",
+          color: "#fff",
+          fontSize: 13,
           outline: "none",
         }}
       />
       <button
         type="submit"
+        disabled={status === "working"}
         style={{
-          padding: "6px 12px",
+          padding: "8px 12px",
           borderRadius: 6,
           border: "none",
           background: "#e8a04a",
           color: "#0b0b0e",
           fontSize: 12,
           fontWeight: 700,
-          cursor: "pointer",
+          cursor: status === "working" ? "wait" : "pointer",
         }}
       >
-        Enter
+        {status === "working" ? "Signing in…" : "Sign in → Admin"}
       </button>
+      {errMsg && (
+        <p style={{ color: "#fca5a5", fontSize: 11, margin: "2px 0 0", lineHeight: 1.4 }}>{errMsg}</p>
+      )}
+      <a
+        href="/login"
+        style={{ color: "#a1a1aa", fontSize: 10, textAlign: "center", textDecoration: "underline" }}
+      >
+        Use email magic link instead
+      </a>
     </form>
   );
 }
