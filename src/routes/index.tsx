@@ -17,19 +17,6 @@ export const Route = createFileRoute("/")({
       if (DEFENDER_HOSTS.has(host)) {
         throw redirect({ to: "/coming-soon" });
       }
-      // First-time visitors (no lang in URL, no stored preference) → splash
-      const hasUrlLang =
-        search?.lang === "es" || search?.lang === "en" || search?.lang === "ht";
-      let hasStoredLang = false;
-      try {
-        const ls = window.localStorage.getItem("dd_lang");
-        hasStoredLang = ls === "es" || ls === "en" || ls === "ht";
-      } catch {
-        // ignore storage errors
-      }
-      if (!hasUrlLang && !hasStoredLang) {
-        throw redirect({ to: "/splash" });
-      }
     }
     // SSR: location.href contains the full URL including host
     try {
