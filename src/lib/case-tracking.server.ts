@@ -271,11 +271,18 @@ export async function sendWelcomeEmail(params: {
       </ul>
     </div>`;
 
+  const notDownloadNote = {
+    es: "Esto NO es una descarga automática. Toque el botón abajo en el teléfono correcto, luego siga las instrucciones para guardar el ícono rojo AYUDA YA en la pantalla de inicio (toma 10 segundos). En iPhone debe abrirse en Safari.",
+    en: "This is NOT an automatic download. Tap the button below on the correct phone, then follow the prompts to save the red HELP NOW icon to the home screen (takes 10 seconds). On iPhone you must open it in Safari.",
+    ht: "Sa a se PA yon telechajman otomatik. Peze bouton an anba sou bon telefòn nan, epi swiv enstriksyon yo pou sove ikòn wouj AYÈ KOUNYE A sou ekran prensipal la (li pran 10 segond). Sou iPhone fòk ou ouvri li nan Safari.",
+  }[lang];
+
   const familyActivationSection = (params.clientInstallUrl || params.familyInstallUrl)
     ? `<div style="margin-top:18px;padding:18px;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;">
         <p style="margin:0 0 8px;font-size:15px;font-weight:800;color:#991b1b;">${escapeHtml(sc.familyTitle)}</p>
         <p style="margin:0 0 12px;font-size:13px;color:#7f1d1d;line-height:1.55;">${escapeHtml(sc.familyBody)}</p>
         <p style="margin:0 0 14px;font-size:12px;color:#7f1d1d;line-height:1.5;font-style:italic;">${escapeHtml(sc.whyTwoButtons)}</p>
+        <p style="margin:0 0 14px;padding:10px 12px;background:#fff7ed;border:1px solid #fed7aa;border-radius:6px;font-size:12px;color:#9a3412;line-height:1.5;">⚠️ ${escapeHtml(notDownloadNote)}</p>
         ${clientInstallSection}
         ${familyInstallSection}
         <p style="margin:12px 0 0;font-size:11px;color:#a16207;">One-time links. Valid 30 days. Open each link on the matching phone.</p>
