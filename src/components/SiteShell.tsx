@@ -42,27 +42,14 @@ export default function SiteShell() {
     }
   }, [lang]);
 
-  // Inject account link into nav-right based on auth state
+  // Remove any previously injected account link from nav-right
   useEffect(() => {
     const root = ref.current;
     if (!root) return;
-    const navRight = root.querySelector(".nav-right");
-    if (!navRight) return;
-    let acct = navRight.querySelector<HTMLAnchorElement>("a.account-link");
-    if (!acct) {
-      acct = document.createElement("a");
-      acct.className = "account-link";
-      acct.style.cssText = "color:var(--gold,#e8a04a);font-size:13px;text-decoration:none;margin-right:12px;";
-      navRight.insertBefore(acct, navRight.firstChild);
-    }
-    if (isAuthed) {
-      acct.textContent = "My account";
-      acct.setAttribute("href", "/dashboard");
-    } else {
-      acct.textContent = "Sign in";
-      acct.setAttribute("href", "/login");
-    }
+    const acct = root.querySelector(".nav-right a.account-link");
+    if (acct) acct.remove();
   }, [isAuthed]);
+
 
   useEffect(() => {
     const root = ref.current;
