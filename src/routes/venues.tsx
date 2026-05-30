@@ -7,6 +7,7 @@ import {
   VENUE_INSTRUCTIONS_ES,
   VENUE_INSTRUCTIONS_HT,
 } from "@/lib/federal-district-courts";
+import { SELF_HELP_LIBRARY } from "@/lib/self-help-library";
 
 const searchSchema = z.object({
   lang: z.enum(["en", "es", "ht"]).catch("es"),
