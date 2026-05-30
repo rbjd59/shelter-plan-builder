@@ -100,7 +100,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
           })
         : undefined;
 
-    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [
+    const lineItems: Array<{ price: string; quantity: number }> = [
       { price: oneTime.data[0].id, quantity: 1 },
     ];
     if (includeAddon && monthly) {
