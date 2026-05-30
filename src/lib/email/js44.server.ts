@@ -1,20 +1,17 @@
-// Fills the JS-44 Civil Cover Sheet AcroForm with the pro se petitioner's
-// information. The template was uploaded by the user and lives at
-// src/assets/forms/JS44.pdf. We read it from the filesystem-free environment
-// via a base64 module written alongside it.
+// Per the Company's revised opinion (Change #7): the JS-44 Civil Cover Sheet
+// is included BLANK in every Self-Help Packet. The Company does not
+// pre-classify the case, does not select Plaintiff/Defendant captions, does
+// not check the nature-of-suit boxes, and does not write a cause of action.
+// The customer (or their family contact) completes every field by hand at
+// the time of filing.
+//
+// We still expose `buildJs44Pdf(answers)` so the existing intake notification
+// pipeline (upload, signed URLs, email links, App backfill) continues to
+// work unchanged — but the bytes returned are the unmodified official blank
+// AO/USCO form.
 
-import { PDFDocument, PDFName, type PDFForm } from "pdf-lib";
+import { PDFDocument } from "pdf-lib";
 import js44b64 from "@/assets/forms/JS44.pdf.b64";
-
-type A = Record<string, unknown>;
-const s = (v: unknown) => (v == null ? "" : String(v));
-const firstText = (a: A, ...keys: string[]) => {
-  for (const k of keys) {
-    const v = s(a[k]).trim();
-    if (v) return v;
-  }
-  return "";
-};
 
 function b64ToBytes(b64: string): Uint8Array {
   if (typeof Buffer !== "undefined") return new Uint8Array(Buffer.from(b64, "base64"));
@@ -24,83 +21,9 @@ function b64ToBytes(b64: string): Uint8Array {
   return bytes;
 }
 
-function setText(form: PDFForm, name: string, value: string) {
-  try { form.getTextField(name).setText(value || ""); } catch { /* missing */ }
-}
-function check(form: PDFForm, name: string) {
-  try {
-    const cb = form.getCheckBox(name);
-    cb.check();
-  } catch {
-    // Some checkboxes use radio-style widgets; try AS=Yes directly.
-    try {
-      const cb = form.getCheckBox(name);
-      const w = cb.acroField.getWidgets()[0] as unknown as { dict: { set: (k: PDFName, v: PDFName) => void } };
-      w.dict.set(PDFName.of("AS"), PDFName.of("Yes"));
-    } catch { /* ignore */ }
-  }
-}
-
-function detectCountyCheckbox(address: string): string | null {
-  const a = address.toLowerCase();
-  if (/\bmiami|dade\b/.test(a)) return "MIAMIDADE";
-  if (/\bbroward|fort lauderdale|hollywood\b/.test(a)) return "BROWARD";
-  if (/\bpalm beach\b/.test(a)) return "PALM BEACH";
-  if (/\bmonroe|key west\b/.test(a)) return "MONROE";
-  if (/\bmartin\b/.test(a)) return "MARTIN";
-  if (/\bst\.?\s*lucie\b/.test(a)) return "ST LUCIE";
-  if (/\bindian river\b/.test(a)) return "INDIAN RIVER";
-  if (/\bokeechobee\b/.test(a)) return "OKEECHOBEE";
-  if (/\bhighlands\b/.test(a)) return "HIGHLANDS";
-  return null;
-}
-
-export async function buildJs44Pdf(a: A): Promise<Uint8Array> {
+export async function buildJs44Pdf(_answers: Record<string, unknown>): Promise<Uint8Array> {
+  // Load + re-save the official blank template so it round-trips through
+  // pdf-lib (consistent metadata) but remains an interactive blank form.
   const doc = await PDFDocument.load(b64ToBytes(js44b64));
-  const form = doc.getForm();
-
-  const petitioner = firstText(a, "full_name", "mail_inmate_name");
-  const facility = firstText(a, "facility_name", "mail_current_location");
-  const wardenName = firstText(a, "warden_name");
-  const facilityAddr = firstText(a, "facility_address", "mail_facility_address");
-  const defendant = wardenName
-    ? `${wardenName}${facility ? `, Warden, ${facility}` : ""}`
-    : facility
-    ? `Warden, ${facility}`
-    : "Warden of the Facility of Confinement";
-
-  setText(form, "Plaintiffs", petitioner);
-  setText(form, "Defendants", defendant);
-  setText(form, "Attorneys", "PRO SE");
-  setText(form, "Firm Name", "PRO SE");
-
-  // Habeas corpus / immigration detention nature-of-suit boxes.
-  check(form, "463 Alien Detainee");
-  check(form, "530 General"); // 530 Habeas Corpus: General
-
-  // Origin = 1 Original Proceeding.
-  check(form, "V ORIGIN");
-
-  setText(
-    form,
-    "Cause of Action",
-    "28 U.S.C. § 2241 — Petition for Writ of Habeas Corpus challenging immigration detention.",
-  );
-
-  // County checkbox intentionally left blank. The correct SDFL division
-  // depends on the facility of confinement, which is not known until after
-  // the petitioner is detained — the pro se filer checks this manually.
-  void detectCountyCheckbox;
-  void facilityAddr;
-
-  // Strip the interactive Save/Print/Reset buttons so they don't render as
-  // red boxes after flatten.
-  for (const f of form.getFields()) {
-    if (f.constructor.name === "PDFButton") {
-      try { form.removeField(f); } catch { /* ignore */ }
-    }
-  }
-
-  try { form.flatten(); } catch { /* ignore */ }
   return await doc.save();
 }
