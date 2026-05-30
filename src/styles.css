@@ -1334,6 +1334,80 @@ body.splash-active {
     max-width: 200px;
   }
 
+  /* Phone homescreen with app grid */
+  .phone-homescreen {
+    justify-content: flex-start;
+    padding: 2.4rem 1rem 1rem;
+    background: linear-gradient(160deg, #4a6fa5 0%, #2d4870 60%, #1a2f4a 100%);
+  }
+  .phone-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem;
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    letter-spacing: 0.04em;
+  }
+  .app-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.7rem 0.5rem;
+    width: 100%;
+    padding: 0 0.2rem;
+  }
+  .app-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .app-icon span {
+    width: 44px;
+    height: 44px;
+    border-radius: 11px;
+    background: rgba(255,255,255,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+  }
+  .app-icon label {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 0.5rem;
+    color: #fff;
+    letter-spacing: 0.02em;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+  }
+  .app-notify span {
+    background: radial-gradient(circle at 35% 30%, #ff3b30, #c41e10 65%, #6a1208);
+    color: #fff;
+    box-shadow: 0 0 0 2px rgba(255,59,48,0.25), 0 4px 10px rgba(196,30,16,0.55);
+    animation: pulse-notify 2s infinite;
+  }
+  .app-notify label {
+    color: #ffd1cd;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+  @keyframes pulse-notify {
+    0%, 100% { box-shadow: 0 0 0 2px rgba(255,59,48,0.25), 0 4px 10px rgba(196,30,16,0.55); }
+    50% { box-shadow: 0 0 0 6px rgba(255,59,48,0.1), 0 4px 14px rgba(196,30,16,0.7); }
+  }
+  .phone-dock {
+    margin-top: auto;
+    width: 100%;
+    padding: 0.6rem 0.4rem 0;
+  }
+  .dock-hint {
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.85);
+    text-transform: uppercase;
+  }
+
   .trigger-content h2 {
     font-family: 'Libre Baskerville', serif;
     font-weight: 400;
