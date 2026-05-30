@@ -227,9 +227,7 @@ export async function enqueueIntakeNotification(params: {
       <p style="margin:0 0 16px;color:#555;font-size:13px;">Language: ${escapeHtml(language)} &middot; Session: ${escapeHtml(sessionId)}${contactEmail ? ` &middot; Contact: ${escapeHtml(contactEmail)}` : ""}</p>
       <h2 style="font-size:15px;margin:24px 0 8px;">Completed Forms</h2>
       ${formsHtml}
-      <h2 style="font-size:15px;margin:24px 0 8px;">Mailing Label — Inmate (Prepared Forms)</h2>
-      ${inmateLabel}
-      <h2 style="font-size:15px;margin:24px 0 8px;">Self-Help Library (sent to family + stored in App)</h2>
+      <h2 style="font-size:15px;margin:24px 0 8px;">Self-Help Library (linked from emails + App)</h2>
       ${buildSelfHelpLibraryHtml(language)}
       <h2 style="font-size:15px;margin:24px 0 8px;">Mailing Label — Inmate (Prepared Forms)</h2>
       ${inmateLabel}
