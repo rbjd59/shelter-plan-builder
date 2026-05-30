@@ -834,10 +834,19 @@ function EmergencyApp() {
                 style={{ transition: holding ? "none" : "stroke-dashoffset 0.3s" }}
               />
             </svg>
-            <div className="text-center">
-              <div className="text-6xl font-black tracking-tight text-white">
-                {holding ? holdRemaining : "HELP"}
-              </div>
+            <div className="text-center px-4">
+              {holding ? (
+                <div className="text-7xl font-black tracking-tight text-white">{holdRemaining}</div>
+              ) : (
+                <>
+                  <div className="text-3xl font-black leading-tight tracking-tight text-white">
+                    NOTIFY<br />FAMILY
+                  </div>
+                  <div className="mt-1 text-[11px] font-semibold leading-tight text-white/80">
+                    Avisar a Familia<br />Avize Fanmi
+                  </div>
+                </>
+              )}
               <div className="mt-2 text-xs font-semibold uppercase tracking-widest text-white/85">
                 {holding ? `hold ${holdPct}%` : "hold 4 sec to fire"}
               </div>
