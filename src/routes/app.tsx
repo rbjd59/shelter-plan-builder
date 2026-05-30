@@ -3,6 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { bootstrapAppFromToken, type AppBootstrapPayload } from "@/lib/app-install.functions";
 import { backfillAppPdfs } from "@/lib/app-backfill.functions";
+import { SELF_HELP_LIBRARY } from "@/lib/self-help-library";
 
 export const Route = createFileRoute("/app")({
   component: EmergencyApp,
