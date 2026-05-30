@@ -139,6 +139,29 @@ function VenuesPage() {
           </div>
         </section>
 
+        <section style={{ background: "#13203a", border: "1px solid #2a3a5f", borderRadius: 4, padding: "20px 24px", marginBottom: 28 }}>
+          <h2 style={{ fontSize: 18, margin: "0 0 12px", color: "#e8a04a" }}>
+            {L === "es" ? "Biblioteca de Autoayuda" : L === "ht" ? "Bibliyotèk Èd Tèt Ou" : "Self-Help Library"}
+          </h2>
+          <p style={{ fontSize: 13, lineHeight: 1.6, margin: "0 0 12px", color: "#c9c0ad" }}>
+            {L === "es"
+              ? "Manuales públicos gratuitos y formularios federales en blanco. Estos enlaces no caducan."
+              : L === "ht"
+              ? "Manyèl piblik gratis ak fòm federal vid. Lyen sa yo pa janm ekspire."
+              : "Free public manuals and blank federal forms. These links never expire."}
+          </p>
+          <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+            {SELF_HELP_LIBRARY.map((d) => (
+              <li key={d.key} style={{ marginBottom: 10 }}>
+                <a href={d.url} target="_blank" rel="noopener noreferrer" style={{ color: "#e8a04a", textDecoration: "underline", fontSize: 14, fontWeight: 600 }}>
+                  {d.title[L]}
+                </a>
+                <div style={{ fontSize: 12, color: "#9aa4b8", lineHeight: 1.5, marginTop: 2 }}>{d.description[L]}</div>
+              </li>
+            ))}
+          </ul>
+        </section>
+
         <input
           type="search"
           value={q}
