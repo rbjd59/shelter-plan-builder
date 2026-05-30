@@ -188,21 +188,12 @@ async function fillAO242(a: A): Promise<Uint8Array> {
   setText(form, "Petitionersig", "");
   setText(form, "Date", "");
 
-  // District: match user input ("Florida Southern") against full option label
-  // ("        Southern District of Florida") by requiring all input tokens to appear.
-  try {
-    const dd = form.getDropdown("district");
-    const opts = dd.getOptions();
-    const wanted = (s(a.court_district) || "Florida Southern").trim();
-    const tokens = wanted.split(/\s+/).filter(Boolean);
-    const match = opts.find((o) => {
-      const lower = o.toLowerCase();
-      return tokens.every((t) => lower.includes(t.toLowerCase()));
-    });
-    if (match) dd.select(match);
-  } catch {
-    /* ignore */
-  }
+  // District (venue): The Company does NOT select venue on the customer's
+  // behalf. The dropdown is intentionally left UNSET so the customer
+  // handwrites the correct district after detention. See the federal
+  // district court list provided separately for venue instructions.
+  // (Historical behavior pre-filled "Florida Southern" — removed per
+  // legal guidance.)
 
   // Remove interactive Print / SaveAs / Reset buttons before flatten so they
   // do not render as red boxes in the final document.
