@@ -44,12 +44,16 @@ async function resolveOrCreateCustomer(
 
 /**
  * Create the Embedded Checkout session.
- * Charges $199 today and starts the $10/month plan after a 60-day trial.
+ *
+ * Base service is $199 one-time (file preparation). The $10/month
+ * Document Mailing Add-On is OPTIONAL and only added when the
+ * customer opts in AND acknowledges the add-on terms. No trial —
+ * mailing is charged immediately upon subscribe. The add-on can be
+ * canceled at any time from the customer portal.
  *
  * Keep this checkout intentionally tax-neutral in test mode. Do not send
  * managed_payments, automatic_tax, billing_cycle_anchor, or proration_behavior
- * here: this product is a one-time + subscription bundle and those options
- * caused Stripe session creation failures in sandbox checkout.
+ * here: those options caused Stripe session creation failures in sandbox.
  */
 export const createCheckoutSession = createServerFn({ method: "POST" })
   .inputValidator(
@@ -59,21 +63,34 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       environment: StripeEnv;
       customerEmail?: string;
       userId?: string;
+      includeMailingAddon?: boolean;
+      mailingAddonAcknowledged?: boolean;
     }) => {
       if (!["en", "es", "ht"].includes(data.language)) throw new Error("Invalid language");
       if (typeof data.returnUrl !== "string" || !data.returnUrl.startsWith("http"))
         throw new Error("Invalid returnUrl");
+      if (data.includeMailingAddon && !data.mailingAddonAcknowledged) {
+        throw new Error("Mailing add-on requires acknowledgment of the Terms of Add-On Service.");
+      }
       return data;
     },
   )
   .handler(async ({ data }) => {
     const stripe = createStripeClient(data.environment);
 
-    const [oneTime, monthly] = await Promise.all([
+    const includeAddon = !!data.includeMailingAddon;
+
+    const priceQueries: Promise<Stripe.ApiList<Stripe.Price>>[] = [
       stripe.prices.list({ lookup_keys: ["pretransfer_199"], limit: 1 }),
-      stripe.prices.list({ lookup_keys: ["pretransfer_10mo"], limit: 1 }),
-    ]);
-    if (!oneTime.data.length || !monthly.data.length) throw new Error("Prices not found");
+    ];
+    if (includeAddon) {
+      priceQueries.push(stripe.prices.list({ lookup_keys: ["pretransfer_10mo"], limit: 1 }));
+    }
+    const results = await Promise.all(priceQueries);
+    const oneTime = results[0];
+    const monthly = includeAddon ? results[1] : null;
+    if (!oneTime.data.length) throw new Error("Base price not found");
+    if (includeAddon && (!monthly || !monthly.data.length)) throw new Error("Add-on price not found");
 
     const customerId =
       data.customerEmail || data.userId
@@ -83,24 +100,35 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
           })
         : undefined;
 
+    const lineItems: Array<{ price: string; quantity: number }> = [
+      { price: oneTime.data[0].id, quantity: 1 },
+    ];
+    if (includeAddon && monthly) {
+      lineItems.push({ price: monthly.data[0].id, quantity: 1 });
+    }
+
     const sessionParams = {
-      mode: "subscription",
+      // Subscription mode ONLY when the mailing add-on is included.
+      // Without it, this is a one-time $199 payment.
+      mode: includeAddon ? "subscription" : "payment",
       ui_mode: "embedded_page",
       return_url: data.returnUrl,
-      line_items: [
-        { price: monthly.data[0].id, quantity: 1 },
-        { price: oneTime.data[0].id, quantity: 1 },
-      ],
-      subscription_data: {
-        trial_period_days: 60,
-        metadata: {
-          language: data.language,
-          ...(data.userId && { userId: data.userId }),
+      line_items: lineItems,
+      ...(includeAddon && {
+        subscription_data: {
+          metadata: {
+            language: data.language,
+            mailing_addon: "true",
+            mailing_addon_acknowledged: "true",
+            ...(data.userId && { userId: data.userId }),
+          },
         },
-      },
+      }),
       ...(customerId && { customer: customerId }),
       metadata: {
         language: data.language,
+        mailing_addon: includeAddon ? "true" : "false",
+        ...(includeAddon && { mailing_addon_acknowledged: "true" }),
         ...(data.userId && { userId: data.userId }),
       },
     } satisfies Stripe.Checkout.SessionCreateParams;
