@@ -126,15 +126,15 @@ function escapeHtml(s: unknown): string {
 }
 
 const HEADING: Record<Lang, string> = {
-  en: "Self-Help Library (free, public, never expires)",
-  es: "Biblioteca de Autoayuda (gratuita, pública, no caduca)",
-  ht: "Bibliyotèk Èd Tèt Ou (gratis, piblik, pa janm ekspire)",
+  en: "Pro Se Reference Library — publicly available federal & non-profit publications",
+  es: "Biblioteca de Referencia Pro Se — publicaciones federales y sin fines de lucro de acceso público",
+  ht: "Bibliyotèk Referans Pro Se — piblikasyon federal ak òganizasyon san bi likratif ki disponib piblikman",
 };
 
 const NOTE: Record<Lang, string> = {
-  en: "These links never expire. Save them. Share them.",
-  es: "Estos enlaces no caducan. Guárdelos. Compártalos.",
-  ht: "Lyen sa yo pa janm ekspire. Sove yo. Pataje yo.",
+  en: "Reading aid only. The Company authored NONE of this material. Every link points to the original publisher (U.S. Courts, NIJC, NIPNLG). These links never expire — save them and share them.",
+  es: "Solo guía de lectura. La Compañía NO redactó ninguno de estos materiales. Cada enlace apunta al editor original (Tribunales de EE. UU., NIJC, NIPNLG). Estos enlaces no caducan — guárdelos y compártalos.",
+  ht: "Sèlman gid lekti. Konpayi an pa t ekri OKENN nan materyèl sa yo. Chak lyen pwente sou piblikatè orijinal la (Tribinal Etazini, NIJC, NIPNLG). Lyen sa yo pa janm ekspire — sove yo epi pataje yo.",
 };
 
 export function buildSelfHelpLibraryHtml(language: string): string {
