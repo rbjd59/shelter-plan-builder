@@ -22,6 +22,7 @@ import { Route as OwnPropertyRouteImport } from './routes/own-property'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IntakeRouteImport } from './routes/intake'
 import { Route as DownloadRouteImport } from './routes/download'
+import { Route as DagRouteImport } from './routes/dag'
 import { Route as ComingSoonRouteImport } from './routes/coming-soon'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as AppRouteImport } from './routes/app'
@@ -119,6 +120,11 @@ const IntakeRoute = IntakeRouteImport.update({
 const DownloadRoute = DownloadRouteImport.update({
   id: '/download',
   path: '/download',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DagRoute = DagRouteImport.update({
+  id: '/dag',
+  path: '/dag',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ComingSoonRoute = ComingSoonRouteImport.update({
@@ -299,6 +305,7 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRoute
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
+  '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
@@ -345,6 +352,7 @@ export interface FileRoutesByTo {
   '/app': typeof AppRoute
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
+  '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
@@ -394,6 +402,7 @@ export interface FileRoutesById {
   '/app': typeof AppRoute
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
+  '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
@@ -442,6 +451,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/checkout'
     | '/coming-soon'
+    | '/dag'
     | '/download'
     | '/intake'
     | '/login'
@@ -488,6 +498,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/checkout'
     | '/coming-soon'
+    | '/dag'
     | '/download'
     | '/intake'
     | '/login'
@@ -536,6 +547,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/checkout'
     | '/coming-soon'
+    | '/dag'
     | '/download'
     | '/intake'
     | '/login'
@@ -585,6 +597,7 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRoute
   CheckoutRoute: typeof CheckoutRoute
   ComingSoonRoute: typeof ComingSoonRoute
+  DagRoute: typeof DagRoute
   DownloadRoute: typeof DownloadRoute
   IntakeRoute: typeof IntakeRoute
   LoginRoute: typeof LoginRoute
@@ -709,6 +722,13 @@ declare module '@tanstack/react-router' {
       path: '/download'
       fullPath: '/download'
       preLoaderRoute: typeof DownloadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dag': {
+      id: '/dag'
+      path: '/dag'
+      fullPath: '/dag'
+      preLoaderRoute: typeof DagRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/coming-soon': {
@@ -1006,6 +1026,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRoute,
   CheckoutRoute: CheckoutRoute,
   ComingSoonRoute: ComingSoonRoute,
+  DagRoute: DagRoute,
   DownloadRoute: DownloadRoute,
   IntakeRoute: IntakeRoute,
   LoginRoute: LoginRoute,
@@ -1042,13 +1063,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
