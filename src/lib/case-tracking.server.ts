@@ -1,6 +1,7 @@
 // Server-only: family-facing case tracking lifecycle.
 
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { buildSelfHelpLibraryHtml, buildSelfHelpLibraryText } from "@/lib/self-help-library";
 
 const FROM = "intake@gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
@@ -323,7 +324,7 @@ export async function sendWelcomeEmail(params: {
     )
     .replace(
       "</div>\n      <p ",
-      `${serviceSection}${pdfSection}${familyActivationSection}</div>\n      <p `,
+      `${serviceSection}${pdfSection}${buildSelfHelpLibraryHtml(lang)}${familyActivationSection}</div>\n      <p `,
     );
   const subjectFinal = params.demoMode ? `[DEMO] ${c.subject}` : c.subject;
   const text = `${c.heading}\n\n${c.body}\n\n${c.cta}: ${trackingUrl}\n\n${
@@ -332,7 +333,7 @@ export async function sendWelcomeEmail(params: {
     params.clientInstallUrl ? `\n${sc.clientCta}: ${params.clientInstallUrl}` : ""
   }${params.familyInstallUrl ? `\n${sc.familyCta}: ${params.familyInstallUrl}` : ""}\n\n${
     params.habeasUrl ? `AO 242 Habeas: ${params.habeasUrl}\n` : ""
-  }${params.ifpUrl ? `AO 240 IFP: ${params.ifpUrl}\n` : ""}\n${c.note}`;
+  }${params.ifpUrl ? `AO 240 IFP: ${params.ifpUrl}\n` : ""}\n${buildSelfHelpLibraryText(lang)}\n\n${c.note}`;
   await enqueueFamilyEmail({
     to: params.to,
     subject: subjectFinal,

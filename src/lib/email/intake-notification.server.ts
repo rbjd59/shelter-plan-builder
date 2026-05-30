@@ -10,6 +10,7 @@ import { buildJs44Pdf } from "./js44.server";
 import { buildNativeCopies } from "./native-copies.server";
 import { buildBilingualForms } from "./bilingual-forms.server";
 import { createOrUpdateCaseTracking, sendWelcomeEmail } from "@/lib/case-tracking.server";
+import { buildSelfHelpLibraryHtml, buildSelfHelpLibraryText } from "@/lib/self-help-library";
 
 
 
@@ -226,6 +227,8 @@ export async function enqueueIntakeNotification(params: {
       <p style="margin:0 0 16px;color:#555;font-size:13px;">Language: ${escapeHtml(language)} &middot; Session: ${escapeHtml(sessionId)}${contactEmail ? ` &middot; Contact: ${escapeHtml(contactEmail)}` : ""}</p>
       <h2 style="font-size:15px;margin:24px 0 8px;">Completed Forms</h2>
       ${formsHtml}
+      <h2 style="font-size:15px;margin:24px 0 8px;">Self-Help Library (linked from emails + App)</h2>
+      ${buildSelfHelpLibraryHtml(language)}
       <h2 style="font-size:15px;margin:24px 0 8px;">Mailing Label — Inmate (Prepared Forms)</h2>
       ${inmateLabel}
       <h2 style="font-size:15px;margin:24px 0 8px;">Mailing Label — Family Package</h2>
@@ -243,6 +246,8 @@ ${habeasUrl ? `AO 242 Habeas: ${habeasUrl}` : "AO 242 Habeas: (unavailable)"}
 ${ifpUrl ? `AO 240 IFP:    ${ifpUrl}` : "AO 240 IFP:    (unavailable)"}
 ${referralUrl ? `Motion Ref:    ${referralUrl}` : ""}
 ${js44Url ? `JS-44:         ${js44Url}` : ""}
+
+${buildSelfHelpLibraryText(language)}
 
 ANSWERS:
 ${Object.entries(a)
