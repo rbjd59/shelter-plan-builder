@@ -348,31 +348,6 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
 
   return (
     <div style={wrap}>
-      {showGuide && (
-        <div
-          onClick={() => setShowGuide(false)}
-          style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.85)", zIndex: 1000, display: "flex", flexDirection: "column", padding: 16 }}
-        >
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8, color: "#fff" }}>
-            <strong style={{ fontSize: 14 }}>
-              Habeas Explainer — {L === "es" ? "Español" : "English"}
-            </strong>
-            <button
-              type="button"
-              onClick={(e) => { e.stopPropagation(); setShowGuide(false); }}
-              style={{ background: "#fff", color: "#000", border: "none", padding: "6px 14px", borderRadius: 4, fontWeight: 700, cursor: "pointer" }}
-            >
-              {L === "es" ? "Cerrar ✕" : L === "ht" ? "Fèmen ✕" : "Close ✕"}
-            </button>
-          </div>
-          <iframe
-            onClick={(e) => e.stopPropagation()}
-            src={L === "es" ? "/forms/Habeas-Explainer-ES.pdf" : "/forms/Habeas-Explainer-EN.pdf"}
-            title="Habeas Explainer"
-            style={{ flex: 1, width: "100%", border: "none", background: "#fff", borderRadius: 4 }}
-          />
-        </div>
-      )}
       <div style={container}>
         <h1 style={{ fontSize: 32, fontWeight: 700, marginBottom: 8, fontFamily: "Fraunces, serif" }}>{ui.title}</h1>
         <p style={{ color: "#a8a59a", marginBottom: 16 }}>{ui.sub}</p>
