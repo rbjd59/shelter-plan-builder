@@ -43,9 +43,13 @@ export async function buildMotionReferralPdf(a: A): Promise<Uint8Array> {
     draw(text, (612 - w) / 2, yy, { font: f, size });
   };
 
-  // Header
+  // Header — venue (district) is intentionally left blank for the
+  // customer to handwrite. The Company does NOT select venue on the
+  // customer's behalf. See the federal district court list provided
+  // separately for venue instructions.
   center("UNITED STATES DISTRICT COURT", y, bold, 12); y -= 16;
-  center("SOUTHERN DISTRICT OF FLORIDA", y, bold, 12); y -= 28;
+  // Blank district line for the customer to write in
+  line(y + 3, left + 120, right - 120); y -= 28;
 
   // Caption block
   draw(name || "", left, y);
