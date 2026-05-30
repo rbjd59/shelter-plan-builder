@@ -96,7 +96,7 @@ export const PARTNERS: Record<Lang, Section> = {
       items: [
         { h: "Empowering families before detention", p: "Families prepare essential federal court documents in advance, reducing stress and uncertainty." },
         { h: "Easy translation & form preparation", p: "Answers are translated and typed onto official forms in Spanish, Haitian Creole, or English." },
-        { h: "Accessible support via HELP NOW app", p: "Completed packages are delivered directly to the customer's phone for quick access if needed." },
+        { h: "Accessible support via NOTIFY FAMILY app", p: "Completed packages are delivered directly to the customer's phone for quick access if needed." },
       ],
     },
     process: {
@@ -195,7 +195,7 @@ export const PARTNERS: Record<Lang, Section> = {
       items: [
         { h: "Fortaleciendo a las familias antes de la detención", p: "Las familias preparan con anticipación los documentos esenciales para la corte federal, reduciendo estrés e incertidumbre." },
         { h: "Traducción y llenado fácil de formularios", p: "Las respuestas se traducen y se transcriben en los formularios oficiales en español, criollo haitiano o inglés." },
-        { h: "Apoyo accesible vía la app HELP NOW", p: "Los paquetes completos se entregan directamente al teléfono del cliente para acceso rápido cuando sea necesario." },
+        { h: "Apoyo accesible vía la app NOTIFY FAMILY", p: "Los paquetes completos se entregan directamente al teléfono del cliente para acceso rápido cuando sea necesario." },
       ],
     },
     process: {
@@ -294,7 +294,7 @@ export const PARTNERS: Record<Lang, Section> = {
       items: [
         { h: "Bay fanmi yo fòs anvan detansyon", p: "Fanmi yo prepare dokiman esansyèl pou tribinal federal davans, sa redui estrès ak ensètitid." },
         { h: "Tradiksyon fasil ak preparasyon fòm", p: "Repons yo tradui epi tape sou fòm ofisyèl an Panyòl, Kreyòl Ayisyen oswa Anglè." },
-        { h: "Sipò aksesib atravè app HELP NOW", p: "Pakèt fini yo livre dirèkteman sou telefòn kliyan an pou aksè rapid si sa nesesè." },
+        { h: "Sipò aksesib atravè app NOTIFY FAMILY", p: "Pakèt fini yo livre dirèkteman sou telefòn kliyan an pou aksè rapid si sa nesesè." },
       ],
     },
     process: {

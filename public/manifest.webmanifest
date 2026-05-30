@@ -1,6 +1,6 @@
 {
   "name": "DetencionDefensa Emergency",
-  "short_name": "HELP NOW",
+  "short_name": "NOTIFY FAMILY",
   "description": "Hold to alert your legal team and emergency contact in case of ICE detention.",
   "start_url": "/app",
   "scope": "/app",

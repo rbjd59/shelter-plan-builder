@@ -8,11 +8,11 @@ export const Route = createFileRoute("/download")({
   component: DownloadPage,
   head: () => ({
     meta: [
-      { title: "Download the HELP NOW App — DetencionDefensa" },
+      { title: "Download the NOTIFY FAMILY App — DetencionDefensa" },
       {
         name: "description",
         content:
-          "Install the DetencionDefensa HELP NOW app — one tap notifies your legal team and family the moment ICE detains you.",
+          "Install the DetencionDefensa NOTIFY FAMILY app — one tap notifies your legal team and family the moment ICE detains you.",
       },
       { name: "robots", content: "noindex" },
     ],
@@ -42,7 +42,7 @@ type Tab = "ios" | "android";
 
 const T = {
   es: {
-    title: "Instalar AYUDA YA",
+    title: "Instalar AVISAR A FAMILIA",
     subtitle:
       "Un toque en el teléfono alerta a su equipo legal y a su familia — incluso si le quitan el teléfono.",
     iphone: "iPhone",
@@ -52,12 +52,12 @@ const T = {
     iosHeading: "iPhone — instalación en 4 pasos",
     iosIntro:
       "El iPhone usa la app web. No necesita la App Store. Abra esta página en Safari y agréguela a la pantalla de inicio.",
-    iosOpenBtn: "Abrir página AYUDA YA",
+    iosOpenBtn: "Abrir página AVISAR A FAMILIA",
     iosSteps: [
       "Abra detenciondefensa.com/app en Safari (no en Chrome ni en el correo).",
       "Toque el botón Compartir (cuadrado con flecha hacia arriba) abajo.",
       "Baje y toque «Agregar a pantalla de inicio».",
-      "Toque «Agregar». El ícono rojo AYUDA YA aparecerá en su pantalla.",
+      "Toque «Agregar». El ícono rojo AVISAR A FAMILIA aparecerá en su pantalla.",
       "Ábralo, permita ubicación y complete la configuración una vez.",
     ],
     iosWarn:
@@ -94,7 +94,7 @@ const T = {
     aOpenWeb: "Abrir página de emergencia",
   },
   en: {
-    title: "Install HELP NOW",
+    title: "Install NOTIFY FAMILY",
     subtitle:
       "One tap on the phone alerts your legal team and family — even if the phone is taken.",
     iphone: "iPhone",
@@ -103,12 +103,12 @@ const T = {
     iosHeading: "iPhone — install in 4 steps",
     iosIntro:
       "iPhone uses the web app — no App Store needed. Open this page in Safari, then add it to your home screen.",
-    iosOpenBtn: "Open HELP NOW Page",
+    iosOpenBtn: "Open NOTIFY FAMILY Page",
     iosSteps: [
       "Open detenciondefensa.com/app in Safari (not Chrome or your email app).",
       "Tap the Share button (square with up-arrow) at the bottom.",
       "Scroll down and tap “Add to Home Screen”.",
-      "Tap “Add”. The red HELP NOW icon appears on your home screen.",
+      "Tap “Add”. The red NOTIFY FAMILY icon appears on your home screen.",
       "Open it, allow location, and complete one-time setup.",
     ],
     iosWarn:
@@ -142,7 +142,7 @@ const T = {
     aOpenWeb: "Open Web Emergency Page",
   },
   ht: {
-    title: "Enstale AYÈ KOUNYE A",
+    title: "Enstale AVIZE FANMI",
     subtitle:
       "Yon sèl tap sou telefòn lan alète ekip legal ou ak fanmi w — menm si yo pran telefòn lan.",
     iphone: "iPhone",
@@ -151,12 +151,12 @@ const T = {
     iosHeading: "iPhone — enstalasyon nan 4 etap",
     iosIntro:
       "iPhone sèvi avèk app entènèt la — pa bezwen App Store. Ouvri paj sa nan Safari, epi ajoute li sou ekran prensipal ou.",
-    iosOpenBtn: "Ouvri paj AYÈ KOUNYE A",
+    iosOpenBtn: "Ouvri paj AVIZE FANMI",
     iosSteps: [
       "Ouvri detenciondefensa.com/app nan Safari (pa nan Chrome ni nan imèl).",
       "Peze bouton Pataje (kare ak flèch monte) anba a.",
       "Desann epi peze «Ajoute sou Ekran Prensipal».",
-      "Peze «Ajoute». Ikòn wouj AYÈ KOUNYE A ap parèt sou ekran ou.",
+      "Peze «Ajoute». Ikòn wouj AVIZE FANMI ap parèt sou ekran ou.",
       "Ouvri li, otorize lokalizasyon, epi konplete konfigirasyon yon sèl fwa.",
     ],
     iosWarn:

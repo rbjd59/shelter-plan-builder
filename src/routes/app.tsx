@@ -8,12 +8,12 @@ export const Route = createFileRoute("/app")({
   component: EmergencyApp,
   head: () => ({
     meta: [
-      { title: "HELP NOW — DetencionDefensa" },
+      { title: "NOTIFY FAMILY — DetencionDefensa" },
       { name: "theme-color", content: "#dc2626" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
-      { name: "apple-mobile-web-app-title", content: "HELP NOW" },
+      { name: "apple-mobile-web-app-title", content: "NOTIFY FAMILY" },
       { name: "robots", content: "noindex" },
     ],
     links: [
@@ -253,7 +253,7 @@ function EmergencyApp() {
   const [pinEntry, setPinEntry] = useState("");
   const [pinError, setPinError] = useState(false);
 
-  // Hold-to-fire state (4-second hold on HELP button)
+  // Hold-to-fire state (4-second hold on NOTIFY FAMILY button)
   const [holding, setHolding] = useState(false);
   const [holdProgress, setHoldProgress] = useState(0);
   const holdStart = useRef<number | null>(null);
@@ -383,7 +383,7 @@ function EmergencyApp() {
     setSavingSetup(false);
   }, [record, emailInput, pinInput, pinConfirm]);
 
-  // Fire the alert. Triggered after a 4-second hold on HELP NOW.
+  // Fire the alert. Triggered after a 4-second hold on NOTIFY FAMILY.
   // Step 1: server POST (fail-safe — sent through our verified domain).
   // Step 2: open mailto from the user's phone (redundant — also reaches us).
   const fireAlert = useCallback(async (rec: CaseRecord) => {
@@ -548,7 +548,7 @@ function EmergencyApp() {
             <p className="text-xs uppercase tracking-[0.2em] text-white/60">DetencionDefensa</p>
             <h1 className="mt-2 text-2xl font-black">Step 1 — Install the app</h1>
             <p className="mt-3 text-sm text-white/70">
-              Put the red <strong>HELP NOW</strong> icon on your home screen so it's always one
+              Put the red <strong>NOTIFY FAMILY</strong> icon on your home screen so it's always one
               tap away.
             </p>
           </header>
@@ -560,7 +560,7 @@ function EmergencyApp() {
                 <ol className="mt-3 list-decimal space-y-2 pl-5 text-white/85">
                   <li>Tap the <strong>Share</strong> icon at the bottom.</li>
                   <li>Tap <strong>Add to Home Screen</strong>.</li>
-                  <li>Tap <strong>Add</strong>. Open the red <strong>HELP NOW</strong> icon from your home screen.</li>
+                  <li>Tap <strong>Add</strong>. Open the red <strong>NOTIFY FAMILY</strong> icon from your home screen.</li>
                 </ol>
               </>
             )}
@@ -575,7 +575,7 @@ function EmergencyApp() {
                     }}
                     className="mt-3 w-full rounded-xl bg-red-600 px-5 py-3 text-base font-bold text-white shadow hover:bg-red-700"
                   >
-                    📲 Install HELP NOW app (one tap)
+                    📲 Install NOTIFY FAMILY app (one tap)
                   </button>
                 )}
                 <ol className="mt-3 list-decimal space-y-2 pl-5 text-white/85">
@@ -587,7 +587,7 @@ function EmergencyApp() {
                       <li>Tap <strong>Install app</strong> or <strong>Add to Home screen</strong>.</li>
                     </>
                   )}
-                  <li>Open the red <strong>HELP NOW</strong> icon from your home screen.</li>
+                  <li>Open the red <strong>NOTIFY FAMILY</strong> icon from your home screen.</li>
                 </ol>
               </>
             )}
@@ -616,7 +616,7 @@ function EmergencyApp() {
             <p className="text-xs uppercase tracking-[0.2em] text-white/60">Step 2 — Set up</p>
             <h1 className="mt-2 text-2xl font-black">Three quick things</h1>
             <p className="mt-2 text-sm text-white/70">
-              Do this once now, in a safe place. Then HELP will fire after a 4-second hold — no
+              Do this once now, in a safe place. Then NOTIFY FAMILY will fire after a 4-second hold — no
               questions, no permission pop-ups.
             </p>
           </header>
@@ -642,7 +642,7 @@ function EmergencyApp() {
           <div className="mt-4 rounded-2xl border border-white/15 bg-white/5 p-5">
             <p className="text-base font-bold text-white">2. Allow location</p>
             <p className="mt-1 text-xs text-white/60">
-              So we can find you fast if you press HELP.
+              So we can find you fast if you press NOTIFY FAMILY.
             </p>
             {gpsState === "granted" ? (
               <p className="mt-3 rounded-lg bg-green-600/20 px-4 py-3 text-sm font-semibold text-green-300">
@@ -707,7 +707,7 @@ function EmergencyApp() {
             disabled={!canSave || savingSetup}
             className="mt-6 w-full rounded-2xl bg-white px-6 py-4 text-base font-black uppercase tracking-wider text-red-700 disabled:opacity-40"
           >
-            {savingSetup ? "Saving…" : "Done — show HELP button"}
+            {savingSetup ? "Saving…" : "Done — show NOTIFY FAMILY button"}
           </button>
         </div>
       </Shell>
@@ -794,7 +794,7 @@ function EmergencyApp() {
     );
   }
 
-  // ---- Main HELP button — 4-second hold to fire ----
+  // ---- Main NOTIFY FAMILY button — 4-second hold to fire ----
   const holdPct = Math.round(holdProgress * 100);
   const holdRemaining = Math.max(
     0,
@@ -834,10 +834,19 @@ function EmergencyApp() {
                 style={{ transition: holding ? "none" : "stroke-dashoffset 0.3s" }}
               />
             </svg>
-            <div className="text-center">
-              <div className="text-6xl font-black tracking-tight text-white">
-                {holding ? holdRemaining : "HELP"}
-              </div>
+            <div className="text-center px-4">
+              {holding ? (
+                <div className="text-7xl font-black tracking-tight text-white">{holdRemaining}</div>
+              ) : (
+                <>
+                  <div className="text-3xl font-black leading-tight tracking-tight text-white">
+                    NOTIFY<br />FAMILY
+                  </div>
+                  <div className="mt-1 text-[11px] font-semibold leading-tight text-white/80">
+                    Avisar a Familia<br />Avize Fanmi
+                  </div>
+                </>
+              )}
               <div className="mt-2 text-xs font-semibold uppercase tracking-widest text-white/85">
                 {holding ? `hold ${holdPct}%` : "hold 4 sec to fire"}
               </div>

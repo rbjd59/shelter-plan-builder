@@ -60,7 +60,7 @@ function SignPage() {
       <div style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 11, letterSpacing: "0.12em", color: "#8a3c11", marginBottom: 6 }}>SENTINEL READINESS — SIGN & VAULT</div>
       <h1 style={{ fontFamily: "Fraunces, Georgia, serif", fontSize: 30, fontWeight: 600, margin: "0 0 6px" }}>Your documents are ready</h1>
       <p style={{ color: "#1a2940", marginBottom: 22, fontSize: 15, lineHeight: 1.6 }}>
-        Download each document, print it, sign it where indicated, and have it notarized at any UPS Store, bank, or notary public ($5–$15 each). Then upload the scanned signed copies back here. They'll be sealed in your vault and released to {recipientName ?? "your designated recipient"} <strong>only</strong> when HELP NOW is triggered.
+        Download each document, print it, sign it where indicated, and have it notarized at any UPS Store, bank, or notary public ($5–$15 each). Then upload the scanned signed copies back here. They'll be sealed in your vault and released to {recipientName ?? "your designated recipient"} <strong>only</strong> when NOTIFY FAMILY is triggered.
       </p>
 
       <div style={{ background: "#fff", border: "1px solid rgba(14,26,43,0.15)", borderRadius: 6, padding: 22, marginBottom: 22 }}>

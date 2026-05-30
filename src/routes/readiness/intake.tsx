@@ -29,9 +29,9 @@ const STEPS: StepDef[] = [
     id: "recipient",
     title: { en: "1. Trigger Recipient", es: "1. Receptor del Aviso", ht: "1. Moun ki resevwa Alèt la" },
     intro: {
-      en: "Who do we send your sealed packet to the moment HELP NOW fires? Pick ONE person you trust completely.",
-      es: "¿A quién enviamos su paquete sellado en el momento que se active AYUDA YA? Elija UNA persona de total confianza.",
-      ht: "Pou kiyès n ap voye pakè sele a lè AYÈ KOUNYE A aktive? Chwazi YON moun ou fè konfyans nèt.",
+      en: "Who do we send your sealed packet to the moment NOTIFY FAMILY fires? Pick ONE person you trust completely.",
+      es: "¿A quién enviamos su paquete sellado en el momento que se active AVISAR A FAMILIA? Elija UNA persona de total confianza.",
+      ht: "Pou kiyès n ap voye pakè sele a lè AVIZE FANMI aktive? Chwazi YON moun ou fè konfyans nèt.",
     },
     fields: [
       { key: "recipient_name", label: { en: "Full name", es: "Nombre completo", ht: "Non konplè" } },

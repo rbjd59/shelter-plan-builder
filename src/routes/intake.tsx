@@ -126,14 +126,14 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
   {
     id: "mailto",
     title: {
-      en: "6. Emergency Contact for the HELP NOW App + Mailing Address if Detained",
-      es: "6. Contacto de Emergencia para la App AYUDA YA + Dirección Postal si está Detenido",
-      ht: "6. Kontak Ijans pou App AYÈ KOUNYE A + Adrès Postal si Detni",
+      en: "6. Emergency Contact for the NOTIFY FAMILY App + Mailing Address if Detained",
+      es: "6. Contacto de Emergencia para la App AVISAR A FAMILIA + Dirección Postal si está Detenido",
+      ht: "6. Kontak Ijans pou App AVIZE FANMI + Adrès Postal si Detni",
     },
     intro: {
-      en: "If the petitioner is detained, this is where we'll mail a printed copy of the File Now Packet (AO 242 + AO 240). The same person is also notified by email — with a copy of the forms attached — the moment the petitioner activates the HELP NOW button on the mobile app.",
-      es: "Si el peticionario es detenido, aquí enviaremos por correo una copia impresa del Paquete File Now (AO 242 + AO 240). Esta misma persona recibe un aviso por correo electrónico — con copia de los formularios adjunta — en el momento en que el peticionario active el botón AYUDA YA en la app móvil.",
-      ht: "Si yo detni petisyonè a, se la nou pral voye yon kopi enprime nan File Now Packet la (AO 242 + AO 240). Menm moun sa a resevwa yon notifikasyon imèl — ak yon kopi fòm yo — lè petisyonè a aktive bouton AYÈ KOUNYE A nan app la.",
+      en: "If the petitioner is detained, this is where we'll mail a printed copy of the File Now Packet (AO 242 + AO 240). The same person is also notified by email — with a copy of the forms attached — the moment the petitioner activates the NOTIFY FAMILY button on the mobile app.",
+      es: "Si el peticionario es detenido, aquí enviaremos por correo una copia impresa del Paquete File Now (AO 242 + AO 240). Esta misma persona recibe un aviso por correo electrónico — con copia de los formularios adjunta — en el momento en que el peticionario active el botón AVISAR A FAMILIA en la app móvil.",
+      ht: "Si yo detni petisyonè a, se la nou pral voye yon kopi enprime nan File Now Packet la (AO 242 + AO 240). Menm moun sa a resevwa yon notifikasyon imèl — ak yon kopi fòm yo — lè petisyonè a aktive bouton AVIZE FANMI nan app la.",
     },
     fields: [
       { key: "emergency_contact_name", label: { en: "Emergency contact full name (notified by the app)", es: "Nombre completo del contacto de emergencia (notificado por la app)", ht: "Non konplè kontak ijans (app la notifye)" } },
@@ -169,7 +169,7 @@ const UI = {
     upl: "We are NOT a law firm. We do not give legal advice or choose forms. The petitioner signs and files.",
     submit: "Submit answers",
     submitting: "Submitting…",
-    done: "Check your email. We just sent you your prepared AO 242 + AO 240 PDFs and a one-tap link to install the HELP NOW button on the at-risk person's phone, with step-by-step instructions in your chosen language.",
+    done: "Check your email. We just sent you your prepared AO 242 + AO 240 PDFs and a one-tap link to install the NOTIFY FAMILY button on the at-risk person's phone, with step-by-step instructions in your chosen language.",
     spamTitle: "IMPORTANT — don't let our emails go to spam",
     spamBody: "If you don't see our email, check your spam/junk folder. To make sure future emergency emails reach you, tap the button below to send us a quick test email. This trains your phone to trust intake@gohomesooner.com so our alerts always arrive.",
     spamBtn: "Send test email now",
@@ -185,7 +185,7 @@ const UI = {
     upl: "NO somos un bufete de abogados. No damos consejos legales. El peticionario firma y presenta.",
     submit: "Enviar respuestas",
     submitting: "Enviando…",
-    done: "Revise su correo electrónico. Acabamos de enviarle sus formularios AO 242 + AO 240 en PDF y un enlace de un solo toque para instalar el botón AYUDA YA en el teléfono de la persona en riesgo, con instrucciones paso a paso en su idioma.",
+    done: "Revise su correo electrónico. Acabamos de enviarle sus formularios AO 242 + AO 240 en PDF y un enlace de un solo toque para instalar el botón AVISAR A FAMILIA en el teléfono de la persona en riesgo, con instrucciones paso a paso en su idioma.",
     spamTitle: "IMPORTANTE — no deje que nuestros correos vayan a spam",
     spamBody: "Si no ve nuestro correo, revise la carpeta de spam/correo no deseado. Para asegurarse de recibir nuestros correos de emergencia, toque el botón abajo para enviarnos un correo de prueba. Esto le enseña a su teléfono a confiar en intake@gohomesooner.com.",
     spamBtn: "Enviar correo de prueba ahora",
@@ -201,7 +201,7 @@ const UI = {
     upl: "Nou PA yon kabinè avoka. Nou pa bay konsèy legal. Petisyonè a siyen e depoze.",
     submit: "Voye repons",
     submitting: "K ap voye…",
-    done: "Tcheke imèl ou. Nou fenk voye fòm AO 242 + AO 240 PDF ou yo ak yon lyen yon-tap pou enstale bouton AYÈ KOUNYE A sou telefòn moun ki an risk la, ak enstriksyon etap-pa-etap nan lang ou chwazi a.",
+    done: "Tcheke imèl ou. Nou fenk voye fòm AO 242 + AO 240 PDF ou yo ak yon lyen yon-tap pou enstale bouton AVIZE FANMI sou telefòn moun ki an risk la, ak enstriksyon etap-pa-etap nan lang ou chwazi a.",
     spamTitle: "ENPÒTAN — pa kite imèl nou yo ale nan spam",
     spamBody: "Si ou pa wè imèl nou an, tcheke katab spam/junk lan. Pou asire imèl ijans rive jwenn ou, peze bouton anba a pou voye yon imèl tès ba nou. Sa montre telefòn ou pou l fè konfyans intake@gohomesooner.com.",
     spamBtn: "Voye imèl tès la kounye a",
@@ -304,7 +304,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
               {pairCode}
             </p>
             <p style={{ margin: "12px 0 0", fontSize: 13, opacity: 0.8 }}>
-              {L === "es" ? "Este código vincula su intake con la app HELP NOW." : L === "ht" ? "Kòd sa a koneksyon antre w lan ak app HELP NOW lan." : "This code links your intake to the HELP NOW app."}
+              {L === "es" ? "Este código vincula su intake con la app NOTIFY FAMILY." : L === "ht" ? "Kòd sa a koneksyon antre w lan ak app NOTIFY FAMILY lan." : "This code links your intake to the NOTIFY FAMILY app."}
             </p>
           </div>
         )}
@@ -330,7 +330,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
           }}
         >
           <div style={{ fontSize: 13, letterSpacing: 1.5, opacity: 0.85, fontWeight: 700 }}>📱 INSTALL THE APP</div>
-          <div style={{ fontSize: 20, fontWeight: 800, marginTop: 4 }}>Get HELP NOW (iPhone & Android)</div>
+          <div style={{ fontSize: 20, fontWeight: 800, marginTop: 4 }}>Get NOTIFY FAMILY (iPhone & Android)</div>
           <div style={{ fontSize: 13, opacity: 0.9, marginTop: 4 }}>One-tap emergency alert. Install on the detainee's phone now.</div>
         </a>
         <div style={{ background: "#3a2a00", border: "2px solid #e8a04a", padding: 24, borderRadius: 8, marginTop: 24 }}>

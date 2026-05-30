@@ -38,7 +38,7 @@ const COPY = {
       { name: "Important-Document Locator", info: "Where to find passports, birth certificates, marriage certificate, deeds, vehicle titles, leases, insurance policies." },
     ],
     vaultTitle: "Optional encrypted vault — $5/month",
-    vaultBody: "Instead of handing the signed packet to your family today, you can load it into your encrypted device vault. We do NOT have a copy. We only release it to the person you designated when YOU trigger HELP NOW. Cancel anytime — your packet stays yours.",
+    vaultBody: "Instead of handing the signed packet to your family today, you can load it into your encrypted device vault. We do NOT have a copy. We only release it to the person you designated when YOU trigger NOTIFY FAMILY. Cancel anytime — your packet stays yours.",
     faqTitle: "Quick FAQ",
     faq: [
       { q: "Is this legal advice?", a: "No. We are a translation + typing + delivery service. We do NOT pick documents for you, give legal opinions, or appear in court. You decide what you want to say; we type your exact words onto the standard forms." },
@@ -66,7 +66,7 @@ const COPY = {
       { name: "Localizador de Documentos Importantes", info: "Dónde encontrar pasaportes, actas de nacimiento, acta de matrimonio, escrituras, títulos de vehículos, contratos de arrendamiento, pólizas de seguro." },
     ],
     vaultTitle: "Bóveda cifrada opcional — $5/mes",
-    vaultBody: "En vez de entregar el paquete firmado a su familia hoy, puede cargarlo en su bóveda cifrada del dispositivo. Nosotros NO tenemos copia. Solo se libera a la persona que usted designó cuando USTED active AYUDA YA. Cancele cuando quiera — su paquete sigue siendo suyo.",
+    vaultBody: "En vez de entregar el paquete firmado a su familia hoy, puede cargarlo en su bóveda cifrada del dispositivo. Nosotros NO tenemos copia. Solo se libera a la persona que usted designó cuando USTED active AVISAR A FAMILIA. Cancele cuando quiera — su paquete sigue siendo suyo.",
     faqTitle: "Preguntas frecuentes",
     faq: [
       { q: "¿Es esto asesoría legal?", a: "No. Somos un servicio de traducción + escritura + entrega. NO elegimos documentos por usted, no damos opiniones legales, no comparecemos en corte. Usted decide qué quiere decir; nosotros escribimos sus palabras exactas en los formularios estándar." },
@@ -94,7 +94,7 @@ const COPY = {
       { name: "Lokalizatè Dokiman Enpòtan", info: "Kote pou jwenn paspò, batistè, sètifika maryaj, papye kay, tit machin, kontra lwaye, polis asirans." },
     ],
     vaultTitle: "Kòfrefò chiffre opsyonèl — $5/mwa",
-    vaultBody: "Olye bay fanmi w pakè ki siyen an jodi a, ou ka mete l nan kòfrefò chiffre aparèy ou a. Nou PA gen kopi. Nou voye l sèlman bay moun ou nonmen an lè OU aktive AYÈ KOUNYE A. Anile nenpòt lè — pakè a rete pou ou.",
+    vaultBody: "Olye bay fanmi w pakè ki siyen an jodi a, ou ka mete l nan kòfrefò chiffre aparèy ou a. Nou PA gen kopi. Nou voye l sèlman bay moun ou nonmen an lè OU aktive AVIZE FANMI. Anile nenpòt lè — pakè a rete pou ou.",
     faqTitle: "Kesyon Frekan",
     faq: [
       { q: "Èske sa a se konsèy legal?", a: "Non. Nou se yon sèvis tradiksyon + tape + livrezon. Nou PA chwazi dokiman pou ou, pa bay opinyon legal, pa parèt nan tribinal. Ou deside kisa ou vle di; nou tape mo egzak ou yo sou fòm estanda yo." },
