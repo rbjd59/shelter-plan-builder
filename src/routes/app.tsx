@@ -794,7 +794,7 @@ function EmergencyApp() {
     );
   }
 
-  // ---- Main HELP button — 4-second hold to fire ----
+  // ---- Main NOTIFY FAMILY button — 4-second hold to fire ----
   const holdPct = Math.round(holdProgress * 100);
   const holdRemaining = Math.max(
     0,
