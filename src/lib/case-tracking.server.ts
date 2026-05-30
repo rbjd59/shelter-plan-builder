@@ -208,7 +208,7 @@ export async function sendWelcomeEmail(params: {
       serviceTitle: "Cómo funciona DetencionDefensa",
       servicePoints: [
         "Preparamos los formularios federales (Habeas AO 242 + IFP AO 240) listos para presentar.",
-        "Instalamos un botón AYUDA YA en el teléfono de la persona en riesgo.",
+        "Instalamos un botón AVISAR A FAMILIA en el teléfono de la persona en riesgo.",
         "Si se activa, alertamos al equipo legal con su nombre, ubicación GPS y formularios — y comenzamos a localizarlo, notificar a sus contactos y preparar el paquete para enviarle.",
       ],
       familyTitle: `Si le informan que ${inmate || "su ser querido"} fue detenido`,
@@ -238,7 +238,7 @@ export async function sendWelcomeEmail(params: {
       serviceTitle: "Ki jan DetencionDefensa fonksyone",
       servicePoints: [
         "Nou prepare fòm federal yo (Habeas AO 242 + IFP AO 240) pare pou depoze.",
-        "Nou enstale yon bouton AYÈ KOUNYE A sou telefòn moun ki an risk la.",
+        "Nou enstale yon bouton AVIZE FANMI sou telefòn moun ki an risk la.",
         "Si w aktive li, nou alète ekip legal la ak non, GPS, ak fòm yo — epi nou kòmanse jwenn li, alète kontak yo, epi prepare pakè a.",
       ],
       familyTitle: `Si yo di ou ${inmate || "moun ou renmen an"} arete`,
@@ -272,9 +272,9 @@ export async function sendWelcomeEmail(params: {
     </div>`;
 
   const notDownloadNote = {
-    es: "Esto NO es una descarga automática. Toque el botón abajo en el teléfono correcto, luego siga las instrucciones para guardar el ícono rojo AYUDA YA en la pantalla de inicio (toma 10 segundos). En iPhone debe abrirse en Safari.",
+    es: "Esto NO es una descarga automática. Toque el botón abajo en el teléfono correcto, luego siga las instrucciones para guardar el ícono rojo AVISAR A FAMILIA en la pantalla de inicio (toma 10 segundos). En iPhone debe abrirse en Safari.",
     en: "This is NOT an automatic download. Tap the button below on the correct phone, then follow the prompts to save the red NOTIFY FAMILY icon to the home screen (takes 10 seconds). On iPhone you must open it in Safari.",
-    ht: "Sa a se PA yon telechajman otomatik. Peze bouton an anba sou bon telefòn nan, epi swiv enstriksyon yo pou sove ikòn wouj AYÈ KOUNYE A sou ekran prensipal la (li pran 10 segond). Sou iPhone fòk ou ouvri li nan Safari.",
+    ht: "Sa a se PA yon telechajman otomatik. Peze bouton an anba sou bon telefòn nan, epi swiv enstriksyon yo pou sove ikòn wouj AVIZE FANMI sou ekran prensipal la (li pran 10 segond). Sou iPhone fòk ou ouvri li nan Safari.",
   }[lang];
 
   const familyActivationSection = (params.clientInstallUrl || params.familyInstallUrl)

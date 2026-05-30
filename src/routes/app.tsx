@@ -8,12 +8,12 @@ export const Route = createFileRoute("/app")({
   component: EmergencyApp,
   head: () => ({
     meta: [
-      { title: "HELP NOW — DetencionDefensa" },
+      { title: "NOTIFY FAMILY — DetencionDefensa" },
       { name: "theme-color", content: "#dc2626" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
-      { name: "apple-mobile-web-app-title", content: "HELP NOW" },
+      { name: "apple-mobile-web-app-title", content: "NOTIFY FAMILY" },
       { name: "robots", content: "noindex" },
     ],
     links: [
@@ -383,7 +383,7 @@ function EmergencyApp() {
     setSavingSetup(false);
   }, [record, emailInput, pinInput, pinConfirm]);
 
-  // Fire the alert. Triggered after a 4-second hold on HELP NOW.
+  // Fire the alert. Triggered after a 4-second hold on NOTIFY FAMILY.
   // Step 1: server POST (fail-safe — sent through our verified domain).
   // Step 2: open mailto from the user's phone (redundant — also reaches us).
   const fireAlert = useCallback(async (rec: CaseRecord) => {
@@ -548,7 +548,7 @@ function EmergencyApp() {
             <p className="text-xs uppercase tracking-[0.2em] text-white/60">DetencionDefensa</p>
             <h1 className="mt-2 text-2xl font-black">Step 1 — Install the app</h1>
             <p className="mt-3 text-sm text-white/70">
-              Put the red <strong>HELP NOW</strong> icon on your home screen so it's always one
+              Put the red <strong>NOTIFY FAMILY</strong> icon on your home screen so it's always one
               tap away.
             </p>
           </header>
@@ -560,7 +560,7 @@ function EmergencyApp() {
                 <ol className="mt-3 list-decimal space-y-2 pl-5 text-white/85">
                   <li>Tap the <strong>Share</strong> icon at the bottom.</li>
                   <li>Tap <strong>Add to Home Screen</strong>.</li>
-                  <li>Tap <strong>Add</strong>. Open the red <strong>HELP NOW</strong> icon from your home screen.</li>
+                  <li>Tap <strong>Add</strong>. Open the red <strong>NOTIFY FAMILY</strong> icon from your home screen.</li>
                 </ol>
               </>
             )}
@@ -575,7 +575,7 @@ function EmergencyApp() {
                     }}
                     className="mt-3 w-full rounded-xl bg-red-600 px-5 py-3 text-base font-bold text-white shadow hover:bg-red-700"
                   >
-                    📲 Install HELP NOW app (one tap)
+                    📲 Install NOTIFY FAMILY app (one tap)
                   </button>
                 )}
                 <ol className="mt-3 list-decimal space-y-2 pl-5 text-white/85">
@@ -587,7 +587,7 @@ function EmergencyApp() {
                       <li>Tap <strong>Install app</strong> or <strong>Add to Home screen</strong>.</li>
                     </>
                   )}
-                  <li>Open the red <strong>HELP NOW</strong> icon from your home screen.</li>
+                  <li>Open the red <strong>NOTIFY FAMILY</strong> icon from your home screen.</li>
                 </ol>
               </>
             )}
