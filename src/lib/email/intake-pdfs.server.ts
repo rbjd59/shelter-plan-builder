@@ -211,56 +211,11 @@ async function fillAO242(a: A): Promise<Uint8Array> {
   return await doc.save();
 }
 
-async function fillAO240(a: A): Promise<Uint8Array> {
+async function fillAO240(_a: A): Promise<Uint8Array> {
+  // Per attorney revised opinion #8: AO 240 must be delivered BLANK.
+  // The customer fills it in by hand at the time of filing. We load the
+  // official template and return it unchanged — no field pre-fill, no flatten.
   const doc = await PDFDocument.load(b64ToBytes(ao240b64));
-  const form = doc.getForm();
-
-  const name = firstText(a, "full_name", "mail_inmate_name");
-  const facilityName = firstText(a, "facility_name", "mail_current_location");
-  setText(form, "Plaintiff", name);
-  setText(
-    form,
-    "Defendant",
-    s(a.warden_name) || (facilityName ? `Warden, ${facilityName}` : ""),
-  );
-  setText(form, "Location held", facilityName);
-  setText(form, "Applican'tsNameTitle", name);
-
-  const employed = !!s(a.ifp_employer);
-  setCheckOption(form, "Check Box1", employed ? "Yes" : "No");
-  setText(form, "Employer's name and address", s(a.ifp_employer) || "None");
-  setText(form, "Gross pay amount", s(a.ifp_monthly_pay) || "$0");
-  setText(form, "Take-home pay amount", s(a.ifp_monthly_pay) || "$0");
-  setText(form, "Specify pay period", employed ? "monthly" : "N/A");
-
-  const hasOtherIncome = !!s(a.ifp_other_income);
-  setCheckOption(form, "Check Box2", hasOtherIncome ? "Yes" : "No");
-  setCheckOption(form, "Check Box3", "No");
-  setCheckOption(form, "Check Box4", "No");
-  setCheckOption(form, "Check Box5", "No");
-  setCheckOption(form, "Check Box6", "No");
-  setText(form, "Amount and source of other income", s(a.ifp_other_income) || "None");
-
-  setText(form, "Amount of money in cash/checking/savings", s(a.ifp_cash_on_hand) || "$0");
-  setText(form, "Value of property owned", s(a.ifp_property) || "None");
-  setText(form, "Monthly expenses", s(a.ifp_monthly_expenses) || "$0");
-  setText(form, "Dependents, and how much paid for support", s(a.ifp_dependents) || "None");
-  setText(form, "Other financial debts or obligations", s(a.ifp_debts) || "None");
-
-  setText(form, "Applicant'sSignature", "");
-  setText(form, "Date2", "");
-
-  for (const f of form.getFields()) {
-    if (f.constructor.name === "PDFButton") {
-      try { form.removeField(f); } catch { /* ignore */ }
-    }
-  }
-
-  try {
-    form.flatten();
-  } catch {
-    /* ignore */
-  }
   return await doc.save();
 }
 
