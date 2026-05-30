@@ -81,8 +81,7 @@ export function ComingSoonGate({ children }: { children: React.ReactNode }) {
           Coming Soon
         </h1>
         <p style={{ fontSize: 15, opacity: 0.75, margin: "0 0 32px" }}>
-          We're putting the final touches on our pre-detention defense plan.
-          Check back soon.
+          We're putting the final touches on our pre-detention defense plan. Check back soon.
         </p>
         <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <input
@@ -90,7 +89,10 @@ export function ComingSoonGate({ children }: { children: React.ReactNode }) {
             inputMode="numeric"
             autoComplete="off"
             value={pin}
-            onChange={(e) => { setPin(e.target.value); setError(false); }}
+            onChange={(e) => {
+              setPin(e.target.value);
+              setError(false);
+            }}
             placeholder="Access PIN"
             style={{
               padding: "12px 16px",
@@ -119,9 +121,7 @@ export function ComingSoonGate({ children }: { children: React.ReactNode }) {
           >
             Enter
           </button>
-          {error && (
-            <div style={{ fontSize: 13, color: "#e85d3a" }}>Incorrect PIN</div>
-          )}
+          {error && <div style={{ fontSize: 13, color: "#e85d3a" }}>Incorrect PIN</div>}
         </form>
       </div>
     </div>
