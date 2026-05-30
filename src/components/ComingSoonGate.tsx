@@ -46,7 +46,7 @@ export function ComingSoonGate({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  if (unlocked === null) return null;
+  if (unlocked === null) return <GateFallback />;
   if (unlocked) return <>{children}</>;
 
   const submit = (e: React.FormEvent) => {
@@ -123,6 +123,35 @@ export function ComingSoonGate({ children }: { children: React.ReactNode }) {
             <div style={{ fontSize: 13, color: "#e85d3a" }}>Incorrect PIN</div>
           )}
         </form>
+      </div>
+    </div>
+  );
+}
+
+function GateFallback() {
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "linear-gradient(135deg, #0a0a1a 0%, #141432 100%)",
+        color: "#f5f0e0",
+        fontFamily: "system-ui, -apple-system, sans-serif",
+        padding: "24px",
+      }}
+    >
+      <div style={{ maxWidth: 420, width: "100%", textAlign: "center" }}>
+        <div style={{ fontSize: 14, letterSpacing: 3, color: "#c9a84c", marginBottom: 16 }}>
+          DETENCIONDEFENSA.COM
+        </div>
+        <h1 style={{ fontSize: 36, fontWeight: 700, margin: "0 0 12px", lineHeight: 1.15 }}>
+          Coming Soon
+        </h1>
+        <p style={{ fontSize: 15, opacity: 0.75, margin: 0 }}>
+          We're putting the final touches on our pre-detention defense plan.
+        </p>
       </div>
     </div>
   );
