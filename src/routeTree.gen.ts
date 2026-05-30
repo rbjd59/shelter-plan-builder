@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VenuesRouteImport } from './routes/venues'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as SupportRouteImport } from './routes/support'
 import { Route as SplashRouteImport } from './routes/splash'
@@ -55,6 +56,11 @@ import { Route as ApiPublicDevSendInstallRouteImport } from './routes/api/public
 import { Route as ApiPublicCronProcessDueActivationsRouteImport } from './routes/api/public/cron/process-due-activations'
 import { Route as AdminAdminClientsIdRouteImport } from './routes/_admin/admin.clients.$id'
 
+const VenuesRoute = VenuesRouteImport.update({
+  id: '/venues',
+  path: '/venues',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const UnsubscribeRoute = UnsubscribeRouteImport.update({
   id: '/unsubscribe',
   path: '/unsubscribe',
@@ -305,6 +311,7 @@ export interface FileRoutesByFullPath {
   '/splash': typeof SplashRoute
   '/support': typeof SupportRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/venues': typeof VenuesRoute
   '/admin': typeof AdminAdminRouteWithChildren
   '/cases': typeof AuthenticatedCasesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -350,6 +357,7 @@ export interface FileRoutesByTo {
   '/splash': typeof SplashRoute
   '/support': typeof SupportRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/venues': typeof VenuesRoute
   '/admin': typeof AdminAdminRouteWithChildren
   '/cases': typeof AuthenticatedCasesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -398,6 +406,7 @@ export interface FileRoutesById {
   '/splash': typeof SplashRoute
   '/support': typeof SupportRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/venues': typeof VenuesRoute
   '/_admin/admin': typeof AdminAdminRouteWithChildren
   '/_authenticated/cases': typeof AuthenticatedCasesRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
@@ -445,6 +454,7 @@ export interface FileRouteTypes {
     | '/splash'
     | '/support'
     | '/unsubscribe'
+    | '/venues'
     | '/admin'
     | '/cases'
     | '/dashboard'
@@ -490,6 +500,7 @@ export interface FileRouteTypes {
     | '/splash'
     | '/support'
     | '/unsubscribe'
+    | '/venues'
     | '/admin'
     | '/cases'
     | '/dashboard'
@@ -537,6 +548,7 @@ export interface FileRouteTypes {
     | '/splash'
     | '/support'
     | '/unsubscribe'
+    | '/venues'
     | '/_admin/admin'
     | '/_authenticated/cases'
     | '/_authenticated/dashboard'
@@ -585,6 +597,7 @@ export interface RootRouteChildren {
   SplashRoute: typeof SplashRoute
   SupportRoute: typeof SupportRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
+  VenuesRoute: typeof VenuesRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   ReadinessIntakeRoute: typeof ReadinessIntakeRoute
@@ -607,6 +620,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/venues': {
+      id: '/venues'
+      path: '/venues'
+      fullPath: '/venues'
+      preLoaderRoute: typeof VenuesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/unsubscribe': {
       id: '/unsubscribe'
       path: '/unsubscribe'
@@ -998,6 +1018,7 @@ const rootRouteChildren: RootRouteChildren = {
   SplashRoute: SplashRoute,
   SupportRoute: SupportRoute,
   UnsubscribeRoute: UnsubscribeRoute,
+  VenuesRoute: VenuesRoute,
   AuthCallbackRoute: AuthCallbackRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   ReadinessIntakeRoute: ReadinessIntakeRoute,
