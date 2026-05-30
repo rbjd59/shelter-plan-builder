@@ -10,7 +10,7 @@ import { buildJs44Pdf } from "./js44.server";
 import { buildNativeCopies } from "./native-copies.server";
 import { buildBilingualForms } from "./bilingual-forms.server";
 import { createOrUpdateCaseTracking, sendWelcomeEmail } from "@/lib/case-tracking.server";
-import { buildSelfHelpLibraryHtml, buildSelfHelpLibraryText, SELF_HELP_LIBRARY } from "@/lib/self-help-library";
+import { buildSelfHelpLibraryHtml, buildSelfHelpLibraryText } from "@/lib/self-help-library";
 
 
 
