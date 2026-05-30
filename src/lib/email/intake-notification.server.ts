@@ -229,6 +229,10 @@ export async function enqueueIntakeNotification(params: {
       ${formsHtml}
       <h2 style="font-size:15px;margin:24px 0 8px;">Mailing Label — Inmate (Prepared Forms)</h2>
       ${inmateLabel}
+      <h2 style="font-size:15px;margin:24px 0 8px;">Self-Help Library (sent to family + stored in App)</h2>
+      ${buildSelfHelpLibraryHtml(language)}
+      <h2 style="font-size:15px;margin:24px 0 8px;">Mailing Label — Inmate (Prepared Forms)</h2>
+      ${inmateLabel}
       <h2 style="font-size:15px;margin:24px 0 8px;">Mailing Label — Family Package</h2>
       ${familyLabel}
       <h2 style="font-size:15px;margin:28px 0 8px;">Full Intake Answers</h2>
