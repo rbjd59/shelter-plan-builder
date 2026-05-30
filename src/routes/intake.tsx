@@ -379,57 +379,6 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
         <div style={{ background: "#3a2a00", border: "1px solid #e8a04a", padding: 14, borderRadius: 4, marginBottom: 16, fontSize: 14, lineHeight: 1.5, color: "#fff5d6" }}>
           <strong>⚠ {ui.upl}</strong>
         </div>
-        <div style={{ background: "#0f2436", border: "1px solid #4a9eff", padding: 14, borderRadius: 4, marginBottom: 32, fontSize: 14, lineHeight: 1.5, color: "#e6f1ff" }}>
-          <strong style={{ display: "block", marginBottom: 6 }}>
-            {L === "es" ? "📘 LECTURA OBLIGATORIA antes de continuar" : L === "ht" ? "📘 LEKTI OBLIGATWA anvan ou kontinye" : "📘 REQUIRED READING before you continue"}
-          </strong>
-          <p style={{ margin: "0 0 8px" }}>
-            {L === "es"
-              ? "Toda persona detenida por ICE que presenta su propia petición de habeas DEBE leer esta guía del National Immigration Project. Explica qué es una petición de habeas, cuándo se puede presentar, y cómo llenar los formularios paso a paso."
-              : L === "ht"
-              ? "Tout moun ICE detni ki ap depoze pwòp petisyon habeas li DWE li gid sa a nan National Immigration Project. Li eksplike sa yon petisyon habeas ye, kilè ou ka depoze li, ak kijan pou ranpli fòm yo etap pa etap. (Sèlman disponib an anglè pou kounye a.)"
-              : "Every person in ICE detention filing their own habeas petition MUST read this National Immigration Project guide. It explains what a habeas petition is, when you can file one, and how to fill out the forms step by step."}
-          </p>
-          {(() => {
-            const pdfHref = L === "es" ? "/forms/Habeas-Explainer-ES.pdf" : "/forms/Habeas-Explainer-EN.pdf";
-            const openLabel = L === "es"
-              ? "Abrir guía: Habeas Explainer (Español, PDF) ↗"
-              : L === "ht"
-              ? "Louvri gid: Habeas Explainer (Anglè, PDF) ↗"
-              : "Open guide: Habeas Explainer (NIP, PDF) ↗";
-            const viewerLabel = L === "es"
-              ? "Ver aquí mismo (si Chrome bloquea la pestaña nueva)"
-              : L === "ht"
-              ? "Gade la a (si Chrome bloke nouvo tab la)"
-              : "View here instead (if Chrome blocks the new tab)";
-            return (
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                <a
-                  href={pdfHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ display: "inline-block", background: "#4a9eff", color: "#0b1220", padding: "8px 14px", borderRadius: 4, textDecoration: "none", fontWeight: 700, fontSize: 13 }}
-                >
-                  {openLabel}
-                </a>
-                <button
-                  type="button"
-                  onClick={() => setShowGuide(true)}
-                  style={{ display: "inline-block", background: "transparent", color: "#4a9eff", padding: "8px 14px", borderRadius: 4, border: "1px solid #4a9eff", fontWeight: 600, fontSize: 13, cursor: "pointer" }}
-                >
-                  {viewerLabel}
-                </button>
-              </div>
-            );
-          })()}
-          <p style={{ margin: "8px 0 0", fontSize: 12, color: "#a8c4e6" }}>
-            {L === "es"
-              ? "Esta guía se adjunta automáticamente a su paquete de formularios impreso cuando lo enviamos por correo."
-              : L === "ht"
-              ? "Gid sa a ap atache otomatikman nan pakè fòm ou yo lè nou voye yo pa lapòs."
-              : "This guide is automatically attached to your printed forms packet when we mail it."}
-          </p>
-        </div>
         <form onSubmit={handleSubmit}>
           {sections.map((s) => (
             <section key={s.id} style={{ marginBottom: 32, background: "#1a2436", padding: 24, borderRadius: 6 }}>
