@@ -247,6 +247,8 @@ ${ifpUrl ? `AO 240 IFP:    ${ifpUrl}` : "AO 240 IFP:    (unavailable)"}
 ${referralUrl ? `Motion Ref:    ${referralUrl}` : ""}
 ${js44Url ? `JS-44:         ${js44Url}` : ""}
 
+${buildSelfHelpLibraryText(language)}
+
 ANSWERS:
 ${Object.entries(a)
   .map(([k, v]) => `${k}: ${typeof v === "string" ? v : JSON.stringify(v)}`)
