@@ -199,7 +199,7 @@ export async function sendWelcomeEmail(params: {
   const trackingUrl = `${SITE_BASE}/track/${params.trackingToken}`;
   const inmate = escapeHtml(params.inmateName || "");
   const demoBanner = params.demoMode
-    ? `<div style="margin:0 0 18px;padding:16px 18px;background:#0b1220;border:2px solid #e8a04a;border-radius:10px;text-align:center;"><p style="margin:0 0 4px;font-size:11px;letter-spacing:2px;color:#e8a04a;font-weight:700;">DEMO · INVESTOR PREVIEW</p><p style="margin:0;font-size:18px;font-weight:800;color:#fff5d6;">ASSET PROTECTION ACTIVATED</p><p style="margin:6px 0 0;font-size:12px;color:#fff5d6;line-height:1.4;">This is a preview of what the HELP NOW app will deliver to both phones the moment activation fires.</p></div>`
+    ? `<div style="margin:0 0 18px;padding:16px 18px;background:#0b1220;border:2px solid #e8a04a;border-radius:10px;text-align:center;"><p style="margin:0 0 4px;font-size:11px;letter-spacing:2px;color:#e8a04a;font-weight:700;">DEMO · INVESTOR PREVIEW</p><p style="margin:0;font-size:18px;font-weight:800;color:#fff5d6;">ASSET PROTECTION ACTIVATED</p><p style="margin:6px 0 0;font-size:12px;color:#fff5d6;line-height:1.4;">This is a preview of what the NOTIFY FAMILY app will deliver to both phones the moment activation fires.</p></div>`
     : "";
 
   // ---------- Service description + family-activation copy ----------
@@ -223,7 +223,7 @@ export async function sendWelcomeEmail(params: {
       serviceTitle: "How DetencionDefensa works",
       servicePoints: [
         "We prepare federal forms (Habeas AO 242 + IFP AO 240) ready to file.",
-        "We install a HELP NOW button on the at-risk person's phone.",
+        "We install a NOTIFY FAMILY button on the at-risk person's phone.",
         "If triggered, we alert the legal team with name, GPS, and forms — and begin locating them, notifying contacts, and preparing the mail packet.",
       ],
       familyTitle: `If you are told ${inmate || "your loved one"} has been detained`,
@@ -273,7 +273,7 @@ export async function sendWelcomeEmail(params: {
 
   const notDownloadNote = {
     es: "Esto NO es una descarga automática. Toque el botón abajo en el teléfono correcto, luego siga las instrucciones para guardar el ícono rojo AYUDA YA en la pantalla de inicio (toma 10 segundos). En iPhone debe abrirse en Safari.",
-    en: "This is NOT an automatic download. Tap the button below on the correct phone, then follow the prompts to save the red HELP NOW icon to the home screen (takes 10 seconds). On iPhone you must open it in Safari.",
+    en: "This is NOT an automatic download. Tap the button below on the correct phone, then follow the prompts to save the red NOTIFY FAMILY icon to the home screen (takes 10 seconds). On iPhone you must open it in Safari.",
     ht: "Sa a se PA yon telechajman otomatik. Peze bouton an anba sou bon telefòn nan, epi swiv enstriksyon yo pou sove ikòn wouj AYÈ KOUNYE A sou ekran prensipal la (li pran 10 segond). Sou iPhone fòk ou ouvri li nan Safari.",
   }[lang];
 

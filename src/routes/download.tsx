@@ -8,11 +8,11 @@ export const Route = createFileRoute("/download")({
   component: DownloadPage,
   head: () => ({
     meta: [
-      { title: "Download the HELP NOW App — DetencionDefensa" },
+      { title: "Download the NOTIFY FAMILY App — DetencionDefensa" },
       {
         name: "description",
         content:
-          "Install the DetencionDefensa HELP NOW app — one tap notifies your legal team and family the moment ICE detains you.",
+          "Install the DetencionDefensa NOTIFY FAMILY app — one tap notifies your legal team and family the moment ICE detains you.",
       },
       { name: "robots", content: "noindex" },
     ],
@@ -94,7 +94,7 @@ const T = {
     aOpenWeb: "Abrir página de emergencia",
   },
   en: {
-    title: "Install HELP NOW",
+    title: "Install NOTIFY FAMILY",
     subtitle:
       "One tap on the phone alerts your legal team and family — even if the phone is taken.",
     iphone: "iPhone",
@@ -103,12 +103,12 @@ const T = {
     iosHeading: "iPhone — install in 4 steps",
     iosIntro:
       "iPhone uses the web app — no App Store needed. Open this page in Safari, then add it to your home screen.",
-    iosOpenBtn: "Open HELP NOW Page",
+    iosOpenBtn: "Open NOTIFY FAMILY Page",
     iosSteps: [
       "Open detenciondefensa.com/app in Safari (not Chrome or your email app).",
       "Tap the Share button (square with up-arrow) at the bottom.",
       "Scroll down and tap “Add to Home Screen”.",
-      "Tap “Add”. The red HELP NOW icon appears on your home screen.",
+      "Tap “Add”. The red NOTIFY FAMILY icon appears on your home screen.",
       "Open it, allow location, and complete one-time setup.",
     ],
     iosWarn:
