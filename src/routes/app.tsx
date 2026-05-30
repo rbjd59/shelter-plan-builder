@@ -899,6 +899,32 @@ function EmergencyApp() {
           ) : null}
         </div>
 
+        <div className="mt-5 w-full rounded-xl border border-white/10 bg-white/5 p-4">
+          <p className="mb-2 text-xs font-bold uppercase tracking-wider text-white/70">
+            Self-Help Library
+          </p>
+          <div className="grid grid-cols-1 gap-2">
+            {SELF_HELP_LIBRARY.map((d) => {
+              const lang = (record.language === "es" || record.language === "ht" || record.language === "en"
+                ? record.language : "es") as "es" | "ht" | "en";
+              return (
+                <a
+                  key={d.key}
+                  href={d.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-lg bg-white/10 px-3 py-2 text-xs font-semibold text-white hover:bg-white/15"
+                >
+                  {d.title[lang]}
+                </a>
+              );
+            })}
+          </div>
+          <p className="mt-2 text-[10px] text-white/40">
+            Public links — never expire. Stored on your device for offline reference.
+          </p>
+        </div>
+
         <p className="mt-3 text-[11px] text-white/40">
           Alerts go to <strong>{record.alertEmail}</strong>. PDFs are stored only on this phone.
         </p>
