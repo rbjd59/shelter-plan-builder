@@ -479,6 +479,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
               })}
             </section>
           ))}
+          <MailingAddOnSection lang={L} answers={answers} setAnswers={setAnswers} />
           <button type="submit" disabled={status === "submitting"} style={{ background: "#e8a04a", color: "#0b1220", padding: "16px 32px", fontSize: 16, fontWeight: 700, border: "none", borderRadius: 4, cursor: "pointer", width: "100%" }}>
             {status === "submitting" ? ui.submitting : ui.submit}
           </button>
