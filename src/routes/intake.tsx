@@ -235,7 +235,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
   const [answers, setAnswers] = useState<Record<string, string | boolean>>({});
   const [englishAnswers, setEnglishAnswers] = useState<Record<string, string>>({});
   const [approvals, setApprovals] = useState<Record<string, boolean>>({});
-  const [showGuide, setShowGuide] = useState(false);
+  
 
   const isBilingual = L !== "en";
 
