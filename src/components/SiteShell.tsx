@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { SITE_HTML } from "@/lib/markup";
+import { SPLASH_HTML as SITE_HTML } from "@/lib/markup";
 import { useLang, type Lang } from "@/context/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { PARTNERS } from "@/lib/partners-content";
