@@ -253,7 +253,7 @@ function EmergencyApp() {
   const [pinEntry, setPinEntry] = useState("");
   const [pinError, setPinError] = useState(false);
 
-  // Hold-to-fire state (4-second hold on HELP button)
+  // Hold-to-fire state (4-second hold on NOTIFY FAMILY button)
   const [holding, setHolding] = useState(false);
   const [holdProgress, setHoldProgress] = useState(0);
   const holdStart = useRef<number | null>(null);
@@ -616,7 +616,7 @@ function EmergencyApp() {
             <p className="text-xs uppercase tracking-[0.2em] text-white/60">Step 2 — Set up</p>
             <h1 className="mt-2 text-2xl font-black">Three quick things</h1>
             <p className="mt-2 text-sm text-white/70">
-              Do this once now, in a safe place. Then HELP will fire after a 4-second hold — no
+              Do this once now, in a safe place. Then NOTIFY FAMILY will fire after a 4-second hold — no
               questions, no permission pop-ups.
             </p>
           </header>
@@ -642,7 +642,7 @@ function EmergencyApp() {
           <div className="mt-4 rounded-2xl border border-white/15 bg-white/5 p-5">
             <p className="text-base font-bold text-white">2. Allow location</p>
             <p className="mt-1 text-xs text-white/60">
-              So we can find you fast if you press HELP.
+              So we can find you fast if you press NOTIFY FAMILY.
             </p>
             {gpsState === "granted" ? (
               <p className="mt-3 rounded-lg bg-green-600/20 px-4 py-3 text-sm font-semibold text-green-300">
@@ -707,7 +707,7 @@ function EmergencyApp() {
             disabled={!canSave || savingSetup}
             className="mt-6 w-full rounded-2xl bg-white px-6 py-4 text-base font-black uppercase tracking-wider text-red-700 disabled:opacity-40"
           >
-            {savingSetup ? "Saving…" : "Done — show HELP button"}
+            {savingSetup ? "Saving…" : "Done — show NOTIFY FAMILY button"}
           </button>
         </div>
       </Shell>
