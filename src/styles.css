@@ -2326,3 +2326,68 @@ body.splash-active {
 html[lang="es"] [data-es],
 html[lang="en"] [data-en],
 html[lang="ht"] [data-ht] { display: revert !important; }
+
+/* ============================================================
+   MOBILE FIT — iPhone & small phones (≤640px)
+   Defensive overrides; inline styles in markup.ts require !important.
+   ============================================================ */
+@media (max-width: 640px) {
+  html, body { max-width: 100vw; overflow-x: hidden; }
+  img, video, iframe, table { max-width: 100% !important; height: auto; }
+
+  /* Topbar / banner text wrap */
+  .topbar { font-size: 0.65rem !important; padding: 0.5rem 0.75rem !important; flex-wrap: wrap; line-height: 1.35; }
+
+  /* Nav — stack tight */
+  .nav { padding: 0.75rem 1rem !important; }
+  .nav-cta { padding: 0.45rem 0.7rem !important; font-size: 0.68rem !important; }
+  .logo { font-size: 1rem !important; }
+
+  /* Hero — single column, smaller padding */
+  .hero { padding: 1.5rem 1rem !important; gap: 1.5rem !important; }
+  .hero h1 { font-size: 1.65rem !important; line-height: 1.15 !important; }
+  .hero p.lede { font-size: 0.95rem !important; line-height: 1.5 !important; }
+
+  /* Hero image grid — collapse 4-col to 2-col, shorter */
+  .hero-media { grid-template-columns: repeat(2, 1fr) !important; gap: 0.4rem !important; }
+  .hero-media img { height: 110px !important; }
+
+  /* Hero price line — kill negative-margin overflow & scale type */
+  .hero-price-line { padding: 1.25rem 1rem !important; }
+  .hero-price-line > span > div:first-child,
+  .hero-price-line div[style*="font-size:2.4rem"] { font-size: 1.5rem !important; line-height: 1.1 !important; }
+  .hero-price-line div[style*="font-size:1.25rem"] { font-size: 1rem !important; }
+  .hero-price-line p,
+  .hero-price-line div[style*="border-left"] { font-size: 0.92rem !important; line-height: 1.45 !important; }
+  .hero-price-line div[style*="margin:0 -1.75rem"],
+  .hero-price-line div[style*="margin: 0 -1.75rem"] { margin: 0 -1rem !important; font-size: 0.85rem !important; padding: 0.7rem 0.75rem !important; }
+
+  /* Media cards row → stack to 1 column */
+  .hero-price-line div[style*="grid-template-columns:repeat(2,1fr)"] { grid-template-columns: 1fr !important; }
+
+  /* Section padding */
+  .section, .trigger, .compare-section, .cta-band, .scope-quote {
+    padding: 3rem 1rem !important;
+  }
+  .trigger-content h2, .section h2 { font-size: 1.7rem !important; line-height: 1.2 !important; }
+  .trigger-content p, .section p { font-size: 0.95rem !important; line-height: 1.55 !important; }
+
+  /* Wide tables → horizontal scroll inside their own box */
+  .compare-table { display: block; overflow-x: auto; white-space: nowrap; font-size: 0.78rem !important; }
+
+  /* Phone mockup — shrink */
+  .phone { width: 240px !important; height: 480px !important; }
+
+  /* Statbar — 2 cols already, tighter */
+  .statbar { padding: 1.75rem 1rem !important; gap: 1.25rem 0.75rem !important; }
+
+  /* Scope marks — too big at this width */
+  .scope-mark-l, .scope-mark-r { font-size: 7rem !important; }
+
+  /* Footer */
+  .footer-grid { grid-template-columns: 1fr !important; gap: 1.5rem !important; }
+
+  /* Lang label hidden already at 980; keep */
+  .lang-label { display: none !important; }
+}
+
