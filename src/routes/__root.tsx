@@ -136,11 +136,8 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
-        <ComingSoonGate>
-          {!isApp && <BetaBanner />}
-          <Outlet />
-
-        </ComingSoonGate>
+        {!isApp && <BetaBanner />}
+        <Outlet />
       </LanguageProvider>
     </QueryClientProvider>
   );
