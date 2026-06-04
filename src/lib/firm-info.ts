@@ -11,19 +11,25 @@
  */
 
 export const FIRM = {
-  legalName: "Sorrentino Law Firm PLLC",
-  attorney: "Rosario Sorrentino, Esq.",
-  // TODO: Replace placeholders before production launch.
-  flBarNumber: "[CONFIRM: FL Bar #]",
-  address: "[CONFIRM: Firm address — street, city, FL ZIP]",
-  city: "[CONFIRM: City], FL",
-  phone: "[CONFIRM: Firm phone]",
-  email: "[CONFIRM: Firm email]",
+  legalName: "Sorrentino Law Firm, PLLC",
+  attorney: "Rosario Kyle Sorrentino, Esq.",
+  flBarNumber: "FL Bar No. 1049132",
+  address: "1110 Brickell Avenue, Suite 430, Miami, FL 33131-3152",
+  city: "Miami, FL",
+  phone: "+1 (561) 757-0338",
+  email: "rsorrentino@sorrentinolawfirm.com",
+  website: "https://sorrentinolawfirm.com",
+  barProfileUrl: "https://www.floridabar.org/mybarprofile/1049132",
+  admittedDate: "September 20, 2023",
+  lawSchool: "Ave Maria School of Law, 2023",
+  county: "Miami-Dade",
+  circuit: "11th Judicial Circuit",
+  firmPosition: "Managing Partner",
   accentColor: "#6B4F4F",
   admissions: [
-    "The Florida Bar",
-    "U.S. District Court for the Southern District of Florida",
-    "U.S. Court of Appeals for the Eleventh Circuit",
+    "The Florida Bar — Member in Good Standing (admitted Sept. 20, 2023)",
+    "Young Lawyers Section, The Florida Bar",
+    "11th Judicial Circuit, Miami-Dade County",
   ],
 } as const;
 
