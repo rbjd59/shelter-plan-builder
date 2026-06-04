@@ -26,7 +26,7 @@ function FirmShell() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
           <div className="flex items-center gap-6">
             <div>
-              <div className="text-sm font-bold text-white">{firmInfo.legalName}</div>
+              <div className="text-sm font-bold text-white">{FIRM.legalName}</div>
               <div className="text-[11px] text-white/70">Attorney Review Portal</div>
             </div>
             <nav className="flex gap-4 text-sm">
