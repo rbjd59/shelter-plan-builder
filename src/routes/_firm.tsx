@@ -1,7 +1,7 @@
 import { createFileRoute, Link, Outlet, redirect, useRouter } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { getMyFirmStatus } from "@/lib/firm.functions";
-import { firmInfo } from "@/lib/firm-info";
+import { FIRM } from "@/lib/firm-info";
 
 export const Route = createFileRoute("/_firm")({
   beforeLoad: async () => {
