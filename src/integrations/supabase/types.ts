@@ -56,6 +56,36 @@ export type Database = {
         }
         Relationships: []
       }
+      attorney_actions: {
+        Row: {
+          action: string
+          attorney_user_id: string | null
+          case_id: string
+          created_at: string
+          id: string
+          metadata: Json
+          notes: string | null
+        }
+        Insert: {
+          action: string
+          attorney_user_id?: string | null
+          case_id: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          notes?: string | null
+        }
+        Update: {
+          action?: string
+          attorney_user_id?: string | null
+          case_id?: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          notes?: string | null
+        }
+        Relationships: []
+      }
       case_action_log: {
         Row: {
           completed_by: string | null
@@ -386,6 +416,48 @@ export type Database = {
           paid?: boolean
           stripe_session_id?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      legal_retainers: {
+        Row: {
+          body_snapshot: string
+          created_at: string
+          id: string
+          intake_session_id: string | null
+          ip: string | null
+          language: string
+          signed_at: string
+          signed_name: string
+          user_agent: string | null
+          user_id: string | null
+          version: string
+        }
+        Insert: {
+          body_snapshot: string
+          created_at?: string
+          id?: string
+          intake_session_id?: string | null
+          ip?: string | null
+          language: string
+          signed_at?: string
+          signed_name: string
+          user_agent?: string | null
+          user_id?: string | null
+          version: string
+        }
+        Update: {
+          body_snapshot?: string
+          created_at?: string
+          id?: string
+          intake_session_id?: string | null
+          ip?: string | null
+          language?: string
+          signed_at?: string
+          signed_name?: string
+          user_agent?: string | null
+          user_id?: string | null
+          version?: string
         }
         Relationships: []
       }
