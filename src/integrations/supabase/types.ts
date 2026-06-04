@@ -353,6 +353,21 @@ export type Database = {
         }
         Relationships: []
       }
+      firm_email_whitelist: {
+        Row: {
+          created_at: string
+          email: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+        }
+        Relationships: []
+      }
       intake_pair_logs: {
         Row: {
           code: string | null
