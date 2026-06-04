@@ -1,93 +1,127 @@
-# Admin Command Center — "Mission Control"
 
-A password-protected admin site at `/admin` that gives you 100% visibility on every triggered client from sign-up through mailed package delivery confirmation.
+# Attorney-Reviewed Layer — Rosario Sorrentino Law Firm PLLC
 
----
-
-## What you get (5 pages)
-
-### 1. `/admin` — Dashboard (the master info board)
-- **Daily views** chart (last 30 days, line chart)
-- **Where views come from** (referrer breakdown: direct, Google, Facebook, etc. + country if available)
-- **Today's numbers**: signups today, active (not yet triggered) clients, triggered today, packages mailed today
-- **Pending action queue** — every triggered client whose checklist isn't 100% complete, sorted oldest first. This is your "must-do today" list.
-
-### 2. `/admin/clients` — All clients
-- Full list of every intake submission with status: `signed_up` → `triggered` → `forms_sent` → `client_located` → `package_mailed` → `package_received`
-- Filter by status, search by name / A-number / inmate number
-- Click any row → client detail page
-
-### 3. `/admin/clients/:id` — Single client detail + action checklist
-Every triggered client has a 7-step checklist. Each step is a button + timestamp + who did it:
-1. ☐ **Triggered alert at** `[timestamp auto-filled]`
-2. ☐ **Not cancelled by** `[deadline auto-filled, marked passed/cancelled]`
-3. ☐ **Forms sent to legal@detenciondefensa.com for printing** `[button: "Mark sent" → timestamp]`
-4. ☐ **Located client at** `[input: facility name/address → save]`
-5. ☐ **Mailed client package** — form fields: Name, Institution + address, Inmate #, Tracking #, Date mailed
-6. ☐ **Received on** `[date input when USPS confirms delivery]`
-7. ☐ **Print status form** — generates a printable PDF showing all 7 steps with timestamps for your physical case file
-
-### 4. `/admin/triggers` — Trigger log
-Every emergency activation ever fired, with full audit trail (who, when, GPS, IP, status of follow-up actions). Pulls from existing `emergency_activations` table.
-
-### 5. `/admin/reminders` — Re-engagement
-- List of signups who **haven't triggered yet** and haven't been contacted in N days
-- One-click "Send reminder email" (uses your existing email queue)
-- Auto-reminder schedule: 7 days, 30 days, 90 days after signup if no trigger
-- Shows reminder send history per client
+Adds an **independent attorney review** layer to DetencionDefensa.com, modeled on the single-firm + IOLTA compliance pattern (DocDraft / LegalZoom-style trust signaling). Sequenced so we ship everything except the IOLTA money movement now, then flip on the $35 → IOLTA charge the moment Stripe Connect is live.
 
 ---
 
-## Database changes
+## Compliance posture (non-negotiable)
 
-One new table: `case_action_log` — tracks each of the 7 checklist steps per triggered client.
+- Two entities, never conflated: **DetencionDefensa.com, Inc.** (tech / app / translation / typing) and **Rosario Sorrentino Law Firm PLLC** (legal services). Distinct accent color for the Firm (`#6B4F4F`).
+- **"Not a law firm" disclaimer** in the global footer on every page.
+- **Attorney advertising notice** (Florida Bar Rule 4-7) on every page that references legal services + Firm's geographic location.
+- **Dual-role disclosure** wherever the same flow touches both entities.
+- **No fee sharing**: $35 attorney portion will flow customer → Firm IOLTA via Stripe Connect (Phase 2). Until Connect is live, we DO NOT charge the $35 attorney fee — customer pays $164 to the Company, signs the retainer, and the attorney portion is invoiced/collected off-platform with a clear on-screen note. **No single $199 charge to the Company touches attorney funds, ever.**
+- **Limited-scope engagement letter** (Rule 4-1.2(c)) signed before any legal service begins. Captured with version, language, IP, timestamp, signature.
+
+---
+
+## What the customer sees (new flow)
+
+1. **Landing** — repositioned as "Every document is reviewed by an independent licensed attorney." Trust band with attorney photo, bar number, firm name. DocDraft/LegalZoom-style hero. Three-step explainer: *Sign up → Attorney reviews your draft → Locate & mail to detention*.
+2. **What the app does** (new explainer section, EN/ES/HT) — lists every form generated from intake answers:
+   - AO 242 (Habeas Petition) — draft
+   - AO 240 (IFP / *In Forma Pauperis*)
+   - JS 44 Civil Cover Sheet
+   - Motion for Assignment of Counsel
+   - Cover letter to the clerk
+3. **Checkout** — single page, shows itemized breakdown:
+   - $164.00 — DetencionDefensa.com, Inc. (app, translation, typing, storage)
+   - $35.00 — Sorrentino Law Firm PLLC (attorney review, limited scope)
+   - **Total: $199.00**
+   Two-step charge (see Payments below).
+4. **Limited-scope retainer** — signed BEFORE intake answers are taken. Bilingual. Captured to `legal_retainers` table.
+5. **Intake** (existing) — answers feed draft generation.
+6. **Draft generation** (existing pipeline) — but now lands in **attorney review queue** instead of going straight to the app.
+7. **Attorney completes review** at `/firm/review/:caseId` → marks "Approved for storage" → drafts are released to the customer's app + a copy goes to the Firm.
+8. **Trigger (NOTIFY FAMILY)** — when fired, the package routes to: (a) attorney, (b) family/next contact, (c) company ops. Attorney's clock starts.
+9. **Locate** — company ops locate the person (existing case_action_log step 4).
+10. **Attorney fills in respondent / facility / federal # / date of arrest** at `/firm/finalize/:caseId` → marks "Mailed via legal mail" with tracking #. Attorney's fee is earned on review (step 7); mailing is bundled service, not an additional charge.
+11. **Receipt confirmation** logged by ops when USPS confirms delivery.
+
+---
+
+## Build phases
+
+### Phase 1 — Compliance, copy, retainer (ship now, no Connect needed)
+
+- Global footer: add "Not a law firm" disclaimer + Firm advertising notice on every page.
+- New `/attorney` page: Rosario's bio, FL bar #, firm address, scope of services, what "attorney-reviewed" means.
+- Landing page rework: hero, trust band, 3-step explainer, "What the app does" list of forms, attorney-review badge.
+- Retainer: bilingual limited-scope engagement letter (EN/ES/HT) — drafted from FL Bar Rule 4-1.2(c) template. Inserted into checkout flow as a required signing step (typed-name e-signature + checkbox acknowledgment + version + timestamp + IP). Stored in new `legal_retainers` table.
+- Checkout page UI: shows itemized $164 + $35 = $199 breakdown with explicit "two entities" note. **In Phase 1, only the $164 actually charges**; on-screen note explains the $35 attorney fee is billed separately by the Firm under the signed retainer.
+
+### Phase 2 — Stripe Connect / IOLTA ($35 charge) — UNBLOCKED WHEN YOU CONFIRM CONNECT IS LIVE
+
+- Add `STRIPE_CONNECT_FIRM_ACCOUNT_ID` secret.
+- Modify checkout to create **two charges in one UX**: PaymentIntent A ($164 → Company) + PaymentIntent B ($35 → Firm via `transfer_data.destination = <connected account>` → Firm IOLTA). Atomic from the customer's view; two line items on their statement.
+- Update receipts.
+- Remove the Phase-1 "billed separately" note.
+
+### Phase 3 — Attorney review portal (firm-only)
+
+- New `/firm/*` subtree (gated by `role = 'firm'` in `user_roles`). Distinct Firm accent color.
+- `/firm/queue` — drafts awaiting review.
+- `/firm/review/:caseId` — view generated drafts (AO 242, AO 240, JS 44, motion for counsel), edit, approve for storage. Marks `case_action_log` step.
+- `/firm/finalize/:caseId` — post-locate: fill in respondent, facility, fed #, arrest date on AO 242. Generate final PDF. Mark "mailed via legal mail" + tracking #.
+- Audit log of every attorney action (who, when, IP).
+
+### Phase 4 — Trigger routing update
+
+- When NOTIFY FAMILY fires, package now also emails the attorney as a recipient.
+- Attorney receives "Locate complete → please finalize" notification once ops completes step 4.
+
+---
+
+## Database changes (single migration)
 
 ```text
-case_action_log
-├── id
-├── intake_session_id   (links to intake_submissions + emergency_activations)
-├── step                ('forms_sent' | 'client_located' | 'package_mailed' | 'package_received' | 'reminder_sent')
-├── completed_at        (timestamp)
-├── completed_by        (admin email)
-├── metadata            (jsonb — facility, tracking #, etc.)
-└── created_at
+legal_retainers
+├── id, intake_session_id (or user_id for pre-checkout), version,
+├── language (en|es|ht), signed_name, ip, user_agent,
+├── body_snapshot (text — exact retainer shown), signed_at
+
+attorney_actions
+├── id, case_id, attorney_user_id, action ('reviewed_draft' | 'approved_for_storage' | 'finalized_ao242' | 'mailed'),
+├── notes, metadata (jsonb), created_at
+
+user_roles  (existing — add 'firm' to app_role enum)
 ```
 
-Plus a `page_views` table for the analytics counter (logged via a tiny server route called from the public site root layout).
-
-```text
-page_views
-├── id
-├── path
-├── referrer
-├── country (from CF-IPCountry header)
-├── user_agent
-├── created_at
-```
+Plus an `is_firm` policy helper using existing `has_role`.
 
 ---
 
-## Auth (how YOU get in)
+## Files to create / modify
 
-Admin pages are gated by a `user_roles` table check (role = 'admin'). You log in with your normal email/password at `/login`, and only emails listed as admin can see `/admin/*`. I'll seed your email as the first admin during migration.
+**New:**
+- `src/routes/attorney.tsx` — public attorney page
+- `src/routes/retainer.tsx` — bilingual retainer signing
+- `src/lib/retainer-content.ts` — EN/ES/HT retainer text + version constant
+- `src/routes/_firm.tsx` + `_firm/firm.queue.tsx` + `_firm/firm.review.$id.tsx` + `_firm/firm.finalize.$id.tsx`
+- `src/components/AttorneyReviewBadge.tsx`
+- `src/components/LegalDisclaimerFooter.tsx`
+- `src/lib/retainer.functions.ts` — sign + fetch
+- `src/lib/firm-review.functions.ts` — queue, approve, finalize
+- Migration for `legal_retainers`, `attorney_actions`, `firm` role
+
+**Modified:**
+- `src/routes/index.tsx` — landing rework
+- `src/routes/intake.tsx` — gate behind signed retainer
+- `src/components/SiteShell.tsx` — global footer + nav link to /attorney
+- `src/utils/payments.functions.ts` — Phase 1: still $164 single charge with new line-item display metadata; Phase 2: split via Connect
+- `src/components/StripeEmbeddedCheckout.tsx` — itemized breakdown UI
+- Draft pipeline (case-tracking / intake-notification) — route to firm queue, not directly to app
 
 ---
 
-## What I need from you (step by step)
+## What I need from you before I start
 
-1. **Approve this plan** (reply "go")
-2. **Tell me which email address(es)** should be admins (e.g. `legal@detenciondefensa.com`, your personal email)
-3. **Approve the database migration** when I post it (one click)
-4. **Sign in once** at `/login` with your admin email so the role check works
-5. That's it — no software to buy, no third-party signup. Uses Lovable Cloud (already enabled), built-in email queue (already running), and the existing case data.
+1. **Approve this plan** (reply "go").
+2. **Rosario's details** for the attorney page + retainer: full name as it appears on FL Bar (e.g., "Rosario Sorrentino, Esq."), FL Bar number, firm address, firm phone, firm email.
+3. **Confirm price**: $164 to Company + $35 to Firm = $199 total. ✓ (already confirmed)
+4. **Confirm Phase 1 UX**: customer charged $164 now, sees on-screen note that $35 attorney fee is billed separately by the Firm under the signed retainer until Connect is live. (Y/N — if N, I'll hold all checkout work until Connect is ready.)
+5. **Retainer template language**: I'll draft EN first, then mark `[ES TRANSLATION NEEDED]` / `[HT TRANSLATION NEEDED]` per the skill rules — you commission certified legal translation before launch. OK?
+6. **Firm user**: Rosario's email so I can seed his account as `role = 'firm'` after he signs in once.
 
----
-
-## What this does NOT do (out of scope, ask if you want any of these)
-
-- Real-time SMS to your phone when a trigger fires (could add via Twilio connector)
-- Auto-USPS tracking number lookup (we'd need a USPS API key)
-- Multi-admin permission levels (everyone listed as admin sees everything)
-- Replaces your Replit deployment — this lives entirely on the Lovable side and reads/writes the same database
-
-Reply **"go"** and tell me the admin email(s) to seed.
+Reply "go" + answers to 2 / 4 / 6 and I'll start with Phase 1.
