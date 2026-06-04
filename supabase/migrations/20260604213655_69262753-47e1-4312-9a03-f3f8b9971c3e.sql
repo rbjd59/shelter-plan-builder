@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.auto_assign_firm_role() FROM PUBLIC, anon, authenticated;
