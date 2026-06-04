@@ -13,6 +13,7 @@ import { useEffect } from "react";
 import appCss from "../styles.css?url";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { BetaBanner } from "@/components/BetaBanner";
+import { LegalDisclaimerFooter } from "@/components/LegalDisclaimerFooter";
 
 import { trackView } from "@/lib/track-view.functions";
 
@@ -126,6 +127,17 @@ function RootComponent() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isApp =
     typeof window !== "undefined" && window.location.pathname.startsWith("/app");
+  // Routes that render their own footer or shouldn't show the public legal footer.
+  const hideGlobalFooter =
+    isApp ||
+    pathname.startsWith("/admin") ||
+    pathname.startsWith("/_admin") ||
+    pathname.startsWith("/firm") ||
+    pathname.startsWith("/api/") ||
+    pathname.startsWith("/attorney") ||
+    pathname.startsWith("/retainer") ||
+    pathname.startsWith("/lovable/") ||
+    pathname.startsWith("/email/");
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -138,6 +150,7 @@ function RootComponent() {
       <LanguageProvider>
         {!isApp && <BetaBanner />}
         <Outlet />
+        {!hideGlobalFooter && <LegalDisclaimerFooter />}
       </LanguageProvider>
     </QueryClientProvider>
   );
