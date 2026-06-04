@@ -15,6 +15,7 @@ import { Route as SupportRouteImport } from './routes/support'
 import { Route as SplashRouteImport } from './routes/splash'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SentinelTrustRouteImport } from './routes/sentinel-trust'
+import { Route as RetainerRouteImport } from './routes/retainer'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PastorsRouteImport } from './routes/pastors'
 import { Route as PartnersRouteImport } from './routes/partners'
@@ -25,6 +26,7 @@ import { Route as DownloadRouteImport } from './routes/download'
 import { Route as DagRouteImport } from './routes/dag'
 import { Route as ComingSoonRouteImport } from './routes/coming-soon'
 import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as AttorneyRouteImport } from './routes/attorney'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AltRouteImport } from './routes/alt'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
@@ -87,6 +89,11 @@ const SentinelTrustRoute = SentinelTrustRouteImport.update({
   path: '/sentinel-trust',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RetainerRoute = RetainerRouteImport.update({
+  id: '/retainer',
+  path: '/retainer',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
@@ -135,6 +142,11 @@ const ComingSoonRoute = ComingSoonRouteImport.update({
 const CheckoutRoute = CheckoutRouteImport.update({
   id: '/checkout',
   path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AttorneyRoute = AttorneyRouteImport.update({
+  id: '/attorney',
+  path: '/attorney',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppRoute = AppRouteImport.update({
@@ -303,6 +315,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/alt': typeof AltRoute
   '/app': typeof AppRoute
+  '/attorney': typeof AttorneyRoute
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
   '/dag': typeof DagRoute
@@ -313,6 +326,7 @@ export interface FileRoutesByFullPath {
   '/partners': typeof PartnersRoute
   '/pastors': typeof PastorsRoute
   '/privacy': typeof PrivacyRoute
+  '/retainer': typeof RetainerRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/splash': typeof SplashRoute
@@ -350,6 +364,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/alt': typeof AltRoute
   '/app': typeof AppRoute
+  '/attorney': typeof AttorneyRoute
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
   '/dag': typeof DagRoute
@@ -360,6 +375,7 @@ export interface FileRoutesByTo {
   '/partners': typeof PartnersRoute
   '/pastors': typeof PastorsRoute
   '/privacy': typeof PrivacyRoute
+  '/retainer': typeof RetainerRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/splash': typeof SplashRoute
@@ -400,6 +416,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/alt': typeof AltRoute
   '/app': typeof AppRoute
+  '/attorney': typeof AttorneyRoute
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
   '/dag': typeof DagRoute
@@ -410,6 +427,7 @@ export interface FileRoutesById {
   '/partners': typeof PartnersRoute
   '/pastors': typeof PastorsRoute
   '/privacy': typeof PrivacyRoute
+  '/retainer': typeof RetainerRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/splash': typeof SplashRoute
@@ -449,6 +467,7 @@ export interface FileRouteTypes {
     | '/'
     | '/alt'
     | '/app'
+    | '/attorney'
     | '/checkout'
     | '/coming-soon'
     | '/dag'
@@ -459,6 +478,7 @@ export interface FileRouteTypes {
     | '/partners'
     | '/pastors'
     | '/privacy'
+    | '/retainer'
     | '/sentinel-trust'
     | '/sitemap.xml'
     | '/splash'
@@ -496,6 +516,7 @@ export interface FileRouteTypes {
     | '/'
     | '/alt'
     | '/app'
+    | '/attorney'
     | '/checkout'
     | '/coming-soon'
     | '/dag'
@@ -506,6 +527,7 @@ export interface FileRouteTypes {
     | '/partners'
     | '/pastors'
     | '/privacy'
+    | '/retainer'
     | '/sentinel-trust'
     | '/sitemap.xml'
     | '/splash'
@@ -545,6 +567,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/alt'
     | '/app'
+    | '/attorney'
     | '/checkout'
     | '/coming-soon'
     | '/dag'
@@ -555,6 +578,7 @@ export interface FileRouteTypes {
     | '/partners'
     | '/pastors'
     | '/privacy'
+    | '/retainer'
     | '/sentinel-trust'
     | '/sitemap.xml'
     | '/splash'
@@ -595,6 +619,7 @@ export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AltRoute: typeof AltRoute
   AppRoute: typeof AppRoute
+  AttorneyRoute: typeof AttorneyRoute
   CheckoutRoute: typeof CheckoutRoute
   ComingSoonRoute: typeof ComingSoonRoute
   DagRoute: typeof DagRoute
@@ -605,6 +630,7 @@ export interface RootRouteChildren {
   PartnersRoute: typeof PartnersRoute
   PastorsRoute: typeof PastorsRoute
   PrivacyRoute: typeof PrivacyRoute
+  RetainerRoute: typeof RetainerRoute
   SentinelTrustRoute: typeof SentinelTrustRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SplashRoute: typeof SplashRoute
@@ -675,6 +701,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SentinelTrustRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/retainer': {
+      id: '/retainer'
+      path: '/retainer'
+      fullPath: '/retainer'
+      preLoaderRoute: typeof RetainerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
@@ -743,6 +776,13 @@ declare module '@tanstack/react-router' {
       path: '/checkout'
       fullPath: '/checkout'
       preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/attorney': {
+      id: '/attorney'
+      path: '/attorney'
+      fullPath: '/attorney'
+      preLoaderRoute: typeof AttorneyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app': {
@@ -1024,6 +1064,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AltRoute: AltRoute,
   AppRoute: AppRoute,
+  AttorneyRoute: AttorneyRoute,
   CheckoutRoute: CheckoutRoute,
   ComingSoonRoute: ComingSoonRoute,
   DagRoute: DagRoute,
@@ -1034,6 +1075,7 @@ const rootRouteChildren: RootRouteChildren = {
   PartnersRoute: PartnersRoute,
   PastorsRoute: PastorsRoute,
   PrivacyRoute: PrivacyRoute,
+  RetainerRoute: RetainerRoute,
   SentinelTrustRoute: SentinelTrustRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SplashRoute: SplashRoute,
@@ -1063,13 +1105,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

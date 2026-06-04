@@ -56,6 +56,36 @@ export type Database = {
         }
         Relationships: []
       }
+      attorney_actions: {
+        Row: {
+          action: string
+          attorney_user_id: string | null
+          case_id: string
+          created_at: string
+          id: string
+          metadata: Json
+          notes: string | null
+        }
+        Insert: {
+          action: string
+          attorney_user_id?: string | null
+          case_id: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          notes?: string | null
+        }
+        Update: {
+          action?: string
+          attorney_user_id?: string | null
+          case_id?: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          notes?: string | null
+        }
+        Relationships: []
+      }
       case_action_log: {
         Row: {
           completed_by: string | null
@@ -389,6 +419,48 @@ export type Database = {
         }
         Relationships: []
       }
+      legal_retainers: {
+        Row: {
+          body_snapshot: string
+          created_at: string
+          id: string
+          intake_session_id: string | null
+          ip: string | null
+          language: string
+          signed_at: string
+          signed_name: string
+          user_agent: string | null
+          user_id: string | null
+          version: string
+        }
+        Insert: {
+          body_snapshot: string
+          created_at?: string
+          id?: string
+          intake_session_id?: string | null
+          ip?: string | null
+          language: string
+          signed_at?: string
+          signed_name: string
+          user_agent?: string | null
+          user_id?: string | null
+          version: string
+        }
+        Update: {
+          body_snapshot?: string
+          created_at?: string
+          id?: string
+          intake_session_id?: string | null
+          ip?: string | null
+          language?: string
+          signed_at?: string
+          signed_name?: string
+          user_agent?: string | null
+          user_id?: string | null
+          version?: string
+        }
+        Relationships: []
+      }
       page_views: {
         Row: {
           country: string | null
@@ -683,7 +755,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "admin" | "staff"
+      app_role: "admin" | "staff" | "firm"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -811,7 +883,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "staff"],
+      app_role: ["admin", "staff", "firm"],
     },
   },
 } as const
