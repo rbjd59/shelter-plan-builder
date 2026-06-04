@@ -29,6 +29,7 @@ import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as AttorneyRouteImport } from './routes/attorney'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AltRouteImport } from './routes/alt'
+import { Route as FirmRouteImport } from './routes/_firm'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AdminRouteImport } from './routes/_admin'
 import { Route as IndexRouteImport } from './routes/index'
@@ -45,6 +46,7 @@ import { Route as AdminAdminRouteImport } from './routes/_admin/admin'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicSendAdminInviteRouteImport } from './routes/api/public/send-admin-invite'
 import { Route as ApiPublicMailFromCheckRouteImport } from './routes/api/public/mail-from-check'
+import { Route as FirmFirmQueueRouteImport } from './routes/_firm/firm.queue'
 import { Route as AuthenticatedCaseIdRouteImport } from './routes/_authenticated/case.$id'
 import { Route as AdminAdminTriggersRouteImport } from './routes/_admin/admin.triggers'
 import { Route as AdminAdminRemindersRouteImport } from './routes/_admin/admin.reminders'
@@ -57,6 +59,7 @@ import { Route as ApiPublicEmergencyTestMirrorRouteImport } from './routes/api/p
 import { Route as ApiPublicEmergencyActivateRouteImport } from './routes/api/public/emergency/activate'
 import { Route as ApiPublicDevSendInstallRouteImport } from './routes/api/public/dev/send-install'
 import { Route as ApiPublicCronProcessDueActivationsRouteImport } from './routes/api/public/cron/process-due-activations'
+import { Route as FirmFirmReviewIdRouteImport } from './routes/_firm/firm.review.$id'
 import { Route as AdminAdminClientsIdRouteImport } from './routes/_admin/admin.clients.$id'
 
 const VenuesRoute = VenuesRouteImport.update({
@@ -159,6 +162,10 @@ const AltRoute = AltRouteImport.update({
   path: '/alt',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FirmRoute = FirmRouteImport.update({
+  id: '/_firm',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
@@ -238,6 +245,11 @@ const ApiPublicMailFromCheckRoute = ApiPublicMailFromCheckRouteImport.update({
   path: '/api/public/mail-from-check',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FirmFirmQueueRoute = FirmFirmQueueRouteImport.update({
+  id: '/firm/queue',
+  path: '/firm/queue',
+  getParentRoute: () => FirmRoute,
+} as any)
 const AuthenticatedCaseIdRoute = AuthenticatedCaseIdRouteImport.update({
   id: '/case/$id',
   path: '/case/$id',
@@ -305,6 +317,11 @@ const ApiPublicCronProcessDueActivationsRoute =
     path: '/api/public/cron/process-due-activations',
     getParentRoute: () => rootRouteImport,
   } as any)
+const FirmFirmReviewIdRoute = FirmFirmReviewIdRouteImport.update({
+  id: '/firm/review/$id',
+  path: '/firm/review/$id',
+  getParentRoute: () => FirmRoute,
+} as any)
 const AdminAdminClientsIdRoute = AdminAdminClientsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -347,10 +364,12 @@ export interface FileRoutesByFullPath {
   '/admin/reminders': typeof AdminAdminRemindersRoute
   '/admin/triggers': typeof AdminAdminTriggersRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
+  '/firm/queue': typeof FirmFirmQueueRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
   '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/admin/clients/$id': typeof AdminAdminClientsIdRoute
+  '/firm/review/$id': typeof FirmFirmReviewIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
@@ -396,10 +415,12 @@ export interface FileRoutesByTo {
   '/admin/reminders': typeof AdminAdminRemindersRoute
   '/admin/triggers': typeof AdminAdminTriggersRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
+  '/firm/queue': typeof FirmFirmQueueRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
   '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/admin/clients/$id': typeof AdminAdminClientsIdRoute
+  '/firm/review/$id': typeof FirmFirmReviewIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
@@ -414,6 +435,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_admin': typeof AdminRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/_firm': typeof FirmRouteWithChildren
   '/alt': typeof AltRoute
   '/app': typeof AppRoute
   '/attorney': typeof AttorneyRoute
@@ -448,10 +470,12 @@ export interface FileRoutesById {
   '/_admin/admin/reminders': typeof AdminAdminRemindersRoute
   '/_admin/admin/triggers': typeof AdminAdminTriggersRoute
   '/_authenticated/case/$id': typeof AuthenticatedCaseIdRoute
+  '/_firm/firm/queue': typeof FirmFirmQueueRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
   '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/_admin/admin/clients/$id': typeof AdminAdminClientsIdRoute
+  '/_firm/firm/review/$id': typeof FirmFirmReviewIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
@@ -499,10 +523,12 @@ export interface FileRouteTypes {
     | '/admin/reminders'
     | '/admin/triggers'
     | '/case/$id'
+    | '/firm/queue'
     | '/api/public/mail-from-check'
     | '/api/public/send-admin-invite'
     | '/lovable/email/suppression'
     | '/admin/clients/$id'
+    | '/firm/review/$id'
     | '/api/public/cron/process-due-activations'
     | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
@@ -548,10 +574,12 @@ export interface FileRouteTypes {
     | '/admin/reminders'
     | '/admin/triggers'
     | '/case/$id'
+    | '/firm/queue'
     | '/api/public/mail-from-check'
     | '/api/public/send-admin-invite'
     | '/lovable/email/suppression'
     | '/admin/clients/$id'
+    | '/firm/review/$id'
     | '/api/public/cron/process-due-activations'
     | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
@@ -565,6 +593,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_admin'
     | '/_authenticated'
+    | '/_firm'
     | '/alt'
     | '/app'
     | '/attorney'
@@ -599,10 +628,12 @@ export interface FileRouteTypes {
     | '/_admin/admin/reminders'
     | '/_admin/admin/triggers'
     | '/_authenticated/case/$id'
+    | '/_firm/firm/queue'
     | '/api/public/mail-from-check'
     | '/api/public/send-admin-invite'
     | '/lovable/email/suppression'
     | '/_admin/admin/clients/$id'
+    | '/_firm/firm/review/$id'
     | '/api/public/cron/process-due-activations'
     | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
@@ -617,6 +648,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  FirmRoute: typeof FirmRouteWithChildren
   AltRoute: typeof AltRoute
   AppRoute: typeof AppRoute
   AttorneyRoute: typeof AttorneyRoute
@@ -799,6 +831,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AltRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_firm': {
+      id: '/_firm'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof FirmRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
@@ -911,6 +950,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicMailFromCheckRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_firm/firm/queue': {
+      id: '/_firm/firm/queue'
+      path: '/firm/queue'
+      fullPath: '/firm/queue'
+      preLoaderRoute: typeof FirmFirmQueueRouteImport
+      parentRoute: typeof FirmRoute
+    }
     '/_authenticated/case/$id': {
       id: '/_authenticated/case/$id'
       path: '/case/$id'
@@ -995,6 +1041,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicCronProcessDueActivationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_firm/firm/review/$id': {
+      id: '/_firm/firm/review/$id'
+      path: '/firm/review/$id'
+      fullPath: '/firm/review/$id'
+      preLoaderRoute: typeof FirmFirmReviewIdRouteImport
+      parentRoute: typeof FirmRoute
+    }
     '/_admin/admin/clients/$id': {
       id: '/_admin/admin/clients/$id'
       path: '/$id'
@@ -1058,10 +1111,23 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
 )
 
+interface FirmRouteChildren {
+  FirmFirmQueueRoute: typeof FirmFirmQueueRoute
+  FirmFirmReviewIdRoute: typeof FirmFirmReviewIdRoute
+}
+
+const FirmRouteChildren: FirmRouteChildren = {
+  FirmFirmQueueRoute: FirmFirmQueueRoute,
+  FirmFirmReviewIdRoute: FirmFirmReviewIdRoute,
+}
+
+const FirmRouteWithChildren = FirmRoute._addFileChildren(FirmRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  FirmRoute: FirmRouteWithChildren,
   AltRoute: AltRoute,
   AppRoute: AppRoute,
   AttorneyRoute: AttorneyRoute,
