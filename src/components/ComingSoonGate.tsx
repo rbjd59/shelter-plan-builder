@@ -35,7 +35,14 @@ export function ComingSoonGate({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     try {
       const url = new URL(window.location.href);
-      if (url.searchParams.get("dev") === PIN) {
+      const host = window.location.hostname;
+      // Auto-unlock in Lovable preview/sandbox environments so edits are always visible
+      const isLovablePreview =
+        host === "localhost" ||
+        host.endsWith(".lovableproject.com") ||
+        host.endsWith(".lovable.app") ||
+        host.endsWith(".lovable.dev");
+      if (isLovablePreview || url.searchParams.get("dev") === PIN) {
         setUnlockedCookie();
         setUnlocked(true);
         return;
