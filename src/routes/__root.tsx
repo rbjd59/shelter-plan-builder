@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import appCss from "../styles.css?url";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { BetaBanner } from "@/components/BetaBanner";
-import { ComingSoonGate } from "@/components/ComingSoonGate";
+
 import { trackView } from "@/lib/track-view.functions";
 
 function NotFoundComponent() {
