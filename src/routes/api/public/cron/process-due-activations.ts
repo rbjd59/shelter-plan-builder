@@ -2,8 +2,10 @@
 // elapsed without cancellation, emails the family contacts, and marks
 // family_notified_at so we never double-send.
 //
-// Called by pg_cron every 5 minutes. Auth: Supabase anon key in `apikey`
-// header (matches /api/public/* convention).
+// Called by pg_cron every 5 minutes. Auth: caller MUST pass the shared
+// secret in the `x-trigger-secret` header (same secret used by the Replit
+// mirror — REPLIT_TRIGGER_SECRET). Without this check, any internet
+// caller could flood the queue with duplicate sends.
 
 import { createFileRoute } from "@tanstack/react-router";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
@@ -85,7 +87,12 @@ interface TrackingRow {
 export const Route = createFileRoute("/api/public/cron/process-due-activations")({
   server: {
     handlers: {
-      POST: async () => {
+      POST: async ({ request }) => {
+        const expected = process.env.REPLIT_TRIGGER_SECRET?.trim();
+        const incoming = request.headers.get("x-trigger-secret")?.trim() ?? "";
+        if (!expected || incoming !== expected) {
+          return new Response("Unauthorized", { status: 401 });
+        }
         const nowIso = new Date().toISOString();
         const { data: rows, error } = await supabaseAdmin
           .from("emergency_activations" as never)

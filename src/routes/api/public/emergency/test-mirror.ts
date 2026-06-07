@@ -2,20 +2,21 @@
 // x-trigger-secret header is accepted. Sends a synthetic "fire" event
 // (clearly marked as a test) and returns the upstream status + body.
 //
-// Auth: caller must pass ?token=<REPLIT_TRIGGER_SECRET> in the query so
-// this isn't a free abuse vector. The same shared secret is used as the
-// admin token here for convenience.
+// Auth: caller must pass the REPLIT_TRIGGER_SECRET in the
+// `x-trigger-secret` HTTP header so the secret never appears in URLs,
+// server access logs, CDN logs, or browser history.
 //
 // Usage:
-//   GET  /api/public/emergency/test-mirror?token=<REPLIT_TRIGGER_SECRET>
-//   POST /api/public/emergency/test-mirror?token=<REPLIT_TRIGGER_SECRET>
-//        body: { "note": "anything" }  (optional)
+//   curl -H 'x-trigger-secret: <REPLIT_TRIGGER_SECRET>' \
+//     https://detenciondefensa.com/api/public/emergency/test-mirror
+//   curl -X POST -H 'x-trigger-secret: <REPLIT_TRIGGER_SECRET>' \
+//     -H 'content-type: application/json' -d '{"note":"anything"}' \
+//     https://detenciondefensa.com/api/public/emergency/test-mirror
 
 import { createFileRoute } from "@tanstack/react-router";
 
 async function runTest(request: Request): Promise<Response> {
-  const url = new URL(request.url);
-  const token = url.searchParams.get("token") ?? "";
+  const token = request.headers.get("x-trigger-secret") ?? "";
 
   const replitUrl = process.env.REPLIT_TRIGGER_URL?.trim();
   const replitSecret = process.env.REPLIT_TRIGGER_SECRET?.trim();
