@@ -2919,3 +2919,55 @@ body:not(.splash-active) a,
 body:not(.splash-active) button {
   -webkit-tap-highlight-color: transparent;
 }
+
+/* ============================================================
+   FINAL FIT FIXES — kill stubborn horizontal overflow
+   ============================================================ */
+body:not(.splash-active) .step,
+body:not(.splash-active) .nlf-role,
+body:not(.splash-active) .who,
+body:not(.splash-active) .what,
+body:not(.splash-active) .hero-text,
+body:not(.splash-active) .hero-media,
+body:not(.splash-active) .section,
+body:not(.splash-active) .section-header {
+  min-width: 0 !important;
+}
+body:not(.splash-active) .step *,
+body:not(.splash-active) .nlf-role *,
+body:not(.splash-active) .section *,
+body:not(.splash-active) .hero *,
+body:not(.splash-active) .cta-band *,
+body:not(.splash-active) .footer-disclaimer * {
+  word-wrap: break-word !important;
+  overflow-wrap: anywhere !important;
+  max-width: 100%;
+}
+
+/* Step heading is h4 (not h3) */
+body:not(.splash-active) .step h4 {
+  font-family: 'Libre Baskerville', Georgia, serif !important;
+  font-weight: 700 !important;
+  font-size: 1.05rem !important;
+  color: var(--pp-navy) !important;
+  margin: 0.6rem 0 0.4rem !important;
+  line-height: 1.3 !important;
+}
+
+/* The horizontal connector line behind step circles doesn't apply once stacked */
+body:not(.splash-active) .process-steps::before { display: none !important; }
+
+/* Tighten the upper-most white intro block padding on mobile */
+@media (max-width: 720px) {
+  body:not(.splash-active) [style*="padding:1.5rem 1.25rem"][style*="border-bottom:1px solid"] {
+    padding: 1.25rem 1rem !important;
+  }
+}
+
+/* Buttons inside cards shouldn't push card width */
+body:not(.splash-active) .step a,
+body:not(.splash-active) .nlf-role a {
+  display: inline-block;
+  max-width: 100%;
+  white-space: normal !important;
+}
