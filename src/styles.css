@@ -2675,3 +2675,299 @@ body:not(.splash-active) .urgency-line .alt {
   font-style: italic;
   font-weight: 400 !important;
 }
+
+/* ============================================================
+   MOBILE FIT + DE-SHOUT POLISH
+   Stops horizontal overflow, kills ALL-CAPS shouting, tightens spacing.
+   ============================================================ */
+
+/* Hard guarantee: nothing on the home shell overflows horizontally */
+body:not(.splash-active),
+body:not(.splash-active) #root,
+body:not(.splash-active) main {
+  overflow-x: hidden !important;
+  max-width: 100vw;
+}
+body:not(.splash-active) img,
+body:not(.splash-active) iframe,
+body:not(.splash-active) video {
+  max-width: 100% !important;
+  height: auto;
+}
+body:not(.splash-active) .section,
+body:not(.splash-active) .hero,
+body:not(.splash-active) .nlf-roles,
+body:not(.splash-active) .cta-band,
+body:not(.splash-active) .footer-disclaimer {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* De-shout: stop forcing UPPERCASE on body content */
+body:not(.splash-active) .hero-price-line,
+body:not(.splash-active) .hero-price-line *,
+body:not(.splash-active) .cta-band,
+body:not(.splash-active) .cta-band *,
+body:not(.splash-active) .section-title,
+body:not(.splash-active) .nlf-role,
+body:not(.splash-active) .nlf-role *,
+body:not(.splash-active) .who,
+body:not(.splash-active) .what,
+body:not(.splash-active) .step,
+body:not(.splash-active) .step *,
+body:not(.splash-active) .nlf-ifneed,
+body:not(.splash-active) .footer-disclaimer * {
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+/* Re-allow tiny tracking on intentional eyebrows */
+body:not(.splash-active) .section-tag,
+body:not(.splash-active) .nlf-ifneed-tag,
+body:not(.splash-active) .lang-toggle button {
+  text-transform: uppercase !important;
+  letter-spacing: 0.14em !important;
+}
+
+/* The loud dark CTA strip inside the hero — calm it */
+body:not(.splash-active) .hero-price-line [style*="background:#0f1830"],
+body:not(.splash-active) .hero-price-line [style*="background: #0f1830"] {
+  font-size: clamp(13px, 3.4vw, 16px) !important;
+  font-weight: 600 !important;
+  line-height: 1.5 !important;
+  text-align: left !important;
+  padding: 14px 16px !important;
+  border-radius: 8px !important;
+}
+body:not(.splash-active) .hero-price-line [style*="background:#0f1830"] br,
+body:not(.splash-active) .hero-price-line [style*="background: #0f1830"] br {
+  display: none;
+}
+
+/* HERO TEXT — readable on phone */
+body:not(.splash-active) .hero {
+  padding: 1.5rem 1rem !important;
+  gap: 1.25rem !important;
+}
+body:not(.splash-active) .hero-text { padding: 0 !important; }
+body:not(.splash-active) .hero-media {
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 6px !important;
+}
+body:not(.splash-active) .hero-media img {
+  height: 120px !important;
+  width: 100% !important;
+  border-radius: 8px !important;
+}
+
+/* PROCESS STEPS — single column, tight, no overflow */
+body:not(.splash-active) .process-steps {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 1rem !important;
+  max-width: 640px;
+  margin: 0 auto !important;
+}
+body:not(.splash-active) .step {
+  padding: 1.25rem 1.25rem !important;
+  width: 100%;
+}
+body:not(.splash-active) .step h3,
+body:not(.splash-active) .step .step-num + * {
+  font-family: 'Libre Baskerville', Georgia, serif !important;
+  font-weight: 700 !important;
+  font-size: 1.1rem !important;
+  color: var(--pp-navy) !important;
+  margin: 0.6rem 0 0.4rem !important;
+  line-height: 1.25 !important;
+}
+body:not(.splash-active) .step p,
+body:not(.splash-active) .step li {
+  font-size: 0.94rem !important;
+  line-height: 1.55 !important;
+  color: var(--pp-ink) !important;
+}
+
+/* NLF ROLE GRID — collapse to single column on phone */
+body:not(.splash-active) .nlf-roles-grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 1rem !important;
+  border-top: none !important;
+}
+body:not(.splash-active) .nlf-role {
+  padding: 1.25rem !important;
+  border: 1px solid var(--pp-line) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+}
+body:not(.splash-active) .nlf-role h3,
+body:not(.splash-active) .nlf-role .who {
+  font-family: 'Libre Baskerville', Georgia, serif !important;
+  font-weight: 700 !important;
+  font-size: 1.05rem !important;
+  color: var(--pp-navy) !important;
+  margin-bottom: 0.6rem !important;
+}
+body:not(.splash-active) .nlf-role .what,
+body:not(.splash-active) .nlf-role p {
+  font-size: 0.93rem !important;
+  line-height: 1.55 !important;
+  color: var(--pp-ink) !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+/* SECTION padding — tighter on phone */
+body:not(.splash-active) .section {
+  padding: 2.5rem 1rem !important;
+  max-width: 100%;
+}
+body:not(.splash-active) .section-header {
+  text-align: center !important;
+  margin-bottom: 1.5rem !important;
+  padding: 0 0.25rem;
+}
+body:not(.splash-active) .section-title {
+  font-size: clamp(22px, 5.8vw, 36px) !important;
+  line-height: 1.18 !important;
+  margin: 0.6rem 0 0.4rem !important;
+}
+body:not(.splash-active) .section p {
+  font-size: 0.96rem !important;
+  line-height: 1.6 !important;
+}
+
+/* CTA BAND — fit phone, soften shout */
+body:not(.splash-active) .cta-band {
+  margin: 2rem 1rem !important;
+  padding: 2rem 1.25rem !important;
+  border-radius: 14px !important;
+  text-align: center;
+}
+body:not(.splash-active) .cta-band h2,
+body:not(.splash-active) .cta-band .section-title {
+  font-size: clamp(22px, 6vw, 34px) !important;
+  color: #fff !important;
+  margin-bottom: 0.75rem !important;
+}
+body:not(.splash-active) .cta-band p {
+  color: rgba(255,255,255,.85) !important;
+  font-size: 0.95rem !important;
+  margin-bottom: 1.25rem !important;
+}
+body:not(.splash-active) .cta-band .btn-primary {
+  width: 100%;
+  max-width: 320px;
+}
+
+/* FOOTER */
+body:not(.splash-active) .footer-disclaimer {
+  padding: 2rem 1rem !important;
+  font-size: 0.82rem !important;
+  line-height: 1.55 !important;
+}
+body:not(.splash-active) .footer-grid {
+  grid-template-columns: 1fr !important;
+  gap: 1.25rem !important;
+  text-align: left;
+}
+
+/* Hero white intro band — tighten on phone */
+body:not(.splash-active) [style*="border-bottom:1px solid rgba(0,0,0,0.08)"]:first-of-type {
+  padding: 1.5rem 1rem !important;
+}
+body:not(.splash-active) .hero-price-line {
+  padding: 1.5rem 1rem !important;
+  margin: 0 !important;
+}
+body:not(.splash-active) .hero-price-line > div:first-child {
+  font-size: clamp(20px, 5.5vw, 28px) !important;
+  line-height: 1.2 !important;
+  margin-bottom: 1rem !important;
+}
+
+/* NAV — phone friendly */
+@media (max-width: 720px) {
+  body:not(.splash-active) .nav {
+    padding: 10px 14px !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+  body:not(.splash-active) .nav-links { display: none !important; }
+  body:not(.splash-active) .nav-right {
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-end !important;
+  }
+  body:not(.splash-active) .lang-toggle button {
+    padding: 5px 9px !important;
+    font-size: 10.5px !important;
+  }
+  body:not(.splash-active) .nav-cta {
+    padding: 8px 14px !important;
+    font-size: 0.85rem !important;
+  }
+  body:not(.splash-active) .logo { font-size: 1rem !important; gap: 8px !important; }
+  body:not(.splash-active) .logo-mark { width: 26px !important; height: 26px !important; }
+  body:not(.splash-active) .logo-mark::after { font-size: 13px !important; }
+}
+
+/* Tap targets — make every interactive element comfy */
+body:not(.splash-active) a,
+body:not(.splash-active) button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ============================================================
+   FINAL FIT FIXES — kill stubborn horizontal overflow
+   ============================================================ */
+body:not(.splash-active) .step,
+body:not(.splash-active) .nlf-role,
+body:not(.splash-active) .who,
+body:not(.splash-active) .what,
+body:not(.splash-active) .hero-text,
+body:not(.splash-active) .hero-media,
+body:not(.splash-active) .section,
+body:not(.splash-active) .section-header {
+  min-width: 0 !important;
+}
+body:not(.splash-active) .step *,
+body:not(.splash-active) .nlf-role *,
+body:not(.splash-active) .section *,
+body:not(.splash-active) .hero *,
+body:not(.splash-active) .cta-band *,
+body:not(.splash-active) .footer-disclaimer * {
+  word-wrap: break-word !important;
+  overflow-wrap: anywhere !important;
+  max-width: 100%;
+}
+
+/* Step heading is h4 (not h3) */
+body:not(.splash-active) .step h4 {
+  font-family: 'Libre Baskerville', Georgia, serif !important;
+  font-weight: 700 !important;
+  font-size: 1.05rem !important;
+  color: var(--pp-navy) !important;
+  margin: 0.6rem 0 0.4rem !important;
+  line-height: 1.3 !important;
+}
+
+/* The horizontal connector line behind step circles doesn't apply once stacked */
+body:not(.splash-active) .process-steps::before { display: none !important; }
+
+/* Tighten the upper-most white intro block padding on mobile */
+@media (max-width: 720px) {
+  body:not(.splash-active) [style*="padding:1.5rem 1.25rem"][style*="border-bottom:1px solid"] {
+    padding: 1.25rem 1rem !important;
+  }
+}
+
+/* Buttons inside cards shouldn't push card width */
+body:not(.splash-active) .step a,
+body:not(.splash-active) .nlf-role a {
+  display: inline-block;
+  max-width: 100%;
+  white-space: normal !important;
+}
