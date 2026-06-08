@@ -10,6 +10,7 @@ const SRC = { es: esAsset.url, en: enAsset.url, ht: htAsset.url };
 export default function HeroVideoPortal() {
   const { lang } = useLang();
   const [mount, setMount] = useState<HTMLElement | null>(null);
+  const [inView, setInView] = useState(false);
 
   useEffect(() => {
     const find = () => {
@@ -25,16 +26,42 @@ export default function HeroVideoPortal() {
     return () => obs.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (!mount || inView) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setInView(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setInView(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "200px 0px", threshold: 0.01 },
+    );
+    io.observe(mount);
+    return () => io.disconnect();
+  }, [mount, inView]);
+
   if (!mount) return null;
   return createPortal(
-    <video
-      key={lang}
-      src={SRC[lang]}
-      controls
-      playsInline
-      preload="metadata"
-      style={{ width: "100%", height: "100%", objectFit: "contain", background: "#000", display: "block" }}
-    />,
+    inView ? (
+      <video
+        key={lang}
+        src={SRC[lang]}
+        controls
+        playsInline
+        preload="metadata"
+        style={{ width: "100%", height: "100%", objectFit: "contain", background: "#000", display: "block" }}
+      />
+    ) : (
+      <div
+        aria-label="Video loading when scrolled into view"
+        style={{ width: "100%", height: "100%", background: "#000" }}
+      />
+    ),
     mount,
   );
 }
