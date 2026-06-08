@@ -2971,3 +2971,59 @@ body:not(.splash-active) .nlf-role a {
   max-width: 100%;
   white-space: normal !important;
 }
+
+/* ============================================================
+   HOMEPAGE: drop the top nav + intro band; float lang toggle into hero
+   ============================================================ */
+
+/* Hide the top nav bar entirely */
+body:not(.splash-active) .nav { display: none !important; }
+
+/* Hide the white "Stop overpaying for legal help" intro band that sits
+   between the nav and the .hero-price-line section. It is the first
+   element with the bottom-border + white background inline style. */
+body:not(.splash-active)
+  div[style*="background:#fff"][style*="border-bottom:1px solid rgba(0,0,0,0.08)"] {
+  display: none !important;
+}
+
+/* Make the hero-price-line a positioning context for the floating toggle */
+body:not(.splash-active) .hero-price-line {
+  position: relative !important;
+  padding-top: 3.25rem !important;
+}
+
+/* Floating language toggle — top-right of the "Prepare today" hero band */
+body:not(.splash-active) #pp-lang-float {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 5;
+  display: inline-flex;
+  background: rgba(255,255,255,0.95);
+  border: 1px solid var(--pp-line);
+  border-radius: 999px;
+  padding: 3px;
+  box-shadow: 0 2px 8px rgba(15,27,61,.08);
+}
+body:not(.splash-active) #pp-lang-float button {
+  background: transparent;
+  color: var(--pp-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  padding: 6px 11px;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+  transition: all .15s;
+}
+body:not(.splash-active) #pp-lang-float button.active {
+  background: var(--pp-navy);
+  color: #fff;
+}
+body:not(.splash-active) #pp-lang-float button:hover:not(.active) {
+  color: var(--pp-navy);
+}
