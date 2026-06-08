@@ -2287,8 +2287,14 @@ body.splash-active {
       padding-right: 0;
     }
     .pillars { grid-template-columns: 1fr; }
-    .process-steps { grid-template-columns: 1fr; gap: 2rem; }
+    .process-steps { grid-template-columns: 1fr; gap: 0; }
     .process-steps::before { display: none; }
+    .process-steps .step { padding: 1.25rem 0; border-top: 1px solid var(--rule, rgba(0,0,0,0.12)); }
+    .process-steps .step:first-child { border-top: none; padding-top: 0.5rem; }
+    .process-steps .step:last-child { padding-bottom: 0.5rem; }
+    .process-steps .step-num { margin-bottom: 0.75rem; }
+    .process-steps .step h4 { margin-bottom: 0.5rem; font-size: 1.1rem; }
+    .process-steps .step p { margin: 0; }
     .trigger { grid-template-columns: 1fr; gap: 3rem; }
     .price-card-wrap { gap: 1.5rem; }
     .scope-strip { padding: 2.5rem 1.5rem; }
