@@ -148,7 +148,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
-        {!isApp && <BetaBanner />}
+        
         <Outlet />
         {!hideGlobalFooter && <LegalDisclaimerFooter />}
       </LanguageProvider>
