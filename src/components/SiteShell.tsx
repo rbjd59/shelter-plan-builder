@@ -50,6 +50,37 @@ export default function SiteShell() {
     if (acct) acct.remove();
   }, [isAuthed]);
 
+  // Inject a floating language toggle into the hero-price-line band
+  // (replacement for the removed top nav toggle).
+  useEffect(() => {
+    const root = ref.current;
+    if (!root) return;
+    const host = root.querySelector<HTMLElement>(".hero-price-line");
+    if (!host) return;
+    let float = host.querySelector<HTMLDivElement>("#pp-lang-float");
+    if (!float) {
+      float = document.createElement("div");
+      float.id = "pp-lang-float";
+      float.innerHTML = `
+        <button data-lang="es">ES</button>
+        <button data-lang="en">EN</button>
+        <button data-lang="ht">HT</button>
+      `;
+      float.addEventListener("click", (e) => {
+        const b = (e.target as HTMLElement).closest<HTMLButtonElement>("button[data-lang]");
+        if (!b) return;
+        const next = b.dataset.lang as Lang;
+        if (next === "es" || next === "en" || next === "ht") setLang(next);
+      });
+      host.prepend(float);
+    }
+    float.querySelectorAll<HTMLButtonElement>("button").forEach((b) => {
+      b.classList.toggle("active", b.dataset.lang === lang);
+    });
+  }, [lang, setLang]);
+
+
+
 
   useEffect(() => {
     const root = ref.current;
