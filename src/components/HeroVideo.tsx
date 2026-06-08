@@ -30,12 +30,10 @@ export default function HeroVideoPortal() {
     <video
       key={lang}
       src={SRC[lang]}
-      autoPlay
-      muted
       controls
       playsInline
-      preload="auto"
-      style={{ width: "100%", height: "100%", objectFit: "cover", background: "#000" }}
+      preload="metadata"
+      style={{ width: "100%", height: "100%", objectFit: "contain", background: "#000", display: "block" }}
     />,
     mount,
   );
