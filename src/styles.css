@@ -2397,3 +2397,281 @@ html[lang="ht"] [data-ht] { display: revert !important; }
   .lang-label { display: none !important; }
 }
 
+
+/* ============================================================
+   PROFESSIONAL POLISH LAYER — LegalZoom / Rocket Lawyer / DocDraft inspired
+   Scoped to the marketing home page (SITE_HTML). Splash uses #splash-view
+   and its own class names, so it is untouched.
+   ============================================================ */
+
+/* Refined navy + gold palette (overrides ONLY for the home shell) */
+body:not(.splash-active) {
+  --pp-navy:        #0f1b3d;
+  --pp-navy-soft:   #1a2a55;
+  --pp-ink:         #0b1220;
+  --pp-paper:       #ffffff;
+  --pp-paper-warm:  #faf8f3;
+  --pp-line:        #e7e3d8;
+  --pp-line-soft:   #efece4;
+  --pp-muted:       #5b6072;
+  --pp-gold:        #c9a24a;
+  --pp-gold-soft:   #f0e0b8;
+  --pp-shadow:      0 1px 2px rgba(15,27,61,.04), 0 8px 24px rgba(15,27,61,.06);
+  --pp-shadow-lg:   0 4px 12px rgba(15,27,61,.06), 0 24px 60px rgba(15,27,61,.10);
+  background: var(--pp-paper);
+  color: var(--pp-ink);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* ---------- NAV ---------- */
+body:not(.splash-active) .nav {
+  background: rgba(255,255,255,0.92) !important;
+  backdrop-filter: saturate(140%) blur(10px);
+  -webkit-backdrop-filter: saturate(140%) blur(10px);
+  border-bottom: 1px solid var(--pp-line) !important;
+  padding: 14px 28px !important;
+  box-shadow: 0 1px 0 rgba(15,27,61,.02);
+}
+body:not(.splash-active) .nav .logo {
+  font-family: 'Libre Baskerville', Georgia, serif !important;
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  color: var(--pp-navy) !important;
+  letter-spacing: -0.01em !important;
+  gap: 10px !important;
+}
+body:not(.splash-active) .nav .logo em {
+  color: var(--pp-gold) !important;
+  font-weight: 600 !important;
+}
+body:not(.splash-active) .nav .logo-mark {
+  width: 30px !important; height: 30px !important;
+  background: var(--pp-navy) !important;
+  border-radius: 6px !important;
+  position: relative;
+}
+body:not(.splash-active) .nav .logo-mark::after {
+  content: 'D';
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  font-family: 'Libre Baskerville', serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--pp-gold);
+}
+body:not(.splash-active) .nav-links a {
+  color: var(--pp-ink) !important;
+  font-weight: 500 !important;
+  font-size: 0.92rem !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  border-bottom: none !important;
+  opacity: 0.85;
+  transition: color .15s, opacity .15s;
+}
+body:not(.splash-active) .nav-links a:hover { color: var(--pp-navy) !important; opacity: 1; }
+
+body:not(.splash-active) .lang-toggle {
+  background: var(--pp-paper-warm) !important;
+  border: 1px solid var(--pp-line) !important;
+  border-radius: 999px !important;
+  padding: 3px !important;
+  gap: 0 !important;
+}
+body:not(.splash-active) .lang-toggle button {
+  background: transparent !important;
+  color: var(--pp-muted) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  padding: 6px 12px !important;
+  border-radius: 999px !important;
+  border: none !important;
+  transition: all .15s;
+}
+body:not(.splash-active) .lang-toggle button.active {
+  background: var(--pp-navy) !important;
+  color: #fff !important;
+}
+body:not(.splash-active) .lang-label { display: none !important; }
+
+body:not(.splash-active) .nav-cta {
+  background: var(--pp-navy) !important;
+  color: #fff !important;
+  border: 1px solid var(--pp-navy) !important;
+  border-radius: 8px !important;
+  padding: 10px 18px !important;
+  font-weight: 600 !important;
+  font-size: 0.92rem !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  box-shadow: 0 1px 0 rgba(0,0,0,.04);
+  transition: background .15s, transform .05s;
+}
+body:not(.splash-active) .nav-cta:hover {
+  background: var(--pp-navy-soft) !important;
+}
+body:not(.splash-active) .nav-cta:active { transform: translateY(1px); }
+
+/* ---------- HERO band (the inline-styled white intro block) ---------- */
+body:not(.splash-active) .hero-price-line {
+  background: var(--pp-paper-warm) !important;
+  border-color: var(--pp-line) !important;
+  padding: 2.5rem 1.75rem !important;
+}
+body:not(.splash-active) .hero-price-line > div:first-child {
+  text-transform: none !important;
+  letter-spacing: -0.01em !important;
+  color: var(--pp-navy) !important;
+}
+/* Soften the loud dark CTA strip inside hero-price-line */
+body:not(.splash-active) .hero-price-line [style*="background:#0f1830"] {
+  background: var(--pp-navy) !important;
+  border-left-color: var(--pp-gold) !important;
+  border-radius: 6px;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  padding: 1rem 1.25rem !important;
+}
+
+/* ---------- Generic sections ---------- */
+body:not(.splash-active) .section {
+  padding: 5rem 1.5rem !important;
+}
+body:not(.splash-active) .section-header { margin-bottom: 3rem !important; }
+body:not(.splash-active) .section-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  color: var(--pp-gold) !important;
+  background: var(--pp-gold-soft);
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: none !important;
+}
+body:not(.splash-active) .section-title {
+  font-family: 'Libre Baskerville', Georgia, serif !important;
+  font-weight: 700 !important;
+  color: var(--pp-navy) !important;
+  letter-spacing: -0.015em !important;
+  line-height: 1.15 !important;
+  font-size: clamp(28px, 4vw, 44px) !important;
+}
+
+/* ---------- Cards / role boxes / steps ---------- */
+body:not(.splash-active) .nlf-role,
+body:not(.splash-active) .who,
+body:not(.splash-active) .what,
+body:not(.splash-active) .step {
+  background: #fff !important;
+  border: 1px solid var(--pp-line) !important;
+  border-radius: 12px !important;
+  padding: 1.75rem !important;
+  box-shadow: var(--pp-shadow);
+  transition: transform .15s, box-shadow .15s;
+}
+body:not(.splash-active) .nlf-role:hover,
+body:not(.splash-active) .who:hover,
+body:not(.splash-active) .what:hover,
+body:not(.splash-active) .step:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--pp-shadow-lg);
+}
+
+body:not(.splash-active) .step-num {
+  background: var(--pp-navy) !important;
+  color: var(--pp-gold) !important;
+  font-family: 'Libre Baskerville', serif !important;
+  font-weight: 700 !important;
+  width: 40px !important; height: 40px !important;
+  border-radius: 50% !important;
+  display: grid; place-items: center;
+  font-size: 1.1rem !important;
+  border: none !important;
+}
+
+body:not(.splash-active) .nlf-ifneed {
+  background: var(--pp-paper-warm) !important;
+  border: 1px solid var(--pp-line) !important;
+  border-left: 4px solid var(--pp-gold) !important;
+  border-radius: 10px !important;
+  padding: 1.5rem 1.75rem !important;
+}
+body:not(.splash-active) .nlf-ifneed-tag {
+  color: var(--pp-gold) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.15em !important;
+}
+
+/* ---------- Buttons ---------- */
+body:not(.splash-active) .btn-primary {
+  background: var(--pp-navy) !important;
+  color: #fff !important;
+  border: 1px solid var(--pp-navy) !important;
+  border-radius: 8px !important;
+  padding: 14px 28px !important;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  box-shadow: 0 4px 14px rgba(15,27,61,.18) !important;
+  transition: background .15s, transform .05s, box-shadow .15s !important;
+}
+body:not(.splash-active) .btn-primary:hover {
+  background: var(--pp-navy-soft) !important;
+  box-shadow: 0 6px 20px rgba(15,27,61,.24) !important;
+}
+body:not(.splash-active) .btn-primary:active { transform: translateY(1px); }
+
+/* ---------- CTA band ---------- */
+body:not(.splash-active) .cta-band {
+  background: linear-gradient(135deg, var(--pp-navy) 0%, var(--pp-navy-soft) 100%) !important;
+  color: #fff !important;
+  border-radius: 16px !important;
+  margin: 4rem auto !important;
+  max-width: 1100px;
+  padding: 3.5rem 2rem !important;
+  box-shadow: var(--pp-shadow-lg);
+  border: 1px solid rgba(201,162,74,.2) !important;
+}
+body:not(.splash-active) .cta-band .btn-primary {
+  background: var(--pp-gold) !important;
+  color: var(--pp-navy) !important;
+  border-color: var(--pp-gold) !important;
+}
+body:not(.splash-active) .cta-band .btn-primary:hover {
+  background: #d8b25a !important;
+}
+
+/* ---------- Footer ---------- */
+body:not(.splash-active) .footer-disclaimer {
+  background: var(--pp-paper-warm) !important;
+  border-top: 1px solid var(--pp-line) !important;
+  color: var(--pp-muted) !important;
+  padding: 2.5rem 1.5rem !important;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+body:not(.splash-active) .footer-grid { gap: 2rem !important; }
+
+/* ---------- Process steps grid spacing ---------- */
+body:not(.splash-active) .process-steps {
+  gap: 1.25rem !important;
+}
+
+/* ---------- Reveal animation refinement ---------- */
+body:not(.splash-active) .reveal {
+  transition: opacity .6s ease, transform .6s ease !important;
+}
+
+/* ---------- Section title alt language line ---------- */
+body:not(.splash-active) .section-title .alt,
+body:not(.splash-active) .urgency-line .alt {
+  color: var(--pp-muted) !important;
+  font-style: italic;
+  font-weight: 400 !important;
+}
