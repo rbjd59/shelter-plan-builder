@@ -217,11 +217,7 @@ function IntakePage() {
   const { session_id, lang } = Route.useSearch();
   const L = lang as Lang;
   const ui = UI[L];
-  return (
-    <DisclosureGate lang={L} storageKey="dd_disclosure_intake_v1">
-      <IntakeInner sessionId={session_id} L={L} ui={ui} />
-    </DisclosureGate>
-  );
+  return <IntakeInner sessionId={session_id} L={L} ui={ui} />;
 }
 
 function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | undefined; L: Lang; ui: typeof UI[Lang] }) {
