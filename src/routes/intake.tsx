@@ -4,7 +4,7 @@ import { z } from "zod";
 import { useServerFn } from "@tanstack/react-start";
 import { submitDemoIntake } from "@/utils/payments.functions";
 import { pairIntakeWithApp } from "@/lib/intake-pair.functions";
-import { DisclosureGate } from "@/components/DisclosureGate";
+
 import { SentinelUpsellCards } from "@/components/SentinelUpsellCards";
 import { BilingualField } from "@/components/intake/BilingualField";
 
