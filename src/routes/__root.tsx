@@ -14,7 +14,7 @@ import appCss from "../styles.css?url";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { BetaBanner } from "@/components/BetaBanner";
 import { LegalDisclaimerFooter } from "@/components/LegalDisclaimerFooter";
-import SignUpNowButton from "@/components/SignUpNowButton";
+
 
 import { trackView } from "@/lib/track-view.functions";
 
