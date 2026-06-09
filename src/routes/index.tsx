@@ -73,7 +73,6 @@ export const Route = createFileRoute("/")({
     <PinGate>
       <HeroIntro />
       <SiteShell />
-      <StartNowCTA />
     </PinGate>
   ),
 
