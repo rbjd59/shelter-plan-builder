@@ -152,8 +152,8 @@ export default function HeroIntro() {
             opacity: 0.95,
           }}
         >
-          Draft attorney-grade documents with AI and get expert legal guidance
-          — all in one simple platform.
+          AI Drafted — Attorney Supervised — Pro Se ICE Detention Defense Plan
+          all in Minutes — Only $199 — Don't Leave Home Without It!
         </p>
         <div
           ref={wrapRef}
