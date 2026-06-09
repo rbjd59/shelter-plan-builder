@@ -123,9 +123,9 @@ export default function HeroIntro() {
           style={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "center",
+            justifyContent: "flex-end",
             gap: 12,
-            margin: "0 auto 1.25rem",
+            margin: "0 0 1.25rem auto",
             flexWrap: "wrap",
             fontSize: 12,
             fontWeight: 700,
@@ -168,8 +168,8 @@ export default function HeroIntro() {
               </button>
             ))}
           </div>
-          <span>— PICK A LANGUAGE —</span>
         </div>
+
 
         <h1
           style={{
