@@ -114,9 +114,18 @@ function AgreementPage() {
   const t = T[L];
   const navigate = useNavigate();
   const scrollRef = useRef<HTMLDivElement>(null);
+  const STORAGE_KEY = "dd_agreement_accepted_v1";
   const [scrolledToEnd, setScrolledToEnd] = useState(false);
   const [checked, setChecked] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+
+  // If user has previously accepted, skip the gate and go straight to /intake.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.localStorage.getItem(STORAGE_KEY) === "1") {
+      navigate({ to: "/intake", search: { lang: L } });
+    }
+  }, [L, navigate]);
 
   const onScroll = () => {
     const el = scrollRef.current;
@@ -138,10 +147,10 @@ function AgreementPage() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-
   const submit = () => {
     if (!scrolledToEnd) { setErr(t.notScrolled); return; }
     if (!checked) { setErr(t.must); return; }
+    try { window.localStorage.setItem(STORAGE_KEY, "1"); } catch { /* ignore */ }
     navigate({ to: "/intake", search: { lang: L } });
   };
 
