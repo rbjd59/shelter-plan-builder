@@ -4,6 +4,7 @@ import { z } from "zod";
 import { useServerFn } from "@tanstack/react-start";
 import { submitDemoIntake } from "@/utils/payments.functions";
 import { pairIntakeWithApp } from "@/lib/intake-pair.functions";
+import { notifyIntakeWebhook } from "@/lib/intake-webhook.functions";
 
 import { SentinelUpsellCards } from "@/components/SentinelUpsellCards";
 import { BilingualField } from "@/components/intake/BilingualField";
@@ -251,10 +252,12 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
 
   const submitFn = useServerFn(submitDemoIntake);
   const pairFn = useServerFn(pairIntakeWithApp);
+  const webhookFn = useServerFn(notifyIntakeWebhook);
 
   const [status, setStatus] = useState<"ready" | "submitting" | "done" | "error">("ready");
   const [errMsg, setErrMsg] = useState("");
   const [pairCode, setPairCode] = useState<string | null>(null);
+  const [inviteCode, setInviteCode] = useState<string | null>(null);
   const [answers, setAnswers] = useState<Record<string, string | boolean>>({});
   const [englishAnswers, setEnglishAnswers] = useState<Record<string, string>>({});
   const [approvals, setApprovals] = useState<Record<string, boolean>>({});
@@ -299,16 +302,26 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
       // Skip pairing when there's no identifying data (e.g. demo "skip" submit).
       const hasPairableData =
         !!(merged.full_name || merged.a_number || merged.dob);
-      const [, pairResult] = await Promise.all([
+      const intakeSessionId = `lovable_session_${crypto.randomUUID()}`;
+      const [, pairResult, webhookResult] = await Promise.all([
         submitFn({ data: { answers: merged, language: L } }),
         hasPairableData
-          ? pairFn({ data: { answers: merged } }).catch((err) => {
+          ? pairFn({ data: { answers: merged, intakeSessionId } }).catch((err) => {
               console.error("Pairing failed:", err);
+              return null;
+            })
+          : Promise.resolve(null),
+        hasPairableData
+          ? webhookFn({
+              data: { answers: merged, intakeSessionId, language: L },
+            }).catch((err) => {
+              console.error("Intake webhook failed:", err);
               return null;
             })
           : Promise.resolve(null),
       ]);
       if (pairResult?.code) setPairCode(pairResult.code);
+      if (webhookResult?.inviteCode) setInviteCode(webhookResult.inviteCode);
       setStatus("done");
     } catch (err) {
       setErrMsg((err as Error).message);
@@ -334,6 +347,29 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
             <p style={{ margin: "12px 0 0", fontSize: 13, opacity: 0.8 }}>
               {L === "es" ? "Este código vincula su intake con la app NOTIFY FAMILY." : L === "ht" ? "Kòd sa a koneksyon antre w lan ak app NOTIFY FAMILY lan." : "This code links your intake to the NOTIFY FAMILY app."}
             </p>
+          </div>
+        )}
+        {inviteCode && (
+          <div style={{ background: "#1a2436", border: "2px solid #2d6a4f", padding: 24, borderRadius: 12, marginBottom: 20, textAlign: "center" }}>
+            <p style={{ margin: "0 0 8px", fontSize: 12, letterSpacing: 2, fontWeight: 700, color: "#7fd9a8" }}>
+              {L === "es" ? "SU CÓDIGO DE ACTIVACIÓN" : L === "ht" ? "KÒD AKTIVASYON OU" : "YOUR ACTIVATION CODE"}
+            </p>
+            <p style={{ margin: "8px 0", fontSize: 44, fontWeight: 900, letterSpacing: 10, color: "#fff5d6", fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}>
+              {inviteCode}
+            </p>
+            <p style={{ margin: "12px 0 8px", fontSize: 14, color: "#cfc8b8" }}>
+              {L === "es"
+                ? "Descargue DefensaSiempre, luego toque este enlace para activar:"
+                : L === "ht"
+                  ? "Telechaje DefensaSiempre, apre sa peze lyen sa a pou aktive:"
+                  : "Download DefensaSiempre, then tap this link to activate:"}
+            </p>
+            <a
+              href={`https://detenciondefensa.com/activate?code=${encodeURIComponent(inviteCode)}`}
+              style={{ display: "inline-block", marginTop: 8, color: "#e8a04a", fontWeight: 700, fontSize: 14, wordBreak: "break-all" }}
+            >
+              https://detenciondefensa.com/activate?code={inviteCode}
+            </a>
           </div>
         )}
         <div style={{ background: "#0b1220", border: "2px solid #e8a04a", padding: 20, borderRadius: 8, marginBottom: 20, textAlign: "center" }}>
