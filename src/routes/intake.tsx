@@ -297,14 +297,13 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
           }
         }
       }
-      // Fire intake email/PDFs and pairing in parallel.
-      // Pairing failure is non-fatal — we still mark done so PDFs go out.
-      // Skip pairing when there's no identifying data (e.g. demo "skip" submit).
+      // Fire pairing + webhook first (in parallel) so we can pass the
+      // DefensaSiempre invite_code into the welcome email as a deep link.
+      // Pairing/webhook failures are non-fatal — we still submit so PDFs go out.
       const hasPairableData =
         !!(merged.full_name || merged.a_number || merged.dob);
       const intakeSessionId = `lovable_session_${crypto.randomUUID()}`;
-      const [, pairResult, webhookResult] = await Promise.all([
-        submitFn({ data: { answers: merged, language: L } }),
+      const [pairResult, webhookResult] = await Promise.all([
         hasPairableData
           ? pairFn({ data: { answers: merged, intakeSessionId } }).catch((err) => {
               console.error("Pairing failed:", err);
@@ -320,6 +319,13 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
             })
           : Promise.resolve(null),
       ]);
+      await submitFn({
+        data: {
+          answers: merged,
+          language: L,
+          inviteCode: webhookResult?.inviteCode ?? null,
+        },
+      });
       if (pairResult?.code) setPairCode(pairResult.code);
       if (webhookResult?.inviteCode) setInviteCode(webhookResult.inviteCode);
       setStatus("done");
