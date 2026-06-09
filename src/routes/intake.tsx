@@ -167,9 +167,9 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
 
 const UI = {
   en: {
-    title: "Intake — 28 U.S.C. § 2241 + In Forma Pauperis",
-    sub: "Pro se forms used by U.S. District Court Clerks.",
-    upl: "We are NOT a law firm. We do not give legal advice or choose forms. The petitioner signs and files.",
+    title: "    ANSWER ALL QUESTIONS NOT BLOCKED",
+    sub: "IF THE QUESTIONS IS BLOCKED IT MEANS THE ATTORNEY WILL COMPLETE IT IF YOU ARE DETAINED",
+    upl: "The information below is translated and typed onto the Pro Se Federal Habeas Corpus Form AO 242.",
     submit: "Submit answers",
     submitting: "Submitting…",
     done: "Check your email. We just sent you your prepared AO 242 + AO 240 PDFs and a one-tap link to install the NOTIFY FAMILY button on the at-risk person's phone, with step-by-step instructions in your chosen language.",
