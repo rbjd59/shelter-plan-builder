@@ -217,6 +217,20 @@ function IntakePage() {
   const { session_id, lang } = Route.useSearch();
   const L = lang as Lang;
   const ui = UI[L];
+  const navigate = useNavigate();
+  const [gateChecked, setGateChecked] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const key = `dd_agreement_accepted_v1_${L}`;
+    if (window.localStorage.getItem(key) !== "1") {
+      navigate({ to: "/agreement", search: { lang: L }, replace: true });
+    } else {
+      setGateChecked(true);
+    }
+  }, [L, navigate]);
+
+  if (!gateChecked) return null;
   return <IntakeInner sessionId={session_id} L={L} ui={ui} />;
 }
 
