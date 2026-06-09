@@ -41,6 +41,56 @@ export default function HeroIntro() {
       }}
     >
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 12,
+            margin: "0 auto 1.75rem",
+            flexWrap: "wrap",
+            fontSize: 12,
+            fontWeight: 700,
+            letterSpacing: "0.16em",
+            textTransform: "uppercase",
+            opacity: 0.92,
+          }}
+        >
+          <span>PICK A LANGUAGE —</span>
+          <div
+            style={{
+              display: "inline-flex",
+              background: "rgba(255,255,255,0.95)",
+              border: "1px solid rgba(255,255,255,0.6)",
+              borderRadius: 999,
+              padding: 3,
+            }}
+          >
+            {(["es", "en", "ht"] as Lang[]).map((code) => (
+              <button
+                key={code}
+                type="button"
+                onClick={() => setLang(code)}
+                style={{
+                  background: lang === code ? "#0f1830" : "transparent",
+                  color: lang === code ? "#fff" : "#0f1830",
+                  border: "none",
+                  borderRadius: 999,
+                  padding: "6px 14px",
+                  fontSize: 12,
+                  fontWeight: 700,
+                  letterSpacing: "0.14em",
+                  cursor: "pointer",
+                  fontFamily: "inherit",
+                }}
+              >
+                {code.toUpperCase()}
+              </button>
+            ))}
+          </div>
+          <span>—</span>
+        </div>
+
         <h1
           style={{
             fontSize: "clamp(2rem, 5vw, 3.25rem)",
