@@ -199,8 +199,8 @@ const UI = {
     verifying: "Verificando pago…",
   },
   ht: {
-    title: "Fòm Antre — 28 U.S.C. § 2241 + In Forma Pauperis",
-    sub: "Fòm pro se Klèk Tribinal Distri Etazini itilize.",
+    title: "    REPONN TOUT KESYON KI PA BLOKE",
+    sub: "SI KESYON AN BLOKE, AVOKA A AP RANPLI L SI YO DETNI W",
     upl: "Nou PA yon kabinè avoka. Nou pa bay konsèy legal. Petisyonè a siyen e depoze.",
     submit: "Voye repons",
     submitting: "K ap voye…",
