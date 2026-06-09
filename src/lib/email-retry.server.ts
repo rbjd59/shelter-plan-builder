@@ -38,7 +38,7 @@ export async function retryDlqEmails(batchSize = 25): Promise<RetryStats> {
     const messages = (data ?? []) as Array<{ msg_id: number; message: Record<string, unknown> }>;
     if (!messages.length) continue;
 
-    for (const msg of messages as Array<{ msg_id: number; message: Record<string, unknown> }>) {
+    for (const msg of messages) {
       const payload = { ...(msg.message ?? {}) } as Record<string, unknown>;
       const autoRetry = Number(payload.auto_retry_count ?? 0);
 
