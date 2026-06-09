@@ -109,9 +109,9 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
   },
   {
     id: "ifp",
-    title: { en: "5. AO 240 — In Forma Pauperis", es: "5. AO 240 — In Forma Pauperis", ht: "5. AO 240 — In Forma Pauperis" },
+    title: { en: "5. Application for No Court Fee ", es: "5. AO 240 — In Forma Pauperis", ht: "5. AO 240 — In Forma Pauperis" },
     intro: {
-      en: "If the petitioner cannot pay the $5 filing fee, this asks the court to waive it. Enter 0 if none.",
+      en: "Remember you only file this after arrested. Answer the question based upon being in jail. If you want to wait to see your financial condition after arrest, we will send you this form in English, Spanish & Hattian, wait to fill it out. This form is sworn under penalty of perjury.  You must be accurate. If you have income now and will lose your income if arrested it is best to wait to complete it. If you have no income now and are below the poverty level you may fill it out now for consideration of a sliding scale fee by DetencionDefensa.com through your church or non-profit organization.   YOU WILL BE REQUIRED TO PROVIDE PROOF OF INABILITY TO PAY. THE FILING FEE IS ONLY $5.00 AND IF YOU DO NOT COMPLETE THIS FORM YOU WILL RECIEVE A CHECK WIITH YOUR PACKAGE PAYABLE TO THE CLERK OF THE COURT FOR $5.00 SO YOU CAN SIGN AND MAIL THE PRO SE FORMS FOR FILING FROM DETENTION.",
       es: "Si no puede pagar la tasa de $5, esto pide que la exima. Ingrese 0 si no hay.",
       ht: "Si li pa kapab peye frè $5 la, sa mande tribinal la egzante l. Mete 0 si pa gen.",
     },
