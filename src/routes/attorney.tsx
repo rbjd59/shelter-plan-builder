@@ -290,21 +290,19 @@ function AttorneyPage() {
           }}
         >
           <div>
-            <div
+            <img
+              src="/__l5e/assets-v1/39468bab-2418-455f-af3b-71fc939b832e/rosario-sorrentino.png"
+              alt={FIRM.attorney}
               style={{
+                width: "100%",
                 aspectRatio: "1 / 1",
-                background: `linear-gradient(135deg, ${NAVY}, ${FIRM.accentColor})`,
+                objectFit: "cover",
                 borderRadius: 16,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#fff",
-                fontFamily: "'Libre Baskerville', Georgia, serif",
-                fontSize: 72,
+                display: "block",
+                border: `1px solid ${BORDER}`,
               }}
-            >
-              RS
-            </div>
+              loading="lazy"
+            />
             <div style={{ marginTop: 16, fontSize: 13, color: MUTED, lineHeight: 1.6 }}>
               <strong style={{ color: NAVY }}>{FIRM.legalName}</strong><br />
               {FIRM.address}<br />
