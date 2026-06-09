@@ -296,12 +296,17 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
       }
       // Fire intake email/PDFs and pairing in parallel.
       // Pairing failure is non-fatal — we still mark done so PDFs go out.
+      // Skip pairing when there's no identifying data (e.g. demo "skip" submit).
+      const hasPairableData =
+        !!(merged.full_name || merged.a_number || merged.dob);
       const [, pairResult] = await Promise.all([
         submitFn({ data: { answers: merged, language: L } }),
-        pairFn({ data: { answers: merged } }).catch((err) => {
-          console.error("Pairing failed:", err);
-          return null;
-        }),
+        hasPairableData
+          ? pairFn({ data: { answers: merged } }).catch((err) => {
+              console.error("Pairing failed:", err);
+              return null;
+            })
+          : Promise.resolve(null),
       ]);
       if (pairResult?.code) setPairCode(pairResult.code);
       setStatus("done");
