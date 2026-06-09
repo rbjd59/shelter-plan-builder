@@ -73,7 +73,7 @@ export const Route = createFileRoute("/")({
     <PinGate>
       <HeroIntro />
       <SiteShell />
-      <HeroVideo />
     </PinGate>
   ),
+
 });
