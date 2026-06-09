@@ -129,7 +129,7 @@ export default function HeroIntro() {
               </button>
             ))}
           </div>
-          <span>—</span>
+          <span>— PICK A LANGUAGE —</span>
         </div>
 
         <h1
