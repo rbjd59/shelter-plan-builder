@@ -349,6 +349,29 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
             </p>
           </div>
         )}
+        {inviteCode && (
+          <div style={{ background: "#1a2436", border: "2px solid #2d6a4f", padding: 24, borderRadius: 12, marginBottom: 20, textAlign: "center" }}>
+            <p style={{ margin: "0 0 8px", fontSize: 12, letterSpacing: 2, fontWeight: 700, color: "#7fd9a8" }}>
+              {L === "es" ? "SU CÓDIGO DE ACTIVACIÓN" : L === "ht" ? "KÒD AKTIVASYON OU" : "YOUR ACTIVATION CODE"}
+            </p>
+            <p style={{ margin: "8px 0", fontSize: 44, fontWeight: 900, letterSpacing: 10, color: "#fff5d6", fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}>
+              {inviteCode}
+            </p>
+            <p style={{ margin: "12px 0 8px", fontSize: 14, color: "#cfc8b8" }}>
+              {L === "es"
+                ? "Descargue DefensaSiempre, luego toque este enlace para activar:"
+                : L === "ht"
+                  ? "Telechaje DefensaSiempre, apre sa peze lyen sa a pou aktive:"
+                  : "Download DefensaSiempre, then tap this link to activate:"}
+            </p>
+            <a
+              href={`https://detenciondefensa.com/activate?code=${encodeURIComponent(inviteCode)}`}
+              style={{ display: "inline-block", marginTop: 8, color: "#e8a04a", fontWeight: 700, fontSize: 14, wordBreak: "break-all" }}
+            >
+              https://detenciondefensa.com/activate?code={inviteCode}
+            </a>
+          </div>
+        )}
         <div style={{ background: "#0b1220", border: "2px solid #e8a04a", padding: 20, borderRadius: 8, marginBottom: 20, textAlign: "center" }}>
           <p style={{ margin: "0 0 4px", fontSize: 11, letterSpacing: 2, color: "#e8a04a", fontWeight: 700 }}>DEMO · INVESTOR PREVIEW</p>
           <p style={{ margin: 0, fontSize: 22, fontWeight: 800, color: "#fff5d6" }}>ASSET PROTECTION ACTIVATED</p>
