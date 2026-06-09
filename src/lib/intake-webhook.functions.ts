@@ -232,10 +232,13 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 export const listWebhookSendLog = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: { onlyFailures?: boolean; limit?: number } | undefined) => ({
-    onlyFailures: input?.onlyFailures ?? false,
-    limit: Math.min(Math.max(input?.limit ?? 100, 1), 500),
-  }))
+  .inputValidator(
+    (input: { onlyFailures?: boolean; limit?: number; errorKind?: string } | undefined) => ({
+      onlyFailures: input?.onlyFailures ?? false,
+      limit: Math.min(Math.max(input?.limit ?? 100, 1), 500),
+      errorKind: input?.errorKind && input.errorKind !== "" ? input.errorKind : null,
+    }),
+  )
   .handler(async ({ data, context }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: role } = await supabaseAdmin
@@ -253,6 +256,7 @@ export const listWebhookSendLog = createServerFn({ method: "POST" })
       .order("created_at", { ascending: false })
       .limit(data.limit);
     if (data.onlyFailures) q = q.eq("ok", false);
+    if (data.errorKind) q = q.eq("error_kind", data.errorKind);
     const { data: rows, error } = await q;
     if (error) throw new Error(error.message);
     return { rows: rows ?? [] };
