@@ -114,7 +114,7 @@ function AgreementPage() {
   const t = T[L];
   const navigate = useNavigate();
   const scrollRef = useRef<HTMLDivElement>(null);
-  const STORAGE_KEY = "dd_agreement_accepted_v1";
+  const STORAGE_KEY = `dd_agreement_accepted_v1_${L}`;
   const [scrolledToEnd, setScrolledToEnd] = useState(false);
   const [checked, setChecked] = useState(false);
   const [err, setErr] = useState<string | null>(null);
