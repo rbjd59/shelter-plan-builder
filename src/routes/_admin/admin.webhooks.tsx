@@ -32,16 +32,27 @@ function StatusBadge({ ok, code, kind }: { ok: boolean; code: number | null; kin
 function WebhookLogsPage() {
   const fetchLogs = useServerFn(listWebhookSendLog);
   const [onlyFailures, setOnlyFailures] = useState(true);
+  const [errorKind, setErrorKind] = useState<string>("");
 
   const { data, isLoading, error, refetch, isFetching } = useQuery({
-    queryKey: ["webhook-send-log", { onlyFailures }],
-    queryFn: () => fetchLogs({ data: { onlyFailures, limit: 200 } }),
+    queryKey: ["webhook-send-log", { onlyFailures, errorKind }],
+    queryFn: () => fetchLogs({ data: { onlyFailures, errorKind, limit: 200 } }),
     refetchInterval: 30000,
   });
 
+  const ERROR_KINDS = [
+    { value: "", label: "All error kinds" },
+    { value: "signature_rejected", label: "signature_rejected (401)" },
+    { value: "network", label: "network (unreachable)" },
+    { value: "server_error", label: "server_error (5xx)" },
+    { value: "http_error", label: "http_error (4xx)" },
+    { value: "invalid_response_json", label: "invalid_response_json" },
+    { value: "invalid_response_shape", label: "invalid_response_shape" },
+  ];
+
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="text-lg font-bold text-slate-900">Intake webhook delivery log</h1>
           <p className="text-xs text-slate-500">
@@ -49,7 +60,7 @@ function WebhookLogsPage() {
             <span className="ml-1 rounded bg-red-100 px-1 text-red-800">401 signature_rejected</span>.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <label className="flex items-center gap-2 text-xs text-slate-700">
             <input
               type="checkbox"
@@ -58,6 +69,17 @@ function WebhookLogsPage() {
             />
             Only failures
           </label>
+          <select
+            value={errorKind}
+            onChange={(e) => setErrorKind(e.target.value)}
+            className="rounded border border-slate-300 px-2 py-1 text-xs"
+          >
+            {ERROR_KINDS.map((k) => (
+              <option key={k.value} value={k.value}>
+                {k.label}
+              </option>
+            ))}
+          </select>
           <button
             onClick={() => refetch()}
             className="rounded border border-slate-300 px-3 py-1 text-xs hover:bg-slate-100"
