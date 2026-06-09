@@ -98,12 +98,25 @@ export default function SiteShell() {
         return;
       }
 
-      // FAQ accordion
-      const q = target.closest(".faq-q");
+      // FAQ accordion (legacy + ddfaq)
+      const q = target.closest(".faq-q, .ddfaq-q");
       if (q) {
-        q.parentElement?.classList.toggle("open");
+        if (q.classList.contains("ddfaq-q")) {
+          const wasActive = q.classList.contains("active");
+          root.querySelectorAll(".ddfaq-q").forEach((el) => {
+            el.classList.remove("active");
+            el.nextElementSibling?.classList.remove("show");
+          });
+          if (!wasActive) {
+            q.classList.add("active");
+            q.nextElementSibling?.classList.add("show");
+          }
+        } else {
+          q.parentElement?.classList.toggle("open");
+        }
         return;
       }
+
 
       // Anchor links — smooth scroll
       const a = target.closest<HTMLAnchorElement>("a");
