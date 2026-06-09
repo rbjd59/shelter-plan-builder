@@ -25,7 +25,7 @@ export async function retryDlqEmails(batchSize = 25): Promise<RetryStats> {
   const stats: RetryStats = { requeued: 0, dropped: 0, errors: [] };
 
   for (const { dlq, live } of QUEUES) {
-    const { data: messages, error } = await supabaseAdmin.rpc("read_email_batch" as never, {
+    const { data, error } = await supabaseAdmin.rpc("read_email_batch" as never, {
       queue_name: dlq,
       batch_size: batchSize,
       vt: 60,
@@ -35,7 +35,8 @@ export async function retryDlqEmails(batchSize = 25): Promise<RetryStats> {
       stats.errors.push(`read ${dlq}: ${error.message}`);
       continue;
     }
-    if (!messages?.length) continue;
+    const messages = (data ?? []) as Array<{ msg_id: number; message: Record<string, unknown> }>;
+    if (!messages.length) continue;
 
     for (const msg of messages as Array<{ msg_id: number; message: Record<string, unknown> }>) {
       const payload = { ...(msg.message ?? {}) } as Record<string, unknown>;
