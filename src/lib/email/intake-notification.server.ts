@@ -366,6 +366,7 @@ ${Object.entries(a)
           ifpUrl,
           inmateName,
           demoMode,
+          inviteCode,
         });
       }
     }
