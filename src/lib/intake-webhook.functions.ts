@@ -228,15 +228,23 @@ export const notifyIntakeWebhook = createServerFn({ method: "POST" })
     };
   });
 
-export const listWebhookSendLog = createServerFn({ method: "GET" })
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+
+export const listWebhookSendLog = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: { onlyFailures?: boolean; limit?: number } | undefined) => ({
     onlyFailures: input?.onlyFailures ?? false,
     limit: Math.min(Math.max(input?.limit ?? 100, 1), 500),
   }))
-  .handler(async ({ data }) => {
-    const { requireSupabaseAuth } = await import("@/integrations/supabase/auth-middleware");
-    void requireSupabaseAuth; // ensure module path stays referenced
+  .handler(async ({ data, context }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: role } = await supabaseAdmin
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", context.userId)
+      .eq("role", "admin")
+      .maybeSingle();
+    if (!role) throw new Error("Not authorized");
     let q = supabaseAdmin
       .from("webhook_send_log")
       .select(
