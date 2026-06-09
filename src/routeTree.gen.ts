@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VenuesRouteImport } from './routes/venues'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SupportRouteImport } from './routes/support'
 import { Route as SplashRouteImport } from './routes/splash'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
@@ -70,6 +71,11 @@ const VenuesRoute = VenuesRouteImport.update({
 const UnsubscribeRoute = UnsubscribeRouteImport.update({
   id: '/unsubscribe',
   path: '/unsubscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SupportRoute = SupportRouteImport.update({
@@ -348,6 +354,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/splash': typeof SplashRoute
   '/support': typeof SupportRoute
+  '/terms': typeof TermsRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/venues': typeof VenuesRoute
   '/admin': typeof AdminAdminRouteWithChildren
@@ -399,6 +406,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/splash': typeof SplashRoute
   '/support': typeof SupportRoute
+  '/terms': typeof TermsRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/venues': typeof VenuesRoute
   '/admin': typeof AdminAdminRouteWithChildren
@@ -454,6 +462,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/splash': typeof SplashRoute
   '/support': typeof SupportRoute
+  '/terms': typeof TermsRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/venues': typeof VenuesRoute
   '/_admin/admin': typeof AdminAdminRouteWithChildren
@@ -507,6 +516,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/splash'
     | '/support'
+    | '/terms'
     | '/unsubscribe'
     | '/venues'
     | '/admin'
@@ -558,6 +568,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/splash'
     | '/support'
+    | '/terms'
     | '/unsubscribe'
     | '/venues'
     | '/admin'
@@ -612,6 +623,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/splash'
     | '/support'
+    | '/terms'
     | '/unsubscribe'
     | '/venues'
     | '/_admin/admin'
@@ -667,6 +679,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SplashRoute: typeof SplashRoute
   SupportRoute: typeof SupportRoute
+  TermsRoute: typeof TermsRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
   VenuesRoute: typeof VenuesRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
@@ -703,6 +716,13 @@ declare module '@tanstack/react-router' {
       path: '/unsubscribe'
       fullPath: '/unsubscribe'
       preLoaderRoute: typeof UnsubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/support': {
@@ -1146,6 +1166,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SplashRoute: SplashRoute,
   SupportRoute: SupportRoute,
+  TermsRoute: TermsRoute,
   UnsubscribeRoute: UnsubscribeRoute,
   VenuesRoute: VenuesRoute,
   AuthCallbackRoute: AuthCallbackRoute,
