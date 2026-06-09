@@ -193,8 +193,10 @@ export default function HeroIntro() {
             color: "#0a1633",
           }}
         >
-          AI Drafted — Attorney Supervised — Pro Se ICE Detention Defense Plan
-          all in Minutes — <span style={{ color: "#ff8a65" }}>Only $199 — Don't Leave Home Without It!</span>
+          AI Drafted — Attorney Supervised — Pro Se ICE Detention Defense Plan all in Minutes
+          <br />
+          <span style={{ color: "#ff8a65" }}>Only $199 — Don't Leave Home Without It!</span>
+
         </p>
 
         <div
