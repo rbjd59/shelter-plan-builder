@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
+import { readSiteLang } from "@/lib/site-lang";
 
 const searchSchema = z.object({ lang: z.enum(["en", "es", "ht"]).catch("es") });
 
@@ -119,13 +120,23 @@ function AgreementPage() {
   const [checked, setChecked] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
+  // Fallback: if URL has no valid ?lang=, replace with the site-selected lang.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const u = new URLSearchParams(window.location.search).get("lang");
+    if (u !== "es" && u !== "en" && u !== "ht") {
+      const site = readSiteLang();
+      navigate({ to: "/agreement", search: { lang: site }, replace: true });
+    }
+  }, [navigate]);
+
   // If user has previously accepted, skip the gate and go straight to /intake.
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (window.localStorage.getItem(STORAGE_KEY) === "1") {
       navigate({ to: "/intake", search: { lang: L } });
     }
-  }, [L, navigate]);
+  }, [L, navigate, STORAGE_KEY]);
 
   const onScroll = () => {
     const el = scrollRef.current;
