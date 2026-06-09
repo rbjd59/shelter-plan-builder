@@ -50,6 +50,7 @@ import { Route as ApiPublicSendAdminInviteRouteImport } from './routes/api/publi
 import { Route as ApiPublicMailFromCheckRouteImport } from './routes/api/public/mail-from-check'
 import { Route as FirmFirmQueueRouteImport } from './routes/_firm/firm.queue'
 import { Route as AuthenticatedCaseIdRouteImport } from './routes/_authenticated/case.$id'
+import { Route as AdminAdminWebhooksRouteImport } from './routes/_admin/admin.webhooks'
 import { Route as AdminAdminTriggersRouteImport } from './routes/_admin/admin.triggers'
 import { Route as AdminAdminRemindersRouteImport } from './routes/_admin/admin.reminders'
 import { Route as AdminAdminEmailsRouteImport } from './routes/_admin/admin.emails'
@@ -269,6 +270,11 @@ const AuthenticatedCaseIdRoute = AuthenticatedCaseIdRouteImport.update({
   path: '/case/$id',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AdminAdminWebhooksRoute = AdminAdminWebhooksRouteImport.update({
+  id: '/webhooks',
+  path: '/webhooks',
+  getParentRoute: () => AdminAdminRoute,
+} as any)
 const AdminAdminTriggersRoute = AdminAdminTriggersRouteImport.update({
   id: '/triggers',
   path: '/triggers',
@@ -391,6 +397,7 @@ export interface FileRoutesByFullPath {
   '/admin/emails': typeof AdminAdminEmailsRoute
   '/admin/reminders': typeof AdminAdminRemindersRoute
   '/admin/triggers': typeof AdminAdminTriggersRoute
+  '/admin/webhooks': typeof AdminAdminWebhooksRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
   '/firm/queue': typeof FirmFirmQueueRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
@@ -446,6 +453,7 @@ export interface FileRoutesByTo {
   '/admin/emails': typeof AdminAdminEmailsRoute
   '/admin/reminders': typeof AdminAdminRemindersRoute
   '/admin/triggers': typeof AdminAdminTriggersRoute
+  '/admin/webhooks': typeof AdminAdminWebhooksRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
   '/firm/queue': typeof FirmFirmQueueRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
@@ -505,6 +513,7 @@ export interface FileRoutesById {
   '/_admin/admin/emails': typeof AdminAdminEmailsRoute
   '/_admin/admin/reminders': typeof AdminAdminRemindersRoute
   '/_admin/admin/triggers': typeof AdminAdminTriggersRoute
+  '/_admin/admin/webhooks': typeof AdminAdminWebhooksRoute
   '/_authenticated/case/$id': typeof AuthenticatedCaseIdRoute
   '/_firm/firm/queue': typeof FirmFirmQueueRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
@@ -562,6 +571,7 @@ export interface FileRouteTypes {
     | '/admin/emails'
     | '/admin/reminders'
     | '/admin/triggers'
+    | '/admin/webhooks'
     | '/case/$id'
     | '/firm/queue'
     | '/api/public/mail-from-check'
@@ -617,6 +627,7 @@ export interface FileRouteTypes {
     | '/admin/emails'
     | '/admin/reminders'
     | '/admin/triggers'
+    | '/admin/webhooks'
     | '/case/$id'
     | '/firm/queue'
     | '/api/public/mail-from-check'
@@ -675,6 +686,7 @@ export interface FileRouteTypes {
     | '/_admin/admin/emails'
     | '/_admin/admin/reminders'
     | '/_admin/admin/triggers'
+    | '/_admin/admin/webhooks'
     | '/_authenticated/case/$id'
     | '/_firm/firm/queue'
     | '/api/public/mail-from-check'
@@ -1030,6 +1042,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCaseIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_admin/admin/webhooks': {
+      id: '/_admin/admin/webhooks'
+      path: '/webhooks'
+      fullPath: '/admin/webhooks'
+      preLoaderRoute: typeof AdminAdminWebhooksRouteImport
+      parentRoute: typeof AdminAdminRoute
+    }
     '/_admin/admin/triggers': {
       id: '/_admin/admin/triggers'
       path: '/triggers'
@@ -1154,6 +1173,7 @@ interface AdminAdminRouteChildren {
   AdminAdminEmailsRoute: typeof AdminAdminEmailsRoute
   AdminAdminRemindersRoute: typeof AdminAdminRemindersRoute
   AdminAdminTriggersRoute: typeof AdminAdminTriggersRoute
+  AdminAdminWebhooksRoute: typeof AdminAdminWebhooksRoute
 }
 
 const AdminAdminRouteChildren: AdminAdminRouteChildren = {
@@ -1161,6 +1181,7 @@ const AdminAdminRouteChildren: AdminAdminRouteChildren = {
   AdminAdminEmailsRoute: AdminAdminEmailsRoute,
   AdminAdminRemindersRoute: AdminAdminRemindersRoute,
   AdminAdminTriggersRoute: AdminAdminTriggersRoute,
+  AdminAdminWebhooksRoute: AdminAdminWebhooksRoute,
 }
 
 const AdminAdminRouteWithChildren = AdminAdminRoute._addFileChildren(
