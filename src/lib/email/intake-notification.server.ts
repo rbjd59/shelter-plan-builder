@@ -359,6 +359,9 @@ ${Object.entries(a)
         (typeof answers.full_name === "string" && answers.full_name) ||
         "su ser querido";
       for (const to of recipientsSet) {
+        console.info(
+          `[invite-code] sendWelcomeEmail session=${sessionId} to=${to} invite_code=${inviteCode ?? "MISSING"} invite_code_len=${inviteCode?.length ?? 0} path=${inviteCode ? "defensasiempre_deeplink" : "pwa_install_fallback"}`,
+        );
         await sendWelcomeEmail({
           to,
           trackingToken: tracking.token,
