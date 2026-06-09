@@ -17,7 +17,6 @@ const HIDDEN_PREFIXES = [
   "/checkout",
   "/app",
   "/coming-soon",
-  "/splash",
 ];
 
 /**
