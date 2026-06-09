@@ -52,14 +52,14 @@ type FieldDef = {
 const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, string>; fields: FieldDef[] }[] = [
   {
     id: "petitioner",
-    title: { en: "1. About the Petitioner", es: "1. Sobre el Peticionario", ht: "1. Konsènan Petisyonè a" },
+    title: { en: "1. About You", es: "1. Sobre el Peticionario", ht: "1. Konsènan Petisyonè a" },
     intro: {
       en: "Form AO 242 — Petition for Writ of Habeas Corpus under 28 U.S.C. § 2241.",
       es: "Formulario AO 242 — Petición de Habeas Corpus bajo 28 U.S.C. § 2241.",
       ht: "Fòm AO 242 — Petisyon pou Habeas Corpus dapre 28 U.S.C. § 2241.",
     },
     fields: [
-      { key: "full_name", label: { en: "Full legal name", es: "Nombre legal completo", ht: "Non legal konplè" } },
+      { key: "full_name", label: { en: "Name on U.S. Documents / Immigration Forms", es: "Nombre legal completo", ht: "Non legal konplè" } },
       { key: "other_names_used", label: { en: "Other names used", es: "Otros nombres usados", ht: "Lòt non yo te itilize" } },
       { key: "a_number", label: { en: "Alien Registration Number (A#)", es: "Número de Registro de Extranjero (A#)", ht: "Nimewo Anrejistreman Etranje (A#)" } },
       { key: "dob", label: { en: "Date of birth", es: "Fecha de nacimiento", ht: "Dat nesans" }, type: "date" },
@@ -81,27 +81,27 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
     },
     fields: [
       { key: "warden_name", disabled: true, label: { en: "Warden's name", es: "Nombre del director", ht: "Non Direktè a" }, hint: { en: "Leave blank", es: "Dejar en blanco", ht: "Kite vid" } },
-      { key: "warden_title", disabled: true, label: { en: "Warden's title", es: "Título del director", ht: "Tit Direktè a" }, hint: { en: "Leave blank", es: "Dejar en blanco", ht: "Kite vid" } },
+      { key: "warden_title", disabled: true, label: { en: "Additional Respondent", es: "Título del director", ht: "Tit Direktè a" }, hint: { en: "Leave blank", es: "Dejar en blanco", ht: "Kite vid" } },
     ],
   },
   {
     id: "detainer",
-    title: { en: "3. ICE Detainer", es: "3. Detención de ICE", ht: "3. Detainer ICE" },
+    title: { en: "3. Immigration Status", es: "3. Detención de ICE", ht: "3. Detainer ICE" },
     intro: {
-      en: "Information about the immigration hold.",
+      en: "Has Immigration issued a Order of Removal",
       es: "Información sobre la retención migratoria.",
       ht: "Enfòmasyon sou kenbe imigrasyon an.",
     },
     fields: [
-      { key: "ice_form_known", type: "checkbox", label: { en: "Do you have a copy of the I-247 form?", es: "¿Tiene copia del formulario I-247?", ht: "Èske w gen kopi fòm I-247?" } },
-      { key: "prior_immigration_proceedings", type: "textarea", label: { en: "Briefly describe any prior immigration proceedings", es: "Describa procedimientos migratorios anteriores", ht: "Dekri pwosedi imigrasyon anvan" } },
+      { key: "ice_form_known", type: "checkbox", label: { en: "Have you been convicted of a serious felony anywhere?", es: "¿Tiene copia del formulario I-247?", ht: "Èske w gen kopi fòm I-247?" } },
+      { key: "prior_immigration_proceedings", type: "textarea", label: { en: "Describe prior Immigration Status", es: "Describa procedimientos migratorios anteriores", ht: "Dekri pwosedi imigrasyon anvan" } },
     ],
   },
   {
     id: "grounds",
-    title: { en: "4. Grounds for the Petition", es: "4. Motivos de la Petición", ht: "4. Rezon pou Petisyon an" },
+    title: { en: "4. Why you believe you should not be detained by ICE ", es: "4. Motivos de la Petición", ht: "4. Rezon pou Petisyon an" },
     intro: {
-      en: "Check the grounds that apply. We do NOT choose your legal grounds.",
+      en: "Check the grounds that apply. We do NOT choose your legal grounds. If you are not sure the Attorney will complete them, Leave them blank.",
       es: "Marque los motivos que apliquen. NOSOTROS NO elegimos sus motivos legales.",
       ht: "Tcheke rezon yo. Nou PA chwazi rezon legal pou ou.",
     },
@@ -109,9 +109,9 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
   },
   {
     id: "ifp",
-    title: { en: "5. AO 240 — In Forma Pauperis", es: "5. AO 240 — In Forma Pauperis", ht: "5. AO 240 — In Forma Pauperis" },
+    title: { en: "5. Application for No Court Fee ", es: "5. AO 240 — In Forma Pauperis", ht: "5. AO 240 — In Forma Pauperis" },
     intro: {
-      en: "If the petitioner cannot pay the $5 filing fee, this asks the court to waive it. Enter 0 if none.",
+      en: "Remember you only file this after arrested. Answer the question based upon being in jail. If you want to wait to see your financial condition after arrest, we will send you this form in English, Spanish & Hattian, wait to fill it out. This form is sworn under penalty of perjury.  You must be accurate. If you have income now and will lose your income if arrested it is best to wait to complete it. If you have no income now and are below the poverty level you may fill it out now for consideration of a sliding scale fee by DetencionDefensa.com through your church or non-profit organization.   YOU WILL BE REQUIRED TO PROVIDE PROOF OF INABILITY TO PAY. THE FILING FEE IS ONLY $5.00 AND IF YOU DO NOT COMPLETE THIS FORM YOU WILL RECIEVE A CHECK WIITH YOUR PACKAGE PAYABLE TO THE CLERK OF THE COURT FOR $5.00 SO YOU CAN SIGN AND MAIL THE PRO SE FORMS FOR FILING FROM DETENTION.",
       es: "Si no puede pagar la tasa de $5, esto pide que la exima. Ingrese 0 si no hay.",
       ht: "Si li pa kapab peye frè $5 la, sa mande tribinal la egzante l. Mete 0 si pa gen.",
     },
@@ -134,7 +134,7 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       ht: "6. Kontak Ijans pou App AVIZE FANMI + Adrès Postal si Detni",
     },
     intro: {
-      en: "If the petitioner is detained, this is where we'll mail a printed copy of the File Now Packet (AO 242 + AO 240). The same person is also notified by email — with a copy of the forms attached — the moment the petitioner activates the NOTIFY FAMILY button on the mobile app.",
+      en: "If the petitioner is detained, this is where we'll mail a an additional printed copy of the File Now Packet (AO 242 + AO 240). The same person is also notified by email . Your family ca ask the Court to file the forms on your behalf if you are disabled or otherwise qualify. ",
       es: "Si el peticionario es detenido, aquí enviaremos por correo una copia impresa del Paquete File Now (AO 242 + AO 240). Esta misma persona recibe un aviso por correo electrónico — con copia de los formularios adjunta — en el momento en que el peticionario active el botón AVISAR A FAMILIA en la app móvil.",
       ht: "Si yo detni petisyonè a, se la nou pral voye yon kopi enprime nan File Now Packet la (AO 242 + AO 240). Menm moun sa a resevwa yon notifikasyon imèl — ak yon kopi fòm yo — lè petisyonè a aktive bouton AVIZE FANMI nan app la.",
     },
@@ -167,9 +167,9 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
 
 const UI = {
   en: {
-    title: "Intake — 28 U.S.C. § 2241 + In Forma Pauperis",
-    sub: "Pro se forms used by U.S. District Court Clerks.",
-    upl: "We are NOT a law firm. We do not give legal advice or choose forms. The petitioner signs and files.",
+    title: "    ANSWER ALL QUESTIONS NOT BLOCKED",
+    sub: "IF THE QUESTIONS IS BLOCKED IT MEANS THE ATTORNEY WILL COMPLETE IT IF YOU ARE DETAINED",
+    upl: "The information below is translated and typed onto the Pro Se Federal Habeas Corpus Form AO 242.",
     submit: "Submit answers",
     submitting: "Submitting…",
     done: "Check your email. We just sent you your prepared AO 242 + AO 240 PDFs and a one-tap link to install the NOTIFY FAMILY button on the at-risk person's phone, with step-by-step instructions in your chosen language.",
@@ -520,8 +520,8 @@ const RELIEF_OPTIONS: { id: string; label: Record<Lang, string> }[] = [
   { id: "release", label: { en: "Immediate release from custody.", es: "Liberación inmediata.", ht: "Lage imedyatman." } },
   { id: "bond_hearing", label: { en: "A bond hearing before an immigration judge.", es: "Audiencia de fianza.", ht: "Odyans kosyon." } },
   { id: "release_on_recognizance", label: { en: "Release on own recognizance or supervised release.", es: "Liberación bajo palabra.", ht: "Lage sou pwòp pawòl." } },
-  { id: "declare_unlawful", label: { en: "A declaration that my detention is unlawful.", es: "Declaración de que mi detención es ilegal.", ht: "Deklarasyon ke detansyon mwen ilegal." } },
-  { id: "any_other_relief", label: { en: "Any other relief the court deems just and proper.", es: "Cualquier otra reparación.", ht: "Nenpòt lòt sekou." } },
+  { id: "declare_unlawful", label: { en: "That I not be transferred until the Court decides my Habeas Corpus.", es: "Declaración de que mi detención es ilegal.", ht: "Deklarasyon ke detansyon mwen ilegal." } },
+  { id: "any_other_relief", label: { en: "Assignment of Appointed Attorney to handle this mater.", es: "Cualquier otra reparación.", ht: "Nenpòt lòt sekou." } },
 ];
 
 function ReliefChecklist({ lang, answers, setAnswers }: { lang: Lang; answers: Record<string, string | boolean>; setAnswers: React.Dispatch<React.SetStateAction<Record<string, string | boolean>>> }) {
