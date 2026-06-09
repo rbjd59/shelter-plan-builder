@@ -183,8 +183,8 @@ const UI = {
     verifying: "Verifying payment…",
   },
   es: {
-    title: "Formulario de Admisión — 28 U.S.C. § 2241 + In Forma Pauperis",
-    sub: "Formularios pro se usados por Secretarios del Tribunal de Distrito de EE.UU.",
+    title: "    RESPONDA TODAS LAS PREGUNTAS NO BLOQUEADAS",
+    sub: "SI LA PREGUNTA ESTÁ BLOQUEADA, EL ABOGADO LA COMPLETARÁ SI USTED ESTÁ DETENIDO",
     upl: "NO somos un bufete de abogados. No damos consejos legales. El peticionario firma y presenta.",
     submit: "Enviar respuestas",
     submitting: "Enviando…",
@@ -199,8 +199,8 @@ const UI = {
     verifying: "Verificando pago…",
   },
   ht: {
-    title: "Fòm Antre — 28 U.S.C. § 2241 + In Forma Pauperis",
-    sub: "Fòm pro se Klèk Tribinal Distri Etazini itilize.",
+    title: "    REPONN TOUT KESYON KI PA BLOKE",
+    sub: "SI KESYON AN BLOKE, AVOKA A AP RANPLI L SI YO DETNI W",
     upl: "Nou PA yon kabinè avoka. Nou pa bay konsèy legal. Petisyonè a siyen e depoze.",
     submit: "Voye repons",
     submitting: "K ap voye…",
