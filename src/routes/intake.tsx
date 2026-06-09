@@ -349,6 +349,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
   return (
     <div style={wrap}>
       <div style={container}>
+        <LangSwitcher current={L} />
         <h1 style={{ fontSize: 32, fontWeight: 700, marginBottom: 8, fontFamily: "Fraunces, serif" }}>{ui.title}</h1>
         <p style={{ color: "#a8a59a", marginBottom: 16 }}>{ui.sub}</p>
         <div style={{ background: "#3a2a00", border: "1px solid #e8a04a", padding: 14, borderRadius: 4, marginBottom: 16, fontSize: 14, lineHeight: 1.5, color: "#fff5d6" }}>
