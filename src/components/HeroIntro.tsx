@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useLang } from "@/context/LanguageContext";
+import { useLang, type Lang } from "@/context/LanguageContext";
 import esAsset from "@/assets/videos/detenciondefensa_es.mp4.asset.json";
 import enAsset from "@/assets/videos/detenciondefensa_en.mp4.asset.json";
 import htAsset from "@/assets/videos/detenciondefensa_ht.mp4.asset.json";
@@ -7,7 +7,8 @@ import htAsset from "@/assets/videos/detenciondefensa_ht.mp4.asset.json";
 const SRC = { es: esAsset.url, en: enAsset.url, ht: htAsset.url };
 
 export default function HeroIntro() {
-  const { lang } = useLang();
+  const { lang, setLang } = useLang();
+
   const ref = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
 
