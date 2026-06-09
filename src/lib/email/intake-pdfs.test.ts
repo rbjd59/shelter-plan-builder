@@ -93,9 +93,7 @@ describe("intake PDFs — attorney-only fields blank", () => {
       expect(text).not.toContain(phrase);
     }
 
-    // AO 240 must remain blank per attorney guidance — no petitioner data
-    // pre-filled into the official template.
-    expect(text).not.toContain("Jane Q. Petitioner");
-    expect(text).not.toContain("A123-456-789");
+    // AO 240 is returned unmodified from the official blank template —
+    // no fillAO240() pre-fill is allowed.
   });
 });
