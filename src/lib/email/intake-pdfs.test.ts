@@ -2,9 +2,15 @@
 // intake fields are blank, and the "Pending facility lookup" notice
 // (which lives only in the HTML notification email) never leaks into
 // the PDF body.
+//
+// On failure, generated PDFs and the matching HTML email fixture are
+// written to test-artifacts/intake-pdfs/ so CI can upload them for
+// inspection (see .github/workflows/test.yml).
 
 import { describe, it, expect } from "vitest";
 import zlib from "node:zlib";
+import fs from "node:fs";
+import path from "node:path";
 import { buildIntakePdfs } from "./intake-pdfs.server";
 
 // Phrases that must NEVER appear inside the official court PDFs.
@@ -15,6 +21,48 @@ const FORBIDDEN_PHRASES = [
   "attorney's office before the printed",
   "forward those details to the",
 ];
+
+const ARTIFACT_DIR = path.resolve(
+  process.cwd(),
+  "test-artifacts/intake-pdfs",
+);
+
+function dumpArtifacts(name: string, files: Record<string, Uint8Array | string>) {
+  try {
+    fs.mkdirSync(ARTIFACT_DIR, { recursive: true });
+    for (const [fname, data] of Object.entries(files)) {
+      fs.writeFileSync(
+        path.join(ARTIFACT_DIR, `${name}__${fname}`),
+        typeof data === "string" ? data : Buffer.from(data),
+      );
+    }
+  } catch {
+    /* best-effort; do not mask the real test failure */
+  }
+}
+
+/**
+ * Reproduces the inmate-label HTML block from
+ * `intake-notification.server.ts` for the BLANK_ATTORNEY_FIELDS case.
+ * Saved alongside the PDFs so a failing CI run captures exactly what
+ * the email would have rendered.
+ */
+function buildEmailFixtureHtml(a: Record<string, string>): string {
+  const hasInmateAddress =
+    Boolean(a.mail_current_location) && Boolean(a.mail_facility_address);
+  const inmateBlock = hasInmateAddress
+    ? `<pre>${a.mail_inmate_name}\n${a.mail_current_location}\n${a.mail_facility_address}</pre>`
+    : `<div style="border:1px dashed #999;padding:8px">
+        <strong>Pending facility lookup.</strong> DetencionDefensa.com will locate
+        the inmate and forward those details to the attorney's office before the
+        printed File Now Packet is mailed.
+      </div>`;
+  return `<!doctype html><html><body>
+    <h2>Intake — fixture (BLANK_ATTORNEY_FIELDS)</h2>
+    <p>Petitioner: ${a.full_name || ""}</p>
+    ${inmateBlock}
+  </body></html>`;
+}
 
 /**
  * Extract every byte of human-readable text from a PDF, including text
@@ -70,27 +118,39 @@ const BLANK_ATTORNEY_FIELDS = {
 
 describe("intake PDFs — attorney-only fields blank", () => {
   it("AO 242 generates and contains no email-notice leakage", async () => {
-    const { habeas } = await buildIntakePdfs(BLANK_ATTORNEY_FIELDS);
-    expect(habeas.byteLength).toBeGreaterThan(50_000);
-
-    const text = extractAllText(habeas);
-
-
-
-    for (const phrase of FORBIDDEN_PHRASES) {
-      expect(text).not.toContain(phrase);
+    const { habeas, ifp } = await buildIntakePdfs(BLANK_ATTORNEY_FIELDS);
+    try {
+      expect(habeas.byteLength).toBeGreaterThan(50_000);
+      const text = extractAllText(habeas);
+      for (const phrase of FORBIDDEN_PHRASES) {
+        expect(text).not.toContain(phrase);
+      }
+    } catch (err) {
+      dumpArtifacts("ao242", {
+        "AO242.pdf": habeas,
+        "AO240.pdf": ifp,
+        "email-fixture.html": buildEmailFixtureHtml(BLANK_ATTORNEY_FIELDS),
+      });
+      throw err;
     }
   });
 
   it("AO 240 generates blank and contains no email-notice leakage", async () => {
-    const { ifp } = await buildIntakePdfs(BLANK_ATTORNEY_FIELDS);
-    expect(ifp.byteLength).toBeGreaterThan(50_000);
-
-    const text = extractAllText(ifp);
-    for (const phrase of FORBIDDEN_PHRASES) {
-      expect(text).not.toContain(phrase);
+    const { habeas, ifp } = await buildIntakePdfs(BLANK_ATTORNEY_FIELDS);
+    try {
+      expect(ifp.byteLength).toBeGreaterThan(50_000);
+      const text = extractAllText(ifp);
+      for (const phrase of FORBIDDEN_PHRASES) {
+        expect(text).not.toContain(phrase);
+      }
+    } catch (err) {
+      dumpArtifacts("ao240", {
+        "AO240.pdf": ifp,
+        "AO242.pdf": habeas,
+        "email-fixture.html": buildEmailFixtureHtml(BLANK_ATTORNEY_FIELDS),
+      });
+      throw err;
     }
-
     // AO 240 is returned unmodified from the official blank template —
     // no fillAO240() pre-fill is allowed.
   });
