@@ -167,8 +167,10 @@ export async function enqueueIntakeNotification(params: {
   contactEmail?: string | null;
   demoMode?: boolean;
   scope?: "all" | "internal" | "welcome";
+  inviteCode?: string | null;
 }): Promise<void> {
   const { sessionId, answers, language, contactEmail, demoMode } = params;
+  const inviteCode = params.inviteCode ?? null;
   const scope = params.scope ?? "all";
   const doInternal = scope === "all" || scope === "internal";
   const doWelcome = scope === "all" || scope === "welcome";
