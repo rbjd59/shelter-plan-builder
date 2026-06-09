@@ -86,9 +86,9 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
   },
   {
     id: "detainer",
-    title: { en: "3. ICE Detainer", es: "3. Detención de ICE", ht: "3. Detainer ICE" },
+    title: { en: "3. Immigration Status", es: "3. Detención de ICE", ht: "3. Detainer ICE" },
     intro: {
-      en: "Information about the immigration hold.",
+      en: "Has Immigration issued a Order of Removal",
       es: "Información sobre la retención migratoria.",
       ht: "Enfòmasyon sou kenbe imigrasyon an.",
     },
