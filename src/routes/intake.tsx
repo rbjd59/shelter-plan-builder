@@ -134,7 +134,7 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       ht: "6. Kontak Ijans pou App AVIZE FANMI + Adrès Postal si Detni",
     },
     intro: {
-      en: "If the petitioner is detained, this is where we'll mail a printed copy of the File Now Packet (AO 242 + AO 240). The same person is also notified by email — with a copy of the forms attached — the moment the petitioner activates the NOTIFY FAMILY button on the mobile app.",
+      en: "If the petitioner is detained, this is where we'll mail a an additional printed copy of the File Now Packet (AO 242 + AO 240). The same person is also notified by email . Your family ca ask the Court to file the forms on your behalf if you are disabled or otherwise qualify. ",
       es: "Si el peticionario es detenido, aquí enviaremos por correo una copia impresa del Paquete File Now (AO 242 + AO 240). Esta misma persona recibe un aviso por correo electrónico — con copia de los formularios adjunta — en el momento en que el peticionario active el botón AVISAR A FAMILIA en la app móvil.",
       ht: "Si yo detni petisyonè a, se la nou pral voye yon kopi enprime nan File Now Packet la (AO 242 + AO 240). Menm moun sa a resevwa yon notifikasyon imèl — ak yon kopi fòm yo — lè petisyonè a aktive bouton AVIZE FANMI nan app la.",
     },
