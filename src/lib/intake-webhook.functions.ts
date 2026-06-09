@@ -224,10 +224,22 @@ export const notifyIntakeWebhook = createServerFn({ method: "POST" })
       duration_ms: duration,
     });
 
+    const inviteCode = parsed.data.invite_code ?? null;
+    const clientId = parsed.data.client_id ?? null;
+    console.info(
+      `[invite-code] webhook_response session=${data.intakeSessionId} ok=${parsed.data.ok ?? true} client_id=${clientId ?? "null"} invite_code=${inviteCode ?? "MISSING"} invite_code_len=${inviteCode?.length ?? 0} duration_ms=${duration}`,
+    );
+    if (!inviteCode) {
+      const keys = json && typeof json === "object" ? Object.keys(json as object).join(",") : "(non-object)";
+      console.warn(
+        `[invite-code] MISSING invite_code in webhook response session=${data.intakeSessionId} response_keys=${keys} snippet=${snippet.slice(0, 200)}`,
+      );
+    }
+
     return {
       ok: parsed.data.ok ?? true,
-      clientId: parsed.data.client_id ?? null,
-      inviteCode: parsed.data.invite_code ?? null,
+      clientId,
+      inviteCode,
     };
   });
 

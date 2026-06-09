@@ -175,6 +175,9 @@ export async function enqueueIntakeNotification(params: {
   const doInternal = scope === "all" || scope === "internal";
   const doWelcome = scope === "all" || scope === "welcome";
   const a = answers;
+  console.info(
+    `[invite-code] enqueueIntakeNotification session=${sessionId} scope=${scope} demo=${!!demoMode} invite_code=${inviteCode ?? "null"} invite_code_len=${inviteCode?.length ?? 0} contactEmail=${contactEmail ?? "null"}`,
+  );
 
   const subject = `New Intake Submission — ${String(a.mail_inmate_name || a.contact_name || sessionId)}`;
   const urls = await uploadFormsAndSign(sessionId, a, language);
@@ -356,6 +359,9 @@ ${Object.entries(a)
         (typeof answers.full_name === "string" && answers.full_name) ||
         "su ser querido";
       for (const to of recipientsSet) {
+        console.info(
+          `[invite-code] sendWelcomeEmail session=${sessionId} to=${to} invite_code=${inviteCode ?? "MISSING"} invite_code_len=${inviteCode?.length ?? 0} path=${inviteCode ? "defensasiempre_deeplink" : "pwa_install_fallback"}`,
+        );
         await sendWelcomeEmail({
           to,
           trackingToken: tracking.token,
