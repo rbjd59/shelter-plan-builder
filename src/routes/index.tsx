@@ -1,47 +1,79 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import SiteShell from "@/components/SiteShell";
+import PinGate from "@/components/PinGate";
+import HeroVideo from "@/components/HeroVideo";
 import HeroIntro from "@/components/HeroIntro";
-import esAsset from "@/assets/videos/detenciondefensa_es.mp4.asset.json";
+
+const DEFENDER_HOSTS = new Set([
+  "defendermicasa.com",
+  "www.defendermicasa.com",
+]);
 
 export const Route = createFileRoute("/")({
+  validateSearch: (search: Record<string, unknown>): { lang?: string } => {
+    const lang = typeof search.lang === "string" ? search.lang : undefined;
+    return lang ? { lang } : {};
+  },
+  beforeLoad: ({ location, search }) => {
+    if (typeof window !== "undefined") {
+      const host = window.location.hostname.toLowerCase();
+      if (DEFENDER_HOSTS.has(host)) {
+        throw redirect({ to: "/coming-soon" });
+      }
+      const hasUrlLang =
+        search?.lang === "es" || search?.lang === "en" || search?.lang === "ht";
+      let hasStoredLang = false;
+      try {
+        const ls = window.localStorage.getItem("dd_lang");
+        hasStoredLang = ls === "es" || ls === "en" || ls === "ht";
+      } catch {
+        /* ignore */
+      }
+      if (!hasUrlLang && !hasStoredLang) {
+        throw redirect({ to: "/splash" });
+      }
+    }
+    try {
+      const url = new URL(location.href, "http://localhost");
+      const host = url.hostname.toLowerCase();
+      if (DEFENDER_HOSTS.has(host)) {
+        throw redirect({ to: "/coming-soon" });
+      }
+    } catch {
+      /* ignore */
+    }
+  },
+
   head: () => ({
     meta: [
-      { title: "DetencionDefensa — Legal Protection Before Detention" },
+      { title: "DetencionDefensa.com — Plan de Defensa Pre-Detención · $199" },
       {
         name: "description",
         content:
-          "Prepare your Habeas Corpus petition now for $199. If ICE detains you, press one button and we send your legal documents to the federal court.",
+          "A pre-detention defense plan for immigrant working families. $199 today + $10/mo from month 3. NOT a law firm.",
+      },
+      { property: "og:title", content: "DetencionDefensa.com — Plan de Defensa Pre-Detención · $199" },
+      {
+        property: "og:description",
+        content:
+          "Pre-detention defense plan for immigrant working families. $199 today + $10/mo from month 3.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://detenciondefensa.com/" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "DetencionDefensa.com — Plan de Defensa Pre-Detención · $199" },
+      {
+        name: "twitter:description",
+        content: "Pre-detention defense plan for immigrant working families. $199 today.",
       },
     ],
+    links: [{ rel: "canonical", href: "https://detenciondefensa.com/" }],
   }),
-  component: HomePage,
-});
-
-function HomePage() {
-  return (
-    <main style={{ background: "#0f172a", minHeight: "100vh" }}>
+  component: () => (
+    <PinGate>
       <HeroIntro />
-      <section
-        style={{
-          background: "#000",
-          padding: "2rem 1rem",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <video
-          src={esAsset.url}
-          controls
-          playsInline
-          preload="metadata"
-          style={{
-            width: "100%",
-            maxWidth: 960,
-            height: "auto",
-            display: "block",
-            background: "#000",
-          }}
-        />
-      </section>
-    </main>
-  );
-}
+      <SiteShell />
+      <HeroVideo />
+    </PinGate>
+  ),
+});
