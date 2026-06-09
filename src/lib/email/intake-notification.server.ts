@@ -268,55 +268,60 @@ ${Object.entries(a)
   .map(([k, v]) => `${k}: ${typeof v === "string" ? v : JSON.stringify(v)}`)
   .join("\n")}`;
 
-  for (const recipient of RECIPIENTS) {
-    const messageId = crypto.randomUUID();
+  if (doInternal) {
+    for (const recipient of RECIPIENTS) {
+      const messageId = crypto.randomUUID();
 
-    let unsubscribeToken: string;
-    const { data: existing } = await supabaseAdmin
-      .from("email_unsubscribe_tokens" as never)
-      .select("token")
-      .eq("email", recipient)
-      .maybeSingle();
-    if (existing && (existing as { token: string }).token) {
-      unsubscribeToken = (existing as { token: string }).token;
-    } else {
-      unsubscribeToken = crypto.randomUUID();
-      await supabaseAdmin
+      let unsubscribeToken: string;
+      const { data: existing } = await supabaseAdmin
         .from("email_unsubscribe_tokens" as never)
-        .insert({ email: recipient, token: unsubscribeToken } as never);
-    }
+        .select("token")
+        .eq("email", recipient)
+        .maybeSingle();
+      if (existing && (existing as { token: string }).token) {
+        unsubscribeToken = (existing as { token: string }).token;
+      } else {
+        unsubscribeToken = crypto.randomUUID();
+        await supabaseAdmin
+          .from("email_unsubscribe_tokens" as never)
+          .insert({ email: recipient, token: unsubscribeToken } as never);
+      }
 
-    const payload = {
-      to: recipient,
-      from: FROM,
-      sender_domain: SENDER_DOMAIN,
-      subject,
-      html,
-      text,
-      purpose: "transactional",
-      label: "intake-submission",
-      idempotency_key: `intake-${sessionId}-${recipient}-${messageId}`,
-      message_id: messageId,
-      unsubscribe_token: unsubscribeToken,
-      queued_at: new Date().toISOString(),
-    };
+      const payload = {
+        to: recipient,
+        from: FROM,
+        sender_domain: SENDER_DOMAIN,
+        subject,
+        html,
+        text,
+        purpose: "transactional",
+        label: "intake-submission",
+        idempotency_key: `intake-${sessionId}-${recipient}-${messageId}`,
+        message_id: messageId,
+        unsubscribe_token: unsubscribeToken,
+        queued_at: new Date().toISOString(),
+      };
 
-    await supabaseAdmin.from("email_send_log" as never).insert({
-      message_id: messageId,
-      template_name: "intake-submission",
-      recipient_email: recipient,
-      status: "pending",
-    } as never);
+      await supabaseAdmin.from("email_send_log" as never).insert({
+        message_id: messageId,
+        template_name: "intake-submission",
+        recipient_email: recipient,
+        status: "pending",
+      } as never);
 
-    const { error } = await supabaseAdmin.rpc("enqueue_email" as never, {
-      queue_name: "transactional_emails",
-      payload: payload as never,
-    } as never);
+      const { error } = await supabaseAdmin.rpc("enqueue_email" as never, {
+        queue_name: "transactional_emails",
+        payload: payload as never,
+      } as never);
 
-    if (error) {
-      console.error("Failed to enqueue intake notification email", { recipient, error });
+      if (error) {
+        console.error("Failed to enqueue intake notification email", { recipient, error });
+      }
     }
   }
+
+  if (!doWelcome) return;
+
 
   // Family welcome + case tracking record.
   try {
