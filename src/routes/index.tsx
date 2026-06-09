@@ -1,8 +1,8 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import SiteShell from "@/components/SiteShell";
 import PinGate from "@/components/PinGate";
-import HeroVideo from "@/components/HeroVideo";
 import HeroIntro from "@/components/HeroIntro";
+
 
 const DEFENDER_HOSTS = new Set([
   "defendermicasa.com",
@@ -73,7 +73,7 @@ export const Route = createFileRoute("/")({
     <PinGate>
       <HeroIntro />
       <SiteShell />
-      <HeroVideo />
     </PinGate>
   ),
+
 });
