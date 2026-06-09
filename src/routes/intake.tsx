@@ -357,19 +357,50 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
             <p style={{ margin: "8px 0", fontSize: 44, fontWeight: 900, letterSpacing: 10, color: "#fff5d6", fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}>
               {inviteCode}
             </p>
-            <p style={{ margin: "12px 0 8px", fontSize: 14, color: "#cfc8b8" }}>
-              {L === "es"
-                ? "Descargue DefensaSiempre, luego toque este enlace para activar:"
-                : L === "ht"
-                  ? "Telechaje DefensaSiempre, apre sa peze lyen sa a pou aktive:"
-                  : "Download DefensaSiempre, then tap this link to activate:"}
-            </p>
             <a
-              href={`https://detenciondefensa.com/activate?code=${encodeURIComponent(inviteCode)}`}
-              style={{ display: "inline-block", marginTop: 8, color: "#e8a04a", fontWeight: 700, fontSize: 14, wordBreak: "break-all" }}
+              href={`defensasiempre://activate?code=${encodeURIComponent(inviteCode)}`}
+              style={{
+                display: "block",
+                marginTop: 16,
+                background: "#e8a04a",
+                color: "#0b1220",
+                padding: "18px 24px",
+                borderRadius: 8,
+                textDecoration: "none",
+                fontWeight: 800,
+                fontSize: 18,
+              }}
             >
-              https://detenciondefensa.com/activate?code={inviteCode}
+              {L === "es" ? "Abrir DefensaSiempre" : L === "ht" ? "Louvri DefensaSiempre" : "Open DefensaSiempre"}
             </a>
+            <div style={{ display: "flex", gap: 12, marginTop: 12, justifyContent: "center", flexWrap: "wrap" }}>
+              <a
+                href="#"
+                style={{ flex: "1 1 160px", maxWidth: 220, background: "#0b1220", color: "#fff5d6", border: "1px solid #2d6a4f", padding: "12px 16px", borderRadius: 6, textDecoration: "none", fontSize: 13, fontWeight: 600 }}
+              >
+                Download on App Store
+              </a>
+              <a
+                href="#"
+                style={{ flex: "1 1 160px", maxWidth: 220, background: "#0b1220", color: "#fff5d6", border: "1px solid #2d6a4f", padding: "12px 16px", borderRadius: 6, textDecoration: "none", fontSize: 13, fontWeight: 600 }}
+              >
+                Get it on Google Play
+              </a>
+            </div>
+            <p style={{ margin: "14px 0 4px", fontSize: 12, color: "#cfc8b8" }}>
+              {L === "es"
+                ? "¿Ya tienes la app? El código se llenará solo al tocar el botón."
+                : L === "ht"
+                  ? "Ou gen app la deja? Kòd la ap ranpli pou kont li lè w peze bouton an."
+                  : "Already have the app? The code fills in automatically when you tap the button."}
+            </p>
+            <p style={{ margin: "4px 0 0", fontSize: 12, color: "#cfc8b8" }}>
+              {L === "es"
+                ? `Guarda tu código: ${inviteCode} — por si acaso.`
+                : L === "ht"
+                  ? `Sere kòd ou: ${inviteCode} — sizoka.`
+                  : `Save your code: ${inviteCode} — just in case.`}
+            </p>
           </div>
         )}
         <div style={{ background: "#0b1220", border: "2px solid #e8a04a", padding: 20, borderRadius: 8, marginBottom: 20, textAlign: "center" }}>
