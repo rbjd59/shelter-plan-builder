@@ -126,6 +126,19 @@ function AgreementPage() {
     }
   };
 
+  // If the content fits without needing to scroll, unlock immediately.
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const check = () => {
+      if (el.scrollHeight <= el.clientHeight + 8) setScrolledToEnd(true);
+    };
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+
   const submit = () => {
     if (!scrolledToEnd) { setErr(t.notScrolled); return; }
     if (!checked) { setErr(t.must); return; }
