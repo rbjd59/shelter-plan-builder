@@ -18,7 +18,7 @@ export default function HeroIntro() {
             letterSpacing: -0.5,
           }}
         >
-          Legal Protection Before Detention
+          Stop overpaying for legal help
         </h1>
         <p
           style={{
@@ -29,10 +29,10 @@ export default function HeroIntro() {
             opacity: 0.95,
           }}
         >
-          Prepare your Habeas Corpus petition now for $199. If ICE detains you,
-          press one button and we send your legal documents to the federal
-          court.
+          Draft attorney-grade documents with AI and get expert legal guidance
+          — all in one simple platform.
         </p>
+
       </div>
     </section>
   );
