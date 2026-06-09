@@ -432,7 +432,7 @@ function LangSwitcher({ current }: { current: Lang }) {
   return (
     <div style={{ display: "flex", gap: 8, marginBottom: 16, justifyContent: "flex-end" }}>
       {langs.map((l) => (
-        <Link key={l} to="/intake" search={(prev) => ({ ...prev, lang: l })} style={btn(l === current)}>
+        <Link key={l} to="/intake" search={{ lang: l }} style={btn(l === current)}>
           {l.toUpperCase()} · {labels[l]}
         </Link>
       ))}
