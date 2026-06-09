@@ -97,7 +97,7 @@ export default function HeroIntro() {
             opacity: 0.92,
           }}
         >
-          <span>PICK A LANGUAGE —</span>
+          <span>— PICK A LANGUAGE —</span>
           <div
             style={{
               display: "inline-flex",
@@ -129,7 +129,7 @@ export default function HeroIntro() {
               </button>
             ))}
           </div>
-          <span>—</span>
+          <span>— PICK A LANGUAGE —</span>
         </div>
 
         <h1
