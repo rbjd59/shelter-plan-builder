@@ -85,6 +85,27 @@ const ResponseSchema = z.object({
   invite_code: z.string().optional(),
 });
 
+type LogRow = {
+  endpoint: string;
+  intake_session_id: string | null;
+  request_timestamp: string | null;
+  status_code: number | null;
+  ok: boolean;
+  error_kind: string | null;
+  error_message: string | null;
+  response_snippet: string | null;
+  duration_ms: number | null;
+};
+
+async function logAttempt(row: LogRow) {
+  try {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    await supabaseAdmin.from("webhook_send_log").insert(row);
+  } catch (e) {
+    console.error("[intake-webhook] failed to write log row", e);
+  }
+}
+
 export const notifyIntakeWebhook = createServerFn({ method: "POST" })
   .inputValidator((input) => InputSchema.parse(input))
   .handler(async ({ data }) => {
@@ -98,6 +119,7 @@ export const notifyIntakeWebhook = createServerFn({ method: "POST" })
       .update(`${timestamp}.${rawBody}`)
       .digest("hex");
 
+    const startedAt = Date.now();
     let res: Response;
     try {
       res = await fetch(WEBHOOK_URL, {
@@ -110,27 +132,128 @@ export const notifyIntakeWebhook = createServerFn({ method: "POST" })
         body: rawBody,
       });
     } catch (err) {
-      throw new Error(`Could not reach intake webhook: ${(err as Error).message}`);
+      const msg = (err as Error).message;
+      await logAttempt({
+        endpoint: WEBHOOK_URL,
+        intake_session_id: data.intakeSessionId,
+        request_timestamp: timestamp,
+        status_code: null,
+        ok: false,
+        error_kind: "network",
+        error_message: msg,
+        response_snippet: null,
+        duration_ms: Date.now() - startedAt,
+      });
+      throw new Error(`Could not reach intake webhook: ${msg}`);
     }
 
     const text = await res.text();
+    const duration = Date.now() - startedAt;
+    const snippet = text.slice(0, 500);
+
     if (!res.ok) {
-      throw new Error(`Intake webhook returned ${res.status}: ${text.slice(0, 300)}`);
+      // Classify 401 (signature/timestamp rejected) distinctly.
+      const kind =
+        res.status === 401
+          ? "signature_rejected"
+          : res.status >= 500
+            ? "server_error"
+            : "http_error";
+      await logAttempt({
+        endpoint: WEBHOOK_URL,
+        intake_session_id: data.intakeSessionId,
+        request_timestamp: timestamp,
+        status_code: res.status,
+        ok: false,
+        error_kind: kind,
+        error_message: `Webhook returned ${res.status}`,
+        response_snippet: snippet,
+        duration_ms: duration,
+      });
+      console.warn(
+        `[intake-webhook] verification/HTTP failure status=${res.status} kind=${kind} session=${data.intakeSessionId} ts=${timestamp} body=${snippet}`,
+      );
+      throw new Error(`Intake webhook returned ${res.status}: ${snippet.slice(0, 300)}`);
     }
 
     let json: unknown;
     try {
       json = JSON.parse(text);
     } catch {
-      throw new Error(`Intake webhook returned non-JSON: ${text.slice(0, 200)}`);
+      await logAttempt({
+        endpoint: WEBHOOK_URL,
+        intake_session_id: data.intakeSessionId,
+        request_timestamp: timestamp,
+        status_code: res.status,
+        ok: false,
+        error_kind: "invalid_response_json",
+        error_message: "Non-JSON response",
+        response_snippet: snippet,
+        duration_ms: duration,
+      });
+      throw new Error(`Intake webhook returned non-JSON: ${snippet.slice(0, 200)}`);
     }
     const parsed = ResponseSchema.safeParse(json);
     if (!parsed.success) {
-      throw new Error(`Unexpected webhook response shape: ${text.slice(0, 200)}`);
+      await logAttempt({
+        endpoint: WEBHOOK_URL,
+        intake_session_id: data.intakeSessionId,
+        request_timestamp: timestamp,
+        status_code: res.status,
+        ok: false,
+        error_kind: "invalid_response_shape",
+        error_message: parsed.error.message,
+        response_snippet: snippet,
+        duration_ms: duration,
+      });
+      throw new Error(`Unexpected webhook response shape: ${snippet.slice(0, 200)}`);
     }
+
+    await logAttempt({
+      endpoint: WEBHOOK_URL,
+      intake_session_id: data.intakeSessionId,
+      request_timestamp: timestamp,
+      status_code: res.status,
+      ok: true,
+      error_kind: null,
+      error_message: null,
+      response_snippet: snippet,
+      duration_ms: duration,
+    });
+
     return {
       ok: parsed.data.ok ?? true,
       clientId: parsed.data.client_id ?? null,
       inviteCode: parsed.data.invite_code ?? null,
     };
+  });
+
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+
+export const listWebhookSendLog = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: { onlyFailures?: boolean; limit?: number } | undefined) => ({
+    onlyFailures: input?.onlyFailures ?? false,
+    limit: Math.min(Math.max(input?.limit ?? 100, 1), 500),
+  }))
+  .handler(async ({ data, context }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: role } = await supabaseAdmin
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", context.userId)
+      .eq("role", "admin")
+      .maybeSingle();
+    if (!role) throw new Error("Not authorized");
+    let q = supabaseAdmin
+      .from("webhook_send_log")
+      .select(
+        "id, created_at, endpoint, intake_session_id, request_timestamp, status_code, ok, error_kind, error_message, response_snippet, duration_ms",
+      )
+      .order("created_at", { ascending: false })
+      .limit(data.limit);
+    if (data.onlyFailures) q = q.eq("ok", false);
+    const { data: rows, error } = await q;
+    if (error) throw new Error(error.message);
+    return { rows: rows ?? [] };
   });

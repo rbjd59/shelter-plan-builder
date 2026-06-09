@@ -727,6 +727,48 @@ export type Database = {
         }
         Relationships: []
       }
+      webhook_send_log: {
+        Row: {
+          created_at: string
+          duration_ms: number | null
+          endpoint: string
+          error_kind: string | null
+          error_message: string | null
+          id: string
+          intake_session_id: string | null
+          ok: boolean
+          request_timestamp: string | null
+          response_snippet: string | null
+          status_code: number | null
+        }
+        Insert: {
+          created_at?: string
+          duration_ms?: number | null
+          endpoint: string
+          error_kind?: string | null
+          error_message?: string | null
+          id?: string
+          intake_session_id?: string | null
+          ok?: boolean
+          request_timestamp?: string | null
+          response_snippet?: string | null
+          status_code?: number | null
+        }
+        Update: {
+          created_at?: string
+          duration_ms?: number | null
+          endpoint?: string
+          error_kind?: string | null
+          error_message?: string | null
+          id?: string
+          intake_session_id?: string | null
+          ok?: boolean
+          request_timestamp?: string | null
+          response_snippet?: string | null
+          status_code?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
