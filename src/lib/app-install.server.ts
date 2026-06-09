@@ -1,11 +1,11 @@
-// Server-only helpers for issuing app install links.
-// Install links now point at the Premio app (ice-defense-plan.replit.app)
-// instead of the local PWA bootstrap path. We still mint a one-time token
-// keyed to the intake session so Premio (or our own backfill tooling) can
-// look up the intake by token without leaking the raw session id in URLs.
+// Server-only helpers for issuing/consuming one-time PWA install tokens.
+// These are the FALLBACK install URLs used only when the welcome email has
+// no DefensaSiempre invite_code (e.g. webhook failed). The primary path is
+// the defensasiempre://activate?code=... deep link rendered in
+// sendWelcomeEmail when an invite_code is present.
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
-const PREMIO_BASE = "https://ice-defense-plan.replit.app";
+const SITE_BASE = "https://detenciondefensa.com";
 
 export type InstallRole = "client" | "family";
 
@@ -25,8 +25,6 @@ export async function issueAppInstallToken(
   return (data as { token: string }).token;
 }
 
-// Premio install URL. Role distinguishes client vs family device so Premio
-// can preselect the right cancel window (2h vs 12h).
-export function buildAppInstallUrl(token: string, role: InstallRole = "client"): string {
-  return `${PREMIO_BASE}/install?token=${encodeURIComponent(token)}&role=${role}`;
+export function buildAppInstallUrl(token: string, _role: InstallRole = "client"): string {
+  return `${SITE_BASE}/app?bootstrap=${token}`;
 }

@@ -194,6 +194,7 @@ export async function sendWelcomeEmail(params: {
   ifpUrl?: string | null;
   inmateName?: string;
   demoMode?: boolean;
+  inviteCode?: string | null;
 }): Promise<void> {
   const lang = pickLang(params.language);
   const c = COPY.welcome[lang];
@@ -278,7 +279,62 @@ export async function sendWelcomeEmail(params: {
     ht: "Sa a se PA yon telechajman otomatik. Peze bouton an anba sou bon telefòn nan, epi swiv enstriksyon yo pou sove ikòn wouj AVIZE FANMI sou ekran prensipal la (li pran 10 segond). Sou iPhone fòk ou ouvri li nan Safari.",
   }[lang];
 
-  const familyActivationSection = (params.clientInstallUrl || params.familyInstallUrl)
+  // DefensaSiempre activation block (preferred when we have an invite_code from
+  // the webhook). Uses the defensasiempre:// custom scheme so installed apps
+  // open and prefill the code. Plain code is always visible so users can type
+  // it by hand when email clients (e.g. Gmail desktop) strip custom schemes.
+  const activationCopy = {
+    es: {
+      label: "SU CÓDIGO DE ACTIVACIÓN",
+      cta: "Activar DefensaSiempre",
+      fallbackTitle: "¿Aún no tienes la app? Descárgala primero:",
+      appStore: "App Store: próximamente",
+      playStore: "Google Play: próximamente",
+      returnNote: "Luego regresa a este correo y toca el botón de arriba.",
+      stripped: "Si el botón no funciona en su correo, escriba el código de arriba en la pantalla de activación de la app.",
+    },
+    en: {
+      label: "YOUR ACTIVATION CODE",
+      cta: "Activate DefensaSiempre",
+      fallbackTitle: "Don't have the app yet? Download it first:",
+      appStore: "App Store: coming soon",
+      playStore: "Google Play: coming soon",
+      returnNote: "Then return to this email and tap the button above.",
+      stripped: "If the button does not work in your email, type the code above into the app's activation screen.",
+    },
+    ht: {
+      label: "KÒD AKTIVASYON OU",
+      cta: "Aktive DefensaSiempre",
+      fallbackTitle: "Ou poko gen app la? Telechaje li dabò:",
+      appStore: "App Store: byento",
+      playStore: "Google Play: byento",
+      returnNote: "Apre sa, retounen nan imèl sa a epi peze bouton anwo a.",
+      stripped: "Si bouton an pa mache nan imèl ou, tape kòd ki anwo a nan ekran aktivasyon app la.",
+    },
+  }[lang];
+
+  const defensaSection = params.inviteCode
+    ? `<div style="margin-top:18px;padding:22px;background:#fef2f2;border:2px solid #dc2626;border-radius:10px;text-align:center;">
+        <p style="margin:0 0 8px;font-size:12px;letter-spacing:2px;font-weight:800;color:#991b1b;">${escapeHtml(activationCopy.label)}</p>
+        <p style="margin:0 0 18px;font-size:40px;font-weight:900;letter-spacing:8px;color:#0b1220;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">${escapeHtml(params.inviteCode)}</p>
+        <p style="text-align:center;margin:0 0 10px;">
+          <a href="defensasiempre://activate?code=${encodeURIComponent(params.inviteCode)}" style="display:inline-block;background:#dc2626;color:#ffffff;text-decoration:none;padding:16px 28px;border-radius:8px;font-weight:800;font-size:16px;">${escapeHtml(activationCopy.cta)}</a>
+        </p>
+        <p style="margin:14px 0 0;font-size:11px;color:#7f1d1d;line-height:1.5;font-style:italic;">${escapeHtml(activationCopy.stripped)}</p>
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid #fecaca;text-align:left;">
+          <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:#7f1d1d;">${escapeHtml(activationCopy.fallbackTitle)}</p>
+          <p style="margin:0;font-size:12px;color:#7f1d1d;line-height:1.7;">
+            ${escapeHtml(activationCopy.appStore)}<br/>
+            ${escapeHtml(activationCopy.playStore)}<br/>
+            ${escapeHtml(activationCopy.returnNote)}
+          </p>
+        </div>
+      </div>`
+    : "";
+
+  const familyActivationSection = params.inviteCode
+    ? defensaSection
+    : (params.clientInstallUrl || params.familyInstallUrl)
     ? `<div style="margin-top:18px;padding:18px;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;">
         <p style="margin:0 0 8px;font-size:15px;font-weight:800;color:#991b1b;">${escapeHtml(sc.familyTitle)}</p>
         <p style="margin:0 0 12px;font-size:13px;color:#7f1d1d;line-height:1.55;">${escapeHtml(sc.familyBody)}</p>
