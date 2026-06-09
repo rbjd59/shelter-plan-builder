@@ -183,8 +183,8 @@ const UI = {
     verifying: "Verifying payment…",
   },
   es: {
-    title: "Formulario de Admisión — 28 U.S.C. § 2241 + In Forma Pauperis",
-    sub: "Formularios pro se usados por Secretarios del Tribunal de Distrito de EE.UU.",
+    title: "    RESPONDA TODAS LAS PREGUNTAS NO BLOQUEADAS",
+    sub: "SI LA PREGUNTA ESTÁ BLOQUEADA, EL ABOGADO LA COMPLETARÁ SI USTED ESTÁ DETENIDO",
     upl: "NO somos un bufete de abogados. No damos consejos legales. El peticionario firma y presenta.",
     submit: "Enviar respuestas",
     submitting: "Enviando…",
