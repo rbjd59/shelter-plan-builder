@@ -71,8 +71,8 @@ export const Route = createFileRoute("/api/public/dev/send-install")({
           issueAppInstallToken(intake_session_id, "client"),
           issueAppInstallToken(intake_session_id, "family"),
         ]);
-        const clientInstallUrl = clientToken ? buildAppInstallUrl(clientToken) : null;
-        const familyInstallUrl = familyToken ? buildAppInstallUrl(familyToken) : null;
+        const clientInstallUrl = clientToken ? buildAppInstallUrl(clientToken, "client") : null;
+        const familyInstallUrl = familyToken ? buildAppInstallUrl(familyToken, "family") : null;
         const inmateName =
           (typeof ans.mail_inmate_name === "string" && ans.mail_inmate_name) ||
           (typeof ans.full_name === "string" && ans.full_name) ||

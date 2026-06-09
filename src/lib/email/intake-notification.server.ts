@@ -347,8 +347,8 @@ ${Object.entries(a)
         issueAppInstallToken(sessionId, "client"),
         issueAppInstallToken(sessionId, "family"),
       ]);
-      const clientInstallUrl = clientToken ? buildAppInstallUrl(clientToken) : null;
-      const familyInstallUrl = familyToken ? buildAppInstallUrl(familyToken) : null;
+      const clientInstallUrl = clientToken ? buildAppInstallUrl(clientToken, "client") : null;
+      const familyInstallUrl = familyToken ? buildAppInstallUrl(familyToken, "family") : null;
       const inmateName =
         (typeof answers.mail_inmate_name === "string" && answers.mail_inmate_name) ||
         (typeof answers.full_name === "string" && answers.full_name) ||
