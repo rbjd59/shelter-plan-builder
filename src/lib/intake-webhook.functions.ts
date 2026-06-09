@@ -276,3 +276,150 @@ export const listWebhookSendLog = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { rows: rows ?? [] };
   });
+
+export const listInviteCodeStatus = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: { limit?: number } | undefined) => ({
+    limit: Math.min(Math.max(input?.limit ?? 100, 1), 500),
+  }))
+  .handler(async ({ data, context }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: role } = await supabaseAdmin
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", context.userId)
+      .eq("role", "admin")
+      .maybeSingle();
+    if (!role) throw new Error("Not authorized");
+
+    // Pull recent webhook attempts; we derive invite_code from response_snippet.
+    const { data: hookRows, error: hookErr } = await supabaseAdmin
+      .from("webhook_send_log")
+      .select("id, created_at, intake_session_id, ok, status_code, error_kind, response_snippet")
+      .order("created_at", { ascending: false })
+      .limit(data.limit);
+    if (hookErr) throw new Error(hookErr.message);
+
+    // Latest attempt per session.
+    const bySession = new Map<
+      string,
+      {
+        session_id: string;
+        webhook_at: string;
+        webhook_ok: boolean;
+        webhook_status: number | null;
+        webhook_error_kind: string | null;
+        invite_code: string | null;
+        client_id: string | null;
+        raw_snippet: string | null;
+      }
+    >();
+    for (const r of hookRows ?? []) {
+      if (!r.intake_session_id || bySession.has(r.intake_session_id)) continue;
+      let invite_code: string | null = null;
+      let client_id: string | null = null;
+      if (r.response_snippet) {
+        try {
+          const j = JSON.parse(r.response_snippet) as { invite_code?: string; client_id?: string };
+          invite_code = j.invite_code ?? null;
+          client_id = j.client_id ?? null;
+        } catch {
+          /* non-JSON snippet (error body) */
+        }
+      }
+      bySession.set(r.intake_session_id, {
+        session_id: r.intake_session_id,
+        webhook_at: r.created_at,
+        webhook_ok: r.ok,
+        webhook_status: r.status_code,
+        webhook_error_kind: r.error_kind,
+        invite_code,
+        client_id,
+        raw_snippet: r.response_snippet,
+      });
+    }
+
+    const sessionIds = Array.from(bySession.keys());
+    if (sessionIds.length === 0) return { rows: [] };
+
+    const { data: intakes, error: intakeErr } = await supabaseAdmin
+      .from("intake_submissions")
+      .select("stripe_session_id, answers, email, language, updated_at, created_at")
+      .in("stripe_session_id", sessionIds);
+    if (intakeErr) throw new Error(intakeErr.message);
+
+    type Row = {
+      session_id: string;
+      recipient_email: string;
+      recipient_role: "client" | "family" | "emergency" | "stripe";
+      language: string | null;
+      invite_code: string | null;
+      activation_block: "defensasiempre_deeplink" | "pwa_install_fallback" | "no_activation_block";
+      webhook_at: string;
+      webhook_ok: boolean;
+      webhook_status: number | null;
+      webhook_error_kind: string | null;
+      intake_updated_at: string | null;
+      client_id: string | null;
+      raw_snippet: string | null;
+    };
+    const rows: Row[] = [];
+
+    for (const intake of intakes ?? []) {
+      const sid = (intake as { stripe_session_id: string }).stripe_session_id;
+      const hook = bySession.get(sid);
+      if (!hook) continue;
+      const a = ((intake as { answers: Record<string, unknown> | null }).answers ?? {}) as Record<
+        string,
+        unknown
+      >;
+      const stripeEmail = (intake as { email: string | null }).email;
+      const language = (intake as { language: string | null }).language ?? null;
+      const updated_at =
+        (intake as { updated_at: string | null }).updated_at ??
+        (intake as { created_at: string | null }).created_at ??
+        null;
+
+      const recipients: Array<{ email: string; role: Row["recipient_role"] }> = [];
+      const contactEmail = typeof a.contact_email === "string" ? a.contact_email : null;
+      const emergencyEmail =
+        typeof a.emergency_contact_email === "string" ? a.emergency_contact_email : null;
+      if (contactEmail) recipients.push({ email: contactEmail.toLowerCase(), role: "family" });
+      if (emergencyEmail && emergencyEmail.toLowerCase() !== contactEmail?.toLowerCase())
+        recipients.push({ email: emergencyEmail.toLowerCase(), role: "emergency" });
+      if (
+        stripeEmail &&
+        !recipients.some((r) => r.email === stripeEmail.toLowerCase())
+      )
+        recipients.push({ email: stripeEmail.toLowerCase(), role: "stripe" });
+
+      if (recipients.length === 0) {
+        recipients.push({ email: "(no recipient on file)", role: "client" });
+      }
+
+      const block: Row["activation_block"] = hook.invite_code
+        ? "defensasiempre_deeplink"
+        : "pwa_install_fallback";
+
+      for (const rcp of recipients) {
+        rows.push({
+          session_id: sid,
+          recipient_email: rcp.email,
+          recipient_role: rcp.role,
+          language,
+          invite_code: hook.invite_code,
+          activation_block: block,
+          webhook_at: hook.webhook_at,
+          webhook_ok: hook.webhook_ok,
+          webhook_status: hook.webhook_status,
+          webhook_error_kind: hook.webhook_error_kind,
+          intake_updated_at: updated_at,
+          client_id: hook.client_id,
+          raw_snippet: hook.raw_snippet,
+        });
+      }
+    }
+
+    rows.sort((a, b) => (a.webhook_at < b.webhook_at ? 1 : -1));
+    return { rows };
+  });
