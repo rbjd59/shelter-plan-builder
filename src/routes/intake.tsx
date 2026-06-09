@@ -52,7 +52,7 @@ type FieldDef = {
 const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, string>; fields: FieldDef[] }[] = [
   {
     id: "petitioner",
-    title: { en: "1. About the Petitioner", es: "1. Sobre el Peticionario", ht: "1. Konsènan Petisyonè a" },
+    title: { en: "1. About You", es: "1. Sobre el Peticionario", ht: "1. Konsènan Petisyonè a" },
     intro: {
       en: "Form AO 242 — Petition for Writ of Habeas Corpus under 28 U.S.C. § 2241.",
       es: "Formulario AO 242 — Petición de Habeas Corpus bajo 28 U.S.C. § 2241.",
