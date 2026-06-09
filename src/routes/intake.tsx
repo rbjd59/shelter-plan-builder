@@ -302,16 +302,26 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
       // Skip pairing when there's no identifying data (e.g. demo "skip" submit).
       const hasPairableData =
         !!(merged.full_name || merged.a_number || merged.dob);
-      const [, pairResult] = await Promise.all([
+      const intakeSessionId = `lovable_session_${crypto.randomUUID()}`;
+      const [, pairResult, webhookResult] = await Promise.all([
         submitFn({ data: { answers: merged, language: L } }),
         hasPairableData
-          ? pairFn({ data: { answers: merged } }).catch((err) => {
+          ? pairFn({ data: { answers: merged, intakeSessionId } }).catch((err) => {
               console.error("Pairing failed:", err);
+              return null;
+            })
+          : Promise.resolve(null),
+        hasPairableData
+          ? webhookFn({
+              data: { answers: merged, intakeSessionId, language: L },
+            }).catch((err) => {
+              console.error("Intake webhook failed:", err);
               return null;
             })
           : Promise.resolve(null),
       ]);
       if (pairResult?.code) setPairCode(pairResult.code);
+      if (webhookResult?.inviteCode) setInviteCode(webhookResult.inviteCode);
       setStatus("done");
     } catch (err) {
       setErrMsg((err as Error).message);
