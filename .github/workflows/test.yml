@@ -19,3 +19,11 @@ jobs:
         run: bun run test:pdfs
       - name: Full test suite
         run: bun run test
+      - name: Upload intake PDF artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: intake-pdf-fixtures
+          path: test-artifacts/intake-pdfs/
+          if-no-files-found: ignore
+          retention-days: 14
