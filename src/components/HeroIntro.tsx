@@ -12,7 +12,8 @@ export default function HeroIntro() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [inView, setInView] = useState(false);
-  const [started, setStarted] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
 
   useEffect(() => {
     if (!wrapRef.current || inView) return;
@@ -33,17 +34,42 @@ export default function HeroIntro() {
     return () => io.disconnect();
   }, [inView]);
 
+  // Reset on language change
   useEffect(() => {
-    setStarted(false);
+    setIsPlaying(false);
+    setHasStarted(false);
   }, [lang]);
 
-  const handleStart = () => {
-    setStarted(true);
-    requestAnimationFrame(() => {
-      videoRef.current?.play().catch(() => {
-        /* user can use native controls */
+  // Sync button state with the underlying <video>
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    const onPlay = () => {
+      setIsPlaying(true);
+      setHasStarted(true);
+    };
+    const onPause = () => setIsPlaying(false);
+    const onEnded = () => setIsPlaying(false);
+    v.addEventListener("play", onPlay);
+    v.addEventListener("pause", onPause);
+    v.addEventListener("ended", onEnded);
+    return () => {
+      v.removeEventListener("play", onPlay);
+      v.removeEventListener("pause", onPause);
+      v.removeEventListener("ended", onEnded);
+    };
+  }, [inView, lang]);
+
+  const toggle = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) {
+      v.play().catch(() => {
+        /* noop */
       });
-    });
+    } else {
+      v.pause();
+    }
   };
 
   return (
@@ -148,7 +174,7 @@ export default function HeroIntro() {
               ref={videoRef}
               key={lang}
               src={SRC[lang]}
-              controls={started}
+              controls={hasStarted}
               playsInline
               preload="metadata"
               style={{
@@ -160,57 +186,103 @@ export default function HeroIntro() {
               }}
             />
           )}
-          {!started && (
+          {!isPlaying && (
             <button
               type="button"
-              onClick={handleStart}
-              aria-label="Start video"
+              onClick={toggle}
+              aria-label={hasStarted ? "Play video" : "Start video"}
               style={{
                 position: "absolute",
                 inset: 0,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                background: "rgba(0,0,0,0.35)",
+                background: hasStarted ? "rgba(0,0,0,0.25)" : "rgba(0,0,0,0.35)",
                 border: "none",
                 cursor: "pointer",
                 color: "#fff",
                 fontFamily: "inherit",
               }}
             >
-              <span
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 12,
-                  padding: "14px 26px 14px 22px",
-                  background: "rgba(255,255,255,0.96)",
-                  color: "#0f1830",
-                  borderRadius: 999,
-                  fontWeight: 800,
-                  fontSize: 16,
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  boxShadow: "0 8px 24px rgba(0,0,0,0.35)",
-                }}
-              >
-                <span
-                  aria-hidden
-                  style={{
-                    display: "inline-block",
-                    width: 0,
-                    height: 0,
-                    borderTop: "9px solid transparent",
-                    borderBottom: "9px solid transparent",
-                    borderLeft: "14px solid #0f1830",
-                  }}
-                />
-                Start
-              </span>
+              <PillButton label={hasStarted ? "Play" : "Start"} icon="play" />
+            </button>
+          )}
+          {isPlaying && (
+            <button
+              type="button"
+              onClick={toggle}
+              aria-label="Pause video"
+              style={{
+                position: "absolute",
+                top: 12,
+                right: 12,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: 44,
+                height: 44,
+                borderRadius: 999,
+                background: "rgba(15,24,48,0.78)",
+                border: "1px solid rgba(255,255,255,0.4)",
+                color: "#fff",
+                cursor: "pointer",
+                fontFamily: "inherit",
+                padding: 0,
+              }}
+            >
+              <PauseIcon />
             </button>
           )}
         </div>
       </div>
     </section>
+  );
+}
+
+function PillButton({ label, icon }: { label: string; icon: "play" | "pause" }) {
+  return (
+    <span
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 12,
+        padding: "14px 26px 14px 22px",
+        background: "rgba(255,255,255,0.96)",
+        color: "#0f1830",
+        borderRadius: 999,
+        fontWeight: 800,
+        fontSize: 16,
+        letterSpacing: "0.08em",
+        textTransform: "uppercase",
+        boxShadow: "0 8px 24px rgba(0,0,0,0.35)",
+      }}
+    >
+      {icon === "play" ? (
+        <span
+          aria-hidden
+          style={{
+            display: "inline-block",
+            width: 0,
+            height: 0,
+            borderTop: "9px solid transparent",
+            borderBottom: "9px solid transparent",
+            borderLeft: "14px solid #0f1830",
+          }}
+        />
+      ) : (
+        <PauseIcon dark />
+      )}
+      {label}
+    </span>
+  );
+}
+
+function PauseIcon({ dark = false }: { dark?: boolean }) {
+  const color = dark ? "#0f1830" : "#fff";
+  return (
+    <span aria-hidden style={{ display: "inline-flex", gap: 4 }}>
+      <span style={{ display: "inline-block", width: 4, height: 16, background: color }} />
+      <span style={{ display: "inline-block", width: 4, height: 16, background: color }} />
+    </span>
   );
 }
