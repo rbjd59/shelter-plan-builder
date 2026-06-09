@@ -151,7 +151,7 @@ function RootComponent() {
       <LanguageProvider>
         
         <Outlet />
-        <SignUpNowButton />
+        
         {!hideGlobalFooter && <LegalDisclaimerFooter />}
       </LanguageProvider>
     </QueryClientProvider>
