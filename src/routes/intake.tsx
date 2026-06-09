@@ -7,6 +7,7 @@ import { pairIntakeWithApp } from "@/lib/intake-pair.functions";
 
 import { SentinelUpsellCards } from "@/components/SentinelUpsellCards";
 import { BilingualField } from "@/components/intake/BilingualField";
+import { readSiteLang } from "@/lib/site-lang";
 
 const searchSchema = z.object({
   session_id: z.string().optional(),
