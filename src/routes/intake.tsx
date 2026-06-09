@@ -8,6 +8,8 @@ import { pairIntakeWithApp } from "@/lib/intake-pair.functions";
 import { SentinelUpsellCards } from "@/components/SentinelUpsellCards";
 import { BilingualField } from "@/components/intake/BilingualField";
 import { readSiteLang } from "@/lib/site-lang";
+import { resolveIntakeGate } from "@/lib/intake-gate";
+
 
 const searchSchema = z.object({
   session_id: z.string().optional(),
@@ -221,31 +223,29 @@ function IntakePage() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    // Resolve the effective lang from the raw URL; fall back to dd_lang for
-    // deep links that arrive without a ?lang= param.
-    const raw = new URLSearchParams(window.location.search).get("lang");
-    const target: Lang = (raw === "es" || raw === "en" || raw === "ht")
-      ? raw
-      : readSiteLang();
+    const rawLang = new URLSearchParams(window.location.search).get("lang");
+    const decision = resolveIntakeGate({
+      rawLang,
+      siteLang: readSiteLang(),
+      isAccepted: (l) =>
+        window.localStorage.getItem(`dd_agreement_accepted_v1_${l}`) === "1",
+    });
 
-    // If URL is missing/invalid, rewrite it before doing anything else.
-    if (raw !== target) {
-      navigate({ to: "/intake", search: { lang: target }, replace: true });
+    if (decision.kind === "rewrite") {
+      navigate({ to: "/intake", search: { lang: decision.lang }, replace: true });
       return;
     }
-
-    // Enforce per-language acceptance gate before rendering intake content.
-    const key = `dd_agreement_accepted_v1_${target}`;
-    if (window.localStorage.getItem(key) !== "1") {
-      navigate({ to: "/agreement", search: { lang: target }, replace: true });
+    if (decision.kind === "agreement") {
+      navigate({ to: "/agreement", search: { lang: decision.lang }, replace: true });
       return;
     }
-    setResolvedLang(target);
+    setResolvedLang(decision.lang);
   }, [lang, navigate]);
 
   if (!resolvedLang) return null;
   return <IntakeInner sessionId={session_id} L={resolvedLang} ui={UI[resolvedLang]} />;
 }
+
 
 function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | undefined; L: Lang; ui: typeof UI[Lang] }) {
 
