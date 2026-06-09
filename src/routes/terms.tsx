@@ -1,45 +1,19 @@
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
 import { useLang } from "@/context/LanguageContext";
 
-const COPY = {
-  es: {
-    eyebrow: "Términos y Condiciones",
-    title: "Por favor lea los Términos y Condiciones",
-    intro:
-      "Antes de continuar a las preguntas para crear su formulario federal AO 242, lea estos términos completos. Debe desplazarse hasta el final.",
-    body: SAMPLE_TERMS_ES(),
-    confirm: "He leído y acepto los Términos y Condiciones.",
-    continue: "Continuar a las preguntas →",
-    mustScroll: "Desplácese hasta el final para continuar.",
-    back: "← Volver",
-  },
-  en: {
-    eyebrow: "Terms & Conditions",
-    title: "Please read the Terms & Conditions",
-    intro:
-      "Before continuing to the questions that create your federal AO 242 form, read these terms in full. You must scroll to the bottom.",
-    body: SAMPLE_TERMS_EN(),
-    confirm: "I have read and agree to the Terms & Conditions.",
-    continue: "Continue to questions →",
-    mustScroll: "Scroll to the bottom to continue.",
-    back: "← Back",
-  },
-  ht: {
-    eyebrow: "Tèm ak Kondisyon",
-    title: "Tanpri li Tèm ak Kondisyon yo",
-    intro:
-      "Anvan ou kontinye nan kesyon ki kreye fòm federal AO 242 ou, li tèm sa yo nèt. Ou dwe desann jiska anba.",
-    body: SAMPLE_TERMS_HT(),
-    confirm: "Mwen li epi mwen dakò avèk Tèm ak Kondisyon yo.",
-    continue: "Kontinye nan kesyon yo →",
-    mustScroll: "Desann jiska anba pou kontinye.",
-    back: "← Tounen",
-  },
-};
+export const Route = createFileRoute("/terms")({
+  head: () => ({
+    meta: [
+      { title: "Terms & Conditions — DetencionDefensa.com" },
+      { name: "description", content: "Read and accept the Terms & Conditions before continuing to the AO 242 questions." },
+      { name: "robots", content: "noindex" },
+    ],
+  }),
+  component: TermsPage,
+});
 
-function SAMPLE_TERMS_EN() {
-  return `DetencionDefensa.com is NOT a law firm and does not provide legal advice. We provide self-help services: translation and typing of basic, non-legal information onto government-published forms (Federal Form AO 242, Petition for Writ of Habeas Corpus, and the IFP fee-waiver request).
+const TERMS_EN = `DetencionDefensa.com is NOT a law firm and does not provide legal advice. We provide self-help services: translation and typing of basic, non-legal information onto government-published forms (Federal Form AO 242, Petition for Writ of Habeas Corpus, and the IFP fee-waiver request).
 
 You ("You") are the petitioner. You give the facts. You sign the form. You file it with the court. You comply with all court rules and any post-filing requirements. We do not represent you. We do not appear in court for you. We do not select your forms, give legal advice, predict outcomes, or guarantee any result.
 
@@ -56,13 +30,12 @@ Eligibility & Accuracy. You represent that the information you provide is true t
 Acceptance. By checking the box below and clicking Continue, You confirm that You have read these Terms & Conditions in full and that You accept them. You may close this page at any time before clicking Continue.
 
 This summary is provided in plain language for your convenience. The full, binding terms are available on request and at the time of checkout.`;
-}
-function SAMPLE_TERMS_ES() {
-  return `DetencionDefensa.com NO es un bufete de abogados y no brinda asesoría legal. Ofrecemos servicios de autoayuda: traducción y mecanografía de información básica, no legal, en formularios publicados por el gobierno (Formulario federal AO 242, Petición de Habeas Corpus y solicitud de exención de cuotas IFP).
+
+const TERMS_ES = `DetencionDefensa.com NO es un bufete de abogados y no brinda asesoría legal. Ofrecemos servicios de autoayuda: traducción y mecanografía de información básica, no legal, en formularios publicados por el gobierno (Formulario federal AO 242, Petición de Habeas Corpus y solicitud de exención de cuotas IFP).
 
 Usted ("Usted") es el peticionario. Usted aporta los hechos. Usted firma el formulario. Usted lo presenta ante el tribunal. Usted cumple con todas las reglas del tribunal y con cualquier requisito posterior a la presentación. Nosotros no lo representamos. No comparecemos ante el tribunal por Usted. No seleccionamos sus formularios, no damos asesoría legal, no predecimos resultados ni garantizamos ningún resultado.
 
-Revisión por abogado. A través de un acuerdo separado y opcional con un abogado independiente, el borrador mecanografiado de su formulario Pro Se podrá ser revisado para verificar que esté completo, que las firmas estén notarizadas y que el formulario se envíe al secretario del tribunal correcto con un sobre pre-direccionado. Ese abogado no acepta representarlo en el tribunal, ni presentar papeles, ni revisar otros papeles distintos del borrador AO 242 cubierto por el acuerdo de retención que Usted lea y acepte por separado. Sus servicios están limitados por ese acuerdo de retención.
+Revisión por abogado. A través de un acuerdo separado y opcional con un abogado independiente, el borrador mecanografiado de su formulario Pro Se podrá ser revisado para verificar que esté completo, que las firmas estén notarizadas y que el formulario se envíe al secretario del tribunal correcto con un sobre pre-direccionado. Ese abogado no acepta representarlo en el tribunal, ni presentar papeles, ni revisar otros papeles distintos del borrador AO 242 cubierto por el acuerdo de retención que Usted lea y acepte por separado.
 
 Precio. $199 pago único por el Plan de Protección Pre-Detención. Un complemento opcional de Envío de Documentos está disponible por $10/mes y puede cancelarse en cualquier momento.
 
@@ -73,9 +46,8 @@ Sin relación abogado–cliente. El uso de este sitio, el pago del Plan, complet
 Veracidad. Usted declara que la información que proporciona es verdadera a su leal saber y entender. Las declaraciones falsas en una petición federal de habeas pueden tener consecuencias legales graves.
 
 Aceptación. Al marcar la casilla a continuación y hacer clic en Continuar, Usted confirma que ha leído estos Términos y Condiciones en su totalidad y que los acepta.`;
-}
-function SAMPLE_TERMS_HT() {
-  return `DetencionDefensa.com SE PA yon kabinè avoka epi li pa bay konsèy legal. Nou bay sèvis pwòp tèt-ou: tradiksyon ak ekri enfòmasyon debaz, ki pa legal, sou fòm gouvènman an pibliye (Fòm federal AO 242, Petisyon Habeas Corpus, ak demann IFP).
+
+const TERMS_HT = `DetencionDefensa.com SE PA yon kabinè avoka epi li pa bay konsèy legal. Nou bay sèvis pwòp tèt-ou: tradiksyon ak ekri enfòmasyon debaz, ki pa legal, sou fòm gouvènman an pibliye (Fòm federal AO 242, Petisyon Habeas Corpus, ak demann IFP).
 
 Ou ("Ou") se petisyonè a. Ou bay enfòmasyon yo. Ou siyen fòm nan. Ou depoze li nan tribinal la. Ou respekte tout règ tribinal la. Nou pa reprezante w. Nou pa parèt nan tribinal pou ou. Nou pa chwazi fòm ou, nou pa bay konsèy legal, nou pa pwomèt okenn rezilta.
 
@@ -88,9 +60,14 @@ Done ou. Enfòmasyon ou itilize pou ranpli fòm ou yo. Nou pa vann enfòmasyon p
 Pa gen relasyon avoka-kliyan. Sèvi ak sit sa a oswa peye Plan an PA kreye yon relasyon avoka-kliyan.
 
 Aksepte. Lè ou tcheke bwat la epi ou klike Kontinye, ou konfime ou li tout Tèm ak Kondisyon yo epi ou aksepte yo.`;
-}
 
-export default function TermsPage() {
+const COPY = {
+  es: { eyebrow: "Términos y Condiciones", title: "Por favor lea los Términos y Condiciones", intro: "Antes de continuar a las preguntas para crear su formulario federal AO 242, lea estos términos completos. Debe desplazarse hasta el final.", body: TERMS_ES, confirm: "He leído y acepto los Términos y Condiciones.", continue: "Continuar a las preguntas →", mustScroll: "Desplácese hasta el final para continuar.", back: "← Volver" },
+  en: { eyebrow: "Terms & Conditions", title: "Please read the Terms & Conditions", intro: "Before continuing to the questions that create your federal AO 242 form, read these terms in full. You must scroll to the bottom.", body: TERMS_EN, confirm: "I have read and agree to the Terms & Conditions.", continue: "Continue to questions →", mustScroll: "Scroll to the bottom to continue.", back: "← Back" },
+  ht: { eyebrow: "Tèm ak Kondisyon", title: "Tanpri li Tèm ak Kondisyon yo", intro: "Anvan ou kontinye nan kesyon ki kreye fòm federal AO 242 ou, li tèm sa yo nèt. Ou dwe desann jiska anba.", body: TERMS_HT, confirm: "Mwen li epi mwen dakò avèk Tèm ak Kondisyon yo.", continue: "Kontinye nan kesyon yo →", mustScroll: "Desann jiska anba pou kontinye.", back: "← Tounen" },
+};
+
+function TermsPage() {
   const { lang } = useLang();
   const t = COPY[lang];
   const navigate = useNavigate();
@@ -99,14 +76,15 @@ export default function TermsPage() {
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
+    setScrolled(false);
+    setChecked(false);
     const el = scrollRef.current;
     if (!el) return;
+    el.scrollTop = 0;
     const onScroll = () => {
-      const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 8;
-      if (atBottom) setScrolled(true);
+      if (el.scrollTop + el.clientHeight >= el.scrollHeight - 8) setScrolled(true);
     };
     el.addEventListener("scroll", onScroll);
-    // Edge case: short content already fits
     if (el.scrollHeight <= el.clientHeight + 8) setScrolled(true);
     return () => el.removeEventListener("scroll", onScroll);
   }, [lang]);
@@ -114,109 +92,21 @@ export default function TermsPage() {
   const canContinue = scrolled && checked;
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background: "#f8fafc",
-        padding: "2rem 1rem 4rem",
-        fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif",
-        color: "#1e293b",
-      }}
-    >
+    <main style={{ minHeight: "100vh", background: "#f8fafc", padding: "2rem 1rem 4rem", fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif", color: "#1e293b" }}>
       <div style={{ maxWidth: 760, margin: "0 auto" }}>
-        <button
-          onClick={() => navigate({ to: "/" })}
-          style={{
-            background: "none",
-            border: "none",
-            color: "#1e40af",
-            fontSize: 14,
-            cursor: "pointer",
-            padding: 0,
-            marginBottom: "1rem",
-          }}
-        >
-          {t.back}
-        </button>
-        <div
-          style={{
-            fontSize: 11,
-            fontWeight: 700,
-            letterSpacing: ".18em",
-            color: "#1e40af",
-            textTransform: "uppercase",
-            marginBottom: ".5rem",
-          }}
-        >
-          {t.eyebrow}
-        </div>
-        <h1 style={{ fontSize: "clamp(1.6rem,4vw,2.2rem)", fontWeight: 800, margin: "0 0 .75rem" }}>
-          {t.title}
-        </h1>
+        <button onClick={() => navigate({ to: "/" })} style={{ background: "none", border: "none", color: "#1e40af", fontSize: 14, cursor: "pointer", padding: 0, marginBottom: "1rem" }}>{t.back}</button>
+        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: ".18em", color: "#1e40af", textTransform: "uppercase", marginBottom: ".5rem" }}>{t.eyebrow}</div>
+        <h1 style={{ fontSize: "clamp(1.6rem,4vw,2.2rem)", fontWeight: 800, margin: "0 0 .75rem" }}>{t.title}</h1>
         <p style={{ color: "#64748b", margin: "0 0 1.5rem", lineHeight: 1.55 }}>{t.intro}</p>
-
-        <div
-          ref={scrollRef}
-          style={{
-            background: "#fff",
-            border: "1px solid #e2e8f0",
-            borderRadius: 12,
-            padding: "1.25rem 1.25rem",
-            height: 360,
-            overflowY: "auto",
-            lineHeight: 1.6,
-            fontSize: 14,
-            whiteSpace: "pre-wrap",
-          }}
-        >
+        <div ref={scrollRef} style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 12, padding: "1.25rem", height: 360, overflowY: "auto", lineHeight: 1.6, fontSize: 14, whiteSpace: "pre-wrap" }}>
           {t.body}
         </div>
-
-        {!scrolled && (
-          <p style={{ color: "#dc2626", fontSize: 13, margin: ".75rem 0 0" }}>{t.mustScroll}</p>
-        )}
-
-        <label
-          style={{
-            display: "flex",
-            alignItems: "flex-start",
-            gap: 10,
-            marginTop: "1.25rem",
-            opacity: scrolled ? 1 : 0.55,
-            cursor: scrolled ? "pointer" : "not-allowed",
-          }}
-        >
-          <input
-            type="checkbox"
-            disabled={!scrolled}
-            checked={checked}
-            onChange={(e) => setChecked(e.target.checked)}
-            style={{ marginTop: 4, width: 18, height: 18 }}
-          />
+        {!scrolled && <p style={{ color: "#dc2626", fontSize: 13, margin: ".75rem 0 0" }}>{t.mustScroll}</p>}
+        <label style={{ display: "flex", alignItems: "flex-start", gap: 10, marginTop: "1.25rem", opacity: scrolled ? 1 : 0.55, cursor: scrolled ? "pointer" : "not-allowed" }}>
+          <input type="checkbox" disabled={!scrolled} checked={checked} onChange={(e) => setChecked(e.target.checked)} style={{ marginTop: 4, width: 18, height: 18 }} />
           <span style={{ fontSize: 15 }}>{t.confirm}</span>
         </label>
-
-        <button
-          disabled={!canContinue}
-          onClick={() => navigate({ to: "/intake", search: { lang } as never })}
-          style={{
-            marginTop: "1.5rem",
-            width: "100%",
-            padding: "14px 22px",
-            borderRadius: 999,
-            border: "none",
-            background: canContinue ? "#e8a04a" : "#cbd5e1",
-            color: canContinue ? "#0f1830" : "#64748b",
-            fontWeight: 800,
-            fontSize: 15,
-            letterSpacing: ".08em",
-            textTransform: "uppercase",
-            cursor: canContinue ? "pointer" : "not-allowed",
-            boxShadow: canContinue ? "0 8px 24px rgba(0,0,0,0.18)" : "none",
-          }}
-        >
-          {t.continue}
-        </button>
+        <button disabled={!canContinue} onClick={() => navigate({ to: "/intake", search: { lang } as never })} style={{ marginTop: "1.5rem", width: "100%", padding: "14px 22px", borderRadius: 999, border: "none", background: canContinue ? "#e8a04a" : "#cbd5e1", color: canContinue ? "#0f1830" : "#64748b", fontWeight: 800, fontSize: 15, letterSpacing: ".08em", textTransform: "uppercase", cursor: canContinue ? "pointer" : "not-allowed", boxShadow: canContinue ? "0 8px 24px rgba(0,0,0,0.18)" : "none" }}>{t.continue}</button>
       </div>
     </main>
   );
