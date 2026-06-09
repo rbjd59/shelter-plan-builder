@@ -99,9 +99,9 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
   },
   {
     id: "grounds",
-    title: { en: "4. Grounds for the Petition", es: "4. Motivos de la Petición", ht: "4. Rezon pou Petisyon an" },
+    title: { en: "4. Why you believe you should not be detained by ICE ", es: "4. Motivos de la Petición", ht: "4. Rezon pou Petisyon an" },
     intro: {
-      en: "Check the grounds that apply. We do NOT choose your legal grounds.",
+      en: "Check the grounds that apply. We do NOT choose your legal grounds. If you are not sure the Attorney will complete them, Leave them blank.",
       es: "Marque los motivos que apliquen. NOSOTROS NO elegimos sus motivos legales.",
       ht: "Tcheke rezon yo. Nou PA chwazi rezon legal pou ou.",
     },
