@@ -2995,17 +2995,20 @@ body:not(.splash-active) .hero-price-line {
 
 /* Floating language toggle — top-right of the "Prepare today" hero band */
 body:not(.splash-active) #pp-lang-float {
-  position: absolute;
+  position: fixed;
   top: 12px;
-  right: 12px;
-  z-index: 5;
+  left: 50%;
+  transform: translateX(-50%);
+  right: auto;
+  z-index: 1000;
   display: inline-flex;
   background: rgba(255,255,255,0.95);
   border: 1px solid var(--pp-line);
   border-radius: 999px;
   padding: 3px;
-  box-shadow: 0 2px 8px rgba(15,27,61,.08);
+  box-shadow: 0 2px 8px rgba(15,27,61,.12);
 }
+
 body:not(.splash-active) #pp-lang-float button {
   background: transparent;
   color: var(--pp-muted);
