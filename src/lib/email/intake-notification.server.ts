@@ -166,8 +166,12 @@ export async function enqueueIntakeNotification(params: {
   language: string;
   contactEmail?: string | null;
   demoMode?: boolean;
+  scope?: "all" | "internal" | "welcome";
 }): Promise<void> {
   const { sessionId, answers, language, contactEmail, demoMode } = params;
+  const scope = params.scope ?? "all";
+  const doInternal = scope === "all" || scope === "internal";
+  const doWelcome = scope === "all" || scope === "welcome";
   const a = answers;
 
   const subject = `New Intake Submission — ${String(a.mail_inmate_name || a.contact_name || sessionId)}`;
