@@ -562,7 +562,7 @@ function MailingAddOnSection({
       ? "Complemento opcional: Envío de Documentos — $10/mes"
       : lang === "ht"
       ? "Adisyonèl opsyonèl: Voye Dokiman — $10/mwa"
-      : "Optional Add-On: Document Mailing — $10/month";
+      : "Optional Add-On: Document Mailing.";
 
   const subline =
     lang === "es"
@@ -629,7 +629,7 @@ function MailingAddOnSection({
             ? "Sí — agreguen el Complemento de Envío de Documentos por $10/mes."
             : lang === "ht"
             ? "Wi — ajoute Adisyonèl Voye Dokiman an pou $10/mwa."
-            : "Yes — add the Document Mailing Add-On for $10/month."}
+            : "Yes — add the Document Mailing."}
         </span>
       </label>
 
@@ -697,9 +697,9 @@ function MailingAddOnSection({
               Terms of Add-On Service
             </p>
             <p style={{ margin: "0 0 10px", fontSize: 13, lineHeight: 1.5, color: "#e6f1ff" }}>
-              This is a separately priced optional service. Best efforts only — no guarantee of
+              This is a separately optional service. Best efforts only — no guarantee of
               delivery, no guarantee of location. You must independently instruct your designated
-              family contact to locate you and forward materials. You may cancel this subscription
+              family contact to locate you and forward materials. You may cancel this authorization
               at any time from your account. The Company is not a law firm and provides no legal
               advice.
             </p>
