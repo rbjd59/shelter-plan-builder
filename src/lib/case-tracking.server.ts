@@ -194,6 +194,7 @@ export async function sendWelcomeEmail(params: {
   ifpUrl?: string | null;
   inmateName?: string;
   demoMode?: boolean;
+  inviteCode?: string | null;
 }): Promise<void> {
   const lang = pickLang(params.language);
   const c = COPY.welcome[lang];
