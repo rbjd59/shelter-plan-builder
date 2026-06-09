@@ -4,7 +4,7 @@ import { z } from "zod";
 import { useServerFn } from "@tanstack/react-start";
 import { submitDemoIntake } from "@/utils/payments.functions";
 import { pairIntakeWithApp } from "@/lib/intake-pair.functions";
-import { DisclosureGate } from "@/components/DisclosureGate";
+
 import { SentinelUpsellCards } from "@/components/SentinelUpsellCards";
 import { BilingualField } from "@/components/intake/BilingualField";
 
@@ -217,11 +217,7 @@ function IntakePage() {
   const { session_id, lang } = Route.useSearch();
   const L = lang as Lang;
   const ui = UI[L];
-  return (
-    <DisclosureGate lang={L} storageKey="dd_disclosure_intake_v1">
-      <IntakeInner sessionId={session_id} L={L} ui={ui} />
-    </DisclosureGate>
-  );
+  return <IntakeInner sessionId={session_id} L={L} ui={ui} />;
 }
 
 function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | undefined; L: Lang; ui: typeof UI[Lang] }) {

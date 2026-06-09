@@ -30,6 +30,7 @@ import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as AttorneyRouteImport } from './routes/attorney'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AltRouteImport } from './routes/alt'
+import { Route as AgreementRouteImport } from './routes/agreement'
 import { Route as FirmRouteImport } from './routes/_firm'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AdminRouteImport } from './routes/_admin'
@@ -166,6 +167,11 @@ const AppRoute = AppRouteImport.update({
 const AltRoute = AltRouteImport.update({
   id: '/alt',
   path: '/alt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgreementRoute = AgreementRouteImport.update({
+  id: '/agreement',
+  path: '/agreement',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FirmRoute = FirmRouteImport.update({
@@ -336,6 +342,7 @@ const AdminAdminClientsIdRoute = AdminAdminClientsIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/agreement': typeof AgreementRoute
   '/alt': typeof AltRoute
   '/app': typeof AppRoute
   '/attorney': typeof AttorneyRoute
@@ -388,6 +395,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/agreement': typeof AgreementRoute
   '/alt': typeof AltRoute
   '/app': typeof AppRoute
   '/attorney': typeof AttorneyRoute
@@ -444,6 +452,7 @@ export interface FileRoutesById {
   '/_admin': typeof AdminRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_firm': typeof FirmRouteWithChildren
+  '/agreement': typeof AgreementRoute
   '/alt': typeof AltRoute
   '/app': typeof AppRoute
   '/attorney': typeof AttorneyRoute
@@ -498,6 +507,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/agreement'
     | '/alt'
     | '/app'
     | '/attorney'
@@ -550,6 +560,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/agreement'
     | '/alt'
     | '/app'
     | '/attorney'
@@ -605,6 +616,7 @@ export interface FileRouteTypes {
     | '/_admin'
     | '/_authenticated'
     | '/_firm'
+    | '/agreement'
     | '/alt'
     | '/app'
     | '/attorney'
@@ -661,6 +673,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   FirmRoute: typeof FirmRouteWithChildren
+  AgreementRoute: typeof AgreementRoute
   AltRoute: typeof AltRoute
   AppRoute: typeof AppRoute
   AttorneyRoute: typeof AttorneyRoute
@@ -849,6 +862,13 @@ declare module '@tanstack/react-router' {
       path: '/alt'
       fullPath: '/alt'
       preLoaderRoute: typeof AltRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agreement': {
+      id: '/agreement'
+      path: '/agreement'
+      fullPath: '/agreement'
+      preLoaderRoute: typeof AgreementRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_firm': {
@@ -1148,6 +1168,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   FirmRoute: FirmRouteWithChildren,
+  AgreementRoute: AgreementRoute,
   AltRoute: AltRoute,
   AppRoute: AppRoute,
   AttorneyRoute: AttorneyRoute,
