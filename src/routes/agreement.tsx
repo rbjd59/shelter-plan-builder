@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
 
 const searchSchema = z.object({ lang: z.enum(["en", "es", "ht"]).catch("es") });
@@ -125,6 +125,19 @@ function AgreementPage() {
       setScrolledToEnd(true);
     }
   };
+
+  // If the content fits without needing to scroll, unlock immediately.
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const check = () => {
+      if (el.scrollHeight <= el.clientHeight + 8) setScrolledToEnd(true);
+    };
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
 
   const submit = () => {
     if (!scrolledToEnd) { setErr(t.notScrolled); return; }
