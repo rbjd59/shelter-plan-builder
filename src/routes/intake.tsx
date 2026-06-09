@@ -415,6 +415,31 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
   );
 }
 
+function LangSwitcher({ current }: { current: Lang }) {
+  const labels: Record<Lang, string> = { es: "Español", en: "English", ht: "Kreyòl" };
+  const langs: Lang[] = ["es", "en", "ht"];
+  const btn = (active: boolean): React.CSSProperties => ({
+    padding: "6px 12px",
+    fontSize: 13,
+    fontWeight: 600,
+    borderRadius: 4,
+    border: "1px solid #3a4458",
+    background: active ? "#e8a04a" : "transparent",
+    color: active ? "#0b1220" : "#f6efe1",
+    cursor: "pointer",
+    textDecoration: "none",
+  });
+  return (
+    <div style={{ display: "flex", gap: 8, marginBottom: 16, justifyContent: "flex-end" }}>
+      {langs.map((l) => (
+        <Link key={l} to="/intake" search={(prev) => ({ ...prev, lang: l })} style={btn(l === current)}>
+          {l.toUpperCase()} · {labels[l]}
+        </Link>
+      ))}
+    </div>
+  );
+}
+
 const inputStyle: React.CSSProperties = {
   width: "100%",
   padding: "10px 12px",
