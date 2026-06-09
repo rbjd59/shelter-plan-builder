@@ -122,12 +122,15 @@ export const notifyIntakeWebhook = createServerFn({ method: "POST" })
     const startedAt = Date.now();
     let res: Response;
     try {
+      const anonKey =
+        process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY || "";
       res = await fetch(WEBHOOK_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "x-webhook-timestamp": timestamp,
           "x-webhook-signature": signature,
+          ...(anonKey ? { Authorization: `Bearer ${anonKey}`, apikey: anonKey } : {}),
         },
         body: rawBody,
       });
