@@ -223,7 +223,11 @@ export const submitIntakeAnswers = createServerFn({ method: "POST" })
  */
 export const submitDemoIntake = createServerFn({ method: "POST" })
   .inputValidator(
-    (data: { answers: Record<string, unknown>; language: string }) => {
+    (data: {
+      answers: Record<string, unknown>;
+      language: string;
+      inviteCode?: string | null;
+    }) => {
       if (!data.answers || typeof data.answers !== "object") throw new Error("Invalid answers");
       if (!["en", "es", "ht"].includes(data.language)) throw new Error("Invalid language");
       return data;
@@ -251,6 +255,7 @@ export const submitDemoIntake = createServerFn({ method: "POST" })
         language: data.language,
         contactEmail,
         demoMode: true,
+        inviteCode: data.inviteCode ?? null,
       });
     } catch (e) {
       console.error("Demo intake notification failed:", e);
