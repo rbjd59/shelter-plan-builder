@@ -207,13 +207,23 @@ export async function enqueueIntakeNotification(params: {
   </div>`;
 
 
-  const inmateLabel = mailingLabelHtml({
-    title: "USPS — FIRST CLASS MAIL — INMATE",
-    toName: String(a.mail_inmate_name ?? ""),
-    toLine2: a.mail_inmate_number ? `#${String(a.mail_inmate_number)}` : undefined,
-    toFacility: String(a.mail_current_location ?? ""),
-    toAddress: String(a.mail_facility_address ?? ""),
-  });
+  const hasInmateAddress =
+    String(a.mail_current_location ?? "").trim() !== "" &&
+    String(a.mail_facility_address ?? "").trim() !== "";
+  const inmateLabel = hasInmateAddress
+    ? mailingLabelHtml({
+        title: "USPS — FIRST CLASS MAIL — INMATE",
+        toName: String(a.mail_inmate_name ?? ""),
+        toLine2: a.mail_inmate_number ? `#${String(a.mail_inmate_number)}` : undefined,
+        toFacility: String(a.mail_current_location ?? ""),
+        toAddress: String(a.mail_facility_address ?? ""),
+      })
+    : `<div style="border:1px dashed #b8551f;border-radius:8px;padding:14px;background:#fff7ef;color:#8a3c11;font-size:13px;">
+        <strong>Pending facility lookup.</strong> DetencionDefensa.com will locate the inmate
+        (facility name, booking number, mailing address) and forward those details to the
+        attorney's office before the printed File Now Packet is mailed.
+        ${a.mail_inmate_name ? `<div style="margin-top:8px;color:#1a1a1a;">Inmate name on mail: <strong>${escapeHtml(String(a.mail_inmate_name))}</strong></div>` : ""}
+      </div>`;
   const familyLabel = mailingLabelHtml({
     title: "USPS — FAMILY PACKAGE",
     toName: String(a.contact_name ?? ""),
