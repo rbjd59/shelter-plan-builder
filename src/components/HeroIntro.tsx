@@ -3,6 +3,8 @@ import { useLang, type Lang } from "@/context/LanguageContext";
 import esAsset from "@/assets/videos/detenciondefensa_es.mp4.asset.json";
 import enAsset from "@/assets/videos/detenciondefensa_en.mp4.asset.json";
 import htAsset from "@/assets/videos/detenciondefensa_ht.mp4.asset.json";
+import logoAsset from "@/assets/dd-logo.png.asset.json";
+
 
 const SRC = { es: esAsset.url, en: enAsset.url, ht: htAsset.url };
 
@@ -75,34 +77,71 @@ export default function HeroIntro() {
   return (
     <section
       style={{
-        background: "linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%)",
-        color: "#fff",
-        padding: "2rem 1rem 1.5rem",
+        background: "#f5f5f4",
+        color: "#0a1633",
+        padding: "1.25rem 1rem 1.5rem",
         textAlign: "center",
+        fontFamily:
+          'ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
       }}
     >
-      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative" }}>
+        <a
+          href="/"
+          aria-label="DetencionDefensa home"
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 8,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 10,
+            textDecoration: "none",
+            color: "#0a1633",
+          }}
+        >
+          <img
+            src={logoAsset.url}
+            alt="DetencionDefensa logo"
+            width={40}
+            height={40}
+            style={{ width: 40, height: 40, display: "block" }}
+          />
+          <span
+            style={{
+              fontSize: 20,
+              fontWeight: 700,
+              letterSpacing: -0.3,
+              color: "#0a1633",
+            }}
+          >
+            DetencionDefensa
+          </span>
+        </a>
+
         <div
           style={{
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             gap: 12,
-            margin: "0 auto 1rem",
+            margin: "0 auto 1.25rem",
             flexWrap: "wrap",
             fontSize: 12,
             fontWeight: 700,
             letterSpacing: "0.16em",
             textTransform: "uppercase",
-            opacity: 0.92,
+            color: "#0a1633",
+            opacity: 0.85,
+            paddingTop: 8,
           }}
         >
           <span>— PICK A LANGUAGE —</span>
           <div
             style={{
               display: "inline-flex",
-              background: "rgba(255,255,255,0.95)",
-              border: "1px solid rgba(255,255,255,0.6)",
+              background: "#fff",
+              border: "1px solid rgba(10,22,51,0.15)",
               borderRadius: 999,
               padding: 3,
             }}
@@ -113,8 +152,8 @@ export default function HeroIntro() {
                 type="button"
                 onClick={() => setLang(code)}
                 style={{
-                  background: lang === code ? "#0f1830" : "transparent",
-                  color: lang === code ? "#fff" : "#0f1830",
+                  background: lang === code ? "#0a1633" : "transparent",
+                  color: lang === code ? "#fff" : "#0a1633",
                   border: "none",
                   borderRadius: 999,
                   padding: "6px 14px",
@@ -134,27 +173,30 @@ export default function HeroIntro() {
 
         <h1
           style={{
-            fontSize: "clamp(1.5rem, 4vw, 2.5rem)",
-            fontWeight: 800,
-            lineHeight: 1.15,
-            margin: "0 0 0.5rem",
-            letterSpacing: -0.5,
+            fontSize: "clamp(2.25rem, 5.5vw, 3.75rem)",
+            fontWeight: 600,
+            lineHeight: 1.1,
+            margin: "0 0 1.25rem",
+            letterSpacing: -1,
+            color: "#0a1633",
           }}
         >
           Stop overpaying for legal help
         </h1>
         <p
           style={{
-            fontSize: "clamp(0.95rem, 1.8vw, 1.1rem)",
-            lineHeight: 1.5,
-            maxWidth: 720,
-            margin: "0 auto 1.25rem",
-            opacity: 0.95,
+            fontSize: "clamp(1.05rem, 1.8vw, 1.35rem)",
+            lineHeight: 1.45,
+            maxWidth: 820,
+            margin: "0 auto 1.5rem",
+            fontWeight: 600,
+            color: "#0a1633",
           }}
         >
           AI Drafted — Attorney Supervised — Pro Se ICE Detention Defense Plan
-          all in Minutes — Only $199 — Don't Leave Home Without It!
+          all in Minutes — <span style={{ color: "#ff8a65" }}>Only $199 — Don't Leave Home Without It!</span>
         </p>
+
         <div
           ref={wrapRef}
           style={{
