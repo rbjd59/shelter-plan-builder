@@ -222,6 +222,13 @@ function IntakePage() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    // Fallback: if URL has no valid ?lang=, replace with the site-selected lang.
+    const u = new URLSearchParams(window.location.search).get("lang");
+    if (u !== "es" && u !== "en" && u !== "ht") {
+      navigate({ to: "/intake", search: { lang: readSiteLang() }, replace: true });
+      return;
+    }
+    // Enforce acceptance gate for the current language.
     const key = `dd_agreement_accepted_v1_${L}`;
     if (window.localStorage.getItem(key) !== "1") {
       navigate({ to: "/agreement", search: { lang: L }, replace: true });
