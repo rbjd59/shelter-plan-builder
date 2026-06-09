@@ -52,6 +52,7 @@ import { Route as FirmFirmQueueRouteImport } from './routes/_firm/firm.queue'
 import { Route as AuthenticatedCaseIdRouteImport } from './routes/_authenticated/case.$id'
 import { Route as AdminAdminTriggersRouteImport } from './routes/_admin/admin.triggers'
 import { Route as AdminAdminRemindersRouteImport } from './routes/_admin/admin.reminders'
+import { Route as AdminAdminEmailsRouteImport } from './routes/_admin/admin.emails'
 import { Route as AdminAdminClientsRouteImport } from './routes/_admin/admin.clients'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
@@ -278,6 +279,11 @@ const AdminAdminRemindersRoute = AdminAdminRemindersRouteImport.update({
   path: '/reminders',
   getParentRoute: () => AdminAdminRoute,
 } as any)
+const AdminAdminEmailsRoute = AdminAdminEmailsRouteImport.update({
+  id: '/emails',
+  path: '/emails',
+  getParentRoute: () => AdminAdminRoute,
+} as any)
 const AdminAdminClientsRoute = AdminAdminClientsRouteImport.update({
   id: '/clients',
   path: '/clients',
@@ -382,6 +388,7 @@ export interface FileRoutesByFullPath {
   '/readiness/start': typeof ReadinessStartRoute
   '/track/$token': typeof TrackTokenRoute
   '/admin/clients': typeof AdminAdminClientsRouteWithChildren
+  '/admin/emails': typeof AdminAdminEmailsRoute
   '/admin/reminders': typeof AdminAdminRemindersRoute
   '/admin/triggers': typeof AdminAdminTriggersRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
@@ -436,6 +443,7 @@ export interface FileRoutesByTo {
   '/readiness/start': typeof ReadinessStartRoute
   '/track/$token': typeof TrackTokenRoute
   '/admin/clients': typeof AdminAdminClientsRouteWithChildren
+  '/admin/emails': typeof AdminAdminEmailsRoute
   '/admin/reminders': typeof AdminAdminRemindersRoute
   '/admin/triggers': typeof AdminAdminTriggersRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
@@ -494,6 +502,7 @@ export interface FileRoutesById {
   '/readiness/start': typeof ReadinessStartRoute
   '/track/$token': typeof TrackTokenRoute
   '/_admin/admin/clients': typeof AdminAdminClientsRouteWithChildren
+  '/_admin/admin/emails': typeof AdminAdminEmailsRoute
   '/_admin/admin/reminders': typeof AdminAdminRemindersRoute
   '/_admin/admin/triggers': typeof AdminAdminTriggersRoute
   '/_authenticated/case/$id': typeof AuthenticatedCaseIdRoute
@@ -550,6 +559,7 @@ export interface FileRouteTypes {
     | '/readiness/start'
     | '/track/$token'
     | '/admin/clients'
+    | '/admin/emails'
     | '/admin/reminders'
     | '/admin/triggers'
     | '/case/$id'
@@ -604,6 +614,7 @@ export interface FileRouteTypes {
     | '/readiness/start'
     | '/track/$token'
     | '/admin/clients'
+    | '/admin/emails'
     | '/admin/reminders'
     | '/admin/triggers'
     | '/case/$id'
@@ -661,6 +672,7 @@ export interface FileRouteTypes {
     | '/readiness/start'
     | '/track/$token'
     | '/_admin/admin/clients'
+    | '/_admin/admin/emails'
     | '/_admin/admin/reminders'
     | '/_admin/admin/triggers'
     | '/_authenticated/case/$id'
@@ -1032,6 +1044,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminRemindersRouteImport
       parentRoute: typeof AdminAdminRoute
     }
+    '/_admin/admin/emails': {
+      id: '/_admin/admin/emails'
+      path: '/emails'
+      fullPath: '/admin/emails'
+      preLoaderRoute: typeof AdminAdminEmailsRouteImport
+      parentRoute: typeof AdminAdminRoute
+    }
     '/_admin/admin/clients': {
       id: '/_admin/admin/clients'
       path: '/clients'
@@ -1132,12 +1151,14 @@ const AdminAdminClientsRouteWithChildren =
 
 interface AdminAdminRouteChildren {
   AdminAdminClientsRoute: typeof AdminAdminClientsRouteWithChildren
+  AdminAdminEmailsRoute: typeof AdminAdminEmailsRoute
   AdminAdminRemindersRoute: typeof AdminAdminRemindersRoute
   AdminAdminTriggersRoute: typeof AdminAdminTriggersRoute
 }
 
 const AdminAdminRouteChildren: AdminAdminRouteChildren = {
   AdminAdminClientsRoute: AdminAdminClientsRouteWithChildren,
+  AdminAdminEmailsRoute: AdminAdminEmailsRoute,
   AdminAdminRemindersRoute: AdminAdminRemindersRoute,
   AdminAdminTriggersRoute: AdminAdminTriggersRoute,
 }
