@@ -52,6 +52,7 @@ import { Route as FirmFirmQueueRouteImport } from './routes/_firm/firm.queue'
 import { Route as AuthenticatedCaseIdRouteImport } from './routes/_authenticated/case.$id'
 import { Route as AdminAdminTriggersRouteImport } from './routes/_admin/admin.triggers'
 import { Route as AdminAdminRemindersRouteImport } from './routes/_admin/admin.reminders'
+import { Route as AdminAdminEmailsRouteImport } from './routes/_admin/admin.emails'
 import { Route as AdminAdminClientsRouteImport } from './routes/_admin/admin.clients'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
@@ -60,6 +61,7 @@ import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/publi
 import { Route as ApiPublicEmergencyTestMirrorRouteImport } from './routes/api/public/emergency/test-mirror'
 import { Route as ApiPublicEmergencyActivateRouteImport } from './routes/api/public/emergency/activate'
 import { Route as ApiPublicDevSendInstallRouteImport } from './routes/api/public/dev/send-install'
+import { Route as ApiPublicCronRetryFailedEmailsRouteImport } from './routes/api/public/cron/retry-failed-emails'
 import { Route as ApiPublicCronProcessDueActivationsRouteImport } from './routes/api/public/cron/process-due-activations'
 import { Route as FirmFirmReviewIdRouteImport } from './routes/_firm/firm.review.$id'
 import { Route as AdminAdminClientsIdRouteImport } from './routes/_admin/admin.clients.$id'
@@ -277,6 +279,11 @@ const AdminAdminRemindersRoute = AdminAdminRemindersRouteImport.update({
   path: '/reminders',
   getParentRoute: () => AdminAdminRoute,
 } as any)
+const AdminAdminEmailsRoute = AdminAdminEmailsRouteImport.update({
+  id: '/emails',
+  path: '/emails',
+  getParentRoute: () => AdminAdminRoute,
+} as any)
 const AdminAdminClientsRoute = AdminAdminClientsRouteImport.update({
   id: '/clients',
   path: '/clients',
@@ -323,6 +330,12 @@ const ApiPublicDevSendInstallRoute = ApiPublicDevSendInstallRouteImport.update({
   path: '/api/public/dev/send-install',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicCronRetryFailedEmailsRoute =
+  ApiPublicCronRetryFailedEmailsRouteImport.update({
+    id: '/api/public/cron/retry-failed-emails',
+    path: '/api/public/cron/retry-failed-emails',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicCronProcessDueActivationsRoute =
   ApiPublicCronProcessDueActivationsRouteImport.update({
     id: '/api/public/cron/process-due-activations',
@@ -375,6 +388,7 @@ export interface FileRoutesByFullPath {
   '/readiness/start': typeof ReadinessStartRoute
   '/track/$token': typeof TrackTokenRoute
   '/admin/clients': typeof AdminAdminClientsRouteWithChildren
+  '/admin/emails': typeof AdminAdminEmailsRoute
   '/admin/reminders': typeof AdminAdminRemindersRoute
   '/admin/triggers': typeof AdminAdminTriggersRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
@@ -385,6 +399,7 @@ export interface FileRoutesByFullPath {
   '/admin/clients/$id': typeof AdminAdminClientsIdRoute
   '/firm/review/$id': typeof FirmFirmReviewIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
+  '/api/public/cron/retry-failed-emails': typeof ApiPublicCronRetryFailedEmailsRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
   '/api/public/emergency/test-mirror': typeof ApiPublicEmergencyTestMirrorRoute
@@ -428,6 +443,7 @@ export interface FileRoutesByTo {
   '/readiness/start': typeof ReadinessStartRoute
   '/track/$token': typeof TrackTokenRoute
   '/admin/clients': typeof AdminAdminClientsRouteWithChildren
+  '/admin/emails': typeof AdminAdminEmailsRoute
   '/admin/reminders': typeof AdminAdminRemindersRoute
   '/admin/triggers': typeof AdminAdminTriggersRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
@@ -438,6 +454,7 @@ export interface FileRoutesByTo {
   '/admin/clients/$id': typeof AdminAdminClientsIdRoute
   '/firm/review/$id': typeof FirmFirmReviewIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
+  '/api/public/cron/retry-failed-emails': typeof ApiPublicCronRetryFailedEmailsRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
   '/api/public/emergency/test-mirror': typeof ApiPublicEmergencyTestMirrorRoute
@@ -485,6 +502,7 @@ export interface FileRoutesById {
   '/readiness/start': typeof ReadinessStartRoute
   '/track/$token': typeof TrackTokenRoute
   '/_admin/admin/clients': typeof AdminAdminClientsRouteWithChildren
+  '/_admin/admin/emails': typeof AdminAdminEmailsRoute
   '/_admin/admin/reminders': typeof AdminAdminRemindersRoute
   '/_admin/admin/triggers': typeof AdminAdminTriggersRoute
   '/_authenticated/case/$id': typeof AuthenticatedCaseIdRoute
@@ -495,6 +513,7 @@ export interface FileRoutesById {
   '/_admin/admin/clients/$id': typeof AdminAdminClientsIdRoute
   '/_firm/firm/review/$id': typeof FirmFirmReviewIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
+  '/api/public/cron/retry-failed-emails': typeof ApiPublicCronRetryFailedEmailsRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
   '/api/public/emergency/test-mirror': typeof ApiPublicEmergencyTestMirrorRoute
@@ -540,6 +559,7 @@ export interface FileRouteTypes {
     | '/readiness/start'
     | '/track/$token'
     | '/admin/clients'
+    | '/admin/emails'
     | '/admin/reminders'
     | '/admin/triggers'
     | '/case/$id'
@@ -550,6 +570,7 @@ export interface FileRouteTypes {
     | '/admin/clients/$id'
     | '/firm/review/$id'
     | '/api/public/cron/process-due-activations'
+    | '/api/public/cron/retry-failed-emails'
     | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
     | '/api/public/emergency/test-mirror'
@@ -593,6 +614,7 @@ export interface FileRouteTypes {
     | '/readiness/start'
     | '/track/$token'
     | '/admin/clients'
+    | '/admin/emails'
     | '/admin/reminders'
     | '/admin/triggers'
     | '/case/$id'
@@ -603,6 +625,7 @@ export interface FileRouteTypes {
     | '/admin/clients/$id'
     | '/firm/review/$id'
     | '/api/public/cron/process-due-activations'
+    | '/api/public/cron/retry-failed-emails'
     | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
     | '/api/public/emergency/test-mirror'
@@ -649,6 +672,7 @@ export interface FileRouteTypes {
     | '/readiness/start'
     | '/track/$token'
     | '/_admin/admin/clients'
+    | '/_admin/admin/emails'
     | '/_admin/admin/reminders'
     | '/_admin/admin/triggers'
     | '/_authenticated/case/$id'
@@ -659,6 +683,7 @@ export interface FileRouteTypes {
     | '/_admin/admin/clients/$id'
     | '/_firm/firm/review/$id'
     | '/api/public/cron/process-due-activations'
+    | '/api/public/cron/retry-failed-emails'
     | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
     | '/api/public/emergency/test-mirror'
@@ -706,6 +731,7 @@ export interface RootRouteChildren {
   ApiPublicSendAdminInviteRoute: typeof ApiPublicSendAdminInviteRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
   ApiPublicCronProcessDueActivationsRoute: typeof ApiPublicCronProcessDueActivationsRoute
+  ApiPublicCronRetryFailedEmailsRoute: typeof ApiPublicCronRetryFailedEmailsRoute
   ApiPublicDevSendInstallRoute: typeof ApiPublicDevSendInstallRoute
   ApiPublicEmergencyActivateRoute: typeof ApiPublicEmergencyActivateRoute
   ApiPublicEmergencyTestMirrorRoute: typeof ApiPublicEmergencyTestMirrorRoute
@@ -1018,6 +1044,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminRemindersRouteImport
       parentRoute: typeof AdminAdminRoute
     }
+    '/_admin/admin/emails': {
+      id: '/_admin/admin/emails'
+      path: '/emails'
+      fullPath: '/admin/emails'
+      preLoaderRoute: typeof AdminAdminEmailsRouteImport
+      parentRoute: typeof AdminAdminRoute
+    }
     '/_admin/admin/clients': {
       id: '/_admin/admin/clients'
       path: '/clients'
@@ -1074,6 +1107,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicDevSendInstallRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/cron/retry-failed-emails': {
+      id: '/api/public/cron/retry-failed-emails'
+      path: '/api/public/cron/retry-failed-emails'
+      fullPath: '/api/public/cron/retry-failed-emails'
+      preLoaderRoute: typeof ApiPublicCronRetryFailedEmailsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/cron/process-due-activations': {
       id: '/api/public/cron/process-due-activations'
       path: '/api/public/cron/process-due-activations'
@@ -1111,12 +1151,14 @@ const AdminAdminClientsRouteWithChildren =
 
 interface AdminAdminRouteChildren {
   AdminAdminClientsRoute: typeof AdminAdminClientsRouteWithChildren
+  AdminAdminEmailsRoute: typeof AdminAdminEmailsRoute
   AdminAdminRemindersRoute: typeof AdminAdminRemindersRoute
   AdminAdminTriggersRoute: typeof AdminAdminTriggersRoute
 }
 
 const AdminAdminRouteChildren: AdminAdminRouteChildren = {
   AdminAdminClientsRoute: AdminAdminClientsRouteWithChildren,
+  AdminAdminEmailsRoute: AdminAdminEmailsRoute,
   AdminAdminRemindersRoute: AdminAdminRemindersRoute,
   AdminAdminTriggersRoute: AdminAdminTriggersRoute,
 }
@@ -1202,6 +1244,7 @@ const rootRouteChildren: RootRouteChildren = {
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
   ApiPublicCronProcessDueActivationsRoute:
     ApiPublicCronProcessDueActivationsRoute,
+  ApiPublicCronRetryFailedEmailsRoute: ApiPublicCronRetryFailedEmailsRoute,
   ApiPublicDevSendInstallRoute: ApiPublicDevSendInstallRoute,
   ApiPublicEmergencyActivateRoute: ApiPublicEmergencyActivateRoute,
   ApiPublicEmergencyTestMirrorRoute: ApiPublicEmergencyTestMirrorRoute,

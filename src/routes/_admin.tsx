@@ -27,6 +27,7 @@ function AdminShell() {
               <Link to="/admin/clients" activeProps={{ className: "text-amber-600 font-semibold" }} className="text-slate-700 hover:text-slate-900">Clients</Link>
               <Link to="/admin/triggers" activeProps={{ className: "text-amber-600 font-semibold" }} className="text-slate-700 hover:text-slate-900">Triggers</Link>
               <Link to="/admin/reminders" activeProps={{ className: "text-amber-600 font-semibold" }} className="text-slate-700 hover:text-slate-900">Reminders</Link>
+              <Link to="/admin/emails" activeProps={{ className: "text-amber-600 font-semibold" }} className="text-slate-700 hover:text-slate-900">Emails</Link>
             </nav>
           </div>
           <button
