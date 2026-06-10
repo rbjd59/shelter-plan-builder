@@ -137,10 +137,11 @@ export default function HeroIntro() {
               fontSize: 20,
               fontWeight: 700,
               letterSpacing: -0.3,
-              color: "#112e51",
             }}
           >
-            DetencionDefensa
+            {"DetencionDefensa".split("").map((ch, i) => (
+              <span key={i} style={{ color: i % 2 === 0 ? "#c0282d" : "#1d4ed8" }}>{ch}</span>
+            ))}
           </span>
         </a>
 
@@ -232,12 +233,19 @@ export default function HeroIntro() {
                 lineHeight: 1.08,
                 margin: "0 0 1.25rem",
                 letterSpacing: "-0.005em",
-                color: "#112e51",
                 whiteSpace: "pre-line",
               }}
             >
-              <span style={{ color: "#c0282d" }}>La Migra</span>
-              {COPY[lang].headline.replace(/^La Migra/, "")}
+              {(() => {
+                const [line1, line2] = COPY[lang].headline.split("\n");
+                return (
+                  <>
+                    <span style={{ color: "#c0282d" }}>{line1}</span>
+                    {"\n"}
+                    <span style={{ color: "#1d4ed8" }}>{line2}</span>
+                  </>
+                );
+              })()}
             </h1>
             <p
               style={{
