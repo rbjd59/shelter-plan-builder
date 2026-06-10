@@ -196,63 +196,56 @@ export default function HeroIntro() {
       style={{
         background: "#000000",
         color: "#ffffff",
-        padding: "0 1rem 1.5rem",
+        padding: isMobile ? "1rem 0.75rem 1.25rem" : "0 1rem 1.5rem",
         textAlign: "center",
         fontFamily:
           '"Work Sans", -apple-system, Roboto, Helvetica, Arial, sans-serif',
       }}
     >
       <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative" }}>
-        <a
-          href="/"
-          aria-label="DetencionDefensa home"
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 8,
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 10,
-            textDecoration: "none",
-            color: "#ffffff",
-          }}
-        >
-          <img
-            src={logoAsset.url}
-            alt="DetencionDefensa logo"
-            width={40}
-            height={40}
-            style={{ width: 40, height: 40, display: "block" }}
-          />
-          <span
-            style={{
-              fontSize: 20,
-              fontWeight: 700,
-              letterSpacing: -0.3,
-              color: "#ffffff",
-            }}
-          >
-            DetencionDefensa
-          </span>
-        </a>
-
         <div
           style={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "flex-end",
+            justifyContent: "space-between",
             gap: 12,
-            margin: "0 0 1.25rem auto",
             flexWrap: "wrap",
-            fontSize: 12,
-            fontWeight: 700,
-            letterSpacing: "0.16em",
-            textTransform: "uppercase",
-            color: "#ffffff",
-            opacity: 0.85,
+            marginBottom: "1.25rem",
             paddingTop: 4,
           }}
         >
+          <a
+            href="/"
+            aria-label="DetencionDefensa home"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 10,
+              textDecoration: "none",
+              color: "#ffffff",
+              minWidth: 0,
+            }}
+          >
+            <img
+              src={logoAsset.url}
+              alt="DetencionDefensa logo"
+              width={40}
+              height={40}
+              style={{ width: isMobile ? 32 : 40, height: isMobile ? 32 : 40, display: "block", flexShrink: 0 }}
+            />
+            <span
+              style={{
+                fontSize: isMobile ? 16 : 20,
+                fontWeight: 700,
+                letterSpacing: -0.3,
+                color: "#ffffff",
+                whiteSpace: "nowrap",
+              }}
+            >
+              DetencionDefensa
+            </span>
+          </a>
+
           <div
             style={{
               display: "inline-flex",
@@ -260,6 +253,7 @@ export default function HeroIntro() {
               border: "1px solid rgba(10,22,51,0.15)",
               borderRadius: 999,
               padding: 3,
+              flexShrink: 0,
             }}
           >
             {(["es", "en", "ht"] as Lang[]).map((code) => (
@@ -274,8 +268,8 @@ export default function HeroIntro() {
                   color: lang === code ? "#fff" : "#112e51",
                   border: "none",
                   borderRadius: 999,
-                  padding: "8px 16px",
-                  fontSize: 13,
+                  padding: isMobile ? "6px 10px" : "8px 16px",
+                  fontSize: isMobile ? 12 : 13,
                   fontWeight: 700,
                   letterSpacing: "0.14em",
                   cursor: "pointer",
@@ -288,20 +282,22 @@ export default function HeroIntro() {
               </button>
             ))}
           </div>
-
         </div>
 
 
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "minmax(140px, 230px) minmax(0, 1fr) minmax(140px, 230px)",
+            gridTemplateColumns: isMobile
+              ? "1fr"
+              : "minmax(140px, 230px) minmax(0, 1fr) minmax(140px, 230px)",
             alignItems: "center",
-            gap: "clamp(16px, 3vw, 36px)",
+            gap: isMobile ? "1rem" : "clamp(16px, 3vw, 36px)",
             margin: "0 0 1.75rem",
             textAlign: "left",
           }}
         >
+
           <img
             src={iceLeftAsset.url}
             alt="ICE ERO officers conducting a targeted enforcement operation"
