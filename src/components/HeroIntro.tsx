@@ -52,6 +52,8 @@ export default function HeroIntro() {
   useEffect(() => {
     if (!wrapRef.current) return;
     let timer: ReturnType<typeof setTimeout> | null = null;
+    let io: IntersectionObserver | null = null;
+    let lastTouchY: number | null = null;
 
     const tryPlay = () => {
       const v = videoRef.current;
@@ -63,44 +65,60 @@ export default function HeroIntro() {
       });
     };
 
-    const startOnScroll = () => {
-      if (hasAutoStartedRef.current || window.scrollY < SCROLL_ACTIVATION_PX) return;
+    const activateVideo = () => {
+      if (hasAutoStartedRef.current) return;
       hasAutoStartedRef.current = true;
       setInView(true);
       if (timer) clearTimeout(timer);
       timer = setTimeout(tryPlay, VIDEO_START_DELAY_MS);
     };
 
-    window.addEventListener("scroll", startOnScroll, { passive: true });
-    window.addEventListener("wheel", startOnScroll, { passive: true });
-    window.addEventListener("touchmove", startOnScroll, { passive: true });
+    const startOnScroll = () => {
+      if (window.scrollY >= SCROLL_ACTIVATION_PX) activateVideo();
+    };
 
-    if (typeof IntersectionObserver === "undefined") {
-      startOnScroll();
-      return;
-    }
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (!hasAutoStartedRef.current && e.isIntersecting && window.scrollY >= SCROLL_ACTIVATION_PX) {
-            hasAutoStartedRef.current = true;
-            setInView(true);
-            if (timer) clearTimeout(timer);
-            timer = setTimeout(tryPlay, VIDEO_START_DELAY_MS);
-          } else if (!e.isIntersecting && timer) {
-            clearTimeout(timer);
-            timer = null;
+    const startOnWheel = (event: WheelEvent) => {
+      if (event.deltaY > 0) activateVideo();
+    };
+
+    const rememberTouchStart = (event: TouchEvent) => {
+      lastTouchY = event.touches[0]?.clientY ?? null;
+    };
+
+    const startOnTouchMove = (event: TouchEvent) => {
+      const currentY = event.touches[0]?.clientY;
+      if (lastTouchY !== null && currentY !== undefined && currentY < lastTouchY) activateVideo();
+      lastTouchY = currentY ?? lastTouchY;
+    };
+
+    window.addEventListener("scroll", startOnScroll, { passive: true });
+    window.addEventListener("wheel", startOnWheel, { passive: true });
+    window.addEventListener("touchstart", rememberTouchStart, { passive: true });
+    window.addEventListener("touchmove", startOnTouchMove, { passive: true });
+
+    if (typeof IntersectionObserver !== "undefined") {
+      io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (!hasAutoStartedRef.current && e.isIntersecting && window.scrollY >= SCROLL_ACTIVATION_PX) {
+              activateVideo();
+            } else if (!e.isIntersecting && timer) {
+              clearTimeout(timer);
+              timer = null;
+            }
           }
-        }
-      },
-      { rootMargin: "0px", threshold: VIDEO_VISIBILITY_THRESHOLD },
-    );
-    io.observe(wrapRef.current);
+        },
+        { rootMargin: "0px", threshold: VIDEO_VISIBILITY_THRESHOLD },
+      );
+      io.observe(wrapRef.current);
+    }
+
     return () => {
-      io.disconnect();
+      io?.disconnect();
       window.removeEventListener("scroll", startOnScroll);
-      window.removeEventListener("wheel", startOnScroll);
-      window.removeEventListener("touchmove", startOnScroll);
+      window.removeEventListener("wheel", startOnWheel);
+      window.removeEventListener("touchstart", rememberTouchStart);
+      window.removeEventListener("touchmove", startOnTouchMove);
       if (timer) clearTimeout(timer);
     };
   }, [lang]);
