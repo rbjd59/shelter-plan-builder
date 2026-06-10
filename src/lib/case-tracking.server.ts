@@ -258,8 +258,8 @@ export async function sendWelcomeEmail(params: {
   const sc = serviceCopy[lang];
 
   const installButton = (url: string, label: string, color: string) =>
-    `<p style="text-align:center;margin:10px 0;">
-      <a href="${url}" style="display:inline-block;background:${color};color:#fff;text-decoration:none;padding:14px 22px;border-radius:8px;font-weight:700;font-size:14px;">${escapeHtml(label)}</a>
+    `<p style="text-align:center;margin:14px 0;">
+      <a href="${url}" style="display:inline-block;background:${color};color:#fff;text-decoration:none;padding:14px 22px;border-radius:8px;font-weight:700;font-size:14px;line-height:1.3;">${escapeHtml(label)}</a>
     </p>`;
 
   const clientInstallSection = params.clientInstallUrl
