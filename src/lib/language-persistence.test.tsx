@@ -24,7 +24,7 @@ function setViewport(w: number, h: number) {
   window.dispatchEvent(new Event("resize"));
 }
 
-const wrapper = ({ children }: { children: React.ReactNode }) => (
+const wrapper = ({ children }: { children: ReactNode }) => (
   <LanguageProvider>{children}</LanguageProvider>
 );
 
