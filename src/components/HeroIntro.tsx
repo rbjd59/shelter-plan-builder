@@ -218,7 +218,7 @@ export default function HeroIntro() {
             maxWidth: 820,
             margin: "0 auto 1.5rem",
             fontWeight: 600,
-            color: "#0a1633",
+            color: "#1d4ed8",
             whiteSpace: "pre-line",
           }}
         >
