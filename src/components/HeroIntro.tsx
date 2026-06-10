@@ -319,7 +319,7 @@ export default function HeroIntro() {
             position: "relative",
             maxWidth: 900,
             margin: "0 auto",
-            background: "#ffffff",
+            background: "#000000",
             aspectRatio: "16 / 9",
             width: "100%",
             overflow: "hidden",
@@ -329,24 +329,22 @@ export default function HeroIntro() {
             boxShadow: "0 0 0 6px #ffffff inset, 0 0 0 1px rgba(0,0,0,0.08) inset, 0 18px 50px rgba(0,0,0,0.6), 0 0 24px rgba(232,160,74,0.25)",
           }}
         >
+          <video
+            ref={videoRef}
+            key={lang}
+            src={`${SRC[lang]}#t=0.1`}
+            controls
+            playsInline
+            preload="metadata"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+              background: "#000000",
+              display: "block",
+            }}
+          />
 
-          {inView && (
-            <video
-              ref={videoRef}
-              key={lang}
-              src={SRC[lang]}
-              controls
-              playsInline
-              preload="auto"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "contain",
-                background: "#ffffff",
-                display: "block",
-              }}
-            />
-          )}
           {isPlaying && (
             <button
               type="button"
