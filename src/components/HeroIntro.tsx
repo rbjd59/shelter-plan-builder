@@ -35,9 +35,8 @@ const COPY = {
 } satisfies Record<Lang, { headline: string; subline: string; offer: string; start: string; play: string }>;
 
 // === Video autoplay tuning — adjust these values here ===
-const VIDEO_VISIBILITY_THRESHOLD = 0.1; // fallback: % of video in view (0–1) before it triggers
-const VIDEO_START_DELAY_MS = 0;         // delay after trigger before playback starts
-const SCROLL_ACTIVATION_PX = 8;         // starts once the page has moved down this many pixels
+const VIDEO_START_DELAY_MS = 2000;      // delay after scroll-up trigger before playback starts
+const SCROLL_UP_THRESHOLD_PX = 6;       // minimum upward scroll delta required to trigger
 
 export default function HeroIntro() {
   const { lang, setLang } = useLang();
@@ -71,14 +70,13 @@ export default function HeroIntro() {
   useEffect(() => {
     if (!wrapRef.current) return;
     let timer: ReturnType<typeof setTimeout> | null = null;
-    let io: IntersectionObserver | null = null;
+    let lastScrollY = typeof window !== "undefined" ? window.scrollY : 0;
     let lastTouchY: number | null = null;
 
     const tryPlay = () => {
       const v = videoRef.current;
       if (!v) return;
       // iOS Safari requires muted + playsInline for programmatic play().
-      // Start muted synchronously inside the gesture, then try to unmute.
       v.muted = true;
       v.setAttribute("muted", "");
       const playPromise = v.play();
@@ -102,19 +100,17 @@ export default function HeroIntro() {
       hasAutoStartedRef.current = true;
       setInView(true);
       if (timer) clearTimeout(timer);
-      if (VIDEO_START_DELAY_MS > 0) {
-        timer = setTimeout(tryPlay, VIDEO_START_DELAY_MS);
-      } else {
-        tryPlay();
-      }
+      timer = setTimeout(tryPlay, VIDEO_START_DELAY_MS);
     };
 
     const startOnScroll = () => {
-      if (window.scrollY >= SCROLL_ACTIVATION_PX) activateVideo();
+      const y = window.scrollY;
+      if (lastScrollY - y >= SCROLL_UP_THRESHOLD_PX) activateVideo();
+      lastScrollY = y;
     };
 
     const startOnWheel = (event: WheelEvent) => {
-      if (event.deltaY > 0) activateVideo();
+      if (event.deltaY < 0) activateVideo();
     };
 
     const rememberTouchStart = (event: TouchEvent) => {
@@ -123,7 +119,8 @@ export default function HeroIntro() {
 
     const startOnTouchMove = (event: TouchEvent) => {
       const currentY = event.touches[0]?.clientY;
-      if (lastTouchY !== null && currentY !== undefined && currentY < lastTouchY) activateVideo();
+      // Finger moving DOWN the screen = scrolling UP the page.
+      if (lastTouchY !== null && currentY !== undefined && currentY > lastTouchY) activateVideo();
       lastTouchY = currentY ?? lastTouchY;
     };
 
@@ -132,25 +129,7 @@ export default function HeroIntro() {
     window.addEventListener("touchstart", rememberTouchStart, { passive: true });
     window.addEventListener("touchmove", startOnTouchMove, { passive: true });
 
-    if (typeof IntersectionObserver !== "undefined") {
-      io = new IntersectionObserver(
-        (entries) => {
-          for (const e of entries) {
-            if (!hasAutoStartedRef.current && e.isIntersecting && window.scrollY >= SCROLL_ACTIVATION_PX) {
-              activateVideo();
-            } else if (!e.isIntersecting && timer) {
-              clearTimeout(timer);
-              timer = null;
-            }
-          }
-        },
-        { rootMargin: "0px", threshold: VIDEO_VISIBILITY_THRESHOLD },
-      );
-      io.observe(wrapRef.current);
-    }
-
     return () => {
-      io?.disconnect();
       window.removeEventListener("scroll", startOnScroll);
       window.removeEventListener("wheel", startOnWheel);
       window.removeEventListener("touchstart", rememberTouchStart);
@@ -257,6 +236,7 @@ export default function HeroIntro() {
           <div
             style={{
               display: "inline-flex",
+              gap: 4,
               background: "#fff",
               border: "1px solid rgba(10,22,51,0.15)",
               borderRadius: 999,
