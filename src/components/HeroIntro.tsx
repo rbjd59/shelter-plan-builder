@@ -201,7 +201,7 @@ export default function HeroIntro() {
 
         <h1
           style={{
-            fontFamily: '"Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
+            fontFamily: '"Fraunces", "Quincy CF", Georgia, "Times New Roman", serif',
             fontSize: "clamp(2.25rem, 5.5vw, 3.75rem)",
             fontWeight: 700,
             lineHeight: 1.1,
