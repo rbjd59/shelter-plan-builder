@@ -214,7 +214,7 @@ export default function HeroIntro() {
         </h1>
         <p
           style={{
-            fontFamily: '"Source Sans 3", "Source Sans Pro", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
+            fontFamily: '"Nunito Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
             fontSize: "clamp(1.2rem, 2.2vw, 1.7rem)",
             lineHeight: 1.3,
             maxWidth: 880,
