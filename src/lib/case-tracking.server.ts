@@ -1,7 +1,7 @@
 // Server-only: family-facing case tracking lifecycle.
 
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
-import { buildSelfHelpLibraryHtml, buildSelfHelpLibraryText } from "@/lib/self-help-library";
+
 
 const FROM = "intake@gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
