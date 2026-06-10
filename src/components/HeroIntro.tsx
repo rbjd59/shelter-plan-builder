@@ -107,7 +107,7 @@ export default function HeroIntro() {
         padding: "0 1rem 1.5rem",
         textAlign: "center",
         fontFamily:
-          '"Source Sans Pro", "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif',
+          '"Work Sans", -apple-system, Roboto, Helvetica, Arial, sans-serif',
       }}
     >
       <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative" }}>
@@ -226,7 +226,7 @@ export default function HeroIntro() {
           <div style={{ textAlign: "center" }}>
             <h1
               style={{
-                fontFamily: 'Merriweather, Georgia, "Times New Roman", serif',
+                fontFamily: '"Fraunces", "Quincy CF", Georgia, serif',
                 fontSize: "clamp(2.5rem, 6vw, 4.25rem)",
                 fontWeight: 700,
                 lineHeight: 1.08,
@@ -248,7 +248,7 @@ export default function HeroIntro() {
             </h1>
             <p
               style={{
-                fontFamily: '"Source Sans Pro", "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
+                fontFamily: '"Work Sans", -apple-system, Roboto, Helvetica, Arial, sans-serif',
                 fontSize: "clamp(1.2rem, 2.2vw, 1.7rem)",
                 lineHeight: 1.3,
                 maxWidth: 900,
