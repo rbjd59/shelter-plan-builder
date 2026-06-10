@@ -102,9 +102,9 @@ export default function HeroIntro() {
   return (
     <section
       style={{
-        background: "#000000",
-        color: "#ffffff",
-        padding: "1.25rem 1rem 1.5rem",
+        background: "#ffffff",
+        color: "#0a1633",
+        padding: "0.5rem 1rem 1.5rem",
         textAlign: "center",
         fontFamily:
           'ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
@@ -122,7 +122,7 @@ export default function HeroIntro() {
             alignItems: "center",
             gap: 10,
             textDecoration: "none",
-            color: "#ffffff",
+            color: "#0a1633",
           }}
         >
           <img
@@ -137,7 +137,7 @@ export default function HeroIntro() {
               fontSize: 20,
               fontWeight: 700,
               letterSpacing: -0.3,
-              color: "#ffffff",
+              color: "#0a1633",
             }}
           >
             DetencionDefensa
@@ -156,9 +156,9 @@ export default function HeroIntro() {
             fontWeight: 700,
             letterSpacing: "0.16em",
             textTransform: "uppercase",
-            color: "#ffffff",
+            color: "#0a1633",
             opacity: 0.85,
-            paddingTop: 16,
+            paddingTop: 4,
           }}
         >
           <div
@@ -232,7 +232,7 @@ export default function HeroIntro() {
                 lineHeight: 1.08,
                 margin: "0 0 1.25rem",
                 letterSpacing: "-0.005em",
-                color: "#ffffff",
+                color: "#0a1633",
               }}
             >
               <span style={{ color: "#c0282d" }}>La Migra</span>
@@ -246,7 +246,7 @@ export default function HeroIntro() {
                 maxWidth: 900,
                 margin: "0 auto",
                 fontWeight: 400,
-                color: "#ffffff",
+                color: "#0a1633",
                 whiteSpace: "pre-line",
               }}
             >
