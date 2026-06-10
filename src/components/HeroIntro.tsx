@@ -206,7 +206,7 @@ export default function HeroIntro() {
             lineHeight: 1.1,
             margin: "0 0 1.25rem",
             letterSpacing: -1,
-            color: "#0a1633",
+            color: "#c0282d",
           }}
         >
           {COPY[lang].headline}
