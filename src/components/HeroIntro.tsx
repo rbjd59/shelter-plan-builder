@@ -5,7 +5,7 @@ import enAsset from "@/assets/videos/detenciondefensa_en.mp4.asset.json";
 import htAsset from "@/assets/videos/detenciondefensa_ht.mp4.asset.json";
 import logoAsset from "@/assets/dd-logo.png.asset.json";
 import iceLeftAsset from "@/assets/ice-arrest-new.jpg.asset.json";
-import iceRightAsset from "@/assets/ice-arrest-nyc.jpg.asset.json";
+import iceRightAsset from "@/assets/hispanic-family.jpg";
 
 
 const SRC = { es: esAsset.url, en: enAsset.url, ht: htAsset.url };
@@ -263,8 +263,8 @@ export default function HeroIntro() {
             </p>
           </div>
           <img
-            src={iceRightAsset.url}
-            alt="ICE arrest in New York City"
+            src={iceRightAsset}
+            alt="Hispanic family standing together"
             loading="lazy"
             style={{
               width: "100%",
