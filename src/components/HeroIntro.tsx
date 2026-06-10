@@ -226,12 +226,12 @@ export default function HeroIntro() {
           <div style={{ textAlign: "center" }}>
             <h1
               style={{
-                fontFamily: '"Century Schoolbook", "New Century Schoolbook", "TeX Gyre Schola", Georgia, "Times New Roman", serif',
-                fontSize: "clamp(2.25rem, 5.5vw, 3.75rem)",
-                fontWeight: 400,
-                lineHeight: 1.1,
+                fontFamily: '"Cormorant Garamond", "Garamond", "EB Garamond", Georgia, "Times New Roman", serif',
+                fontSize: "clamp(2.5rem, 6vw, 4.25rem)",
+                fontWeight: 300,
+                lineHeight: 1.08,
                 margin: "0 0 1.25rem",
-                letterSpacing: -1,
+                letterSpacing: "-0.005em",
                 color: "#ffffff",
               }}
             >
