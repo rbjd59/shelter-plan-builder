@@ -228,7 +228,7 @@ export default function HeroIntro() {
               style={{
                 fontFamily: 'Merriweather, Georgia, "Times New Roman", serif',
                 fontSize: "clamp(2.5rem, 6vw, 4.25rem)",
-                fontWeight: 300,
+                fontWeight: 700,
                 lineHeight: 1.08,
                 margin: "0 0 1.25rem",
                 letterSpacing: "-0.005em",
