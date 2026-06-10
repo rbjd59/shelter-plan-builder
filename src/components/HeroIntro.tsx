@@ -158,7 +158,7 @@ export default function HeroIntro() {
             textTransform: "uppercase",
             color: "#ffffff",
             opacity: 0.85,
-            paddingTop: 56,
+            paddingTop: 16,
           }}
         >
           <div
