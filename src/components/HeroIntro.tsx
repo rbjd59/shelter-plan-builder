@@ -155,7 +155,7 @@ export default function HeroIntro() {
             fontWeight: 700,
             letterSpacing: "0.16em",
             textTransform: "uppercase",
-            color: "#0a1633",
+            color: "#ffffff",
             opacity: 0.85,
             paddingTop: 56,
           }}
