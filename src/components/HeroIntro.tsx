@@ -49,26 +49,36 @@ export default function HeroIntro() {
       setInView(true);
       return;
     }
+    let timer: ReturnType<typeof setTimeout> | null = null;
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
-          if (e.isIntersecting) {
+          if (e.isIntersecting && window.scrollY > 40) {
             setInView(true);
-            const v = videoRef.current;
-            if (v && v.paused) {
-              v.muted = true;
-              v.play().catch(() => {
-                /* autoplay blocked */
-              });
-            }
+            if (timer) clearTimeout(timer);
+            timer = setTimeout(() => {
+              const v = videoRef.current;
+              if (v && v.paused) {
+                v.muted = true;
+                v.play().catch(() => {
+                  /* autoplay blocked */
+                });
+              }
+            }, 2000);
+          } else if (!e.isIntersecting && timer) {
+            clearTimeout(timer);
+            timer = null;
           }
         }
       },
-      { rootMargin: "0px", threshold: 0.35 },
+      { rootMargin: "0px", threshold: 0.6 },
     );
     io.observe(wrapRef.current);
-    return () => io.disconnect();
-  }, [inView, lang]);
+    return () => {
+      io.disconnect();
+      if (timer) clearTimeout(timer);
+    };
+  }, [lang]);
 
   // Reset on language change
   useEffect(() => {
