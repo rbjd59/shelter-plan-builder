@@ -263,7 +263,7 @@ export default function HeroIntro() {
             </p>
           </div>
           <img
-            src={iceRightAsset.url}
+            src={iceRightAsset}
             alt="ICE arrest in New York City"
             loading="lazy"
             style={{
