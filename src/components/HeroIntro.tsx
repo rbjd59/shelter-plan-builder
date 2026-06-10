@@ -59,12 +59,14 @@ export default function HeroIntro() {
             timer = setTimeout(() => {
               const v = videoRef.current;
               if (v && v.paused) {
-                v.muted = true;
+                v.muted = false;
                 v.play().catch(() => {
-                  /* autoplay blocked */
+                  // Browser blocked unmuted autoplay — fall back to muted
+                  v.muted = true;
+                  v.play().catch(() => {});
                 });
               }
-            }, 2000);
+            }, 3000);
           } else if (!e.isIntersecting && timer) {
             clearTimeout(timer);
             timer = null;
@@ -330,7 +332,6 @@ export default function HeroIntro() {
               src={SRC[lang]}
               controls
               playsInline
-              muted
               preload="auto"
               style={{
                 width: "100%",
