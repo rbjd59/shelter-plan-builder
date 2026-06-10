@@ -122,7 +122,7 @@ export default function HeroIntro() {
             alignItems: "center",
             gap: 10,
             textDecoration: "none",
-            color: "#ffffff",
+            color: "#0a1633",
           }}
         >
           <img
