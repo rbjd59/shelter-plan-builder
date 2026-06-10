@@ -4,6 +4,8 @@ import esAsset from "@/assets/videos/detenciondefensa_es.mp4.asset.json";
 import enAsset from "@/assets/videos/detenciondefensa_en.mp4.asset.json";
 import htAsset from "@/assets/videos/detenciondefensa_ht.mp4.asset.json";
 import logoAsset from "@/assets/dd-logo.png.asset.json";
+import iceLeftAsset from "@/assets/ice-arrest-dallas.jpg.asset.json";
+import iceRightAsset from "@/assets/ice-arrest-nyc.jpg.asset.json";
 
 
 const SRC = { es: esAsset.url, en: enAsset.url, ht: htAsset.url };
@@ -199,33 +201,72 @@ export default function HeroIntro() {
         </div>
 
 
-        <h1
+        <div
           style={{
-            fontFamily: '"Fraunces", "Quincy CF", Georgia, "Times New Roman", serif',
-            fontSize: "clamp(2.25rem, 5.5vw, 3.75rem)",
-            fontWeight: 700,
-            lineHeight: 1.1,
-            margin: "0 0 1.25rem",
-            letterSpacing: -1,
-            color: "#c0282d",
+            display: "grid",
+            gridTemplateColumns: "minmax(140px, 1fr) minmax(0, 2.4fr) minmax(140px, 1fr)",
+            alignItems: "center",
+            gap: "clamp(12px, 2vw, 32px)",
+            margin: "0 0 1.75rem",
           }}
         >
-          {COPY[lang].headline}
-        </h1>
-        <p
-          style={{
-            fontFamily: '"Work Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
-            fontSize: "clamp(1.2rem, 2.2vw, 1.7rem)",
-            lineHeight: 1.3,
-            maxWidth: 880,
-            margin: "0 auto 1.5rem",
-            fontWeight: 400,
-            color: "#ffffff",
-            whiteSpace: "pre-line",
-          }}
-        >
-          {COPY[lang].subline}
-        </p>
+          <img
+            src={iceLeftAsset.url}
+            alt="ICE ERO officers conducting a targeted enforcement operation"
+            loading="lazy"
+            style={{
+              width: "100%",
+              aspectRatio: "3 / 4",
+              objectFit: "cover",
+              borderRadius: 10,
+              boxShadow: "0 10px 30px rgba(0,0,0,0.45)",
+              display: "block",
+            }}
+          />
+          <div>
+            <h1
+              style={{
+                fontFamily: '"Fraunces", "Quincy CF", Georgia, "Times New Roman", serif',
+                fontSize: "clamp(2.25rem, 5.5vw, 3.75rem)",
+                fontWeight: 700,
+                lineHeight: 1.1,
+                margin: "0 0 1.25rem",
+                letterSpacing: -1,
+                color: "#c0282d",
+              }}
+            >
+              {COPY[lang].headline}
+            </h1>
+            <p
+              style={{
+                fontFamily: '"Work Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
+                fontSize: "clamp(1.2rem, 2.2vw, 1.7rem)",
+                lineHeight: 1.3,
+                maxWidth: 720,
+                margin: "0 auto",
+                fontWeight: 400,
+                color: "#ffffff",
+                whiteSpace: "pre-line",
+              }}
+            >
+              {COPY[lang].subline}
+            </p>
+          </div>
+          <img
+            src={iceRightAsset.url}
+            alt="ICE Fugitive Operations Team arresting a subject"
+            loading="lazy"
+            style={{
+              width: "100%",
+              aspectRatio: "3 / 4",
+              objectFit: "cover",
+              borderRadius: 10,
+              boxShadow: "0 10px 30px rgba(0,0,0,0.45)",
+              display: "block",
+            }}
+          />
+        </div>
+
 
         <div
           ref={wrapRef}
