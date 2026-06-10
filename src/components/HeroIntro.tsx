@@ -232,7 +232,7 @@ export default function HeroIntro() {
                 lineHeight: 1.08,
                 margin: "0 0 1.25rem",
                 letterSpacing: "-0.005em",
-                color: "#ffffff",
+                color: "#0a1633",
               }}
             >
               <span style={{ color: "#c0282d" }}>La Migra</span>
