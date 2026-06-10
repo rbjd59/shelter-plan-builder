@@ -34,9 +34,10 @@ const COPY = {
   },
 } satisfies Record<Lang, { headline: string; subline: string; offer: string; start: string; play: string }>;
 
-// === Video autoplay tuning — adjust both values here ===
-const VIDEO_VISIBILITY_THRESHOLD = 0.1; // % of video in view (0–1) before it triggers
+// === Video autoplay tuning — adjust these values here ===
+const VIDEO_VISIBILITY_THRESHOLD = 0.1; // fallback: % of video in view (0–1) before it triggers
 const VIDEO_START_DELAY_MS = 0;         // delay after trigger before playback starts
+const SCROLL_ACTIVATION_PX = 8;         // starts once the page has moved down this many pixels
 
 export default function HeroIntro() {
   const { lang, setLang } = useLang();
@@ -46,42 +47,82 @@ export default function HeroIntro() {
   const [inView, setInView] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
+  const hasAutoStartedRef = useRef(false);
 
   useEffect(() => {
     if (!wrapRef.current) return;
-    if (typeof IntersectionObserver === "undefined") {
-      setInView(true);
-      return;
-    }
     let timer: ReturnType<typeof setTimeout> | null = null;
+    let io: IntersectionObserver | null = null;
+    let lastTouchY: number | null = null;
+
     const tryPlay = () => {
       const v = videoRef.current;
-      if (v && v.paused) {
-        v.muted = false;
-        v.play().catch(() => {
-          v.muted = true;
-          v.play().catch(() => {});
-        });
+      if (!v || !v.paused) return;
+      v.muted = false;
+      v.play().catch(() => {
+        v.muted = true;
+        v.play().catch(() => {});
+      });
+    };
+
+    const activateVideo = () => {
+      if (hasAutoStartedRef.current) return;
+      hasAutoStartedRef.current = true;
+      setInView(true);
+      if (timer) clearTimeout(timer);
+      if (VIDEO_START_DELAY_MS > 0) {
+        timer = setTimeout(tryPlay, VIDEO_START_DELAY_MS);
+      } else {
+        tryPlay();
       }
     };
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting && window.scrollY > 40) {
-            setInView(true);
-            if (timer) clearTimeout(timer);
-            timer = setTimeout(tryPlay, VIDEO_START_DELAY_MS);
-          } else if (!e.isIntersecting && timer) {
-            clearTimeout(timer);
-            timer = null;
+
+    const startOnScroll = () => {
+      if (window.scrollY >= SCROLL_ACTIVATION_PX) activateVideo();
+    };
+
+    const startOnWheel = (event: WheelEvent) => {
+      if (event.deltaY > 0) activateVideo();
+    };
+
+    const rememberTouchStart = (event: TouchEvent) => {
+      lastTouchY = event.touches[0]?.clientY ?? null;
+    };
+
+    const startOnTouchMove = (event: TouchEvent) => {
+      const currentY = event.touches[0]?.clientY;
+      if (lastTouchY !== null && currentY !== undefined && currentY < lastTouchY) activateVideo();
+      lastTouchY = currentY ?? lastTouchY;
+    };
+
+    window.addEventListener("scroll", startOnScroll, { passive: true });
+    window.addEventListener("wheel", startOnWheel, { passive: true });
+    window.addEventListener("touchstart", rememberTouchStart, { passive: true });
+    window.addEventListener("touchmove", startOnTouchMove, { passive: true });
+
+    if (typeof IntersectionObserver !== "undefined") {
+      io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (!hasAutoStartedRef.current && e.isIntersecting && window.scrollY >= SCROLL_ACTIVATION_PX) {
+              activateVideo();
+            } else if (!e.isIntersecting && timer) {
+              clearTimeout(timer);
+              timer = null;
+            }
           }
-        }
-      },
-      { rootMargin: "0px", threshold: VIDEO_VISIBILITY_THRESHOLD },
-    );
-    io.observe(wrapRef.current);
+        },
+        { rootMargin: "0px", threshold: VIDEO_VISIBILITY_THRESHOLD },
+      );
+      io.observe(wrapRef.current);
+    }
+
     return () => {
-      io.disconnect();
+      io?.disconnect();
+      window.removeEventListener("scroll", startOnScroll);
+      window.removeEventListener("wheel", startOnWheel);
+      window.removeEventListener("touchstart", rememberTouchStart);
+      window.removeEventListener("touchmove", startOnTouchMove);
       if (timer) clearTimeout(timer);
     };
   }, [lang]);
@@ -91,6 +132,7 @@ export default function HeroIntro() {
   useEffect(() => {
     setIsPlaying(false);
     setHasStarted(false);
+    hasAutoStartedRef.current = false;
   }, [lang]);
 
   // Sync button state with the underlying <video>
