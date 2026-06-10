@@ -219,12 +219,10 @@ export default function HeroIntro() {
             margin: "0 auto 1.5rem",
             fontWeight: 600,
             color: "#0a1633",
+            whiteSpace: "pre-line",
           }}
         >
           {COPY[lang].subline}
-          <br />
-          <span style={{ color: "#ff8a65" }}>{COPY[lang].offer}</span>
-
         </p>
 
         <div
