@@ -236,6 +236,7 @@ export default function HeroIntro() {
           <div
             style={{
               display: "inline-flex",
+              gap: 4,
               background: "#fff",
               border: "1px solid rgba(10,22,51,0.15)",
               borderRadius: 999,
