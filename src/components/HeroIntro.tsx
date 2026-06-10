@@ -332,7 +332,6 @@ export default function HeroIntro() {
               src={SRC[lang]}
               controls
               playsInline
-              muted
               preload="auto"
               style={{
                 width: "100%",
