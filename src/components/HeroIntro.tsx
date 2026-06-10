@@ -44,23 +44,31 @@ export default function HeroIntro() {
   const [hasStarted, setHasStarted] = useState(false);
 
   useEffect(() => {
-    if (!wrapRef.current || inView) return;
+    if (!wrapRef.current) return;
     if (typeof IntersectionObserver === "undefined") {
       setInView(true);
       return;
     }
     const io = new IntersectionObserver(
       (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          setInView(true);
-          io.disconnect();
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            setInView(true);
+            const v = videoRef.current;
+            if (v && v.paused) {
+              v.muted = true;
+              v.play().catch(() => {
+                /* autoplay blocked */
+              });
+            }
+          }
         }
       },
-      { rootMargin: "200px 0px", threshold: 0.01 },
+      { rootMargin: "0px", threshold: 0.35 },
     );
     io.observe(wrapRef.current);
     return () => io.disconnect();
-  }, [inView]);
+  }, [inView, lang]);
 
   // Reset on language change
   useEffect(() => {
