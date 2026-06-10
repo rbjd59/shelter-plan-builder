@@ -34,6 +34,10 @@ const COPY = {
   },
 } satisfies Record<Lang, { headline: string; subline: string; offer: string; start: string; play: string }>;
 
+// === Video autoplay tuning — adjust both values here ===
+const VIDEO_VISIBILITY_THRESHOLD = 0.1; // % of video in view (0–1) before it triggers
+const VIDEO_START_DELAY_MS = 0;         // delay after trigger before playback starts
+
 export default function HeroIntro() {
   const { lang, setLang } = useLang();
 
@@ -49,6 +53,7 @@ export default function HeroIntro() {
       setInView(true);
       return;
     }
+    let timer: ReturnType<typeof setTimeout> | null = null;
     const tryPlay = () => {
       const v = videoRef.current;
       if (v && v.paused) {
@@ -64,17 +69,23 @@ export default function HeroIntro() {
         for (const e of entries) {
           if (e.isIntersecting && window.scrollY > 40) {
             setInView(true);
-            tryPlay();
+            if (timer) clearTimeout(timer);
+            timer = setTimeout(tryPlay, VIDEO_START_DELAY_MS);
+          } else if (!e.isIntersecting && timer) {
+            clearTimeout(timer);
+            timer = null;
           }
         }
       },
-      { rootMargin: "0px", threshold: 0.1 },
+      { rootMargin: "0px", threshold: VIDEO_VISIBILITY_THRESHOLD },
     );
     io.observe(wrapRef.current);
     return () => {
       io.disconnect();
+      if (timer) clearTimeout(timer);
     };
   }, [lang]);
+
 
   // Reset on language change
   useEffect(() => {
