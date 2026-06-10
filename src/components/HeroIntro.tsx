@@ -408,8 +408,8 @@ function PillButton({ label, icon }: { label: string; icon: "play" | "pause" }) 
         alignItems: "center",
         gap: 12,
         padding: "14px 26px 14px 22px",
-        background: "rgba(255,255,255,0.96)",
-        color: "#0f1830",
+        background: "#0a0a0a",
+        color: "#ffffff",
         borderRadius: 999,
         fontWeight: 800,
         fontSize: 16,
@@ -427,7 +427,7 @@ function PillButton({ label, icon }: { label: string; icon: "play" | "pause" }) 
             height: 0,
             borderTop: "9px solid transparent",
             borderBottom: "9px solid transparent",
-            borderLeft: "14px solid #0f1830",
+            borderLeft: "14px solid #ffffff",
           }}
         />
       ) : (
