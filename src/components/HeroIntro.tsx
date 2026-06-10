@@ -104,7 +104,7 @@ export default function HeroIntro() {
       style={{
         background: "#ffffff",
         color: "#112e51",
-        padding: "0.5rem 1rem 1.5rem",
+        padding: "0 1rem 1.5rem",
         textAlign: "center",
         fontFamily:
           '"Source Sans Pro", "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif',
