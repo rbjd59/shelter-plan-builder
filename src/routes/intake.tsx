@@ -94,7 +94,7 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       ht: "Enfòmasyon sou kenbe imigrasyon an.",
     },
     fields: [
-      { key: "ice_form_known", type: "checkbox", label: { en: "Have you been convicted of a serious felony anywhere?", es: "¿Tiene copia del formulario I-247?", ht: "Èske w gen kopi fòm I-247?" } },
+      { key: "serious_felony", type: "checkbox", label: { en: "Have you ever been convicted of a serious felony anywhere?", es: "¿Alguna vez ha sido condenado por un delito grave en cualquier lugar?", ht: "Èske ou janm te kondane pou yon krim grav nenpòt kote?" } },
       { key: "prior_immigration_proceedings", type: "textarea", label: { en: "Describe prior Immigration Status", es: "Describa procedimientos migratorios anteriores", ht: "Dekri pwosedi imigrasyon anvan" } },
     ],
   },
@@ -496,7 +496,18 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
                     {f.type === "textarea" ? (
                       <textarea value={(answers[f.key] as string) || ""} onChange={(e) => setAnswers((a) => ({ ...a, [f.key]: e.target.value }))} rows={3} disabled={f.disabled} style={{ ...inputStyle, ...(f.disabled ? disabledStyle : null) }} />
                     ) : f.type === "checkbox" ? (
-                      <input type="checkbox" checked={!!answers[f.key]} onChange={(e) => setAnswers((a) => ({ ...a, [f.key]: e.target.checked }))} disabled={f.disabled} />
+                      <>
+                        <input type="checkbox" checked={!!answers[f.key]} onChange={(e) => setAnswers((a) => ({ ...a, [f.key]: e.target.checked }))} disabled={f.disabled} />
+                        {f.key === "serious_felony" && !!answers[f.key] && (
+                          <div style={{ marginTop: 10, padding: 12, background: "#3a1f1f", border: "1px solid #ff8080", borderRadius: 4, color: "#ffd6d6", fontSize: 13, lineHeight: 1.5 }}>
+                            {L === "es"
+                              ? "Advertencia: Las personas condenadas por delitos graves deben considerar contactar a un abogado independiente o contratar a un abogado especializado en defensa de detención compleja. Este paquete no está destinado a personas con condenas por delitos graves."
+                              : L === "ht"
+                              ? "Avètisman: Moun ki te kondane pou krim grav yo ta dwe konsidere kontakte yon avoka endepandan oswa angaje yon avoka ki espesyalize nan defans detansyon konplèks. Pakè sa a pa fèt pou moun ki gen kondanasyon pou krim grav."
+                              : "Warning: Persons convicted of serious felonies should consider contacting independent legal counsel or contracting with an attorney that specializes in complex detention defense. This package is not intended for persons with serious felony convictions."}
+                          </div>
+                        )}
+                      </>
                     ) : (
                       <input type={f.type || "text"} value={(answers[f.key] as string) || ""} onChange={(e) => setAnswers((a) => ({ ...a, [f.key]: e.target.value }))} disabled={f.disabled} style={{ ...inputStyle, ...(f.disabled ? disabledStyle : null) }} />
                     )}
