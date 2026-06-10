@@ -204,7 +204,7 @@ export default function HeroIntro() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "minmax(120px, 220px) minmax(0, 1fr)",
+            gridTemplateColumns: "minmax(140px, 230px) minmax(0, 1fr) minmax(140px, 230px)",
             alignItems: "center",
             gap: "clamp(16px, 3vw, 36px)",
             margin: "0 0 1.75rem",
@@ -228,7 +228,7 @@ export default function HeroIntro() {
             <h1
               style={{
                 fontFamily: '"Fraunces", "Quincy CF", Georgia, serif',
-                fontSize: "clamp(2.5rem, 6vw, 4.25rem)",
+                fontSize: "clamp(2.25rem, 5.4vw, 3.75rem)",
                 fontWeight: 700,
                 lineHeight: 1.08,
                 margin: "0 0 1.25rem",
@@ -242,19 +242,19 @@ export default function HeroIntro() {
                   <>
                     <span style={{ color: "#ffffff" }}>{line1}</span>
                     {"\n"}
-                    <span style={{ color: "#ffffff" }}>{line2}</span>
+                    <span style={{ color: "#e85d3a" }}>{line2}</span>
                   </>
                 );
               })()}
             </h1>
             <p
               style={{
-                fontFamily: '"Work Sans", -apple-system, Roboto, Helvetica, Arial, sans-serif',
-                fontSize: "clamp(1.2rem, 2.2vw, 1.7rem)",
-                lineHeight: 1.3,
-                maxWidth: 900,
+                fontFamily: '"Fraunces", "Quincy CF", Georgia, serif',
+                fontSize: "clamp(1.05rem, 1.7vw, 1.35rem)",
+                lineHeight: 1.4,
+                maxWidth: 720,
                 margin: "0 auto",
-                fontWeight: 600,
+                fontWeight: 500,
                 color: "#ffffff",
                 whiteSpace: "pre-line",
               }}
@@ -262,6 +262,19 @@ export default function HeroIntro() {
               {COPY[lang].subline}
             </p>
           </div>
+          <img
+            src={iceRightAsset.url}
+            alt="ICE arrest in New York City"
+            loading="lazy"
+            style={{
+              width: "100%",
+              aspectRatio: "3 / 4",
+              objectFit: "cover",
+              borderRadius: 10,
+              boxShadow: "0 10px 30px rgba(0,0,0,0.45)",
+              display: "block",
+            }}
+          />
         </div>
 
         <div
