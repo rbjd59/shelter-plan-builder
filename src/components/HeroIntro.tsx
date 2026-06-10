@@ -102,8 +102,8 @@ export default function HeroIntro() {
   return (
     <section
       style={{
-        background: "#ffffff",
-        color: "#112e51",
+        background: "#000000",
+        color: "#ffffff",
         padding: "0 1rem 1.5rem",
         textAlign: "center",
         fontFamily:
