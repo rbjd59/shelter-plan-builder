@@ -61,6 +61,14 @@ export default function HeroIntro() {
 
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+    if ("scrollRestoration" in window.history) {
+      try { window.history.scrollRestoration = "manual"; } catch { /* noop */ }
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     if (!wrapRef.current) return;
     let timer: ReturnType<typeof setTimeout> | null = null;
     let io: IntersectionObserver | null = null;
