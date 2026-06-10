@@ -137,7 +137,7 @@ export default function HeroIntro() {
               fontSize: 20,
               fontWeight: 700,
               letterSpacing: -0.3,
-              color: "#ffffff",
+              color: "#0a1633",
             }}
           >
             DetencionDefensa
