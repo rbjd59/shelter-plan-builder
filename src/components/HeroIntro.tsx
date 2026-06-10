@@ -264,7 +264,7 @@ export default function HeroIntro() {
           </div>
           <img
             src={iceRightAsset}
-            alt="ICE arrest in New York City"
+            alt="Hispanic family standing together"
             loading="lazy"
             style={{
               width: "100%",
