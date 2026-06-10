@@ -44,23 +44,31 @@ export default function HeroIntro() {
   const [hasStarted, setHasStarted] = useState(false);
 
   useEffect(() => {
-    if (!wrapRef.current || inView) return;
+    if (!wrapRef.current) return;
     if (typeof IntersectionObserver === "undefined") {
       setInView(true);
       return;
     }
     const io = new IntersectionObserver(
       (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          setInView(true);
-          io.disconnect();
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            setInView(true);
+            const v = videoRef.current;
+            if (v && v.paused) {
+              v.muted = true;
+              v.play().catch(() => {
+                /* autoplay blocked */
+              });
+            }
+          }
         }
       },
-      { rootMargin: "200px 0px", threshold: 0.01 },
+      { rootMargin: "0px", threshold: 0.35 },
     );
     io.observe(wrapRef.current);
     return () => io.disconnect();
-  }, [inView]);
+  }, [inView, lang]);
 
   // Reset on language change
   useEffect(() => {
@@ -310,9 +318,11 @@ export default function HeroIntro() {
               ref={videoRef}
               key={lang}
               src={SRC[lang]}
-              controls={hasStarted}
+              controls
               playsInline
-              preload="metadata"
+              muted
+              autoPlay
+              preload="auto"
               style={{
                 width: "100%",
                 height: "100%",
@@ -321,52 +331,6 @@ export default function HeroIntro() {
                 display: "block",
               }}
             />
-          )}
-          {!isPlaying && (
-            <div
-              style={{
-                position: "absolute",
-                top: 22,
-                left: 22,
-                display: "flex",
-                alignItems: "center",
-                gap: 14,
-                zIndex: 2,
-              }}
-            >
-              <button
-                type="button"
-                onClick={toggle}
-                aria-label={hasStarted ? "Play video" : "Start video"}
-                style={{
-                  background: "transparent",
-                  border: "none",
-                  padding: 0,
-                  cursor: "pointer",
-                  fontFamily: "inherit",
-                }}
-              >
-                <PillButton label={hasStarted ? COPY[lang].play : COPY[lang].start} icon="play" />
-              </button>
-              <div
-                style={{
-                  background: "#ffffff",
-                  color: "#0a0a0a",
-                  border: "1.5px solid #0a0a0a",
-                  borderRadius: 8,
-                  padding: "8px 12px",
-                  fontFamily: '"Fraunces", "Quincy CF", Georgia, serif',
-                  fontSize: 13,
-                  fontWeight: 600,
-                  lineHeight: 1.2,
-                  textAlign: "left",
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.18)",
-                }}
-              >
-                <div>Please watch video</div>
-                <div>Por favor mire el video</div>
-              </div>
-            </div>
           )}
           {isPlaying && (
             <button
