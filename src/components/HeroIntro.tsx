@@ -10,21 +10,21 @@ const SRC = { es: esAsset.url, en: enAsset.url, ht: htAsset.url };
 
 const COPY = {
   es: {
-    headline: "Deje de pagar de más por ayuda legal",
+    headline: "La Migra ya viene, prepárese",
     subline: "Redactado con IA — Supervisado por abogado — Plan Pro Se de defensa contra detención de ICE en minutos",
     offer: "Solo $199 — ¡No salga de casa sin él!",
     start: "Comenzar",
     play: "Reproducir",
   },
   en: {
-    headline: "Stop overpaying for legal help",
+    headline: "La Migra is Coming, Be Prepared",
     subline: "AI Drafted — Attorney Supervised — Pro Se ICE Detention Defense Plan all in Minutes",
     offer: "Only $199 — Don't Leave Home Without It!",
     start: "Start",
     play: "Play",
   },
   ht: {
-    headline: "Sispann peye twòp pou èd legal",
+    headline: "La Migra ap vini, prepare w",
     subline: "Redije ak IA — Sipèvize pa avoka — Plan defans Pro Se pou detansyon ICE nan kèk minit",
     offer: "Sèlman $199 — Pa kite kay la san li!",
     start: "Kòmanse",
