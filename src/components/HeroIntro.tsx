@@ -304,23 +304,25 @@ export default function HeroIntro() {
             loading="lazy"
             style={{
               width: "100%",
-              aspectRatio: "3 / 4",
+              aspectRatio: isMobile ? "4 / 3" : "3 / 4",
               objectFit: "cover",
               borderRadius: 10,
               boxShadow: "0 10px 30px rgba(0,0,0,0.45)",
               display: "block",
+              order: isMobile ? 2 : 0,
             }}
           />
-          <div style={{ textAlign: "center" }}>
+          <div style={{ textAlign: "center", order: isMobile ? 1 : 0 }}>
             <h1
               style={{
                 fontFamily: '"Fraunces", "Quincy CF", Georgia, serif',
-                fontSize: "clamp(2.25rem, 5.4vw, 3.75rem)",
+                fontSize: isMobile ? "1.9rem" : "clamp(2.25rem, 5.4vw, 3.75rem)",
                 fontWeight: 700,
                 lineHeight: 1.08,
-                margin: "0 0 1.25rem",
+                margin: "0 0 1rem",
                 letterSpacing: "-0.005em",
                 whiteSpace: "pre-line",
+                textAlign: "center",
               }}
             >
               {(() => {
@@ -337,13 +339,14 @@ export default function HeroIntro() {
             <p
               style={{
                 fontFamily: '"Fraunces", "Quincy CF", Georgia, serif',
-                fontSize: "clamp(1.05rem, 1.7vw, 1.35rem)",
+                fontSize: isMobile ? "1rem" : "clamp(1.05rem, 1.7vw, 1.35rem)",
                 lineHeight: 1.4,
                 maxWidth: 720,
                 margin: "0 auto",
                 fontWeight: 500,
                 color: "#ffffff",
                 whiteSpace: "pre-line",
+                textAlign: "center",
               }}
             >
               {COPY[lang].subline}
@@ -355,13 +358,15 @@ export default function HeroIntro() {
             loading="lazy"
             style={{
               width: "100%",
-              aspectRatio: "3 / 4",
+              aspectRatio: isMobile ? "4 / 3" : "3 / 4",
               objectFit: "cover",
               borderRadius: 10,
               boxShadow: "0 10px 30px rgba(0,0,0,0.45)",
               display: "block",
+              order: isMobile ? 3 : 0,
             }}
           />
+
         </div>
 
         <div
