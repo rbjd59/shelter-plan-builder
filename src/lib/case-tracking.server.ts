@@ -111,7 +111,7 @@ function buildHtml(opts: {
   cta: string;
   note?: string;
 }): string {
-  return `<!doctype html><html><body style="margin:0;background:#ffffff;font-family:Arial,sans-serif;color:#111;">
+  return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;background:#ffffff;font-family:Arial,sans-serif;color:#111;">
     <div style="max-width:560px;margin:0 auto;padding:32px 24px;">
       <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:28px;">
         <h1 style="font-size:22px;margin:0 0 12px;color:#0b1220;">${escapeHtml(opts.heading)}</h1>
