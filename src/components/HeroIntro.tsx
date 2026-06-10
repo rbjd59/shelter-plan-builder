@@ -390,6 +390,9 @@ export default function HeroIntro() {
             src={`${SRC[lang]}#t=0.1`}
             controls
             playsInline
+            // @ts-expect-error legacy iOS attribute
+            webkit-playsinline="true"
+            muted
             preload="metadata"
             style={{
               width: "100%",
