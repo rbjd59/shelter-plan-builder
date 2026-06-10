@@ -213,11 +213,15 @@ export default function HeroIntro() {
         </h1>
         <p
           style={{
-            fontSize: "clamp(1.05rem, 1.8vw, 1.35rem)",
-            lineHeight: 1.45,
-            maxWidth: 820,
+            fontFamily:
+              '"Libre Baskerville", "Playfair Display", Georgia, "Times New Roman", serif',
+            fontSize: "clamp(1.2rem, 2.2vw, 1.7rem)",
+            lineHeight: 1.3,
+            maxWidth: 880,
             margin: "0 auto 1.5rem",
-            fontWeight: 600,
+            fontWeight: 700,
+            fontStyle: "italic",
+            letterSpacing: "-0.01em",
             color: "#1d4ed8",
             whiteSpace: "pre-line",
           }}
