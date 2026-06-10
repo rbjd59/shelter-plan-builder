@@ -294,14 +294,14 @@ export default function HeroIntro() {
             position: "relative",
             maxWidth: 900,
             margin: "0 auto",
-            background: "#0a0a0a",
+            background: "#ffffff",
             aspectRatio: "16 / 9",
             width: "100%",
             overflow: "hidden",
             borderRadius: 18,
             padding: 14,
             border: "2px solid #e8a04a",
-            boxShadow: "0 0 0 6px #ffffff inset, 0 0 0 1px rgba(255,255,255,0.08) inset, 0 18px 50px rgba(0,0,0,0.6), 0 0 24px rgba(232,160,74,0.25)",
+            boxShadow: "0 0 0 6px #ffffff inset, 0 0 0 1px rgba(0,0,0,0.08) inset, 0 18px 50px rgba(0,0,0,0.6), 0 0 24px rgba(232,160,74,0.25)",
           }}
         >
 
@@ -317,31 +317,56 @@ export default function HeroIntro() {
                 width: "100%",
                 height: "100%",
                 objectFit: "contain",
-                background: "#000",
+                background: "#ffffff",
                 display: "block",
               }}
             />
           )}
           {!isPlaying && (
-            <button
-              type="button"
-              onClick={toggle}
-              aria-label={hasStarted ? "Play video" : "Start video"}
+            <div
               style={{
                 position: "absolute",
-                inset: 0,
+                top: 22,
+                left: 22,
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
-                background: hasStarted ? "rgba(0,0,0,0.25)" : "rgba(0,0,0,0.35)",
-                border: "none",
-                cursor: "pointer",
-                color: "#fff",
-                fontFamily: "inherit",
+                gap: 14,
+                zIndex: 2,
               }}
             >
-              <PillButton label={hasStarted ? COPY[lang].play : COPY[lang].start} icon="play" />
-            </button>
+              <button
+                type="button"
+                onClick={toggle}
+                aria-label={hasStarted ? "Play video" : "Start video"}
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  padding: 0,
+                  cursor: "pointer",
+                  fontFamily: "inherit",
+                }}
+              >
+                <PillButton label={hasStarted ? COPY[lang].play : COPY[lang].start} icon="play" />
+              </button>
+              <div
+                style={{
+                  background: "#ffffff",
+                  color: "#0a0a0a",
+                  border: "1.5px solid #0a0a0a",
+                  borderRadius: 8,
+                  padding: "8px 12px",
+                  fontFamily: '"Fraunces", "Quincy CF", Georgia, serif',
+                  fontSize: 13,
+                  fontWeight: 600,
+                  lineHeight: 1.2,
+                  textAlign: "left",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.18)",
+                }}
+              >
+                <div>Please watch video</div>
+                <div>Por favor mire el video</div>
+              </div>
+            </div>
           )}
           {isPlaying && (
             <button
@@ -383,8 +408,8 @@ function PillButton({ label, icon }: { label: string; icon: "play" | "pause" }) 
         alignItems: "center",
         gap: 12,
         padding: "14px 26px 14px 22px",
-        background: "rgba(255,255,255,0.96)",
-        color: "#0f1830",
+        background: "#0a0a0a",
+        color: "#ffffff",
         borderRadius: 999,
         fontWeight: 800,
         fontSize: 16,
@@ -402,7 +427,7 @@ function PillButton({ label, icon }: { label: string; icon: "play" | "pause" }) 
             height: 0,
             borderTop: "9px solid transparent",
             borderBottom: "9px solid transparent",
-            borderLeft: "14px solid #0f1830",
+            borderLeft: "14px solid #ffffff",
           }}
         />
       ) : (
