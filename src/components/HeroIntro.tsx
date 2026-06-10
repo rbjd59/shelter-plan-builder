@@ -5,6 +5,7 @@ import enAsset from "@/assets/videos/detenciondefensa_en.mp4.asset.json";
 import htAsset from "@/assets/videos/detenciondefensa_ht.mp4.asset.json";
 import logoAsset from "@/assets/dd-logo.png.asset.json";
 import iceLeftAsset from "@/assets/ice-arrest-new.jpg.asset.json";
+import iceRightAsset from "@/assets/ice-arrest-nyc.jpg.asset.json";
 
 
 const SRC = { es: esAsset.url, en: enAsset.url, ht: htAsset.url };
