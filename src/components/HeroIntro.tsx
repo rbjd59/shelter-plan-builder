@@ -254,8 +254,8 @@ export default function HeroIntro() {
                 lineHeight: 1.3,
                 maxWidth: 900,
                 margin: "0 auto",
-                fontWeight: 400,
-                color: "#112e51",
+                fontWeight: 600,
+                color: "#1d4ed8",
                 whiteSpace: "pre-line",
               }}
             >
