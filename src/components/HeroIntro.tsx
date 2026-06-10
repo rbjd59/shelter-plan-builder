@@ -362,7 +362,7 @@ export default function HeroIntro() {
               objectFit: "cover",
               borderRadius: 10,
               boxShadow: "0 10px 30px rgba(0,0,0,0.45)",
-              display: "block",
+              display: isMobile ? "none" : "block",
               order: isMobile ? 3 : 0,
             }}
           />
