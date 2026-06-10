@@ -287,7 +287,7 @@ export default function HeroIntro() {
             borderRadius: 18,
             padding: 14,
             border: "2px solid #e8a04a",
-            boxShadow: "0 0 0 1px rgba(255,255,255,0.08) inset, 0 18px 50px rgba(0,0,0,0.6), 0 0 24px rgba(232,160,74,0.25)",
+            boxShadow: "0 0 0 6px #ffffff inset, 0 0 0 1px rgba(255,255,255,0.08) inset, 0 18px 50px rgba(0,0,0,0.6), 0 0 24px rgba(232,160,74,0.25)",
           }}
         >
 
