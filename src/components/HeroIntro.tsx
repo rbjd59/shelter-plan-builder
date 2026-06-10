@@ -11,21 +11,21 @@ const SRC = { es: esAsset.url, en: enAsset.url, ht: htAsset.url };
 
 const COPY = {
   es: {
-    headline: "La Migra ya viene, por favor prepárese",
+    headline: "La Migra ya viene\npor favor prepárese",
     subline: "Plan de Defensa Legal Pro Se de Bajo Costo $199\nCreado y Revisado por Abogados\nPara Quienes No Pueden Pagar $10,000 si son Arrestados",
     offer: "",
     start: "Comenzar",
     play: "Reproducir",
   },
   en: {
-    headline: "La Migra is Coming, Please Be Prepared",
+    headline: "La Migra is Coming\nPlease Be Prepared",
     subline: "Attorney Created & Reviewed Low Cost $199 Pro Se Legal Defense Plan\nFor Those Who Can Not Afford $10,000 if Arrested",
     offer: "",
     start: "Start",
     play: "Play",
   },
   ht: {
-    headline: "La Migra ap vini, tanpri prepare w",
+    headline: "La Migra ap vini\ntanpri prepare w",
     subline: "Plan Defans Legal Pro Se Pri Ba $199 Avoka Kreye ak Revize\nPou Moun Ki Pa Kapab Peye $10,000 si yo Arestasyon",
     offer: "",
     start: "Kòmanse",
@@ -103,7 +103,7 @@ export default function HeroIntro() {
     <section
       style={{
         background: "#ffffff",
-        color: "#0a1633",
+        color: "#1d4ed8",
         padding: "0.5rem 1rem 1.5rem",
         textAlign: "center",
         fontFamily:
@@ -122,7 +122,7 @@ export default function HeroIntro() {
             alignItems: "center",
             gap: 10,
             textDecoration: "none",
-            color: "#0a1633",
+            color: "#1d4ed8",
           }}
         >
           <img
@@ -137,7 +137,7 @@ export default function HeroIntro() {
               fontSize: 20,
               fontWeight: 700,
               letterSpacing: -0.3,
-              color: "#0a1633",
+              color: "#1d4ed8",
             }}
           >
             DetencionDefensa
@@ -156,7 +156,7 @@ export default function HeroIntro() {
             fontWeight: 700,
             letterSpacing: "0.16em",
             textTransform: "uppercase",
-            color: "#0a1633",
+            color: "#1d4ed8",
             opacity: 0.85,
             paddingTop: 4,
           }}
@@ -178,8 +178,8 @@ export default function HeroIntro() {
                   setLang(code);
                 }}
                 style={{
-                  background: lang === code ? "#0a1633" : "transparent",
-                  color: lang === code ? "#fff" : "#0a1633",
+                  background: lang === code ? "#1d4ed8" : "transparent",
+                  color: lang === code ? "#fff" : "#1d4ed8",
                   border: "none",
                   borderRadius: 999,
                   padding: "8px 16px",
@@ -232,7 +232,8 @@ export default function HeroIntro() {
                 lineHeight: 1.08,
                 margin: "0 0 1.25rem",
                 letterSpacing: "-0.005em",
-                color: "#0a1633",
+                color: "#1d4ed8",
+                whiteSpace: "pre-line",
               }}
             >
               <span style={{ color: "#c0282d" }}>La Migra</span>
@@ -246,7 +247,7 @@ export default function HeroIntro() {
                 maxWidth: 900,
                 margin: "0 auto",
                 fontWeight: 400,
-                color: "#0a1633",
+                color: "#1d4ed8",
                 whiteSpace: "pre-line",
               }}
             >
