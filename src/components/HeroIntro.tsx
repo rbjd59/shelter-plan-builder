@@ -226,9 +226,9 @@ export default function HeroIntro() {
           <div>
             <h1
               style={{
-                fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
+                fontFamily: '"Century Schoolbook", "New Century Schoolbook", "TeX Gyre Schola", Georgia, "Times New Roman", serif',
                 fontSize: "clamp(2.25rem, 5.5vw, 3.75rem)",
-                fontWeight: 700,
+                fontWeight: 400,
                 lineHeight: 1.1,
                 margin: "0 0 1.25rem",
                 letterSpacing: -1,
