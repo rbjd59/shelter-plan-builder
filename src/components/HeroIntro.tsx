@@ -331,7 +331,6 @@ export default function HeroIntro() {
               controls
               playsInline
               muted
-              autoPlay
               preload="auto"
               style={{
                 width: "100%",
