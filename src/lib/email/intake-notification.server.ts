@@ -240,7 +240,7 @@ export async function enqueueIntakeNotification(params: {
     toAddress: String(a.contact_address ?? ""),
   });
 
-  const html = `<!doctype html><html><body style="margin:0;background:#ffffff;font-family:Arial,sans-serif;color:#111;">
+  const html = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;background:#ffffff;font-family:Arial,sans-serif;color:#111;">
     <div style="max-width:680px;margin:0 auto;padding:24px;">
       <h1 style="font-size:20px;margin:0 0 4px;">New Intake Submission — DetencionDefensa.com</h1>
       <p style="margin:0 0 16px;color:#555;font-size:13px;">Language: ${escapeHtml(language)} &middot; Session: ${escapeHtml(sessionId)}${contactEmail ? ` &middot; Contact: ${escapeHtml(contactEmail)}` : ""}</p>
