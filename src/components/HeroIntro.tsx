@@ -101,8 +101,8 @@ export default function HeroIntro() {
   return (
     <section
       style={{
-        background: "#f5f5f4",
-        color: "#0a1633",
+        background: "#000000",
+        color: "#ffffff",
         padding: "1.25rem 1rem 1.5rem",
         textAlign: "center",
         fontFamily:
@@ -121,7 +121,7 @@ export default function HeroIntro() {
             alignItems: "center",
             gap: 10,
             textDecoration: "none",
-            color: "#0a1633",
+            color: "#ffffff",
           }}
         >
           <img
@@ -136,7 +136,7 @@ export default function HeroIntro() {
               fontSize: 20,
               fontWeight: 700,
               letterSpacing: -0.3,
-              color: "#0a1633",
+              color: "#ffffff",
             }}
           >
             DetencionDefensa
@@ -155,7 +155,7 @@ export default function HeroIntro() {
             fontWeight: 700,
             letterSpacing: "0.16em",
             textTransform: "uppercase",
-            color: "#0a1633",
+            color: "#ffffff",
             opacity: 0.85,
             paddingTop: 56,
           }}
@@ -220,7 +220,7 @@ export default function HeroIntro() {
             maxWidth: 880,
             margin: "0 auto 1.5rem",
             fontWeight: 400,
-            color: "#1d4ed8",
+            color: "#ffffff",
             whiteSpace: "pre-line",
           }}
         >
