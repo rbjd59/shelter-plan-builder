@@ -1,7 +1,7 @@
 // Server-only: family-facing case tracking lifecycle.
 
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
-import { buildSelfHelpLibraryHtml, buildSelfHelpLibraryText } from "@/lib/self-help-library";
+
 
 const FROM = "intake@gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
@@ -258,8 +258,8 @@ export async function sendWelcomeEmail(params: {
   const sc = serviceCopy[lang];
 
   const installButton = (url: string, label: string, color: string) =>
-    `<p style="text-align:center;margin:10px 0;">
-      <a href="${url}" style="display:inline-block;background:${color};color:#fff;text-decoration:none;padding:14px 22px;border-radius:8px;font-weight:700;font-size:14px;">${escapeHtml(label)}</a>
+    `<p style="text-align:center;margin:14px 0;">
+      <a href="${url}" style="display:inline-block;background:${color};color:#fff;text-decoration:none;padding:14px 22px;border-radius:8px;font-weight:700;font-size:14px;line-height:1.3;">${escapeHtml(label)}</a>
     </p>`;
 
   const clientInstallSection = params.clientInstallUrl
@@ -269,12 +269,6 @@ export async function sendWelcomeEmail(params: {
     ? installButton(params.familyInstallUrl, sc.familyCta, "#0b1220")
     : "";
 
-  const serviceSection = `<div style="margin-top:18px;padding:18px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;">
-      <p style="margin:0 0 10px;font-size:14px;font-weight:700;color:#0b1220;">${escapeHtml(sc.serviceTitle)}</p>
-      <ul style="margin:0;padding-left:20px;font-size:13px;color:#334155;line-height:1.6;">
-        ${sc.servicePoints.map((p) => `<li>${escapeHtml(p)}</li>`).join("")}
-      </ul>
-    </div>`;
 
   const notDownloadNote = {
     es: "Esto NO es una descarga automática. Toque el botón abajo en el teléfono correcto, luego siga las instrucciones para guardar el ícono rojo AVISAR A FAMILIA en la pantalla de inicio (toma 10 segundos). En iPhone debe abrirse en Safari.",
@@ -317,21 +311,13 @@ export async function sendWelcomeEmail(params: {
   }[lang];
 
   const defensaSection = params.inviteCode
-    ? `<div style="margin-top:18px;padding:22px;background:#fef2f2;border:2px solid #dc2626;border-radius:10px;text-align:center;">
-        <p style="margin:0 0 8px;font-size:12px;letter-spacing:2px;font-weight:800;color:#991b1b;">${escapeHtml(activationCopy.label)}</p>
-        <p style="margin:0 0 18px;font-size:40px;font-weight:900;letter-spacing:8px;color:#0b1220;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">${escapeHtml(params.inviteCode)}</p>
-        <p style="text-align:center;margin:0 0 10px;">
-          <a href="defensasiempre://activate?code=${encodeURIComponent(params.inviteCode)}" style="display:inline-block;background:#dc2626;color:#ffffff;text-decoration:none;padding:16px 28px;border-radius:8px;font-weight:800;font-size:16px;">${escapeHtml(activationCopy.cta)}</a>
+    ? `<div style="margin-top:24px;padding:24px 20px;background:#fef2f2;border:2px solid #dc2626;border-radius:10px;text-align:center;">
+        <p style="margin:0 0 10px;font-size:12px;letter-spacing:2px;font-weight:800;color:#991b1b;">${escapeHtml(activationCopy.label)}</p>
+        <p style="margin:0 0 20px;font-size:34px;font-weight:900;letter-spacing:6px;color:#0b1220;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;word-break:break-all;">${escapeHtml(params.inviteCode)}</p>
+        <p style="text-align:center;margin:0 0 12px;">
+          <a href="defensasiempre://activate?code=${encodeURIComponent(params.inviteCode)}" style="display:inline-block;background:#dc2626;color:#ffffff;text-decoration:none;padding:14px 24px;border-radius:8px;font-weight:800;font-size:15px;">${escapeHtml(activationCopy.cta)}</a>
         </p>
         <p style="margin:14px 0 0;font-size:11px;color:#7f1d1d;line-height:1.5;font-style:italic;">${escapeHtml(activationCopy.stripped)}</p>
-        <div style="margin-top:16px;padding-top:14px;border-top:1px solid #fecaca;text-align:left;">
-          <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:#7f1d1d;">${escapeHtml(activationCopy.fallbackTitle)}</p>
-          <p style="margin:0;font-size:12px;color:#7f1d1d;line-height:1.7;">
-            ${escapeHtml(activationCopy.appStore)}<br/>
-            ${escapeHtml(activationCopy.playStore)}<br/>
-            ${escapeHtml(activationCopy.returnNote)}
-          </p>
-        </div>
       </div>`
     : "";
 
@@ -383,16 +369,16 @@ export async function sendWelcomeEmail(params: {
     )
     .replace(
       "</div>\n      <p ",
-      `${serviceSection}${pdfSection}${buildSelfHelpLibraryHtml(lang)}${familyActivationSection}</div>\n      <p `,
+      `${pdfSection}${familyActivationSection}</div>\n      <p `,
     );
   const subjectFinal = params.demoMode ? `[DEMO] ${c.subject}` : c.subject;
-  const text = `${c.heading}\n\n${c.body}\n\n${c.cta}: ${trackingUrl}\n\n${
-    sc.serviceTitle
-  }\n${sc.servicePoints.map((p) => `- ${p}`).join("\n")}\n\n${sc.familyTitle}\n${sc.familyBody}\n${sc.whyTwoButtons}\n${
+  const text = `${c.heading}\n\n${c.body}\n\n${c.cta}: ${trackingUrl}\n${
+    params.inviteCode ? `\n${activationCopy.label}: ${params.inviteCode}\n${activationCopy.cta}: defensasiempre://activate?code=${encodeURIComponent(params.inviteCode)}\n` : ""
+  }${
     params.clientInstallUrl ? `\n${sc.clientCta}: ${params.clientInstallUrl}` : ""
-  }${params.familyInstallUrl ? `\n${sc.familyCta}: ${params.familyInstallUrl}` : ""}\n\n${
-    params.habeasUrl ? `AO 242 Habeas: ${params.habeasUrl}\n` : ""
-  }${params.ifpUrl ? `AO 240 IFP: ${params.ifpUrl}\n` : ""}\n${buildSelfHelpLibraryText(lang)}\n\n${c.note}`;
+  }${params.familyInstallUrl ? `\n${sc.familyCta}: ${params.familyInstallUrl}` : ""}\n${
+    params.habeasUrl ? `\nAO 242 Habeas: ${params.habeasUrl}` : ""
+  }${params.ifpUrl ? `\nAO 240 IFP: ${params.ifpUrl}` : ""}\n\n${c.note}`;
   await enqueueFamilyEmail({
     to: params.to,
     subject: subjectFinal,
