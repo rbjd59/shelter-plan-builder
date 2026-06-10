@@ -137,10 +137,11 @@ export default function HeroIntro() {
               fontSize: 20,
               fontWeight: 700,
               letterSpacing: -0.3,
-              color: "#112e51",
             }}
           >
-            DetencionDefensa
+            {"DetencionDefensa".split("").map((ch, i) => (
+              <span key={i} style={{ color: i % 2 === 0 ? "#c0282d" : "#1d4ed8" }}>{ch}</span>
+            ))}
           </span>
         </a>
 
