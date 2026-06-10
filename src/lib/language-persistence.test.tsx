@@ -6,6 +6,7 @@
  * stores the choice in localStorage under "dd_lang" and rehydrates from
  * it on next mount.
  */
+import type { ReactNode } from "react";
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { renderHook, act, cleanup } from "@testing-library/react";
 import { LanguageProvider, useLang, type Lang } from "@/context/LanguageContext";
