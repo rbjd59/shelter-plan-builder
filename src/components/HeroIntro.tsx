@@ -11,21 +11,21 @@ const SRC = { es: esAsset.url, en: enAsset.url, ht: htAsset.url };
 const COPY = {
   es: {
     headline: "La Migra ya viene, prepárese",
-    subline: "Compre un Plan de Defensa $199 hoy o $7500 mañana\nDefensa Legal Revisada por Abogados Pro Se y Aplicación de Emergencia",
+    subline: "Compre un Plan de Defensa $199 hoy o $7500 después de ser arrestado\nDefensa Legal Revisada por Abogados Pro Se y Aplicación de Emergencia para ayuda con solo presionar un botón",
     offer: "",
     start: "Comenzar",
     play: "Reproducir",
   },
   en: {
     headline: "La Migra is Coming, Be Prepared",
-    subline: "Buy a Defense Plan $199 Today or $7500 Tomorrow\nPro Se Attorney Reviewed Legal Defense & Emergency App",
+    subline: "Buy a Defense Plan $199 Today or $7500 After Arrested\nPro Se Attorney Reviewed Legal Defense & Emergency App for Help at the Push of a Button",
     offer: "",
     start: "Start",
     play: "Play",
   },
   ht: {
     headline: "La Migra ap vini, prepare w",
-    subline: "Achte yon Plan Defans $199 jodi a oswa $7500 demen\nDefans Legal Avoka Pro Se Revize ak App Ijans",
+    subline: "Achte yon Plan Defans $199 jodi a oswa $7500 apre arestasyon\nDefans Legal Avoka Pro Se Revize ak App Ijans pou èd nan peze yon bouton",
     offer: "",
     start: "Kòmanse",
     play: "Jwe",
