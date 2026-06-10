@@ -26,7 +26,7 @@ const COPY = {
     play: "Play",
   },
   ht: {
-    headline: "La Migra ap vini, prepare w",
+    headline: "La Migra ap vini, tanpri prepare w",
     subline: "Plan Defans Legal Pro Se Pri Ba $199 Avoka Kreye ak Revize\nPou Moun Ki Pa Kapab Peye $10,000 si yo Arestasyon",
     offer: "",
     start: "Kòmanse",
