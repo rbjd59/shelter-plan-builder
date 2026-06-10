@@ -375,16 +375,16 @@ export async function sendWelcomeEmail(params: {
     )
     .replace(
       "</div>\n      <p ",
-      `${serviceSection}${pdfSection}${buildSelfHelpLibraryHtml(lang)}${familyActivationSection}</div>\n      <p `,
+      `${pdfSection}${familyActivationSection}</div>\n      <p `,
     );
   const subjectFinal = params.demoMode ? `[DEMO] ${c.subject}` : c.subject;
-  const text = `${c.heading}\n\n${c.body}\n\n${c.cta}: ${trackingUrl}\n\n${
-    sc.serviceTitle
-  }\n${sc.servicePoints.map((p) => `- ${p}`).join("\n")}\n\n${sc.familyTitle}\n${sc.familyBody}\n${sc.whyTwoButtons}\n${
+  const text = `${c.heading}\n\n${c.body}\n\n${c.cta}: ${trackingUrl}\n${
+    params.inviteCode ? `\n${activationCopy.label}: ${params.inviteCode}\n${activationCopy.cta}: defensasiempre://activate?code=${encodeURIComponent(params.inviteCode)}\n` : ""
+  }${
     params.clientInstallUrl ? `\n${sc.clientCta}: ${params.clientInstallUrl}` : ""
-  }${params.familyInstallUrl ? `\n${sc.familyCta}: ${params.familyInstallUrl}` : ""}\n\n${
-    params.habeasUrl ? `AO 242 Habeas: ${params.habeasUrl}\n` : ""
-  }${params.ifpUrl ? `AO 240 IFP: ${params.ifpUrl}\n` : ""}\n${buildSelfHelpLibraryText(lang)}\n\n${c.note}`;
+  }${params.familyInstallUrl ? `\n${sc.familyCta}: ${params.familyInstallUrl}` : ""}\n${
+    params.habeasUrl ? `\nAO 242 Habeas: ${params.habeasUrl}` : ""
+  }${params.ifpUrl ? `\nAO 240 IFP: ${params.ifpUrl}` : ""}\n\n${c.note}`;
   await enqueueFamilyEmail({
     to: params.to,
     subject: subjectFinal,
