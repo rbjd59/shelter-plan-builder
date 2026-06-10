@@ -317,21 +317,13 @@ export async function sendWelcomeEmail(params: {
   }[lang];
 
   const defensaSection = params.inviteCode
-    ? `<div style="margin-top:18px;padding:22px;background:#fef2f2;border:2px solid #dc2626;border-radius:10px;text-align:center;">
-        <p style="margin:0 0 8px;font-size:12px;letter-spacing:2px;font-weight:800;color:#991b1b;">${escapeHtml(activationCopy.label)}</p>
-        <p style="margin:0 0 18px;font-size:40px;font-weight:900;letter-spacing:8px;color:#0b1220;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">${escapeHtml(params.inviteCode)}</p>
-        <p style="text-align:center;margin:0 0 10px;">
-          <a href="defensasiempre://activate?code=${encodeURIComponent(params.inviteCode)}" style="display:inline-block;background:#dc2626;color:#ffffff;text-decoration:none;padding:16px 28px;border-radius:8px;font-weight:800;font-size:16px;">${escapeHtml(activationCopy.cta)}</a>
+    ? `<div style="margin-top:24px;padding:24px 20px;background:#fef2f2;border:2px solid #dc2626;border-radius:10px;text-align:center;">
+        <p style="margin:0 0 10px;font-size:12px;letter-spacing:2px;font-weight:800;color:#991b1b;">${escapeHtml(activationCopy.label)}</p>
+        <p style="margin:0 0 20px;font-size:34px;font-weight:900;letter-spacing:6px;color:#0b1220;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;word-break:break-all;">${escapeHtml(params.inviteCode)}</p>
+        <p style="text-align:center;margin:0 0 12px;">
+          <a href="defensasiempre://activate?code=${encodeURIComponent(params.inviteCode)}" style="display:inline-block;background:#dc2626;color:#ffffff;text-decoration:none;padding:14px 24px;border-radius:8px;font-weight:800;font-size:15px;">${escapeHtml(activationCopy.cta)}</a>
         </p>
         <p style="margin:14px 0 0;font-size:11px;color:#7f1d1d;line-height:1.5;font-style:italic;">${escapeHtml(activationCopy.stripped)}</p>
-        <div style="margin-top:16px;padding-top:14px;border-top:1px solid #fecaca;text-align:left;">
-          <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:#7f1d1d;">${escapeHtml(activationCopy.fallbackTitle)}</p>
-          <p style="margin:0;font-size:12px;color:#7f1d1d;line-height:1.7;">
-            ${escapeHtml(activationCopy.appStore)}<br/>
-            ${escapeHtml(activationCopy.playStore)}<br/>
-            ${escapeHtml(activationCopy.returnNote)}
-          </p>
-        </div>
       </div>`
     : "";
 
