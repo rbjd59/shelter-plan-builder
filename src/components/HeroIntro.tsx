@@ -102,9 +102,9 @@ export default function HeroIntro() {
   return (
     <section
       style={{
-        background: "#000000",
-        color: "#ffffff",
-        padding: "1.25rem 1rem 1.5rem",
+        background: "#ffffff",
+        color: "#0a1633",
+        padding: "0.5rem 1rem 1.5rem",
         textAlign: "center",
         fontFamily:
           'ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
