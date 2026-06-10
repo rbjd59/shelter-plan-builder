@@ -11,22 +11,22 @@ const SRC = { es: esAsset.url, en: enAsset.url, ht: htAsset.url };
 const COPY = {
   es: {
     headline: "La Migra ya viene, prepárese",
-    subline: "Redactado con IA — Supervisado por abogado — Plan Pro Se de defensa contra detención de ICE en minutos",
-    offer: "Solo $199 — ¡No salga de casa sin él!",
+    subline: "Compre un Plan de Defensa $199 hoy o $7500 mañana\nDefensa Legal Revisada por Abogados Pro Se y Aplicación de Emergencia",
+    offer: "",
     start: "Comenzar",
     play: "Reproducir",
   },
   en: {
     headline: "La Migra is Coming, Be Prepared",
-    subline: "AI Drafted — Attorney Supervised — Pro Se ICE Detention Defense Plan all in Minutes",
-    offer: "Only $199 — Don't Leave Home Without It!",
+    subline: "Buy a Defense Plan $199 Today or $7500 Tomorrow\nPro Se Attorney Reviewed Legal Defense & Emergency App",
+    offer: "",
     start: "Start",
     play: "Play",
   },
   ht: {
     headline: "La Migra ap vini, prepare w",
-    subline: "Redije ak IA — Sipèvize pa avoka — Plan defans Pro Se pou detansyon ICE nan kèk minit",
-    offer: "Sèlman $199 — Pa kite kay la san li!",
+    subline: "Achte yon Plan Defans $199 jodi a oswa $7500 demen\nDefans Legal Avoka Pro Se Revize ak App Ijans",
+    offer: "",
     start: "Kòmanse",
     play: "Jwe",
   },
@@ -219,12 +219,10 @@ export default function HeroIntro() {
             margin: "0 auto 1.5rem",
             fontWeight: 600,
             color: "#0a1633",
+            whiteSpace: "pre-line",
           }}
         >
           {COPY[lang].subline}
-          <br />
-          <span style={{ color: "#ff8a65" }}>{COPY[lang].offer}</span>
-
         </p>
 
         <div
