@@ -8,6 +8,30 @@ import logoAsset from "@/assets/dd-logo.png.asset.json";
 
 const SRC = { es: esAsset.url, en: enAsset.url, ht: htAsset.url };
 
+const COPY = {
+  es: {
+    headline: "Deje de pagar de más por ayuda legal",
+    subline: "Redactado con IA — Supervisado por abogado — Plan Pro Se de defensa contra detención de ICE en minutos",
+    offer: "Solo $199 — ¡No salga de casa sin él!",
+    start: "Comenzar",
+    play: "Reproducir",
+  },
+  en: {
+    headline: "Stop overpaying for legal help",
+    subline: "AI Drafted — Attorney Supervised — Pro Se ICE Detention Defense Plan all in Minutes",
+    offer: "Only $199 — Don't Leave Home Without It!",
+    start: "Start",
+    play: "Play",
+  },
+  ht: {
+    headline: "Sispann peye twòp pou èd legal",
+    subline: "Redije ak IA — Sipèvize pa avoka — Plan defans Pro Se pou detansyon ICE nan kèk minit",
+    offer: "Sèlman $199 — Pa kite kay la san li!",
+    start: "Kòmanse",
+    play: "Jwe",
+  },
+} satisfies Record<Lang, { headline: string; subline: string; offer: string; start: string; play: string }>;
+
 export default function HeroIntro() {
   const { lang, setLang } = useLang();
 
@@ -151,9 +175,6 @@ export default function HeroIntro() {
                 type="button"
                 onClick={() => {
                   setLang(code);
-                  if (typeof document !== "undefined") {
-                    document.documentElement.setAttribute("lang", code);
-                  }
                 }}
                 style={{
                   background: lang === code ? "#0a1633" : "transparent",
@@ -188,7 +209,7 @@ export default function HeroIntro() {
             color: "#0a1633",
           }}
         >
-          Stop overpaying for legal help
+          {COPY[lang].headline}
         </h1>
         <p
           style={{
@@ -200,9 +221,9 @@ export default function HeroIntro() {
             color: "#0a1633",
           }}
         >
-          AI Drafted — Attorney Supervised — Pro Se ICE Detention Defense Plan all in Minutes
+          {COPY[lang].subline}
           <br />
-          <span style={{ color: "#ff8a65" }}>Only $199 — Don't Leave Home Without It!</span>
+          <span style={{ color: "#ff8a65" }}>{COPY[lang].offer}</span>
 
         </p>
 
@@ -255,7 +276,7 @@ export default function HeroIntro() {
                 fontFamily: "inherit",
               }}
             >
-              <PillButton label={hasStarted ? "Play" : "Start"} icon="play" />
+              <PillButton label={hasStarted ? COPY[lang].play : COPY[lang].start} icon="play" />
             </button>
           )}
           {isPlaying && (
