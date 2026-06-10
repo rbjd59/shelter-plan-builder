@@ -233,12 +233,19 @@ export default function HeroIntro() {
                 lineHeight: 1.08,
                 margin: "0 0 1.25rem",
                 letterSpacing: "-0.005em",
-                color: "#112e51",
                 whiteSpace: "pre-line",
               }}
             >
-              <span style={{ color: "#c0282d" }}>La Migra</span>
-              {COPY[lang].headline.replace(/^La Migra/, "")}
+              {(() => {
+                const [line1, line2] = COPY[lang].headline.split("\n");
+                return (
+                  <>
+                    <span style={{ color: "#c0282d" }}>{line1}</span>
+                    {"\n"}
+                    <span style={{ color: "#1d4ed8" }}>{line2}</span>
+                  </>
+                );
+              })()}
             </h1>
             <p
               style={{
