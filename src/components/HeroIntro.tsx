@@ -248,10 +248,21 @@ export default function HeroIntro() {
                 margin: "0 auto",
                 fontWeight: 400,
                 color: "#112e51",
-                whiteSpace: "pre-line",
               }}
             >
-              {COPY[lang].subline}
+              {COPY[lang].subline.split("\n").map((line, i) => (
+                <span
+                  key={i}
+                  style={{
+                    display: "block",
+                    ...(i === 1
+                      ? { color: "#c0282d", fontWeight: 600 }
+                      : null),
+                  }}
+                >
+                  {line}
+                </span>
+              ))}
             </p>
           </div>
         </div>
