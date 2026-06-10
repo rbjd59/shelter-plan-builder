@@ -136,7 +136,6 @@ export default function HeroIntro() {
             paddingTop: 56,
           }}
         >
-          <span>— PICK A LANGUAGE —</span>
           <div
             style={{
               display: "inline-flex",
@@ -150,24 +149,32 @@ export default function HeroIntro() {
               <button
                 key={code}
                 type="button"
-                onClick={() => setLang(code)}
+                onClick={() => {
+                  setLang(code);
+                  if (typeof document !== "undefined") {
+                    document.documentElement.setAttribute("lang", code);
+                  }
+                }}
                 style={{
                   background: lang === code ? "#0a1633" : "transparent",
                   color: lang === code ? "#fff" : "#0a1633",
                   border: "none",
                   borderRadius: 999,
-                  padding: "6px 14px",
-                  fontSize: 12,
+                  padding: "8px 16px",
+                  fontSize: 13,
                   fontWeight: 700,
                   letterSpacing: "0.14em",
                   cursor: "pointer",
                   fontFamily: "inherit",
+                  touchAction: "manipulation",
+                  WebkitTapHighlightColor: "transparent",
                 }}
               >
                 {code.toUpperCase()}
               </button>
             ))}
           </div>
+
         </div>
 
 
