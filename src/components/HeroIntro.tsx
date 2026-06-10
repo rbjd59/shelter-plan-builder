@@ -449,6 +449,23 @@ export default function HeroIntro() {
             </button>
           )}
         </div>
+        <p
+          style={{
+            maxWidth: 900,
+            margin: "0.75rem auto 0",
+            fontSize: 12,
+            lineHeight: 1.45,
+            color: "rgba(255,255,255,0.75)",
+            textAlign: "center",
+            fontStyle: "italic",
+          }}
+        >
+          {lang === "es"
+            ? "Este video es un anuncio publicitario. No garantiza resultados. Cada caso se maneja de manera diferente."
+            : lang === "ht"
+            ? "Videyo sa a se yon piblisite. Li pa garanti rezilta. Chak ka jere yon fason diferan."
+            : "This video is an advertisement. It does not guarantee outcomes. Each case is handled differently."}
+        </p>
       </div>
     </section>
   );
