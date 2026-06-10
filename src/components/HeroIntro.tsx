@@ -70,7 +70,11 @@ export default function HeroIntro() {
       hasAutoStartedRef.current = true;
       setInView(true);
       if (timer) clearTimeout(timer);
-      timer = setTimeout(tryPlay, VIDEO_START_DELAY_MS);
+      if (VIDEO_START_DELAY_MS > 0) {
+        timer = setTimeout(tryPlay, VIDEO_START_DELAY_MS);
+      } else {
+        tryPlay();
+      }
     };
 
     const startOnScroll = () => {
