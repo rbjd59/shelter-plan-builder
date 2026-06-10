@@ -35,9 +35,8 @@ const COPY = {
 } satisfies Record<Lang, { headline: string; subline: string; offer: string; start: string; play: string }>;
 
 // === Video autoplay tuning — adjust these values here ===
-const VIDEO_VISIBILITY_THRESHOLD = 0.1; // fallback: % of video in view (0–1) before it triggers
-const VIDEO_START_DELAY_MS = 0;         // delay after trigger before playback starts
-const SCROLL_ACTIVATION_PX = 8;         // starts once the page has moved down this many pixels
+const VIDEO_START_DELAY_MS = 2000;      // delay after scroll-up trigger before playback starts
+const SCROLL_UP_THRESHOLD_PX = 6;       // minimum upward scroll delta required to trigger
 
 export default function HeroIntro() {
   const { lang, setLang } = useLang();
