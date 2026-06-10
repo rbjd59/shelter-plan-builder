@@ -21,13 +21,27 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>(readInitial);
 
   useEffect(() => {
+    const initial = readInitial();
+    setLangState(initial);
+    document.documentElement.setAttribute("lang", initial);
+  }, []);
+
+  useEffect(() => {
     document.documentElement.setAttribute("lang", lang);
     try {
       window.localStorage.setItem(LS_KEY, lang);
     } catch {}
   }, [lang]);
 
-  const setLang = (l: Lang) => setLangState(l);
+  const setLang = (l: Lang) => {
+    if (typeof document !== "undefined") {
+      document.documentElement.setAttribute("lang", l);
+    }
+    try {
+      window.localStorage.setItem(LS_KEY, l);
+    } catch {}
+    setLangState(l);
+  };
   return <Ctx.Provider value={{ lang, setLang }}>{children}</Ctx.Provider>;
 }
 
