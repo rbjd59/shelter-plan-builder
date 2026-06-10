@@ -200,53 +200,89 @@ export default function HeroIntro() {
         </div>
 
 
-        <div style={{ margin: "0 0 1.75rem", textAlign: "center" }}>
-          <h1
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "minmax(120px, 220px) minmax(0, 1fr)",
+            alignItems: "center",
+            gap: "clamp(16px, 3vw, 36px)",
+            margin: "0 0 1.75rem",
+            textAlign: "left",
+          }}
+        >
+          <img
+            src={iceLeftAsset.url}
+            alt="ICE ERO officers conducting a targeted enforcement operation"
+            loading="lazy"
             style={{
-              fontFamily: '"Century Schoolbook", "New Century Schoolbook", "TeX Gyre Schola", Georgia, "Times New Roman", serif',
-              fontSize: "clamp(2.25rem, 5.5vw, 3.75rem)",
-              fontWeight: 400,
-              lineHeight: 1.1,
-              margin: "0 0 1.25rem",
-              letterSpacing: -1,
-              color: "#ffffff",
+              width: "100%",
+              aspectRatio: "3 / 4",
+              objectFit: "cover",
+              borderRadius: 10,
+              boxShadow: "0 10px 30px rgba(0,0,0,0.45)",
+              display: "block",
             }}
-          >
-            <span style={{ color: "#c0282d" }}>La Migra</span>
-            {COPY[lang].headline.replace(/^La Migra/, "")}
-          </h1>
-          <p
-            style={{
-              fontFamily: '"Work Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
-              fontSize: "clamp(1.2rem, 2.2vw, 1.7rem)",
-              lineHeight: 1.3,
-              maxWidth: 1100,
-              margin: "0 auto",
-              fontWeight: 400,
-              color: "#ffffff",
-              whiteSpace: "pre-line",
-            }}
-          >
-            {COPY[lang].subline}
-          </p>
+          />
+          <div style={{ textAlign: "center" }}>
+            <h1
+              style={{
+                fontFamily: '"Century Schoolbook", "New Century Schoolbook", "TeX Gyre Schola", Georgia, "Times New Roman", serif',
+                fontSize: "clamp(2.25rem, 5.5vw, 3.75rem)",
+                fontWeight: 400,
+                lineHeight: 1.1,
+                margin: "0 0 1.25rem",
+                letterSpacing: -1,
+                color: "#ffffff",
+              }}
+            >
+              <span style={{ color: "#c0282d" }}>La Migra</span>
+              {COPY[lang].headline.replace(/^La Migra/, "")}
+            </h1>
+            <p
+              style={{
+                fontFamily: '"Work Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
+                fontSize: "clamp(1.2rem, 2.2vw, 1.7rem)",
+                lineHeight: 1.3,
+                maxWidth: 900,
+                margin: "0 auto",
+                fontWeight: 400,
+                color: "#ffffff",
+                whiteSpace: "pre-line",
+              }}
+            >
+              {COPY[lang].subline}
+            </p>
+          </div>
         </div>
 
-
+        <div
+          aria-hidden
+          style={{
+            height: 2,
+            background: "linear-gradient(90deg, transparent, #e8a04a 20%, #e8a04a 80%, transparent)",
+            margin: "0 auto 1.75rem",
+            maxWidth: 1100,
+            borderRadius: 2,
+          }}
+        />
 
         <div
           ref={wrapRef}
           style={{
             position: "relative",
-            maxWidth: 880,
+            maxWidth: 900,
             margin: "0 auto",
-            background: "#000",
+            background: "#0a0a0a",
             aspectRatio: "16 / 9",
             width: "100%",
             overflow: "hidden",
-            borderRadius: 8,
-            boxShadow: "0 10px 30px rgba(0,0,0,0.35)",
+            borderRadius: 18,
+            padding: 14,
+            border: "2px solid #e8a04a",
+            boxShadow: "0 0 0 1px rgba(255,255,255,0.08) inset, 0 18px 50px rgba(0,0,0,0.6), 0 0 24px rgba(232,160,74,0.25)",
           }}
         >
+
           {inView && (
             <video
               ref={videoRef}
