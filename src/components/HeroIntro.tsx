@@ -133,7 +133,7 @@ export default function HeroIntro() {
             textTransform: "uppercase",
             color: "#0a1633",
             opacity: 0.85,
-            paddingTop: 8,
+            paddingTop: 56,
           }}
         >
           <span>— PICK A LANGUAGE —</span>
