@@ -201,72 +201,37 @@ export default function HeroIntro() {
         </div>
 
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "minmax(140px, 1fr) minmax(0, 2.4fr) minmax(140px, 1fr)",
-            alignItems: "center",
-            gap: "clamp(12px, 2vw, 32px)",
-            margin: "0 0 1.75rem",
-          }}
-        >
-          <img
-            src={iceLeftAsset.url}
-            alt="ICE ERO officers conducting a targeted enforcement operation"
-            loading="lazy"
+        <div style={{ margin: "0 0 1.75rem", textAlign: "center" }}>
+          <h1
             style={{
-              width: "100%",
-              aspectRatio: "3 / 4",
-              objectFit: "cover",
-              borderRadius: 10,
-              boxShadow: "0 10px 30px rgba(0,0,0,0.45)",
-              display: "block",
+              fontFamily: '"Century Schoolbook", "New Century Schoolbook", "TeX Gyre Schola", Georgia, "Times New Roman", serif',
+              fontSize: "clamp(2.25rem, 5.5vw, 3.75rem)",
+              fontWeight: 400,
+              lineHeight: 1.1,
+              margin: "0 0 1.25rem",
+              letterSpacing: -1,
+              color: "#ffffff",
             }}
-          />
-          <div>
-            <h1
-              style={{
-                fontFamily: '"Century Schoolbook", "New Century Schoolbook", "TeX Gyre Schola", Georgia, "Times New Roman", serif',
-                fontSize: "clamp(2.25rem, 5.5vw, 3.75rem)",
-                fontWeight: 400,
-                lineHeight: 1.1,
-                margin: "0 0 1.25rem",
-                letterSpacing: -1,
-                color: "#ffffff",
-              }}
-            >
-              <span style={{ color: "#c0282d" }}>La Migra</span>
-              {COPY[lang].headline.replace(/^La Migra/, "")}
-            </h1>
-            <p
-              style={{
-                fontFamily: '"Work Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
-                fontSize: "clamp(1.2rem, 2.2vw, 1.7rem)",
-                lineHeight: 1.3,
-                maxWidth: 720,
-                margin: "0 auto",
-                fontWeight: 400,
-                color: "#ffffff",
-                whiteSpace: "pre-line",
-              }}
-            >
-              {COPY[lang].subline}
-            </p>
-          </div>
-          <img
-            src={iceRightAsset.url}
-            alt="ICE Fugitive Operations Team arresting a subject"
-            loading="lazy"
+          >
+            <span style={{ color: "#c0282d" }}>La Migra</span>
+            {COPY[lang].headline.replace(/^La Migra/, "")}
+          </h1>
+          <p
             style={{
-              width: "100%",
-              aspectRatio: "3 / 4",
-              objectFit: "cover",
-              borderRadius: 10,
-              boxShadow: "0 10px 30px rgba(0,0,0,0.45)",
-              display: "block",
+              fontFamily: '"Work Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
+              fontSize: "clamp(1.2rem, 2.2vw, 1.7rem)",
+              lineHeight: 1.3,
+              maxWidth: 1100,
+              margin: "0 auto",
+              fontWeight: 400,
+              color: "#ffffff",
+              whiteSpace: "pre-line",
             }}
-          />
+          >
+            {COPY[lang].subline}
+          </p>
         </div>
+
 
 
         <div
