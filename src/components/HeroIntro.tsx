@@ -103,11 +103,11 @@ export default function HeroIntro() {
     <section
       style={{
         background: "#ffffff",
-        color: "#1d4ed8",
+        color: "#112e51",
         padding: "0.5rem 1rem 1.5rem",
         textAlign: "center",
         fontFamily:
-          'ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+          '"Source Sans Pro", "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif',
       }}
     >
       <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative" }}>
@@ -122,7 +122,7 @@ export default function HeroIntro() {
             alignItems: "center",
             gap: 10,
             textDecoration: "none",
-            color: "#1d4ed8",
+            color: "#112e51",
           }}
         >
           <img
@@ -137,7 +137,7 @@ export default function HeroIntro() {
               fontSize: 20,
               fontWeight: 700,
               letterSpacing: -0.3,
-              color: "#1d4ed8",
+              color: "#112e51",
             }}
           >
             DetencionDefensa
@@ -156,7 +156,7 @@ export default function HeroIntro() {
             fontWeight: 700,
             letterSpacing: "0.16em",
             textTransform: "uppercase",
-            color: "#1d4ed8",
+            color: "#112e51",
             opacity: 0.85,
             paddingTop: 4,
           }}
@@ -178,8 +178,8 @@ export default function HeroIntro() {
                   setLang(code);
                 }}
                 style={{
-                  background: lang === code ? "#1d4ed8" : "transparent",
-                  color: lang === code ? "#fff" : "#1d4ed8",
+                  background: lang === code ? "#112e51" : "transparent",
+                  color: lang === code ? "#fff" : "#112e51",
                   border: "none",
                   borderRadius: 999,
                   padding: "8px 16px",
@@ -226,13 +226,13 @@ export default function HeroIntro() {
           <div style={{ textAlign: "center" }}>
             <h1
               style={{
-                fontFamily: '"Cormorant Garamond", "Garamond", "EB Garamond", Georgia, "Times New Roman", serif',
+                fontFamily: 'Merriweather, Georgia, "Times New Roman", serif',
                 fontSize: "clamp(2.5rem, 6vw, 4.25rem)",
                 fontWeight: 300,
                 lineHeight: 1.08,
                 margin: "0 0 1.25rem",
                 letterSpacing: "-0.005em",
-                color: "#1d4ed8",
+                color: "#112e51",
                 whiteSpace: "pre-line",
               }}
             >
@@ -241,13 +241,13 @@ export default function HeroIntro() {
             </h1>
             <p
               style={{
-                fontFamily: '"Work Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
+                fontFamily: '"Source Sans Pro", "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
                 fontSize: "clamp(1.2rem, 2.2vw, 1.7rem)",
                 lineHeight: 1.3,
                 maxWidth: 900,
                 margin: "0 auto",
                 fontWeight: 400,
-                color: "#1d4ed8",
+                color: "#112e51",
                 whiteSpace: "pre-line",
               }}
             >
