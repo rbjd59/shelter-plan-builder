@@ -102,8 +102,8 @@ export default function HeroIntro() {
   return (
     <section
       style={{
-        background: "#ffffff",
-        color: "#112e51",
+        background: "#000000",
+        color: "#ffffff",
         padding: "0 1rem 1.5rem",
         textAlign: "center",
         fontFamily:
@@ -122,7 +122,7 @@ export default function HeroIntro() {
             alignItems: "center",
             gap: 10,
             textDecoration: "none",
-            color: "#112e51",
+            color: "#ffffff",
           }}
         >
           <img
@@ -137,7 +137,7 @@ export default function HeroIntro() {
               fontSize: 20,
               fontWeight: 700,
               letterSpacing: -0.3,
-              color: "#1d4ed8",
+              color: "#ffffff",
             }}
           >
             DetencionDefensa
@@ -156,7 +156,7 @@ export default function HeroIntro() {
             fontWeight: 700,
             letterSpacing: "0.16em",
             textTransform: "uppercase",
-            color: "#112e51",
+            color: "#ffffff",
             opacity: 0.85,
             paddingTop: 4,
           }}
@@ -239,9 +239,9 @@ export default function HeroIntro() {
                 const [line1, line2] = COPY[lang].headline.split("\n");
                 return (
                   <>
-                    <span style={{ color: "#c0282d" }}>{line1}</span>
+                    <span style={{ color: "#ffffff" }}>{line1}</span>
                     {"\n"}
-                    <span style={{ color: "#1d4ed8" }}>{line2}</span>
+                    <span style={{ color: "#ffffff" }}>{line2}</span>
                   </>
                 );
               })()}
@@ -254,7 +254,7 @@ export default function HeroIntro() {
                 maxWidth: 900,
                 margin: "0 auto",
                 fontWeight: 600,
-                color: "#1d4ed8",
+                color: "#ffffff",
                 whiteSpace: "pre-line",
               }}
             >
