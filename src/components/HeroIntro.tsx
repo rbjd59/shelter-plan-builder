@@ -57,12 +57,25 @@ export default function HeroIntro() {
 
     const tryPlay = () => {
       const v = videoRef.current;
-      if (!v || !v.paused) return;
-      v.muted = false;
-      v.play().catch(() => {
-        v.muted = true;
-        v.play().catch(() => {});
-      });
+      if (!v) return;
+      // iOS Safari requires muted + playsInline for programmatic play().
+      // Start muted synchronously inside the gesture, then try to unmute.
+      v.muted = true;
+      v.setAttribute("muted", "");
+      const playPromise = v.play();
+      if (playPromise && typeof playPromise.then === "function") {
+        playPromise
+          .then(() => {
+            try {
+              v.muted = false;
+            } catch {
+              /* keep muted */
+            }
+          })
+          .catch(() => {
+            v.muted = true;
+          });
+      }
     };
 
     const activateVideo = () => {
