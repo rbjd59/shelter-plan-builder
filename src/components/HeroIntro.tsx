@@ -226,7 +226,7 @@ export default function HeroIntro() {
           <div>
             <h1
               style={{
-                fontFamily: '"Fraunces", "Quincy CF", Georgia, "Times New Roman", serif',
+                fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
                 fontSize: "clamp(2.25rem, 5.5vw, 3.75rem)",
                 fontWeight: 700,
                 lineHeight: 1.1,
