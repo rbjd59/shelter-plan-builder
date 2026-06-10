@@ -19,7 +19,7 @@ const COPY = {
     play: "Reproducir",
   },
   en: {
-    headline: "La Migra is Coming, Be Prepared",
+    headline: "La Migra is Coming, Please Be Prepared",
     subline: "Attorney Created & Reviewed Low Cost $199 Pro Se Legal Defense Plan\nFor Those Who Can Not Afford $10,000 if Arrested",
     offer: "",
     start: "Start",
