@@ -269,12 +269,6 @@ export async function sendWelcomeEmail(params: {
     ? installButton(params.familyInstallUrl, sc.familyCta, "#0b1220")
     : "";
 
-  const serviceSection = `<div style="margin-top:18px;padding:18px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;">
-      <p style="margin:0 0 10px;font-size:14px;font-weight:700;color:#0b1220;">${escapeHtml(sc.serviceTitle)}</p>
-      <ul style="margin:0;padding-left:20px;font-size:13px;color:#334155;line-height:1.6;">
-        ${sc.servicePoints.map((p) => `<li>${escapeHtml(p)}</li>`).join("")}
-      </ul>
-    </div>`;
 
   const notDownloadNote = {
     es: "Esto NO es una descarga automática. Toque el botón abajo en el teléfono correcto, luego siga las instrucciones para guardar el ícono rojo AVISAR A FAMILIA en la pantalla de inicio (toma 10 segundos). En iPhone debe abrirse en Safari.",
