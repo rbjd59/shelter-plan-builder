@@ -173,7 +173,7 @@ const UI = {
     upl: "The information below is translated and typed onto the Pro Se Federal Habeas Corpus Form AO 242.",
     submit: "Submit answers",
     submitting: "Submitting…",
-    done: "Check your email. We just sent you your prepared AO 242 + AO 240 PDFs and a one-tap link to install the NOTIFY FAMILY button on the at-risk person's phone, with step-by-step instructions in your chosen language.",
+    done: "Check your email. We just sent you a link to download the emergency app. When you receive it, follow the instructions after you enter in the activation code above. We have transferred the draft documents to your phone and scrubbed our servers of your information for your safety.",
     spamTitle: "IMPORTANT — don't let our emails go to spam",
     spamBody: "If you don't see our email, check your spam/junk folder. To make sure future emergency emails reach you, tap the button below to send us a quick test email. This trains your phone to trust intake@gohomesooner.com so our alerts always arrive.",
     spamBtn: "Send test email now",
