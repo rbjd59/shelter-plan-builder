@@ -189,7 +189,7 @@ const UI = {
     upl: "NO somos un bufete de abogados. No damos consejos legales. El peticionario firma y presenta.",
     submit: "Enviar respuestas",
     submitting: "Enviando…",
-    done: "Revise su correo electrónico. Acabamos de enviarle sus formularios AO 242 + AO 240 en PDF y un enlace de un solo toque para instalar el botón AVISAR A FAMILIA en el teléfono de la persona en riesgo, con instrucciones paso a paso en su idioma.",
+    done: "Revise su correo electrónico. Acabamos de enviarle un enlace para descargar la app de emergencia. Cuando lo reciba, siga las instrucciones después de ingresar el código de activación de arriba. Hemos transferido los documentos borrador a su teléfono y borrado su información de nuestros servidores para su seguridad.",
     spamTitle: "IMPORTANTE — no deje que nuestros correos vayan a spam",
     spamBody: "Si no ve nuestro correo, revise la carpeta de spam/correo no deseado. Para asegurarse de recibir nuestros correos de emergencia, toque el botón abajo para enviarnos un correo de prueba. Esto le enseña a su teléfono a confiar en intake@gohomesooner.com.",
     spamBtn: "Enviar correo de prueba ahora",
