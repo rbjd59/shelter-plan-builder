@@ -205,7 +205,7 @@ const UI = {
     upl: "Nou PA yon kabinè avoka. Nou pa bay konsèy legal. Petisyonè a siyen e depoze.",
     submit: "Voye repons",
     submitting: "K ap voye…",
-    done: "Tcheke imèl ou. Nou fenk voye fòm AO 242 + AO 240 PDF ou yo ak yon lyen yon-tap pou enstale bouton AVIZE FANMI sou telefòn moun ki an risk la, ak enstriksyon etap-pa-etap nan lang ou chwazi a.",
+    done: "Tcheke imèl ou. Nou fenk voye yon lyen pou telechaje app ijans la. Lè ou resevwa l, swiv enstriksyon yo apre ou antre kòd aktivasyon anwo a. Nou transfere dokiman bouyon yo nan telefòn ou e efase enfòmasyon ou yo nan sèvè nou pou sekirite w.",
     spamTitle: "ENPÒTAN — pa kite imèl nou yo ale nan spam",
     spamBody: "Si ou pa wè imèl nou an, tcheke katab spam/junk lan. Pou asire imèl ijans rive jwenn ou, peze bouton anba a pou voye yon imèl tès ba nou. Sa montre telefòn ou pou l fè konfyans intake@gohomesooner.com.",
     spamBtn: "Voye imèl tès la kounye a",
