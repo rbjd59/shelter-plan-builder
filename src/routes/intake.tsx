@@ -410,8 +410,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
           </div>
         )}
         <div style={{ background: "#0b1220", border: "2px solid #e8a04a", padding: 20, borderRadius: 8, marginBottom: 20, textAlign: "center" }}>
-          <p style={{ margin: "0 0 4px", fontSize: 11, letterSpacing: 2, color: "#e8a04a", fontWeight: 700 }}>DEMO · INVESTOR PREVIEW</p>
-          <p style={{ margin: 0, fontSize: 22, fontWeight: 800, color: "#fff5d6" }}>ASSET PROTECTION ACTIVATED</p>
+          <p style={{ margin: 0, fontSize: 22, fontWeight: 800, color: "#fff5d6" }}>POST DETENTION PLAN ENROLLED</p>
         </div>
         <div style={{ background: "#1a2436", padding: 32, borderRadius: 8, borderLeft: "4px solid #2d6a4f" }}>
           <h1 style={{ fontSize: 28, marginBottom: 16 }}>✓</h1>
