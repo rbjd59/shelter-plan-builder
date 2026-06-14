@@ -33,7 +33,7 @@ html, body {
 
 /* When splash-view is the active view, body becomes dark */
 body.splash-active {
-  background: #0b3d2e;
+  background: #0d2c54;
   color: var(--paper);
 }
 
