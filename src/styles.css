@@ -1,5 +1,7 @@
 /* Google Fonts loaded via <link> tag in src/routes/__root.tsx (Lightning CSS can't resolve remote @import). */
 @import "tailwindcss" source(none);
+@import "@fontsource/roboto-slab/400.css";
+@import "@fontsource/roboto-slab/700.css";
 @source "../src";
 
 /* ===== ROOT ===== */
