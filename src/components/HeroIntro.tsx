@@ -326,7 +326,7 @@ export default function HeroIntro() {
             </h1>
             <p
               style={{
-                fontFamily: '"Fraunces", "Quincy CF", Georgia, serif',
+                fontFamily: '"Courier New", Courier, monospace',
                 fontSize: isMobile ? "1rem" : "clamp(1.05rem, 1.7vw, 1.35rem)",
                 lineHeight: 1.4,
                 maxWidth: 720,
