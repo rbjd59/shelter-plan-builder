@@ -278,7 +278,7 @@ export default function HeroIntro() {
             display: "grid",
             gridTemplateColumns: isMobile
               ? "1fr"
-              : "minmax(140px, 230px) minmax(0, 1fr) minmax(140px, 230px)",
+              : "minmax(90px, 150px) minmax(0, 1fr) minmax(90px, 150px)",
             alignItems: "center",
             gap: isMobile ? "1rem" : "clamp(16px, 3vw, 36px)",
             margin: "0 0 1.75rem",
