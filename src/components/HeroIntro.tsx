@@ -181,7 +181,7 @@ export default function HeroIntro() {
   return (
     <section
       style={{
-        background: "linear-gradient(180deg, #0b3d2e 0%, #07291f 100%)",
+        background: "linear-gradient(180deg, #0d2c54 0%, #081d3a 100%)",
         color: "#ffffff",
         padding: isMobile ? "1rem 0.75rem 1.25rem" : "0 1rem 1.5rem",
         textAlign: "center",
@@ -278,7 +278,7 @@ export default function HeroIntro() {
             display: "grid",
             gridTemplateColumns: isMobile
               ? "1fr"
-              : "minmax(140px, 230px) minmax(0, 1fr) minmax(140px, 230px)",
+              : "minmax(90px, 150px) minmax(0, 1fr) minmax(90px, 150px)",
             alignItems: "center",
             gap: isMobile ? "1rem" : "clamp(16px, 3vw, 36px)",
             margin: "0 0 1.75rem",
