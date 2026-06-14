@@ -181,7 +181,7 @@ export default function HeroIntro() {
   return (
     <section
       style={{
-        background: "#000000",
+        background: "linear-gradient(180deg, #0b3d2e 0%, #07291f 100%)",
         color: "#ffffff",
         padding: isMobile ? "1rem 0.75rem 1.25rem" : "0 1rem 1.5rem",
         textAlign: "center",
