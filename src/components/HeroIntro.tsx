@@ -303,7 +303,7 @@ export default function HeroIntro() {
           <div style={{ textAlign: "center", order: isMobile ? 1 : 0 }}>
             <h1
               style={{
-                fontFamily: '"Courier New", Courier, monospace',
+                fontFamily: '"Roboto Slab", Georgia, serif',
                 fontSize: isMobile ? "1.9rem" : "clamp(2.25rem, 5.4vw, 3.75rem)",
                 fontWeight: 700,
                 lineHeight: 1.08,
@@ -326,7 +326,7 @@ export default function HeroIntro() {
             </h1>
             <p
               style={{
-                fontFamily: '"Courier New", Courier, monospace',
+                fontFamily: '"Roboto Slab", Georgia, serif',
                 fontSize: isMobile ? "1rem" : "clamp(1.05rem, 1.7vw, 1.35rem)",
                 lineHeight: 1.4,
                 maxWidth: 720,
