@@ -33,7 +33,7 @@ html, body {
 
 /* When splash-view is the active view, body becomes dark */
 body.splash-active {
-  background: var(--ink-deep);
+  background: #0b3d2e;
   color: var(--paper);
 }
 
@@ -59,7 +59,7 @@ body.splash-active {
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   #splash-view {
-    background: var(--ink-deep);
+    background: linear-gradient(180deg, #0b3d2e 0%, #07291f 100%);
     color: var(--paper);
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
