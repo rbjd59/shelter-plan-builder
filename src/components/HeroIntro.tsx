@@ -303,7 +303,7 @@ export default function HeroIntro() {
           <div style={{ textAlign: "center", order: isMobile ? 1 : 0 }}>
             <h1
               style={{
-                fontFamily: '"Fraunces", "Quincy CF", Georgia, serif',
+                fontFamily: '"Courier New", Courier, monospace',
                 fontSize: isMobile ? "1.9rem" : "clamp(2.25rem, 5.4vw, 3.75rem)",
                 fontWeight: 700,
                 lineHeight: 1.08,
