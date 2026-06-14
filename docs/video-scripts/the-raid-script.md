@@ -1,9 +1,10 @@
 # DetencionDefensa.com — "The Raid" Video Script
-## Three Languages · Plain Language (3rd–5th grade level)
+
+Three Languages · Plain Language (3rd–5th grade level)
 
 ---
 
-# 🇺🇸 ENGLISH
+## 🇺🇸 ENGLISH
 
 **SCENE 1 — A normal day**
 "It is just a normal day at work. Like every day."
@@ -26,15 +27,13 @@ ON-SCREEN: They were not ready. Miguel was.
 "Your paper was ready before the raid. Not after."
 
 **SCENE 5 — Why $199? (Trust)**
-"A lawyer to do all of this costs ten thousand dollars. Most families do not have that.
-So how can we do it for one hundred ninety-nine?
+"A lawyer to do all of this costs ten thousand dollars. Most families do not have that. So how can we do it for one hundred ninety-nine?
 A smart computer — what people call A.I. — does the slow work. It writes your paper and puts it in your language. That saves many hours.
 Then — and this is important — a real lawyer checks your paper. A real, licensed lawyer. His name is Rosario Sorrentino.
 The computer makes it fast and cheap. The lawyer makes it right."
 
 **SCENE 6 — Why it works**
-"This paper has a special name: habeas corpus. It is very old, and it is very strong. It makes a federal judge ask one question: Why are you holding this person?
-And right now, many judges are listening."
+"This paper has a special name: habeas corpus. It is very old, and it is very strong. It makes a federal judge ask one question: Why are you holding this person? And right now, many judges are listening."
 ON-SCREEN: In 2026, about 9 out of 10 court decisions went against the detention rule.
 FOOTNOTE: Politico, May 2026. This is about court decisions on the rule — not a promise for your case. Every case is different.
 
@@ -50,7 +49,7 @@ ON-SCREEN: A real lawyer checks every paper. Not a law firm. We cannot promise a
 
 ---
 
-# 🇪🇸 ESPAÑOL (everyday spoken Spanish, simple)
+## 🇪🇸 ESPAÑOL (everyday spoken Spanish, simple)
 
 **ESCENA 1 — Un día normal**
 "Es un día normal de trabajo. Como todos los días."
@@ -73,16 +72,14 @@ EN PANTALLA: Ellos no estaban listos. Miguel sí.
 "Su papel estaba listo antes de la redada. No después."
 
 **ESCENA 5 — ¿Por qué $199? (Confianza)**
-"Un abogado para hacer todo esto cuesta diez mil dólares. La mayoría de las familias no tienen eso.
-¿Entonces cómo lo hacemos por ciento noventa y nueve?
+"Un abogado para hacer todo esto cuesta diez mil dólares. La mayoría de las familias no tienen eso. ¿Entonces cómo lo hacemos por ciento noventa y nueve?
 Una computadora inteligente — lo que la gente llama Inteligencia Artificial — hace el trabajo lento. Escribe su papel y lo pone en su idioma. Eso ahorra muchas horas.
 Y luego — esto es importante — un abogado de verdad revisa su papel. Un abogado con licencia, de verdad. Se llama Rosario Sorrentino.
 La computadora lo hace rápido y barato. El abogado lo hace bien."
 EN PANTALLA: Computadora inteligente + abogado de verdad = precio bajo.
 
 **ESCENA 6 — Por qué funciona**
-"Este papel tiene un nombre especial: habeas corpus. Es muy antiguo, y es muy fuerte. Hace que un juez federal pregunte una sola cosa: ¿Por qué tienen detenida a esta persona?
-Y ahora mismo, muchos jueces están escuchando."
+"Este papel tiene un nombre especial: habeas corpus. Es muy antiguo, y es muy fuerte. Hace que un juez federal pregunte una sola cosa: ¿Por qué tienen detenida a esta persona? Y ahora mismo, muchos jueces están escuchando."
 EN PANTALLA: En 2026, casi 9 de cada 10 decisiones de la corte fueron en contra de la regla de detención.
 NOTA: Politico, mayo 2026. Esto es sobre decisiones de la corte sobre la regla — no es una promesa para su caso. Cada caso es diferente.
 
@@ -98,7 +95,7 @@ EN PANTALLA: Un abogado de verdad revisa cada papel. No somos un bufete. No pode
 
 ---
 
-# 🇭🇹 KREYÒL AYISYEN (simple, spoken Haitian Creole)
+## 🇭🇹 KREYÒL AYISYEN (simple, spoken Haitian Creole)
 
 **SÈN 1 — Yon jou nòmal**
 "Se yon jou nòmal nan travay. Tankou chak jou."
@@ -121,16 +118,14 @@ SOU EKRAN: Yo pa t pare. Miguel te pare.
 "Papye w te pare anvan desant lan. Pa apre."
 
 **SÈN 5 — Poukisa $199? (Konfyans)**
-"Yon avoka pou fè tout sa koute dis mil dola. Pifò fanmi pa gen kòb sa a.
-Kòman nou ka fè li pou san katrevendis-nèf (199) dola?
+"Yon avoka pou fè tout sa koute dis mil dola. Pifò fanmi pa gen kòb sa a. Kòman nou ka fè li pou san katrevendis-nèf (199) dola?
 Yon òdinatè entelijan — sa moun rele Entèlijans Atifisyèl — fè travay ki long lan. Li ekri papye w epi mete li nan lang ou. Sa sove anpil tan.
 Apre sa — sa enpòtan anpil — yon vrè avoka tcheke papye w. Yon vrè avoka ki gen lisans. Non li se Rosario Sorrentino.
 Òdinatè a fè li vit epi bon mache. Avoka a fè li kòrèk."
 SOU EKRAN: Òdinatè entelijan + vrè avoka = pri ki ba.
 
 **SÈN 6 — Poukisa li mache**
-"Papye sa a gen yon non espesyal: habeas corpus. Li trè ansyen, epi li trè fò. Li fè yon jij federal poze yon sèl kesyon: Poukisa nou kenbe moun sa a?
-Epi kounye a, anpil jij ap koute."
+"Papye sa a gen yon non espesyal: habeas corpus. Li trè ansyen, epi li trè fò. Li fè yon jij federal poze yon sèl kesyon: Poukisa nou kenbe moun sa a? Epi kounye a, anpil jij ap koute."
 SOU EKRAN: An 2026, anviwon 9 sou 10 desizyon tribinal te kont règ detansyon an.
 NÒT: Politico, me 2026. Sa konsène desizyon tribinal sou règ la — se pa yon pwomès pou ka pa w. Chak ka diferan.
 
@@ -147,7 +142,5 @@ SOU EKRAN: Yon vrè avoka tcheke chak papye. Nou pa yon kabinè avoka. Nou pa ka
 ---
 
 ## NOTE ON TRANSLATIONS
-These are written at a simple, spoken level on purpose — not formal "legal" Spanish or Creole.
-Before publishing, have a native speaker from your target community (Mexican/Central American
-Spanish; Haitian Creole) read them aloud to confirm they sound natural and warm, not robotic.
-A 10-minute review by a real person catches anything a translation misses.
+
+These are written at a simple, spoken level on purpose — not formal "legal" Spanish or Creole. Before publishing, have a native speaker from your target community (Mexican/Central American Spanish; Haitian Creole) read them aloud to confirm they sound natural and warm, not robotic. A 10-minute review by a real person catches anything a translation misses.
