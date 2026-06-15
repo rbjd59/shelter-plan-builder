@@ -4,7 +4,6 @@ import { useLang } from "@/context/LanguageContext";
 import enAd from "@/assets/videos/detencion-defensa-ad-final-en.mp4.asset.json";
 import esAd from "@/assets/videos/detencion-defensa-ad-final-es.mp4.asset.json";
 
-// English ad for EN, Spanish ad for ES, English ad for HT as fallback.
 const SRC: Record<string, string> = {
   en: enAd.url,
   es: esAd.url,
@@ -20,66 +19,41 @@ const HEADING: Record<string, string> = {
 export default function AdVideoSection() {
   const { lang } = useLang();
   const [mount, setMount] = useState<HTMLElement | null>(null);
-  const wrapRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const triggeredRef = useRef(false);
+  const [started, setStarted] = useState(false);
 
-  // Find mount node (re-scan if SiteShell re-renders innerHTML)
   useEffect(() => {
     const find = () => {
       const el = document.getElementById("dd-ad-video-mount");
-      if (el) {
-        setMount(el);
-        return true;
-      }
+      if (el) { setMount(el); return true; }
       return false;
     };
     if (find()) return;
-    const obs = new MutationObserver(() => {
-      if (find()) obs.disconnect();
-    });
+    const obs = new MutationObserver(() => { if (find()) obs.disconnect(); });
     obs.observe(document.body, { childList: true, subtree: true });
     return () => obs.disconnect();
   }, []);
 
-  // Reset autoplay flag when language changes
   useEffect(() => {
-    triggeredRef.current = false;
+    setStarted(false);
     const v = videoRef.current;
-    if (v) {
-      v.pause();
-      v.currentTime = 0;
-    }
+    if (v) { v.pause(); v.currentTime = 0; }
   }, [lang]);
 
-  // Auto-play when the video scrolls into view
-  useEffect(() => {
-    const node = wrapRef.current;
-    if (!node) return;
-    if (typeof IntersectionObserver === "undefined") return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting && !triggeredRef.current) {
-            triggeredRef.current = true;
-            const v = videoRef.current;
-            if (!v) return;
-            v.muted = true;
-            v.setAttribute("muted", "");
-            const p = v.play();
-            if (p && typeof p.then === "function") {
-              p.then(() => {
-                try { v.muted = false; } catch { /* keep muted */ }
-              }).catch(() => { v.muted = true; });
-            }
-          }
-        }
-      },
-      { threshold: 0.4 },
-    );
-    io.observe(node);
-    return () => io.disconnect();
-  }, [mount, lang]);
+  const handlePlay = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = false;
+    const p = v.play();
+    if (p && typeof p.then === "function") {
+      p.then(() => setStarted(true)).catch(() => {
+        v.muted = true;
+        v.play().then(() => setStarted(true)).catch(() => {});
+      });
+    } else {
+      setStarted(true);
+    }
+  };
 
   if (!mount) return null;
 
@@ -105,7 +79,6 @@ export default function AdVideoSection() {
           {HEADING[lang] ?? HEADING.en}
         </h2>
         <div
-          ref={wrapRef}
           style={{
             position: "relative",
             background: "#000",
@@ -123,10 +96,9 @@ export default function AdVideoSection() {
             ref={videoRef}
             key={lang}
             src={`${SRC[lang] ?? SRC.en}#t=0.1`}
-            controls
+            controls={started}
             playsInline
             {...({ "webkit-playsinline": "true" } as Record<string, string>)}
-            muted
             preload="metadata"
             style={{
               width: "100%",
@@ -136,9 +108,59 @@ export default function AdVideoSection() {
               display: "block",
             }}
           />
+          {!started && <PlayOverlay onClick={handlePlay} />}
         </div>
       </div>
     </section>,
     mount,
+  );
+}
+
+export function PlayOverlay({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label="Play video"
+      style={{
+        position: "absolute",
+        inset: 0,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "rgba(0,0,0,0.35)",
+        border: "none",
+        cursor: "pointer",
+        padding: 0,
+        zIndex: 5,
+      }}
+    >
+      <span
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: 96,
+          height: 96,
+          borderRadius: "50%",
+          background: "rgba(232,160,74,0.95)",
+          border: "4px solid #fff",
+          boxShadow: "0 10px 30px rgba(0,0,0,0.55)",
+        }}
+      >
+        <span
+          aria-hidden
+          style={{
+            display: "inline-block",
+            width: 0,
+            height: 0,
+            marginLeft: 8,
+            borderTop: "18px solid transparent",
+            borderBottom: "18px solid transparent",
+            borderLeft: "28px solid #0f1830",
+          }}
+        />
+      </span>
+    </button>
   );
 }
