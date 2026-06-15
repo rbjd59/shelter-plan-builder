@@ -70,76 +70,7 @@ export default function HeroIntro() {
     window.scrollTo(0, 0);
   }, []);
 
-  useEffect(() => {
-    if (!wrapRef.current) return;
-    let timer: ReturnType<typeof setTimeout> | null = null;
-    let lastScrollY = typeof window !== "undefined" ? window.scrollY : 0;
-    let lastTouchY: number | null = null;
-
-    const tryPlay = () => {
-      const v = videoRef.current;
-      if (!v) return;
-      // iOS Safari requires muted + playsInline for programmatic play().
-      v.muted = true;
-      v.setAttribute("muted", "");
-      const playPromise = v.play();
-      if (playPromise && typeof playPromise.then === "function") {
-        playPromise
-          .then(() => {
-            try {
-              v.muted = false;
-            } catch {
-              /* keep muted */
-            }
-          })
-          .catch(() => {
-            v.muted = true;
-          });
-      }
-    };
-
-    const activateVideo = () => {
-      if (hasAutoStartedRef.current) return;
-      hasAutoStartedRef.current = true;
-      setInView(true);
-      if (timer) clearTimeout(timer);
-      timer = setTimeout(tryPlay, VIDEO_START_DELAY_MS);
-    };
-
-    const startOnScroll = () => {
-      const y = window.scrollY;
-      if (lastScrollY - y >= SCROLL_UP_THRESHOLD_PX) activateVideo();
-      lastScrollY = y;
-    };
-
-    const startOnWheel = (event: WheelEvent) => {
-      if (event.deltaY < 0) activateVideo();
-    };
-
-    const rememberTouchStart = (event: TouchEvent) => {
-      lastTouchY = event.touches[0]?.clientY ?? null;
-    };
-
-    const startOnTouchMove = (event: TouchEvent) => {
-      const currentY = event.touches[0]?.clientY;
-      // Finger moving DOWN the screen = scrolling UP the page.
-      if (lastTouchY !== null && currentY !== undefined && currentY > lastTouchY) activateVideo();
-      lastTouchY = currentY ?? lastTouchY;
-    };
-
-    window.addEventListener("scroll", startOnScroll, { passive: true });
-    window.addEventListener("wheel", startOnWheel, { passive: true });
-    window.addEventListener("touchstart", rememberTouchStart, { passive: true });
-    window.addEventListener("touchmove", startOnTouchMove, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", startOnScroll);
-      window.removeEventListener("wheel", startOnWheel);
-      window.removeEventListener("touchstart", rememberTouchStart);
-      window.removeEventListener("touchmove", startOnTouchMove);
-      if (timer) clearTimeout(timer);
-    };
-  }, [lang]);
+  // Auto-play removed — user must click the play overlay to start the video.
 
 
   // Reset on language change
