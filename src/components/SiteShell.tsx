@@ -4,6 +4,7 @@ import { SITE_HTML } from "@/lib/markup";
 import { useLang, type Lang } from "@/context/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { PARTNERS } from "@/lib/partners-content";
+import AdVideoSection from "@/components/AdVideoSection";
 
 /**
  * Renders the main marketing page from the reference HTML markup.
@@ -186,7 +187,10 @@ export default function SiteShell() {
   }, [navigate, setLang, lang]);
 
   return (
-    <div ref={ref} dangerouslySetInnerHTML={{ __html: SITE_HTML }} />
+    <>
+      <div ref={ref} dangerouslySetInnerHTML={{ __html: SITE_HTML }} />
+      <AdVideoSection />
+    </>
   );
 }
 
