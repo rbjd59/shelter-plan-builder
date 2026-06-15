@@ -357,10 +357,9 @@ export default function HeroIntro() {
             ref={videoRef}
             key={lang}
             src={`${SRC[lang]}#t=0.1`}
-            controls
+            controls={hasStarted}
             playsInline
             {...({ "webkit-playsinline": "true" } as Record<string, string>)}
-            muted
             preload="metadata"
             style={{
               width: "100%",
@@ -370,6 +369,23 @@ export default function HeroIntro() {
               display: "block",
             }}
           />
+
+          {!hasStarted && (
+            <PlayOverlay
+              onClick={() => {
+                const v = videoRef.current;
+                if (!v) return;
+                v.muted = false;
+                const p = v.play();
+                if (p && typeof p.then === "function") {
+                  p.catch(() => {
+                    v.muted = true;
+                    v.play().catch(() => {});
+                  });
+                }
+              }}
+            />
+          )}
 
           {isPlaying && (
             <button
