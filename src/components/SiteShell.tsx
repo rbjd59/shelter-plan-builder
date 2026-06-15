@@ -187,7 +187,10 @@ export default function SiteShell() {
   }, [navigate, setLang, lang]);
 
   return (
-    <div ref={ref} dangerouslySetInnerHTML={{ __html: SITE_HTML }} />
+    <>
+      <div ref={ref} dangerouslySetInnerHTML={{ __html: SITE_HTML }} />
+      <AdVideoSection />
+    </>
   );
 }
 
