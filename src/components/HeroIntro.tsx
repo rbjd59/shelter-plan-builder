@@ -6,6 +6,7 @@ import htAsset from "@/assets/videos/detenciondefensa_ht.mp4.asset.json";
 import logoAsset from "@/assets/dd-logo.png.asset.json";
 import iceLeftAsset from "@/assets/ice-arrest-new.jpg.asset.json";
 import iceRightAsset from "@/assets/hispanic-family.jpg";
+import { PlayOverlay } from "@/components/AdVideoSection";
 
 
 const SRC = { es: esAsset.url, en: enAsset.url, ht: htAsset.url };
