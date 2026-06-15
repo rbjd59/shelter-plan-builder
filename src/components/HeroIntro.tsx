@@ -17,6 +17,7 @@ const COPY = {
     offer: "",
     start: "Comenzar",
     play: "Reproducir",
+    getStarted: "Regístrese ahora",
   },
   en: {
     headline: "La migra is coming\nplease be prepared",
@@ -24,6 +25,7 @@ const COPY = {
     offer: "",
     start: "Start",
     play: "Play",
+    getStarted: "Get Started",
   },
   ht: {
     headline: "La migra ap vini\ntanpri prepare w",
@@ -31,8 +33,9 @@ const COPY = {
     offer: "",
     start: "Kòmanse",
     play: "Jwe",
+    getStarted: "Kòmanse",
   },
-} satisfies Record<Lang, { headline: string; subline: string; offer: string; start: string; play: string }>;
+} satisfies Record<Lang, { headline: string; subline: string; offer: string; start: string; play: string; getStarted: string }>;
 
 // === Video autoplay tuning — adjust these values here ===
 const VIDEO_START_DELAY_MS = 2000;      // delay after scroll-up trigger before playback starts
