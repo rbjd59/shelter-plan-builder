@@ -239,40 +239,75 @@ export default function HeroIntro() {
           <div
             style={{
               display: "inline-flex",
-              gap: 4,
-              background: "#fff",
-              border: "1px solid rgba(10,22,51,0.15)",
-              borderRadius: 999,
-              padding: 3,
+              alignItems: "center",
+              gap: 10,
               flexShrink: 0,
+              flexWrap: "wrap",
+              justifyContent: "flex-end",
             }}
           >
-            {(["es", "en", "ht"] as Lang[]).map((code) => (
-              <button
-                key={code}
-                type="button"
-                onClick={() => {
-                  setLang(code);
-                }}
-                style={{
-                  background: lang === code ? "#112e51" : "transparent",
-                  color: lang === code ? "#fff" : "#112e51",
-                  border: "none",
-                  borderRadius: 999,
-                  padding: isMobile ? "6px 10px" : "8px 16px",
-                  fontSize: isMobile ? 12 : 13,
-                  fontWeight: 700,
-                  letterSpacing: "0.14em",
-                  cursor: "pointer",
-                  fontFamily: "inherit",
-                  touchAction: "manipulation",
-                  WebkitTapHighlightColor: "transparent",
-                }}
-              >
-                {code.toUpperCase()}
-              </button>
-            ))}
+            <div
+              style={{
+                display: "inline-flex",
+                gap: 4,
+                background: "#fff",
+                border: "1px solid rgba(10,22,51,0.15)",
+                borderRadius: 999,
+                padding: 3,
+                flexShrink: 0,
+              }}
+            >
+              {(["es", "en", "ht"] as Lang[]).map((code) => (
+                <button
+                  key={code}
+                  type="button"
+                  onClick={() => {
+                    setLang(code);
+                  }}
+                  style={{
+                    background: lang === code ? "#112e51" : "transparent",
+                    color: lang === code ? "#fff" : "#112e51",
+                    border: "none",
+                    borderRadius: 999,
+                    padding: isMobile ? "6px 10px" : "8px 16px",
+                    fontSize: isMobile ? 12 : 13,
+                    fontWeight: 700,
+                    letterSpacing: "0.14em",
+                    cursor: "pointer",
+                    fontFamily: "inherit",
+                    touchAction: "manipulation",
+                    WebkitTapHighlightColor: "transparent",
+                  }}
+                >
+                  {code.toUpperCase()}
+                </button>
+              ))}
+            </div>
+
+            <a
+              href="/terms"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                background: "#e8a04a",
+                color: "#0f1830",
+                textDecoration: "none",
+                fontWeight: 800,
+                fontSize: isMobile ? 12 : 13,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                padding: isMobile ? "8px 14px" : "10px 18px",
+                borderRadius: 999,
+                boxShadow: "0 6px 18px rgba(0,0,0,0.3)",
+                fontFamily: "inherit",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {COPY[lang].getStarted} →
+            </a>
           </div>
+
         </div>
 
 
