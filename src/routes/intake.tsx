@@ -261,6 +261,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
   const [answers, setAnswers] = useState<Record<string, string | boolean>>({});
   const [englishAnswers, setEnglishAnswers] = useState<Record<string, string>>({});
   const [approvals, setApprovals] = useState<Record<string, boolean>>({});
+  const [smsConsent, setSmsConsent] = useState(false);
   
 
   const isBilingual = L !== "en";
@@ -284,11 +285,22 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
       setStatus("error");
       return;
     }
+    if (!smsConsent) {
+      setErrMsg(L === "es" ? "Marque la casilla de consentimiento de SMS para continuar." : L === "ht" ? "Tcheke kazye konsantman SMS la pou kontinye." : "Please check the SMS consent box to continue.");
+      setStatus("error");
+      return;
+    }
     setStatus("submitting");
     try {
       // Merge: English-approved values overwrite native values for PDF filling;
       // preserve the native originals under "<key>__native" for record copies.
-      const merged: Record<string, string | boolean> = { ...answers };
+      const merged: Record<string, string | boolean> = {
+        ...answers,
+        sms_consent: true,
+        sms_consent_text:
+          "I agree to receive SMS messages from DetencionDefensa.com, Inc. at the phone number provided, including an activation code and emergency-case notifications. Message and data rates may apply. Message frequency varies. Reply STOP to unsubscribe, HELP for help.",
+        sms_consent_at: new Date().toISOString(),
+      };
       if (isBilingual) {
         for (const [k, v] of Object.entries(answers)) {
           if (typeof v === "string" && englishAnswers[k]) {
@@ -516,7 +528,25 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
             </section>
           ))}
           
-          <button type="submit" disabled={status === "submitting"} style={{ background: "#e8a04a", color: "#0b1220", padding: "16px 32px", fontSize: 16, fontWeight: 700, border: "none", borderRadius: 4, cursor: "pointer", width: "100%" }}>
+          <label style={{ display: "flex", gap: 12, alignItems: "flex-start", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 6, padding: 14, marginBottom: 16, cursor: "pointer" }}>
+            <input
+              type="checkbox"
+              checked={smsConsent}
+              onChange={(e) => setSmsConsent(e.target.checked)}
+              style={{ marginTop: 4, width: 18, height: 18, flexShrink: 0 }}
+            />
+            <span style={{ fontSize: 13, lineHeight: 1.5, color: "#e8eef7" }}>
+              {L === "es" ? (
+                <>Acepto recibir mensajes SMS de <strong>DetencionDefensa.com, Inc.</strong> al número de teléfono proporcionado, incluyendo un código de activación y notificaciones de emergencia del caso. Pueden aplicar tarifas de mensajes y datos. La frecuencia varía. Responda STOP para cancelar la suscripción, HELP para ayuda. Consulte la <a href="/privacy" target="_blank" style={{ color: "#e8a04a" }}>Política de Privacidad</a> y los <a href="/terms" target="_blank" style={{ color: "#e8a04a" }}>Términos</a>.</>
+              ) : L === "ht" ? (
+                <>Mwen dakò pou m resevwa mesaj SMS soti nan <strong>DetencionDefensa.com, Inc.</strong> nan nimewo telefòn mwen bay la, ki gen ladann yon kòd aktivasyon ak notifikasyon ka ijans. Tarif mesaj ak done ka aplike. Frekans mesaj la varye. Reponn STOP pou w dezabòne, HELP pou èd. Gade <a href="/privacy" target="_blank" style={{ color: "#e8a04a" }}>Règleman Konfidansyalite</a> ak <a href="/terms" target="_blank" style={{ color: "#e8a04a" }}>Kondisyon yo</a>.</>
+              ) : (
+                <>I agree to receive SMS messages from <strong>DetencionDefensa.com, Inc.</strong> at the phone number provided, including an activation code and emergency-case notifications. Message and data rates may apply. Message frequency varies. Reply STOP to unsubscribe, HELP for help. See our <a href="/privacy" target="_blank" style={{ color: "#e8a04a" }}>Privacy Policy</a> and <a href="/terms" target="_blank" style={{ color: "#e8a04a" }}>Terms</a>.</>
+              )}
+            </span>
+          </label>
+
+          <button type="submit" disabled={status === "submitting" || !smsConsent} style={{ background: smsConsent ? "#e8a04a" : "#6b6b6b", color: "#0b1220", padding: "16px 32px", fontSize: 16, fontWeight: 700, border: "none", borderRadius: 4, cursor: smsConsent ? "pointer" : "not-allowed", width: "100%" }}>
             {status === "submitting" ? ui.submitting : ui.submit}
           </button>
           {errMsg && status === "error" && <p style={{ color: "#ff8080", marginTop: 12 }}>{errMsg}</p>}
