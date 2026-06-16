@@ -294,7 +294,13 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
     try {
       // Merge: English-approved values overwrite native values for PDF filling;
       // preserve the native originals under "<key>__native" for record copies.
-      const merged: Record<string, string | boolean> = { ...answers };
+      const merged: Record<string, string | boolean> = {
+        ...answers,
+        sms_consent: true,
+        sms_consent_text:
+          "I agree to receive SMS messages from DetencionDefensa.com, Inc. at the phone number provided, including an activation code and emergency-case notifications. Message and data rates may apply. Message frequency varies. Reply STOP to unsubscribe, HELP for help.",
+        sms_consent_at: new Date().toISOString(),
+      };
       if (isBilingual) {
         for (const [k, v] of Object.entries(answers)) {
           if (typeof v === "string" && englishAnswers[k]) {
