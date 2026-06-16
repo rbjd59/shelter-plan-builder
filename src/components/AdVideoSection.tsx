@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useLang } from "@/context/LanguageContext";
-import enAd from "@/assets/videos/detencion-defensa-prose-v3-en.mp4.asset.json";
-import esAd from "@/assets/videos/detencion-defensa-prose-v3-es.mp4.asset.json";
-import htAd from "@/assets/videos/detencion-defensa-prose-v3-ht.mp4.asset.json";
+import enAd from "@/assets/videos/detenciondefensa_en.mp4.asset.json";
+import esAd from "@/assets/videos/detenciondefensa_es.mp4.asset.json";
+import htAd from "@/assets/videos/detenciondefensa_ht.mp4.asset.json";
 
 const SRC: Record<string, string> = {
   en: enAd.url,
