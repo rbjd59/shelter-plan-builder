@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import SiteShell from "@/components/SiteShell";
-import PinGate from "@/components/PinGate";
+
 import HeroIntro from "@/components/HeroIntro";
 
 
