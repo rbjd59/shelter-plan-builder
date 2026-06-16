@@ -1,19 +1,26 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useLang } from "@/context/LanguageContext";
-import enAd from "@/assets/videos/detencion-defensa-ad-final-en.mp4.asset.json";
-import esAd from "@/assets/videos/detencion-defensa-ad-final-es.mp4.asset.json";
+import enAd from "@/assets/videos/detencion-defensa-prose-v3-en.mp4.asset.json";
+import esAd from "@/assets/videos/detencion-defensa-prose-v3-es.mp4.asset.json";
+import htAd from "@/assets/videos/detencion-defensa-prose-v3-ht.mp4.asset.json";
 
 const SRC: Record<string, string> = {
   en: enAd.url,
   es: esAd.url,
-  ht: enAd.url,
+  ht: htAd.url,
 };
 
 const HEADING: Record<string, string> = {
   en: "Watch: How DetencionDefensa Works",
   es: "Vea: Cómo Funciona DetencionDefensa",
   ht: "Gade: Kijan DetencionDefensa Mache",
+};
+
+const DISCLAIMER: Record<string, string> = {
+  en: "This video is an advertisement. Every case can be handled independently, and the outcome is not guaranteed.",
+  es: "Este video es un anuncio publicitario. Cada caso se maneja de manera independiente y el resultado no está garantizado.",
+  ht: "Videyo sa a se yon piblisite. Chak ka jere endepandamman, e rezilta a pa garanti.",
 };
 
 export default function AdVideoSection() {
@@ -108,8 +115,40 @@ export default function AdVideoSection() {
               display: "block",
             }}
           />
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              top: 20,
+              right: 20,
+              padding: "4px 10px",
+              background: "rgba(0,0,0,0.55)",
+              color: "#fff",
+              fontSize: 12,
+              fontWeight: 700,
+              letterSpacing: "0.04em",
+              borderRadius: 6,
+              border: "1px solid rgba(232,160,74,0.6)",
+              zIndex: 4,
+              pointerEvents: "none",
+            }}
+          >
+            detenciondefensa.com
+          </div>
           {!started && <PlayOverlay onClick={handlePlay} />}
         </div>
+        <p
+          style={{
+            margin: "0.75rem auto 0",
+            fontSize: 12,
+            lineHeight: 1.45,
+            color: "rgba(255,255,255,0.75)",
+            fontStyle: "italic",
+            maxWidth: 760,
+          }}
+        >
+          {DISCLAIMER[lang] ?? DISCLAIMER.en}
+        </p>
       </div>
     </section>,
     mount,
