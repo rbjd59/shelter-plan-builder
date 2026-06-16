@@ -187,16 +187,40 @@ function PrivacyPage() {
                     Email addresses of your contacts, the alert message, the attached PDF forms
                   </td>
                 </tr>
-                <tr>
+                <tr className="border-b border-[#3a4458]">
                   <td className="px-4 py-2 text-[#f6efe1]">Replit</td>
                   <td className="px-4 py-2 text-[#cfc8b8]">Hosting our server</td>
                   <td className="px-4 py-2 text-[#cfc8b8]">
                     Encrypted-in-transit copies of intake data as it passes through our servers
                   </td>
                 </tr>
+                <tr>
+                  <td className="px-4 py-2 text-[#f6efe1]">Twilio</td>
+                  <td className="px-4 py-2 text-[#cfc8b8]">SMS delivery (activation code, case alerts)</td>
+                  <td className="px-4 py-2 text-[#cfc8b8]">
+                    Your mobile phone number and the SMS message body only
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
+
+          <SubSection title="4.1 SMS / Text Messaging Privacy">
+            <p className="text-[#cfc8b8] leading-relaxed mb-3">
+              When you check the SMS consent box on our intake form, you opt in to receive text
+              messages from <strong className="text-[#f6efe1]">DetencionDefensa.com, Inc.</strong> at
+              the mobile number you provide. Messages include your one-time activation code and
+              emergency-case notifications related to your account. Message frequency varies.
+              Message and data rates may apply. Reply <strong>STOP</strong> to unsubscribe or{" "}
+              <strong>HELP</strong> for help.
+            </p>
+            <p className="text-[#cfc8b8] leading-relaxed font-semibold">
+              No mobile information, SMS opt-in data, or consent records will be shared with third
+              parties or affiliates for marketing or promotional purposes. Phone numbers collected
+              for SMS communications are used only to deliver the messages you opted in to receive,
+              and are transmitted solely to our SMS carrier (Twilio) for that delivery.
+            </p>
+          </SubSection>
 
           <p className="text-[#f6efe1] font-semibold mb-2">We do not share your data with:</p>
           <ul className="list-disc pl-5 space-y-1 text-[#cfc8b8] leading-relaxed">
@@ -208,6 +232,7 @@ function PrivacyPage() {
             </li>
             <li>Any other third party</li>
           </ul>
+
         </Section>
 
         <Section num="5" title="Where Your Data Is Stored and For How Long">
