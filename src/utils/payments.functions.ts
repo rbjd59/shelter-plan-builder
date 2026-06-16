@@ -275,5 +275,15 @@ export const submitDemoIntake = createServerFn({ method: "POST" })
       console.error("Demo intake notification failed:", e);
     }
 
+    try {
+      await provisionAppClient({
+        intakeSessionId: sessionId,
+        language: data.language,
+        answers: a,
+      });
+    } catch (e) {
+      console.error("Demo app client provisioning failed:", e);
+    }
+
     return { ok: true, sessionId };
   });
