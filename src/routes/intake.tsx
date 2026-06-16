@@ -285,6 +285,11 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
       setStatus("error");
       return;
     }
+    if (!smsConsent) {
+      setErrMsg(L === "es" ? "Marque la casilla de consentimiento de SMS para continuar." : L === "ht" ? "Tcheke kazye konsantman SMS la pou kontinye." : "Please check the SMS consent box to continue.");
+      setStatus("error");
+      return;
+    }
     setStatus("submitting");
     try {
       // Merge: English-approved values overwrite native values for PDF filling;
