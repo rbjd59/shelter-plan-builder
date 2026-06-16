@@ -291,6 +291,7 @@ export type Database = {
       client_sos_alerts: {
         Row: {
           battery_pct: number | null
+          cancelled_at: string | null
           client_id: string
           created_at: string
           delivered_at: string | null
@@ -302,6 +303,7 @@ export type Database = {
         }
         Insert: {
           battery_pct?: number | null
+          cancelled_at?: string | null
           client_id: string
           created_at?: string
           delivered_at?: string | null
@@ -313,6 +315,7 @@ export type Database = {
         }
         Update: {
           battery_pct?: number | null
+          cancelled_at?: string | null
           client_id?: string
           created_at?: string
           delivered_at?: string | null
@@ -981,6 +984,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      _enqueue_sos_emails: {
+        Args: {
+          _alert_id: string
+          _client_id: string
+          _kind: string
+          _lat: number
+          _lng: number
+        }
+        Returns: undefined
+      }
+      cancel_sos_alert: { Args: { _token: string }; Returns: string }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean
