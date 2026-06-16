@@ -29,6 +29,48 @@ export type Database = {
         }
         Relationships: []
       }
+      app_clients: {
+        Row: {
+          activated_at: string | null
+          created_at: string
+          device_info: Json | null
+          email: string | null
+          full_name: string | null
+          id: string
+          intake_session_id: string | null
+          invite_token: string
+          language: string
+          phone_e164: string | null
+          updated_at: string
+        }
+        Insert: {
+          activated_at?: string | null
+          created_at?: string
+          device_info?: Json | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          intake_session_id?: string | null
+          invite_token: string
+          language?: string
+          phone_e164?: string | null
+          updated_at?: string
+        }
+        Update: {
+          activated_at?: string | null
+          created_at?: string
+          device_info?: Json | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          intake_session_id?: string | null
+          invite_token?: string
+          language?: string
+          phone_e164?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       app_install_tokens: {
         Row: {
           created_at: string
@@ -160,6 +202,135 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      client_contacts: {
+        Row: {
+          client_id: string
+          created_at: string
+          email: string | null
+          id: string
+          name: string
+          notify_on_sos: boolean
+          phone_e164: string | null
+          priority: number
+          relationship: string | null
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          name: string
+          notify_on_sos?: boolean
+          phone_e164?: string | null
+          priority?: number
+          relationship?: string | null
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string
+          notify_on_sos?: boolean
+          phone_e164?: string | null
+          priority?: number
+          relationship?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_contacts_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "app_clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      client_documents: {
+        Row: {
+          client_id: string
+          content: string
+          created_at: string
+          document_type: string
+          id: string
+          loaded_at: string
+          send_on_alert: boolean
+          title: string
+        }
+        Insert: {
+          client_id: string
+          content: string
+          created_at?: string
+          document_type: string
+          id?: string
+          loaded_at?: string
+          send_on_alert?: boolean
+          title: string
+        }
+        Update: {
+          client_id?: string
+          content?: string
+          created_at?: string
+          document_type?: string
+          id?: string
+          loaded_at?: string
+          send_on_alert?: boolean
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_documents_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "app_clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      client_sos_alerts: {
+        Row: {
+          battery_pct: number | null
+          client_id: string
+          created_at: string
+          delivered_at: string | null
+          id: string
+          lat: number | null
+          lng: number | null
+          payload: Json | null
+          triggered_at: string
+        }
+        Insert: {
+          battery_pct?: number | null
+          client_id: string
+          created_at?: string
+          delivered_at?: string | null
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          payload?: Json | null
+          triggered_at?: string
+        }
+        Update: {
+          battery_pct?: number | null
+          client_id?: string
+          created_at?: string
+          delivered_at?: string | null
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          payload?: Json | null
+          triggered_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_sos_alerts_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "app_clients"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       defendermicasa_signups: {
         Row: {
@@ -625,6 +796,42 @@ export type Database = {
         }
         Relationships: []
       }
+      sms_send_log: {
+        Row: {
+          body_preview: string | null
+          created_at: string
+          error_message: string | null
+          id: string
+          metadata: Json | null
+          purpose: string
+          recipient_phone: string
+          status: string
+          twilio_sid: string | null
+        }
+        Insert: {
+          body_preview?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          metadata?: Json | null
+          purpose: string
+          recipient_phone: string
+          status?: string
+          twilio_sid?: string | null
+        }
+        Update: {
+          body_preview?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          metadata?: Json | null
+          purpose?: string
+          recipient_phone?: string
+          status?: string
+          twilio_sid?: string | null
+        }
+        Relationships: []
+      }
       subscriptions: {
         Row: {
           cancel_at_period_end: boolean | null
@@ -782,6 +989,7 @@ export type Database = {
         Args: { payload: Json; queue_name: string }
         Returns: number
       }
+      get_client_bundle: { Args: { _token: string }; Returns: Json }
       has_active_subscription: {
         Args: { check_env?: string; user_uuid: string }
         Returns: boolean
@@ -808,6 +1016,24 @@ export type Database = {
           message: Json
           msg_id: number
           read_ct: number
+        }[]
+      }
+      record_sos_alert: {
+        Args: {
+          _battery_pct?: number
+          _lat?: number
+          _lng?: number
+          _payload?: Json
+          _token: string
+        }
+        Returns: string
+      }
+      redeem_invite_token: {
+        Args: { _token: string }
+        Returns: {
+          client_id: string
+          full_name: string
+          language: string
         }[]
       }
     }
