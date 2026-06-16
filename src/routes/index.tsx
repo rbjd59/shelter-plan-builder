@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import SiteShell from "@/components/SiteShell";
-import PinGate from "@/components/PinGate";
+
 import HeroIntro from "@/components/HeroIntro";
 
 
@@ -70,10 +70,11 @@ export const Route = createFileRoute("/")({
     links: [{ rel: "canonical", href: "https://detenciondefensa.com/" }],
   }),
   component: () => (
-    <PinGate>
+    <>
       <HeroIntro />
       <SiteShell />
-    </PinGate>
+    </>
   ),
+
 
 });
