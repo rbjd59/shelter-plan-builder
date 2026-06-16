@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import { type StripeEnv, createStripeClient } from "@/lib/stripe.server";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { enqueueIntakeNotification } from "@/lib/email/intake-notification.server";
+import { provisionAppClient } from "@/lib/app-clients.server";
 
 /**
  * Find an existing Stripe Customer by userId metadata, then by email,
@@ -210,6 +211,19 @@ export const submitIntakeAnswers = createServerFn({ method: "POST" })
       });
     } catch (e) {
       console.error("Intake notification email enqueue failed:", e);
+    }
+
+    // Provision the mobile-app client: 8-char activation code, contacts mirror,
+    // activation email + SMS. Non-blocking — never fail intake on this.
+    try {
+      const language = (session.metadata?.language as string) || "en";
+      await provisionAppClient({
+        intakeSessionId: data.sessionId,
+        language,
+        answers: data.answers as Record<string, unknown>,
+      });
+    } catch (e) {
+      console.error("App client provisioning failed:", e);
     }
 
     return { ok: true };
