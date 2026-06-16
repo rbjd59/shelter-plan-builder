@@ -13,7 +13,7 @@ const SRC = { es: esAsset.url, en: enAsset.url, ht: htAsset.url };
 
 const COPY = {
   es: {
-    headline: "La migra ya viene\npor favor prepárese",
+    headline: "La migra ya viene\nno espere, actúe ahora",
     subline: "Plan de Defensa Legal de Bajo Costo $199\nCreado y Revisado por Abogados\nPara Quienes No Pueden Pagar $10,000",
     offer: "",
     start: "Comenzar",
@@ -21,7 +21,7 @@ const COPY = {
     getStarted: "Regístrese ahora",
   },
   en: {
-    headline: "La migra is coming\nplease be prepared",
+    headline: "La migra is coming\ndon't wait, act now",
     subline: "Attorney Created & Reviewed Low Cost $199\nLegal Defense Plan\nFor Those Who Can Not Afford $10,000",
     offer: "",
     start: "Start",
@@ -29,7 +29,7 @@ const COPY = {
     getStarted: "Get Started",
   },
   ht: {
-    headline: "La migra ap vini\ntanpri prepare w",
+    headline: "La migra ap vini\npa tann, aji kounye a",
     subline: "Plan Defans Legal Pro Se Pri Ba $199 Avoka Kreye ak Revize\nPou Moun Ki Pa Kapab Peye $10,000 Si Yo Arestasyon",
     offer: "",
     start: "Kòmanse",
