@@ -21,7 +21,7 @@ const COPY = {
     getStarted: "Regístrese ahora",
   },
   en: {
-    headline: "La migra is coming\nplease be prepared",
+    headline: "La migra is coming\ndon't wait, act now",
     subline: "Attorney Created & Reviewed Low Cost $199\nLegal Defense Plan\nFor Those Who Can Not Afford $10,000",
     offer: "",
     start: "Start",
