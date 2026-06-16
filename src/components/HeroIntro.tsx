@@ -13,7 +13,7 @@ const SRC = { es: esAsset.url, en: enAsset.url, ht: htAsset.url };
 
 const COPY = {
   es: {
-    headline: "La migra ya viene\npor favor prepárese",
+    headline: "La migra ya viene\nno espere, actúe ahora",
     subline: "Plan de Defensa Legal de Bajo Costo $199\nCreado y Revisado por Abogados\nPara Quienes No Pueden Pagar $10,000",
     offer: "",
     start: "Comenzar",
