@@ -447,7 +447,7 @@ export const listSosAlertsBoard = createServerFn({ method: "GET" })
     if (error) throw new Error(error.message);
 
     const clientIds = Array.from(new Set((alerts ?? []).map((a) => a.client_id)));
-    const [clientsRes, docsRes, contactsRes] = await Promise.all([
+    const [clientsRes, docsRes, contactsRes, detentionRes] = await Promise.all([
       clientIds.length
         ? supabaseAdmin
             .from("app_clients")
@@ -467,6 +467,12 @@ export const listSosAlertsBoard = createServerFn({ method: "GET" })
             .select("client_id, name, email, phone_e164, relationship, notify_on_sos")
             .in("client_id", clientIds)
         : Promise.resolve({ data: [] as any[] }),
+      clientIds.length
+        ? supabaseAdmin
+            .from("client_detention_info")
+            .select("*")
+            .in("client_id", clientIds)
+        : Promise.resolve({ data: [] as any[] }),
     ]);
 
     const clientMap = new Map((clientsRes.data ?? []).map((c: any) => [c.id, c]));
@@ -479,6 +485,10 @@ export const listSosAlertsBoard = createServerFn({ method: "GET" })
     for (const c of (contactsRes.data ?? []) as any[]) {
       if (!contactsByClient.has(c.client_id)) contactsByClient.set(c.client_id, []);
       contactsByClient.get(c.client_id)!.push(c);
+    }
+    const detentionByClient = new Map<string, any>();
+    for (const d of (detentionRes.data ?? []) as any[]) {
+      detentionByClient.set(d.client_id, d);
     }
 
     return {
