@@ -4,7 +4,7 @@ import { createHmac } from "crypto";
 
 const WEBHOOK_URL =
   process.env.INTAKE_WEBHOOK_URL ||
-  "https://npydavpycjdmbijsxozl.supabase.co/functions/v1/intake-webhook";
+  "https://bynibqfcjsmugcjaaaho.supabase.co/functions/v1/intake-webhook";
 
 const AnswersSchema = z.record(z.string(), z.union([z.string(), z.boolean()]));
 
