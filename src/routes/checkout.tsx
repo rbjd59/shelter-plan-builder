@@ -78,15 +78,7 @@ function CheckoutPage() {
   const { lang } = Route.useSearch();
   const L = lang as Lang;
   const t = T[L];
-  const navigate = useNavigate();
-  const [processing, setProcessing] = useState(false);
-
-  const handlePay = async () => {
-    setProcessing(true);
-    // Demo: simulate payment, then forward to agreement gate.
-    await new Promise((r) => setTimeout(r, 600));
-    navigate({ to: "/agreement", search: { lang: L } });
-  };
+  const [showPay, setShowPay] = useState(false);
 
   const langs: Lang[] = ["es", "en", "ht"];
   const langBtn = (active: boolean): React.CSSProperties => ({
@@ -95,8 +87,14 @@ function CheckoutPage() {
     color: active ? "#0b1220" : "#f6efe1", textDecoration: "none",
   });
 
+  const returnUrl =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/agreement?lang=${L}&session_id={CHECKOUT_SESSION_ID}`
+      : `/agreement?lang=${L}&session_id={CHECKOUT_SESSION_ID}`;
+
   return (
     <div style={{ minHeight: "100vh", background: "#0b1220", color: "#f6efe1", fontFamily: "Inter Tight, system-ui, sans-serif" }}>
+      <PaymentTestModeBanner />
       <div style={{ maxWidth: 640, margin: "0 auto", padding: "48px 24px" }}>
         <div style={{ display: "flex", gap: 8, justifyContent: "flex-end", marginBottom: 16 }}>
           {langs.map((l) => (
@@ -118,13 +116,18 @@ function CheckoutPage() {
             ))}
           </ul>
 
-          <button
-            onClick={handlePay}
-            disabled={processing}
-            style={{ background: "#e8a04a", color: "#0b1220", padding: "16px 28px", fontSize: 16, fontWeight: 700, border: "none", borderRadius: 4, cursor: processing ? "wait" : "pointer", width: "100%" }}
-          >
-            {processing ? t.processing : t.pay}
-          </button>
+          {!showPay ? (
+            <button
+              onClick={() => setShowPay(true)}
+              style={{ background: "#e8a04a", color: "#0b1220", padding: "16px 28px", fontSize: 16, fontWeight: 700, border: "none", borderRadius: 4, cursor: "pointer", width: "100%" }}
+            >
+              {t.pay}
+            </button>
+          ) : (
+            <div style={{ background: "#fff", borderRadius: 6, padding: 12 }}>
+              <StripeEmbeddedCheckoutBox language={L} returnUrl={returnUrl} />
+            </div>
+          )}
 
           <p style={{ fontSize: 12, color: "#a8a59a", marginTop: 16, lineHeight: 1.5 }}>{t.note}</p>
         </div>
