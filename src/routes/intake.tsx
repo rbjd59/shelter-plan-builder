@@ -544,6 +544,86 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
               })}
             </section>
           ))}
+
+          {/* Add-Ons (Asset Protection + Pet Rescue) */}
+          <section style={{ marginBottom: 32, background: "#1a2436", padding: 24, borderRadius: 6, borderLeft: "4px solid #e8a04a" }}>
+            <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 6 }}>
+              {L === "es" ? "Complementos opcionales" : L === "ht" ? "Opsyon adisyonèl" : "Optional Add-Ons"}
+            </h2>
+            <p style={{ fontSize: 13, color: "#a8a59a", marginBottom: 20, fontStyle: "italic" }}>
+              {L === "es" ? "Marque las casillas que desea agregar a su pedido." : L === "ht" ? "Tcheke sa ou vle ajoute nan kòmand ou a." : "Check any items you want added to your order."}
+            </p>
+
+            {/* Asset Protection */}
+            <label style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 16, cursor: "pointer", padding: 12, background: "rgba(255,255,255,0.04)", borderRadius: 4 }}>
+              <input
+                type="checkbox"
+                checked={!!answers.addon_asset_protection}
+                onChange={(e) => setAnswers((a) => ({ ...a, addon_asset_protection: e.target.checked }))}
+                style={{ marginTop: 4, width: 18, height: 18, flexShrink: 0 }}
+              />
+              <span style={{ fontSize: 14, lineHeight: 1.5, color: "#fff5d6" }}>
+                <strong>{L === "es" ? "Paquete de Protección de Bienes — $99" : L === "ht" ? "Pakè Pwoteksyon Byen — $99" : "Asset Protection Package — $99"}</strong>
+                <br />
+                <span style={{ fontSize: 12, color: "#cfc8b8" }}>
+                  {L === "es" ? "Poder notarial y documentos para proteger su propiedad si es detenido." : L === "ht" ? "Manda ak dokiman pou pwoteje pwopriyete ou si yo detni w." : "Power of attorney and documents to protect your property if detained."}
+                </span>
+              </span>
+            </label>
+
+            {/* Pet Rescue */}
+            <label style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 12, cursor: "pointer", padding: 12, background: "rgba(255,255,255,0.04)", borderRadius: 4 }}>
+              <input
+                type="checkbox"
+                checked={!!answers.addon_pet_rescue}
+                onChange={(e) => setAnswers((a) => ({ ...a, addon_pet_rescue: e.target.checked }))}
+                style={{ marginTop: 4, width: 18, height: 18, flexShrink: 0 }}
+              />
+              <span style={{ fontSize: 14, lineHeight: 1.5, color: "#fff5d6" }}>
+                <strong>{L === "es" ? "Módulo de Rescate de Mascotas — $10" : L === "ht" ? "Modil Sove Bèt Kay — $10" : "Pet Rescue Module — $10"}</strong>
+                <br />
+                <span style={{ fontSize: 12, color: "#cfc8b8" }}>
+                  {L === "es" ? "Instrucciones para que un contacto recoja a su mascota si es detenido." : L === "ht" ? "Enstriksyon pou yon kontak chèche bèt kay ou a si yo detni w." : "Instructions for a contact to retrieve your pet if you're detained."}
+                </span>
+              </span>
+            </label>
+
+            {!!answers.addon_pet_rescue && (
+              <div style={{ marginTop: 12, padding: 16, background: "#0b1220", borderRadius: 6, border: "1px solid rgba(232,160,74,0.3)" }}>
+                <p style={{ fontSize: 13, color: "#e8a04a", marginBottom: 12, fontWeight: 600 }}>
+                  {L === "es" ? "Información de su mascota" : L === "ht" ? "Enfòmasyon sou bèt kay ou" : "Your pet's information"}
+                </p>
+                {[
+                  { k: "pet_name", en: "Pet's name", es: "Nombre de la mascota", ht: "Non bèt kay la" },
+                  { k: "pet_type", en: "Type of pet (dog, cat, bird, etc.)", es: "Tipo de mascota (perro, gato, ave, etc.)", ht: "Kalite bèt kay (chen, chat, zwazo, elt.)" },
+                  { k: "pet_location", en: "Where the pet is located (home address)", es: "Dónde está la mascota (dirección)", ht: "Kote bèt la ye (adrès)" },
+                  { k: "pet_access", en: "How to access (spare key, code, neighbor with key)", es: "Cómo acceder (llave de repuesto, código, vecino con llave)", ht: "Kijan pou antre (kle, kòd, vwazen ki gen kle)" },
+                  { k: "pet_notify", en: "Who to notify (name + phone)", es: "A quién avisar (nombre + teléfono)", ht: "Ki moun pou avize (non + telefòn)" },
+                ].map((f) => (
+                  <div key={f.k} style={{ marginBottom: 12 }}>
+                    <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 4, color: "#fff5d6" }}>{f[L]}</label>
+                    <input type="text" value={(answers[f.k] as string) || ""} onChange={(e) => setAnswers((a) => ({ ...a, [f.k]: e.target.value }))} style={inputStyle} />
+                  </div>
+                ))}
+                <label style={{ display: "flex", gap: 10, alignItems: "center", marginTop: 10, marginBottom: 12, color: "#fff5d6", fontSize: 13 }}>
+                  <input
+                    type="checkbox"
+                    checked={answers.pet_no_kill_preferred !== false}
+                    onChange={(e) => setAnswers((a) => ({ ...a, pet_no_kill_preferred: e.target.checked }))}
+                  />
+                  {L === "es" ? "Preferir refugio sin sacrificio (no-kill)" : L === "ht" ? "Pi pito yon abri san touye (no-kill)" : "Prefer a no-kill shelter"}
+                </label>
+                <div>
+                  <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 4, color: "#fff5d6" }}>
+                    {L === "es" ? "Dirección del refugio sin sacrificio (si conoce alguno)" : L === "ht" ? "Adrès abri no-kill (si ou konnen youn)" : "No-kill shelter address (if you know one)"}
+                  </label>
+                  <input type="text" value={(answers.pet_no_kill_address as string) || ""} onChange={(e) => setAnswers((a) => ({ ...a, pet_no_kill_address: e.target.value }))} style={inputStyle} />
+                </div>
+              </div>
+            )}
+          </section>
+
+
           
           <label style={{ display: "flex", gap: 12, alignItems: "flex-start", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 6, padding: 14, marginBottom: 16, cursor: "pointer" }}>
             <input
