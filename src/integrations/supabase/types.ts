@@ -1108,7 +1108,7 @@ export type Database = {
         Returns: string
       }
       redeem_invite_token: {
-        Args: { _token: string }
+        Args: { p_token: string }
         Returns: {
           client_id: string
           full_name: string
