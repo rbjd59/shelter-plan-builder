@@ -392,11 +392,17 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
         )}
         {inviteCode && (
           <div style={{ background: "#1a2436", border: "2px solid #2d6a4f", padding: 24, borderRadius: 12, marginBottom: 20, textAlign: "center" }}>
+            <div style={{ display: "inline-block", background: "#2d6a4f", color: "#fff5d6", padding: "4px 10px", borderRadius: 4, fontSize: 10, fontWeight: 800, letterSpacing: 1.5, marginBottom: 10 }}>
+              CODE 2 OF 2 · DETENCIONDEFENSA APP
+            </div>
             <p style={{ margin: "0 0 8px", fontSize: 12, letterSpacing: 2, fontWeight: 700, color: "#7fd9a8" }}>
-              {L === "es" ? "SU CÓDIGO DE ACTIVACIÓN" : L === "ht" ? "KÒD AKTIVASYON OU" : "YOUR ACTIVATION CODE"}
+              {L === "es" ? "CÓDIGO DE ACTIVACIÓN DE 8 CARACTERES" : L === "ht" ? "KÒD AKTIVASYON 8 KARAKTÈ" : "8-CHARACTER ACTIVATION CODE"}
             </p>
             <p style={{ margin: "8px 0", fontSize: 44, fontWeight: 900, letterSpacing: 10, color: "#fff5d6", fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}>
               {inviteCode}
+            </p>
+            <p style={{ margin: "0 0 6px", fontSize: 11, opacity: 0.7, color: "#fff5d6", fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}>
+              {L === "es" ? "Formato: 8 letras/números (ej. A3F7B2E1)" : L === "ht" ? "Fòma: 8 lèt/chif (egz. A3F7B2E1)" : "Format: 8 letters/numbers (e.g. A3F7B2E1)"}
             </p>
             <a
               href={`defensasiempre://activate?code=${encodeURIComponent(inviteCode)}`}
