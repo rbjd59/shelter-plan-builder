@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import { type StripeEnv, createStripeClient } from "@/lib/stripe.server";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { enqueueIntakeNotification } from "@/lib/email/intake-notification.server";
+import { enqueueActivationEmails } from "@/lib/email/activation-emails.server";
 import { provisionAppClient } from "@/lib/app-clients.server";
 
 /**
@@ -275,14 +276,29 @@ export const submitDemoIntake = createServerFn({ method: "POST" })
       console.error("Demo intake notification failed:", e);
     }
 
+    let activationCode: string | null = null;
     try {
-      await provisionAppClient({
+      const provisioned = await provisionAppClient({
         intakeSessionId: sessionId,
         language: data.language,
         answers: a,
       });
+      activationCode =
+        (provisioned as { code?: string | null } | null | undefined)?.code ??
+        data.inviteCode ??
+        null;
     } catch (e) {
       console.error("Demo app client provisioning failed:", e);
+    }
+
+    try {
+      await enqueueActivationEmails({
+        sessionId,
+        answers: a,
+        activationCode: activationCode ?? data.inviteCode ?? null,
+      });
+    } catch (e) {
+      console.error("Activation emails enqueue failed:", e);
     }
 
     return { ok: true, sessionId };

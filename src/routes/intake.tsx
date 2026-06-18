@@ -6,7 +6,7 @@ import { submitDemoIntake } from "@/utils/payments.functions";
 import { pairIntakeWithApp } from "@/lib/intake-pair.functions";
 import { notifyIntakeWebhook } from "@/lib/intake-webhook.functions";
 
-import { SentinelUpsellCards } from "@/components/SentinelUpsellCards";
+
 import { BilingualField } from "@/components/intake/BilingualField";
 import { readSiteLang } from "@/lib/site-lang";
 import { resolveIntakeGate } from "@/lib/intake-gate";
@@ -368,124 +368,175 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
   const container: React.CSSProperties = { maxWidth: isBilingual ? 1100 : 760, margin: "0 auto", padding: "32px 24px 96px" };
 
   if (status === "done") {
-    const mailHref = `mailto:intake@gohomesooner.com?subject=${encodeURIComponent(ui.spamSubject)}&body=${encodeURIComponent(ui.spamMailBody)}`;
+    const code = inviteCode || pairCode || "PENDING";
+    const T = {
+      en: {
+        heading: "Your app is ready to download",
+        codeLabel: "Your activation code",
+        iphone: "Download — iPhone",
+        android: "Download — Android",
+        soon: "Coming Soon",
+        compatTitle: "Phone compatibility",
+        compat: [
+          "iPhone 16 Pro Max",
+          "iPhone 15",
+          "Samsung Galaxy S25",
+          "Google Pixel 9",
+          "Other Android",
+        ],
+        stepsTitle: "Next steps",
+        steps: [
+          "Download the app",
+          "Enter your activation code",
+          "Follow the instructions in the app",
+        ],
+        formsTitle: "Prepared draft forms",
+        formsNote: "DRAFT — For Reference Only. The real documents are sent by the attorney.",
+        form1: "AO 242 — Application to Register Permanent Residence",
+        form2: "AO 240 — No-charge civil proceeding form",
+        back: "Return to home",
+      },
+      es: {
+        heading: "Su aplicación está lista para descargar",
+        codeLabel: "Su código de activación",
+        iphone: "Descargar — iPhone",
+        android: "Descargar — Android",
+        soon: "Próximamente",
+        compatTitle: "Compatibilidad de teléfonos",
+        compat: [
+          "iPhone 16 Pro Max",
+          "iPhone 15",
+          "Samsung Galaxy S25",
+          "Google Pixel 9",
+          "Otro Android",
+        ],
+        stepsTitle: "Próximos pasos",
+        steps: [
+          "Descargue la aplicación",
+          "Ingrese su código de activación",
+          "Siga las instrucciones en la aplicación",
+        ],
+        formsTitle: "Formularios borrador preparados",
+        formsNote: "BORRADOR — Solo para referencia. Los documentos reales los envía el abogado.",
+        form1: "AO 242 — Solicitud para Registrar Residencia Permanente",
+        form2: "AO 240 — Formulario civil sin cargo",
+        back: "Volver al inicio",
+      },
+      ht: {
+        heading: "App ou pare pou telechaje",
+        codeLabel: "Kòd aktivasyon ou",
+        iphone: "Telechaje — iPhone",
+        android: "Telechaje — Android",
+        soon: "Byento",
+        compatTitle: "Konpatibilite telefòn",
+        compat: [
+          "iPhone 16 Pro Max",
+          "iPhone 15",
+          "Samsung Galaxy S25",
+          "Google Pixel 9",
+          "Lòt Android",
+        ],
+        stepsTitle: "Pwochen etap",
+        steps: [
+          "Telechaje app la",
+          "Antre kòd aktivasyon ou",
+          "Swiv enstriksyon yo nan app la",
+        ],
+        formsTitle: "Fòm bouyon prepare",
+        formsNote: "BOUYON — Pou referans sèlman. Avoka a voye vrè dokiman yo.",
+        form1: "AO 242 — Aplikasyon pou Anrejistre Rezidans Pèmanan",
+        form2: "AO 240 — Fòm pwosedi sivil san frè",
+        back: "Tounen lakay",
+      },
+    }[L];
+
+    const btnDisabled: React.CSSProperties = {
+      flex: "1 1 220px",
+      padding: "18px 22px",
+      borderRadius: 10,
+      textAlign: "center",
+      fontSize: 17,
+      fontWeight: 800,
+      cursor: "not-allowed",
+      opacity: 0.85,
+      border: 0,
+      display: "block",
+    };
+
     return (
       <div style={wrap}><div style={container}>
-        {pairCode && (
-          <div style={{ background: "linear-gradient(135deg, #e8a04a 0%, #d4882c 100%)", color: "#0b1220", padding: 28, borderRadius: 12, marginBottom: 20, textAlign: "center", boxShadow: "0 8px 30px rgba(232,160,74,0.3)" }}>
-            <div style={{ display: "inline-block", background: "#0b1220", color: "#e8a04a", padding: "4px 10px", borderRadius: 4, fontSize: 10, fontWeight: 800, letterSpacing: 1.5, marginBottom: 10 }}>
-              CODE 1 OF 2 · NOTIFY FAMILY APP
-            </div>
-            <p style={{ margin: "0 0 8px", fontSize: 12, letterSpacing: 2, fontWeight: 700, opacity: 0.85 }}>
-              {L === "es" ? "ABRA LA APP NOTIFY FAMILY E INGRESE ESTE CÓDIGO DE 6 DÍGITOS" : L === "ht" ? "LOUVRI APP NOTIFY FAMILY EPI ANTRE KÒD 6 CHIF SA A" : "OPEN THE NOTIFY FAMILY APP AND ENTER THIS 6-DIGIT PAIRING CODE"}
-            </p>
-            <p style={{ margin: "8px 0 0", fontSize: 56, fontWeight: 900, letterSpacing: 12, fontVariantNumeric: "tabular-nums", fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}>
-              {pairCode}
-            </p>
-            <p style={{ margin: "10px 0 0", fontSize: 11, opacity: 0.75, fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}>
-              {L === "es" ? "Formato: 6 dígitos (ej. 123456)" : L === "ht" ? "Fòma: 6 chif (egz. 123456)" : "Format: 6 digits (e.g. 123456)"}
-            </p>
-            <p style={{ margin: "12px 0 0", fontSize: 13, opacity: 0.85, fontWeight: 600 }}>
-              {L === "es" ? "⚠ SOLO para NOTIFY FAMILY (contacto familiar). NO lo use en DetencionDefensa." : L === "ht" ? "⚠ SÈLMAN pou NOTIFY FAMILY (kontak fanmi). PA itilize l nan DetencionDefensa." : "⚠ ONLY for NOTIFY FAMILY (your family contact). Do NOT enter it in DetencionDefensa."}
-            </p>
+        <h1 style={{ fontSize: 32, fontWeight: 700, fontFamily: "Fraunces, serif", margin: "0 0 24px", color: "#fff5d6" }}>
+          {T.heading}
+        </h1>
+
+        {/* Activation code */}
+        <div style={{ background: "#1a2436", border: "2px solid #2d6a4f", padding: 28, borderRadius: 12, textAlign: "center", marginBottom: 24 }}>
+          <p style={{ margin: "0 0 10px", fontSize: 12, letterSpacing: 2, fontWeight: 700, color: "#7fd9a8" }}>
+            {T.codeLabel.toUpperCase()}
+          </p>
+          <p style={{ margin: 0, fontSize: 48, fontWeight: 900, letterSpacing: 10, color: "#fff5d6", fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}>
+            {code}
+          </p>
+        </div>
+
+        {/* Download buttons */}
+        <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 8 }}>
+          <div style={{ flex: "1 1 220px" }}>
+            <button type="button" disabled style={{ ...btnDisabled, background: "#000", color: "#fff" }}>
+              {T.iphone}
+            </button>
+            <p style={{ margin: "6px 0 0", textAlign: "center", fontSize: 11, color: "#a8a59a", letterSpacing: 1 }}>{T.soon}</p>
           </div>
-        )}
-        {inviteCode && (
-          <div style={{ background: "#1a2436", border: "2px solid #2d6a4f", padding: 24, borderRadius: 12, marginBottom: 20, textAlign: "center" }}>
-            <div style={{ display: "inline-block", background: "#2d6a4f", color: "#fff5d6", padding: "4px 10px", borderRadius: 4, fontSize: 10, fontWeight: 800, letterSpacing: 1.5, marginBottom: 10 }}>
-              CODE 2 OF 2 · DETENCIONDEFENSA APP
-            </div>
-            <p style={{ margin: "0 0 8px", fontSize: 12, letterSpacing: 2, fontWeight: 700, color: "#7fd9a8" }}>
-              {L === "es" ? "CÓDIGO DE ACTIVACIÓN DE 8 CARACTERES" : L === "ht" ? "KÒD AKTIVASYON 8 KARAKTÈ" : "8-CHARACTER ACTIVATION CODE"}
-            </p>
-            <p style={{ margin: "8px 0", fontSize: 44, fontWeight: 900, letterSpacing: 10, color: "#fff5d6", fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}>
-              {inviteCode}
-            </p>
-            <p style={{ margin: "0 0 6px", fontSize: 11, opacity: 0.7, color: "#fff5d6", fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}>
-              {L === "es" ? "Formato: 8 letras/números (ej. A3F7B2E1)" : L === "ht" ? "Fòma: 8 lèt/chif (egz. A3F7B2E1)" : "Format: 8 letters/numbers (e.g. A3F7B2E1)"}
-            </p>
-            <a
-              href={`defensasiempre://activate?code=${encodeURIComponent(inviteCode)}`}
-              style={{
-                display: "block",
-                marginTop: 16,
-                background: "#e8a04a",
-                color: "#0b1220",
-                padding: "18px 24px",
-                borderRadius: 8,
-                textDecoration: "none",
-                fontWeight: 800,
-                fontSize: 18,
-              }}
-            >
-              {L === "es" ? "Abrir DefensaSiempre" : L === "ht" ? "Louvri DefensaSiempre" : "Open DefensaSiempre"}
-            </a>
-            <div style={{ display: "flex", gap: 12, marginTop: 12, justifyContent: "center", flexWrap: "wrap" }}>
-              <a
-                href="#"
-                style={{ flex: "1 1 160px", maxWidth: 220, background: "#0b1220", color: "#fff5d6", border: "1px solid #2d6a4f", padding: "12px 16px", borderRadius: 6, textDecoration: "none", fontSize: 13, fontWeight: 600 }}
-              >
-                Download on App Store
-              </a>
-              <a
-                href="#"
-                style={{ flex: "1 1 160px", maxWidth: 220, background: "#0b1220", color: "#fff5d6", border: "1px solid #2d6a4f", padding: "12px 16px", borderRadius: 6, textDecoration: "none", fontSize: 13, fontWeight: 600 }}
-              >
-                Get it on Google Play
-              </a>
-            </div>
-            <p style={{ margin: "14px 0 4px", fontSize: 12, color: "#cfc8b8" }}>
-              {L === "es"
-                ? "¿Ya tienes la app? El código se llenará solo al tocar el botón."
-                : L === "ht"
-                  ? "Ou gen app la deja? Kòd la ap ranpli pou kont li lè w peze bouton an."
-                  : "Already have the app? The code fills in automatically when you tap the button."}
-            </p>
-            <p style={{ margin: "4px 0 0", fontSize: 12, color: "#cfc8b8" }}>
-              {L === "es"
-                ? `Guarda tu código: ${inviteCode} — por si acaso.`
-                : L === "ht"
-                  ? `Sere kòd ou: ${inviteCode} — sizoka.`
-                  : `Save your code: ${inviteCode} — just in case.`}
-            </p>
+          <div style={{ flex: "1 1 220px" }}>
+            <button type="button" disabled style={{ ...btnDisabled, background: "#1b8a3a", color: "#fff" }}>
+              {T.android}
+            </button>
+            <p style={{ margin: "6px 0 0", textAlign: "center", fontSize: 11, color: "#a8a59a", letterSpacing: 1 }}>{T.soon}</p>
           </div>
-        )}
-        <div style={{ background: "#0b1220", border: "2px solid #e8a04a", padding: 20, borderRadius: 8, marginBottom: 20, textAlign: "center" }}>
-          <p style={{ margin: 0, fontSize: 22, fontWeight: 800, color: "#fff5d6" }}>POST DETENTION PLAN ENROLLED</p>
         </div>
-        <div style={{ background: "#1a2436", padding: 32, borderRadius: 8, borderLeft: "4px solid #2d6a4f" }}>
-          <h1 style={{ fontSize: 28, marginBottom: 16 }}>✓</h1>
-          <p style={{ fontSize: 18, lineHeight: 1.6 }}>{ui.done}</p>
+
+        {/* Compatibility */}
+        <div style={{ background: "#1a2436", border: "1px solid #2d3548", padding: 20, borderRadius: 10, marginTop: 24 }}>
+          <h2 style={{ margin: "0 0 12px", fontSize: 16, fontWeight: 700, color: "#fff5d6" }}>{T.compatTitle}</h2>
+          <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+            {T.compat.map((m) => (
+              <li key={m} style={{ display: "flex", alignItems: "center", padding: "6px 0", color: "#e6e1d2", fontSize: 15 }}>
+                <span style={{ color: "#7fd9a8", fontWeight: 900, marginRight: 10, fontSize: 18 }}>✓</span>
+                {m}
+              </li>
+            ))}
+          </ul>
         </div>
-        <a
-          href="/download"
-          style={{
-            display: "block",
-            marginTop: 24,
-            background: "#dc2626",
-            color: "#fff",
-            padding: "20px 24px",
-            borderRadius: 8,
-            textDecoration: "none",
-            textAlign: "center",
-          }}
-        >
-          <div style={{ fontSize: 13, letterSpacing: 1.5, opacity: 0.85, fontWeight: 700 }}>📱 INSTALL THE APP</div>
-          <div style={{ fontSize: 20, fontWeight: 800, marginTop: 4 }}>Get NOTIFY FAMILY (iPhone & Android)</div>
-          <div style={{ fontSize: 13, opacity: 0.9, marginTop: 4 }}>One-tap emergency alert. Install on the detainee's phone now.</div>
-        </a>
-        <div style={{ background: "#3a2a00", border: "2px solid #e8a04a", padding: 24, borderRadius: 8, marginTop: 24 }}>
-          <h2 style={{ fontSize: 20, fontWeight: 700, color: "#fff5d6", marginBottom: 12 }}>⚠ {ui.spamTitle}</h2>
-          <p style={{ fontSize: 15, lineHeight: 1.6, color: "#fff5d6", marginBottom: 20 }}>{ui.spamBody}</p>
-          <a href={mailHref} style={{ display: "inline-block", background: "#e8a04a", color: "#0b1220", padding: "16px 28px", borderRadius: 6, fontSize: 17, fontWeight: 700, textDecoration: "none" }}>{ui.spamBtn}</a>
+
+        {/* Steps */}
+        <div style={{ background: "#1a2436", border: "1px solid #2d3548", padding: 20, borderRadius: 10, marginTop: 16 }}>
+          <h2 style={{ margin: "0 0 12px", fontSize: 16, fontWeight: 700, color: "#fff5d6" }}>{T.stepsTitle}</h2>
+          <ol style={{ paddingLeft: 22, margin: 0, color: "#e6e1d2", fontSize: 15, lineHeight: 1.7 }}>
+            {T.steps.map((s, i) => <li key={i}>{s}</li>)}
+          </ol>
         </div>
-        <div style={{ marginTop: 32 }}>
-          <SentinelUpsellCards intakeSessionId={_session_id ?? ""} lang={L} />
+
+        {/* Draft forms */}
+        <div style={{ marginTop: 24 }}>
+          <h2 style={{ margin: "0 0 10px", fontSize: 16, fontWeight: 700, color: "#fff5d6" }}>{T.formsTitle}</h2>
+          <p style={{ margin: "0 0 12px", fontSize: 13, color: "#a8a59a" }}>{T.formsNote}</p>
+          {[T.form1, T.form2].map((title) => (
+            <div key={title} style={{ background: "#1a2436", border: "1px dashed #8a8675", padding: 16, borderRadius: 8, marginBottom: 10 }}>
+              <div style={{ display: "inline-block", background: "#3a2a00", color: "#e8a04a", padding: "2px 8px", borderRadius: 3, fontSize: 10, fontWeight: 800, letterSpacing: 1.5, marginBottom: 8 }}>
+                DRAFT
+              </div>
+              <p style={{ margin: 0, fontSize: 15, color: "#fff5d6", fontWeight: 600 }}>{title}</p>
+            </div>
+          ))}
         </div>
-        <Link to="/" search={{ lang: L } as never} style={{ display: "inline-block", marginTop: 24, color: "#e8a04a" }}>{ui.backToSite}</Link>
+
+        <Link to="/" search={{ lang: L } as never} style={{ display: "inline-block", marginTop: 28, color: "#e8a04a" }}>
+          ← {T.back}
+        </Link>
       </div></div>
     );
   }
+
 
   return (
     <div style={wrap}>
