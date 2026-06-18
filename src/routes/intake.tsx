@@ -166,6 +166,21 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       { key: "contact_address", type: "textarea", label: { en: "Mailing address", es: "Dirección postal", ht: "Adrès postal" } },
     ],
   },
+  {
+    id: "second_emergency",
+    title: { en: "8. Second Emergency Contact", es: "8. Segundo Contacto de Emergencia", ht: "8. Dezyèm Kontak Ijans" },
+    intro: {
+      en: "A backup contact notified by the app if we cannot reach the first emergency contact.",
+      es: "Un contacto de respaldo notificado por la app si no podemos contactar al primero.",
+      ht: "Yon kontak rezèv app la notifye si nou pa ka jwenn premye kontak la.",
+    },
+    fields: [
+      { key: "emergency_contact_2_name", label: { en: "Full name", es: "Nombre completo", ht: "Non konplè" } },
+      { key: "emergency_contact_2_email", label: { en: "Email", es: "Correo electrónico", ht: "Imèl" } },
+      { key: "emergency_contact_2_phone", label: { en: "Phone (with WhatsApp if applicable)", es: "Teléfono (WhatsApp)", ht: "Telefòn (WhatsApp)" } },
+      { key: "emergency_contact_2_relation", label: { en: "Relationship to petitioner", es: "Parentesco", ht: "Relasyon" } },
+    ],
+  },
 ];
 
 const UI = {
