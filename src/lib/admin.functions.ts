@@ -377,3 +377,134 @@ export const sendReminderEmail = createServerFn({ method: "POST" })
     });
     return { ok: true };
   });
+
+// ---------- List app activations (NOTIFY FAMILY app provisioning) ----------
+export const listAppActivations = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertAdmin(context.userId);
+    const { data: clients, error } = await supabaseAdmin
+      .from("app_clients")
+      .select("id, invite_token, full_name, email, phone_e164, language, activated_at, created_at, device_info")
+      .order("created_at", { ascending: false })
+      .limit(1000);
+    if (error) throw new Error(error.message);
+
+    const clientIds = (clients ?? []).map((c) => c.id);
+    let alerts: { client_id: string; triggered_at: string; cancelled_at: string | null }[] = [];
+    if (clientIds.length) {
+      const { data } = await supabaseAdmin
+        .from("client_sos_alerts")
+        .select("client_id, triggered_at, cancelled_at")
+        .in("client_id", clientIds)
+        .order("triggered_at", { ascending: false });
+      alerts = data ?? [];
+    }
+    const latestByClient = new Map<string, { triggered_at: string; cancelled_at: string | null }>();
+    for (const a of alerts) {
+      if (!latestByClient.has(a.client_id)) {
+        latestByClient.set(a.client_id, { triggered_at: a.triggered_at, cancelled_at: a.cancelled_at });
+      }
+    }
+
+    return {
+      activations: (clients ?? []).map((c) => {
+        const a = latestByClient.get(c.id);
+        const status: "pending" | "activated" | "triggered" | "cancelled" = a
+          ? a.cancelled_at
+            ? "cancelled"
+            : "triggered"
+          : c.activated_at
+            ? "activated"
+            : "pending";
+        return {
+          id: c.id,
+          activation_code: c.invite_token,
+          full_name: c.full_name,
+          email: c.email,
+          phone: c.phone_e164,
+          language: c.language,
+          created_at: c.created_at,
+          activated_at: c.activated_at,
+          last_triggered_at: a?.triggered_at ?? null,
+          last_cancelled_at: a?.cancelled_at ?? null,
+          status,
+        };
+      }),
+    };
+  });
+
+// ---------- SOS Alert Board (with documents that were sent) ----------
+export const listSosAlertsBoard = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertAdmin(context.userId);
+    const { data: alerts, error } = await supabaseAdmin
+      .from("client_sos_alerts")
+      .select("id, client_id, triggered_at, cancelled_at, lat, lng, battery_pct, payload")
+      .order("triggered_at", { ascending: false })
+      .limit(500);
+    if (error) throw new Error(error.message);
+
+    const clientIds = Array.from(new Set((alerts ?? []).map((a) => a.client_id)));
+    const [clientsRes, docsRes, contactsRes] = await Promise.all([
+      clientIds.length
+        ? supabaseAdmin
+            .from("app_clients")
+            .select("id, full_name, email, phone_e164, invite_token, language")
+            .in("id", clientIds)
+        : Promise.resolve({ data: [] as any[] }),
+      clientIds.length
+        ? supabaseAdmin
+            .from("client_documents")
+            .select("id, client_id, title, content, document_type, send_on_alert")
+            .in("client_id", clientIds)
+            .eq("send_on_alert", true)
+        : Promise.resolve({ data: [] as any[] }),
+      clientIds.length
+        ? supabaseAdmin
+            .from("client_contacts")
+            .select("client_id, name, email, phone_e164, relationship, notify_on_sos")
+            .in("client_id", clientIds)
+        : Promise.resolve({ data: [] as any[] }),
+    ]);
+
+    const clientMap = new Map((clientsRes.data ?? []).map((c: any) => [c.id, c]));
+    const docsByClient = new Map<string, any[]>();
+    for (const d of (docsRes.data ?? []) as any[]) {
+      if (!docsByClient.has(d.client_id)) docsByClient.set(d.client_id, []);
+      docsByClient.get(d.client_id)!.push(d);
+    }
+    const contactsByClient = new Map<string, any[]>();
+    for (const c of (contactsRes.data ?? []) as any[]) {
+      if (!contactsByClient.has(c.client_id)) contactsByClient.set(c.client_id, []);
+      contactsByClient.get(c.client_id)!.push(c);
+    }
+
+    return {
+      alerts: (alerts ?? []).map((a) => {
+        const client: any = clientMap.get(a.client_id);
+        return {
+          id: a.id,
+          triggered_at: a.triggered_at,
+          cancelled_at: a.cancelled_at,
+          lat: a.lat,
+          lng: a.lng,
+          battery_pct: a.battery_pct,
+          payload: a.payload,
+          client: client
+            ? {
+                id: client.id,
+                full_name: client.full_name,
+                email: client.email,
+                phone: client.phone_e164,
+                activation_code: client.invite_token,
+                language: client.language,
+              }
+            : null,
+          documents: docsByClient.get(a.client_id) ?? [],
+          contacts_notified: (contactsByClient.get(a.client_id) ?? []).filter((c: any) => c.notify_on_sos),
+        };
+      }),
+    };
+  });
