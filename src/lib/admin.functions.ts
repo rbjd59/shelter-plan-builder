@@ -504,7 +504,44 @@ export const listSosAlertsBoard = createServerFn({ method: "GET" })
             : null,
           documents: docsByClient.get(a.client_id) ?? [],
           contacts_notified: (contactsByClient.get(a.client_id) ?? []).filter((c: any) => c.notify_on_sos),
+          detention_info: detentionByClient.get(a.client_id) ?? null,
         };
       }),
     };
+  });
+
+// ---------- Save/update detention location info (admin) ----------
+export const upsertDetentionInfo = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator(
+    z.object({
+      client_id: z.string().uuid(),
+      facility_name: z.string().max(200).optional().nullable(),
+      facility_address: z.string().max(500).optional().nullable(),
+      warden_name: z.string().max(200).optional().nullable(),
+      arrest_date: z.string().optional().nullable(),
+      a_number: z.string().max(50).optional().nullable(),
+      federal_id: z.string().max(50).optional().nullable(),
+      notes: z.string().max(5000).optional().nullable(),
+    }).parse,
+  )
+  .handler(async ({ context, data }) => {
+    const email = await assertAdmin(context.userId);
+    const payload = {
+      client_id: data.client_id,
+      facility_name: data.facility_name || null,
+      facility_address: data.facility_address || null,
+      warden_name: data.warden_name || null,
+      arrest_date: data.arrest_date || null,
+      a_number: data.a_number || null,
+      federal_id: data.federal_id || null,
+      notes: data.notes || null,
+      located_at: new Date().toISOString(),
+      located_by: email,
+    };
+    const { error } = await supabaseAdmin
+      .from("client_detention_info")
+      .upsert(payload, { onConflict: "client_id" });
+    if (error) throw new Error(error.message);
+    return { ok: true };
   });
