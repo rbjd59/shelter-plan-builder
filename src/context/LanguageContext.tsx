@@ -18,7 +18,9 @@ function readInitial(): Lang {
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>(readInitial);
+  // Always start with the SSR default ("es") so server + first client render match.
+  // Switch to the user's stored/URL preference after hydration.
+  const [lang, setLangState] = useState<Lang>("es");
 
   useEffect(() => {
     const initial = readInitial();
