@@ -159,7 +159,7 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       ht: "Nou voye fòm yo bay kontak sa a.",
     },
     fields: [
-      { key: "contact_name", label: { en: "Your full name", es: "Su nombre completo", ht: "Non konplè w" } },
+      { key: "contact_name", label: { en: "Contact name", es: "Nombre del contacto", ht: "Non kontak la" } },
       { key: "contact_relation", label: { en: "Relationship to petitioner", es: "Parentesco", ht: "Relasyon" } },
       { key: "contact_phone", label: { en: "Phone (with WhatsApp if applicable)", es: "Teléfono (WhatsApp)", ht: "Telefòn (WhatsApp)" } },
       { key: "contact_email", label: { en: "Email", es: "Correo electrónico", ht: "Imèl" } },
