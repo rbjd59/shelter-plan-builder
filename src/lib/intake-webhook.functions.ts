@@ -37,16 +37,22 @@ function splitName(full: string): { first: string; middle: string; last: string 
 
 const LANG_LABEL: Record<string, string> = { en: "English", es: "Spanish", ht: "Haitian Creole" };
 
-function buildBody(input: z.infer<typeof InputSchema>) {
+function buildBody(
+  input: z.infer<typeof InputSchema>,
+  extras: { invite_token?: string | null } = {},
+) {
   const a = input.answers;
   const fullName = s(a.full_name);
   const { first, middle, last } = splitName(fullName);
   const langCode = (input.language || "en").toLowerCase();
   const prefLang = LANG_LABEL[langCode] || langCode;
+  const hasAssetProtection = a.addon_asset_protection === true || a.addon_asset_protection === "yes";
+  const hasPetRescue = a.addon_pet_rescue === true || a.addon_pet_rescue === "yes";
 
   return {
     event_id: input.intakeSessionId,
     intake_session_id: input.intakeSessionId,
+    invite_token: extras.invite_token ?? null,
     client: {
       full_name: fullName,
       first_name: first,
@@ -60,6 +66,14 @@ function buildBody(input: z.infer<typeof InputSchema>) {
       preferred_language: prefLang,
       languages_spoken: [prefLang].filter(Boolean),
       address: s(a.mail_current_location) || s(a.facility_address),
+      invite_token: extras.invite_token ?? null,
+      has_asset_protection: hasAssetProtection,
+      has_pet_rescue: hasPetRescue,
+      status: "active",
+    },
+    addons: {
+      asset_protection: hasAssetProtection,
+      pet_rescue: hasPetRescue,
     },
     emergency_contacts: [
       {
@@ -78,6 +92,7 @@ function buildBody(input: z.infer<typeof InputSchema>) {
     language: langCode,
   };
 }
+
 
 const ResponseSchema = z.object({
   ok: z.boolean().optional(),
