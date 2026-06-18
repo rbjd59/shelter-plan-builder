@@ -276,14 +276,29 @@ export const submitDemoIntake = createServerFn({ method: "POST" })
       console.error("Demo intake notification failed:", e);
     }
 
+    let activationCode: string | null = null;
     try {
-      await provisionAppClient({
+      const provisioned = await provisionAppClient({
         intakeSessionId: sessionId,
         language: data.language,
         answers: a,
       });
+      activationCode =
+        (provisioned as { inviteToken?: string | null } | null | undefined)?.inviteToken ??
+        data.inviteCode ??
+        null;
     } catch (e) {
       console.error("Demo app client provisioning failed:", e);
+    }
+
+    try {
+      await enqueueActivationEmails({
+        sessionId,
+        answers: a,
+        activationCode: activationCode ?? data.inviteCode ?? null,
+      });
+    } catch (e) {
+      console.error("Activation emails enqueue failed:", e);
     }
 
     return { ok: true, sessionId };
