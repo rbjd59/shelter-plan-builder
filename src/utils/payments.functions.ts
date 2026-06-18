@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import { type StripeEnv, createStripeClient } from "@/lib/stripe.server";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { enqueueIntakeNotification } from "@/lib/email/intake-notification.server";
+import { enqueueActivationEmails } from "@/lib/email/activation-emails.server";
 import { provisionAppClient } from "@/lib/app-clients.server";
 
 /**
