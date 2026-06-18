@@ -259,6 +259,62 @@ export type Database = {
           },
         ]
       }
+      client_detention_info: {
+        Row: {
+          a_number: string | null
+          arrest_date: string | null
+          client_id: string
+          created_at: string
+          facility_address: string | null
+          facility_name: string | null
+          federal_id: string | null
+          id: string
+          located_at: string | null
+          located_by: string | null
+          notes: string | null
+          updated_at: string
+          warden_name: string | null
+        }
+        Insert: {
+          a_number?: string | null
+          arrest_date?: string | null
+          client_id: string
+          created_at?: string
+          facility_address?: string | null
+          facility_name?: string | null
+          federal_id?: string | null
+          id?: string
+          located_at?: string | null
+          located_by?: string | null
+          notes?: string | null
+          updated_at?: string
+          warden_name?: string | null
+        }
+        Update: {
+          a_number?: string | null
+          arrest_date?: string | null
+          client_id?: string
+          created_at?: string
+          facility_address?: string | null
+          facility_name?: string | null
+          federal_id?: string | null
+          id?: string
+          located_at?: string | null
+          located_by?: string | null
+          notes?: string | null
+          updated_at?: string
+          warden_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_detention_info_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: true
+            referencedRelation: "app_clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       client_documents: {
         Row: {
           client_id: string
