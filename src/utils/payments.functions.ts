@@ -284,7 +284,7 @@ export const submitDemoIntake = createServerFn({ method: "POST" })
         answers: a,
       });
       activationCode =
-        (provisioned as { inviteToken?: string | null } | null | undefined)?.inviteToken ??
+        (provisioned as { code?: string | null } | null | undefined)?.code ??
         data.inviteCode ??
         null;
     } catch (e) {
