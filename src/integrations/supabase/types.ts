@@ -32,41 +32,53 @@ export type Database = {
       app_clients: {
         Row: {
           activated_at: string | null
+          country_of_origin: string | null
           created_at: string
           device_info: Json | null
           email: string | null
           full_name: string | null
+          has_asset_protection: boolean
+          has_pet_rescue: boolean
           id: string
           intake_session_id: string | null
           invite_token: string
           language: string
           phone_e164: string | null
+          place_of_birth: string | null
           updated_at: string
         }
         Insert: {
           activated_at?: string | null
+          country_of_origin?: string | null
           created_at?: string
           device_info?: Json | null
           email?: string | null
           full_name?: string | null
+          has_asset_protection?: boolean
+          has_pet_rescue?: boolean
           id?: string
           intake_session_id?: string | null
           invite_token: string
           language?: string
           phone_e164?: string | null
+          place_of_birth?: string | null
           updated_at?: string
         }
         Update: {
           activated_at?: string | null
+          country_of_origin?: string | null
           created_at?: string
           device_info?: Json | null
           email?: string | null
           full_name?: string | null
+          has_asset_protection?: boolean
+          has_pet_rescue?: boolean
           id?: string
           intake_session_id?: string | null
           invite_token?: string
           language?: string
           phone_e164?: string | null
+          place_of_birth?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -283,6 +295,59 @@ export type Database = {
             foreignKeyName: "client_documents_client_id_fkey"
             columns: ["client_id"]
             isOneToOne: false
+            referencedRelation: "app_clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      client_pet_rescue: {
+        Row: {
+          access_instructions: string | null
+          client_id: string
+          created_at: string
+          id: string
+          no_kill_shelter_address: string | null
+          no_kill_shelter_preferred: boolean
+          notes: string | null
+          pet_location: string | null
+          pet_name: string | null
+          pet_type: string | null
+          updated_at: string
+          who_to_notify: string | null
+        }
+        Insert: {
+          access_instructions?: string | null
+          client_id: string
+          created_at?: string
+          id?: string
+          no_kill_shelter_address?: string | null
+          no_kill_shelter_preferred?: boolean
+          notes?: string | null
+          pet_location?: string | null
+          pet_name?: string | null
+          pet_type?: string | null
+          updated_at?: string
+          who_to_notify?: string | null
+        }
+        Update: {
+          access_instructions?: string | null
+          client_id?: string
+          created_at?: string
+          id?: string
+          no_kill_shelter_address?: string | null
+          no_kill_shelter_preferred?: boolean
+          notes?: string | null
+          pet_location?: string | null
+          pet_name?: string | null
+          pet_type?: string | null
+          updated_at?: string
+          who_to_notify?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_pet_rescue_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: true
             referencedRelation: "app_clients"
             referencedColumns: ["id"]
           },

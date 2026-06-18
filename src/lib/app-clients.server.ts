@@ -69,6 +69,15 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
     (typeof a.phone === "string" && a.phone) ||
     null;
 
+  // New fields from Premio intake spec
+  const placeOfBirth = typeof a.place_of_birth === "string" ? a.place_of_birth : null;
+  const countryOfOrigin =
+    (typeof a.country_of_origin === "string" && a.country_of_origin) ||
+    (typeof a.country_of_citizenship === "string" && a.country_of_citizenship) ||
+    null;
+  const hasAssetProtection = !!a.addon_asset_protection;
+  const hasPetRescue = !!a.addon_pet_rescue;
+
   // Generate token with retry on collision
   let code = generateToken();
   let inserted: { id: string } | null = null;
@@ -82,7 +91,11 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
         email,
         phone_e164: phone,
         language: params.language,
-      })
+        place_of_birth: placeOfBirth,
+        country_of_origin: countryOfOrigin,
+        has_asset_protection: hasAssetProtection,
+        has_pet_rescue: hasPetRescue,
+      } as never)
       .select("id")
       .single();
 
@@ -116,7 +129,7 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
   if (!inserted) return { ok: false, error: "could not allocate activation code" };
   const clientId = inserted.id;
 
-  // Mirror emergency contacts from intake answers (sections 6 + 7)
+  // Mirror emergency contacts from intake answers (sections 6 + 7 + 8)
   const contactsToInsert: Array<Record<string, any>> = [];
   const addContact = (
     name: unknown,
@@ -138,10 +151,34 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
     }
   };
   addContact(a.emergency_contact_name, a.emergency_contact_phone, a.emergency_contact_email, "emergency", 1);
-  addContact(a.family_contact_name, a.family_contact_phone, a.family_contact_email, "family", 2);
+  addContact(
+    a.emergency_contact_2_name,
+    a.emergency_contact_2_phone,
+    a.emergency_contact_2_email,
+    typeof a.emergency_contact_2_relation === "string" ? a.emergency_contact_2_relation : "emergency-2",
+    2,
+  );
+  addContact(a.contact_name, a.contact_phone, a.contact_email, "family", 3);
 
   if (contactsToInsert.length) {
     await sb.from("client_contacts").insert(contactsToInsert);
+  }
+
+  // Persist pet rescue row if the add-on was selected
+  if (hasPetRescue) {
+    await sb.from("client_pet_rescue").upsert(
+      {
+        client_id: clientId,
+        pet_name: typeof a.pet_name === "string" ? a.pet_name : null,
+        pet_type: typeof a.pet_type === "string" ? a.pet_type : null,
+        pet_location: typeof a.pet_location === "string" ? a.pet_location : null,
+        access_instructions: typeof a.pet_access === "string" ? a.pet_access : null,
+        who_to_notify: typeof a.pet_notify === "string" ? a.pet_notify : null,
+        no_kill_shelter_preferred: a.pet_no_kill_preferred !== false,
+        no_kill_shelter_address: typeof a.pet_no_kill_address === "string" ? a.pet_no_kill_address : null,
+      } as never,
+      { onConflict: "client_id" },
+    );
   }
 
   // Seed a welcome/summary document so the app shows something on first open
@@ -153,6 +190,7 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
     document_type: "summary",
     send_on_alert: false,
   });
+
 
   // Send activation email
   try {
