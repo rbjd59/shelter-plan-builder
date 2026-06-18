@@ -57,6 +57,8 @@ import { Route as AdminAdminRemindersRouteImport } from './routes/_admin/admin.r
 import { Route as AdminAdminInviteCodesRouteImport } from './routes/_admin/admin.invite-codes'
 import { Route as AdminAdminEmailsRouteImport } from './routes/_admin/admin.emails'
 import { Route as AdminAdminClientsRouteImport } from './routes/_admin/admin.clients'
+import { Route as AdminAdminAlertsRouteImport } from './routes/_admin/admin.alerts'
+import { Route as AdminAdminActivationsRouteImport } from './routes/_admin/admin.activations'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
@@ -307,6 +309,16 @@ const AdminAdminClientsRoute = AdminAdminClientsRouteImport.update({
   path: '/clients',
   getParentRoute: () => AdminAdminRoute,
 } as any)
+const AdminAdminAlertsRoute = AdminAdminAlertsRouteImport.update({
+  id: '/alerts',
+  path: '/alerts',
+  getParentRoute: () => AdminAdminRoute,
+} as any)
+const AdminAdminActivationsRoute = AdminAdminActivationsRouteImport.update({
+  id: '/activations',
+  path: '/activations',
+  getParentRoute: () => AdminAdminRoute,
+} as any)
 const LovableEmailTransactionalSendRoute =
   LovableEmailTransactionalSendRouteImport.update({
     id: '/lovable/email/transactional/send',
@@ -406,6 +418,8 @@ export interface FileRoutesByFullPath {
   '/readiness/sign': typeof ReadinessSignRoute
   '/readiness/start': typeof ReadinessStartRoute
   '/track/$token': typeof TrackTokenRoute
+  '/admin/activations': typeof AdminAdminActivationsRoute
+  '/admin/alerts': typeof AdminAdminAlertsRoute
   '/admin/clients': typeof AdminAdminClientsRouteWithChildren
   '/admin/emails': typeof AdminAdminEmailsRoute
   '/admin/invite-codes': typeof AdminAdminInviteCodesRoute
@@ -464,6 +478,8 @@ export interface FileRoutesByTo {
   '/readiness/sign': typeof ReadinessSignRoute
   '/readiness/start': typeof ReadinessStartRoute
   '/track/$token': typeof TrackTokenRoute
+  '/admin/activations': typeof AdminAdminActivationsRoute
+  '/admin/alerts': typeof AdminAdminAlertsRoute
   '/admin/clients': typeof AdminAdminClientsRouteWithChildren
   '/admin/emails': typeof AdminAdminEmailsRoute
   '/admin/invite-codes': typeof AdminAdminInviteCodesRoute
@@ -526,6 +542,8 @@ export interface FileRoutesById {
   '/readiness/sign': typeof ReadinessSignRoute
   '/readiness/start': typeof ReadinessStartRoute
   '/track/$token': typeof TrackTokenRoute
+  '/_admin/admin/activations': typeof AdminAdminActivationsRoute
+  '/_admin/admin/alerts': typeof AdminAdminAlertsRoute
   '/_admin/admin/clients': typeof AdminAdminClientsRouteWithChildren
   '/_admin/admin/emails': typeof AdminAdminEmailsRoute
   '/_admin/admin/invite-codes': typeof AdminAdminInviteCodesRoute
@@ -586,6 +604,8 @@ export interface FileRouteTypes {
     | '/readiness/sign'
     | '/readiness/start'
     | '/track/$token'
+    | '/admin/activations'
+    | '/admin/alerts'
     | '/admin/clients'
     | '/admin/emails'
     | '/admin/invite-codes'
@@ -644,6 +664,8 @@ export interface FileRouteTypes {
     | '/readiness/sign'
     | '/readiness/start'
     | '/track/$token'
+    | '/admin/activations'
+    | '/admin/alerts'
     | '/admin/clients'
     | '/admin/emails'
     | '/admin/invite-codes'
@@ -705,6 +727,8 @@ export interface FileRouteTypes {
     | '/readiness/sign'
     | '/readiness/start'
     | '/track/$token'
+    | '/_admin/admin/activations'
+    | '/_admin/admin/alerts'
     | '/_admin/admin/clients'
     | '/_admin/admin/emails'
     | '/_admin/admin/invite-codes'
@@ -1116,6 +1140,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminClientsRouteImport
       parentRoute: typeof AdminAdminRoute
     }
+    '/_admin/admin/alerts': {
+      id: '/_admin/admin/alerts'
+      path: '/alerts'
+      fullPath: '/admin/alerts'
+      preLoaderRoute: typeof AdminAdminAlertsRouteImport
+      parentRoute: typeof AdminAdminRoute
+    }
+    '/_admin/admin/activations': {
+      id: '/_admin/admin/activations'
+      path: '/activations'
+      fullPath: '/admin/activations'
+      preLoaderRoute: typeof AdminAdminActivationsRouteImport
+      parentRoute: typeof AdminAdminRoute
+    }
     '/lovable/email/transactional/send': {
       id: '/lovable/email/transactional/send'
       path: '/lovable/email/transactional/send'
@@ -1208,6 +1246,8 @@ const AdminAdminClientsRouteWithChildren =
   AdminAdminClientsRoute._addFileChildren(AdminAdminClientsRouteChildren)
 
 interface AdminAdminRouteChildren {
+  AdminAdminActivationsRoute: typeof AdminAdminActivationsRoute
+  AdminAdminAlertsRoute: typeof AdminAdminAlertsRoute
   AdminAdminClientsRoute: typeof AdminAdminClientsRouteWithChildren
   AdminAdminEmailsRoute: typeof AdminAdminEmailsRoute
   AdminAdminInviteCodesRoute: typeof AdminAdminInviteCodesRoute
@@ -1217,6 +1257,8 @@ interface AdminAdminRouteChildren {
 }
 
 const AdminAdminRouteChildren: AdminAdminRouteChildren = {
+  AdminAdminActivationsRoute: AdminAdminActivationsRoute,
+  AdminAdminAlertsRoute: AdminAdminAlertsRoute,
   AdminAdminClientsRoute: AdminAdminClientsRouteWithChildren,
   AdminAdminEmailsRoute: AdminAdminEmailsRoute,
   AdminAdminInviteCodesRoute: AdminAdminInviteCodesRoute,
