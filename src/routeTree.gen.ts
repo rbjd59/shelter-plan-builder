@@ -50,6 +50,7 @@ import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/em
 import { Route as ApiPublicSendAdminInviteRouteImport } from './routes/api/public/send-admin-invite'
 import { Route as ApiPublicMailFromCheckRouteImport } from './routes/api/public/mail-from-check'
 import { Route as FirmFirmQueueRouteImport } from './routes/_firm/firm.queue'
+import { Route as FirmFirmDetainedRouteImport } from './routes/_firm/firm.detained'
 import { Route as AuthenticatedCaseIdRouteImport } from './routes/_authenticated/case.$id'
 import { Route as AdminAdminWebhooksRouteImport } from './routes/_admin/admin.webhooks'
 import { Route as AdminAdminTriggersRouteImport } from './routes/_admin/admin.triggers'
@@ -69,6 +70,7 @@ import { Route as ApiPublicDevSendInstallRouteImport } from './routes/api/public
 import { Route as ApiPublicCronRetryFailedEmailsRouteImport } from './routes/api/public/cron/retry-failed-emails'
 import { Route as ApiPublicCronProcessDueActivationsRouteImport } from './routes/api/public/cron/process-due-activations'
 import { Route as FirmFirmReviewIdRouteImport } from './routes/_firm/firm.review.$id'
+import { Route as FirmFirmDetainedIdRouteImport } from './routes/_firm/firm.detained.$id'
 import { Route as AdminAdminClientsIdRouteImport } from './routes/_admin/admin.clients.$id'
 
 const VenuesRoute = VenuesRouteImport.update({
@@ -274,6 +276,11 @@ const FirmFirmQueueRoute = FirmFirmQueueRouteImport.update({
   path: '/firm/queue',
   getParentRoute: () => FirmRoute,
 } as any)
+const FirmFirmDetainedRoute = FirmFirmDetainedRouteImport.update({
+  id: '/firm/detained',
+  path: '/firm/detained',
+  getParentRoute: () => FirmRoute,
+} as any)
 const AuthenticatedCaseIdRoute = AuthenticatedCaseIdRouteImport.update({
   id: '/case/$id',
   path: '/case/$id',
@@ -377,6 +384,11 @@ const FirmFirmReviewIdRoute = FirmFirmReviewIdRouteImport.update({
   path: '/firm/review/$id',
   getParentRoute: () => FirmRoute,
 } as any)
+const FirmFirmDetainedIdRoute = FirmFirmDetainedIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => FirmFirmDetainedRoute,
+} as any)
 const AdminAdminClientsIdRoute = AdminAdminClientsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -427,11 +439,13 @@ export interface FileRoutesByFullPath {
   '/admin/triggers': typeof AdminAdminTriggersRoute
   '/admin/webhooks': typeof AdminAdminWebhooksRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
+  '/firm/detained': typeof FirmFirmDetainedRouteWithChildren
   '/firm/queue': typeof FirmFirmQueueRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
   '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/admin/clients/$id': typeof AdminAdminClientsIdRoute
+  '/firm/detained/$id': typeof FirmFirmDetainedIdRoute
   '/firm/review/$id': typeof FirmFirmReviewIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/cron/retry-failed-emails': typeof ApiPublicCronRetryFailedEmailsRoute
@@ -487,11 +501,13 @@ export interface FileRoutesByTo {
   '/admin/triggers': typeof AdminAdminTriggersRoute
   '/admin/webhooks': typeof AdminAdminWebhooksRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
+  '/firm/detained': typeof FirmFirmDetainedRouteWithChildren
   '/firm/queue': typeof FirmFirmQueueRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
   '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/admin/clients/$id': typeof AdminAdminClientsIdRoute
+  '/firm/detained/$id': typeof FirmFirmDetainedIdRoute
   '/firm/review/$id': typeof FirmFirmReviewIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/cron/retry-failed-emails': typeof ApiPublicCronRetryFailedEmailsRoute
@@ -551,11 +567,13 @@ export interface FileRoutesById {
   '/_admin/admin/triggers': typeof AdminAdminTriggersRoute
   '/_admin/admin/webhooks': typeof AdminAdminWebhooksRoute
   '/_authenticated/case/$id': typeof AuthenticatedCaseIdRoute
+  '/_firm/firm/detained': typeof FirmFirmDetainedRouteWithChildren
   '/_firm/firm/queue': typeof FirmFirmQueueRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
   '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/_admin/admin/clients/$id': typeof AdminAdminClientsIdRoute
+  '/_firm/firm/detained/$id': typeof FirmFirmDetainedIdRoute
   '/_firm/firm/review/$id': typeof FirmFirmReviewIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/cron/retry-failed-emails': typeof ApiPublicCronRetryFailedEmailsRoute
@@ -613,11 +631,13 @@ export interface FileRouteTypes {
     | '/admin/triggers'
     | '/admin/webhooks'
     | '/case/$id'
+    | '/firm/detained'
     | '/firm/queue'
     | '/api/public/mail-from-check'
     | '/api/public/send-admin-invite'
     | '/lovable/email/suppression'
     | '/admin/clients/$id'
+    | '/firm/detained/$id'
     | '/firm/review/$id'
     | '/api/public/cron/process-due-activations'
     | '/api/public/cron/retry-failed-emails'
@@ -673,11 +693,13 @@ export interface FileRouteTypes {
     | '/admin/triggers'
     | '/admin/webhooks'
     | '/case/$id'
+    | '/firm/detained'
     | '/firm/queue'
     | '/api/public/mail-from-check'
     | '/api/public/send-admin-invite'
     | '/lovable/email/suppression'
     | '/admin/clients/$id'
+    | '/firm/detained/$id'
     | '/firm/review/$id'
     | '/api/public/cron/process-due-activations'
     | '/api/public/cron/retry-failed-emails'
@@ -736,11 +758,13 @@ export interface FileRouteTypes {
     | '/_admin/admin/triggers'
     | '/_admin/admin/webhooks'
     | '/_authenticated/case/$id'
+    | '/_firm/firm/detained'
     | '/_firm/firm/queue'
     | '/api/public/mail-from-check'
     | '/api/public/send-admin-invite'
     | '/lovable/email/suppression'
     | '/_admin/admin/clients/$id'
+    | '/_firm/firm/detained/$id'
     | '/_firm/firm/review/$id'
     | '/api/public/cron/process-due-activations'
     | '/api/public/cron/retry-failed-emails'
@@ -1091,6 +1115,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FirmFirmQueueRouteImport
       parentRoute: typeof FirmRoute
     }
+    '/_firm/firm/detained': {
+      id: '/_firm/firm/detained'
+      path: '/firm/detained'
+      fullPath: '/firm/detained'
+      preLoaderRoute: typeof FirmFirmDetainedRouteImport
+      parentRoute: typeof FirmRoute
+    }
     '/_authenticated/case/$id': {
       id: '/_authenticated/case/$id'
       path: '/case/$id'
@@ -1224,6 +1255,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FirmFirmReviewIdRouteImport
       parentRoute: typeof FirmRoute
     }
+    '/_firm/firm/detained/$id': {
+      id: '/_firm/firm/detained/$id'
+      path: '/$id'
+      fullPath: '/firm/detained/$id'
+      preLoaderRoute: typeof FirmFirmDetainedIdRouteImport
+      parentRoute: typeof FirmFirmDetainedRoute
+    }
     '/_admin/admin/clients/$id': {
       id: '/_admin/admin/clients/$id'
       path: '/$id'
@@ -1297,12 +1335,25 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
 )
 
+interface FirmFirmDetainedRouteChildren {
+  FirmFirmDetainedIdRoute: typeof FirmFirmDetainedIdRoute
+}
+
+const FirmFirmDetainedRouteChildren: FirmFirmDetainedRouteChildren = {
+  FirmFirmDetainedIdRoute: FirmFirmDetainedIdRoute,
+}
+
+const FirmFirmDetainedRouteWithChildren =
+  FirmFirmDetainedRoute._addFileChildren(FirmFirmDetainedRouteChildren)
+
 interface FirmRouteChildren {
+  FirmFirmDetainedRoute: typeof FirmFirmDetainedRouteWithChildren
   FirmFirmQueueRoute: typeof FirmFirmQueueRoute
   FirmFirmReviewIdRoute: typeof FirmFirmReviewIdRoute
 }
 
 const FirmRouteChildren: FirmRouteChildren = {
+  FirmFirmDetainedRoute: FirmFirmDetainedRouteWithChildren,
   FirmFirmQueueRoute: FirmFirmQueueRoute,
   FirmFirmReviewIdRoute: FirmFirmReviewIdRoute,
 }

@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useQuery } from "@tanstack/react-query";
-import { listSosAlertsBoard } from "@/lib/admin.functions";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { listSosAlertsBoard, upsertDetentionInfo } from "@/lib/admin.functions";
 
 export const Route = createFileRoute("/_admin/admin/alerts")({
   component: AlertsBoardPage,
@@ -25,6 +26,17 @@ type AlertRow = {
   } | null;
   documents: Array<{ id: string; title: string | null; content: string | null; document_type: string | null }>;
   contacts_notified: Array<{ name: string | null; email: string | null; phone_e164: string | null; relationship: string | null }>;
+  detention_info: {
+    facility_name: string | null;
+    facility_address: string | null;
+    warden_name: string | null;
+    arrest_date: string | null;
+    a_number: string | null;
+    federal_id: string | null;
+    notes: string | null;
+    located_at: string | null;
+    located_by: string | null;
+  } | null;
 };
 
 function downloadText(filename: string, content: string) {
@@ -207,6 +219,114 @@ function AlertCard({ a, muted }: { a: AlertRow; muted?: boolean }) {
           </ul>
         </div>
       )}
+
+      {a.client?.id && <LocateForm clientId={a.client.id} existing={a.detention_info} />}
+    </div>
+  );
+}
+
+function LocateForm({
+  clientId,
+  existing,
+}: {
+  clientId: string;
+  existing: AlertRow["detention_info"];
+}) {
+  const [open, setOpen] = useState(!existing);
+  const [form, setForm] = useState({
+    facility_name: existing?.facility_name ?? "",
+    facility_address: existing?.facility_address ?? "",
+    warden_name: existing?.warden_name ?? "",
+    arrest_date: existing?.arrest_date ?? "",
+    a_number: existing?.a_number ?? "",
+    federal_id: existing?.federal_id ?? "",
+    notes: existing?.notes ?? "",
+  });
+  const upsertFn = useServerFn(upsertDetentionInfo);
+  const qc = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: () => upsertFn({ data: { client_id: clientId, ...form } }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-sos-alerts"] });
+      qc.invalidateQueries({ queryKey: ["firm", "detained"] });
+    },
+  });
+
+  return (
+    <div className="mt-3 border-t-2 border-amber-300 pt-3">
+      <div className="flex items-center justify-between">
+        <div className="text-xs font-bold uppercase text-amber-800">
+          📍 Detention location {existing ? "(on file — sent to attorney)" : "— locate client"}
+        </div>
+        <button
+          onClick={() => setOpen(!open)}
+          className="text-xs text-slate-600 hover:text-slate-900 underline"
+        >
+          {open ? "Hide" : existing ? "Edit" : "Locate now"}
+        </button>
+      </div>
+
+      {existing && !open && (
+        <div className="mt-2 text-xs text-slate-700">
+          <span className="font-semibold">{existing.facility_name ?? "—"}</span>
+          {existing.a_number && <span className="ml-2 font-mono">A# {existing.a_number}</span>}
+          {existing.arrest_date && <span className="ml-2">arrested {existing.arrest_date}</span>}
+        </div>
+      )}
+
+      {open && (
+        <div className="mt-3 grid gap-2 sm:grid-cols-2">
+          <Field label="Detention facility" value={form.facility_name} onChange={(v) => setForm({ ...form, facility_name: v })} />
+          <Field label="A-Number (alien #)" value={form.a_number} onChange={(v) => setForm({ ...form, a_number: v })} mono />
+          <Field label="Facility address" value={form.facility_address} onChange={(v) => setForm({ ...form, facility_address: v })} full />
+          <Field label="Warden's name" value={form.warden_name} onChange={(v) => setForm({ ...form, warden_name: v })} />
+          <Field label="Federal / ICE ID" value={form.federal_id} onChange={(v) => setForm({ ...form, federal_id: v })} mono />
+          <Field label="Arrest date" value={form.arrest_date} onChange={(v) => setForm({ ...form, arrest_date: v })} type="date" />
+          <div className="sm:col-span-2">
+            <label className="text-[11px] font-semibold uppercase text-slate-500">Notes</label>
+            <textarea
+              value={form.notes}
+              onChange={(e) => setForm({ ...form, notes: e.target.value })}
+              rows={2}
+              className="mt-1 w-full rounded border border-slate-300 px-2 py-1.5 text-sm"
+            />
+          </div>
+          <div className="sm:col-span-2 flex items-center gap-3">
+            <button
+              onClick={() => mutation.mutate()}
+              disabled={mutation.isPending}
+              className="rounded bg-amber-600 px-4 py-1.5 text-xs font-semibold text-white hover:bg-amber-700 disabled:opacity-50"
+            >
+              {mutation.isPending ? "Saving…" : existing ? "Update detention info" : "Save & send to attorney"}
+            </button>
+            {mutation.isSuccess && <span className="text-xs text-emerald-700">✓ Saved · pushed to attorney board</span>}
+            {mutation.error && <span className="text-xs text-red-700">{(mutation.error as Error).message}</span>}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Field({
+  label, value, onChange, type = "text", mono, full,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  type?: string;
+  mono?: boolean;
+  full?: boolean;
+}) {
+  return (
+    <div className={full ? "sm:col-span-2" : ""}>
+      <label className="text-[11px] font-semibold uppercase text-slate-500">{label}</label>
+      <input
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className={`mt-1 w-full rounded border border-slate-300 px-2 py-1.5 text-sm ${mono ? "font-mono" : ""}`}
+      />
     </div>
   );
 }
