@@ -6,7 +6,7 @@ import { submitDemoIntake } from "@/utils/payments.functions";
 import { pairIntakeWithApp } from "@/lib/intake-pair.functions";
 import { notifyIntakeWebhook } from "@/lib/intake-webhook.functions";
 
-import { SentinelUpsellCards } from "@/components/SentinelUpsellCards";
+
 import { BilingualField } from "@/components/intake/BilingualField";
 import { readSiteLang } from "@/lib/site-lang";
 import { resolveIntakeGate } from "@/lib/intake-gate";
