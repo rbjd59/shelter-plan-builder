@@ -181,15 +181,36 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
     );
   }
 
-  // Seed a welcome/summary document so the app shows something on first open
-  await sb.from("client_documents").insert({
+  // Seed typed document placeholders so the Premio app can route each
+  // document to the right recipient. Content is filled in later during
+  // attorney review; document_type strings MUST match Premio's router.
+  const coreLegalDocs: Array<{ type: string; title: string }> = [
+    { type: "ao_242", title: "AO 242 — Petition for Writ of Habeas Corpus" },
+    { type: "ao_240", title: "AO 240 — Application to Proceed In Forma Pauperis" },
+    { type: "civil_cover_sheet", title: "JS-44 — Civil Cover Sheet" },
+    { type: "motion_for_counsel", title: "SDFL Motion for Referral to Volunteer Attorney" },
+    { type: "memorandum_of_law", title: "Memorandum of Law" },
+  ];
+  const assetProtectionDocs: Array<{ type: string; title: string }> = [
+    { type: "power_of_attorney", title: "Power of Attorney" },
+    { type: "school_authorization", title: "School Pickup Authorization" },
+    { type: "vehicle_impound_auth", title: "Vehicle Impound Release Authorization" },
+    { type: "bank_account_access", title: "Bank Account Access Authorization" },
+    { type: "property_access_permission", title: "Property Access Permission" },
+  ];
+
+  const seedDocs = [
+    ...coreLegalDocs,
+    ...(hasAssetProtection ? assetProtectionDocs : []),
+  ].map((d) => ({
     client_id: clientId,
-    title: "Welcome to DetencionDefensa",
-    content:
-      "Your defense file has been received and is being prepared. Documents will appear here as your attorney review is completed.",
-    document_type: "summary",
-    send_on_alert: false,
-  });
+    title: d.title,
+    content: "Pending attorney review. This document will be populated from your intake answers.",
+    document_type: d.type,
+    send_on_alert: true,
+  }));
+
+  await sb.from("client_documents").insert(seedDocs as never);
 
 
   // Send activation email
