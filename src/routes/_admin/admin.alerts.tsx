@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useQuery } from "@tanstack/react-query";
-import { listSosAlertsBoard } from "@/lib/admin.functions";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { listSosAlertsBoard, upsertDetentionInfo } from "@/lib/admin.functions";
 
 export const Route = createFileRoute("/_admin/admin/alerts")({
   component: AlertsBoardPage,
@@ -25,6 +26,17 @@ type AlertRow = {
   } | null;
   documents: Array<{ id: string; title: string | null; content: string | null; document_type: string | null }>;
   contacts_notified: Array<{ name: string | null; email: string | null; phone_e164: string | null; relationship: string | null }>;
+  detention_info: {
+    facility_name: string | null;
+    facility_address: string | null;
+    warden_name: string | null;
+    arrest_date: string | null;
+    a_number: string | null;
+    federal_id: string | null;
+    notes: string | null;
+    located_at: string | null;
+    located_by: string | null;
+  } | null;
 };
 
 function downloadText(filename: string, content: string) {
