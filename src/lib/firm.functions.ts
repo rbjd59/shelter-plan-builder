@@ -231,3 +231,106 @@ export const getCaseForReview = createServerFn({ method: "GET" })
       intake: intakeRes.data ?? null,
     };
   });
+
+// ---------- Detained-clients board (firm + admin) ----------
+async function assertFirmOrAdmin(userId: string) {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data } = await supabaseAdmin
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", userId)
+    .in("role", ["firm", "admin"])
+    .maybeSingle();
+  if (!data) throw new Error("Not authorized");
+}
+
+export const listDetainedClients = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertFirmOrAdmin(context.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    // Detained = either has detention_info OR has an active SOS alert
+    const [{ data: detentionRows }, { data: alertRows }] = await Promise.all([
+      supabaseAdmin.from("client_detention_info").select("*"),
+      supabaseAdmin
+        .from("client_sos_alerts")
+        .select("client_id, triggered_at, cancelled_at, lat, lng")
+        .order("triggered_at", { ascending: false }),
+    ]);
+
+    const clientIds = new Set<string>();
+    for (const d of detentionRows ?? []) clientIds.add((d as any).client_id);
+    for (const a of alertRows ?? []) clientIds.add((a as any).client_id);
+    if (clientIds.size === 0) return { clients: [] };
+
+    const { data: clients } = await supabaseAdmin
+      .from("app_clients")
+      .select("id, full_name, email, phone_e164, invite_token, language, activated_at, created_at")
+      .in("id", Array.from(clientIds));
+
+    const detentionByClient = new Map<string, any>();
+    for (const d of detentionRows ?? []) detentionByClient.set((d as any).client_id, d);
+    const latestAlertByClient = new Map<string, any>();
+    for (const a of alertRows ?? []) {
+      const cid = (a as any).client_id;
+      if (!latestAlertByClient.has(cid)) latestAlertByClient.set(cid, a);
+    }
+
+    return {
+      clients: (clients ?? []).map((c) => ({
+        id: c.id,
+        full_name: c.full_name,
+        email: c.email,
+        phone: c.phone_e164,
+        activation_code: c.invite_token,
+        language: c.language,
+        latest_alert: latestAlertByClient.get(c.id) ?? null,
+        detention: detentionByClient.get(c.id) ?? null,
+      })),
+    };
+  });
+
+export const getDetainedClient = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { clientId: string }) => {
+    if (!data.clientId) throw new Error("Missing clientId");
+    return data;
+  })
+  .handler(async ({ context, data }) => {
+    await assertFirmOrAdmin(context.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    const [{ data: client }, { data: detention }, { data: alerts }, { data: documents }, { data: contacts }] = await Promise.all([
+      supabaseAdmin
+        .from("app_clients")
+        .select("id, full_name, email, phone_e164, invite_token, language, activated_at, created_at, place_of_birth, country_of_origin")
+        .eq("id", data.clientId)
+        .maybeSingle(),
+      supabaseAdmin.from("client_detention_info").select("*").eq("client_id", data.clientId).maybeSingle(),
+      supabaseAdmin
+        .from("client_sos_alerts")
+        .select("*")
+        .eq("client_id", data.clientId)
+        .order("triggered_at", { ascending: false }),
+      supabaseAdmin
+        .from("client_documents")
+        .select("id, title, content, document_type, send_on_alert, loaded_at")
+        .eq("client_id", data.clientId)
+        .order("loaded_at", { ascending: true }),
+      supabaseAdmin
+        .from("client_contacts")
+        .select("name, email, phone_e164, relationship, priority, notify_on_sos")
+        .eq("client_id", data.clientId)
+        .order("priority", { ascending: true }),
+    ]);
+
+    if (!client) throw new Error("Client not found");
+    return {
+      client,
+      detention: detention ?? null,
+      alerts: alerts ?? [],
+      documents: documents ?? [],
+      contacts: contacts ?? [],
+    };
+  });
