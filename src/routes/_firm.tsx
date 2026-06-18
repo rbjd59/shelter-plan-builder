@@ -37,6 +37,13 @@ function FirmShell() {
               >
                 Review Queue
               </Link>
+              <Link
+                to="/firm/detained"
+                activeProps={{ className: "text-white font-semibold underline" }}
+                className="text-white/80 hover:text-white"
+              >
+                Detained Clients
+              </Link>
             </nav>
           </div>
           <button
