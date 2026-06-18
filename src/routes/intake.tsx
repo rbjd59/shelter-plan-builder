@@ -373,24 +373,36 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
       <div style={wrap}><div style={container}>
         {pairCode && (
           <div style={{ background: "linear-gradient(135deg, #e8a04a 0%, #d4882c 100%)", color: "#0b1220", padding: 28, borderRadius: 12, marginBottom: 20, textAlign: "center", boxShadow: "0 8px 30px rgba(232,160,74,0.3)" }}>
+            <div style={{ display: "inline-block", background: "#0b1220", color: "#e8a04a", padding: "4px 10px", borderRadius: 4, fontSize: 10, fontWeight: 800, letterSpacing: 1.5, marginBottom: 10 }}>
+              CODE 1 OF 2 · NOTIFY FAMILY APP
+            </div>
             <p style={{ margin: "0 0 8px", fontSize: 12, letterSpacing: 2, fontWeight: 700, opacity: 0.85 }}>
-              {L === "es" ? "ABRA LA APP NOTIFY FAMILY E INGRESE ESTE CÓDIGO DE VINCULACIÓN" : L === "ht" ? "LOUVRI APP NOTIFY FAMILY EPI ANTRE KÒD KONEKSYON SA A" : "OPEN THE NOTIFY FAMILY APP AND ENTER THIS PAIRING CODE"}
+              {L === "es" ? "ABRA LA APP NOTIFY FAMILY E INGRESE ESTE CÓDIGO DE 6 DÍGITOS" : L === "ht" ? "LOUVRI APP NOTIFY FAMILY EPI ANTRE KÒD 6 CHIF SA A" : "OPEN THE NOTIFY FAMILY APP AND ENTER THIS 6-DIGIT PAIRING CODE"}
             </p>
             <p style={{ margin: "8px 0 0", fontSize: 56, fontWeight: 900, letterSpacing: 12, fontVariantNumeric: "tabular-nums", fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}>
               {pairCode}
             </p>
-            <p style={{ margin: "12px 0 0", fontSize: 13, opacity: 0.8 }}>
-              {L === "es" ? "Este código vincula su intake con la app NOTIFY FAMILY (para el contacto familiar). El código de activación de DetencionDefensa (8 caracteres) aparece abajo." : L === "ht" ? "Kòd sa a koneksyon antre w lan ak app NOTIFY FAMILY (pou kontak fanmi an). Kòd aktivasyon DetencionDefensa (8 karaktè) parèt anba a." : "This code links your intake to the NOTIFY FAMILY app (for your family contact). Your 8-character DetencionDefensa activation code appears below."}
+            <p style={{ margin: "10px 0 0", fontSize: 11, opacity: 0.75, fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}>
+              {L === "es" ? "Formato: 6 dígitos (ej. 123456)" : L === "ht" ? "Fòma: 6 chif (egz. 123456)" : "Format: 6 digits (e.g. 123456)"}
+            </p>
+            <p style={{ margin: "12px 0 0", fontSize: 13, opacity: 0.85, fontWeight: 600 }}>
+              {L === "es" ? "⚠ SOLO para NOTIFY FAMILY (contacto familiar). NO lo use en DetencionDefensa." : L === "ht" ? "⚠ SÈLMAN pou NOTIFY FAMILY (kontak fanmi). PA itilize l nan DetencionDefensa." : "⚠ ONLY for NOTIFY FAMILY (your family contact). Do NOT enter it in DetencionDefensa."}
             </p>
           </div>
         )}
         {inviteCode && (
           <div style={{ background: "#1a2436", border: "2px solid #2d6a4f", padding: 24, borderRadius: 12, marginBottom: 20, textAlign: "center" }}>
+            <div style={{ display: "inline-block", background: "#2d6a4f", color: "#fff5d6", padding: "4px 10px", borderRadius: 4, fontSize: 10, fontWeight: 800, letterSpacing: 1.5, marginBottom: 10 }}>
+              CODE 2 OF 2 · DETENCIONDEFENSA APP
+            </div>
             <p style={{ margin: "0 0 8px", fontSize: 12, letterSpacing: 2, fontWeight: 700, color: "#7fd9a8" }}>
-              {L === "es" ? "SU CÓDIGO DE ACTIVACIÓN" : L === "ht" ? "KÒD AKTIVASYON OU" : "YOUR ACTIVATION CODE"}
+              {L === "es" ? "CÓDIGO DE ACTIVACIÓN DE 8 CARACTERES" : L === "ht" ? "KÒD AKTIVASYON 8 KARAKTÈ" : "8-CHARACTER ACTIVATION CODE"}
             </p>
             <p style={{ margin: "8px 0", fontSize: 44, fontWeight: 900, letterSpacing: 10, color: "#fff5d6", fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}>
               {inviteCode}
+            </p>
+            <p style={{ margin: "0 0 6px", fontSize: 11, opacity: 0.7, color: "#fff5d6", fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}>
+              {L === "es" ? "Formato: 8 letras/números (ej. A3F7B2E1)" : L === "ht" ? "Fòma: 8 lèt/chif (egz. A3F7B2E1)" : "Format: 8 letters/numbers (e.g. A3F7B2E1)"}
             </p>
             <a
               href={`defensasiempre://activate?code=${encodeURIComponent(inviteCode)}`}
