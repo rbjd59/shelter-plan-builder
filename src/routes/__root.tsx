@@ -141,6 +141,18 @@ function RootComponent() {
     pathname.startsWith("/lovable/") ||
     pathname.startsWith("/email/");
 
+  const hideStaffPin =
+    isApp ||
+    pathname.startsWith("/admin") ||
+    pathname.startsWith("/_admin") ||
+    pathname.startsWith("/firm") ||
+    pathname.startsWith("/api/") ||
+    pathname.startsWith("/lovable/") ||
+    pathname.startsWith("/email/") ||
+    pathname.startsWith("/company-board") ||
+    pathname.startsWith("/attorney-board") ||
+    pathname.startsWith("/login");
+
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (pathname.startsWith("/admin") || pathname.startsWith("/api/")) return;
@@ -154,6 +166,7 @@ function RootComponent() {
         <Outlet />
         
         {!hideGlobalFooter && <LegalDisclaimerFooter />}
+        {!hideStaffPin && <StaffAccessPinBox />}
       </LanguageProvider>
     </QueryClientProvider>
   );
