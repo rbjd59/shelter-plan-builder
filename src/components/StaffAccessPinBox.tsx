@@ -1,12 +1,53 @@
 import { useState } from "react";
 
-const PIN = "5689";
+const PIN = "5688";
 const STORAGE_KEYS = {
   company: "pin:company-board",
   attorney: "pin:attorney-board",
 } as const;
 
-export default function StaffAccessPinBox() {
+/**
+ * Renders a single tile-styled button that opens a modal containing the
+ * role toggle, PIN entry, and help text. No floating overlay.
+ */
+export default function StaffAccessTile() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="lang-tile"
+        style={{
+          font: "inherit",
+          color: "inherit",
+          background: "transparent",
+          border: "none",
+          textAlign: "left",
+          width: "100%",
+          cursor: "pointer",
+        }}
+      >
+        <div className="lang-flag">🔒 Staff · Personal</div>
+        <div className="lang-name">
+          Staff Access
+          <em>Company & Attorney boards</em>
+        </div>
+        <div className="lang-desc">
+          Internal dashboards for company admins and the attorney team. PIN required.
+        </div>
+        <div className="lang-cta">
+          Enter PIN
+          <span className="arrow">→</span>
+        </div>
+      </button>
+
+      {open && <PinModal onClose={() => setOpen(false)} />}
+    </>
+  );
+}
+
+function PinModal({ onClose }: { onClose: () => void }) {
   const [role, setRole] = useState<"company" | "attorney">("company");
   const [pin, setPin] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -29,137 +70,17 @@ export default function StaffAccessPinBox() {
 
   const tabBtn = (active: boolean): React.CSSProperties => ({
     flex: 1,
-    padding: "6px 10px",
-    fontSize: 11,
+    padding: "10px 12px",
+    fontSize: 13,
     fontWeight: 700,
     letterSpacing: 0.5,
     border: "none",
-    borderRadius: 6,
+    borderRadius: 8,
     cursor: "pointer",
     background: active ? "#e8a04a" : "transparent",
     color: active ? "#0b0b0e" : "#e8a04a",
   });
 
-  return (
-    <>
-      <form
-        onSubmit={submit}
-        style={{
-          position: "fixed",
-          bottom: 16,
-          right: 16,
-          zIndex: 1000,
-          width: 260,
-          background: "rgba(0,0,0,0.78)",
-          backdropFilter: "blur(8px)",
-          border: `1px solid ${error ? "#ef4444" : "rgba(232,160,74,0.4)"}`,
-          borderRadius: 10,
-          padding: 10,
-          fontFamily: "system-ui, sans-serif",
-          display: "flex",
-          flexDirection: "column",
-          gap: 8,
-          boxShadow: "0 8px 24px rgba(0,0,0,0.35)",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <span style={{ color: "#e8a04a", fontSize: 11, fontWeight: 700, letterSpacing: 1 }}>
-            STAFF ACCESS
-          </span>
-          <button
-            type="button"
-            onClick={() => setShowHelp(true)}
-            aria-label="PIN help"
-            style={{
-              width: 20,
-              height: 20,
-              borderRadius: "50%",
-              border: "1px solid rgba(232,160,74,0.6)",
-              background: "transparent",
-              color: "#e8a04a",
-              fontSize: 12,
-              fontWeight: 700,
-              cursor: "pointer",
-              lineHeight: 1,
-            }}
-          >
-            ?
-          </button>
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            gap: 4,
-            padding: 3,
-            background: "rgba(255,255,255,0.05)",
-            border: "1px solid rgba(232,160,74,0.25)",
-            borderRadius: 8,
-          }}
-        >
-          <button type="button" style={tabBtn(role === "company")} onClick={() => setRole("company")}>
-            🏢 Company
-          </button>
-          <button type="button" style={tabBtn(role === "attorney")} onClick={() => setRole("attorney")}>
-            ⚖️ Attorney
-          </button>
-        </div>
-
-        <div style={{ display: "flex", gap: 6 }}>
-          <input
-            type="password"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            autoComplete="off"
-            value={pin}
-            onChange={(e) => {
-              setPin(e.target.value);
-              if (error) setError(null);
-            }}
-            placeholder="PIN"
-            maxLength={8}
-            style={{
-              flex: 1,
-              padding: "6px 8px",
-              borderRadius: 6,
-              border: "1px solid rgba(255,255,255,0.2)",
-              background: "rgba(0,0,0,0.4)",
-              color: "#fff",
-              fontSize: 14,
-              fontFamily: "monospace",
-              textAlign: "center",
-              outline: "none",
-              letterSpacing: 4,
-            }}
-          />
-          <button
-            type="submit"
-            style={{
-              padding: "6px 12px",
-              borderRadius: 6,
-              border: "none",
-              background: "#e8a04a",
-              color: "#0b0b0e",
-              fontSize: 12,
-              fontWeight: 700,
-              cursor: "pointer",
-            }}
-          >
-            Enter
-          </button>
-        </div>
-
-        {error && (
-          <div style={{ color: "#ef4444", fontSize: 11, textAlign: "center" }}>{error}</div>
-        )}
-      </form>
-
-      {showHelp && <PinHelpModal onClose={() => setShowHelp(false)} />}
-    </>
-  );
-}
-
-function PinHelpModal({ onClose }: { onClose: () => void }) {
   return (
     <div
       onClick={onClose}
@@ -167,8 +88,8 @@ function PinHelpModal({ onClose }: { onClose: () => void }) {
         position: "fixed",
         inset: 0,
         zIndex: 1100,
-        background: "rgba(0,0,0,0.7)",
-        backdropFilter: "blur(4px)",
+        background: "rgba(0,0,0,0.72)",
+        backdropFilter: "blur(6px)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -179,14 +100,14 @@ function PinHelpModal({ onClose }: { onClose: () => void }) {
       <div
         onClick={(e) => e.stopPropagation()}
         role="dialog"
-        aria-labelledby="pin-help-title"
+        aria-labelledby="staff-pin-title"
         style={{
           width: "100%",
-          maxWidth: 480,
+          maxWidth: 440,
           background: "#fff",
           borderRadius: 14,
-          padding: 28,
-          boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
+          padding: 26,
+          boxShadow: "0 24px 60px rgba(0,0,0,0.45)",
           position: "relative",
           color: "#1a1a1a",
         }}
@@ -198,13 +119,13 @@ function PinHelpModal({ onClose }: { onClose: () => void }) {
             position: "absolute",
             top: 12,
             right: 12,
-            width: 28,
-            height: 28,
+            width: 30,
+            height: 30,
             borderRadius: "50%",
             border: "none",
             background: "#f1efe9",
             cursor: "pointer",
-            fontSize: 16,
+            fontSize: 18,
             fontWeight: 700,
             color: "#5b5b66",
           }}
@@ -213,7 +134,7 @@ function PinHelpModal({ onClose }: { onClose: () => void }) {
         </button>
 
         <h2
-          id="pin-help-title"
+          id="staff-pin-title"
           style={{
             margin: 0,
             fontFamily: "'Libre Baskerville', Georgia, serif",
@@ -221,89 +142,122 @@ function PinHelpModal({ onClose }: { onClose: () => void }) {
             color: "#0f1b3d",
           }}
         >
-          Where do I find the access PIN?
+          Staff Access
         </h2>
-
-        <p style={{ marginTop: 10, fontSize: 14, lineHeight: 1.55, color: "#3a3a44" }}>
-          The PIN gates the two internal staff dashboards. Pick the role that matches your job,
-          enter the 4-digit PIN, and you'll be taken to the right board.
+        <p style={{ marginTop: 6, marginBottom: 16, fontSize: 13, color: "#5b5b66" }}>
+          Choose your role and enter the staff PIN.
         </p>
 
-        <div
-          style={{
-            marginTop: 14,
-            border: "1px solid #e5e2db",
-            borderRadius: 10,
-            overflow: "hidden",
-            fontSize: 13,
-          }}
-        >
-          <div style={{ padding: "10px 14px", background: "#faf8f3", borderBottom: "1px solid #e5e2db" }}>
-            <strong style={{ color: "#0f1b3d" }}>🏢 Company Admin Board</strong>
-            <div style={{ color: "#5b5b66", marginTop: 2 }}>
-              Live SOS alerts, activations, and client locate intake.
-            </div>
+        <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <div
+            style={{
+              display: "flex",
+              gap: 6,
+              padding: 4,
+              background: "#0f1b3d",
+              borderRadius: 10,
+            }}
+          >
+            <button
+              type="button"
+              style={tabBtn(role === "company")}
+              onClick={() => setRole("company")}
+            >
+              🏢 Company
+            </button>
+            <button
+              type="button"
+              style={tabBtn(role === "attorney")}
+              onClick={() => setRole("attorney")}
+            >
+              ⚖️ Attorney
+            </button>
           </div>
-          <div style={{ padding: "10px 14px" }}>
-            <strong style={{ color: "#0f1b3d" }}>⚖️ Attorney Board</strong>
-            <div style={{ color: "#5b5b66", marginTop: 2 }}>
-              Detained-client queue with location, warden info, and legal forms.
+
+          <input
+            type="password"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            autoComplete="off"
+            autoFocus
+            value={pin}
+            onChange={(e) => {
+              setPin(e.target.value);
+              if (error) setError(null);
+            }}
+            placeholder="• • • •"
+            maxLength={8}
+            style={{
+              padding: "12px 14px",
+              borderRadius: 8,
+              border: `1px solid ${error ? "#c0392b" : "#d9d6cd"}`,
+              background: "#fafaf7",
+              color: "#0f1b3d",
+              fontSize: 20,
+              fontFamily: "monospace",
+              textAlign: "center",
+              letterSpacing: 8,
+              outline: "none",
+            }}
+          />
+
+          {error && (
+            <div style={{ color: "#c0392b", fontSize: 13, textAlign: "center" }}>{error}</div>
+          )}
+
+          <button
+            type="submit"
+            style={{
+              padding: "12px",
+              borderRadius: 8,
+              border: "none",
+              background: "#e8a04a",
+              color: "#0b0b0e",
+              fontSize: 14,
+              fontWeight: 700,
+              cursor: "pointer",
+            }}
+          >
+            Enter →
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setShowHelp((v) => !v)}
+            style={{
+              background: "transparent",
+              border: "none",
+              color: "#5b5b66",
+              fontSize: 12,
+              cursor: "pointer",
+              textDecoration: "underline",
+              padding: 0,
+            }}
+          >
+            {showHelp ? "Hide help" : "Where do I find or change the PIN?"}
+          </button>
+
+          {showHelp && (
+            <div
+              style={{
+                padding: 14,
+                background: "#fff8ec",
+                border: "1px solid #f3e1bf",
+                borderRadius: 10,
+                fontSize: 12.5,
+                color: "#5a4615",
+                lineHeight: 1.55,
+              }}
+            >
+              <div style={{ fontWeight: 700, marginBottom: 4 }}>Current default PIN: 5688</div>
+              The same PIN works for both Company and Attorney roles. To change it, update the{" "}
+              <code style={codeStyle}>PIN</code> constant in{" "}
+              <code style={codeStyle}>src/components/StaffAccessPinBox.tsx</code> and in{" "}
+              <code style={codeStyle}>src/lib/pin-access.functions.ts</code>, then redeploy. Lost
+              the PIN? Contact the project owner — it is not recoverable from inside the app.
             </div>
-          </div>
-        </div>
-
-        <div
-          style={{
-            marginTop: 16,
-            padding: 14,
-            background: "#fff8ec",
-            border: "1px solid #f3e1bf",
-            borderRadius: 10,
-            fontSize: 13,
-            color: "#5a4615",
-          }}
-        >
-          <div style={{ fontWeight: 700, marginBottom: 4 }}>Current default PIN: 5689</div>
-          The same PIN works for both roles during the launch phase.
-        </div>
-
-        <h3 style={{ marginTop: 18, marginBottom: 6, fontSize: 14, color: "#0f1b3d" }}>
-          How to change the PIN
-        </h3>
-        <ol style={{ margin: 0, paddingLeft: 18, fontSize: 13, lineHeight: 1.6, color: "#3a3a44" }}>
-          <li>
-            Open <code style={codeStyle}>src/components/StaffAccessPinBox.tsx</code> and update the{" "}
-            <code style={codeStyle}>PIN</code> constant at the top.
-          </li>
-          <li>
-            Also update the matching <code style={codeStyle}>PIN</code> in{" "}
-            <code style={codeStyle}>src/lib/pin-access.functions.ts</code> so the server validates
-            the new value.
-          </li>
-          <li>Redeploy. All existing browser sessions will be asked for the new PIN.</li>
-        </ol>
-
-        <p style={{ marginTop: 14, fontSize: 12, color: "#7a7a84" }}>
-          Lost the PIN? Contact the project owner — it is not recoverable from inside the app.
-        </p>
-
-        <button
-          onClick={onClose}
-          style={{
-            marginTop: 18,
-            width: "100%",
-            padding: "10px 14px",
-            background: "#0f1b3d",
-            color: "#fff",
-            border: "none",
-            borderRadius: 8,
-            fontSize: 14,
-            fontWeight: 700,
-            cursor: "pointer",
-          }}
-        >
-          Got it
-        </button>
+          )}
+        </form>
       </div>
     </div>
   );
@@ -313,6 +267,6 @@ const codeStyle: React.CSSProperties = {
   background: "#f1efe9",
   padding: "1px 6px",
   borderRadius: 4,
-  fontSize: 12,
+  fontSize: 11,
   fontFamily: "ui-monospace, monospace",
 };
