@@ -44,6 +44,7 @@ body.splash-active {
 
 /* ===== SPLASH-SCOPED STYLES ===== */
 #splash-view { position: relative; min-height: 100vh; }
+body.splash-has-staff #splash-view { min-height: 0; }
 
   :root {
     --ink: #0e1a2b;
