@@ -45,8 +45,56 @@ function SplashPage() {
   return (
     <>
       <div id="splash-view" ref={ref} dangerouslySetInnerHTML={{ __html: SPLASH_HTML }} />
+      <QuickAccessButtons />
       <AdminPinBox />
     </>
+  );
+}
+
+function QuickAccessButtons() {
+  return (
+    <div
+      style={{
+        position: "fixed",
+        bottom: 16,
+        left: 16,
+        zIndex: 1000,
+        display: "flex",
+        gap: 8,
+        fontFamily: "system-ui, sans-serif",
+      }}
+    >
+      <a
+        href="/company-board"
+        style={{
+          padding: "8px 14px",
+          borderRadius: 8,
+          background: "rgba(15,27,61,0.92)",
+          color: "#fff",
+          fontSize: 12,
+          fontWeight: 700,
+          textDecoration: "none",
+          border: "1px solid rgba(232,160,74,0.5)",
+        }}
+      >
+        🏢 Company Admin
+      </a>
+      <a
+        href="/attorney-board"
+        style={{
+          padding: "8px 14px",
+          borderRadius: 8,
+          background: "rgba(107,79,79,0.95)",
+          color: "#fff",
+          fontSize: 12,
+          fontWeight: 700,
+          textDecoration: "none",
+          border: "1px solid rgba(232,160,74,0.5)",
+        }}
+      >
+        ⚖️ Attorney Board
+      </a>
+    </div>
   );
 }
 

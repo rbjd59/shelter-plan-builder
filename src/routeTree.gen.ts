@@ -26,8 +26,10 @@ import { Route as IntakeRouteImport } from './routes/intake'
 import { Route as GetAppRouteImport } from './routes/get-app'
 import { Route as DownloadRouteImport } from './routes/download'
 import { Route as DagRouteImport } from './routes/dag'
+import { Route as CompanyBoardRouteImport } from './routes/company-board'
 import { Route as ComingSoonRouteImport } from './routes/coming-soon'
 import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as AttorneyBoardRouteImport } from './routes/attorney-board'
 import { Route as AttorneyRouteImport } from './routes/attorney'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AltRouteImport } from './routes/alt'
@@ -158,6 +160,11 @@ const DagRoute = DagRouteImport.update({
   path: '/dag',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CompanyBoardRoute = CompanyBoardRouteImport.update({
+  id: '/company-board',
+  path: '/company-board',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ComingSoonRoute = ComingSoonRouteImport.update({
   id: '/coming-soon',
   path: '/coming-soon',
@@ -166,6 +173,11 @@ const ComingSoonRoute = ComingSoonRouteImport.update({
 const CheckoutRoute = CheckoutRouteImport.update({
   id: '/checkout',
   path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AttorneyBoardRoute = AttorneyBoardRouteImport.update({
+  id: '/attorney-board',
+  path: '/attorney-board',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AttorneyRoute = AttorneyRouteImport.update({
@@ -401,8 +413,10 @@ export interface FileRoutesByFullPath {
   '/alt': typeof AltRoute
   '/app': typeof AppRoute
   '/attorney': typeof AttorneyRoute
+  '/attorney-board': typeof AttorneyBoardRoute
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
+  '/company-board': typeof CompanyBoardRoute
   '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
   '/get-app': typeof GetAppRoute
@@ -463,8 +477,10 @@ export interface FileRoutesByTo {
   '/alt': typeof AltRoute
   '/app': typeof AppRoute
   '/attorney': typeof AttorneyRoute
+  '/attorney-board': typeof AttorneyBoardRoute
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
+  '/company-board': typeof CompanyBoardRoute
   '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
   '/get-app': typeof GetAppRoute
@@ -529,8 +545,10 @@ export interface FileRoutesById {
   '/alt': typeof AltRoute
   '/app': typeof AppRoute
   '/attorney': typeof AttorneyRoute
+  '/attorney-board': typeof AttorneyBoardRoute
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
+  '/company-board': typeof CompanyBoardRoute
   '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
   '/get-app': typeof GetAppRoute
@@ -593,8 +611,10 @@ export interface FileRouteTypes {
     | '/alt'
     | '/app'
     | '/attorney'
+    | '/attorney-board'
     | '/checkout'
     | '/coming-soon'
+    | '/company-board'
     | '/dag'
     | '/download'
     | '/get-app'
@@ -655,8 +675,10 @@ export interface FileRouteTypes {
     | '/alt'
     | '/app'
     | '/attorney'
+    | '/attorney-board'
     | '/checkout'
     | '/coming-soon'
+    | '/company-board'
     | '/dag'
     | '/download'
     | '/get-app'
@@ -720,8 +742,10 @@ export interface FileRouteTypes {
     | '/alt'
     | '/app'
     | '/attorney'
+    | '/attorney-board'
     | '/checkout'
     | '/coming-soon'
+    | '/company-board'
     | '/dag'
     | '/download'
     | '/get-app'
@@ -786,8 +810,10 @@ export interface RootRouteChildren {
   AltRoute: typeof AltRoute
   AppRoute: typeof AppRoute
   AttorneyRoute: typeof AttorneyRoute
+  AttorneyBoardRoute: typeof AttorneyBoardRoute
   CheckoutRoute: typeof CheckoutRoute
   ComingSoonRoute: typeof ComingSoonRoute
+  CompanyBoardRoute: typeof CompanyBoardRoute
   DagRoute: typeof DagRoute
   DownloadRoute: typeof DownloadRoute
   GetAppRoute: typeof GetAppRoute
@@ -947,6 +973,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DagRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/company-board': {
+      id: '/company-board'
+      path: '/company-board'
+      fullPath: '/company-board'
+      preLoaderRoute: typeof CompanyBoardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/coming-soon': {
       id: '/coming-soon'
       path: '/coming-soon'
@@ -959,6 +992,13 @@ declare module '@tanstack/react-router' {
       path: '/checkout'
       fullPath: '/checkout'
       preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/attorney-board': {
+      id: '/attorney-board'
+      path: '/attorney-board'
+      fullPath: '/attorney-board'
+      preLoaderRoute: typeof AttorneyBoardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/attorney': {
@@ -1369,8 +1409,10 @@ const rootRouteChildren: RootRouteChildren = {
   AltRoute: AltRoute,
   AppRoute: AppRoute,
   AttorneyRoute: AttorneyRoute,
+  AttorneyBoardRoute: AttorneyBoardRoute,
   CheckoutRoute: CheckoutRoute,
   ComingSoonRoute: ComingSoonRoute,
+  CompanyBoardRoute: CompanyBoardRoute,
   DagRoute: DagRoute,
   DownloadRoute: DownloadRoute,
   GetAppRoute: GetAppRoute,
