@@ -141,17 +141,37 @@ export const Route = createFileRoute("/api/public/emergency/activate")({
             .eq("id", d.cancel_of)
             .eq("intake_session_id", d.intake_session_id);
 
-          // Mirror cancellation into client_sos_alerts (the board schema) when
-          // intake_session_id is an 8-char activation code.
-          if (/^[A-Z0-9]{8}$/.test(d.intake_session_id.toUpperCase())) {
+          // Mirror cancellation into client_sos_alerts (the board schema).
+          // Resolve the activation token from intake_session_id directly or by
+          // looking up the client row.
+          let cancelToken: string | null = null;
+          const rawCancel = d.intake_session_id.toUpperCase();
+          if (/^[A-Z0-9]{8}$/.test(rawCancel)) {
+            cancelToken = rawCancel;
+          } else {
+            try {
+              const { data: c } = await supabaseAdmin
+                .from("app_clients" as never)
+                .select("invite_token")
+                .eq("intake_session_id", d.intake_session_id)
+                .maybeSingle();
+              if (c && (c as { invite_token: string }).invite_token) {
+                cancelToken = (c as { invite_token: string }).invite_token;
+              }
+            } catch (e) {
+              console.error("[activate] cancel invite_token lookup failed", e);
+            }
+          }
+          if (cancelToken) {
             try {
               await supabaseAdmin.rpc("cancel_sos_alert" as never, {
-                _token: d.intake_session_id.toUpperCase(),
+                _token: cancelToken,
               } as never);
             } catch (e) {
               console.error("[activate] cancel_sos_alert mirror failed", e);
             }
           }
+
 
 
           const subject = `CANCEL EMERGENCY [${d.role.toUpperCase()}] — ${d.full_name ?? d.intake_session_id.slice(0, 12)}`;
