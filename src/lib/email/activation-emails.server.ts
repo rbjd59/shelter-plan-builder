@@ -99,6 +99,52 @@ export interface ActivationEmailParams {
   answers: Record<string, unknown>;
   activationCode: string | null;
   activatedAt?: Date;
+  language?: string; // "en" | "es" | "ht"
+}
+
+const DOWNLOAD_URL = "https://detenciondefensa.com/download";
+
+function clientWelcomeContent(lang: string, name: string, code: string) {
+  if (lang === "es") {
+    return {
+      subject: "Su cuenta DetencionDefensa está activa",
+      heading: "¡Bienvenido(a), " + name + "!",
+      body: [
+        "Su intake está completo y su cuenta está activa.",
+        "Su código de activación es:",
+        "Su abogado ya tiene copias de sus documentos preparados.",
+        "Descargue la aplicación e ingrese su código para activarla en su teléfono. No recibirá más correos hasta que active la alerta SOS desde la aplicación.",
+      ],
+      button: "Descargar la aplicación",
+      footer: "Si tiene problemas, responda a este correo.",
+    };
+  }
+  if (lang === "ht") {
+    return {
+      subject: "Kont DetencionDefensa ou aktive",
+      heading: "Byenveni, " + name + "!",
+      body: [
+        "Enskripsyon ou fini epi kont ou aktive.",
+        "Kòd aktivasyon ou se:",
+        "Avoka ou gen tan resevwa kopi dokiman ou yo.",
+        "Telechaje aplikasyon an epi antre kòd ou pou aktive li sou telefòn ou. Ou pap resevwa lòt imèl jiskaske ou deklanche alèt SOS la nan aplikasyon an.",
+      ],
+      button: "Telechaje aplikasyon an",
+      footer: "Si ou gen pwoblèm, reponn imèl sa a.",
+    };
+  }
+  return {
+    subject: "Your DetencionDefensa account is active",
+    heading: "Welcome, " + name + "!",
+    body: [
+      "Your intake is complete and your account is active.",
+      "Your activation code is:",
+      "Your attorney already has copies of your prepared documents.",
+      "Download the app and enter your code to activate it on your phone. You will not receive any more emails until you trigger the SOS alert from the app.",
+    ],
+    button: "Download the app",
+    footer: "If you have any trouble, just reply to this email.",
+  };
 }
 
 export async function enqueueActivationEmails(p: ActivationEmailParams): Promise<void> {
@@ -108,6 +154,10 @@ export async function enqueueActivationEmails(p: ActivationEmailParams): Promise
   const clientName = String(
     a.full_name || a.mail_inmate_name || a.contact_name || "Client",
   );
+  const clientEmailRaw = typeof a.contact_email === "string" ? a.contact_email.trim().toLowerCase() : "";
+  const clientEmail = clientEmailRaw && clientEmailRaw.includes("@") ? clientEmailRaw : null;
+  const lang = (p.language || (typeof a.language === "string" ? a.language : "en") || "en").toLowerCase();
+
 
   // 1) Company email
   const companyHtml = wrap(`
