@@ -65,7 +65,7 @@ export const pinListCompanyBoard = createServerFn({ method: "POST" })
         triggered_at: string;
         cancelled_at: string | null;
         app_reported_name: string | null;
-        app_reported_a_number: string | null;
+        app_reported_
         app_reported_place_of_birth: string | null;
         app_reported_date_of_birth: string | null;
       };
@@ -102,7 +102,7 @@ export const pinListAttorneyBoard = createServerFn({ method: "POST" })
     const { data: clients } = await supabaseAdmin
       .from("app_clients")
       .select(
-        "id, invite_token, full_name, email, phone_e164, language, created_at, activated_at, a_number",
+        "id, invite_token, full_name, email, phone_e164, language, created_at, activated_at",
       )
       .order("created_at", { ascending: false })
       .limit(1000);
@@ -150,7 +150,7 @@ export const pinListAttorneyBoard = createServerFn({ method: "POST" })
           language: string | null;
           created_at: string;
           activated_at: string | null;
-          a_number: string | null;
+          
         };
         const docs = docsByClient.get(row.id) ?? [];
         return {
@@ -162,7 +162,7 @@ export const pinListAttorneyBoard = createServerFn({ method: "POST" })
           language: row.language,
           registered_at: row.created_at,
           activated_at: row.activated_at,
-          a_number: row.a_number,
+          
           draft_forms: docs.filter((d) => !d.from_app),
           app_uploads: docs.filter((d) => d.from_app),
           latest_alert: latestAlert.get(row.id) ?? null,
@@ -181,7 +181,7 @@ export const pinGetAttorneyClient = createServerFn({ method: "POST" })
       supabaseAdmin
         .from("app_clients")
         .select(
-          "id, invite_token, full_name, email, phone_e164, language, created_at, activated_at, a_number",
+          "id, invite_token, full_name, email, phone_e164, language, created_at, activated_at",
         )
         .eq("id", data.clientId)
         .maybeSingle(),
