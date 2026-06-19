@@ -46,26 +46,6 @@ function SplashPage() {
   return (
     <>
       <div id="splash-view" ref={ref} dangerouslySetInnerHTML={{ __html: SPLASH_HTML }} />
-      <div
-        id="splash-staff-strip"
-        style={{
-          background: "linear-gradient(180deg,#081d3a 0%,#0d2c54 100%)",
-          padding: "0 1.25rem 3rem",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: 980,
-            width: "100%",
-            margin: "0 auto",
-            border: "1px solid rgba(232,160,74,0.3)",
-            background: "rgba(14,26,43,0.55)",
-            boxShadow: "0 20px 60px rgba(0,0,0,0.35)",
-          }}
-        >
-          <StaffAccessTile />
-        </div>
-      </div>
     </>
   );
 }
