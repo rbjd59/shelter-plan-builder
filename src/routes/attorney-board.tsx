@@ -1,3 +1,4 @@
+import * as React from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
@@ -79,8 +80,8 @@ function AttorneyBoard({ pin }: { pin: string }) {
                 const isOpen = openId === r.id;
                 const triggered = !!r.latest_alert;
                 return (
-                  <>
-                    <tr key={r.id} className={triggered ? "bg-red-50/40" : ""}>
+                  <React.Fragment key={r.id}>
+                    <tr className={triggered ? "bg-red-50/40" : ""}>
                       <td className="px-4 py-2 font-mono font-bold">{r.activation_code}</td>
                       <td className="px-4 py-2">{r.full_name ?? <span className="text-slate-400">—</span>}</td>
                       <td className="px-4 py-2 text-xs text-slate-600">
@@ -116,13 +117,13 @@ function AttorneyBoard({ pin }: { pin: string }) {
                       </td>
                     </tr>
                     {isOpen && (
-                      <tr key={r.id + "-detail"}>
+                      <tr>
                         <td colSpan={6} className="bg-slate-50 px-4 py-4">
                           <ClientDetail pin={pin} clientId={r.id} />
                         </td>
                       </tr>
                     )}
-                  </>
+                  </React.Fragment>
                 );
               })}
               {rows.length === 0 && (
@@ -151,81 +152,136 @@ function ClientDetail({ pin, clientId }: { pin: string; clientId: string }) {
   if (error) return <div className="text-sm text-red-600">{(error as Error).message}</div>;
   if (!data) return null;
 
-  const { draft_forms, app_uploads, alerts } = data;
+  const { client, draft_forms, app_uploads, alerts, contacts, pet_rescue } = data as any;
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
-      <div>
-        <h3 className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-700">
-          Draft forms ({draft_forms.length})
-        </h3>
-        <ul className="space-y-1">
-          {draft_forms.map((d: any) => (
-            <li key={d.id}>
-              <button
-                onClick={() =>
-                  downloadText(
-                    `${(d.title ?? "doc").replace(/[^a-z0-9]+/gi, "_")}.txt`,
-                    d.content ?? "",
-                  )
-                }
-                className="text-left text-sm text-blue-700 underline"
-              >
-                ⬇ {d.title ?? "Document"}
-              </button>
-            </li>
-          ))}
-          {draft_forms.length === 0 && (
-            <li className="text-sm text-slate-500">None.</li>
+    <div className="space-y-5">
+      <div className="grid gap-4 sm:grid-cols-3 text-xs">
+        <div className="rounded border border-slate-200 bg-white p-3">
+          <div className="font-bold uppercase tracking-wide text-slate-500 mb-1">Client</div>
+          <div>{client.full_name ?? "—"}</div>
+          <div className="text-slate-600">{client.email ?? "no email"}</div>
+          <div className="text-slate-600">{client.phone_e164 ?? "no phone"}</div>
+          <div className="mt-1 text-slate-500">
+            DOB place: {client.place_of_birth ?? "—"} · {client.country_of_origin ?? "—"}
+          </div>
+          <div className="mt-1 flex gap-1 flex-wrap">
+            {client.has_asset_protection && (
+              <span className="rounded bg-amber-100 px-1.5 py-0.5 font-semibold text-amber-800">Asset protection</span>
+            )}
+            {client.has_pet_rescue && (
+              <span className="rounded bg-emerald-100 px-1.5 py-0.5 font-semibold text-emerald-800">Pet rescue</span>
+            )}
+          </div>
+        </div>
+
+        <div className="rounded border border-slate-200 bg-white p-3">
+          <div className="font-bold uppercase tracking-wide text-slate-500 mb-1">
+            Emergency contacts ({contacts.length})
+          </div>
+          {contacts.length === 0 && <div className="text-slate-500">None.</div>}
+          <ul className="space-y-1">
+            {contacts.map((c: any) => (
+              <li key={c.id}>
+                <span className="font-semibold">{c.name}</span>
+                {c.relationship ? ` · ${c.relationship}` : ""}
+                <div className="text-slate-600">{c.phone_e164 ?? "—"} · {c.email ?? "—"}</div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="rounded border border-slate-200 bg-white p-3">
+          <div className="font-bold uppercase tracking-wide text-slate-500 mb-1">Pet rescue</div>
+          {pet_rescue ? (
+            <div className="space-y-0.5">
+              <div><span className="font-semibold">{pet_rescue.pet_name ?? "—"}</span> {pet_rescue.pet_type ? `(${pet_rescue.pet_type})` : ""}</div>
+              <div className="text-slate-600">Location: {pet_rescue.pet_location ?? "—"}</div>
+              <div className="text-slate-600">Access: {pet_rescue.access_instructions ?? "—"}</div>
+              <div className="text-slate-600">Notify: {pet_rescue.who_to_notify ?? "—"}</div>
+              {pet_rescue.no_kill_shelter_preferred && (
+                <div className="text-slate-600">No-kill shelter: {pet_rescue.no_kill_shelter_address ?? "preferred"}</div>
+              )}
+            </div>
+          ) : (
+            <div className="text-slate-500">No pet rescue on file.</div>
           )}
-        </ul>
+        </div>
       </div>
 
-      <div>
-        <h3 className="mb-2 text-xs font-bold uppercase tracking-wide text-emerald-800">
-          From client's phone ({app_uploads.length})
-        </h3>
-        <ul className="space-y-1">
-          {app_uploads.map((d: any) => (
-            <li key={d.id}>
-              <button
-                onClick={() =>
-                  downloadText(
-                    `${(d.title ?? "doc").replace(/[^a-z0-9]+/gi, "_")}.txt`,
-                    d.content ?? "",
-                  )
-                }
-                className="text-left text-sm text-emerald-700 underline"
-              >
-                ⬇ {d.title ?? "Document"}
-                <span className="ml-2 text-xs text-slate-500">
-                  {new Date(d.loaded_at).toLocaleString()}
-                </span>
-              </button>
-            </li>
-          ))}
-          {app_uploads.length === 0 && (
-            <li className="text-sm text-slate-500">
-              Nothing uploaded from the app yet.
-            </li>
-          )}
-        </ul>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
+          <h3 className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-700">
+            Draft forms ({draft_forms.length})
+          </h3>
+          <ul className="space-y-1">
+            {draft_forms.map((d: any) => (
+              <li key={d.id}>
+                <button
+                  onClick={() =>
+                    downloadText(
+                      `${(d.title ?? "doc").replace(/[^a-z0-9]+/gi, "_")}.txt`,
+                      d.content ?? "",
+                    )
+                  }
+                  className="text-left text-sm text-blue-700 underline"
+                >
+                  ⬇ {d.title ?? "Document"}
+                </button>
+              </li>
+            ))}
+            {draft_forms.length === 0 && (
+              <li className="text-sm text-slate-500">None.</li>
+            )}
+          </ul>
+        </div>
 
-        {alerts.length > 0 && (
-          <div className="mt-4">
-            <h3 className="mb-2 text-xs font-bold uppercase tracking-wide text-red-800">
-              Triggers
-            </h3>
-            <ul className="space-y-1 text-xs">
-              {alerts.map((a: any) => (
-                <li key={a.id}>
-                  {new Date(a.triggered_at).toLocaleString()}
-                  {a.cancelled_at ? " — cancelled" : ""}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        <div>
+          <h3 className="mb-2 text-xs font-bold uppercase tracking-wide text-emerald-800">
+            From client's phone ({app_uploads.length})
+          </h3>
+          <ul className="space-y-1">
+            {app_uploads.map((d: any) => (
+              <li key={d.id}>
+                <button
+                  onClick={() =>
+                    downloadText(
+                      `${(d.title ?? "doc").replace(/[^a-z0-9]+/gi, "_")}.txt`,
+                      d.content ?? "",
+                    )
+                  }
+                  className="text-left text-sm text-emerald-700 underline"
+                >
+                  ⬇ {d.title ?? "Document"}
+                  <span className="ml-2 text-xs text-slate-500">
+                    {new Date(d.loaded_at).toLocaleString()}
+                  </span>
+                </button>
+              </li>
+            ))}
+            {app_uploads.length === 0 && (
+              <li className="text-sm text-slate-500">
+                Nothing uploaded from the app yet.
+              </li>
+            )}
+          </ul>
+
+          {alerts.length > 0 && (
+            <div className="mt-4">
+              <h3 className="mb-2 text-xs font-bold uppercase tracking-wide text-red-800">
+                Triggers
+              </h3>
+              <ul className="space-y-1 text-xs">
+                {alerts.map((a: any) => (
+                  <li key={a.id}>
+                    {new Date(a.triggered_at).toLocaleString()}
+                    {a.cancelled_at ? " — cancelled" : ""}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
