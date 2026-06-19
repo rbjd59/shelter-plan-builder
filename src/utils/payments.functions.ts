@@ -296,10 +296,12 @@ export const submitDemoIntake = createServerFn({ method: "POST" })
         sessionId,
         answers: a,
         activationCode: activationCode ?? data.inviteCode ?? null,
+        language: data.language,
       });
     } catch (e) {
       console.error("Activation emails enqueue failed:", e);
     }
+
 
     return { ok: true, sessionId };
   });
