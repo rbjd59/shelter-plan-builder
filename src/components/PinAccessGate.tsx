@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 
-const PIN = "5689";
+const PIN = "5688";
 
 export default function PinAccessGate({
   storageKey,
