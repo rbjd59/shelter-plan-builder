@@ -291,6 +291,23 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
           } catch (e) {
             console.error("[activate] record_sos_alert mirror failed", e);
           }
+          // Twilio SMS fan-out — alert
+          try {
+            const mapsUrlForSms =
+              d.gps_lat != null && d.gps_lng != null
+                ? `https://maps.google.com/?q=${d.gps_lat},${d.gps_lng}`
+                : null;
+            const result = await sendSosSmsToContacts({
+              token: mirrorToken,
+              clientName: d.full_name ?? null,
+              kind: "alert",
+              mapsUrl: mapsUrlForSms,
+              activationId,
+            });
+            console.log("[activate] sms alert fan-out", result);
+          } catch (e) {
+            console.error("[activate] sms alert fan-out failed", e);
+          }
         }
 
 
