@@ -216,16 +216,35 @@ export const submitIntakeAnswers = createServerFn({ method: "POST" })
 
     // Provision the mobile-app client: 8-char activation code, contacts mirror,
     // activation email + SMS. Non-blocking — never fail intake on this.
+    let activationCode: string | null = null;
     try {
       const language = (session.metadata?.language as string) || "en";
-      await provisionAppClient({
+      const provisioned = await provisionAppClient({
         intakeSessionId: data.sessionId,
         language,
         answers: data.answers as Record<string, unknown>,
       });
+      activationCode =
+        (provisioned as { code?: string | null } | null | undefined)?.code ?? null;
     } catch (e) {
       console.error("App client provisioning failed:", e);
     }
+
+    // Client welcome email (trilingual). Only the client gets this — company,
+    // attorney, and emergency contacts live on the back end and are notified
+    // only when an SOS alert fires.
+    try {
+      const language = (session.metadata?.language as string) || "en";
+      await enqueueActivationEmails({
+        sessionId: data.sessionId,
+        answers: data.answers as Record<string, unknown>,
+        activationCode,
+        language,
+      });
+    } catch (e) {
+      console.error("Activation welcome email enqueue failed:", e);
+    }
+
 
     return { ok: true };
   });
