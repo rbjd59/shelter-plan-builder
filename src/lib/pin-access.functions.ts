@@ -178,11 +178,17 @@ export const pinGetAttorneyClient = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     check(data.pin);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const [{ data: client }, { data: documents }, { data: alerts }] = await Promise.all([
+    const [
+      { data: client },
+      { data: documents },
+      { data: alerts },
+      { data: contacts },
+      { data: pet },
+    ] = await Promise.all([
       supabaseAdmin
         .from("app_clients")
         .select(
-          "id, invite_token, full_name, email, phone_e164, language, created_at, activated_at",
+          "id, invite_token, full_name, email, phone_e164, language, created_at, activated_at, place_of_birth, country_of_origin, has_asset_protection, has_pet_rescue",
         )
         .eq("id", data.clientId)
         .maybeSingle(),
@@ -196,6 +202,18 @@ export const pinGetAttorneyClient = createServerFn({ method: "POST" })
         .select("id, triggered_at, cancelled_at")
         .eq("client_id", data.clientId)
         .order("triggered_at", { ascending: false }),
+      supabaseAdmin
+        .from("client_contacts")
+        .select("id, name, phone_e164, email, relationship, priority, notify_on_sos")
+        .eq("client_id", data.clientId)
+        .order("priority", { ascending: true }),
+      supabaseAdmin
+        .from("client_pet_rescue")
+        .select(
+          "pet_name, pet_type, pet_location, access_instructions, who_to_notify, no_kill_shelter_preferred, no_kill_shelter_address, notes",
+        )
+        .eq("client_id", data.clientId)
+        .maybeSingle(),
     ]);
     if (!client) throw new Error("Client not found");
     return {
@@ -203,6 +221,8 @@ export const pinGetAttorneyClient = createServerFn({ method: "POST" })
       draft_forms: (documents ?? []).filter((d) => !(d as { from_app: boolean }).from_app),
       app_uploads: (documents ?? []).filter((d) => (d as { from_app: boolean }).from_app),
       alerts: alerts ?? [],
+      contacts: contacts ?? [],
+      pet_rescue: pet ?? null,
     };
   });
 
