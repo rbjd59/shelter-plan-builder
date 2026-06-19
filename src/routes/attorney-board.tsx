@@ -248,15 +248,10 @@ function ClientDetail({ pin, clientId }: { pin: string; clientId: string }) {
             {draft_forms.map((d: any) => (
               <li key={d.id}>
                 <button
-                  onClick={() =>
-                    downloadText(
-                      `${(d.title ?? "doc").replace(/[^a-z0-9]+/gi, "_")}.txt`,
-                      d.content ?? "",
-                    )
-                  }
+                  onClick={() => handleDownload(d.id, d.title ?? "doc", d.content ?? "")}
                   className="text-left text-sm text-blue-700 underline"
                 >
-                  ⬇ {d.title ?? "Document"}
+                  ⬇ {d.title ?? "Document"} <span className="text-xs text-slate-500">(PDF)</span>
                 </button>
               </li>
             ))}
