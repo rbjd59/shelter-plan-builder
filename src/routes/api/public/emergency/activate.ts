@@ -11,6 +11,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { triggerVaultRelease } from "@/lib/readiness.server";
+import { sendSosSmsToContacts } from "@/lib/twilio-sms.server";
 
 const ActivateSchema = z.object({
   intake_session_id: z.string().min(8).max(128),
