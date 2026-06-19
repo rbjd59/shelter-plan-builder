@@ -166,28 +166,8 @@ export async function enqueueActivationEmails(p: ActivationEmailParams): Promise
   // if an SOS alert is triggered.
 
 
-  const uniqueContacts = Array.from(new Set(contacts));
-  for (const to of uniqueContacts) {
-    const contactHtml = wrap(`
-      <h1 style="font-size:18px;margin:0 0 12px;">You've been listed as an emergency contact</h1>
-      <p style="margin:0 0 12px;"><strong>${esc(clientName)}</strong> has listed you as an emergency contact.</p>
-      <p style="margin:0 0 12px;">If they are ever detained, you will receive an email at this address with instructions.</p>
-      <p style="margin:0;color:#555;">No action is needed now.</p>
-    `);
-    const contactText = `You've been listed as an emergency contact.
 
-${clientName} has listed you as an emergency contact. If they are ever detained, you will receive an email at this address with instructions.
 
-No action is needed now.`;
-    await enqueueOne({
-      to,
-      subject: "You've been listed as an emergency contact",
-      html: contactHtml,
-      text: contactText,
-      label: "activation-contact",
-      idempotencyKey: `activation-contact-${p.sessionId}-${to}`,
-    });
-  }
 
   // 4) Client welcome (trilingual) — one email, then silence until SOS triggered
   if (clientEmail) {
