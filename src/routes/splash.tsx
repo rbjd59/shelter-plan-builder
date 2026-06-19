@@ -1,6 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import { useEffect, useRef } from "react";
 import { SPLASH_HTML } from "@/lib/markup";
 import { useLang, type Lang } from "@/context/LanguageContext";
 import StaffAccessTile from "@/components/StaffAccessPinBox";
@@ -19,40 +18,19 @@ export const Route = createFileRoute("/splash")({
   component: SplashPage,
 });
 
-const HOST_ID = "staff-access-host";
-
 function SplashPage() {
   const ref = useRef<HTMLDivElement>(null);
   const { setLang } = useLang();
   const navigate = useNavigate();
-  const [host, setHost] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
-    document.body.classList.add("splash-active");
-    return () => document.body.classList.remove("splash-active");
+    document.body.classList.add("splash-active", "splash-has-staff");
+    return () => document.body.classList.remove("splash-active", "splash-has-staff");
   }, []);
 
   useEffect(() => {
     const root = ref.current;
-    console.log("[splash effect]", { hasRoot: !!root, grid: !!root?.querySelector(".lang-grid") });
     if (!root) return;
-
-    // Idempotently insert a host node right after the .lang-grid so the tile
-    // visually appears inside the splash hero, not below the fold.
-    let h = root.querySelector<HTMLElement>(`#${HOST_ID}`);
-    if (!h) {
-      const grid = root.querySelector(".lang-grid");
-      console.log("[splash effect] creating host", { grid: !!grid });
-      if (grid && grid.parentNode) {
-        h = document.createElement("div");
-        h.id = HOST_ID;
-        h.style.cssText =
-          "width:100%;max-width:980px;margin:1.25rem auto 0;padding:0;display:block;";
-        grid.parentNode.insertBefore(h, grid.nextSibling);
-      }
-    }
-    setHost(h ?? null);
-
     const onClick = (e: MouseEvent) => {
       const tile = (e.target as HTMLElement).closest<HTMLAnchorElement>(".lang-tile");
       if (!tile || !tile.hasAttribute("data-lang")) return;
@@ -62,15 +40,32 @@ function SplashPage() {
       navigate({ to: "/", search: { lang } as never });
     };
     root.addEventListener("click", onClick);
-    return () => {
-      root.removeEventListener("click", onClick);
-    };
+    return () => root.removeEventListener("click", onClick);
   }, [navigate, setLang]);
 
   return (
     <>
       <div id="splash-view" ref={ref} dangerouslySetInnerHTML={{ __html: SPLASH_HTML }} />
-      {host && createPortal(<StaffAccessTile />, host)}
+      <div
+        id="splash-staff-strip"
+        style={{
+          background: "linear-gradient(180deg,#081d3a 0%,#0d2c54 100%)",
+          padding: "0 1.25rem 3rem",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: 980,
+            width: "100%",
+            margin: "0 auto",
+            border: "1px solid rgba(232,160,74,0.3)",
+            background: "rgba(14,26,43,0.55)",
+            boxShadow: "0 20px 60px rgba(0,0,0,0.35)",
+          }}
+        >
+          <StaffAccessTile />
+        </div>
+      </div>
     </>
   );
 }
