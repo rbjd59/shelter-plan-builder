@@ -141,6 +141,39 @@ export const Route = createFileRoute("/api/public/emergency/activate")({
             .eq("id", d.cancel_of)
             .eq("intake_session_id", d.intake_session_id);
 
+          // Mirror cancellation into client_sos_alerts (the board schema).
+          // Resolve the activation token from intake_session_id directly or by
+          // looking up the client row.
+          let cancelToken: string | null = null;
+          const rawCancel = d.intake_session_id.toUpperCase();
+          if (/^[A-Z0-9]{8}$/.test(rawCancel)) {
+            cancelToken = rawCancel;
+          } else {
+            try {
+              const { data: c } = await supabaseAdmin
+                .from("app_clients" as never)
+                .select("invite_token")
+                .eq("intake_session_id", d.intake_session_id)
+                .maybeSingle();
+              if (c && (c as { invite_token: string }).invite_token) {
+                cancelToken = (c as { invite_token: string }).invite_token;
+              }
+            } catch (e) {
+              console.error("[activate] cancel invite_token lookup failed", e);
+            }
+          }
+          if (cancelToken) {
+            try {
+              await supabaseAdmin.rpc("cancel_sos_alert" as never, {
+                _token: cancelToken,
+              } as never);
+            } catch (e) {
+              console.error("[activate] cancel_sos_alert mirror failed", e);
+            }
+          }
+
+
+
           const subject = `CANCEL EMERGENCY [${d.role.toUpperCase()}] — ${d.full_name ?? d.intake_session_id.slice(0, 12)}`;
           const text = `FALSE ALARM — please disregard the previous emergency alert.
 
@@ -202,6 +235,53 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
           return new Response("Insert failed", { status: 500 });
         }
         const activationId = (row as { id: string }).id;
+
+        // Mirror into client_sos_alerts so the company and attorney boards see
+        // this trigger. The boards read from client_sos_alerts (keyed by
+        // app_clients.invite_token), not from the legacy emergency_activations
+        // table. Resolve the activation token from either the intake_session_id
+        // (when it is already an 8-char code) or by looking up the client row.
+        let mirrorToken: string | null = null;
+        const rawToken = d.intake_session_id.toUpperCase();
+        if (/^[A-Z0-9]{8}$/.test(rawToken)) {
+          mirrorToken = rawToken;
+        } else {
+          try {
+            const { data: clientRow } = await supabaseAdmin
+              .from("app_clients" as never)
+              .select("invite_token")
+              .eq("intake_session_id", d.intake_session_id)
+              .maybeSingle();
+            if (clientRow && (clientRow as { invite_token: string }).invite_token) {
+              mirrorToken = (clientRow as { invite_token: string }).invite_token;
+            }
+          } catch (e) {
+            console.error("[activate] invite_token lookup failed", e);
+          }
+        }
+        if (mirrorToken) {
+          try {
+            await supabaseAdmin.rpc("record_sos_alert" as never, {
+              _token: mirrorToken,
+              _lat: d.gps_lat ?? null,
+              _lng: d.gps_lng ?? null,
+              _battery_pct: null,
+              _payload: {
+                name: d.full_name ?? null,
+                contact_email: d.contact_email ?? null,
+                alert_email: d.alert_email ?? null,
+                notes: d.notes ?? null,
+                role: d.role,
+                source: "web-emergency-activate",
+              },
+            } as never);
+          } catch (e) {
+            console.error("[activate] record_sos_alert mirror failed", e);
+          }
+        }
+
+
+
 
         const gps =
           d.gps_lat != null && d.gps_lng != null
