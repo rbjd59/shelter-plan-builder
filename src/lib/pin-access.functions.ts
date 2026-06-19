@@ -65,7 +65,8 @@ export const pinListCompanyBoard = createServerFn({ method: "POST" })
         triggered_at: string;
         cancelled_at: string | null;
         app_reported_name: string | null;
-        app_reported_
+        app_reported_a_number: string | null;
+
         app_reported_place_of_birth: string | null;
         app_reported_date_of_birth: string | null;
       };
