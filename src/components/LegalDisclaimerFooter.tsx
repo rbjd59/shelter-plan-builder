@@ -60,6 +60,16 @@ export function LegalDisclaimerFooter() {
             {t.privacy}
           </Link>
         </p>
+
+        <div
+          style={{
+            marginTop: 8,
+            paddingTop: 16,
+            borderTop: "1px solid rgba(255,255,255,0.08)",
+          }}
+        >
+          <StaffAccessTile />
+        </div>
       </div>
     </footer>
   );
