@@ -79,8 +79,8 @@ function AttorneyBoard({ pin }: { pin: string }) {
                 const isOpen = openId === r.id;
                 const triggered = !!r.latest_alert;
                 return (
-                  <>
-                    <tr key={r.id} className={triggered ? "bg-red-50/40" : ""}>
+                  <React.Fragment key={r.id}>
+                    <tr className={triggered ? "bg-red-50/40" : ""}>
                       <td className="px-4 py-2 font-mono font-bold">{r.activation_code}</td>
                       <td className="px-4 py-2">{r.full_name ?? <span className="text-slate-400">—</span>}</td>
                       <td className="px-4 py-2 text-xs text-slate-600">
@@ -116,13 +116,13 @@ function AttorneyBoard({ pin }: { pin: string }) {
                       </td>
                     </tr>
                     {isOpen && (
-                      <tr key={r.id + "-detail"}>
+                      <tr>
                         <td colSpan={6} className="bg-slate-50 px-4 py-4">
                           <ClientDetail pin={pin} clientId={r.id} />
                         </td>
                       </tr>
                     )}
-                  </>
+                  </React.Fragment>
                 );
               })}
               {rows.length === 0 && (
