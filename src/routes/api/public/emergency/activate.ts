@@ -219,12 +219,30 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
         // Mirror into client_sos_alerts so the company and attorney boards see
         // this trigger. The boards read from client_sos_alerts (keyed by
         // app_clients.invite_token), not from the legacy emergency_activations
-        // table. Only mirror when intake_session_id is an 8-char activation code.
-        const token = d.intake_session_id.toUpperCase();
-        if (/^[A-Z0-9]{8}$/.test(token)) {
+        // table. Resolve the activation token from either the intake_session_id
+        // (when it is already an 8-char code) or by looking up the client row.
+        let mirrorToken: string | null = null;
+        const rawToken = d.intake_session_id.toUpperCase();
+        if (/^[A-Z0-9]{8}$/.test(rawToken)) {
+          mirrorToken = rawToken;
+        } else {
+          try {
+            const { data: clientRow } = await supabaseAdmin
+              .from("app_clients" as never)
+              .select("invite_token")
+              .eq("intake_session_id", d.intake_session_id)
+              .maybeSingle();
+            if (clientRow && (clientRow as { invite_token: string }).invite_token) {
+              mirrorToken = (clientRow as { invite_token: string }).invite_token;
+            }
+          } catch (e) {
+            console.error("[activate] invite_token lookup failed", e);
+          }
+        }
+        if (mirrorToken) {
           try {
             await supabaseAdmin.rpc("record_sos_alert" as never, {
-              _token: token,
+              _token: mirrorToken,
               _lat: d.gps_lat ?? null,
               _lng: d.gps_lng ?? null,
               _battery_pct: null,
@@ -241,6 +259,7 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
             console.error("[activate] record_sos_alert mirror failed", e);
           }
         }
+
 
 
 
