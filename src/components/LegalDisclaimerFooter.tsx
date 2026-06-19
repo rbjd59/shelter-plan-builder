@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { FIRM, COMPANY } from "@/lib/firm-info";
 import { useLang } from "@/context/LanguageContext";
+import StaffAccessTile from "@/components/StaffAccessPinBox";
 
 /**
  * Global legal footer mandated on every page that references legal services.
@@ -59,6 +60,16 @@ export function LegalDisclaimerFooter() {
             {t.privacy}
           </Link>
         </p>
+
+        <div
+          style={{
+            marginTop: 8,
+            paddingTop: 16,
+            borderTop: "1px solid rgba(255,255,255,0.08)",
+          }}
+        >
+          <StaffAccessTile />
+        </div>
       </div>
     </footer>
   );

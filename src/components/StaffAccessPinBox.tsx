@@ -17,29 +17,23 @@ export default function StaffAccessTile() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="lang-tile"
         style={{
-          font: "inherit",
-          color: "inherit",
-          background: "transparent",
-          border: "none",
-          textAlign: "left",
-          width: "100%",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 8,
+          padding: "8px 14px",
+          background: "rgba(232,160,74,0.12)",
+          border: "1px solid rgba(232,160,74,0.5)",
+          borderRadius: 8,
+          color: "#e8a04a",
+          fontSize: 12,
+          fontWeight: 700,
+          letterSpacing: 0.8,
           cursor: "pointer",
+          fontFamily: "Inter, system-ui, sans-serif",
         }}
       >
-        <div className="lang-flag">🔒 Staff · Personal</div>
-        <div className="lang-name">
-          Staff Access
-          <em>Company & Attorney boards</em>
-        </div>
-        <div className="lang-desc">
-          Internal dashboards for company admins and the attorney team. PIN required.
-        </div>
-        <div className="lang-cta">
-          Enter PIN
-          <span className="arrow">→</span>
-        </div>
+        🔒 Staff Access — Company / Attorney (PIN)
       </button>
 
       {open && <PinModal onClose={() => setOpen(false)} />}
