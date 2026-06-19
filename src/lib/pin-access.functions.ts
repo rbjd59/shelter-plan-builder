@@ -275,6 +275,20 @@ export const pinGetAttorneyClient = createServerFn({ method: "POST" })
     };
   });
 
+/** Build the actual PDF for a draft form and return base64 + filename. */
+export const pinDownloadDocument = createServerFn({ method: "POST" })
+  .inputValidator((d: { pin: string; documentId: string }) => d)
+  .handler(async ({ data }) => {
+    check(data.pin);
+    const { buildDocumentPdf } = await import("@/lib/draft-pdfs.server");
+    const { bytes, filename } = await buildDocumentPdf(data.documentId);
+    const b64 =
+      typeof Buffer !== "undefined"
+        ? Buffer.from(bytes).toString("base64")
+        : btoa(String.fromCharCode(...bytes));
+    return { pdfB64: b64, filename };
+  });
+
 // ---------------------------------------------------------------------------
 // Legacy exports kept so existing imports compile until we delete those routes.
 // They proxy the new functions. The /firm.* and /admin.* routes that still
