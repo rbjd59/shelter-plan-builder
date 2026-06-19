@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 
-const PIN = "5689";
+const PIN = "5688";
 
 function check(pin: string) {
   if (pin !== PIN) throw new Error("Invalid PIN");
