@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { FIRM, COMPANY } from "@/lib/firm-info";
 import { useLang } from "@/context/LanguageContext";
+import StaffAccessTile from "@/components/StaffAccessPinBox";
 
 /**
  * Global legal footer mandated on every page that references legal services.
