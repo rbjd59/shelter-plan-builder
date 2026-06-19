@@ -11,6 +11,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { triggerVaultRelease } from "@/lib/readiness.server";
+import { sendSosSmsToContacts } from "@/lib/twilio-sms.server";
 
 const ActivateSchema = z.object({
   intake_session_id: z.string().min(8).max(128),
@@ -170,6 +171,18 @@ export const Route = createFileRoute("/api/public/emergency/activate")({
             } catch (e) {
               console.error("[activate] cancel_sos_alert mirror failed", e);
             }
+            // Twilio SMS fan-out — cancellation
+            try {
+              const result = await sendSosSmsToContacts({
+                token: cancelToken,
+                clientName: d.full_name ?? null,
+                kind: "cancel",
+                activationId: d.cancel_of,
+              });
+              console.log("[activate] sms cancel fan-out", result);
+            } catch (e) {
+              console.error("[activate] sms cancel fan-out failed", e);
+            }
           }
 
 
@@ -277,6 +290,23 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
             } as never);
           } catch (e) {
             console.error("[activate] record_sos_alert mirror failed", e);
+          }
+          // Twilio SMS fan-out — alert
+          try {
+            const mapsUrlForSms =
+              d.gps_lat != null && d.gps_lng != null
+                ? `https://maps.google.com/?q=${d.gps_lat},${d.gps_lng}`
+                : null;
+            const result = await sendSosSmsToContacts({
+              token: mirrorToken,
+              clientName: d.full_name ?? null,
+              kind: "alert",
+              mapsUrl: mapsUrlForSms,
+              activationId,
+            });
+            console.log("[activate] sms alert fan-out", result);
+          } catch (e) {
+            console.error("[activate] sms alert fan-out failed", e);
           }
         }
 
