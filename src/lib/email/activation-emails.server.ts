@@ -240,4 +240,45 @@ No action is needed now.`;
       idempotencyKey: `activation-contact-${p.sessionId}-${to}`,
     });
   }
+
+  // 4) Client welcome (trilingual) — one email, then silence until SOS triggered
+  if (clientEmail) {
+    const w = clientWelcomeContent(lang, clientName, code);
+    const html = wrap(`
+      <h1 style="font-size:22px;margin:0 0 14px;color:#0f172a;">${esc(w.heading)}</h1>
+      <p style="margin:0 0 14px;">${esc(w.body[0])}</p>
+      <p style="margin:0 0 6px;">${esc(w.body[1])}</p>
+      <p style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:28px;font-weight:800;letter-spacing:3px;background:#f1f5f9;border:1px solid #cbd5e1;border-radius:8px;padding:14px 18px;margin:0 0 18px;text-align:center;">${esc(code)}</p>
+      <p style="margin:0 0 14px;">${esc(w.body[2])}</p>
+      <p style="margin:0 0 22px;">${esc(w.body[3])}</p>
+      <p style="margin:0 0 22px;text-align:center;">
+        <a href="${DOWNLOAD_URL}" style="display:inline-block;background:#0f172a;color:#ffffff;text-decoration:none;padding:14px 26px;border-radius:8px;font-weight:600;">${esc(w.button)}</a>
+      </p>
+      <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;"/>
+      <p style="margin:0;color:#666;font-size:12px;">${esc(w.footer)}</p>
+    `);
+    const text = `${w.heading}
+
+${w.body[0]}
+
+${w.body[1]}
+${code}
+
+${w.body[2]}
+
+${w.body[3]}
+
+${w.button}: ${DOWNLOAD_URL}
+
+${w.footer}`;
+    await enqueueOne({
+      to: clientEmail,
+      subject: w.subject,
+      html,
+      text,
+      label: "activation-client-welcome",
+      idempotencyKey: `activation-client-welcome-${p.sessionId}`,
+    });
+  }
 }
+
