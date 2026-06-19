@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
 import { SPLASH_HTML } from "@/lib/markup";
 import { useLang, type Lang } from "@/context/LanguageContext";
-import StaffAccessTile from "@/components/StaffAccessPinBox";
+
 
 export const Route = createFileRoute("/splash")({
   head: () => ({
