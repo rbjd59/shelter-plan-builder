@@ -36,6 +36,21 @@ function downloadText(filename: string, content: string) {
   URL.revokeObjectURL(url);
 }
 
+function downloadPdfFromBase64(filename: string, b64: string) {
+  const bin = atob(b64);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  const blob = new Blob([bytes], { type: "application/pdf" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 function AttorneyBoard({ pin }: { pin: string }) {
   const [openId, setOpenId] = useState<string | null>(null);
   const listFn = useServerFn(pinListAttorneyBoard);
