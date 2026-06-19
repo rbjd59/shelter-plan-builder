@@ -159,64 +159,12 @@ export async function enqueueActivationEmails(p: ActivationEmailParams): Promise
   const lang = (p.language || (typeof a.language === "string" ? a.language : "en") || "en").toLowerCase();
 
 
-  // 1) Company email
-  const companyHtml = wrap(`
-    <h1 style="font-size:18px;margin:0 0 12px;">New client activated</h1>
-    <p style="margin:0 0 6px;"><strong>Client:</strong> ${esc(clientName)}</p>
-    <p style="margin:0 0 6px;"><strong>Activation code (Company ID):</strong> <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:700;">${esc(code)}</span></p>
-    <p style="margin:14px 0 0;">Client has downloaded and activated the app.</p>
-  `);
-  const companyText = `New client activated
-Client: ${clientName}
-Activation code (Company ID): ${code}
+  // Company, attorney, and emergency contacts are recorded on the back end
+  // (app_clients / client_contacts / client_documents) and visible on the
+  // company + attorney boards. No emails fired here for them — only the
+  // client gets a welcome email on activation. They are notified later only
+  // if an SOS alert is triggered.
 
-Client has downloaded and activated the app.`;
-  await enqueueOne({
-    to: COMPANY_EMAIL,
-    subject: `New client activated — ${clientName}`,
-    html: companyHtml,
-    text: companyText,
-    label: "activation-company",
-    idempotencyKey: `activation-company-${p.sessionId}`,
-  });
-
-  // 2) Attorney email
-  const formsList = CORE_LEGAL_FORMS.map((f) => `<li style="margin:4px 0;">${esc(f)}</li>`).join("");
-  const attorneyHtml = wrap(`
-    <h1 style="font-size:18px;margin:0 0 12px;">Client activated — ${esc(clientName)}</h1>
-    <p style="margin:0 0 6px;"><strong>Client:</strong> ${esc(clientName)}</p>
-    <p style="margin:0 0 6px;"><strong>Activation code:</strong> <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:700;">${esc(code)}</span></p>
-    <p style="margin:0 0 14px;"><strong>Activated at:</strong> ${esc(activatedAt)}</p>
-    <p style="margin:14px 0 6px;"><strong>5 Core Legal forms on file:</strong></p>
-    <ul style="padding-left:20px;margin:0 0 14px;">${formsList}</ul>
-    <p style="margin:14px 0 0;color:#555;">No action required until SOS is triggered.</p>
-  `);
-  const attorneyText = `Client activated — ${clientName}
-Activation code: ${code}
-Activated at: ${activatedAt}
-
-5 Core Legal forms on file:
-${CORE_LEGAL_FORMS.map((f) => `- ${f}`).join("\n")}
-
-No action required until SOS is triggered.`;
-  await enqueueOne({
-    to: ATTORNEY_EMAIL,
-    subject: `Client activated — ${clientName} ${code}`,
-    html: attorneyHtml,
-    text: attorneyText,
-    label: "activation-attorney",
-    idempotencyKey: `activation-attorney-${p.sessionId}`,
-  });
-
-  // 3) Each emergency contact (exclude the client's own email)
-  const contacts: string[] = [];
-  for (const k of ["emergency_contact_email", "emergency_contact_2_email"]) {
-    const v = a[k];
-    if (typeof v === "string" && v.trim() && v.includes("@")) {
-      const norm = v.trim().toLowerCase();
-      if (norm !== clientEmail) contacts.push(norm);
-    }
-  }
 
   const uniqueContacts = Array.from(new Set(contacts));
   for (const to of uniqueContacts) {
