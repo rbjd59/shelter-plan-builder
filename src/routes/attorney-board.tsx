@@ -269,12 +269,7 @@ function ClientDetail({ pin, clientId }: { pin: string; clientId: string }) {
             {app_uploads.map((d: any) => (
               <li key={d.id}>
                 <button
-                  onClick={() =>
-                    downloadText(
-                      `${(d.title ?? "doc").replace(/[^a-z0-9]+/gi, "_")}.txt`,
-                      d.content ?? "",
-                    )
-                  }
+                  onClick={() => handleDownload(d.id, d.title ?? "doc", d.content ?? "")}
                   className="text-left text-sm text-emerald-700 underline"
                 >
                   ⬇ {d.title ?? "Document"}
