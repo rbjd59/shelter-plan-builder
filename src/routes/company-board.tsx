@@ -70,29 +70,41 @@ function CompanyBoard({ pin }: { pin: string }) {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {triggered.map((t) => (
-                    <tr key={t.alert_id} className={t.cancelled_at ? "bg-slate-50" : ""}>
-                      <td className="px-3 py-2 font-mono font-bold">{t.activation_code}</td>
-                      <td className="px-3 py-2">{t.name ?? <span className="text-slate-400">—</span>}</td>
-                      <td className="px-3 py-2 font-mono">{t.a_number ?? <span className="text-slate-400">—</span>}</td>
-                      <td className="px-3 py-2">{t.date_of_birth ?? <span className="text-slate-400">—</span>}</td>
-                      <td className="px-3 py-2">{t.place_of_birth ?? <span className="text-slate-400">—</span>}</td>
-                      <td className="px-3 py-2 text-xs text-slate-600">
-                        {new Date(t.triggered_at).toLocaleString()}
-                      </td>
-                      <td className="px-3 py-2">
-                        {t.cancelled_at ? (
-                          <span className="rounded bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-900">
-                            CANCELLED
-                          </span>
-                        ) : (
-                          <span className="rounded bg-red-600 px-2 py-0.5 text-xs font-bold text-white">
-                            ACTIVE
-                          </span>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
+                  {triggered.map((t) => {
+                    const isActive = !t.cancelled_at;
+                    return (
+                      <tr
+                        key={t.alert_id}
+                        className={
+                          isActive
+                            ? "bg-red-100 animate-pulse ring-2 ring-inset ring-red-500"
+                            : "bg-slate-50"
+                        }
+                      >
+                        <td className={`px-3 py-2 font-mono font-bold ${isActive ? "text-red-700 text-base" : ""}`}>
+                          {t.activation_code}
+                        </td>
+                        <td className="px-3 py-2">{t.name ?? <span className="text-slate-400">—</span>}</td>
+                        <td className="px-3 py-2 font-mono">{t.a_number ?? <span className="text-slate-400">—</span>}</td>
+                        <td className="px-3 py-2">{t.date_of_birth ?? <span className="text-slate-400">—</span>}</td>
+                        <td className="px-3 py-2">{t.place_of_birth ?? <span className="text-slate-400">—</span>}</td>
+                        <td className="px-3 py-2 text-xs text-slate-600">
+                          {new Date(t.triggered_at).toLocaleString()}
+                        </td>
+                        <td className="px-3 py-2">
+                          {isActive ? (
+                            <span className="rounded bg-red-600 px-2 py-0.5 text-xs font-bold text-white">
+                              ● ACTIVE
+                            </span>
+                          ) : (
+                            <span className="rounded bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-900">
+                              CANCELLED
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
