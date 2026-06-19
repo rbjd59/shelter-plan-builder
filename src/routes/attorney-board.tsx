@@ -7,6 +7,7 @@ import PinAccessGate from "@/components/PinAccessGate";
 import {
   pinListAttorneyBoard,
   pinGetAttorneyClient,
+  pinDownloadDocument,
 } from "@/lib/pin-access.functions";
 
 export const Route = createFileRoute("/attorney-board")({
