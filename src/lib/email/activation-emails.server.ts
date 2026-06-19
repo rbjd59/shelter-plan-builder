@@ -208,14 +208,16 @@ No action required until SOS is triggered.`;
     idempotencyKey: `activation-attorney-${p.sessionId}`,
   });
 
-  // 3) Each emergency contact
+  // 3) Each emergency contact (exclude the client's own email)
   const contacts: string[] = [];
-  for (const k of ["emergency_contact_email", "emergency_contact_2_email", "contact_email"]) {
+  for (const k of ["emergency_contact_email", "emergency_contact_2_email"]) {
     const v = a[k];
     if (typeof v === "string" && v.trim() && v.includes("@")) {
-      contacts.push(v.trim().toLowerCase());
+      const norm = v.trim().toLowerCase();
+      if (norm !== clientEmail) contacts.push(norm);
     }
   }
+
   const uniqueContacts = Array.from(new Set(contacts));
   for (const to of uniqueContacts) {
     const contactHtml = wrap(`
