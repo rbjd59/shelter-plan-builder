@@ -17,7 +17,9 @@ async function buildSyntheticAnswers(clientId: string): Promise<Record<string, u
   const [{ data: client }, { data: contacts }] = await Promise.all([
     supabaseAdmin
       .from("app_clients")
-      .select("full_name, email, phone_e164, place_of_birth, country_of_origin, language")
+      .select(
+        "full_name, email, phone_e164, place_of_birth, country_of_origin, language, intake_session_id",
+      )
       .eq("id", clientId)
       .maybeSingle(),
     supabaseAdmin
@@ -30,7 +32,30 @@ async function buildSyntheticAnswers(clientId: string): Promise<Record<string, u
   const cs = (contacts ?? []) as any[];
   const primary = cs[0] ?? {};
   const secondary = cs[1] ?? {};
-  return {
+
+  // Pull the real intake answers (by intake_session_id or matching email)
+  // so generated PDFs reflect what the client actually filled out at
+  // intake, not synthetic placeholders.
+  let intakeAnswers: Record<string, unknown> = {};
+  try {
+    let q = supabaseAdmin.from("intake_submissions").select("answers, created_at");
+    if (c.intake_session_id) {
+      q = q.eq("stripe_session_id", c.intake_session_id);
+    } else if (c.email) {
+      q = q.ilike("email", c.email);
+    } else {
+      q = q.eq("stripe_session_id", "__none__");
+    }
+    const { data: rows } = await q.order("created_at", { ascending: false }).limit(1);
+    const r = (rows ?? [])[0] as { answers?: Record<string, unknown> } | undefined;
+    if (r?.answers && typeof r.answers === "object") {
+      intakeAnswers = r.answers;
+    }
+  } catch {
+    /* ignore — fall back to client/contact data */
+  }
+
+  const fallback: Record<string, unknown> = {
     full_name: s(c.full_name),
     contact_email: s(c.email),
     contact_phone: s(c.phone_e164),
@@ -46,6 +71,9 @@ async function buildSyntheticAnswers(clientId: string): Promise<Record<string, u
     emergency_contact_2_email: s(secondary.email),
     emergency_contact_2_relation: s(secondary.relationship),
   };
+
+  // Intake answers (what the client actually typed) win; fallback fills gaps.
+  return { ...fallback, ...intakeAnswers };
 }
 
 async function buildStubPdf(title: string, clientInfo: Record<string, string>): Promise<Uint8Array> {
