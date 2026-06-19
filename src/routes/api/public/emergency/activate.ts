@@ -216,6 +216,34 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
         }
         const activationId = (row as { id: string }).id;
 
+        // Mirror into client_sos_alerts so the company and attorney boards see
+        // this trigger. The boards read from client_sos_alerts (keyed by
+        // app_clients.invite_token), not from the legacy emergency_activations
+        // table. Only mirror when intake_session_id is an 8-char activation code.
+        const token = d.intake_session_id.toUpperCase();
+        if (/^[A-Z0-9]{8}$/.test(token)) {
+          try {
+            await supabaseAdmin.rpc("record_sos_alert" as never, {
+              _token: token,
+              _lat: d.gps_lat ?? null,
+              _lng: d.gps_lng ?? null,
+              _battery_pct: null,
+              _payload: {
+                name: d.full_name ?? null,
+                contact_email: d.contact_email ?? null,
+                alert_email: d.alert_email ?? null,
+                notes: d.notes ?? null,
+                role: d.role,
+                source: "web-emergency-activate",
+              },
+            } as never);
+          } catch (e) {
+            console.error("[activate] record_sos_alert mirror failed", e);
+          }
+        }
+
+
+
         const gps =
           d.gps_lat != null && d.gps_lng != null
             ? `${d.gps_lat.toFixed(6)}, ${d.gps_lng.toFixed(6)}`
