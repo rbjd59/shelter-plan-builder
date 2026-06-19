@@ -159,10 +159,24 @@ function AttorneyBoard({ pin }: { pin: string }) {
 
 function ClientDetail({ pin, clientId }: { pin: string; clientId: string }) {
   const fn = useServerFn(pinGetAttorneyClient);
+  const downloadFn = useServerFn(pinDownloadDocument);
   const { data, isLoading, error } = useQuery({
     queryKey: ["attorney-client", clientId],
     queryFn: () => fn({ data: { pin, clientId } }),
   });
+
+  const handleDownload = async (docId: string, fallbackTitle: string, fallbackContent: string) => {
+    try {
+      const res = await downloadFn({ data: { pin, documentId: docId } });
+      downloadPdfFromBase64(res.filename, res.pdfB64);
+    } catch (e) {
+      console.error("PDF download failed, falling back to text", e);
+      downloadText(
+        `${fallbackTitle.replace(/[^a-z0-9]+/gi, "_")}.txt`,
+        fallbackContent,
+      );
+    }
+  };
 
   if (isLoading) return <div className="text-sm text-slate-500">Loading file…</div>;
   if (error) return <div className="text-sm text-red-600">{(error as Error).message}</div>;
