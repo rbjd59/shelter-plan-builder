@@ -321,6 +321,7 @@ export type Database = {
           content: string
           created_at: string
           document_type: string
+          from_app: boolean
           id: string
           loaded_at: string
           send_on_alert: boolean
@@ -331,6 +332,7 @@ export type Database = {
           content: string
           created_at?: string
           document_type: string
+          from_app?: boolean
           id?: string
           loaded_at?: string
           send_on_alert?: boolean
@@ -341,6 +343,7 @@ export type Database = {
           content?: string
           created_at?: string
           document_type?: string
+          from_app?: boolean
           id?: string
           loaded_at?: string
           send_on_alert?: boolean
@@ -411,6 +414,10 @@ export type Database = {
       }
       client_sos_alerts: {
         Row: {
+          app_reported_a_number: string | null
+          app_reported_date_of_birth: string | null
+          app_reported_name: string | null
+          app_reported_place_of_birth: string | null
           battery_pct: number | null
           cancelled_at: string | null
           client_id: string
@@ -423,6 +430,10 @@ export type Database = {
           triggered_at: string
         }
         Insert: {
+          app_reported_a_number?: string | null
+          app_reported_date_of_birth?: string | null
+          app_reported_name?: string | null
+          app_reported_place_of_birth?: string | null
           battery_pct?: number | null
           cancelled_at?: string | null
           client_id: string
@@ -435,6 +446,10 @@ export type Database = {
           triggered_at?: string
         }
         Update: {
+          app_reported_a_number?: string | null
+          app_reported_date_of_birth?: string | null
+          app_reported_name?: string | null
+          app_reported_place_of_birth?: string | null
           battery_pct?: number | null
           cancelled_at?: string | null
           client_id?: string
@@ -1114,6 +1129,15 @@ export type Database = {
           _lng: number
         }
         Returns: undefined
+      }
+      attach_alert_document: {
+        Args: {
+          _content: string
+          _document_type?: string
+          _title: string
+          _token: string
+        }
+        Returns: string
       }
       cancel_sos_alert: { Args: { _token: string }; Returns: string }
       delete_email: {

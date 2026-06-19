@@ -3,12 +3,20 @@ import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import PinAccessGate from "@/components/PinAccessGate";
-import { pinListDetained, pinGetDetained } from "@/lib/pin-access.functions";
+import {
+  pinListAttorneyBoard,
+  pinGetAttorneyClient,
+} from "@/lib/pin-access.functions";
 
 export const Route = createFileRoute("/attorney-board")({
-  head: () => ({ meta: [{ title: "Attorney Board — DetencionDefensa" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({
+    meta: [
+      { title: "Attorney Board — DetencionDefensa" },
+      { name: "robots", content: "noindex" },
+    ],
+  }),
   component: () => (
-    <PinAccessGate storageKey="dd_pin_attorney" title="Attorney Board — Detained Clients">
+    <PinAccessGate storageKey="dd_pin_attorney" title="Attorney Board — Client Files">
       {(pin) => <AttorneyBoard pin={pin} />}
     </PinAccessGate>
   ),
@@ -18,16 +26,19 @@ function downloadText(filename: string, content: string) {
   const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
-  a.href = url; a.download = filename;
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
 
 function AttorneyBoard({ pin }: { pin: string }) {
   const [openId, setOpenId] = useState<string | null>(null);
-  const listFn = useServerFn(pinListDetained);
+  const listFn = useServerFn(pinListAttorneyBoard);
   const { data, isLoading, error } = useQuery({
-    queryKey: ["pin-detained"],
+    queryKey: ["attorney-board"],
     queryFn: () => listFn({ data: { pin } }),
     refetchInterval: 30000,
   });
@@ -40,132 +51,182 @@ function AttorneyBoard({ pin }: { pin: string }) {
   return (
     <div className="min-h-screen bg-slate-50 p-6">
       <div className="mx-auto max-w-6xl space-y-5">
-        <div>
-          <h1 className="text-2xl font-bold" style={{ color: "#6B4F4F" }}>Attorney Board — Detained Clients</h1>
-          <p className="mt-1 text-sm text-slate-600">{rows.length} client{rows.length === 1 ? "" : "s"} with an active alert or recorded detention.</p>
-        </div>
+        <header>
+          <h1 className="text-2xl font-bold" style={{ color: "#6B4F4F" }}>
+            Attorney Board — Client Files
+          </h1>
+          <p className="mt-1 text-sm text-slate-600">
+            {rows.length} client file{rows.length === 1 ? "" : "s"} on record. Each
+            row is keyed by the activation code. Trigger column shows when (and if)
+            the client activated the SOS.
+          </p>
+        </header>
 
         <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
           <table className="w-full text-sm">
             <thead className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
               <tr>
-                <th className="px-4 py-2.5">Client</th>
-                <th className="px-4 py-2.5">A-Number</th>
-                <th className="px-4 py-2.5">Facility</th>
-                <th className="px-4 py-2.5">Arrest</th>
-                <th className="px-4 py-2.5">Alert</th>
+                <th className="px-4 py-2.5">Activation #</th>
+                <th className="px-4 py-2.5">Name</th>
+                <th className="px-4 py-2.5">Contact</th>
+                <th className="px-4 py-2.5">Forms</th>
+                <th className="px-4 py-2.5">Trigger</th>
                 <th className="px-4 py-2.5"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {rows.length === 0 ? (
-                <tr><td colSpan={6} className="px-4 py-8 text-center text-slate-400">No detained clients yet.</td></tr>
-              ) : rows.map((c: any) => {
-                const d = c.detention; const a = c.latest_alert;
+              {rows.map((r) => {
+                const isOpen = openId === r.id;
+                const triggered = !!r.latest_alert;
                 return (
-                  <tr key={c.id} className="hover:bg-slate-50">
-                    <td className="px-4 py-3">
-                      <div className="font-medium text-slate-900">{c.full_name ?? "—"}</div>
-                      <div className="text-xs font-mono text-slate-500">{c.activation_code}</div>
-                    </td>
-                    <td className="px-4 py-3 font-mono text-slate-700">{d?.a_number ?? "—"}</td>
-                    <td className="px-4 py-3 text-slate-700">{d?.facility_name ?? <span className="text-amber-700">Not located yet</span>}</td>
-                    <td className="px-4 py-3 text-slate-700">{d?.arrest_date ?? "—"}</td>
-                    <td className="px-4 py-3 text-xs">
-                      {a ? (a.cancelled_at
-                        ? <span className="text-slate-500">Cancelled</span>
-                        : <span className="font-semibold text-red-700">ACTIVE</span>) : "—"}
-                    </td>
-                    <td className="px-4 py-3 text-right">
-                      <button onClick={() => setOpenId(openId === c.id ? null : c.id)} className="text-xs font-semibold text-amber-700 hover:text-amber-900">
-                        {openId === c.id ? "Close" : "Open →"}
-                      </button>
-                    </td>
-                  </tr>
+                  <>
+                    <tr key={r.id} className={triggered ? "bg-red-50/40" : ""}>
+                      <td className="px-4 py-2 font-mono font-bold">{r.activation_code}</td>
+                      <td className="px-4 py-2">{r.full_name ?? <span className="text-slate-400">—</span>}</td>
+                      <td className="px-4 py-2 text-xs text-slate-600">
+                        {r.email ?? "—"}
+                        {r.phone ? ` · ${r.phone}` : ""}
+                      </td>
+                      <td className="px-4 py-2 text-xs">
+                        <span className="text-slate-700">{r.draft_forms.length} draft</span>
+                        {r.app_uploads.length > 0 && (
+                          <span className="ml-2 rounded bg-emerald-100 px-1.5 py-0.5 font-semibold text-emerald-800">
+                            + {r.app_uploads.length} from app
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-2 text-xs">
+                        {r.latest_alert ? (
+                          <span className="text-red-700">
+                            {new Date(r.latest_alert.triggered_at).toLocaleString()}
+                            {r.latest_alert.cancelled_at ? " (cancelled)" : ""}
+                          </span>
+                        ) : (
+                          <span className="text-slate-400">—</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-2 text-right">
+                        <button
+                          className="text-xs font-semibold underline"
+                          style={{ color: "#6B4F4F" }}
+                          onClick={() => setOpenId(isOpen ? null : r.id)}
+                        >
+                          {isOpen ? "Close" : "Open file"}
+                        </button>
+                      </td>
+                    </tr>
+                    {isOpen && (
+                      <tr key={r.id + "-detail"}>
+                        <td colSpan={6} className="bg-slate-50 px-4 py-4">
+                          <ClientDetail pin={pin} clientId={r.id} />
+                        </td>
+                      </tr>
+                    )}
+                  </>
                 );
               })}
+              {rows.length === 0 && (
+                <tr>
+                  <td colSpan={6} className="px-4 py-6 text-center text-sm text-slate-500">
+                    No clients on file yet.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
-
-        {openId && <ClientDetail pin={pin} clientId={openId} />}
       </div>
     </div>
   );
 }
 
 function ClientDetail({ pin, clientId }: { pin: string; clientId: string }) {
-  const fn = useServerFn(pinGetDetained);
+  const fn = useServerFn(pinGetAttorneyClient);
   const { data, isLoading, error } = useQuery({
-    queryKey: ["pin-detained", clientId],
+    queryKey: ["attorney-client", clientId],
     queryFn: () => fn({ data: { pin, clientId } }),
-    refetchInterval: 30000,
   });
-  if (isLoading) return <p className="text-sm text-slate-500">Loading…</p>;
-  if (error) return <p className="text-sm text-red-700">{(error as Error).message}</p>;
+
+  if (isLoading) return <div className="text-sm text-slate-500">Loading file…</div>;
+  if (error) return <div className="text-sm text-red-600">{(error as Error).message}</div>;
   if (!data) return null;
-  const c = data.client as any; const d = data.detention as any;
+
+  const { draft_forms, app_uploads, alerts } = data;
 
   return (
-    <div className="space-y-5 rounded-lg border border-slate-300 bg-white p-5 shadow-sm">
-      <h2 className="text-xl font-bold" style={{ color: "#6B4F4F" }}>{c.full_name}</h2>
-      <div className="grid gap-5 lg:grid-cols-2">
-        <section>
-          <h3 className="text-xs font-bold uppercase text-slate-600">Client</h3>
-          <dl className="mt-2 grid grid-cols-3 gap-y-1 text-sm">
-            <dt className="text-slate-500">Email</dt><dd className="col-span-2">{c.email ?? "—"}</dd>
-            <dt className="text-slate-500">Phone</dt><dd className="col-span-2">{c.phone_e164 ?? "—"}</dd>
-            <dt className="text-slate-500">Country</dt><dd className="col-span-2">{c.country_of_origin ?? "—"}</dd>
-            <dt className="text-slate-500">Language</dt><dd className="col-span-2 uppercase">{c.language ?? "—"}</dd>
-          </dl>
-        </section>
-        <section>
-          <h3 className="text-xs font-bold uppercase text-slate-600">Detention</h3>
-          {d ? (
-            <dl className="mt-2 grid grid-cols-3 gap-y-1 text-sm">
-              <dt className="text-slate-500">A-Number</dt><dd className="col-span-2 font-mono">{d.a_number ?? "—"}</dd>
-              <dt className="text-slate-500">Federal ID</dt><dd className="col-span-2 font-mono">{d.federal_id ?? "—"}</dd>
-              <dt className="text-slate-500">Facility</dt><dd className="col-span-2">{d.facility_name ?? "—"}</dd>
-              <dt className="text-slate-500">Address</dt><dd className="col-span-2 whitespace-pre-wrap">{d.facility_address ?? "—"}</dd>
-              <dt className="text-slate-500">Warden</dt><dd className="col-span-2">{d.warden_name ?? "—"}</dd>
-              <dt className="text-slate-500">Arrest date</dt><dd className="col-span-2">{d.arrest_date ?? "—"}</dd>
-            </dl>
-          ) : <p className="mt-2 text-sm text-amber-700">Client not yet located. Company will update once detention facility is confirmed.</p>}
-        </section>
+    <div className="grid gap-4 sm:grid-cols-2">
+      <div>
+        <h3 className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-700">
+          Draft forms ({draft_forms.length})
+        </h3>
+        <ul className="space-y-1">
+          {draft_forms.map((d: any) => (
+            <li key={d.id}>
+              <button
+                onClick={() =>
+                  downloadText(
+                    `${(d.title ?? "doc").replace(/[^a-z0-9]+/gi, "_")}.txt`,
+                    d.content ?? "",
+                  )
+                }
+                className="text-left text-sm text-blue-700 underline"
+              >
+                ⬇ {d.title ?? "Document"}
+              </button>
+            </li>
+          ))}
+          {draft_forms.length === 0 && (
+            <li className="text-sm text-slate-500">None.</li>
+          )}
+        </ul>
       </div>
 
-      <section>
-        <h3 className="text-xs font-bold uppercase text-slate-600">Legal Forms ({data.documents.length})</h3>
-        {data.documents.length === 0 ? <p className="mt-2 text-sm text-slate-500">No documents.</p> : (
-          <ul className="mt-2 divide-y divide-slate-100">
-            {(data.documents as any[]).map((doc) => (
-              <li key={doc.id} className="flex items-center justify-between py-2">
-                <div>
-                  <div className="text-sm font-medium">{doc.title ?? "Untitled"}</div>
-                  <div className="text-xs text-slate-500">{doc.document_type ?? "document"}</div>
-                </div>
-                <button onClick={() => downloadText(`${(doc.title ?? "doc").replace(/[^a-z0-9]+/gi, "_")}.txt`, doc.content ?? "")}
-                  className="rounded border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium hover:bg-slate-50">⬇ Download</button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      <div>
+        <h3 className="mb-2 text-xs font-bold uppercase tracking-wide text-emerald-800">
+          From client's phone ({app_uploads.length})
+        </h3>
+        <ul className="space-y-1">
+          {app_uploads.map((d: any) => (
+            <li key={d.id}>
+              <button
+                onClick={() =>
+                  downloadText(
+                    `${(d.title ?? "doc").replace(/[^a-z0-9]+/gi, "_")}.txt`,
+                    d.content ?? "",
+                  )
+                }
+                className="text-left text-sm text-emerald-700 underline"
+              >
+                ⬇ {d.title ?? "Document"}
+                <span className="ml-2 text-xs text-slate-500">
+                  {new Date(d.loaded_at).toLocaleString()}
+                </span>
+              </button>
+            </li>
+          ))}
+          {app_uploads.length === 0 && (
+            <li className="text-sm text-slate-500">
+              Nothing uploaded from the app yet.
+            </li>
+          )}
+        </ul>
 
-      <section>
-        <h3 className="text-xs font-bold uppercase text-slate-600">Emergency Contacts</h3>
-        {data.contacts.length === 0 ? <p className="mt-2 text-sm text-slate-500">None.</p> : (
-          <ul className="mt-2 space-y-1 text-sm">
-            {(data.contacts as any[]).map((ct, i) => (
-              <li key={i}>
-                <span className="font-medium">{ct.name}</span>
-                {ct.relationship && <span className="text-slate-500"> ({ct.relationship})</span>}
-                {" — "}{ct.email ?? ""} {ct.phone_e164 ?? ""}
-              </li>
-            ))}
-          </ul>
+        {alerts.length > 0 && (
+          <div className="mt-4">
+            <h3 className="mb-2 text-xs font-bold uppercase tracking-wide text-red-800">
+              Triggers
+            </h3>
+            <ul className="space-y-1 text-xs">
+              {alerts.map((a: any) => (
+                <li key={a.id}>
+                  {new Date(a.triggered_at).toLocaleString()}
+                  {a.cancelled_at ? " — cancelled" : ""}
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
-      </section>
+      </div>
     </div>
   );
 }
