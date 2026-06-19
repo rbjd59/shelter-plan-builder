@@ -76,6 +76,7 @@ body.splash-has-staff #splash-view { min-height: 0; }
     flex-direction: column;
     position: relative;
   }
+  body.splash-has-staff #splash-view { min-height: 0; }
 
   /* ============ ATMOSPHERIC BACKGROUND ============ */
   .bg-layer {
