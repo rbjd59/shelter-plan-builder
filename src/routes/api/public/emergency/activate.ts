@@ -171,6 +171,18 @@ export const Route = createFileRoute("/api/public/emergency/activate")({
             } catch (e) {
               console.error("[activate] cancel_sos_alert mirror failed", e);
             }
+            // Twilio SMS fan-out — cancellation
+            try {
+              const result = await sendSosSmsToContacts({
+                token: cancelToken,
+                clientName: d.full_name ?? null,
+                kind: "cancel",
+                activationId: d.cancel_of,
+              });
+              console.log("[activate] sms cancel fan-out", result);
+            } catch (e) {
+              console.error("[activate] sms cancel fan-out failed", e);
+            }
           }
 
 
