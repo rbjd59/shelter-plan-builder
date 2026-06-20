@@ -186,16 +186,16 @@ export default function SiteShell() {
     };
   }, [navigate, setLang, lang]);
 
-  const faqMarker = "<!-- FAQ -->";
-  const faqIndex = SITE_HTML.indexOf(faqMarker);
-  const beforeFaq = faqIndex >= 0 ? SITE_HTML.slice(0, faqIndex) : SITE_HTML;
-  const faqAndAfter = faqIndex >= 0 ? SITE_HTML.slice(faqIndex) : "";
+  const adMarker = '<div id="dd-ad-video-mount"></div>';
+  const adIndex = SITE_HTML.indexOf(adMarker);
+  const beforeAd = adIndex >= 0 ? SITE_HTML.slice(0, adIndex) : SITE_HTML;
+  const afterAd = adIndex >= 0 ? SITE_HTML.slice(adIndex + adMarker.length) : "";
 
   return (
     <div ref={ref}>
-      <div dangerouslySetInnerHTML={{ __html: beforeFaq }} />
+      <div dangerouslySetInnerHTML={{ __html: beforeAd }} />
       <AdVideoSection />
-      {faqAndAfter && <div dangerouslySetInnerHTML={{ __html: faqAndAfter }} />}
+      {afterAd && <div dangerouslySetInnerHTML={{ __html: afterAd }} />}
     </div>
   );
 }
