@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useLang } from "@/context/LanguageContext";
 import enAd from "@/assets/videos/detenciondefensa_en.mp4.asset.json";
 import esAd from "@/assets/videos/detenciondefensa_es.mp4.asset.json";
@@ -26,6 +27,19 @@ export default function AdVideoSection() {
   const { lang } = useLang();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [started, setStarted] = useState(false);
+  const [mount, setMount] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const find = () => {
+      const el = document.getElementById("dd-ad-video-mount");
+      if (el) { setMount(el); return true; }
+      return false;
+    };
+    if (find()) return;
+    const obs = new MutationObserver(() => { if (find()) obs.disconnect(); });
+    obs.observe(document.body, { childList: true, subtree: true });
+    return () => obs.disconnect();
+  }, []);
 
   useEffect(() => {
     setStarted(false);
@@ -48,7 +62,7 @@ export default function AdVideoSection() {
     }
   };
 
-  return (
+  const content = (
     <section
       style={{
         padding: "3rem 1rem 1rem",
@@ -136,6 +150,9 @@ export default function AdVideoSection() {
       </div>
     </section>
   );
+
+  if (!mount) return null;
+  return createPortal(content, mount);
 }
 
 export function PlayOverlay({ onClick }: { onClick: () => void }) {
