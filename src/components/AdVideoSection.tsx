@@ -134,8 +134,7 @@ export default function AdVideoSection() {
           {DISCLAIMER[lang] ?? DISCLAIMER.en}
         </p>
       </div>
-    </section>,
-    mount,
+    </section>
   );
 }
 
