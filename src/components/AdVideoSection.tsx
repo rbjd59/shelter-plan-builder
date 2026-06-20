@@ -27,6 +27,19 @@ export default function AdVideoSection() {
   const { lang } = useLang();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [started, setStarted] = useState(false);
+  const [mount, setMount] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const find = () => {
+      const el = document.getElementById("dd-ad-video-mount");
+      if (el) { setMount(el); return true; }
+      return false;
+    };
+    if (find()) return;
+    const obs = new MutationObserver(() => { if (find()) obs.disconnect(); });
+    obs.observe(document.body, { childList: true, subtree: true });
+    return () => obs.disconnect();
+  }, []);
 
   useEffect(() => {
     setStarted(false);
