@@ -62,7 +62,7 @@ export default function AdVideoSection() {
     }
   };
 
-  return (
+  const content = (
     <section
       style={{
         padding: "3rem 1rem 1rem",
