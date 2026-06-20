@@ -186,11 +186,17 @@ export default function SiteShell() {
     };
   }, [navigate, setLang, lang]);
 
+  const faqMarker = "<!-- FAQ -->";
+  const faqIndex = SITE_HTML.indexOf(faqMarker);
+  const beforeFaq = faqIndex >= 0 ? SITE_HTML.slice(0, faqIndex) : SITE_HTML;
+  const faqAndAfter = faqIndex >= 0 ? SITE_HTML.slice(faqIndex) : "";
+
   return (
-    <>
-      <div ref={ref} dangerouslySetInnerHTML={{ __html: SITE_HTML }} />
+    <div ref={ref}>
+      <div dangerouslySetInnerHTML={{ __html: beforeFaq }} />
       <AdVideoSection />
-    </>
+      {faqAndAfter && <div dangerouslySetInnerHTML={{ __html: faqAndAfter }} />}
+    </div>
   );
 }
 
