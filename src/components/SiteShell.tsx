@@ -186,11 +186,17 @@ export default function SiteShell() {
     };
   }, [navigate, setLang, lang]);
 
+  const adMarker = '<div id="dd-ad-video-mount"></div>';
+  const adIndex = SITE_HTML.indexOf(adMarker);
+  const beforeAd = adIndex >= 0 ? SITE_HTML.slice(0, adIndex) : SITE_HTML;
+  const afterAd = adIndex >= 0 ? SITE_HTML.slice(adIndex + adMarker.length) : "";
+
   return (
-    <>
-      <div ref={ref} dangerouslySetInnerHTML={{ __html: SITE_HTML }} />
+    <div ref={ref}>
+      <div dangerouslySetInnerHTML={{ __html: beforeAd }} />
       <AdVideoSection />
-    </>
+      {afterAd && <div dangerouslySetInnerHTML={{ __html: afterAd }} />}
+    </div>
   );
 }
 
