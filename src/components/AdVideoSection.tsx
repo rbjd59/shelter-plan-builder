@@ -150,6 +150,9 @@ export default function AdVideoSection() {
       </div>
     </section>
   );
+
+  if (!mount) return null;
+  return createPortal(content, mount);
 }
 
 export function PlayOverlay({ onClick }: { onClick: () => void }) {
