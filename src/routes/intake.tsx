@@ -167,7 +167,7 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
 const UI = {
   en: {
     title: "    ANSWER ALL QUESTIONS NOT BLOCKED",
-    sub: "IF THE QUESTIONS IS BLOCKED IT MEANS THE ATTORNEY WILL COMPLETE IT IF YOU ARE DETAINED",
+    sub: "Answer every question you can. If you do not know an answer, leave it blank — the attorney will fill it in.",
     upl: "The information below is translated and typed onto the Pro Se Federal Habeas Corpus Form AO 242.",
     submit: "Submit answers",
     submitting: "Submitting…",
@@ -182,8 +182,8 @@ const UI = {
     verifying: "Verifying payment…",
   },
   es: {
-    title: "    RESPONDA TODAS LAS PREGUNTAS NO BLOQUEADAS",
-    sub: "SI LA PREGUNTA ESTÁ BLOQUEADA, EL ABOGADO LA COMPLETARÁ SI USTED ESTÁ DETENIDO",
+    title: "Intake — DetencionDefensa.com",
+    sub: "Responda cada pregunta que pueda. Si no sabe una respuesta, déjela en blanco — el abogado la completará.",
     upl: "NO somos un bufete de abogados. No damos consejos legales. El peticionario firma y presenta.",
     submit: "Enviar respuestas",
     submitting: "Enviando…",
@@ -198,8 +198,8 @@ const UI = {
     verifying: "Verificando pago…",
   },
   ht: {
-    title: "    REPONN TOUT KESYON KI PA BLOKE",
-    sub: "SI KESYON AN BLOKE, AVOKA A AP RANPLI L SI YO DETNI W",
+    title: "Intake — DetencionDefensa.com",
+    sub: "Reponn chak kesyon ou kapab. Si ou pa konnen yon repons, kite l vid — avoka a ap ranpli l.",
     upl: "Nou PA yon kabinè avoka. Nou pa bay konsèy legal. Petisyonè a siyen e depoze.",
     submit: "Voye repons",
     submitting: "K ap voye…",
