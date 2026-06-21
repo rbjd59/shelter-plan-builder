@@ -166,7 +166,7 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
 
 const UI = {
   en: {
-    title: "    ANSWER ALL QUESTIONS NOT BLOCKED",
+    title: "Intake — DetencionDefensa.com",
     sub: "Answer every question you can. If you do not know an answer, leave it blank — the attorney will fill it in.",
     upl: "The information below is translated and typed onto the Pro Se Federal Habeas Corpus Form AO 242.",
     submit: "Submit answers",
