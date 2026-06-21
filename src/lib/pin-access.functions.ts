@@ -289,6 +289,64 @@ export const pinDownloadDocument = createServerFn({ method: "POST" })
     return { pdfB64: b64, filename };
   });
 
+/**
+ * Endpoint the client app calls right after activation to overwrite the
+ * mirrored "From client's file" copy of a form with the personalized PDF
+ * text the app generated locally. Idempotent — repeats just overwrite.
+ *
+ * Auth: no PIN — the activation token is the bearer. We accept the 8-char
+ * invite_token and the document_type to target a single row.
+ */
+export const appUploadFormCopy = createServerFn({ method: "POST" })
+  .inputValidator((d: { token: string; documentType: string; content: string; title?: string }) => {
+    const norm = (d.token || "").toUpperCase().trim();
+    if (!/^[A-Z0-9]{8}$/.test(norm)) throw new Error("invalid_token_format");
+    if (!d.documentType || typeof d.documentType !== "string") throw new Error("documentType required");
+    if (typeof d.content !== "string") throw new Error("content required");
+    return { ...d, token: norm };
+  })
+  .handler(async ({ data }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: client } = await supabaseAdmin
+      .from("app_clients")
+      .select("id")
+      .eq("invite_token", data.token)
+      .maybeSingle();
+    if (!client) throw new Error("invalid_token");
+    const cid = (client as { id: string }).id;
+
+    // Update the from_app=true mirror row for that document_type. If none
+    // exists (older client predating the mirror change), insert one.
+    const { data: existing } = await supabaseAdmin
+      .from("client_documents")
+      .select("id")
+      .eq("client_id", cid)
+      .eq("document_type", data.documentType)
+      .eq("from_app", true)
+      .maybeSingle();
+
+    if (existing) {
+      await supabaseAdmin
+        .from("client_documents")
+        .update({ content: data.content, loaded_at: new Date().toISOString(), title: data.title ?? undefined } as never)
+        .eq("id", (existing as { id: string }).id);
+      return { ok: true, document_id: (existing as { id: string }).id };
+    }
+    const { data: inserted } = await supabaseAdmin
+      .from("client_documents")
+      .insert({
+        client_id: cid,
+        title: data.title ?? data.documentType,
+        content: data.content,
+        document_type: data.documentType,
+        send_on_alert: false,
+        from_app: true,
+      } as never)
+      .select("id")
+      .single();
+    return { ok: true, document_id: (inserted as { id: string }).id };
+  });
+
 // ---------------------------------------------------------------------------
 // Legacy exports kept so existing imports compile until we delete those routes.
 // They proxy the new functions. The /firm.* and /admin.* routes that still
