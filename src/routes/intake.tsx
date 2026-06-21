@@ -161,6 +161,32 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       { key: "emergency_contact_2_relation", label: { en: "Relationship to petitioner", es: "Parentesco", ht: "Relasyon" } },
     ],
   },
+  {
+    id: "attorney_file",
+    title: { en: "8. For Your Attorney", es: "8. Para Su Abogado", ht: "8. Pou Avoka Ou" },
+    intro: {
+      en: "These answers go only to your attorney to help build the strongest argument. If you do not know or do not remember, leave it blank.",
+      es: "Estas respuestas son solo para su abogado, para construir el mejor argumento. Si no sabe o no recuerda, deje en blanco.",
+      ht: "Repons sa yo ale sèlman bay avoka ou pou ede l fè pi bon agiman. Si ou pa konnen oswa pa sonje, kite vid.",
+    },
+    fields: [
+      { key: "atty_entry_manner", type: "textarea", label: { en: "How did you come into the U.S.? (airport/port with a visa, crossed the border, by boat, don't remember)", es: "¿Cómo entró a EE.UU.? (aeropuerto/puerto con visa, cruzó la frontera, por barco, no recuerda)", ht: "Kijan ou te antre Etazini? (ayewopò/pò ak yon viza, travèse fwontyè a, pa bato, pa sonje)" } },
+      { key: "atty_entry_date", label: { en: "When did you come into the U.S.? (month and year, approximate is fine)", es: "¿Cuándo entró a EE.UU.? (mes y año, aproximado está bien)", ht: "Kilè ou te antre Etazini? (mwa ak ane, apeprè dakò)" } },
+      { key: "atty_prior_ice", type: "textarea", label: { en: "Have you ever been paroled, released, or taken in by ICE before this time? (when and what happened)", es: "¿Alguna vez ICE le dio parole, lo liberó o lo detuvo antes? (cuándo y qué pasó)", ht: "Èske ICE te janm bay ou parole, lage ou, oswa kenbe ou anvan? (kilè e sa ki te pase)" } },
+      { key: "atty_relief_applied", type: "textarea", label: { en: "Did you ever apply for asylum, TPS, DACA, U-visa, or any other immigration help? (which one, when, status)", es: "¿Solicitó asilo, TPS, DACA, visa U, u otra ayuda migratoria? (cuál, cuándo, estado)", ht: "Èske ou te janm aplike pou azil, TPS, DACA, viza U, oswa lòt èd imigrasyon? (kilès, kilè, estati)" } },
+      { key: "atty_two_years_us", type: "textarea", label: { en: "Have you been living in the U.S. for more than 2 years without leaving?", es: "¿Ha vivido en EE.UU. más de 2 años sin salir?", ht: "Èske ou ap viv Ozetazini plis pase 2 ane san ou pa soti?" } },
+      { key: "atty_where_arrested", type: "textarea", label: { en: "Where did ICE arrest you? (city and state — and were you at home, at work, on the street, at the border, or in a jail?)", es: "¿Dónde lo arrestó ICE? (ciudad y estado — y estaba en casa, en el trabajo, en la calle, en la frontera o en una cárcel?)", ht: "Ki kote ICE te arete ou? (vil ak eta — èske ou te lakay, nan travay, nan lari, nan fwontyè a, oswa nan yon prizon?)" } },
+      { key: "atty_us_family", type: "textarea", label: { en: "Do you have a spouse, child, or parent who is a U.S. citizen or legal resident? (who and their status)", es: "¿Tiene esposo/a, hijo/a o padre/madre que sea ciudadano o residente legal de EE.UU.? (quién y su estatus)", ht: "Èske ou gen mari/madanm, pitit, oswa paran ki sitwayen oswa rezidan legal Ameriken? (kilès ak estati yo)" } },
+      { key: "atty_address_years", label: { en: "How long have you lived at your current address?", es: "¿Cuánto tiempo ha vivido en su dirección actual?", ht: "Konbyen tan ou ap viv nan adrès aktyèl ou a?" } },
+      { key: "atty_work", type: "textarea", label: { en: "Do you work in the U.S.? (employer name and how long)", es: "¿Trabaja en EE.UU.? (nombre del empleador y cuánto tiempo)", ht: "Èske ou travay Ozetazini? (non anplwayè a ak konbyen tan)" } },
+      { key: "atty_property", type: "textarea", label: { en: "Do you own a home, car, or business in the U.S.?", es: "¿Es dueño de una casa, carro o negocio en EE.UU.?", ht: "Èske ou gen yon kay, machin, oswa biznis Ozetazini?" } },
+      { key: "atty_serious_crime", type: "textarea", label: { en: "Have you ever been arrested in the USA for a serious crime? (if yes, briefly: what and outcome)", es: "¿Alguna vez lo arrestaron en EE.UU. por un delito grave? (si sí, brevemente: qué y resultado)", ht: "Èske yo te janm arete ou Ozetazini pou yon krim grav? (si wi, an kèk mo: ki sa epi rezilta)" } },
+      { key: "atty_medical", type: "textarea", label: { en: "Do you have any serious medical conditions or take prescription medication?", es: "¿Tiene alguna condición médica seria o toma medicamento recetado?", ht: "Èske ou gen pwoblèm medikal grav oswa pran medikaman preskripsyon?" } },
+      { key: "atty_fear_return", type: "textarea", label: { en: "Are you afraid to return to your home country? Why? (gangs, government, family, religion, politics, persecution)", es: "¿Tiene miedo de regresar a su país? ¿Por qué? (pandillas, gobierno, familia, religión, política, persecución)", ht: "Èske ou pè retounen nan peyi ou? Poukisa? (gang, gouvènman, fanmi, relijyon, politik, pèsekisyon)" } },
+      { key: "atty_dependents", type: "textarea", label: { en: "Does anyone depend on you for money or care? (who)", es: "¿Alguien depende de usted para dinero o cuidado? (quién)", ht: "Èske gen moun ki depann sou ou pou lajan oswa swen? (kilès)" } },
+      { key: "atty_missed_court", type: "textarea", label: { en: "Have you ever missed an immigration court date or forgotten to send a change of address to immigration?", es: "¿Alguna vez faltó a una cita en la corte de inmigración o se olvidó de enviar cambio de dirección a inmigración?", ht: "Èske ou te janm manke yon dat tribinal imigrasyon oswa bliye voye yon chanjman adrès bay imigrasyon?" } },
+    ],
+  },
 ];
 
 
