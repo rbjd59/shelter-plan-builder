@@ -199,18 +199,36 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
     { type: "property_access_permission", title: "Property Access Permission" },
   ];
 
-  const seedDocs = [
+  const docSet = [
     ...coreLegalDocs,
     ...(hasAssetProtection ? assetProtectionDocs : []),
-  ].map((d) => ({
+  ];
+
+  const seedDocs = docSet.map((d) => ({
     client_id: clientId,
     title: d.title,
     content: "Pending attorney review. This document will be populated from your intake answers.",
     document_type: d.type,
     send_on_alert: true,
+    from_app: false,
   }));
 
-  await sb.from("client_documents").insert(seedDocs as never);
+  // Mirror the same set into the attorney's "From client's file" column so
+  // the attorney has the full file the moment the client activates — not
+  // dependent on the phone surviving an arrest. The app may later overwrite
+  // the `content` of these rows with the personalized PDF text.
+  const mirrorDocs = docSet.map((d) => ({
+    client_id: clientId,
+    title: d.title,
+    content:
+      `Captured at activation on ${new Date().toISOString().slice(0, 10)}. ` +
+      "The client's app will overwrite this with the personalized copy once it generates it locally.",
+    document_type: d.type,
+    send_on_alert: false,
+    from_app: true,
+  }));
+
+  await sb.from("client_documents").insert([...seedDocs, ...mirrorDocs] as never);
 
 
   // Send activation email

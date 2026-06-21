@@ -262,9 +262,12 @@ function ClientDetail({ pin, clientId }: { pin: string; clientId: string }) {
         </div>
 
         <div>
-          <h3 className="mb-2 text-xs font-bold uppercase tracking-wide text-emerald-800">
-            From client's phone ({app_uploads.length})
+          <h3 className="mb-1 text-xs font-bold uppercase tracking-wide text-emerald-800">
+            From client's file ({app_uploads.length})
           </h3>
+          <p className="mb-2 text-[11px] text-slate-500">
+            Captured at signup, live-updated by the app. Does not depend on the phone surviving the arrest.
+          </p>
           <ul className="space-y-1">
             {app_uploads.map((d: any) => (
               <li key={d.id}>
@@ -281,7 +284,7 @@ function ClientDetail({ pin, clientId }: { pin: string; clientId: string }) {
             ))}
             {app_uploads.length === 0 && (
               <li className="text-sm text-slate-500">
-                Nothing uploaded from the app yet.
+                Nothing in the client's file yet.
               </li>
             )}
           </ul>
