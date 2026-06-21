@@ -1,85 +1,69 @@
-# Two-board data separation + app SOS payload
-
 ## Goal
 
-The activation code is the file number used everywhere. Each board holds only what it needs — so a subpoena against the company yields nothing identifying.
+Stop relying on the client's phone to upload forms during an SOS. The attorney's file should contain every personalized form the moment the client signs up. When SOS fires, the phone only needs to push the things the attorney genuinely can't have ahead of time: live GPS/battery/timestamp, plus any contacts or pet-rescue details the client edited in-app after signup.
 
-## Data contract
+## Why the right column is empty today
 
-```text
-                        ACTIVATION CODE  (file # everywhere)
-                                 |
-        ┌────────────────────────┴────────────────────────┐
-        |                                                 |
-  COMPANY BOARD                                    ATTORNEY BOARD
-  --------------                                   ----------------
-  At signup:                                       At signup:
-  - activation code (only)                         - activation code
-                                                   - full name
-                                                   - contact email / phone
-                                                   - A-Number (if known)
-                                                   - draft forms (5 core)
+At signup, `provisionAppClient` (in `src/lib/app-clients.server.ts`) inserts the 5–10 seed forms into `client_documents` with `from_app = false`. The attorney board splits documents:
 
-  On SOS trigger (from app):                       On SOS trigger (from app):
-  - activation code                                - activation code
-  - name (entered in app)                          - date + time of trigger
-  - A-Number (entered in app)                      - any forms uploaded from
-  - place of birth                                   the phone are attached
-  - date of birth                                    to the client's file
-  - trigger date + time                              automatically
+- `from_app = false` → "Draft forms" (left column) ✅
+- `from_app = true`  → "From client's phone" (right column) ❌ empty until the phone POSTs back
+
+That's a single-source design — there's no second copy. If the phone never uploads (because ICE took it), the right column stays blank forever. The forms themselves are not lost (they're in the left column), but the attorney has no visible signal that the file is complete.
+
+## Plan
+
+### 1. Mirror seed forms into the attorney file at signup
+
+In `provisionAppClient`, after inserting the existing seed docs as `from_app = false` (left column / "Draft forms"), insert a **mirror copy** of the same set with `from_app = true` and `loaded_at = now()` (right column / "From client's phone"). The mirror's `content` field records that it was captured at activation, not uploaded from the device:
+
+```
+Mirrored from app file at activation on 2026-06-21.
+Pending attorney review — will be populated from intake answers.
 ```
 
-## What changes
+This means the moment a client activates the code, the attorney sees the right column populated with the same 10 forms. No SOS required. No race against ICE.
 
-### 1. Welcome email (already simplified)
+### 2. Wire the app to push immediately on activation
 
-Keeps: activation code (big), one button → `https://detenciondefensa.com/download`. That page already auto-detects iPhone vs. Android and walks them through install. No change required this turn beyond confirming wording is third-grade-friendly.
+When the app redeems the activation code (`redeem_invite_token` RPC), have the phone immediately call `attach_alert_document` for each personalized form it locally generated, replacing the mirrored placeholder content. If the phone gets seized before this call, the placeholder mirror from step 1 is still in the attorney file — belt and suspenders.
 
-### 2. Company board (`/company-board`)
+Concretely: add a new server function `pinUploadAppCopy({ token, documentType, content })` that updates the matching `from_app = true` row's `content` field. The app calls this once per form right after activation.
 
-Rewrite the board to show two sections:
+### 3. Trigger payload becomes lean
 
-- **Registered clients (no trigger yet)** — table of just `activation_code` and `registered_at`. No names, no emails.
-- **Triggered clients** — for each, only what the app sent on trigger: `activation_code`, `name`, `A-Number`, `place_of_birth`, `date_of_birth`, `trigger_date`, `trigger_time`. Nothing else.
+On SOS, the phone only needs to send:
+- Live GPS lat/lng
+- Battery %
+- Timestamp
+- Any contacts/pet-rescue rows the client *added or edited in-app* after signup (not the seed ones — those are already on the server)
 
-Remove from this board: contact emails, phone numbers, documents, detention-locate form, attorney workflow.
+`record_sos_alert` already accepts these. No schema change needed.
 
-### 3. Attorney board (`/attorney-board`)
+### 4. UI label update on `/attorney-board`
 
-Show **every** client (not just detained), keyed by activation code:
+In the right column header, change `From client's phone (N)` to:
 
-- At signup: activation code, full name, contact email/phone, A-Number (if intake captured it), the 5 draft forms attached.
-- At trigger: timestamp appears on the row; any forms the app uploads land in the client's folder automatically.
+```
+From client's file (N) — captured at signup, live-updated by the app
+```
 
-### 4. SOS app payload — new fields
+So the attorney understands the column is populated at signup and refreshed by the app, not dependent on the phone surviving an arrest.
 
-The app currently calls `record_sos_alert(_token, _lat, _lng, _battery_pct, _payload)`. We extend the JSON payload contract so the app can send `{ name, a_number, place_of_birth, date_of_birth }` on trigger. A small migration:
+### 5. Backfill DEMO0001 and any existing clients
 
-- Add nullable columns `app_reported_name`, `app_reported_a_number`, `app_reported_place_of_birth`, `app_reported_date_of_birth` to `client_sos_alerts`.
-- Update `record_sos_alert` to read those keys out of `_payload` and write them to the columns.
+One-time SQL: for every `app_clients` row, find its `from_app = false` docs and insert mirrors with `from_app = true` if a mirror doesn't already exist. This makes the change visible immediately for existing demo clients without forcing a re-signup.
 
-These fields are what the company board reads. The intake-stored name/email never crosses over to the company board.
+## Files touched
 
-### 5. Attorney upload channel for forms-from-phone
+- `src/lib/app-clients.server.ts` — insert mirror docs at provisioning
+- `src/lib/pin-access.functions.ts` — new `pinUploadAppCopy` server fn (step 2); update column header text in the response if needed
+- `src/routes/attorney-board.tsx` — relabel the right column
+- New migration — backfill mirrors for existing clients
+- (Optional, for the app team) document the new `pinUploadAppCopy` endpoint so the Premio app can call it post-activation
 
-New RPC `attach_alert_document(_token, _title, _content, _document_type)` — anon-callable, validates token format, inserts into `client_documents` with a new flag `from_app = true`. Attorney board groups these under the client's folder.
+## Out of scope for this PR
 
-## Order I'll ship
-
-1. Migration: new alert columns + `attach_alert_document` RPC + `from_app` column on `client_documents`. Update `record_sos_alert`.
-2. Rewrite `pinListAlerts` / add `pinListRegisteredClients` server fns to match the new company-board contract.
-3. Rewrite `/company-board` UI: registered table + triggered table, nothing else.
-4. Expand `pinListDetained` → `pinListAllClients`; rewrite `/attorney-board` UI to show every client with their draft forms and any app-uploaded forms.
-5. Update the API contract doc (`/mnt/documents/api-contract.md`) so the Flutter dev knows the four new payload keys and the new `attach_alert_document` RPC.
-
-## Out of scope (this turn)
-
-- Actual auto-install of the app on a phone — neither iOS nor Android allows that without the App Store / Play Store. The `/download` flow with the activation code is the simplest legal path; user enters code → app loads with their data already wired. We are not building an exploit-style auto-installer.
-- SMS delivery of the activation code (already exists separately).
-- Per-form audience routing (deferred from earlier).
-
-## Technical notes
-
-- `client_sos_alerts` already has a `payload jsonb` column, so the new columns are denormalized convenience for board queries.
-- `attach_alert_document` is anon-callable like the other app-facing RPCs, validated by `^[A-Z0-9]{8}$` token regex.
-- No schema changes to `app_clients` — what the company board sees comes from the alert row, not the client row.
+- The Premio app's local PDF generation pipeline. We expose the endpoint; the app team wires the call.
+- Changing what SOS uploads — the payload is already correct.
+- Twilio toll-free verification (separate thread).
