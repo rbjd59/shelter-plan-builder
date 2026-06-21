@@ -67,29 +67,11 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       { key: "place_of_birth", label: { en: "Place of birth (city, state/province)", es: "Lugar de nacimiento (ciudad, estado/provincia)", ht: "Kote ou te fèt (vil, eta/pwovens)" } },
       { key: "country_of_origin", label: { en: "Country of origin", es: "País de origen", ht: "Peyi orijin" } },
       { key: "country_of_citizenship", label: { en: "Country of citizenship", es: "País de ciudadanía", ht: "Peyi sitwayènte" } },
-      { key: "court_district", disabled: true, label: { en: "U.S. District Court (e.g. Florida Southern, New York Southern)", es: "Tribunal de Distrito (ej. Florida Sur, Nueva York Sur)", ht: "Tribinal Distri (egz. Florid Sid, New York Sid)" }, hint: { en: "Leave blank — determined later based on facility", es: "Dejar en blanco — se determina después según el centro", ht: "Kite vid — n ap detèmine apre" } },
-      { key: "facility_name", disabled: true, label: { en: "Facility where detained", es: "Centro donde está detenido", ht: "Sant kote li detni" }, hint: { en: "Leave blank — inmate fills after transfer", es: "Dejar en blanco", ht: "Kite vid" } },
-      { key: "facility_address", disabled: true, type: "textarea", label: { en: "Facility address", es: "Dirección del centro", ht: "Adrès sant lan" }, hint: { en: "Leave blank", es: "Dejar en blanco", ht: "Kite vid" } },
-      { key: "booking_number", disabled: true, label: { en: "Booking / inmate ID", es: "Número de reserva", ht: "Nimewo prizonye" }, hint: { en: "Leave blank", es: "Dejar en blanco", ht: "Kite vid" } },
-      { key: "date_taken_into_custody", disabled: true, type: "date", label: { en: "Date taken into custody", es: "Fecha de detención", ht: "Dat yo te pran l" }, hint: { en: "Leave blank", es: "Dejar en blanco", ht: "Kite vid" } },
-    ],
-  },
-  {
-    id: "respondent",
-    title: { en: "2. Respondent (Custodian)", es: "2. Demandado (Custodio)", ht: "2. Defandè (Gadyen)" },
-    intro: {
-      en: "The Warden of the facility is normally the proper respondent.",
-      es: "El Director del centro es normalmente el demandado correcto.",
-      ht: "Direktè sant lan se nòmalman defandè ki kòrèk la.",
-    },
-    fields: [
-      { key: "warden_name", disabled: true, label: { en: "Warden's name", es: "Nombre del director", ht: "Non Direktè a" }, hint: { en: "Leave blank", es: "Dejar en blanco", ht: "Kite vid" } },
-      { key: "warden_title", disabled: true, label: { en: "Additional Respondent", es: "Título del director", ht: "Tit Direktè a" }, hint: { en: "Leave blank", es: "Dejar en blanco", ht: "Kite vid" } },
     ],
   },
   {
     id: "detainer",
-    title: { en: "3. Immigration Status", es: "3. Detención de ICE", ht: "3. Detainer ICE" },
+    title: { en: "2. Immigration Status", es: "2. Detención de ICE", ht: "2. Detainer ICE" },
     intro: {
       en: "Has Immigration issued a Order of Removal",
       es: "Información sobre la retención migratoria.",
@@ -100,6 +82,7 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       { key: "prior_immigration_proceedings", type: "textarea", label: { en: "Describe prior Immigration Status", es: "Describa procedimientos migratorios anteriores", ht: "Dekri pwosedi imigrasyon anvan" } },
     ],
   },
+
   {
     id: "grounds",
     title: { en: "4. Why you believe you should not be detained by ICE ", es: "4. Motivos de la Petición", ht: "4. Rezon pou Petisyon an" },
