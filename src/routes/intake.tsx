@@ -67,29 +67,11 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       { key: "place_of_birth", label: { en: "Place of birth (city, state/province)", es: "Lugar de nacimiento (ciudad, estado/provincia)", ht: "Kote ou te fèt (vil, eta/pwovens)" } },
       { key: "country_of_origin", label: { en: "Country of origin", es: "País de origen", ht: "Peyi orijin" } },
       { key: "country_of_citizenship", label: { en: "Country of citizenship", es: "País de ciudadanía", ht: "Peyi sitwayènte" } },
-      { key: "court_district", disabled: true, label: { en: "U.S. District Court (e.g. Florida Southern, New York Southern)", es: "Tribunal de Distrito (ej. Florida Sur, Nueva York Sur)", ht: "Tribinal Distri (egz. Florid Sid, New York Sid)" }, hint: { en: "Leave blank — determined later based on facility", es: "Dejar en blanco — se determina después según el centro", ht: "Kite vid — n ap detèmine apre" } },
-      { key: "facility_name", disabled: true, label: { en: "Facility where detained", es: "Centro donde está detenido", ht: "Sant kote li detni" }, hint: { en: "Leave blank — inmate fills after transfer", es: "Dejar en blanco", ht: "Kite vid" } },
-      { key: "facility_address", disabled: true, type: "textarea", label: { en: "Facility address", es: "Dirección del centro", ht: "Adrès sant lan" }, hint: { en: "Leave blank", es: "Dejar en blanco", ht: "Kite vid" } },
-      { key: "booking_number", disabled: true, label: { en: "Booking / inmate ID", es: "Número de reserva", ht: "Nimewo prizonye" }, hint: { en: "Leave blank", es: "Dejar en blanco", ht: "Kite vid" } },
-      { key: "date_taken_into_custody", disabled: true, type: "date", label: { en: "Date taken into custody", es: "Fecha de detención", ht: "Dat yo te pran l" }, hint: { en: "Leave blank", es: "Dejar en blanco", ht: "Kite vid" } },
-    ],
-  },
-  {
-    id: "respondent",
-    title: { en: "2. Respondent (Custodian)", es: "2. Demandado (Custodio)", ht: "2. Defandè (Gadyen)" },
-    intro: {
-      en: "The Warden of the facility is normally the proper respondent.",
-      es: "El Director del centro es normalmente el demandado correcto.",
-      ht: "Direktè sant lan se nòmalman defandè ki kòrèk la.",
-    },
-    fields: [
-      { key: "warden_name", disabled: true, label: { en: "Warden's name", es: "Nombre del director", ht: "Non Direktè a" }, hint: { en: "Leave blank", es: "Dejar en blanco", ht: "Kite vid" } },
-      { key: "warden_title", disabled: true, label: { en: "Additional Respondent", es: "Título del director", ht: "Tit Direktè a" }, hint: { en: "Leave blank", es: "Dejar en blanco", ht: "Kite vid" } },
     ],
   },
   {
     id: "detainer",
-    title: { en: "3. Immigration Status", es: "3. Detención de ICE", ht: "3. Detainer ICE" },
+    title: { en: "2. Immigration Status", es: "2. Detención de ICE", ht: "2. Detainer ICE" },
     intro: {
       en: "Has Immigration issued a Order of Removal",
       es: "Información sobre la retención migratoria.",
@@ -100,9 +82,10 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       { key: "prior_immigration_proceedings", type: "textarea", label: { en: "Describe prior Immigration Status", es: "Describa procedimientos migratorios anteriores", ht: "Dekri pwosedi imigrasyon anvan" } },
     ],
   },
+
   {
     id: "grounds",
-    title: { en: "4. Why you believe you should not be detained by ICE ", es: "4. Motivos de la Petición", ht: "4. Rezon pou Petisyon an" },
+    title: { en: "3. Why you believe you should not be detained by ICE ", es: "3. Motivos de la Petición", ht: "3. Rezon pou Petisyon an" },
     intro: {
       en: "Check the grounds that apply. We do NOT choose your legal grounds. If you are not sure the Attorney will complete them, Leave them blank.",
       es: "Marque los motivos que apliquen. NOSOTROS NO elegimos sus motivos legales.",
@@ -112,9 +95,9 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
   },
   {
     id: "ifp",
-    title: { en: "5. Application for No Court Fee ", es: "5. AO 240 — In Forma Pauperis", ht: "5. AO 240 — In Forma Pauperis" },
+    title: { en: "4. Application for No Court Fee ", es: "4. AO 240 — In Forma Pauperis", ht: "4. AO 240 — In Forma Pauperis" },
     intro: {
-      en: "Remember you only file this after arrested. Answer the question based upon being in jail. If you want to wait to see your financial condition after arrest, we will send you this form in English, Spanish & Hattian, wait to fill it out. This form is sworn under penalty of perjury.  You must be accurate. If you have income now and will lose your income if arrested it is best to wait to complete it. If you have no income now and are below the poverty level you may fill it out now for consideration of a sliding scale fee by DetencionDefensa.com through your church or non-profit organization.   YOU WILL BE REQUIRED TO PROVIDE PROOF OF INABILITY TO PAY. THE FILING FEE IS ONLY $5.00 AND IF YOU DO NOT COMPLETE THIS FORM YOU WILL RECIEVE A CHECK WIITH YOUR PACKAGE PAYABLE TO THE CLERK OF THE COURT FOR $5.00 SO YOU CAN SIGN AND MAIL THE PRO SE FORMS FOR FILING FROM DETENTION.",
+      en: "Remember you only file this after arrested. Answer the question based upon being in jail. If you want to wait to see your financial condition after arrest, we will send you this form in English, Spanish & Hattian, wait to fill it out. This form is sworn under penalty of perjury.  You must be accurate. If you have income now and will lose your income if arrested it is best to wait to complete it. If you have no income now and are below the poverty level you may fill it out now for consideration of a sliding scale fee by DetencionDefensa.com through your church or non-profit organization.   YOU WILL BE REQUIRED TO PROVIDE PROOF OF INABILITY TO PAY. THE FILING FEE IS ONLY $5.00 AND IF YOU DO NOT COMPLETE THIS FORM YOU WILL RECIEVE A CHECK WIITH YOUR PACKAGE PAYABLE TO THE CLERK OF THE COURT FOR $5.00 SO YOU CAN SIGN AND MAIL THE PRO SE FORMS FOR FILING FROM DETENTION.",
       es: "Si no puede pagar la tasa de $5, esto pide que la exima. Ingrese 0 si no hay.",
       ht: "Si li pa kapab peye frè $5 la, sa mande tribinal la egzante l. Mete 0 si pa gen.",
     },
@@ -132,27 +115,24 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
   {
     id: "mailto",
     title: {
-      en: "6. Emergency Contact for the NOTIFY FAMILY App + Mailing Address if Detained",
-      es: "6. Contacto de Emergencia para la App AVISAR A FAMILIA + Dirección Postal si está Detenido",
-      ht: "6. Kontak Ijans pou App AVIZE FANMI + Adrès Postal si Detni",
+      en: "5. Emergency Contact for the NOTIFY FAMILY App",
+      es: "5. Contacto de Emergencia para la App AVISAR A FAMILIA",
+      ht: "5. Kontak Ijans pou App AVIZE FANMI",
     },
     intro: {
-      en: "If the petitioner is detained, this is where we'll mail a an additional printed copy of the File Now Packet (AO 242 + AO 240). The same person is also notified by email . Your family ca ask the Court to file the forms on your behalf if you are disabled or otherwise qualify. ",
-      es: "Si el peticionario es detenido, aquí enviaremos por correo una copia impresa del Paquete File Now (AO 242 + AO 240). Esta misma persona recibe un aviso por correo electrónico — con copia de los formularios adjunta — en el momento en que el peticionario active el botón AVISAR A FAMILIA en la app móvil.",
-      ht: "Si yo detni petisyonè a, se la nou pral voye yon kopi enprime nan File Now Packet la (AO 242 + AO 240). Menm moun sa a resevwa yon notifikasyon imèl — ak yon kopi fòm yo — lè petisyonè a aktive bouton AVIZE FANMI nan app la.",
+      en: "This person is notified by email — with a copy of your forms attached — the moment you press the NOTIFY FAMILY button in the app.",
+      es: "Esta persona recibe un aviso por correo electrónico — con copia de los formularios adjunta — en el momento en que usted active el botón AVISAR A FAMILIA en la app móvil.",
+      ht: "Moun sa a resevwa yon notifikasyon imèl — ak yon kopi fòm yo — lè ou aktive bouton AVIZE FANMI nan app la.",
     },
     fields: [
       { key: "emergency_contact_name", label: { en: "Emergency contact full name (notified by the app)", es: "Nombre completo del contacto de emergencia (notificado por la app)", ht: "Non konplè kontak ijans (app la notifye)" } },
       { key: "emergency_contact_email", label: { en: "Emergency contact email — receives the activation alert + form copies", es: "Correo del contacto de emergencia — recibe la alerta + copia de los formularios", ht: "Imèl kontak ijans — resevwa alèt la + kopi fòm yo" } },
       { key: "mail_inmate_name", label: { en: "Inmate full name (as on mail)", es: "Nombre completo del recluso", ht: "Non konplè prizonye a" } },
-      { key: "mail_current_location", disabled: true, label: { en: "Where is inmate located now (facility name)", es: "¿Dónde está el recluso ahora?", ht: "Kote prizonye a ye kounye a" }, hint: { en: "Leave blank — detenciondefensa.com locates the inmate and forwards this to the attorney's office", es: "Dejar en blanco — detenciondefensa.com localiza al recluso y lo envía al despacho del abogado", ht: "Kite vid — detenciondefensa.com jwenn kote prizonye a e voye l bay biwo avoka a" } },
-      { key: "mail_inmate_number", disabled: true, label: { en: "Inmate / booking number", es: "Número de recluso", ht: "Nimewo prizonye" }, hint: { en: "Leave blank — completed by detenciondefensa.com once the inmate is located", es: "Dejar en blanco — lo completa detenciondefensa.com al localizar al recluso", ht: "Kite vid — detenciondefensa.com ranpli l lè li jwenn prizonye a" } },
-      { key: "mail_facility_address", disabled: true, type: "textarea", label: { en: "Facility mailing address (for printed File Now Packet)", es: "Dirección postal del centro (para el Paquete File Now impreso)", ht: "Adrès postal sant lan (pou File Now Packet enprime)" }, hint: { en: "Leave blank — completed by detenciondefensa.com once the inmate is located", es: "Dejar en blanco — lo completa detenciondefensa.com al localizar al recluso", ht: "Kite vid — detenciondefensa.com ranpli l lè li jwenn prizonye a" } },
     ],
   },
   {
     id: "contact",
-    title: { en: "7. Family Contact (you)", es: "7. Contacto Familiar (usted)", ht: "7. Kontak Fanmi (ou menm)" },
+    title: { en: "6. Family Contact (you)", es: "6. Contacto Familiar (usted)", ht: "6. Kontak Fanmi (ou menm)" },
     intro: {
       en: "We send the prepared forms to this contact.",
       es: "Enviamos los formularios a este contacto.",
@@ -168,7 +148,7 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
   },
   {
     id: "second_emergency",
-    title: { en: "8. Second Emergency Contact", es: "8. Segundo Contacto de Emergencia", ht: "8. Dezyèm Kontak Ijans" },
+    title: { en: "7. Second Emergency Contact", es: "7. Segundo Contacto de Emergencia", ht: "7. Dezyèm Kontak Ijans" },
     intro: {
       en: "A backup contact notified by the app if we cannot reach the first emergency contact.",
       es: "Un contacto de respaldo notificado por la app si no podemos contactar al primero.",
@@ -183,10 +163,11 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
   },
 ];
 
+
 const UI = {
   en: {
-    title: "    ANSWER ALL QUESTIONS NOT BLOCKED",
-    sub: "IF THE QUESTIONS IS BLOCKED IT MEANS THE ATTORNEY WILL COMPLETE IT IF YOU ARE DETAINED",
+    title: "Intake — DetencionDefensa.com",
+    sub: "Answer every question you can. If you do not know an answer, leave it blank — the attorney will fill it in.",
     upl: "The information below is translated and typed onto the Pro Se Federal Habeas Corpus Form AO 242.",
     submit: "Submit answers",
     submitting: "Submitting…",
@@ -201,8 +182,8 @@ const UI = {
     verifying: "Verifying payment…",
   },
   es: {
-    title: "    RESPONDA TODAS LAS PREGUNTAS NO BLOQUEADAS",
-    sub: "SI LA PREGUNTA ESTÁ BLOQUEADA, EL ABOGADO LA COMPLETARÁ SI USTED ESTÁ DETENIDO",
+    title: "Intake — DetencionDefensa.com",
+    sub: "Responda cada pregunta que pueda. Si no sabe una respuesta, déjela en blanco — el abogado la completará.",
     upl: "NO somos un bufete de abogados. No damos consejos legales. El peticionario firma y presenta.",
     submit: "Enviar respuestas",
     submitting: "Enviando…",
@@ -217,8 +198,8 @@ const UI = {
     verifying: "Verificando pago…",
   },
   ht: {
-    title: "    REPONN TOUT KESYON KI PA BLOKE",
-    sub: "SI KESYON AN BLOKE, AVOKA A AP RANPLI L SI YO DETNI W",
+    title: "Intake — DetencionDefensa.com",
+    sub: "Reponn chak kesyon ou kapab. Si ou pa konnen yon repons, kite l vid — avoka a ap ranpli l.",
     upl: "Nou PA yon kabinè avoka. Nou pa bay konsèy legal. Petisyonè a siyen e depoze.",
     submit: "Voye repons",
     submitting: "K ap voye…",
