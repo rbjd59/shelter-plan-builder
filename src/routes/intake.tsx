@@ -85,7 +85,7 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
 
   {
     id: "grounds",
-    title: { en: "4. Why you believe you should not be detained by ICE ", es: "4. Motivos de la Petición", ht: "4. Rezon pou Petisyon an" },
+    title: { en: "3. Why you believe you should not be detained by ICE ", es: "3. Motivos de la Petición", ht: "3. Rezon pou Petisyon an" },
     intro: {
       en: "Check the grounds that apply. We do NOT choose your legal grounds. If you are not sure the Attorney will complete them, Leave them blank.",
       es: "Marque los motivos que apliquen. NOSOTROS NO elegimos sus motivos legales.",
@@ -95,9 +95,9 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
   },
   {
     id: "ifp",
-    title: { en: "5. Application for No Court Fee ", es: "5. AO 240 — In Forma Pauperis", ht: "5. AO 240 — In Forma Pauperis" },
+    title: { en: "4. Application for No Court Fee ", es: "4. AO 240 — In Forma Pauperis", ht: "4. AO 240 — In Forma Pauperis" },
     intro: {
-      en: "Remember you only file this after arrested. Answer the question based upon being in jail. If you want to wait to see your financial condition after arrest, we will send you this form in English, Spanish & Hattian, wait to fill it out. This form is sworn under penalty of perjury.  You must be accurate. If you have income now and will lose your income if arrested it is best to wait to complete it. If you have no income now and are below the poverty level you may fill it out now for consideration of a sliding scale fee by DetencionDefensa.com through your church or non-profit organization.   YOU WILL BE REQUIRED TO PROVIDE PROOF OF INABILITY TO PAY. THE FILING FEE IS ONLY $5.00 AND IF YOU DO NOT COMPLETE THIS FORM YOU WILL RECIEVE A CHECK WIITH YOUR PACKAGE PAYABLE TO THE CLERK OF THE COURT FOR $5.00 SO YOU CAN SIGN AND MAIL THE PRO SE FORMS FOR FILING FROM DETENTION.",
+      en: "Remember you only file this after arrested. Answer the question based upon being in jail. If you want to wait to see your financial condition after arrest, we will send you this form in English, Spanish & Hattian, wait to fill it out. This form is sworn under penalty of perjury.  You must be accurate. If you have income now and will lose your income if arrested it is best to wait to complete it. If you have no income now and are below the poverty level you may fill it out now for consideration of a sliding scale fee by DetencionDefensa.com through your church or non-profit organization.   YOU WILL BE REQUIRED TO PROVIDE PROOF OF INABILITY TO PAY. THE FILING FEE IS ONLY $5.00 AND IF YOU DO NOT COMPLETE THIS FORM YOU WILL RECIEVE A CHECK WIITH YOUR PACKAGE PAYABLE TO THE CLERK OF THE COURT FOR $5.00 SO YOU CAN SIGN AND MAIL THE PRO SE FORMS FOR FILING FROM DETENTION.",
       es: "Si no puede pagar la tasa de $5, esto pide que la exima. Ingrese 0 si no hay.",
       ht: "Si li pa kapab peye frè $5 la, sa mande tribinal la egzante l. Mete 0 si pa gen.",
     },
@@ -115,27 +115,24 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
   {
     id: "mailto",
     title: {
-      en: "6. Emergency Contact for the NOTIFY FAMILY App + Mailing Address if Detained",
-      es: "6. Contacto de Emergencia para la App AVISAR A FAMILIA + Dirección Postal si está Detenido",
-      ht: "6. Kontak Ijans pou App AVIZE FANMI + Adrès Postal si Detni",
+      en: "5. Emergency Contact for the NOTIFY FAMILY App",
+      es: "5. Contacto de Emergencia para la App AVISAR A FAMILIA",
+      ht: "5. Kontak Ijans pou App AVIZE FANMI",
     },
     intro: {
-      en: "If the petitioner is detained, this is where we'll mail a an additional printed copy of the File Now Packet (AO 242 + AO 240). The same person is also notified by email . Your family ca ask the Court to file the forms on your behalf if you are disabled or otherwise qualify. ",
-      es: "Si el peticionario es detenido, aquí enviaremos por correo una copia impresa del Paquete File Now (AO 242 + AO 240). Esta misma persona recibe un aviso por correo electrónico — con copia de los formularios adjunta — en el momento en que el peticionario active el botón AVISAR A FAMILIA en la app móvil.",
-      ht: "Si yo detni petisyonè a, se la nou pral voye yon kopi enprime nan File Now Packet la (AO 242 + AO 240). Menm moun sa a resevwa yon notifikasyon imèl — ak yon kopi fòm yo — lè petisyonè a aktive bouton AVIZE FANMI nan app la.",
+      en: "This person is notified by email — with a copy of your forms attached — the moment you press the NOTIFY FAMILY button in the app.",
+      es: "Esta persona recibe un aviso por correo electrónico — con copia de los formularios adjunta — en el momento en que usted active el botón AVISAR A FAMILIA en la app móvil.",
+      ht: "Moun sa a resevwa yon notifikasyon imèl — ak yon kopi fòm yo — lè ou aktive bouton AVIZE FANMI nan app la.",
     },
     fields: [
       { key: "emergency_contact_name", label: { en: "Emergency contact full name (notified by the app)", es: "Nombre completo del contacto de emergencia (notificado por la app)", ht: "Non konplè kontak ijans (app la notifye)" } },
       { key: "emergency_contact_email", label: { en: "Emergency contact email — receives the activation alert + form copies", es: "Correo del contacto de emergencia — recibe la alerta + copia de los formularios", ht: "Imèl kontak ijans — resevwa alèt la + kopi fòm yo" } },
       { key: "mail_inmate_name", label: { en: "Inmate full name (as on mail)", es: "Nombre completo del recluso", ht: "Non konplè prizonye a" } },
-      { key: "mail_current_location", disabled: true, label: { en: "Where is inmate located now (facility name)", es: "¿Dónde está el recluso ahora?", ht: "Kote prizonye a ye kounye a" }, hint: { en: "Leave blank — detenciondefensa.com locates the inmate and forwards this to the attorney's office", es: "Dejar en blanco — detenciondefensa.com localiza al recluso y lo envía al despacho del abogado", ht: "Kite vid — detenciondefensa.com jwenn kote prizonye a e voye l bay biwo avoka a" } },
-      { key: "mail_inmate_number", disabled: true, label: { en: "Inmate / booking number", es: "Número de recluso", ht: "Nimewo prizonye" }, hint: { en: "Leave blank — completed by detenciondefensa.com once the inmate is located", es: "Dejar en blanco — lo completa detenciondefensa.com al localizar al recluso", ht: "Kite vid — detenciondefensa.com ranpli l lè li jwenn prizonye a" } },
-      { key: "mail_facility_address", disabled: true, type: "textarea", label: { en: "Facility mailing address (for printed File Now Packet)", es: "Dirección postal del centro (para el Paquete File Now impreso)", ht: "Adrès postal sant lan (pou File Now Packet enprime)" }, hint: { en: "Leave blank — completed by detenciondefensa.com once the inmate is located", es: "Dejar en blanco — lo completa detenciondefensa.com al localizar al recluso", ht: "Kite vid — detenciondefensa.com ranpli l lè li jwenn prizonye a" } },
     ],
   },
   {
     id: "contact",
-    title: { en: "7. Family Contact (you)", es: "7. Contacto Familiar (usted)", ht: "7. Kontak Fanmi (ou menm)" },
+    title: { en: "6. Family Contact (you)", es: "6. Contacto Familiar (usted)", ht: "6. Kontak Fanmi (ou menm)" },
     intro: {
       en: "We send the prepared forms to this contact.",
       es: "Enviamos los formularios a este contacto.",
@@ -151,7 +148,7 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
   },
   {
     id: "second_emergency",
-    title: { en: "8. Second Emergency Contact", es: "8. Segundo Contacto de Emergencia", ht: "8. Dezyèm Kontak Ijans" },
+    title: { en: "7. Second Emergency Contact", es: "7. Segundo Contacto de Emergencia", ht: "7. Dezyèm Kontak Ijans" },
     intro: {
       en: "A backup contact notified by the app if we cannot reach the first emergency contact.",
       es: "Un contacto de respaldo notificado por la app si no podemos contactar al primero.",
@@ -165,6 +162,7 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
     ],
   },
 ];
+
 
 const UI = {
   en: {
