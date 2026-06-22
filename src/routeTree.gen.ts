@@ -73,6 +73,7 @@ import { Route as ApiPublicDevSendInstallRouteImport } from './routes/api/public
 import { Route as ApiPublicCronRetryFailedEmailsRouteImport } from './routes/api/public/cron/retry-failed-emails'
 import { Route as ApiPublicCronProcessDueActivationsRouteImport } from './routes/api/public/cron/process-due-activations'
 import { Route as FirmFirmReviewIdRouteImport } from './routes/_firm/firm.review.$id'
+import { Route as FirmFirmPacketIdRouteImport } from './routes/_firm/firm.packet.$id'
 import { Route as FirmFirmDetainedIdRouteImport } from './routes/_firm/firm.detained.$id'
 import { Route as AdminAdminClientsIdRouteImport } from './routes/_admin/admin.clients.$id'
 
@@ -402,6 +403,11 @@ const FirmFirmReviewIdRoute = FirmFirmReviewIdRouteImport.update({
   path: '/firm/review/$id',
   getParentRoute: () => FirmRoute,
 } as any)
+const FirmFirmPacketIdRoute = FirmFirmPacketIdRouteImport.update({
+  id: '/firm/packet/$id',
+  path: '/firm/packet/$id',
+  getParentRoute: () => FirmRoute,
+} as any)
 const FirmFirmDetainedIdRoute = FirmFirmDetainedIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -467,6 +473,7 @@ export interface FileRoutesByFullPath {
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/admin/clients/$id': typeof AdminAdminClientsIdRoute
   '/firm/detained/$id': typeof FirmFirmDetainedIdRoute
+  '/firm/packet/$id': typeof FirmFirmPacketIdRoute
   '/firm/review/$id': typeof FirmFirmReviewIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/cron/retry-failed-emails': typeof ApiPublicCronRetryFailedEmailsRoute
@@ -532,6 +539,7 @@ export interface FileRoutesByTo {
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/admin/clients/$id': typeof AdminAdminClientsIdRoute
   '/firm/detained/$id': typeof FirmFirmDetainedIdRoute
+  '/firm/packet/$id': typeof FirmFirmPacketIdRoute
   '/firm/review/$id': typeof FirmFirmReviewIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/cron/retry-failed-emails': typeof ApiPublicCronRetryFailedEmailsRoute
@@ -601,6 +609,7 @@ export interface FileRoutesById {
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/_admin/admin/clients/$id': typeof AdminAdminClientsIdRoute
   '/_firm/firm/detained/$id': typeof FirmFirmDetainedIdRoute
+  '/_firm/firm/packet/$id': typeof FirmFirmPacketIdRoute
   '/_firm/firm/review/$id': typeof FirmFirmReviewIdRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/cron/retry-failed-emails': typeof ApiPublicCronRetryFailedEmailsRoute
@@ -668,6 +677,7 @@ export interface FileRouteTypes {
     | '/lovable/email/suppression'
     | '/admin/clients/$id'
     | '/firm/detained/$id'
+    | '/firm/packet/$id'
     | '/firm/review/$id'
     | '/api/public/cron/process-due-activations'
     | '/api/public/cron/retry-failed-emails'
@@ -733,6 +743,7 @@ export interface FileRouteTypes {
     | '/lovable/email/suppression'
     | '/admin/clients/$id'
     | '/firm/detained/$id'
+    | '/firm/packet/$id'
     | '/firm/review/$id'
     | '/api/public/cron/process-due-activations'
     | '/api/public/cron/retry-failed-emails'
@@ -801,6 +812,7 @@ export interface FileRouteTypes {
     | '/lovable/email/suppression'
     | '/_admin/admin/clients/$id'
     | '/_firm/firm/detained/$id'
+    | '/_firm/firm/packet/$id'
     | '/_firm/firm/review/$id'
     | '/api/public/cron/process-due-activations'
     | '/api/public/cron/retry-failed-emails'
@@ -1315,6 +1327,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FirmFirmReviewIdRouteImport
       parentRoute: typeof FirmRoute
     }
+    '/_firm/firm/packet/$id': {
+      id: '/_firm/firm/packet/$id'
+      path: '/firm/packet/$id'
+      fullPath: '/firm/packet/$id'
+      preLoaderRoute: typeof FirmFirmPacketIdRouteImport
+      parentRoute: typeof FirmRoute
+    }
     '/_firm/firm/detained/$id': {
       id: '/_firm/firm/detained/$id'
       path: '/$id'
@@ -1409,12 +1428,14 @@ const FirmFirmDetainedRouteWithChildren =
 interface FirmRouteChildren {
   FirmFirmDetainedRoute: typeof FirmFirmDetainedRouteWithChildren
   FirmFirmQueueRoute: typeof FirmFirmQueueRoute
+  FirmFirmPacketIdRoute: typeof FirmFirmPacketIdRoute
   FirmFirmReviewIdRoute: typeof FirmFirmReviewIdRoute
 }
 
 const FirmRouteChildren: FirmRouteChildren = {
   FirmFirmDetainedRoute: FirmFirmDetainedRouteWithChildren,
   FirmFirmQueueRoute: FirmFirmQueueRoute,
+  FirmFirmPacketIdRoute: FirmFirmPacketIdRoute,
   FirmFirmReviewIdRoute: FirmFirmReviewIdRoute,
 }
 

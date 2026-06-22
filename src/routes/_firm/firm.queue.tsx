@@ -1,7 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getReviewQueue, type QueueItem } from "@/lib/firm.functions";
+import { seedDummyCase } from "@/lib/firm-packet.functions";
 
 export const Route = createFileRoute("/_firm/firm/queue")({
   head: () => ({ meta: [{ title: "Review Queue — Sorrentino Law Firm" }, { name: "robots", content: "noindex" }] }),
@@ -23,9 +24,20 @@ const STATUS_LABEL: Record<QueueItem["status"], { label: string; bg: string; fg:
 
 function FirmQueuePage() {
   const fetchQueue = useServerFn(getReviewQueue);
+  const seed = useServerFn(seedDummyCase);
+  const navigate = useNavigate();
+  const qc = useQueryClient();
   const { data, isLoading, error, refetch, isFetching } = useQuery({
     queryKey: ["firm", "queue"],
     queryFn: () => fetchQueue(),
+  });
+
+  const seedMutation = useMutation({
+    mutationFn: () => seed({ data: {} as never }),
+    onSuccess: (r) => {
+      qc.invalidateQueries({ queryKey: ["firm", "queue"] });
+      navigate({ to: "/firm/packet/$id", params: { id: r.intakeSessionId } });
+    },
   });
 
   const items = data?.items ?? [];
@@ -44,20 +56,37 @@ function FirmQueuePage() {
               : `${items.length} case${items.length === 1 ? "" : "s"} · ${pending} awaiting review`}
           </p>
         </div>
-        <button
-          onClick={() => refetch()}
-          disabled={isFetching}
-          className="rounded border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
-        >
-          {isFetching ? "Refreshing…" : "Refresh"}
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => seedMutation.mutate()}
+            disabled={seedMutation.isPending}
+            className="rounded border border-amber-400 bg-amber-50 px-3 py-1.5 text-xs font-semibold text-amber-900 hover:bg-amber-100 disabled:opacity-50"
+            title="Creates the demo case Juan Demo Hernández and opens its packet"
+          >
+            {seedMutation.isPending ? "Seeding…" : "Seed demo case"}
+          </button>
+          <button
+            onClick={() => refetch()}
+            disabled={isFetching}
+            className="rounded border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+          >
+            {isFetching ? "Refreshing…" : "Refresh"}
+          </button>
+        </div>
       </div>
+
+      {seedMutation.error ? (
+        <div className="rounded-md border border-red-200 bg-red-50 p-3 text-xs text-red-800">
+          Seed failed: {(seedMutation.error as Error).message}
+        </div>
+      ) : null}
 
       {error ? (
         <div className="rounded-md border border-red-200 bg-red-50 p-4 text-sm text-red-800">
           {(error as Error).message}
         </div>
       ) : null}
+
 
       <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
         <table className="w-full text-sm">
