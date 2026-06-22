@@ -14,23 +14,15 @@ export const Route = createFileRoute("/")({
     const lang = typeof search.lang === "string" ? search.lang : undefined;
     return lang ? { lang } : {};
   },
-  beforeLoad: ({ location, search }) => {
+  beforeLoad: ({ location }) => {
+    // Note: do NOT redirect first-time visitors to /splash. The homepage must
+    // load real business content immediately for SEO, social previews, and
+    // compliance reviewers (Twilio toll-free verification error 30489).
+    // Users can still pick a language via the on-page ES/EN/HT toggle.
     if (typeof window !== "undefined") {
       const host = window.location.hostname.toLowerCase();
       if (DEFENDER_HOSTS.has(host)) {
         throw redirect({ to: "/coming-soon" });
-      }
-      const hasUrlLang =
-        search?.lang === "es" || search?.lang === "en" || search?.lang === "ht";
-      let hasStoredLang = false;
-      try {
-        const ls = window.localStorage.getItem("dd_lang");
-        hasStoredLang = ls === "es" || ls === "en" || ls === "ht";
-      } catch {
-        /* ignore */
-      }
-      if (!hasUrlLang && !hasStoredLang) {
-        throw redirect({ to: "/splash" });
       }
     }
     try {
