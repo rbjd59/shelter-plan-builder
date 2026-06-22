@@ -1,69 +1,76 @@
-## Goal
+# Attorney Document Packet — End-to-End Preview
 
-Stop relying on the client's phone to upload forms during an SOS. The attorney's file should contain every personalized form the moment the client signs up. When SOS fires, the phone only needs to push the things the attorney genuinely can't have ahead of time: live GPS/battery/timestamp, plus any contacts or pet-rescue details the client edited in-app after signup.
+Goal for this turn: let you log into the firm back end, open a test case that has every form filled in, see the full document packet (including a new Memorandum of Law), and download/email it to yourself. LetterStream comes next as its own phase once you've eyeballed the output.
 
-## Why the right column is empty today
+## Phase 1 — Memorandum of Law generator
 
-At signup, `provisionAppClient` (in `src/lib/app-clients.server.ts`) inserts the 5–10 seed forms into `client_documents` with `from_app = false`. The attorney board splits documents:
+New file: `src/lib/email/memorandum-of-law.server.ts`
+- `buildMemorandumOfLawPdf(answers, options)` — pdf-lib, same style as existing intake PDFs
+- Sections (auto-filled from intake answers + retainer):
+  1. Caption (Immigration Court / Circuit, A-number, Respondent name)
+  2. Introduction (who, country of origin, date of detention, custody facility)
+  3. Statement of Facts (pulled from intake narrative fields)
+  4. Procedural Posture
+  5. Argument — three default headings:
+     - Bond eligibility under 8 U.S.C. § 1226(a)
+     - Lack of flight risk (community ties from intake)
+     - Lack of danger (no qualifying convictions per intake)
+  6. Prayer for Relief
+  7. Signature block — Rosario Sorrentino, Esq.
+- Long paragraphs wrap; multi-page supported.
+- Where data is missing, prints a bracketed placeholder like `[FACT: date of arrest]` so the attorney sees what they still need to fill in. No silent blanks.
 
-- `from_app = false` → "Draft forms" (left column) ✅
-- `from_app = true`  → "From client's phone" (right column) ❌ empty until the phone POSTs back
+## Phase 2 — Dummy intake fixture
 
-That's a single-source design — there's no second copy. If the phone never uploads (because ICE took it), the right column stays blank forever. The forms themselves are not lost (they're in the left column), but the attorney has no visible signal that the file is complete.
+New file: `src/lib/fixtures/dummy-case.server.ts`
+- Exports `seedDummyCase()` — a server function that:
+  1. Creates an `app_clients` row (full name "Juan Demo Hernández", token `DEMO0001`, language `es`, country Honduras, etc.)
+  2. Inserts a fully populated `intake_submissions.answers` JSON covering every field the PDFs read (personal info, family, employment, community ties, criminal history "none", detention facility, A-number, etc.)
+  3. Inserts two `client_contacts`
+  4. Inserts a signed `legal_retainers` row (so the review screen lets you approve)
+  5. Returns `{ clientId, intakeSessionId }`
+- Idempotent — re-running upserts on the demo token instead of duplicating.
 
-## Plan
+Trigger: a button on `/firm/queue` labelled "Seed demo case" (firm-role only) that calls the server fn and then routes to the new packet page.
 
-### 1. Mirror seed forms into the attorney file at signup
+## Phase 3 — Document packet page on the attorney back end
 
-In `provisionAppClient`, after inserting the existing seed docs as `from_app = false` (left column / "Draft forms"), insert a **mirror copy** of the same set with `from_app = true` and `loaded_at = now()` (right column / "From client's phone"). The mirror's `content` field records that it was captured at activation, not uploaded from the device:
+New route: `src/routes/_firm/firm.packet.$id.tsx` (firm-role only)
+- Lists every generated document for the case with a thumbnail row:
+  - Cover letter (existing)
+  - AO 242 habeas (existing)
+  - JS-44 civil cover (existing)
+  - Motion referral / pro-se brochure (existing)
+  - **Memorandum of Law** (new)
+  - Mailing label PDF (existing)
+- Each row: "Preview" (opens PDF in new tab) and "Download" buttons
+- Top of page: "Email entire packet to me" button → triggers a new server fn that zips/attaches all PDFs and emails them to the logged-in firm user
+- Bottom: placeholder card "Send via LetterStream" (disabled, "Coming in Phase 4")
 
-```
-Mirrored from app file at activation on 2026-06-21.
-Pending attorney review — will be populated from intake answers.
-```
+Backed by:
+- `src/lib/firm-packet.functions.ts` — `getPacketManifest({caseId})`, `previewPacketDoc({caseId, docKey})` returns base64 PDF, `emailPacketToMe({caseId})`
+- All require `requireSupabaseAuth` + `has_role('firm' | 'admin')`
 
-This means the moment a client activates the code, the attorney sees the right column populated with the same 10 forms. No SOS required. No race against ICE.
+## Phase 4 — LetterStream (next turn, after you eyeball Phase 1-3)
 
-### 2. Wire the app to push immediately on activation
+Not building this yet. When you're ready:
+- Add `LETTERSTREAM_API_KEY` + `LETTERSTREAM_API_USER` via add_secret
+- New `src/lib/letterstream.server.ts` wrapping their REST API (`/jobs`, certified mail w/ return receipt)
+- "Send via LetterStream" button on the packet page → uploads PDFs, sets recipient address (detention facility from intake), confirms cost, returns tracking number
+- Log each send in a new `letterstream_jobs` table
 
-When the app redeems the activation code (`redeem_invite_token` RPC), have the phone immediately call `attach_alert_document` for each personalized form it locally generated, replacing the mirrored placeholder content. If the phone gets seized before this call, the placeholder mirror from step 1 is still in the attorney file — belt and suspenders.
+## Technical notes
 
-Concretely: add a new server function `pinUploadAppCopy({ token, documentType, content })` that updates the matching `from_app = true` row's `content` field. The app calls this once per form right after activation.
+- All new server fns use `createServerFn` + `requireSupabaseAuth`, gated by `has_role` check inside the handler.
+- PDF builders are pure (answers in, `Uint8Array` out) so they're easy to unit test and reuse for LetterStream later.
+- The "email packet to me" path reuses the existing transactional email queue with attachments — same pattern as `intake-pdfs.server.ts`.
+- No new tables required for Phase 1-3. Phase 4 will need `letterstream_jobs`.
 
-### 3. Trigger payload becomes lean
+## What you'll do after I'm done
 
-On SOS, the phone only needs to send:
-- Live GPS lat/lng
-- Battery %
-- Timestamp
-- Any contacts/pet-rescue rows the client *added or edited in-app* after signup (not the seed ones — those are already on the server)
+1. Open `/firm/queue` → click "Seed demo case"
+2. Land on `/firm/packet/<id>` → preview each PDF, especially the Memorandum of Law
+3. Click "Email packet to me" → check inbox at the firm email on file
+4. Tell me what to tweak before we wire LetterStream
 
-`record_sos_alert` already accepts these. No schema change needed.
-
-### 4. UI label update on `/attorney-board`
-
-In the right column header, change `From client's phone (N)` to:
-
-```
-From client's file (N) — captured at signup, live-updated by the app
-```
-
-So the attorney understands the column is populated at signup and refreshed by the app, not dependent on the phone surviving an arrest.
-
-### 5. Backfill DEMO0001 and any existing clients
-
-One-time SQL: for every `app_clients` row, find its `from_app = false` docs and insert mirrors with `from_app = true` if a mirror doesn't already exist. This makes the change visible immediately for existing demo clients without forcing a re-signup.
-
-## Files touched
-
-- `src/lib/app-clients.server.ts` — insert mirror docs at provisioning
-- `src/lib/pin-access.functions.ts` — new `pinUploadAppCopy` server fn (step 2); update column header text in the response if needed
-- `src/routes/attorney-board.tsx` — relabel the right column
-- New migration — backfill mirrors for existing clients
-- (Optional, for the app team) document the new `pinUploadAppCopy` endpoint so the Premio app can call it post-activation
-
-## Out of scope for this PR
-
-- The Premio app's local PDF generation pipeline. We expose the endpoint; the app team wires the call.
-- Changing what SOS uploads — the payload is already correct.
-- Twilio toll-free verification (separate thread).
+Approve and I'll build Phases 1-3 in one pass.
