@@ -14,6 +14,7 @@ import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SupportRouteImport } from './routes/support'
 import { Route as SplashRouteImport } from './routes/splash'
+import { Route as SmsTermsRouteImport } from './routes/sms-terms'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SentinelTrustRouteImport } from './routes/sentinel-trust'
 import { Route as RetainerRouteImport } from './routes/retainer'
@@ -98,6 +99,11 @@ const SupportRoute = SupportRouteImport.update({
 const SplashRoute = SplashRouteImport.update({
   id: '/splash',
   path: '/splash',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SmsTermsRoute = SmsTermsRouteImport.update({
+  id: '/sms-terms',
+  path: '/sms-terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -429,6 +435,7 @@ export interface FileRoutesByFullPath {
   '/retainer': typeof RetainerRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/sms-terms': typeof SmsTermsRoute
   '/splash': typeof SplashRoute
   '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
@@ -493,6 +500,7 @@ export interface FileRoutesByTo {
   '/retainer': typeof RetainerRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/sms-terms': typeof SmsTermsRoute
   '/splash': typeof SplashRoute
   '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
@@ -561,6 +569,7 @@ export interface FileRoutesById {
   '/retainer': typeof RetainerRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/sms-terms': typeof SmsTermsRoute
   '/splash': typeof SplashRoute
   '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
@@ -627,6 +636,7 @@ export interface FileRouteTypes {
     | '/retainer'
     | '/sentinel-trust'
     | '/sitemap.xml'
+    | '/sms-terms'
     | '/splash'
     | '/support'
     | '/terms'
@@ -691,6 +701,7 @@ export interface FileRouteTypes {
     | '/retainer'
     | '/sentinel-trust'
     | '/sitemap.xml'
+    | '/sms-terms'
     | '/splash'
     | '/support'
     | '/terms'
@@ -758,6 +769,7 @@ export interface FileRouteTypes {
     | '/retainer'
     | '/sentinel-trust'
     | '/sitemap.xml'
+    | '/sms-terms'
     | '/splash'
     | '/support'
     | '/terms'
@@ -826,6 +838,7 @@ export interface RootRouteChildren {
   RetainerRoute: typeof RetainerRoute
   SentinelTrustRoute: typeof SentinelTrustRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  SmsTermsRoute: typeof SmsTermsRoute
   SplashRoute: typeof SplashRoute
   SupportRoute: typeof SupportRoute
   TermsRoute: typeof TermsRoute
@@ -887,6 +900,13 @@ declare module '@tanstack/react-router' {
       path: '/splash'
       fullPath: '/splash'
       preLoaderRoute: typeof SplashRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sms-terms': {
+      id: '/sms-terms'
+      path: '/sms-terms'
+      fullPath: '/sms-terms'
+      preLoaderRoute: typeof SmsTermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -1425,6 +1445,7 @@ const rootRouteChildren: RootRouteChildren = {
   RetainerRoute: RetainerRoute,
   SentinelTrustRoute: SentinelTrustRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  SmsTermsRoute: SmsTermsRoute,
   SplashRoute: SplashRoute,
   SupportRoute: SupportRoute,
   TermsRoute: TermsRoute,
@@ -1454,13 +1475,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
