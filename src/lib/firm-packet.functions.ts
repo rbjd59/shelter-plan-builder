@@ -269,10 +269,11 @@ async function buildPdfFor(key: PacketDocKey, answers: Record<string, unknown>):
     case "mailing_label": {
       const { buildMailingLabelPdf } = await import("@/lib/mailing-label-pdf.server");
       return await buildMailingLabelPdf({
-        toName: String(answers.mail_inmate_name ?? answers.full_name ?? ""),
-        toLine2: answers.mail_inmate_number ? `#${String(answers.mail_inmate_number)}` : undefined,
-        toFacility: String(answers.mail_current_location ?? answers.facility_name ?? ""),
-        toAddress: String(answers.mail_facility_address ?? answers.facility_address ?? ""),
+        inmateName: String(answers.mail_inmate_name ?? answers.full_name ?? ""),
+        aNumber: answers.mail_inmate_number ? String(answers.mail_inmate_number) : null,
+        facilityName: String(answers.mail_current_location ?? answers.facility_name ?? ""),
+        facilityAddress: String(answers.mail_facility_address ?? answers.facility_address ?? ""),
+        caseId: "DEMO",
       });
     }
   }
