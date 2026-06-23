@@ -283,43 +283,59 @@ export async function sendWelcomeEmail(params: {
   const activationCopy = {
     es: {
       label: "SU CÓDIGO DE ACTIVACIÓN",
-      cta: "Activar DefensaSiempre",
-      fallbackTitle: "¿Aún no tienes la app? Descárgala primero:",
-      appStore: "App Store: próximamente",
-      playStore: "Google Play: próximamente",
-      returnNote: "Luego regresa a este correo y toca el botón de arriba.",
-      stripped: "Si el botón no funciona en su correo, escriba el código de arriba en la pantalla de activación de la app.",
+      installTitle: "Paso 1 — Instalar la app",
+      installBody: "Toque el botón que coincida con su teléfono. Toma menos de 1 minuto.",
+      iphoneBtn: "📱 Instalar en iPhone",
+      androidBtn: "🤖 Instalar en Android",
+      step2: "Paso 2 — Abra la app e ingrese el código de arriba.",
+      alreadyInstalled: "¿Ya tiene la app instalada? Tocar aquí para abrirla con el código.",
+      stripped: "Si el botón de abrir la app no funciona, escriba el código a mano en la pantalla de activación.",
     },
     en: {
       label: "YOUR ACTIVATION CODE",
-      cta: "Activate DefensaSiempre",
-      fallbackTitle: "Don't have the app yet? Download it first:",
-      appStore: "App Store: coming soon",
-      playStore: "Google Play: coming soon",
-      returnNote: "Then return to this email and tap the button above.",
-      stripped: "If the button does not work in your email, type the code above into the app's activation screen.",
+      installTitle: "Step 1 — Install the app",
+      installBody: "Tap the button that matches your phone. Takes under 1 minute.",
+      iphoneBtn: "📱 Install on iPhone",
+      androidBtn: "🤖 Install on Android",
+      step2: "Step 2 — Open the app and enter the code above.",
+      alreadyInstalled: "Already installed the app? Tap here to open it with the code.",
+      stripped: "If the open-app button doesn't work, type the code by hand in the activation screen.",
     },
     ht: {
       label: "KÒD AKTIVASYON OU",
-      cta: "Aktive DefensaSiempre",
-      fallbackTitle: "Ou poko gen app la? Telechaje li dabò:",
-      appStore: "App Store: byento",
-      playStore: "Google Play: byento",
-      returnNote: "Apre sa, retounen nan imèl sa a epi peze bouton anwo a.",
-      stripped: "Si bouton an pa mache nan imèl ou, tape kòd ki anwo a nan ekran aktivasyon app la.",
+      installTitle: "Etap 1 — Enstale app la",
+      installBody: "Peze bouton ki koresponn ak telefòn ou. Li pran mwens pase 1 minit.",
+      iphoneBtn: "📱 Enstale sou iPhone",
+      androidBtn: "🤖 Enstale sou Android",
+      step2: "Etap 2 — Ouvri app la epi antre kòd la anwo.",
+      alreadyInstalled: "App la deja enstale? Peze la pou ouvri li ak kòd la.",
+      stripped: "Si bouton ouvri app la pa mache, tape kòd la a la men nan ekran aktivasyon an.",
     },
   }[lang];
 
+  const downloadIos = `${SITE_BASE}/download?p=ios`;
+  const downloadAndroid = `${SITE_BASE}/download?p=android`;
+
   const defensaSection = params.inviteCode
-    ? `<div style="margin-top:24px;padding:24px 20px;background:#fef2f2;border:2px solid #dc2626;border-radius:10px;text-align:center;">
-        <p style="margin:0 0 10px;font-size:12px;letter-spacing:2px;font-weight:800;color:#991b1b;">${escapeHtml(activationCopy.label)}</p>
-        <p style="margin:0 0 20px;font-size:34px;font-weight:900;letter-spacing:6px;color:#0b1220;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;word-break:break-all;">${escapeHtml(params.inviteCode)}</p>
-        <p style="text-align:center;margin:0 0 12px;">
-          <a href="defensasiempre://activate?code=${encodeURIComponent(params.inviteCode)}" style="display:inline-block;background:#dc2626;color:#ffffff;text-decoration:none;padding:14px 24px;border-radius:8px;font-weight:800;font-size:15px;">${escapeHtml(activationCopy.cta)}</a>
+    ? `<div style="margin-top:24px;padding:24px 20px;background:#fef2f2;border:2px solid #dc2626;border-radius:10px;">
+        <p style="margin:0 0 10px;font-size:12px;letter-spacing:2px;font-weight:800;color:#991b1b;text-align:center;">${escapeHtml(activationCopy.label)}</p>
+        <p style="margin:0 0 22px;font-size:34px;font-weight:900;letter-spacing:6px;color:#0b1220;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;word-break:break-all;text-align:center;">${escapeHtml(params.inviteCode)}</p>
+        <p style="margin:0 0 6px;font-size:15px;font-weight:800;color:#0b1220;">${escapeHtml(activationCopy.installTitle)}</p>
+        <p style="margin:0 0 14px;font-size:13px;color:#374151;line-height:1.5;">${escapeHtml(activationCopy.installBody)}</p>
+        <p style="text-align:center;margin:0 0 10px;">
+          <a href="${downloadIos}" style="display:inline-block;background:#0b1220;color:#ffffff;text-decoration:none;padding:14px 22px;border-radius:8px;font-weight:800;font-size:15px;min-width:220px;">${escapeHtml(activationCopy.iphoneBtn)}</a>
         </p>
-        <p style="margin:14px 0 0;font-size:11px;color:#7f1d1d;line-height:1.5;font-style:italic;">${escapeHtml(activationCopy.stripped)}</p>
+        <p style="text-align:center;margin:0 0 18px;">
+          <a href="${downloadAndroid}" style="display:inline-block;background:#dc2626;color:#ffffff;text-decoration:none;padding:14px 22px;border-radius:8px;font-weight:800;font-size:15px;min-width:220px;">${escapeHtml(activationCopy.androidBtn)}</a>
+        </p>
+        <p style="margin:0 0 14px;font-size:14px;font-weight:700;color:#0b1220;">${escapeHtml(activationCopy.step2)}</p>
+        <p style="margin:0 0 4px;font-size:12px;color:#6b7280;line-height:1.5;text-align:center;">
+          <a href="defensasiempre://activate?code=${encodeURIComponent(params.inviteCode)}" style="color:#6b7280;text-decoration:underline;">${escapeHtml(activationCopy.alreadyInstalled)}</a>
+        </p>
+        <p style="margin:10px 0 0;font-size:11px;color:#7f1d1d;line-height:1.5;font-style:italic;text-align:center;">${escapeHtml(activationCopy.stripped)}</p>
       </div>`
     : "";
+
 
   const familyActivationSection = params.inviteCode
     ? defensaSection
@@ -373,7 +389,7 @@ export async function sendWelcomeEmail(params: {
     );
   const subjectFinal = params.demoMode ? `[DEMO] ${c.subject}` : c.subject;
   const text = `${c.heading}\n\n${c.body}\n\n${c.cta}: ${trackingUrl}\n${
-    params.inviteCode ? `\n${activationCopy.label}: ${params.inviteCode}\n${activationCopy.cta}: defensasiempre://activate?code=${encodeURIComponent(params.inviteCode)}\n` : ""
+    params.inviteCode ? `\n${activationCopy.label}: ${params.inviteCode}\n${activationCopy.iphoneBtn}: ${downloadIos}\n${activationCopy.androidBtn}: ${downloadAndroid}\n` : ""
   }${
     params.clientInstallUrl ? `\n${sc.clientCta}: ${params.clientInstallUrl}` : ""
   }${params.familyInstallUrl ? `\n${sc.familyCta}: ${params.familyInstallUrl}` : ""}\n${
