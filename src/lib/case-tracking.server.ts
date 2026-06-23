@@ -389,7 +389,7 @@ export async function sendWelcomeEmail(params: {
     );
   const subjectFinal = params.demoMode ? `[DEMO] ${c.subject}` : c.subject;
   const text = `${c.heading}\n\n${c.body}\n\n${c.cta}: ${trackingUrl}\n${
-    params.inviteCode ? `\n${activationCopy.label}: ${params.inviteCode}\n${activationCopy.cta}: defensasiempre://activate?code=${encodeURIComponent(params.inviteCode)}\n` : ""
+    params.inviteCode ? `\n${activationCopy.label}: ${params.inviteCode}\n${activationCopy.iphoneBtn}: ${downloadIos}\n${activationCopy.androidBtn}: ${downloadAndroid}\n` : ""
   }${
     params.clientInstallUrl ? `\n${sc.clientCta}: ${params.clientInstallUrl}` : ""
   }${params.familyInstallUrl ? `\n${sc.familyCta}: ${params.familyInstallUrl}` : ""}\n${
