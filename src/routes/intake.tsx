@@ -347,6 +347,19 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
       });
       if (pairResult?.code) setPairCode(pairResult.code);
       if (webhookResult?.inviteCode) setInviteCode(webhookResult.inviteCode);
+      // Fire-and-forget SMS notifications (client confirmation + staff alert).
+      const contactPhoneRaw = typeof merged.contact_phone === "string" ? merged.contact_phone : null;
+      const contactNameRaw = typeof merged.full_name === "string" ? merged.full_name : null;
+      const intakeSessionIdForSms = intakeSessionId;
+      smsNotifyFn({
+        data: {
+          intakeSessionId: intakeSessionIdForSms,
+          contactPhone: contactPhoneRaw,
+          contactName: contactNameRaw,
+          language: L,
+          inviteCode: webhookResult?.inviteCode ?? pairResult?.code ?? null,
+        },
+      }).catch((err) => console.error("SMS notify failed:", err));
       setStatus("done");
     } catch (err) {
       setErrMsg((err as Error).message);
