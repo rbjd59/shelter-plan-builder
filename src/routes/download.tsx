@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
-import { getApkInfo } from "@/lib/download.functions";
+import { getAppDownloadInfo, type AppDownloadInfo } from "@/lib/download.functions";
 import { useLang, type Lang } from "@/context/LanguageContext";
 
 export const Route = createFileRoute("/download")({
@@ -27,16 +27,20 @@ function detectPlatform(): "ios" | "android" | "other" {
   return "other";
 }
 
+function parseAndroidVersion(): number | null {
+  if (typeof navigator === "undefined") return null;
+  const m = (navigator.userAgent || "").match(/Android\s+(\d+)(?:\.(\d+))?/i);
+  if (!m) return null;
+  return parseInt(m[1], 10);
+}
+
 function isIOSSafari(): boolean {
   if (typeof navigator === "undefined") return false;
   const ua = navigator.userAgent || "";
   const isIOS = /iPad|iPhone|iPod/.test(ua);
   if (!isIOS) return false;
-  // Chrome on iOS = "CriOS", Firefox = "FxiOS", Edge = "EdgiOS", in-app browsers vary
   return !/CriOS|FxiOS|EdgiOS|GSA\//.test(ua);
 }
-
-// ---------------- i18n ----------------
 
 type Tab = "ios" | "android";
 
@@ -48,7 +52,6 @@ const T = {
     iphone: "iPhone",
     android: "Android",
     back: "← Volver a DetencionDefensa",
-    // iPhone (single page)
     iosHeading: "iPhone — instalación en 4 pasos",
     iosIntro:
       "El iPhone usa la app web. No necesita la App Store. Abra esta página en Safari y agréguela a la pantalla de inicio.",
@@ -68,14 +71,16 @@ const T = {
     iosCopyLink: "Copiar enlace",
     iosCopied: "¡Copiado! Abra Safari y pegue.",
     iosOpenSafari: "Abrir en Safari",
-    // Android — Step 1
+    iosTestflightBtn: "Abrir invitación TestFlight",
+    iosTestflightPending: "Invitación TestFlight próximamente",
+    iosTestflightPendingBody:
+      "Aún estamos esperando la aprobación de Apple. Mientras tanto, use la app web siguiendo los pasos abajo — funciona igual.",
     aStep1Heading: "Android — Paso 1 de 2: Descargar",
     aStep1Body:
       "Toque el botón rojo abajo para descargar la aplicación (.apk). El archivo se guardará en su carpeta de Descargas.",
     aDownloadBtn: "Descargar app Android (.apk)",
     aVersion: "Versión",
     aNextBtn: "Continuar al Paso 2 →",
-    // Android — Step 2
     aStep2Heading: "Android — Paso 2 de 2: Instalar",
     aStep2Steps: [
       "Abra el archivo descargado (toque la notificación o ábralo desde Descargas).",
@@ -87,11 +92,13 @@ const T = {
     aStep2Warn:
       "Si su teléfono bloquea la instalación, vaya a Configuración → Seguridad → permita «Instalar apps desconocidas» para su navegador.",
     aBackBtn: "← Volver al Paso 1",
-    // Android testing fallback
-    aTestingHeading: "App Android en pruebas finales",
-    aTestingBody:
-      "El .apk de Android está en pruebas finales. Mientras tanto use la app web — funciona igual.",
-    aOpenWeb: "Abrir página de emergencia",
+    aErrorTitle: "No se pudo iniciar la descarga",
+    aErrorBody:
+      "El archivo de instalación de Android no está disponible en este momento. Nuestro equipo recibió una alerta. Por favor escríbanos o use la app web mientras tanto.",
+    aErrorEmail: "Reportar enlace roto",
+    aOpenWeb: "Usar app web ahora",
+    aMinAndroidWarn: (min: number, have: number) =>
+      `⚠️ Su Android ${have} es demasiado antiguo. Esta app requiere Android ${min} o superior. Use la app web en su lugar.`,
   },
   en: {
     title: "Install NOTIFY FAMILY",
@@ -119,6 +126,10 @@ const T = {
     iosCopyLink: "Copy link",
     iosCopied: "Copied! Open Safari and paste.",
     iosOpenSafari: "Open in Safari",
+    iosTestflightBtn: "Open TestFlight invite",
+    iosTestflightPending: "TestFlight invite coming soon",
+    iosTestflightPendingBody:
+      "We're still waiting on Apple's approval. In the meantime, use the web app with the steps below — it works the same way.",
     aStep1Heading: "Android — Step 1 of 2: Download",
     aStep1Body:
       "Tap the red button below to download the app (.apk). It will save to your Downloads folder.",
@@ -136,10 +147,13 @@ const T = {
     aStep2Warn:
       "If your phone blocks the install, go to Settings → Security → allow “Install unknown apps” for your browser.",
     aBackBtn: "← Back to Step 1",
-    aTestingHeading: "Android app in final testing",
-    aTestingBody:
-      "The Android .apk is in final testing. Use the web app on Android in the meantime — it works the same way.",
-    aOpenWeb: "Open Web Emergency Page",
+    aErrorTitle: "Download couldn't start",
+    aErrorBody:
+      "The Android install file isn't available right now. Our team has been alerted. Please email us or use the web app in the meantime.",
+    aErrorEmail: "Report broken link",
+    aOpenWeb: "Use web app now",
+    aMinAndroidWarn: (min: number, have: number) =>
+      `⚠️ Your Android ${have} is too old. This app requires Android ${min} or newer. Use the web app instead.`,
   },
   ht: {
     title: "Enstale AVIZE FANMI",
@@ -167,6 +181,10 @@ const T = {
     iosCopyLink: "Kopi lyen",
     iosCopied: "Kopye! Ouvri Safari epi kole.",
     iosOpenSafari: "Ouvri nan Safari",
+    iosTestflightBtn: "Ouvri envitasyon TestFlight",
+    iosTestflightPending: "Envitasyon TestFlight ap vini",
+    iosTestflightPendingBody:
+      "Nou toujou ap tann apwobasyon Apple. Pandan tan an, sèvi ak app entènèt la avèk etap anba yo — li fonksyone menm jan.",
     aStep1Heading: "Android — Etap 1 sou 2: Telechaje",
     aStep1Body:
       "Peze bouton wouj la anba pou telechaje aplikasyon an (.apk). L ap sove nan dosye Downloads ou.",
@@ -184,14 +202,15 @@ const T = {
     aStep2Warn:
       "Si telefòn ou bloke enstalasyon an, ale nan Paramèt → Sekirite → otorize «Enstale app enkoni» pou navigatè ou.",
     aBackBtn: "← Retounen Etap 1",
-    aTestingHeading: "App Android nan tès final",
-    aTestingBody:
-      "Fichye Android .apk la nan tès final. Sèvi ak app entènèt la sou Android pandan tan an — li fonksyone menm jan.",
-    aOpenWeb: "Ouvri paj ijans entènèt",
+    aErrorTitle: "Telechajman an pa t kapab kòmanse",
+    aErrorBody:
+      "Fichye enstalasyon Android la pa disponib kounye a. Ekip nou an resevwa yon alèt. Tanpri voye imèl ban nou oswa sèvi ak app entènèt la pandan tan an.",
+    aErrorEmail: "Rapòte lyen kraze",
+    aOpenWeb: "Sèvi ak app entènèt kounye a",
+    aMinAndroidWarn: (min: number, have: number) =>
+      `⚠️ Android ${have} ou twò ansyen. App sa mande Android ${min} oswa pi nouvo. Sèvi ak app entènèt la pito.`,
   },
 } as const;
-
-// ---------------- styles ----------------
 
 const styles = {
   page: {
@@ -279,6 +298,14 @@ const styles = {
     margin: "12px 0 0",
     fontSize: 13,
   },
+  errorBox: {
+    background: "#7f1d1d",
+    border: "1px solid #fca5a5",
+    borderRadius: 10,
+    padding: 18,
+    textAlign: "left" as const,
+    marginBottom: 18,
+  },
   pill: {
     display: "inline-block" as const,
     fontSize: 11,
@@ -297,16 +324,16 @@ const styles = {
   },
 } as const;
 
+const SUPPORT_EMAIL = "support@detenciondefensa.com";
+
 function DownloadPage() {
   const { lang, setLang } = useLang();
   const t = T[lang];
-  const fetchApk = useServerFn(getApkInfo);
-  const [state, setState] = useState<{ loading: boolean; url: string | null; version: string | null }>({
-    loading: true,
-    url: null,
-    version: null,
-  });
+  const fetchInfo = useServerFn(getAppDownloadInfo);
+  const [info, setInfo] = useState<AppDownloadInfo | null>(null);
+  const [loading, setLoading] = useState(true);
   const [platform, setPlatform] = useState<"ios" | "android" | "other">("other");
+  const [androidMajor, setAndroidMajor] = useState<number | null>(null);
   const [tab, setTab] = useState<Tab>("android");
   const [androidStep, setAndroidStep] = useState<1 | 2>(1);
   const [iosSafari, setIosSafari] = useState(true);
@@ -317,6 +344,7 @@ function DownloadPage() {
     setPlatform(p);
     setTab(p === "ios" ? "ios" : "android");
     setIosSafari(p !== "ios" || isIOSSafari());
+    setAndroidMajor(parseAndroidVersion());
   }, []);
 
   const installUrl =
@@ -330,29 +358,46 @@ function DownloadPage() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
     } catch {
-      // fallback
       window.prompt(t.iosCopyLink, installUrl);
     }
   };
 
   useEffect(() => {
-    fetchApk()
-      .then((info) => setState({ loading: false, url: info.url, version: info.version }))
-      .catch(() => setState({ loading: false, url: null, version: null }));
-  }, [fetchApk]);
+    fetchInfo()
+      .then((data) => {
+        setInfo(data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setInfo(null);
+        setLoading(false);
+      });
+  }, [fetchInfo]);
+
+  const android = info?.android;
+  const ios = info?.ios;
+  const minSdk = android?.minAndroidSdk ?? null;
+  // Android API 26 = Android 8. Rough mapping: major = SDK - 18 (for 8/26, 7/24, etc.).
+  const minMajorVersion = minSdk ? Math.max(1, minSdk - 18) : null;
+  const showTooOld =
+    platform === "android" &&
+    androidMajor !== null &&
+    minMajorVersion !== null &&
+    androidMajor < minMajorVersion;
 
   const handleDownload = () => {
-    if (state.url) {
-      window.location.href = state.url;
-      // Advance to step 2 so they see install instructions when they return.
+    if (android?.url) {
+      window.location.href = android.url;
       setTimeout(() => setAndroidStep(2), 800);
     }
   };
 
+  // Suppress unused-variable lint for `platform` while still using it above.
+  void platform;
+
   return (
     <div style={styles.page}>
       <div style={styles.card}>
-        {/* Language bar */}
         <div style={styles.langBar}>
           {(["es", "en", "ht"] as Lang[]).map((l) => (
             <button key={l} onClick={() => setLang(l)} style={styles.langBtn(lang === l)}>
@@ -365,7 +410,6 @@ function DownloadPage() {
         <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 8px" }}>{t.title}</h1>
         <p style={{ color: "#a1a1aa", fontSize: 14, margin: "0 0 16px" }}>{t.subtitle}</p>
 
-        {/* Universal "not an auto-install" explainer */}
         <div
           style={{
             background: "#1c1917",
@@ -393,8 +437,6 @@ function DownloadPage() {
             : "iPhone saves a shortcut to your home screen (you must use Safari). Android downloads an .apk file. Pick your phone below and follow the steps — under 1 minute."}
         </div>
 
-
-        {/* Platform tabs */}
         <div style={styles.tabs}>
           <button onClick={() => setTab("ios")} style={styles.tabBtn(tab === "ios")}>
              {t.iphone}
@@ -404,7 +446,7 @@ function DownloadPage() {
           </button>
         </div>
 
-        {/* iPhone — single page */}
+        {/* ============ iPhone ============ */}
         {tab === "ios" && (
           <>
             {!iosSafari && (
@@ -438,6 +480,42 @@ function DownloadPage() {
                 </button>
               </div>
             )}
+
+            {/* TestFlight banner: shown above the web-app fallback */}
+            {!loading && ios && (
+              ios.testflightUrl ? (
+                <div style={{ marginBottom: 24 }}>
+                  <a href={ios.testflightUrl} style={styles.primaryBtn}>
+                    {t.iosTestflightBtn}
+                  </a>
+                  {ios.version && (
+                    <p style={{ color: "#71717a", fontSize: 13, margin: "8px 0 0" }}>
+                      {t.aVersion} {ios.version}
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <div
+                  style={{
+                    background: "#1c1917",
+                    border: "1px solid #3f3f46",
+                    borderRadius: 10,
+                    padding: 14,
+                    marginBottom: 20,
+                    textAlign: "left",
+                    fontSize: 13,
+                    color: "#d4d4d8",
+                    lineHeight: 1.55,
+                  }}
+                >
+                  <p style={{ margin: "0 0 4px", fontWeight: 700, color: "#fde68a" }}>
+                    {t.iosTestflightPending}
+                  </p>
+                  <p style={{ margin: 0 }}>{t.iosTestflightPendingBody}</p>
+                </div>
+              )
+            )}
+
             <h2 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 8px" }}>{t.iosHeading}</h2>
             <p style={styles.intro}>{t.iosIntro}</p>
             <a href="/app" style={styles.primaryBtn}>
@@ -456,10 +534,21 @@ function DownloadPage() {
           </>
         )}
 
-        {/* Android — two pages */}
-        {tab === "android" && state.loading && <p style={{ color: "#a1a1aa" }}>…</p>}
+        {/* ============ Android ============ */}
+        {tab === "android" && loading && <p style={{ color: "#a1a1aa" }}>…</p>}
 
-        {tab === "android" && !state.loading && state.url && androidStep === 1 && (
+        {tab === "android" && !loading && showTooOld && minMajorVersion !== null && androidMajor !== null && (
+          <div style={styles.errorBox}>
+            <p style={{ margin: "0 0 12px", color: "#fff", fontWeight: 700 }}>
+              {t.aMinAndroidWarn(minMajorVersion, androidMajor)}
+            </p>
+            <a href="/app" style={{ ...styles.primaryBtn, fontSize: 15, padding: "12px 22px" }}>
+              {t.aOpenWeb}
+            </a>
+          </div>
+        )}
+
+        {tab === "android" && !loading && !showTooOld && android?.available && androidStep === 1 && (
           <>
             <span style={styles.pill}>1 / 2</span>
             <h2 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 8px" }}>{t.aStep1Heading}</h2>
@@ -467,9 +556,10 @@ function DownloadPage() {
             <button onClick={handleDownload} style={styles.primaryBtn}>
               {t.aDownloadBtn}
             </button>
-            {state.version && (
+            {android.version && (
               <p style={{ color: "#71717a", fontSize: 13, margin: "8px 0 0" }}>
-                {t.aVersion} {state.version}
+                {t.aVersion} {android.version}
+                {minMajorVersion !== null && ` · Android ${minMajorVersion}+`}
               </p>
             )}
             <div style={{ marginTop: 24 }}>
@@ -480,7 +570,7 @@ function DownloadPage() {
           </>
         )}
 
-        {tab === "android" && !state.loading && state.url && androidStep === 2 && (
+        {tab === "android" && !loading && !showTooOld && android?.available && androidStep === 2 && (
           <>
             <span style={styles.pill}>2 / 2</span>
             <h2 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 12px" }}>{t.aStep2Heading}</h2>
@@ -502,16 +592,29 @@ function DownloadPage() {
           </>
         )}
 
-        {tab === "android" && !state.loading && !state.url && (
-          <>
-            <h2 style={{ fontSize: 18, fontWeight: 600, margin: "0 0 12px", color: "#fbbf24" }}>
-              {t.aTestingHeading}
-            </h2>
-            <p style={styles.intro}>{t.aTestingBody}</p>
-            <a href="/app" style={styles.primaryBtn}>
-              {t.aOpenWeb}
-            </a>
-          </>
+        {tab === "android" && !loading && !showTooOld && !android?.available && (
+          <div style={styles.errorBox}>
+            <p style={{ margin: "0 0 8px", color: "#fff", fontWeight: 700, fontSize: 16 }}>
+              ⚠️ {t.aErrorTitle}
+            </p>
+            <p style={{ margin: "0 0 14px", color: "#fee2e2", fontSize: 14, lineHeight: 1.55 }}>
+              {t.aErrorBody}
+            </p>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+              <a
+                href={`mailto:${SUPPORT_EMAIL}?subject=Android%20download%20broken`}
+                style={{ ...styles.primaryBtn, fontSize: 14, padding: "10px 18px", background: "#fff", color: "#7f1d1d" }}
+              >
+                ✉️ {t.aErrorEmail}
+              </a>
+              <a
+                href="/app"
+                style={{ ...styles.secondaryBtn, color: "#fff", borderColor: "#fca5a5" }}
+              >
+                {t.aOpenWeb}
+              </a>
+            </div>
+          </div>
         )}
 
         <div style={{ marginTop: 40 }}>

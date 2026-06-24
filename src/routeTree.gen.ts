@@ -55,6 +55,7 @@ import { Route as ApiPublicMailFromCheckRouteImport } from './routes/api/public/
 import { Route as FirmFirmQueueRouteImport } from './routes/_firm/firm.queue'
 import { Route as FirmFirmDetainedRouteImport } from './routes/_firm/firm.detained'
 import { Route as AuthenticatedCaseIdRouteImport } from './routes/_authenticated/case.$id'
+import { Route as AuthenticatedAdminAppBuildsRouteImport } from './routes/_authenticated/admin.app-builds'
 import { Route as AdminAdminWebhooksRouteImport } from './routes/_admin/admin.webhooks'
 import { Route as AdminAdminTriggersRouteImport } from './routes/_admin/admin.triggers'
 import { Route as AdminAdminRemindersRouteImport } from './routes/_admin/admin.reminders'
@@ -72,6 +73,7 @@ import { Route as ApiPublicEmergencyActivateRouteImport } from './routes/api/pub
 import { Route as ApiPublicDevSendInstallRouteImport } from './routes/api/public/dev/send-install'
 import { Route as ApiPublicCronRetryFailedEmailsRouteImport } from './routes/api/public/cron/retry-failed-emails'
 import { Route as ApiPublicCronProcessDueActivationsRouteImport } from './routes/api/public/cron/process-due-activations'
+import { Route as ApiPublicAppLatestDotapkRouteImport } from './routes/api/public/app/latest[.]apk'
 import { Route as FirmFirmReviewIdRouteImport } from './routes/_firm/firm.review.$id'
 import { Route as FirmFirmPacketIdRouteImport } from './routes/_firm/firm.packet.$id'
 import { Route as FirmFirmDetainedIdRouteImport } from './routes/_firm/firm.detained.$id'
@@ -305,6 +307,12 @@ const AuthenticatedCaseIdRoute = AuthenticatedCaseIdRouteImport.update({
   path: '/case/$id',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedAdminAppBuildsRoute =
+  AuthenticatedAdminAppBuildsRouteImport.update({
+    id: '/admin/app-builds',
+    path: '/admin/app-builds',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AdminAdminWebhooksRoute = AdminAdminWebhooksRouteImport.update({
   id: '/webhooks',
   path: '/webhooks',
@@ -398,6 +406,12 @@ const ApiPublicCronProcessDueActivationsRoute =
     path: '/api/public/cron/process-due-activations',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicAppLatestDotapkRoute =
+  ApiPublicAppLatestDotapkRouteImport.update({
+    id: '/api/public/app/latest.apk',
+    path: '/api/public/app/latest.apk',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const FirmFirmReviewIdRoute = FirmFirmReviewIdRouteImport.update({
   id: '/firm/review/$id',
   path: '/firm/review/$id',
@@ -465,6 +479,7 @@ export interface FileRoutesByFullPath {
   '/admin/reminders': typeof AdminAdminRemindersRoute
   '/admin/triggers': typeof AdminAdminTriggersRoute
   '/admin/webhooks': typeof AdminAdminWebhooksRoute
+  '/admin/app-builds': typeof AuthenticatedAdminAppBuildsRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
   '/firm/detained': typeof FirmFirmDetainedRouteWithChildren
   '/firm/queue': typeof FirmFirmQueueRoute
@@ -475,6 +490,7 @@ export interface FileRoutesByFullPath {
   '/firm/detained/$id': typeof FirmFirmDetainedIdRoute
   '/firm/packet/$id': typeof FirmFirmPacketIdRoute
   '/firm/review/$id': typeof FirmFirmReviewIdRoute
+  '/api/public/app/latest.apk': typeof ApiPublicAppLatestDotapkRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/cron/retry-failed-emails': typeof ApiPublicCronRetryFailedEmailsRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
@@ -531,6 +547,7 @@ export interface FileRoutesByTo {
   '/admin/reminders': typeof AdminAdminRemindersRoute
   '/admin/triggers': typeof AdminAdminTriggersRoute
   '/admin/webhooks': typeof AdminAdminWebhooksRoute
+  '/admin/app-builds': typeof AuthenticatedAdminAppBuildsRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
   '/firm/detained': typeof FirmFirmDetainedRouteWithChildren
   '/firm/queue': typeof FirmFirmQueueRoute
@@ -541,6 +558,7 @@ export interface FileRoutesByTo {
   '/firm/detained/$id': typeof FirmFirmDetainedIdRoute
   '/firm/packet/$id': typeof FirmFirmPacketIdRoute
   '/firm/review/$id': typeof FirmFirmReviewIdRoute
+  '/api/public/app/latest.apk': typeof ApiPublicAppLatestDotapkRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/cron/retry-failed-emails': typeof ApiPublicCronRetryFailedEmailsRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
@@ -601,6 +619,7 @@ export interface FileRoutesById {
   '/_admin/admin/reminders': typeof AdminAdminRemindersRoute
   '/_admin/admin/triggers': typeof AdminAdminTriggersRoute
   '/_admin/admin/webhooks': typeof AdminAdminWebhooksRoute
+  '/_authenticated/admin/app-builds': typeof AuthenticatedAdminAppBuildsRoute
   '/_authenticated/case/$id': typeof AuthenticatedCaseIdRoute
   '/_firm/firm/detained': typeof FirmFirmDetainedRouteWithChildren
   '/_firm/firm/queue': typeof FirmFirmQueueRoute
@@ -611,6 +630,7 @@ export interface FileRoutesById {
   '/_firm/firm/detained/$id': typeof FirmFirmDetainedIdRoute
   '/_firm/firm/packet/$id': typeof FirmFirmPacketIdRoute
   '/_firm/firm/review/$id': typeof FirmFirmReviewIdRoute
+  '/api/public/app/latest.apk': typeof ApiPublicAppLatestDotapkRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/cron/retry-failed-emails': typeof ApiPublicCronRetryFailedEmailsRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
@@ -669,6 +689,7 @@ export interface FileRouteTypes {
     | '/admin/reminders'
     | '/admin/triggers'
     | '/admin/webhooks'
+    | '/admin/app-builds'
     | '/case/$id'
     | '/firm/detained'
     | '/firm/queue'
@@ -679,6 +700,7 @@ export interface FileRouteTypes {
     | '/firm/detained/$id'
     | '/firm/packet/$id'
     | '/firm/review/$id'
+    | '/api/public/app/latest.apk'
     | '/api/public/cron/process-due-activations'
     | '/api/public/cron/retry-failed-emails'
     | '/api/public/dev/send-install'
@@ -735,6 +757,7 @@ export interface FileRouteTypes {
     | '/admin/reminders'
     | '/admin/triggers'
     | '/admin/webhooks'
+    | '/admin/app-builds'
     | '/case/$id'
     | '/firm/detained'
     | '/firm/queue'
@@ -745,6 +768,7 @@ export interface FileRouteTypes {
     | '/firm/detained/$id'
     | '/firm/packet/$id'
     | '/firm/review/$id'
+    | '/api/public/app/latest.apk'
     | '/api/public/cron/process-due-activations'
     | '/api/public/cron/retry-failed-emails'
     | '/api/public/dev/send-install'
@@ -804,6 +828,7 @@ export interface FileRouteTypes {
     | '/_admin/admin/reminders'
     | '/_admin/admin/triggers'
     | '/_admin/admin/webhooks'
+    | '/_authenticated/admin/app-builds'
     | '/_authenticated/case/$id'
     | '/_firm/firm/detained'
     | '/_firm/firm/queue'
@@ -814,6 +839,7 @@ export interface FileRouteTypes {
     | '/_firm/firm/detained/$id'
     | '/_firm/firm/packet/$id'
     | '/_firm/firm/review/$id'
+    | '/api/public/app/latest.apk'
     | '/api/public/cron/process-due-activations'
     | '/api/public/cron/retry-failed-emails'
     | '/api/public/dev/send-install'
@@ -866,6 +892,7 @@ export interface RootRouteChildren {
   ApiPublicMailFromCheckRoute: typeof ApiPublicMailFromCheckRoute
   ApiPublicSendAdminInviteRoute: typeof ApiPublicSendAdminInviteRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
+  ApiPublicAppLatestDotapkRoute: typeof ApiPublicAppLatestDotapkRoute
   ApiPublicCronProcessDueActivationsRoute: typeof ApiPublicCronProcessDueActivationsRoute
   ApiPublicCronRetryFailedEmailsRoute: typeof ApiPublicCronRetryFailedEmailsRoute
   ApiPublicDevSendInstallRoute: typeof ApiPublicDevSendInstallRoute
@@ -1201,6 +1228,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCaseIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/admin/app-builds': {
+      id: '/_authenticated/admin/app-builds'
+      path: '/admin/app-builds'
+      fullPath: '/admin/app-builds'
+      preLoaderRoute: typeof AuthenticatedAdminAppBuildsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_admin/admin/webhooks': {
       id: '/_admin/admin/webhooks'
       path: '/webhooks'
@@ -1320,6 +1354,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicCronProcessDueActivationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/app/latest.apk': {
+      id: '/api/public/app/latest.apk'
+      path: '/api/public/app/latest.apk'
+      fullPath: '/api/public/app/latest.apk'
+      preLoaderRoute: typeof ApiPublicAppLatestDotapkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_firm/firm/review/$id': {
       id: '/_firm/firm/review/$id'
       path: '/firm/review/$id'
@@ -1401,12 +1442,14 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 interface AuthenticatedRouteChildren {
   AuthenticatedCasesRoute: typeof AuthenticatedCasesRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedAdminAppBuildsRoute: typeof AuthenticatedAdminAppBuildsRoute
   AuthenticatedCaseIdRoute: typeof AuthenticatedCaseIdRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedCasesRoute: AuthenticatedCasesRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedAdminAppBuildsRoute: AuthenticatedAdminAppBuildsRoute,
   AuthenticatedCaseIdRoute: AuthenticatedCaseIdRoute,
 }
 
@@ -1482,6 +1525,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicMailFromCheckRoute: ApiPublicMailFromCheckRoute,
   ApiPublicSendAdminInviteRoute: ApiPublicSendAdminInviteRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
+  ApiPublicAppLatestDotapkRoute: ApiPublicAppLatestDotapkRoute,
   ApiPublicCronProcessDueActivationsRoute:
     ApiPublicCronProcessDueActivationsRoute,
   ApiPublicCronRetryFailedEmailsRoute: ApiPublicCronRetryFailedEmailsRoute,
