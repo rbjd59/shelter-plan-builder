@@ -196,11 +196,16 @@ export const generateMailingLabel = createServerFn({ method: "POST" })
 
     // Auto-stamp tracking step 2 (forms mailed to detainee) when label generated.
     if (a.intake_session_id) {
-      await supabaseAdmin
+      const { data: updated } = await supabaseAdmin
         .from("case_tracking")
         .update({ step2_sent_to_inmate_at: nowIso } as never)
         .eq("intake_session_id", a.intake_session_id)
-        .is("step2_sent_to_inmate_at", null);
+        .is("step2_sent_to_inmate_at", null)
+        .select("id");
+      // Only notify if this update actually flipped the column (null -> now).
+      if (updated && (updated as unknown as unknown[]).length > 0) {
+        await notifyCaseStep(a.intake_session_id, 2);
+      }
     }
 
     const sig = await supabaseAdmin.storage
