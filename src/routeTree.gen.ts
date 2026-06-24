@@ -74,6 +74,7 @@ import { Route as ApiPublicDevSendInstallRouteImport } from './routes/api/public
 import { Route as ApiPublicCronRetryFailedEmailsRouteImport } from './routes/api/public/cron/retry-failed-emails'
 import { Route as ApiPublicCronProcessDueActivationsRouteImport } from './routes/api/public/cron/process-due-activations'
 import { Route as ApiPublicAppLatestDotapkRouteImport } from './routes/api/public/app/latest[.]apk'
+import { Route as ApiPublicAppInfoRouteImport } from './routes/api/public/app/info'
 import { Route as FirmFirmReviewIdRouteImport } from './routes/_firm/firm.review.$id'
 import { Route as FirmFirmPacketIdRouteImport } from './routes/_firm/firm.packet.$id'
 import { Route as FirmFirmDetainedIdRouteImport } from './routes/_firm/firm.detained.$id'
@@ -412,6 +413,11 @@ const ApiPublicAppLatestDotapkRoute =
     path: '/api/public/app/latest.apk',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicAppInfoRoute = ApiPublicAppInfoRouteImport.update({
+  id: '/api/public/app/info',
+  path: '/api/public/app/info',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FirmFirmReviewIdRoute = FirmFirmReviewIdRouteImport.update({
   id: '/firm/review/$id',
   path: '/firm/review/$id',
@@ -490,6 +496,7 @@ export interface FileRoutesByFullPath {
   '/firm/detained/$id': typeof FirmFirmDetainedIdRoute
   '/firm/packet/$id': typeof FirmFirmPacketIdRoute
   '/firm/review/$id': typeof FirmFirmReviewIdRoute
+  '/api/public/app/info': typeof ApiPublicAppInfoRoute
   '/api/public/app/latest.apk': typeof ApiPublicAppLatestDotapkRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/cron/retry-failed-emails': typeof ApiPublicCronRetryFailedEmailsRoute
@@ -558,6 +565,7 @@ export interface FileRoutesByTo {
   '/firm/detained/$id': typeof FirmFirmDetainedIdRoute
   '/firm/packet/$id': typeof FirmFirmPacketIdRoute
   '/firm/review/$id': typeof FirmFirmReviewIdRoute
+  '/api/public/app/info': typeof ApiPublicAppInfoRoute
   '/api/public/app/latest.apk': typeof ApiPublicAppLatestDotapkRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/cron/retry-failed-emails': typeof ApiPublicCronRetryFailedEmailsRoute
@@ -630,6 +638,7 @@ export interface FileRoutesById {
   '/_firm/firm/detained/$id': typeof FirmFirmDetainedIdRoute
   '/_firm/firm/packet/$id': typeof FirmFirmPacketIdRoute
   '/_firm/firm/review/$id': typeof FirmFirmReviewIdRoute
+  '/api/public/app/info': typeof ApiPublicAppInfoRoute
   '/api/public/app/latest.apk': typeof ApiPublicAppLatestDotapkRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/cron/retry-failed-emails': typeof ApiPublicCronRetryFailedEmailsRoute
@@ -700,6 +709,7 @@ export interface FileRouteTypes {
     | '/firm/detained/$id'
     | '/firm/packet/$id'
     | '/firm/review/$id'
+    | '/api/public/app/info'
     | '/api/public/app/latest.apk'
     | '/api/public/cron/process-due-activations'
     | '/api/public/cron/retry-failed-emails'
@@ -768,6 +778,7 @@ export interface FileRouteTypes {
     | '/firm/detained/$id'
     | '/firm/packet/$id'
     | '/firm/review/$id'
+    | '/api/public/app/info'
     | '/api/public/app/latest.apk'
     | '/api/public/cron/process-due-activations'
     | '/api/public/cron/retry-failed-emails'
@@ -839,6 +850,7 @@ export interface FileRouteTypes {
     | '/_firm/firm/detained/$id'
     | '/_firm/firm/packet/$id'
     | '/_firm/firm/review/$id'
+    | '/api/public/app/info'
     | '/api/public/app/latest.apk'
     | '/api/public/cron/process-due-activations'
     | '/api/public/cron/retry-failed-emails'
@@ -892,6 +904,7 @@ export interface RootRouteChildren {
   ApiPublicMailFromCheckRoute: typeof ApiPublicMailFromCheckRoute
   ApiPublicSendAdminInviteRoute: typeof ApiPublicSendAdminInviteRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
+  ApiPublicAppInfoRoute: typeof ApiPublicAppInfoRoute
   ApiPublicAppLatestDotapkRoute: typeof ApiPublicAppLatestDotapkRoute
   ApiPublicCronProcessDueActivationsRoute: typeof ApiPublicCronProcessDueActivationsRoute
   ApiPublicCronRetryFailedEmailsRoute: typeof ApiPublicCronRetryFailedEmailsRoute
@@ -1361,6 +1374,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicAppLatestDotapkRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/app/info': {
+      id: '/api/public/app/info'
+      path: '/api/public/app/info'
+      fullPath: '/api/public/app/info'
+      preLoaderRoute: typeof ApiPublicAppInfoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_firm/firm/review/$id': {
       id: '/_firm/firm/review/$id'
       path: '/firm/review/$id'
@@ -1525,6 +1545,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicMailFromCheckRoute: ApiPublicMailFromCheckRoute,
   ApiPublicSendAdminInviteRoute: ApiPublicSendAdminInviteRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
+  ApiPublicAppInfoRoute: ApiPublicAppInfoRoute,
   ApiPublicAppLatestDotapkRoute: ApiPublicAppLatestDotapkRoute,
   ApiPublicCronProcessDueActivationsRoute:
     ApiPublicCronProcessDueActivationsRoute,
