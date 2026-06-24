@@ -76,6 +76,7 @@ import { Route as FirmFirmReviewIdRouteImport } from './routes/_firm/firm.review
 import { Route as FirmFirmPacketIdRouteImport } from './routes/_firm/firm.packet.$id'
 import { Route as FirmFirmDetainedIdRouteImport } from './routes/_firm/firm.detained.$id'
 import { Route as AdminAdminClientsIdRouteImport } from './routes/_admin/admin.clients.$id'
+import { Route as ApiPublicAppLatestApkRouteImport } from './routes/api/public/app/latest.apk'
 
 const VenuesRoute = VenuesRouteImport.update({
   id: '/venues',
@@ -418,6 +419,11 @@ const AdminAdminClientsIdRoute = AdminAdminClientsIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AdminAdminClientsRoute,
 } as any)
+const ApiPublicAppLatestApkRoute = ApiPublicAppLatestApkRouteImport.update({
+  id: '/api/public/app/latest/apk',
+  path: '/api/public/app/latest/apk',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -484,6 +490,7 @@ export interface FileRoutesByFullPath {
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
+  '/api/public/app/latest/apk': typeof ApiPublicAppLatestApkRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -550,6 +557,7 @@ export interface FileRoutesByTo {
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
+  '/api/public/app/latest/apk': typeof ApiPublicAppLatestApkRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -620,6 +628,7 @@ export interface FileRoutesById {
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
+  '/api/public/app/latest/apk': typeof ApiPublicAppLatestApkRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -688,6 +697,7 @@ export interface FileRouteTypes {
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
     | '/lovable/email/transactional/send'
+    | '/api/public/app/latest/apk'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -754,6 +764,7 @@ export interface FileRouteTypes {
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
     | '/lovable/email/transactional/send'
+    | '/api/public/app/latest/apk'
   id:
     | '__root__'
     | '/'
@@ -823,6 +834,7 @@ export interface FileRouteTypes {
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
     | '/lovable/email/transactional/send'
+    | '/api/public/app/latest/apk'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -875,6 +887,7 @@ export interface RootRouteChildren {
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
   LovableEmailTransactionalSendRoute: typeof LovableEmailTransactionalSendRoute
+  ApiPublicAppLatestApkRoute: typeof ApiPublicAppLatestApkRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1348,6 +1361,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminClientsIdRouteImport
       parentRoute: typeof AdminAdminClientsRoute
     }
+    '/api/public/app/latest/apk': {
+      id: '/api/public/app/latest/apk'
+      path: '/api/public/app/latest/apk'
+      fullPath: '/api/public/app/latest/apk'
+      preLoaderRoute: typeof ApiPublicAppLatestApkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -1492,6 +1512,7 @@ const rootRouteChildren: RootRouteChildren = {
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
   LovableEmailTransactionalSendRoute: LovableEmailTransactionalSendRoute,
+  ApiPublicAppLatestApkRoute: ApiPublicAppLatestApkRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
