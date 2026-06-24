@@ -110,6 +110,48 @@ export type Database = {
         }
         Relationships: []
       }
+      app_releases: {
+        Row: {
+          apk_path: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          is_current: boolean
+          min_android_sdk: number | null
+          notes: string | null
+          platform: string
+          testflight_url: string | null
+          updated_at: string
+          version: string
+        }
+        Insert: {
+          apk_path?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_current?: boolean
+          min_android_sdk?: number | null
+          notes?: string | null
+          platform: string
+          testflight_url?: string | null
+          updated_at?: string
+          version: string
+        }
+        Update: {
+          apk_path?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_current?: boolean
+          min_android_sdk?: number | null
+          notes?: string | null
+          platform?: string
+          testflight_url?: string | null
+          updated_at?: string
+          version?: string
+        }
+        Relationships: []
+      }
       attorney_actions: {
         Row: {
           action: string
