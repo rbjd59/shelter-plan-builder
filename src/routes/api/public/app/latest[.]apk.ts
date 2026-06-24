@@ -6,7 +6,7 @@
 // /admin/app-builds.
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/api/public/app/latest/apk")({
+export const Route = createFileRoute("/api/public/app/latest.apk")({
   server: {
     handlers: {
       GET: async () => {
