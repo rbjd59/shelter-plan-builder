@@ -259,6 +259,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
   const submitFn = useServerFn(submitDemoIntake);
   const pairFn = useServerFn(pairIntakeWithApp);
   const webhookFn = useServerFn(notifyIntakeWebhook);
+  const smsNotifyFn = useServerFn(sendIntakeNotifications);
 
   const [status, setStatus] = useState<"ready" | "submitting" | "done" | "error">("ready");
   const [errMsg, setErrMsg] = useState("");
