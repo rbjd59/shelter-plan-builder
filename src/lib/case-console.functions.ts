@@ -257,6 +257,10 @@ export const markCaseStep = createServerFn({ method: "POST" })
         .update({ [col]: value } as never)
         .eq("intake_session_id", sessionId);
     }
+    // Notify the family contact when a step is set (not when cleared).
+    if (!data.clear) {
+      await notifyCaseStep(sessionId, data.step);
+    }
     return { ok: true as const };
   });
 
