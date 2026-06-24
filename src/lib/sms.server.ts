@@ -100,11 +100,11 @@ export async function sendSms(params: SendSmsParams): Promise<{
 
 const ACTIVATION_BODY: Record<string, (code: string) => string> = {
   en: (c) =>
-    `DetencionDefensa: your activation code is ${c}. Install the app: https://detenciondefensa.com/app`,
+    `DetencionDefensa: your code is ${c}. Tap to install the app: https://detenciondefensa.com/get-app`,
   es: (c) =>
-    `DetencionDefensa: su codigo de activacion es ${c}. Instale la app: https://detenciondefensa.com/app`,
+    `DetencionDefensa: su codigo es ${c}. Toque para instalar la app: https://detenciondefensa.com/get-app`,
   ht: (c) =>
-    `DetencionDefensa: kod aktivasyon ou se ${c}. Enstale aplikasyon an: https://detenciondefensa.com/app`,
+    `DetencionDefensa: kòd ou se ${c}. Peze pou enstale aplikasyon an: https://detenciondefensa.com/get-app`,
 };
 
 export function activationSmsBody(code: string, language: string): string {

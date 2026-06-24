@@ -14,11 +14,11 @@ function pickLang(raw: string | null | undefined): Lang {
 
 const INTAKE_CONFIRM: Record<Lang, (code: string) => string> = {
   en: (c) =>
-    `DetencionDefensa: We received your case. Attorney review within 24h. Your activation code: ${c}. Install: https://detenciondefensa.com/app — Reply STOP to opt out.`,
+    `DetencionDefensa: We received your case. Attorney review within 24h. Your code: ${c}. Tap to install: https://detenciondefensa.com/get-app — Reply STOP to opt out.`,
   es: (c) =>
-    `DetencionDefensa: Recibimos su caso. Revisión del abogado en 24h. Su código: ${c}. Instale: https://detenciondefensa.com/app — Responda STOP para cancelar.`,
+    `DetencionDefensa: Recibimos su caso. Revisión del abogado en 24h. Su código: ${c}. Toque para instalar: https://detenciondefensa.com/get-app — Responda STOP para cancelar.`,
   ht: (c) =>
-    `DetencionDefensa: Nou resevwa ka ou. Avoka ap revize nan 24è. Kòd ou: ${c}. Enstale: https://detenciondefensa.com/app — Reponn STOP pou sispann.`,
+    `DetencionDefensa: Nou resevwa ka ou. Avoka ap revize nan 24è. Kòd ou: ${c}. Peze pou enstale: https://detenciondefensa.com/get-app — Reponn STOP pou sispann.`,
 };
 
 const STEP_BODY: Record<1 | 2 | 3, Record<Lang, (name: string) => string>> = {

@@ -102,7 +102,9 @@ export interface ActivationEmailParams {
   language?: string; // "en" | "es" | "ht"
 }
 
-const DOWNLOAD_URL = "https://detenciondefensa.com/download";
+// One-tap installer: server-side User-Agent sniff redirects Android→APK,
+// iOS→TestFlight, everything else→/download instructions.
+const DOWNLOAD_URL = "https://detenciondefensa.com/get-app";
 
 function clientWelcomeContent(lang: string, name: string, code: string) {
   if (lang === "es") {
