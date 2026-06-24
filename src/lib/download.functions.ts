@@ -47,7 +47,7 @@ export const getAppDownloadInfo = createServerFn({ method: "GET" }).handler(
     return {
       android: {
         available: !!android?.apk_path,
-        url: android?.apk_path ? "/app/latest.apk" : null,
+        url: android?.apk_path ? "/api/public/app/latest.apk" : null,
         version: android?.version ?? null,
         minAndroidSdk: android?.min_android_sdk ?? null,
       },
