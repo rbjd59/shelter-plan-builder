@@ -7,8 +7,34 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { assertOfficeStaff } from "@/lib/office-auth.server";
 import { buildMailingLabelPdf } from "@/lib/mailing-label-pdf.server";
+import { sendCaseStepSms } from "@/lib/sms-notifications.server";
 
 const SIGNED_TTL = 60 * 60 * 24; // 1 day
+
+async function notifyCaseStep(sessionId: string, step: 1 | 2 | 3): Promise<void> {
+  try {
+    const { data } = await supabaseAdmin
+      .from("case_tracking")
+      .select("contact_phone, language, inmate_name")
+      .eq("intake_session_id", sessionId)
+      .maybeSingle();
+    const row = data as {
+      contact_phone: string | null;
+      language: string | null;
+      inmate_name: string | null;
+    } | null;
+    if (!row?.contact_phone) return;
+    await sendCaseStepSms({
+      phone: row.contact_phone,
+      language: row.language,
+      inmateName: row.inmate_name,
+      step,
+      intakeSessionId: sessionId,
+    });
+  } catch (e) {
+    console.error("[case-step-sms] failed", e);
+  }
+}
 
 export type AnswerValue = string | number | boolean | null;
 export interface CaseDetail {
@@ -170,11 +196,16 @@ export const generateMailingLabel = createServerFn({ method: "POST" })
 
     // Auto-stamp tracking step 2 (forms mailed to detainee) when label generated.
     if (a.intake_session_id) {
-      await supabaseAdmin
+      const { data: updated } = await supabaseAdmin
         .from("case_tracking")
         .update({ step2_sent_to_inmate_at: nowIso } as never)
         .eq("intake_session_id", a.intake_session_id)
-        .is("step2_sent_to_inmate_at", null);
+        .is("step2_sent_to_inmate_at", null)
+        .select("id");
+      // Only notify if this update actually flipped the column (null -> now).
+      if (updated && (updated as unknown as unknown[]).length > 0) {
+        await notifyCaseStep(a.intake_session_id, 2);
+      }
     }
 
     const sig = await supabaseAdmin.storage
@@ -225,6 +256,10 @@ export const markCaseStep = createServerFn({ method: "POST" })
         .from("case_tracking")
         .update({ [col]: value } as never)
         .eq("intake_session_id", sessionId);
+    }
+    // Notify the family contact when a step is set (not when cleared).
+    if (!data.clear) {
+      await notifyCaseStep(sessionId, data.step);
     }
     return { ok: true as const };
   });
