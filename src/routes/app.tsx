@@ -710,6 +710,18 @@ function EmergencyApp() {
           >
             {savingSetup ? "Saving…" : "Done — show NOTIFY FAMILY button"}
           </button>
+
+          <p className="mt-4 text-center text-xs text-white/60">
+            By tapping Done, you agree to our{" "}
+            <a href="/terms" target="_blank" rel="noopener" className="underline hover:text-white">
+              Terms
+            </a>
+            {" "}and{" "}
+            <a href="/privacy" target="_blank" rel="noopener" className="underline hover:text-white">
+              Privacy Policy
+            </a>
+            . This app sends documents to contacts you choose. It does not contact 911 or any emergency service.
+          </p>
         </div>
       </Shell>
     );
