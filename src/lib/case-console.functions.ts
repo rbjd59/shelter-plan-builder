@@ -7,8 +7,34 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { assertOfficeStaff } from "@/lib/office-auth.server";
 import { buildMailingLabelPdf } from "@/lib/mailing-label-pdf.server";
+import { sendCaseStepSms } from "@/lib/sms-notifications.server";
 
 const SIGNED_TTL = 60 * 60 * 24; // 1 day
+
+async function notifyCaseStep(sessionId: string, step: 1 | 2 | 3): Promise<void> {
+  try {
+    const { data } = await supabaseAdmin
+      .from("case_tracking")
+      .select("contact_phone, language, inmate_name")
+      .eq("intake_session_id", sessionId)
+      .maybeSingle();
+    const row = data as {
+      contact_phone: string | null;
+      language: string | null;
+      inmate_name: string | null;
+    } | null;
+    if (!row?.contact_phone) return;
+    await sendCaseStepSms({
+      phone: row.contact_phone,
+      language: row.language,
+      inmateName: row.inmate_name,
+      step,
+      intakeSessionId: sessionId,
+    });
+  } catch (e) {
+    console.error("[case-step-sms] failed", e);
+  }
+}
 
 export type AnswerValue = string | number | boolean | null;
 export interface CaseDetail {
