@@ -55,6 +55,7 @@ import { Route as ApiPublicMailFromCheckRouteImport } from './routes/api/public/
 import { Route as FirmFirmQueueRouteImport } from './routes/_firm/firm.queue'
 import { Route as FirmFirmDetainedRouteImport } from './routes/_firm/firm.detained'
 import { Route as AuthenticatedCaseIdRouteImport } from './routes/_authenticated/case.$id'
+import { Route as AuthenticatedAdminAppBuildsRouteImport } from './routes/_authenticated/admin.app-builds'
 import { Route as AdminAdminWebhooksRouteImport } from './routes/_admin/admin.webhooks'
 import { Route as AdminAdminTriggersRouteImport } from './routes/_admin/admin.triggers'
 import { Route as AdminAdminRemindersRouteImport } from './routes/_admin/admin.reminders'
@@ -306,6 +307,12 @@ const AuthenticatedCaseIdRoute = AuthenticatedCaseIdRouteImport.update({
   path: '/case/$id',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedAdminAppBuildsRoute =
+  AuthenticatedAdminAppBuildsRouteImport.update({
+    id: '/admin/app-builds',
+    path: '/admin/app-builds',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AdminAdminWebhooksRoute = AdminAdminWebhooksRouteImport.update({
   id: '/webhooks',
   path: '/webhooks',
@@ -471,6 +478,7 @@ export interface FileRoutesByFullPath {
   '/admin/reminders': typeof AdminAdminRemindersRoute
   '/admin/triggers': typeof AdminAdminTriggersRoute
   '/admin/webhooks': typeof AdminAdminWebhooksRoute
+  '/admin/app-builds': typeof AuthenticatedAdminAppBuildsRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
   '/firm/detained': typeof FirmFirmDetainedRouteWithChildren
   '/firm/queue': typeof FirmFirmQueueRoute
@@ -538,6 +546,7 @@ export interface FileRoutesByTo {
   '/admin/reminders': typeof AdminAdminRemindersRoute
   '/admin/triggers': typeof AdminAdminTriggersRoute
   '/admin/webhooks': typeof AdminAdminWebhooksRoute
+  '/admin/app-builds': typeof AuthenticatedAdminAppBuildsRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
   '/firm/detained': typeof FirmFirmDetainedRouteWithChildren
   '/firm/queue': typeof FirmFirmQueueRoute
@@ -609,6 +618,7 @@ export interface FileRoutesById {
   '/_admin/admin/reminders': typeof AdminAdminRemindersRoute
   '/_admin/admin/triggers': typeof AdminAdminTriggersRoute
   '/_admin/admin/webhooks': typeof AdminAdminWebhooksRoute
+  '/_authenticated/admin/app-builds': typeof AuthenticatedAdminAppBuildsRoute
   '/_authenticated/case/$id': typeof AuthenticatedCaseIdRoute
   '/_firm/firm/detained': typeof FirmFirmDetainedRouteWithChildren
   '/_firm/firm/queue': typeof FirmFirmQueueRoute
@@ -678,6 +688,7 @@ export interface FileRouteTypes {
     | '/admin/reminders'
     | '/admin/triggers'
     | '/admin/webhooks'
+    | '/admin/app-builds'
     | '/case/$id'
     | '/firm/detained'
     | '/firm/queue'
@@ -745,6 +756,7 @@ export interface FileRouteTypes {
     | '/admin/reminders'
     | '/admin/triggers'
     | '/admin/webhooks'
+    | '/admin/app-builds'
     | '/case/$id'
     | '/firm/detained'
     | '/firm/queue'
@@ -815,6 +827,7 @@ export interface FileRouteTypes {
     | '/_admin/admin/reminders'
     | '/_admin/admin/triggers'
     | '/_admin/admin/webhooks'
+    | '/_authenticated/admin/app-builds'
     | '/_authenticated/case/$id'
     | '/_firm/firm/detained'
     | '/_firm/firm/queue'
@@ -1214,6 +1227,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCaseIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/admin/app-builds': {
+      id: '/_authenticated/admin/app-builds'
+      path: '/admin/app-builds'
+      fullPath: '/admin/app-builds'
+      preLoaderRoute: typeof AuthenticatedAdminAppBuildsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_admin/admin/webhooks': {
       id: '/_admin/admin/webhooks'
       path: '/webhooks'
@@ -1421,12 +1441,14 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 interface AuthenticatedRouteChildren {
   AuthenticatedCasesRoute: typeof AuthenticatedCasesRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedAdminAppBuildsRoute: typeof AuthenticatedAdminAppBuildsRoute
   AuthenticatedCaseIdRoute: typeof AuthenticatedCaseIdRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedCasesRoute: AuthenticatedCasesRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedAdminAppBuildsRoute: AuthenticatedAdminAppBuildsRoute,
   AuthenticatedCaseIdRoute: AuthenticatedCaseIdRoute,
 }
 
