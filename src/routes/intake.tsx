@@ -5,6 +5,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { submitDemoIntake } from "@/utils/payments.functions";
 import { pairIntakeWithApp } from "@/lib/intake-pair.functions";
 import { notifyIntakeWebhook } from "@/lib/intake-webhook.functions";
+import { sendIntakeNotifications } from "@/lib/sms-notifications.functions";
 
 
 import { BilingualField } from "@/components/intake/BilingualField";
