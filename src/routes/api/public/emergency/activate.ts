@@ -328,8 +328,15 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
         // (when it is already an 8-char code) or by looking up the client row.
         const mirrorToken = await resolveMirrorToken(caseRef, explicitCode);
         let contactSyncResult: { contacts_saved: number; error?: string } = { contacts_saved: 0 };
+        const incomingContacts = d.contacts ?? d.payload?.contacts ?? [];
+        console.log("[activate] contacts received", {
+          token: mirrorToken,
+          top_level_count: d.contacts?.length ?? 0,
+          payload_count: d.payload?.contacts?.length ?? 0,
+        });
         if (mirrorToken) {
-          contactSyncResult = await syncContactsForToken(mirrorToken, d.contacts);
+          contactSyncResult = await syncContactsForToken(mirrorToken, incomingContacts);
+          console.log("[activate] contacts synced", contactSyncResult);
           try {
             await supabaseAdmin.rpc("record_sos_alert" as never, {
               _token: mirrorToken,
