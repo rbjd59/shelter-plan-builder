@@ -41,13 +41,16 @@ type DocRow = {
 
 type PetRow = {
   id?: string;
-  species: string | null;
+  pet_type: string | null;
   pet_name: string | null;
-  caretaker_name: string | null;
-  caretaker_phone: string | null;
-  vet_name: string | null;
+  pet_location: string | null;
+  access_instructions: string | null;
+  who_to_notify: string | null;
+  no_kill_shelter_preferred: boolean;
+  no_kill_shelter_address: string | null;
   notes: string | null;
 };
+
 
 const wrap: React.CSSProperties = { minHeight: "100vh", background: "#0b1220", color: "#f6efe1", fontFamily: "Inter Tight, system-ui, sans-serif" };
 const card: React.CSSProperties = { background: "#1a2436", borderRadius: 12, padding: 20, marginBottom: 20 };
