@@ -94,17 +94,30 @@ function wrap(bodyHtml: string): string {
   </body></html>`;
 }
 
+export interface ActivationDocLink {
+  label: string;
+  url: string;
+}
+
 export interface ActivationEmailParams {
   sessionId: string;
   answers: Record<string, unknown>;
   activationCode: string | null;
   activatedAt?: Date;
   language?: string; // "en" | "es" | "ht"
+  documentUrls?: {
+    habeasUrl?: string | null;
+    memorandumUrl?: string | null;
+    referralUrl?: string | null;
+    js44Url?: string | null;
+    brochureUrl?: string | null;
+  } | null;
 }
 
 // One-tap installer: server-side User-Agent sniff redirects Android→APK,
 // iOS→TestFlight, everything else→/download instructions.
 const DOWNLOAD_URL = "https://detenciondefensa.com/get-app";
+const CONFIGURE_URL = "https://detenciondefensa.com/configurar";
 
 function clientWelcomeContent(lang: string, name: string, code: string) {
   if (lang === "es") {
