@@ -521,9 +521,13 @@ function DownloadPage() {
             <p style={{ margin: "0 0 12px", color: "#fff", fontWeight: 700 }}>
               {t.aMinAndroidWarn(minMajorVersion, androidMajor)}
             </p>
-            <a href="/app" style={{ ...styles.primaryBtn, fontSize: 15, padding: "12px 22px" }}>
-              {t.aOpenWeb}
+            <a
+              href={`mailto:${SUPPORT_EMAIL}?subject=Android%20version%20too%20old`}
+              style={{ ...styles.primaryBtn, fontSize: 15, padding: "12px 22px" }}
+            >
+              ✉️ {t.aErrorEmail}
             </a>
+
           </div>
         )}
 
