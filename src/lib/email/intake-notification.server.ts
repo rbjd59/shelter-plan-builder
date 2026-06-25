@@ -174,7 +174,7 @@ export async function enqueueIntakeNotification(params: {
   demoMode?: boolean;
   scope?: "all" | "internal" | "welcome";
   inviteCode?: string | null;
-}): Promise<void> {
+}): Promise<UploadedUrls | null> {
   const { sessionId, answers, language, contactEmail, demoMode } = params;
   const inviteCode = params.inviteCode ?? null;
   const scope = params.scope ?? "all";
@@ -333,7 +333,7 @@ ${Object.entries(a)
     }
   }
 
-  if (!doWelcome) return;
+  if (!doWelcome) return urls;
 
 
   // Family welcome + case tracking record.
@@ -387,4 +387,5 @@ ${Object.entries(a)
   } catch (e) {
     console.error("Family welcome / case tracking failed:", e);
   }
+  return urls;
 }

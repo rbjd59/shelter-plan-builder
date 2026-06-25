@@ -195,6 +195,7 @@ export const submitIntakeAnswers = createServerFn({ method: "POST" })
       .eq("stripe_session_id", data.sessionId);
     if (error) throw new Error(error.message);
 
+    let intakeUrls: Awaited<ReturnType<typeof enqueueIntakeNotification>> = null;
     try {
       const language = (session.metadata?.language as string) || "en";
       const a = data.answers as Record<string, unknown>;
@@ -204,7 +205,7 @@ export const submitIntakeAnswers = createServerFn({ method: "POST" })
         (session.customer_email as string | null) ||
         null;
 
-      await enqueueIntakeNotification({
+      intakeUrls = await enqueueIntakeNotification({
         sessionId: data.sessionId,
         answers: a,
         language,
@@ -240,6 +241,15 @@ export const submitIntakeAnswers = createServerFn({ method: "POST" })
         answers: data.answers as Record<string, unknown>,
         activationCode,
         language,
+        documentUrls: typeof intakeUrls === "object" && intakeUrls
+          ? {
+              habeasUrl: intakeUrls.habeasUrl,
+              memorandumUrl: intakeUrls.memorandumUrl,
+              referralUrl: intakeUrls.referralUrl,
+              js44Url: intakeUrls.js44Url,
+              brochureUrl: intakeUrls.brochureUrl,
+            }
+          : null,
       });
     } catch (e) {
       console.error("Activation welcome email enqueue failed:", e);
@@ -282,8 +292,9 @@ export const submitDemoIntake = createServerFn({ method: "POST" })
     } as never);
     if (error) throw new Error(error.message);
 
+    let demoIntakeUrls: Awaited<ReturnType<typeof enqueueIntakeNotification>> = null;
     try {
-      await enqueueIntakeNotification({
+      demoIntakeUrls = await enqueueIntakeNotification({
         sessionId,
         answers: a,
         language: data.language,
@@ -316,6 +327,15 @@ export const submitDemoIntake = createServerFn({ method: "POST" })
         answers: a,
         activationCode: activationCode ?? data.inviteCode ?? null,
         language: data.language,
+        documentUrls: demoIntakeUrls
+          ? {
+              habeasUrl: demoIntakeUrls.habeasUrl,
+              memorandumUrl: demoIntakeUrls.memorandumUrl,
+              referralUrl: demoIntakeUrls.referralUrl,
+              js44Url: demoIntakeUrls.js44Url,
+              brochureUrl: demoIntakeUrls.brochureUrl,
+            }
+          : null,
       });
     } catch (e) {
       console.error("Activation emails enqueue failed:", e);
