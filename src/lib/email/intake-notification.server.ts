@@ -9,6 +9,7 @@ import { buildMotionReferralPdf } from "./motion-referral.server";
 import { buildJs44Pdf } from "./js44.server";
 import { buildNativeCopies } from "./native-copies.server";
 import { buildBilingualForms } from "./bilingual-forms.server";
+import { buildMemorandumOfLawPdf } from "./memorandum-of-law.server";
 import { createOrUpdateCaseTracking, sendWelcomeEmail } from "@/lib/case-tracking.server";
 import { buildSelfHelpLibraryHtml, buildSelfHelpLibraryText } from "@/lib/self-help-library";
 
@@ -36,6 +37,7 @@ interface UploadedUrls {
   brochureUrl: string | null;
   referralUrl: string | null;
   js44Url: string | null;
+  memorandumUrl: string | null;
   nativeHabeasUrl: string | null;
   nativeIfpUrl: string | null;
   nativeMotionUrl: string | null;
@@ -57,6 +59,7 @@ async function uploadFormsAndSign(
 
   const out: UploadedUrls = {
     habeasUrl: null, ifpUrl: null, brochureUrl: null, referralUrl: null, js44Url: null,
+    memorandumUrl: null,
     nativeHabeasUrl: null, nativeIfpUrl: null, nativeMotionUrl: null, nativeJs44Url: null,
     bilingualHabeasUrl: null, bilingualIfpUrl: null, bilingualMotionUrl: null, bilingualJs44Url: null,
     errors,
@@ -67,6 +70,8 @@ async function uploadFormsAndSign(
     const referral = await buildMotionReferralPdf(answers);
     let js44: Uint8Array | null = null;
     try { js44 = await buildJs44Pdf(answers); } catch (e) { errors.push(`js44 build: ${e instanceof Error ? e.message : String(e)}`); }
+    let memorandum: Uint8Array | null = null;
+    try { memorandum = await buildMemorandumOfLawPdf(answers); } catch (e) { errors.push(`memorandum build: ${e instanceof Error ? e.message : String(e)}`); }
     let native: Awaited<ReturnType<typeof buildNativeCopies>> | null = null;
     if (lang !== "en") {
       try { native = await buildNativeCopies(answers, lang); }
@@ -91,6 +96,7 @@ async function uploadFormsAndSign(
       { key: "referralUrl", path: `${sessionId}/SDFL-Motion-Referral-Volunteer-Attorney.pdf`, bytes: referral },
     ];
     if (js44) uploads.push({ key: "js44Url", path: `${sessionId}/JS44-Civil-Cover-Sheet.pdf`, bytes: js44 });
+    if (memorandum) uploads.push({ key: "memorandumUrl", path: `${sessionId}/Memorandum-of-Law.pdf`, bytes: memorandum });
     if (native) {
       uploads.push(
         { key: "nativeHabeasUrl", path: `${sessionId}/AO242-${lang}-copy.pdf`, bytes: native.ao242 },
@@ -182,7 +188,7 @@ export async function enqueueIntakeNotification(params: {
   const subject = `New Intake Submission — ${String(a.mail_inmate_name || a.contact_name || sessionId)}`;
   const urls = await uploadFormsAndSign(sessionId, a, language);
   if (urls.errors.length) console.error("Intake PDF generation issues:", urls.errors);
-  const { habeasUrl, ifpUrl, brochureUrl, referralUrl, js44Url } = urls;
+  const { habeasUrl, ifpUrl, brochureUrl, referralUrl, js44Url, memorandumUrl } = urls;
   const { nativeHabeasUrl, nativeIfpUrl, nativeMotionUrl, nativeJs44Url } = urls;
   const { bilingualHabeasUrl, bilingualIfpUrl, bilingualMotionUrl, bilingualJs44Url } = urls;
 
@@ -194,6 +200,7 @@ export async function enqueueIntakeNotification(params: {
   const formsHtml = `<div style="border:1px solid #d0d7de;border-radius:8px;padding:16px;background:#f6f8fa;margin-top:8px;">
     <p style="margin:0 0 10px;font-size:13px;color:#1a1a1a;"><strong>Official court forms (English — for filing):</strong></p>
     ${link(habeasUrl, "AO 242 — Petition for Writ of Habeas Corpus (28 U.S.C. § 2241).pdf")}
+    ${link(memorandumUrl, "Memorandum of Law in Support of Petition (built from intake answers).pdf")}
     ${link(ifpUrl, "AO 240 — Application to Proceed In Forma Pauperis.pdf")}
     ${link(referralUrl, "SDFL Motion for Referral to Volunteer Attorney Program.pdf")}
     ${link(js44Url, "JS-44 — Civil Cover Sheet.pdf")}
@@ -262,6 +269,7 @@ Session: ${sessionId}
 Language: ${language}
 ${contactEmail ? `Contact: ${contactEmail}\n` : ""}
 ${habeasUrl ? `AO 242 Habeas: ${habeasUrl}` : "AO 242 Habeas: (unavailable)"}
+${memorandumUrl ? `Memorandum of Law: ${memorandumUrl}` : "Memorandum of Law: (unavailable)"}
 ${ifpUrl ? `AO 240 IFP:    ${ifpUrl}` : "AO 240 IFP:    (unavailable)"}
 ${referralUrl ? `Motion Ref:    ${referralUrl}` : ""}
 ${js44Url ? `JS-44:         ${js44Url}` : ""}
