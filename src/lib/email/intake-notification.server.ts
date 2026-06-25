@@ -96,6 +96,7 @@ async function uploadFormsAndSign(
       { key: "referralUrl", path: `${sessionId}/SDFL-Motion-Referral-Volunteer-Attorney.pdf`, bytes: referral },
     ];
     if (js44) uploads.push({ key: "js44Url", path: `${sessionId}/JS44-Civil-Cover-Sheet.pdf`, bytes: js44 });
+    if (memorandum) uploads.push({ key: "memorandumUrl", path: `${sessionId}/Memorandum-of-Law.pdf`, bytes: memorandum });
     if (native) {
       uploads.push(
         { key: "nativeHabeasUrl", path: `${sessionId}/AO242-${lang}-copy.pdf`, bytes: native.ao242 },
