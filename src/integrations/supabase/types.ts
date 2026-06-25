@@ -32,6 +32,7 @@ export type Database = {
       app_clients: {
         Row: {
           activated_at: string | null
+          cancel_pin_hash: string | null
           country_of_origin: string | null
           created_at: string
           device_info: Json | null
@@ -45,10 +46,13 @@ export type Database = {
           language: string
           phone_e164: string | null
           place_of_birth: string | null
+          setup_completed_at: string | null
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           activated_at?: string | null
+          cancel_pin_hash?: string | null
           country_of_origin?: string | null
           created_at?: string
           device_info?: Json | null
@@ -62,10 +66,13 @@ export type Database = {
           language?: string
           phone_e164?: string | null
           place_of_birth?: string | null
+          setup_completed_at?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           activated_at?: string | null
+          cancel_pin_hash?: string | null
           country_of_origin?: string | null
           created_at?: string
           device_info?: Json | null
@@ -79,7 +86,9 @@ export type Database = {
           language?: string
           phone_e164?: string | null
           place_of_birth?: string | null
+          setup_completed_at?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -1182,6 +1191,28 @@ export type Database = {
         Returns: string
       }
       cancel_sos_alert: { Args: { _token: string }; Returns: string }
+      cancel_sos_alert_with_pin: {
+        Args: { _pin: string; _token: string }
+        Returns: string
+      }
+      claim_app_client_by_code: {
+        Args: { _token: string; _user_id: string }
+        Returns: {
+          client_id: string
+          full_name: string
+          invite_token: string
+          language: string
+        }[]
+      }
+      claim_app_client_by_email: {
+        Args: { _email: string; _user_id: string }
+        Returns: {
+          client_id: string
+          full_name: string
+          invite_token: string
+          language: string
+        }[]
+      }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean
@@ -1190,6 +1221,7 @@ export type Database = {
         Args: { payload: Json; queue_name: string }
         Returns: number
       }
+      get_alert_viewer_bundle: { Args: { _token: string }; Returns: Json }
       get_client_bundle: { Args: { _token: string }; Returns: Json }
       has_active_subscription: {
         Args: { check_env?: string; user_uuid: string }
@@ -1236,6 +1268,10 @@ export type Database = {
           full_name: string
           language: string
         }[]
+      }
+      set_sos_cancel_pin: {
+        Args: { _client_id: string; _pin: string }
+        Returns: undefined
       }
       sync_client_contacts: {
         Args: { _contacts: Json; _token: string }
