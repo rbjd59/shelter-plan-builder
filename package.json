@@ -14,7 +14,7 @@
     "test:pdfs": "vitest run src/lib/email/intake-pdfs.test.ts"
   },
   "dependencies": {
-    "@cloudflare/vite-plugin": "^1.25.5",
+    "@cloudflare/vite-plugin": "^1.42.2",
     "@fontsource/roboto-slab": "^5.2.8",
     "@hookform/resolvers": "^5.2.2",
     "@lovable.dev/email-js": "^0.0.4",
@@ -67,7 +67,7 @@
     "react": "^19.2.0",
     "react-day-picker": "^9.14.0",
     "react-dom": "^19.2.0",
-    "react-email": "^6.3.2",
+    "react-email": "^6.6.4",
     "react-hook-form": "^7.71.2",
     "react-resizable-panels": "^4.6.5",
     "recharts": "^2.15.4",
