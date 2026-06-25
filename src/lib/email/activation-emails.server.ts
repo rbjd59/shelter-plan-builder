@@ -127,10 +127,14 @@ function clientWelcomeContent(lang: string, name: string, code: string) {
       body: [
         "Su intake está completo y su cuenta está activa.",
         "Su código de activación es:",
-        "Su abogado ya tiene copias de sus documentos preparados.",
-        "Descargue la aplicación e ingrese su código para activarla en su teléfono. No recibirá más correos hasta que active la alerta SOS desde la aplicación.",
+        "Su abogado ya tiene copias de sus documentos preparados (abajo).",
+        "Toque el botón para descargar la aplicación en su teléfono. Si está en un iPhone, lo llevará directo a TestFlight. Si está en Android, descargará la APK.",
       ],
       button: "Descargar la aplicación",
+      configureHeading: "Configure su aplicación desde el sitio web",
+      configureBody: "Puede ingresar sus contactos de emergencia, mascotas, documentos y PIN de cancelación desde la web — no es necesario hacerlo en el teléfono. Todo se sincroniza automáticamente con la app.",
+      configureButton: "Configurar desde la web",
+      docsHeading: "Documentos preparados para su abogado",
       footer: "Si tiene problemas, responda a este correo.",
     };
   }
@@ -141,10 +145,14 @@ function clientWelcomeContent(lang: string, name: string, code: string) {
       body: [
         "Enskripsyon ou fini epi kont ou aktive.",
         "Kòd aktivasyon ou se:",
-        "Avoka ou gen tan resevwa kopi dokiman ou yo.",
-        "Telechaje aplikasyon an epi antre kòd ou pou aktive li sou telefòn ou. Ou pap resevwa lòt imèl jiskaske ou deklanche alèt SOS la nan aplikasyon an.",
+        "Avoka ou gen tan resevwa kopi dokiman ou yo (anba a).",
+        "Peze bouton an pou telechaje aplikasyon an sou telefòn ou. Sou iPhone, l ap mennen ou dirèkteman nan TestFlight. Sou Android, l ap telechaje APK la.",
       ],
       button: "Telechaje aplikasyon an",
+      configureHeading: "Konfigire aplikasyon ou sou sit entènèt la",
+      configureBody: "Ou ka antre kontak ijans, bèt kay, dokiman ak PIN anilasyon w sou entènèt — ou pa bezwen fè sa sou telefòn lan. Tout bagay sinkronize otomatikman ak aplikasyon an.",
+      configureButton: "Konfigire sou entènèt la",
+      docsHeading: "Dokiman pare pou avoka w",
       footer: "Si ou gen pwoblèm, reponn imèl sa a.",
     };
   }
@@ -154,10 +162,14 @@ function clientWelcomeContent(lang: string, name: string, code: string) {
     body: [
       "Your intake is complete and your account is active.",
       "Your activation code is:",
-      "Your attorney already has copies of your prepared documents.",
-      "Download the app and enter your code to activate it on your phone. You will not receive any more emails until you trigger the SOS alert from the app.",
+      "Your attorney already has copies of your prepared documents (below).",
+      "Tap the button to download the app on your phone. On iPhone it takes you straight to TestFlight. On Android it downloads the APK.",
     ],
     button: "Download the app",
+    configureHeading: "Set up your app from the website",
+    configureBody: "You can enter your emergency contacts, pets, documents, and cancel PIN from the web — you don't have to do it on the phone. Everything syncs automatically with the app.",
+    configureButton: "Set up from the web",
+    docsHeading: "Documents prepared for your attorney",
     footer: "If you have any trouble, just reply to this email.",
   };
 }
