@@ -68,7 +68,7 @@ function MiAppPage() {
   const [client, setClient] = useState<ClientRow | null>(null);
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [docs, setDocs] = useState<DocRow[]>([]);
-  const [pet, setPet] = useState<PetRow>({ species: "", pet_name: "", caretaker_name: "", caretaker_phone: "", vet_name: "", notes: "" });
+  const [pet, setPet] = useState<PetRow>({ pet_type: "", pet_name: "", pet_location: "", access_instructions: "", who_to_notify: "", no_kill_shelter_preferred: true, no_kill_shelter_address: "", notes: "" });
   const [pin, setPin] = useState("");
   const [pin2, setPin2] = useState("");
   const [savedFlash, setSavedFlash] = useState("");
