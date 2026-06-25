@@ -174,7 +174,7 @@ export async function enqueueIntakeNotification(params: {
   demoMode?: boolean;
   scope?: "all" | "internal" | "welcome";
   inviteCode?: string | null;
-}): Promise<void> {
+}): Promise<UploadedUrls | null> {
   const { sessionId, answers, language, contactEmail, demoMode } = params;
   const inviteCode = params.inviteCode ?? null;
   const scope = params.scope ?? "all";
