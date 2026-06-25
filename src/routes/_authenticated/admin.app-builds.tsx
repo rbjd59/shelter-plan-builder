@@ -40,6 +40,33 @@ function AppBuildsPage() {
   const [iosNotes, setIosNotes] = useState("");
   const [savingIos, setSavingIos] = useState(false);
 
+  // QR code generator
+  const [qrText, setQrText] = useState("https://testflight.apple.com/join/5GBXYZJLF2");
+  const [qrDataUrl, setQrDataUrl] = useState<string>("");
+  const [qrError, setQrError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (!qrText.trim()) {
+      setQrDataUrl("");
+      return;
+    }
+    QRCode.toDataURL(qrText.trim(), { width: 320, margin: 2, errorCorrectionLevel: "M" })
+      .then((url) => {
+        if (!cancelled) {
+          setQrDataUrl(url);
+          setQrError(null);
+        }
+      })
+      .catch((e) => {
+        if (!cancelled) setQrError(e instanceof Error ? e.message : "QR generation failed");
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [qrText]);
+
+
   const refresh = async () => {
     setLoading(true);
     try {
