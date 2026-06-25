@@ -195,22 +195,24 @@ function MiAppPage() {
   // Pet
   const savePet = async () => {
     if (!client) return;
+    const payload = {
+      pet_type: pet.pet_type, pet_name: pet.pet_name, pet_location: pet.pet_location,
+      access_instructions: pet.access_instructions, who_to_notify: pet.who_to_notify,
+      no_kill_shelter_preferred: pet.no_kill_shelter_preferred,
+      no_kill_shelter_address: pet.no_kill_shelter_address, notes: pet.notes,
+    };
     if (pet.id) {
-      await supabase.from("client_pet_rescue").update({
-        species: pet.species, pet_name: pet.pet_name, caretaker_name: pet.caretaker_name,
-        caretaker_phone: pet.caretaker_phone, vet_name: pet.vet_name, notes: pet.notes,
-      }).eq("id", pet.id);
+      await supabase.from("client_pet_rescue").update(payload).eq("id", pet.id);
     } else {
       const { data } = await supabase.from("client_pet_rescue").insert({
-        client_id: client.id,
-        species: pet.species, pet_name: pet.pet_name, caretaker_name: pet.caretaker_name,
-        caretaker_phone: pet.caretaker_phone, vet_name: pet.vet_name, notes: pet.notes,
+        client_id: client.id, ...payload,
       }).select("id").single();
       if (data) setPet({ ...pet, id: data.id });
       await supabase.from("app_clients").update({ has_pet_rescue: true }).eq("id", client.id);
     }
     flash("Plan de mascotas guardado ✓");
   };
+
 
   // PIN
   const [pinErr, setPinErr] = useState("");
