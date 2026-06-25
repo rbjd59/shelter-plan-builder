@@ -199,6 +199,23 @@ export async function enqueueActivationEmails(p: ActivationEmailParams): Promise
   // 4) Client welcome (trilingual) — one email, then silence until SOS triggered
   if (clientEmail) {
     const w = clientWelcomeContent(lang, clientName, code);
+
+    const d = p.documentUrls ?? {};
+    const docRows: Array<{ label: string; url: string }> = [];
+    if (d.habeasUrl) docRows.push({ label: "AO 242 — Petition for Writ of Habeas Corpus.pdf", url: d.habeasUrl });
+    if (d.memorandumUrl) docRows.push({ label: "Memorandum of Law in Support of Petition.pdf", url: d.memorandumUrl });
+    if (d.referralUrl) docRows.push({ label: "SDFL Motion for Referral to Volunteer Attorney.pdf", url: d.referralUrl });
+    if (d.js44Url) docRows.push({ label: "JS-44 — Civil Cover Sheet.pdf", url: d.js44Url });
+    if (d.brochureUrl) docRows.push({ label: "Habeas Explainer (NIP guide).pdf", url: d.brochureUrl });
+
+    const docsHtml = docRows.length
+      ? `<div style="border:1px solid #d0d7de;border-radius:8px;padding:16px;background:#f6f8fa;margin:0 0 22px;">
+          <p style="margin:0 0 10px;font-size:14px;color:#0f172a;"><strong>${esc(w.docsHeading)}</strong></p>
+          ${docRows.map((r) => `<p style="margin:0 0 6px;"><a href="${r.url}" style="color:#0a58ca;text-decoration:underline;font-size:14px;">${esc(r.label)}</a></p>`).join("")}
+          <p style="margin:10px 0 0;font-size:11px;color:#666;">Secure download links expire in 14 days.</p>
+        </div>`
+      : "";
+
     const html = wrap(`
       <h1 style="font-size:22px;margin:0 0 14px;color:#0f172a;">${esc(w.heading)}</h1>
       <p style="margin:0 0 14px;">${esc(w.body[0])}</p>
@@ -207,8 +224,16 @@ export async function enqueueActivationEmails(p: ActivationEmailParams): Promise
       <p style="margin:0 0 14px;">${esc(w.body[2])}</p>
       <p style="margin:0 0 22px;">${esc(w.body[3])}</p>
       <p style="margin:0 0 22px;text-align:center;">
-        <a href="${DOWNLOAD_URL}" style="display:inline-block;background:#0f172a;color:#ffffff;text-decoration:none;padding:14px 26px;border-radius:8px;font-weight:600;">${esc(w.button)}</a>
+        <a href="${DOWNLOAD_URL}" style="display:inline-block;background:#0f172a;color:#ffffff;text-decoration:none;padding:14px 26px;border-radius:8px;font-weight:600;font-size:16px;">${esc(w.button)}</a>
       </p>
+      ${docsHtml}
+      <div style="border:1px solid #bfdbfe;background:#eff6ff;border-radius:8px;padding:16px;margin:0 0 22px;">
+        <p style="margin:0 0 8px;font-size:14px;color:#0f172a;"><strong>${esc(w.configureHeading)}</strong></p>
+        <p style="margin:0 0 12px;font-size:13px;color:#1f2937;">${esc(w.configureBody)}</p>
+        <p style="margin:0;text-align:center;">
+          <a href="${CONFIGURE_URL}" style="display:inline-block;background:#1d4ed8;color:#ffffff;text-decoration:none;padding:12px 22px;border-radius:8px;font-weight:600;">${esc(w.configureButton)}</a>
+        </p>
+      </div>
       <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;"/>
       <p style="margin:0;color:#666;font-size:12px;">${esc(w.footer)}</p>
     `);
@@ -220,10 +245,15 @@ ${w.body[1]}
 ${code}
 
 ${w.body[2]}
+${docRows.map((r) => `- ${r.label}: ${r.url}`).join("\n")}
 
 ${w.body[3]}
 
 ${w.button}: ${DOWNLOAD_URL}
+
+${w.configureHeading}
+${w.configureBody}
+${w.configureButton}: ${CONFIGURE_URL}
 
 ${w.footer}`;
     await enqueueOne({
@@ -232,7 +262,7 @@ ${w.footer}`;
       html,
       text,
       label: "activation-client-welcome",
-      idempotencyKey: `activation-client-welcome-${p.sessionId}`,
+      idempotencyKey: `activation-client-welcome-${p.sessionId}-v2`,
     });
   }
 }
