@@ -139,9 +139,10 @@ function MiAppPage() {
   const saveProfileField = async (field: keyof ClientRow, value: string) => {
     if (!client) return;
     setClient({ ...client, [field]: value });
-    await supabase.from("app_clients").update({ [field]: value }).eq("id", client.id);
+    await supabase.from("app_clients").update({ [field]: value } as never).eq("id", client.id);
     flash("Guardado / Saved ✓");
   };
+
 
   // Contacts
   const addContact = () => {
