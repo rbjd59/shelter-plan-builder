@@ -37,6 +37,7 @@ const ActivateSchema = z.object({
   device_timestamp: z.string().max(80).optional(),
   notes: z.string().max(1000).optional(),
   cancel_of: z.string().uuid().optional(),
+  cancel_pin: z.string().regex(/^\d{4,8}$/).optional(),
 }).refine((data) => data.intake_session_id || data.activation_code || data.token, {
   message: "intake_session_id_or_activation_code_required",
   path: ["intake_session_id"],
@@ -224,9 +225,21 @@ export const Route = createFileRoute("/api/public/emergency/activate")({
           const cancelToken = await resolveMirrorToken(caseRef, explicitCode);
           if (cancelToken) {
             try {
-              await supabaseAdmin.rpc("cancel_sos_alert" as never, {
-                _token: cancelToken,
-              } as never);
+              if (d.cancel_pin) {
+                const { data: pinOk, error: pinErr } = await supabaseAdmin.rpc(
+                  "cancel_sos_alert_with_pin" as never,
+                  { _token: cancelToken, _pin: d.cancel_pin } as never,
+                );
+                if (pinErr || pinOk === false) {
+                  console.warn("[activate] PIN rejected", { pinErr, pinOk });
+                  return jsonResponse({ ok: false, error: "invalid_pin" }, { status: 403 });
+                }
+                console.log("[activate] cancel via PIN ok");
+              } else {
+                await supabaseAdmin.rpc("cancel_sos_alert" as never, {
+                  _token: cancelToken,
+                } as never);
+              }
             } catch (e) {
               console.error("[activate] cancel_sos_alert mirror failed", e);
             }
