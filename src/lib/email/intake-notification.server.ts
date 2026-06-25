@@ -201,21 +201,21 @@ export async function enqueueIntakeNotification(params: {
     <p style="margin:0 0 10px;font-size:13px;color:#1a1a1a;"><strong>Official court forms (English — for filing):</strong></p>
     ${link(habeasUrl, "AO 242 — Petition for Writ of Habeas Corpus (28 U.S.C. § 2241).pdf")}
     ${link(memorandumUrl, "Memorandum of Law in Support of Petition (built from intake answers).pdf")}
-    ${link(ifpUrl, "AO 240 — Application to Proceed In Forma Pauperis.pdf")}
+    <!-- AO 240 IFP attachment suppressed: intake no longer collects IFP financial questions. Form is still generated server-side but not surfaced until those questions are restored. -->
     ${link(referralUrl, "SDFL Motion for Referral to Volunteer Attorney Program.pdf")}
     ${link(js44Url, "JS-44 — Civil Cover Sheet.pdf")}
     ${brochureUrl ? `<p style="margin:8px 0 6px;"><a href="${brochureUrl}" style="color:#0a58ca;text-decoration:underline;font-size:14px;font-weight:600;">📘 INCLUDE WITH MAILED PACKAGE — Habeas Explainer (${language === "es" ? "Español" : "English"}, NIP guide).pdf</a></p>` : ""}
     ${(bilingualHabeasUrl || bilingualIfpUrl || bilingualMotionUrl || bilingualJs44Url) ? `
       <p style="margin:14px 0 8px;font-size:13px;color:#1a1a1a;"><strong>Side-by-side bilingual forms (English left / ${escapeHtml(language)} right — for petitioner reference, NOT for filing):</strong></p>
       ${link(bilingualHabeasUrl, `AO 242 — bilingual (EN / ${language}).pdf`)}
-      ${link(bilingualIfpUrl, `AO 240 — bilingual (EN / ${language}).pdf`)}
+      
       ${link(bilingualMotionUrl, `SDFL Motion — bilingual (EN / ${language}).pdf`)}
       ${link(bilingualJs44Url, `JS-44 — bilingual (EN / ${language}).pdf`)}
     ` : ""}
     ${(nativeHabeasUrl || nativeIfpUrl || nativeMotionUrl || nativeJs44Url) ? `
       <p style="margin:14px 0 8px;font-size:13px;color:#1a1a1a;"><strong>Native-language summary copies (${escapeHtml(language)} — for petitioner's records, NOT for filing):</strong></p>
       ${link(nativeHabeasUrl, `AO 242 — ${language} copy.pdf`)}
-      ${link(nativeIfpUrl, `AO 240 — ${language} copy.pdf`)}
+      
       ${link(nativeMotionUrl, `SDFL Motion — ${language} copy.pdf`)}
       ${link(nativeJs44Url, `JS-44 — ${language} copy.pdf`)}
     ` : ""}
@@ -270,7 +270,7 @@ Language: ${language}
 ${contactEmail ? `Contact: ${contactEmail}\n` : ""}
 ${habeasUrl ? `AO 242 Habeas: ${habeasUrl}` : "AO 242 Habeas: (unavailable)"}
 ${memorandumUrl ? `Memorandum of Law: ${memorandumUrl}` : "Memorandum of Law: (unavailable)"}
-${ifpUrl ? `AO 240 IFP:    ${ifpUrl}` : "AO 240 IFP:    (unavailable)"}
+
 ${referralUrl ? `Motion Ref:    ${referralUrl}` : ""}
 ${js44Url ? `JS-44:         ${js44Url}` : ""}
 
