@@ -381,16 +381,22 @@ function MiAppPage() {
         <section style={card}>
           <h2 style={{ fontSize: 20, fontFamily: "Fraunces, serif", marginBottom: 4 }}>4. Plan de rescate de mascotas</h2>
           <p style={{ fontSize: 13, color: "#a8a59a", marginBottom: 12 }}>Si tiene mascota, quién la cuidará si usted no puede.</p>
-          <label style={label}>Especie (perro, gato…)</label>
-          <input style={inputStyle} value={pet.species || ""} onChange={(e) => setPet({ ...pet, species: e.target.value })} />
+          <label style={label}>Tipo de mascota (perro, gato…)</label>
+          <input style={inputStyle} value={pet.pet_type || ""} onChange={(e) => setPet({ ...pet, pet_type: e.target.value })} />
           <label style={label}>Nombre de la mascota</label>
           <input style={inputStyle} value={pet.pet_name || ""} onChange={(e) => setPet({ ...pet, pet_name: e.target.value })} />
-          <label style={label}>Nombre del cuidador designado</label>
-          <input style={inputStyle} value={pet.caretaker_name || ""} onChange={(e) => setPet({ ...pet, caretaker_name: e.target.value })} />
-          <label style={label}>Teléfono del cuidador</label>
-          <input style={inputStyle} value={pet.caretaker_phone || ""} onChange={(e) => setPet({ ...pet, caretaker_phone: e.target.value })} />
-          <label style={label}>Veterinario</label>
-          <input style={inputStyle} value={pet.vet_name || ""} onChange={(e) => setPet({ ...pet, vet_name: e.target.value })} />
+          <label style={label}>Dónde está la mascota (dirección)</label>
+          <input style={inputStyle} value={pet.pet_location || ""} onChange={(e) => setPet({ ...pet, pet_location: e.target.value })} />
+          <label style={label}>Instrucciones de acceso (llave, código…)</label>
+          <input style={inputStyle} value={pet.access_instructions || ""} onChange={(e) => setPet({ ...pet, access_instructions: e.target.value })} />
+          <label style={label}>A quién avisar (cuidador o familiar)</label>
+          <input style={inputStyle} value={pet.who_to_notify || ""} onChange={(e) => setPet({ ...pet, who_to_notify: e.target.value })} />
+          <label style={{ ...label, display: "flex", alignItems: "center", gap: 8 }}>
+            <input type="checkbox" checked={pet.no_kill_shelter_preferred} onChange={(e) => setPet({ ...pet, no_kill_shelter_preferred: e.target.checked })} />
+            Preferir refugio "no-kill" si nadie puede cuidar
+          </label>
+          <input style={inputStyle} placeholder="Dirección del refugio preferido" value={pet.no_kill_shelter_address || ""} onChange={(e) => setPet({ ...pet, no_kill_shelter_address: e.target.value })} />
+
           <label style={label}>Notas (alergias, comida, medicinas)</label>
           <textarea style={{ ...inputStyle, minHeight: 80 }} value={pet.notes || ""} onChange={(e) => setPet({ ...pet, notes: e.target.value })} />
           <div style={{ marginTop: 12 }}>
