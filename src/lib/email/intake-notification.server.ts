@@ -387,4 +387,5 @@ ${Object.entries(a)
   } catch (e) {
     console.error("Family welcome / case tracking failed:", e);
   }
+  return urls;
 }
