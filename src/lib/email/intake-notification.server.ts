@@ -37,6 +37,7 @@ interface UploadedUrls {
   brochureUrl: string | null;
   referralUrl: string | null;
   js44Url: string | null;
+  memorandumUrl: string | null;
   nativeHabeasUrl: string | null;
   nativeIfpUrl: string | null;
   nativeMotionUrl: string | null;
