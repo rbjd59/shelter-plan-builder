@@ -295,6 +295,78 @@ function AppBuildsPage() {
           </form>
         </section>
 
+        {/* QR code generator */}
+        <section style={s.card}>
+          <h2 style={s.h2}>📱 QR code generator</h2>
+          <p style={{ color: "#a1a1aa", fontSize: 13, margin: "0 0 12px" }}>
+            Generate a scannable QR for the TestFlight invite (or any URL). Print it on flyers or show it on
+            screen — people scan with their iPhone camera to join.
+          </p>
+          <label style={s.label}>
+            URL or text
+            <input
+              value={qrText}
+              onChange={(e) => setQrText(e.target.value)}
+              placeholder="https://testflight.apple.com/join/XXXXXXXX"
+              style={s.input}
+            />
+          </label>
+          <div style={{ display: "flex", gap: 8, marginTop: 10, flexWrap: "wrap" }}>
+            {releases
+              .filter((r) => r.platform === "ios" && r.testflight_url)
+              .slice(0, 3)
+              .map((r) => (
+                <button
+                  key={r.id}
+                  type="button"
+                  onClick={() => setQrText(r.testflight_url!)}
+                  style={s.smallBtn}
+                >
+                  Use v{r.version} link
+                </button>
+              ))}
+            <button type="button" onClick={() => setQrText("https://detenciondefensa.com/download")} style={s.smallBtn}>
+              Use /download page
+            </button>
+          </div>
+          {qrError && <p style={{ color: "#fca5a5", fontSize: 13, marginTop: 10 }}>{qrError}</p>}
+          {qrDataUrl && (
+            <div style={{ marginTop: 16, display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
+              <img
+                src={qrDataUrl}
+                alt="QR code"
+                style={{ width: 280, height: 280, background: "#fff", padding: 8, borderRadius: 8 }}
+              />
+              <div style={{ display: "flex", gap: 8 }}>
+                <a
+                  href={qrDataUrl}
+                  download={`qr-${Date.now()}.png`}
+                  style={{ ...s.smallBtn, textDecoration: "none", display: "inline-block" }}
+                >
+                  Download PNG
+                </a>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const w = window.open("");
+                    if (w) {
+                      w.document.write(
+                        `<html><head><title>QR — ${qrText}</title></head><body style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:system-ui;"><img src="${qrDataUrl}" style="width:480px;height:480px"/><p style="font-size:14px;margin-top:16px;word-break:break-all;max-width:480px;text-align:center">${qrText}</p><script>window.print()</script></body></html>`,
+                      );
+                      w.document.close();
+                    }
+                  }}
+                  style={s.smallBtn}
+                >
+                  Print
+                </button>
+              </div>
+            </div>
+          )}
+        </section>
+
+
+
         {/* History */}
         <section style={{ marginTop: 32 }}>
           <h2 style={s.h2}>Release history</h2>
