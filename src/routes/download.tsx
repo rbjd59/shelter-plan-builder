@@ -590,12 +590,8 @@ function DownloadPage() {
               >
                 ✉️ {t.aErrorEmail}
               </a>
-              <a
-                href="/app"
-                style={{ ...styles.secondaryBtn, color: "#fff", borderColor: "#fca5a5" }}
-              >
-                {t.aOpenWeb}
-              </a>
+
+
             </div>
           </div>
         )}
