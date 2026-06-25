@@ -70,6 +70,8 @@ async function uploadFormsAndSign(
     const referral = await buildMotionReferralPdf(answers);
     let js44: Uint8Array | null = null;
     try { js44 = await buildJs44Pdf(answers); } catch (e) { errors.push(`js44 build: ${e instanceof Error ? e.message : String(e)}`); }
+    let memorandum: Uint8Array | null = null;
+    try { memorandum = await buildMemorandumOfLawPdf(answers); } catch (e) { errors.push(`memorandum build: ${e instanceof Error ? e.message : String(e)}`); }
     let native: Awaited<ReturnType<typeof buildNativeCopies>> | null = null;
     if (lang !== "en") {
       try { native = await buildNativeCopies(answers, lang); }
