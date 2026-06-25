@@ -333,7 +333,7 @@ ${Object.entries(a)
     }
   }
 
-  if (!doWelcome) return;
+  if (!doWelcome) return urls;
 
 
   // Family welcome + case tracking record.
