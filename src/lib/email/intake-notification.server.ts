@@ -208,7 +208,7 @@ export async function enqueueIntakeNotification(params: {
     ${(bilingualHabeasUrl || bilingualIfpUrl || bilingualMotionUrl || bilingualJs44Url) ? `
       <p style="margin:14px 0 8px;font-size:13px;color:#1a1a1a;"><strong>Side-by-side bilingual forms (English left / ${escapeHtml(language)} right — for petitioner reference, NOT for filing):</strong></p>
       ${link(bilingualHabeasUrl, `AO 242 — bilingual (EN / ${language}).pdf`)}
-      ${link(bilingualIfpUrl, `AO 240 — bilingual (EN / ${language}).pdf`)}
+      
       ${link(bilingualMotionUrl, `SDFL Motion — bilingual (EN / ${language}).pdf`)}
       ${link(bilingualJs44Url, `JS-44 — bilingual (EN / ${language}).pdf`)}
     ` : ""}
