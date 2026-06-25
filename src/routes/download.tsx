@@ -447,92 +447,71 @@ function DownloadPage() {
         </div>
 
         {/* ============ iPhone ============ */}
+        {/* TestFlight ONLY. No PWA / Add-to-Home-Screen path — the native */}
+        {/* Flutter app is what the customer is supposed to install.        */}
         {tab === "ios" && (
           <>
-            {!iosSafari && (
+            <h2 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 8px" }}>{t.iosHeading}</h2>
+            {!loading && ios && ios.testflightUrl ? (
+              <>
+                <p style={styles.intro}>
+                  {lang === "es"
+                    ? "iPhone usa TestFlight (la app oficial de Apple para apps en prueba). Toque el botón abajo en su iPhone, instale TestFlight si se le solicita, y luego acepte la invitación."
+                    : lang === "ht"
+                    ? "iPhone sèvi avèk TestFlight (app ofisyèl Apple pou app k ap teste). Peze bouton anba a sou iPhone ou, enstale TestFlight si li mande w, epi aksepte envitasyon an."
+                    : "iPhone uses TestFlight (Apple's official app for beta apps). Tap the button below on your iPhone, install TestFlight if asked, then accept the invitation."}
+                </p>
+                <a href={ios.testflightUrl} style={styles.primaryBtn}>
+                  {t.iosTestflightBtn}
+                </a>
+                {ios.version && (
+                  <p style={{ color: "#71717a", fontSize: 13, margin: "10px 0 0" }}>
+                    {t.aVersion} {ios.version}
+                  </p>
+                )}
+                <p style={{ color: "#a1a1aa", fontSize: 12, margin: "16px 0 0", lineHeight: 1.55 }}>
+                  {lang === "es"
+                    ? "Importante: este enlace solo funciona en el iPhone con el correo electrónico que envió en el intake. Si TestFlight dice que la invitación no es para usted, escríbanos."
+                    : lang === "ht"
+                    ? "Enpòtan: lyen sa mache sèlman sou iPhone la avèk imèl ou te bay nan enskripsyon an. Si TestFlight di envitasyon an pa pou ou, ekri nou."
+                    : "Important: this link only works on your iPhone with the email address you submitted at intake. If TestFlight says the invitation isn't for you, email us."}
+                </p>
+              </>
+            ) : (
               <div
                 style={{
-                  background: "#7f1d1d",
-                  border: "1px solid #fca5a5",
+                  background: "#1c1917",
+                  border: "1px solid #f59e0b",
                   borderRadius: 10,
                   padding: 14,
-                  marginBottom: 18,
+                  marginTop: 8,
                   textAlign: "left",
+                  fontSize: 13,
+                  color: "#fde68a",
+                  lineHeight: 1.55,
                 }}
               >
-                <p style={{ margin: "0 0 6px", fontWeight: 700, color: "#fff", fontSize: 15 }}>
-                  ⚠️ {t.iosNotSafariTitle}
+                <p style={{ margin: "0 0 6px", fontWeight: 700, color: "#fbbf24" }}>
+                  {t.iosTestflightPending}
                 </p>
-                <p style={{ margin: "0 0 10px", color: "#fee2e2", fontSize: 13, lineHeight: 1.5 }}>
-                  {t.iosNotSafariBody}
+                <p style={{ margin: "0 0 12px" }}>
+                  {lang === "es"
+                    ? "La invitación TestFlight para su iPhone aún no está lista. Escríbanos y se la enviaremos directamente."
+                    : lang === "ht"
+                    ? "Envitasyon TestFlight pou iPhone ou poko pare. Ekri nou epi n ap voye li dirèkteman ba ou."
+                    : "Your iPhone TestFlight invite isn't ready yet. Email us and we'll send it to you directly."}
                 </p>
-                <button
-                  onClick={handleCopy}
-                  style={{
-                    ...styles.primaryBtn,
-                    fontSize: 14,
-                    padding: "10px 18px",
-                    background: "#fff",
-                    color: "#7f1d1d",
-                  }}
+                <a
+                  href={`mailto:${SUPPORT_EMAIL}?subject=iPhone%20TestFlight%20invite`}
+                  style={{ ...styles.primaryBtn, fontSize: 14, padding: "10px 18px" }}
                 >
-                  {copied ? t.iosCopied : `📋 ${t.iosCopyLink}`}
-                </button>
+                  ✉️ {lang === "es" ? "Pedir invitación" : lang === "ht" ? "Mande envitasyon" : "Request invite"}
+                </a>
               </div>
             )}
-
-            {/* TestFlight banner: shown above the web-app fallback */}
-            {!loading && ios && (
-              ios.testflightUrl ? (
-                <div style={{ marginBottom: 24 }}>
-                  <a href={ios.testflightUrl} style={styles.primaryBtn}>
-                    {t.iosTestflightBtn}
-                  </a>
-                  {ios.version && (
-                    <p style={{ color: "#71717a", fontSize: 13, margin: "8px 0 0" }}>
-                      {t.aVersion} {ios.version}
-                    </p>
-                  )}
-                </div>
-              ) : (
-                <div
-                  style={{
-                    background: "#1c1917",
-                    border: "1px solid #3f3f46",
-                    borderRadius: 10,
-                    padding: 14,
-                    marginBottom: 20,
-                    textAlign: "left",
-                    fontSize: 13,
-                    color: "#d4d4d8",
-                    lineHeight: 1.55,
-                  }}
-                >
-                  <p style={{ margin: "0 0 4px", fontWeight: 700, color: "#fde68a" }}>
-                    {t.iosTestflightPending}
-                  </p>
-                  <p style={{ margin: 0 }}>{t.iosTestflightPendingBody}</p>
-                </div>
-              )
-            )}
-
-            <h2 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 8px" }}>{t.iosHeading}</h2>
-            <p style={styles.intro}>{t.iosIntro}</p>
-            <a href="/app" style={styles.primaryBtn}>
-              {t.iosOpenBtn}
-            </a>
-            <div style={styles.panel}>
-              <ol style={{ paddingLeft: 20, margin: 0 }}>
-                {t.iosSteps.map((step, i) => (
-                  <li key={i} style={{ marginBottom: 6 }}>
-                    {step}
-                  </li>
-                ))}
-              </ol>
-              <p style={styles.warn}>{t.iosWarn}</p>
-            </div>
           </>
         )}
+
 
         {/* ============ Android ============ */}
         {tab === "android" && loading && <p style={{ color: "#a1a1aa" }}>…</p>}
