@@ -30,6 +30,9 @@ const ActivateSchema = z.object({
   alert_email: z.string().email().max(200).optional(),
   contact_email: z.string().email().max(200).optional(),
   contacts: z.array(AppContactSchema).max(20).optional(),
+  payload: z.object({
+    contacts: z.array(AppContactSchema).max(20).optional(),
+  }).passthrough().optional(),
   gps_lat: z.number().min(-90).max(90).optional(),
   gps_lng: z.number().min(-180).max(180).optional(),
   gps_raw: z.string().max(200).optional(),
@@ -38,7 +41,7 @@ const ActivateSchema = z.object({
   notes: z.string().max(1000).optional(),
   cancel_of: z.string().uuid().optional(),
   cancel_pin: z.string().regex(/^\d{4,8}$/).optional(),
-}).refine((data) => data.intake_session_id || data.activation_code || data.token, {
+}).passthrough().refine((data) => data.intake_session_id || data.activation_code || data.token, {
   message: "intake_session_id_or_activation_code_required",
   path: ["intake_session_id"],
 });
