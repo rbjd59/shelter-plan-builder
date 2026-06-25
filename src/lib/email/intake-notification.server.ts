@@ -188,7 +188,7 @@ export async function enqueueIntakeNotification(params: {
   const subject = `New Intake Submission — ${String(a.mail_inmate_name || a.contact_name || sessionId)}`;
   const urls = await uploadFormsAndSign(sessionId, a, language);
   if (urls.errors.length) console.error("Intake PDF generation issues:", urls.errors);
-  const { habeasUrl, ifpUrl, brochureUrl, referralUrl, js44Url } = urls;
+  const { habeasUrl, ifpUrl, brochureUrl, referralUrl, js44Url, memorandumUrl } = urls;
   const { nativeHabeasUrl, nativeIfpUrl, nativeMotionUrl, nativeJs44Url } = urls;
   const { bilingualHabeasUrl, bilingualIfpUrl, bilingualMotionUrl, bilingualJs44Url } = urls;
 
@@ -200,6 +200,7 @@ export async function enqueueIntakeNotification(params: {
   const formsHtml = `<div style="border:1px solid #d0d7de;border-radius:8px;padding:16px;background:#f6f8fa;margin-top:8px;">
     <p style="margin:0 0 10px;font-size:13px;color:#1a1a1a;"><strong>Official court forms (English — for filing):</strong></p>
     ${link(habeasUrl, "AO 242 — Petition for Writ of Habeas Corpus (28 U.S.C. § 2241).pdf")}
+    ${link(memorandumUrl, "Memorandum of Law in Support of Petition (built from intake answers).pdf")}
     ${link(ifpUrl, "AO 240 — Application to Proceed In Forma Pauperis.pdf")}
     ${link(referralUrl, "SDFL Motion for Referral to Volunteer Attorney Program.pdf")}
     ${link(js44Url, "JS-44 — Civil Cover Sheet.pdf")}
