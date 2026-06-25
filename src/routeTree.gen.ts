@@ -47,6 +47,7 @@ import { Route as ReadinessReviewRouteImport } from './routes/readiness/review'
 import { Route as ReadinessIntakeRouteImport } from './routes/readiness/intake'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
+import { Route as AuthenticatedMiAppRouteImport } from './routes/_authenticated/mi-app'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCasesRouteImport } from './routes/_authenticated/cases'
 import { Route as AdminAdminRouteImport } from './routes/_admin/admin'
@@ -269,6 +270,11 @@ const AuthCallbackRoute = AuthCallbackRouteImport.update({
   path: '/auth/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedMiAppRoute = AuthenticatedMiAppRouteImport.update({
+  id: '/mi-app',
+  path: '/mi-app',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -484,6 +490,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminAdminRouteWithChildren
   '/cases': typeof AuthenticatedCasesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/mi-app': typeof AuthenticatedMiAppRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/readiness/intake': typeof ReadinessIntakeRoute
@@ -555,6 +562,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminAdminRouteWithChildren
   '/cases': typeof AuthenticatedCasesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/mi-app': typeof AuthenticatedMiAppRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/readiness/intake': typeof ReadinessIntakeRoute
@@ -630,6 +638,7 @@ export interface FileRoutesById {
   '/_admin/admin': typeof AdminAdminRouteWithChildren
   '/_authenticated/cases': typeof AuthenticatedCasesRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/mi-app': typeof AuthenticatedMiAppRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/readiness/intake': typeof ReadinessIntakeRoute
@@ -703,6 +712,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/cases'
     | '/dashboard'
+    | '/mi-app'
     | '/auth/callback'
     | '/email/unsubscribe'
     | '/readiness/intake'
@@ -774,6 +784,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/cases'
     | '/dashboard'
+    | '/mi-app'
     | '/auth/callback'
     | '/email/unsubscribe'
     | '/readiness/intake'
@@ -848,6 +859,7 @@ export interface FileRouteTypes {
     | '/_admin/admin'
     | '/_authenticated/cases'
     | '/_authenticated/dashboard'
+    | '/_authenticated/mi-app'
     | '/auth/callback'
     | '/email/unsubscribe'
     | '/readiness/intake'
@@ -1212,6 +1224,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/mi-app': {
+      id: '/_authenticated/mi-app'
+      path: '/mi-app'
+      fullPath: '/mi-app'
+      preLoaderRoute: typeof AuthenticatedMiAppRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -1503,6 +1522,7 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 interface AuthenticatedRouteChildren {
   AuthenticatedCasesRoute: typeof AuthenticatedCasesRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedMiAppRoute: typeof AuthenticatedMiAppRoute
   AuthenticatedAdminAppBuildsRoute: typeof AuthenticatedAdminAppBuildsRoute
   AuthenticatedCaseIdRoute: typeof AuthenticatedCaseIdRoute
 }
@@ -1510,6 +1530,7 @@ interface AuthenticatedRouteChildren {
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedCasesRoute: AuthenticatedCasesRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedMiAppRoute: AuthenticatedMiAppRoute,
   AuthenticatedAdminAppBuildsRoute: AuthenticatedAdminAppBuildsRoute,
   AuthenticatedCaseIdRoute: AuthenticatedCaseIdRoute,
 }
