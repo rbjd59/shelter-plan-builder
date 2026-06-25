@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
+import QRCode from "qrcode";
 import { supabase } from "@/integrations/supabase/client";
 import {
   listAppReleases,
@@ -38,6 +39,33 @@ function AppBuildsPage() {
   const [iosUrl, setIosUrl] = useState("");
   const [iosNotes, setIosNotes] = useState("");
   const [savingIos, setSavingIos] = useState(false);
+
+  // QR code generator
+  const [qrText, setQrText] = useState("https://testflight.apple.com/join/5GBXYZJLF2");
+  const [qrDataUrl, setQrDataUrl] = useState<string>("");
+  const [qrError, setQrError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (!qrText.trim()) {
+      setQrDataUrl("");
+      return;
+    }
+    QRCode.toDataURL(qrText.trim(), { width: 320, margin: 2, errorCorrectionLevel: "M" })
+      .then((url) => {
+        if (!cancelled) {
+          setQrDataUrl(url);
+          setQrError(null);
+        }
+      })
+      .catch((e) => {
+        if (!cancelled) setQrError(e instanceof Error ? e.message : "QR generation failed");
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [qrText]);
+
 
   const refresh = async () => {
     setLoading(true);
@@ -266,6 +294,78 @@ function AppBuildsPage() {
             </button>
           </form>
         </section>
+
+        {/* QR code generator */}
+        <section style={s.card}>
+          <h2 style={s.h2}>📱 QR code generator</h2>
+          <p style={{ color: "#a1a1aa", fontSize: 13, margin: "0 0 12px" }}>
+            Generate a scannable QR for the TestFlight invite (or any URL). Print it on flyers or show it on
+            screen — people scan with their iPhone camera to join.
+          </p>
+          <label style={s.label}>
+            URL or text
+            <input
+              value={qrText}
+              onChange={(e) => setQrText(e.target.value)}
+              placeholder="https://testflight.apple.com/join/XXXXXXXX"
+              style={s.input}
+            />
+          </label>
+          <div style={{ display: "flex", gap: 8, marginTop: 10, flexWrap: "wrap" }}>
+            {releases
+              .filter((r) => r.platform === "ios" && r.testflight_url)
+              .slice(0, 3)
+              .map((r) => (
+                <button
+                  key={r.id}
+                  type="button"
+                  onClick={() => setQrText(r.testflight_url!)}
+                  style={s.smallBtn}
+                >
+                  Use v{r.version} link
+                </button>
+              ))}
+            <button type="button" onClick={() => setQrText("https://detenciondefensa.com/download")} style={s.smallBtn}>
+              Use /download page
+            </button>
+          </div>
+          {qrError && <p style={{ color: "#fca5a5", fontSize: 13, marginTop: 10 }}>{qrError}</p>}
+          {qrDataUrl && (
+            <div style={{ marginTop: 16, display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
+              <img
+                src={qrDataUrl}
+                alt="QR code"
+                style={{ width: 280, height: 280, background: "#fff", padding: 8, borderRadius: 8 }}
+              />
+              <div style={{ display: "flex", gap: 8 }}>
+                <a
+                  href={qrDataUrl}
+                  download={`qr-${Date.now()}.png`}
+                  style={{ ...s.smallBtn, textDecoration: "none", display: "inline-block" }}
+                >
+                  Download PNG
+                </a>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const w = window.open("");
+                    if (w) {
+                      w.document.write(
+                        `<html><head><title>QR — ${qrText}</title></head><body style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:system-ui;"><img src="${qrDataUrl}" style="width:480px;height:480px"/><p style="font-size:14px;margin-top:16px;word-break:break-all;max-width:480px;text-align:center">${qrText}</p><script>window.print()</script></body></html>`,
+                      );
+                      w.document.close();
+                    }
+                  }}
+                  style={s.smallBtn}
+                >
+                  Print
+                </button>
+              </div>
+            </div>
+          )}
+        </section>
+
+
 
         {/* History */}
         <section style={{ marginTop: 32 }}>
