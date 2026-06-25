@@ -59,6 +59,7 @@ async function uploadFormsAndSign(
 
   const out: UploadedUrls = {
     habeasUrl: null, ifpUrl: null, brochureUrl: null, referralUrl: null, js44Url: null,
+    memorandumUrl: null,
     nativeHabeasUrl: null, nativeIfpUrl: null, nativeMotionUrl: null, nativeJs44Url: null,
     bilingualHabeasUrl: null, bilingualIfpUrl: null, bilingualMotionUrl: null, bilingualJs44Url: null,
     errors,
