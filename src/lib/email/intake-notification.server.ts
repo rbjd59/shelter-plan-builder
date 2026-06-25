@@ -215,7 +215,7 @@ export async function enqueueIntakeNotification(params: {
     ${(nativeHabeasUrl || nativeIfpUrl || nativeMotionUrl || nativeJs44Url) ? `
       <p style="margin:14px 0 8px;font-size:13px;color:#1a1a1a;"><strong>Native-language summary copies (${escapeHtml(language)} — for petitioner's records, NOT for filing):</strong></p>
       ${link(nativeHabeasUrl, `AO 242 — ${language} copy.pdf`)}
-      ${link(nativeIfpUrl, `AO 240 — ${language} copy.pdf`)}
+      
       ${link(nativeMotionUrl, `SDFL Motion — ${language} copy.pdf`)}
       ${link(nativeJs44Url, `JS-44 — ${language} copy.pdf`)}
     ` : ""}
