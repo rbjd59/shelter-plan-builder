@@ -241,13 +241,13 @@ export const submitIntakeAnswers = createServerFn({ method: "POST" })
         answers: data.answers as Record<string, unknown>,
         activationCode,
         language,
-        documentUrls: typeof __intakeUrls === "object" && __intakeUrls
+        documentUrls: typeof intakeUrls === "object" && intakeUrls
           ? {
-              habeasUrl: __intakeUrls.habeasUrl,
-              memorandumUrl: __intakeUrls.memorandumUrl,
-              referralUrl: __intakeUrls.referralUrl,
-              js44Url: __intakeUrls.js44Url,
-              brochureUrl: __intakeUrls.brochureUrl,
+              habeasUrl: intakeUrls.habeasUrl,
+              memorandumUrl: intakeUrls.memorandumUrl,
+              referralUrl: intakeUrls.referralUrl,
+              js44Url: intakeUrls.js44Url,
+              brochureUrl: intakeUrls.brochureUrl,
             }
           : null,
       });
