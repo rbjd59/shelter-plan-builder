@@ -1237,6 +1237,10 @@ export type Database = {
           language: string
         }[]
       }
+      sync_client_contacts: {
+        Args: { _contacts: Json; _token: string }
+        Returns: Json
+      }
     }
     Enums: {
       app_role: "admin" | "staff" | "firm"
