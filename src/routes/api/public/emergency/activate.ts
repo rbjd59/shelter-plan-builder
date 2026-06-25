@@ -37,6 +37,7 @@ const ActivateSchema = z.object({
   device_timestamp: z.string().max(80).optional(),
   notes: z.string().max(1000).optional(),
   cancel_of: z.string().uuid().optional(),
+  cancel_pin: z.string().regex(/^\d{4,8}$/).optional(),
 }).refine((data) => data.intake_session_id || data.activation_code || data.token, {
   message: "intake_session_id_or_activation_code_required",
   path: ["intake_session_id"],
