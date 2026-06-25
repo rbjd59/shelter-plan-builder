@@ -204,12 +204,17 @@ export const submitIntakeAnswers = createServerFn({ method: "POST" })
         (session.customer_email as string | null) ||
         null;
 
-      await enqueueIntakeNotification({
-        sessionId: data.sessionId,
-        answers: a,
-        language,
-        contactEmail,
-      });
+      var __intakeUrls: Awaited<ReturnType<typeof enqueueIntakeNotification>> = null;
+      try {
+        __intakeUrls = await enqueueIntakeNotification({
+          sessionId: data.sessionId,
+          answers: a,
+          language,
+          contactEmail,
+        });
+      } catch (e) {
+        console.error("Intake notification email enqueue failed:", e);
+      }
     } catch (e) {
       console.error("Intake notification email enqueue failed:", e);
     }
@@ -240,6 +245,15 @@ export const submitIntakeAnswers = createServerFn({ method: "POST" })
         answers: data.answers as Record<string, unknown>,
         activationCode,
         language,
+        documentUrls: typeof __intakeUrls === "object" && __intakeUrls
+          ? {
+              habeasUrl: __intakeUrls.habeasUrl,
+              memorandumUrl: __intakeUrls.memorandumUrl,
+              referralUrl: __intakeUrls.referralUrl,
+              js44Url: __intakeUrls.js44Url,
+              brochureUrl: __intakeUrls.brochureUrl,
+            }
+          : null,
       });
     } catch (e) {
       console.error("Activation welcome email enqueue failed:", e);
