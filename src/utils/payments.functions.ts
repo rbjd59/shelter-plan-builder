@@ -292,8 +292,9 @@ export const submitDemoIntake = createServerFn({ method: "POST" })
     } as never);
     if (error) throw new Error(error.message);
 
+    let demoIntakeUrls: Awaited<ReturnType<typeof enqueueIntakeNotification>> = null;
     try {
-      await enqueueIntakeNotification({
+      demoIntakeUrls = await enqueueIntakeNotification({
         sessionId,
         answers: a,
         language: data.language,
@@ -326,6 +327,15 @@ export const submitDemoIntake = createServerFn({ method: "POST" })
         answers: a,
         activationCode: activationCode ?? data.inviteCode ?? null,
         language: data.language,
+        documentUrls: demoIntakeUrls
+          ? {
+              habeasUrl: demoIntakeUrls.habeasUrl,
+              memorandumUrl: demoIntakeUrls.memorandumUrl,
+              referralUrl: demoIntakeUrls.referralUrl,
+              js44Url: demoIntakeUrls.js44Url,
+              brochureUrl: demoIntakeUrls.brochureUrl,
+            }
+          : null,
       });
     } catch (e) {
       console.error("Activation emails enqueue failed:", e);
