@@ -241,7 +241,7 @@ export const notifyIntakeWebhook = createServerFn({ method: "POST" })
         response_snippet: snippet,
         duration_ms: duration,
       });
-      throw new Error(`Unexpected webhook response shape: ${snippet.slice(0, 200)}`);
+      return { ok: false, clientId: null, inviteCode: null, fallback: true, error: "bad_shape" } as const;
     }
 
     await logAttempt({
