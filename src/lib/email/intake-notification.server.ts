@@ -270,7 +270,7 @@ Language: ${language}
 ${contactEmail ? `Contact: ${contactEmail}\n` : ""}
 ${habeasUrl ? `AO 242 Habeas: ${habeasUrl}` : "AO 242 Habeas: (unavailable)"}
 ${memorandumUrl ? `Memorandum of Law: ${memorandumUrl}` : "Memorandum of Law: (unavailable)"}
-${ifpUrl ? `AO 240 IFP:    ${ifpUrl}` : "AO 240 IFP:    (unavailable)"}
+
 ${referralUrl ? `Motion Ref:    ${referralUrl}` : ""}
 ${js44Url ? `JS-44:         ${js44Url}` : ""}
 
