@@ -27,6 +27,7 @@ import { Route as IntakeRouteImport } from './routes/intake'
 import { Route as GetAppRouteImport } from './routes/get-app'
 import { Route as DownloadRouteImport } from './routes/download'
 import { Route as DagRouteImport } from './routes/dag'
+import { Route as ConfigurarRouteImport } from './routes/configurar'
 import { Route as CompanyBoardRouteImport } from './routes/company-board'
 import { Route as ComingSoonRouteImport } from './routes/coming-soon'
 import { Route as CheckoutRouteImport } from './routes/checkout'
@@ -169,6 +170,11 @@ const DownloadRoute = DownloadRouteImport.update({
 const DagRoute = DagRouteImport.update({
   id: '/dag',
   path: '/dag',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfigurarRoute = ConfigurarRouteImport.update({
+  id: '/configurar',
+  path: '/configurar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CompanyBoardRoute = CompanyBoardRouteImport.update({
@@ -456,6 +462,7 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
   '/company-board': typeof CompanyBoardRoute
+  '/configurar': typeof ConfigurarRoute
   '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
   '/get-app': typeof GetAppRoute
@@ -526,6 +533,7 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
   '/company-board': typeof CompanyBoardRoute
+  '/configurar': typeof ConfigurarRoute
   '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
   '/get-app': typeof GetAppRoute
@@ -600,6 +608,7 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
   '/company-board': typeof CompanyBoardRoute
+  '/configurar': typeof ConfigurarRoute
   '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
   '/get-app': typeof GetAppRoute
@@ -672,6 +681,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/coming-soon'
     | '/company-board'
+    | '/configurar'
     | '/dag'
     | '/download'
     | '/get-app'
@@ -742,6 +752,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/coming-soon'
     | '/company-board'
+    | '/configurar'
     | '/dag'
     | '/download'
     | '/get-app'
@@ -815,6 +826,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/coming-soon'
     | '/company-board'
+    | '/configurar'
     | '/dag'
     | '/download'
     | '/get-app'
@@ -889,6 +901,7 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRoute
   ComingSoonRoute: typeof ComingSoonRoute
   CompanyBoardRoute: typeof CompanyBoardRoute
+  ConfigurarRoute: typeof ConfigurarRoute
   DagRoute: typeof DagRoute
   DownloadRoute: typeof DownloadRoute
   GetAppRoute: typeof GetAppRoute
@@ -1057,6 +1070,13 @@ declare module '@tanstack/react-router' {
       path: '/dag'
       fullPath: '/dag'
       preLoaderRoute: typeof DagRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/configurar': {
+      id: '/configurar'
+      path: '/configurar'
+      fullPath: '/configurar'
+      preLoaderRoute: typeof ConfigurarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/company-board': {
@@ -1538,6 +1558,7 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRoute,
   ComingSoonRoute: ComingSoonRoute,
   CompanyBoardRoute: CompanyBoardRoute,
+  ConfigurarRoute: ConfigurarRoute,
   DagRoute: DagRoute,
   DownloadRoute: DownloadRoute,
   GetAppRoute: GetAppRoute,

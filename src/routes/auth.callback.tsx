@@ -4,16 +4,24 @@ import { supabase } from "@/integrations/supabase/client";
 import { getMyAdminStatus } from "@/lib/admin.functions";
 
 export const Route = createFileRoute("/auth/callback")({
+  validateSearch: (s: Record<string, unknown>) => ({
+    next: typeof s.next === "string" ? s.next : undefined,
+  }),
   head: () => ({ meta: [{ title: "Signing in… — DetencionDefensa.com" }] }),
   component: AuthCallbackPage,
 });
 
 function AuthCallbackPage() {
   const navigate = useNavigate();
+  const { next } = Route.useSearch();
   const [errMsg, setErrMsg] = useState("");
 
   useEffect(() => {
     const routeAfterAuth = async () => {
+      if (next === "mi-app") {
+        navigate({ to: "/mi-app" });
+        return;
+      }
       try {
         const status = await getMyAdminStatus();
         navigate({ to: status.isAdmin ? "/admin" : "/dashboard" });
@@ -31,7 +39,8 @@ function AuthCallbackPage() {
     return () => {
       sub.data.subscription.unsubscribe();
     };
-  }, [navigate]);
+  }, [navigate, next]);
+
 
 
   return (
