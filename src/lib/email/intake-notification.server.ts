@@ -201,7 +201,7 @@ export async function enqueueIntakeNotification(params: {
     <p style="margin:0 0 10px;font-size:13px;color:#1a1a1a;"><strong>Official court forms (English — for filing):</strong></p>
     ${link(habeasUrl, "AO 242 — Petition for Writ of Habeas Corpus (28 U.S.C. § 2241).pdf")}
     ${link(memorandumUrl, "Memorandum of Law in Support of Petition (built from intake answers).pdf")}
-    ${link(ifpUrl, "AO 240 — Application to Proceed In Forma Pauperis.pdf")}
+    <!-- AO 240 IFP attachment suppressed: intake no longer collects IFP financial questions. Form is still generated server-side but not surfaced until those questions are restored. -->
     ${link(referralUrl, "SDFL Motion for Referral to Volunteer Attorney Program.pdf")}
     ${link(js44Url, "JS-44 — Civil Cover Sheet.pdf")}
     ${brochureUrl ? `<p style="margin:8px 0 6px;"><a href="${brochureUrl}" style="color:#0a58ca;text-decoration:underline;font-size:14px;font-weight:600;">📘 INCLUDE WITH MAILED PACKAGE — Habeas Explainer (${language === "es" ? "Español" : "English"}, NIP guide).pdf</a></p>` : ""}
