@@ -13,23 +13,54 @@ import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { triggerVaultRelease } from "@/lib/readiness.server";
 import { sendSosSmsToContacts } from "@/lib/twilio-sms.server";
 
+const AppContactSchema = z.object({
+  name: z.string().max(160).optional().nullable(),
+  email: z.string().email().max(200).optional().nullable(),
+  phone: z.string().max(32).optional().nullable(),
+  phone_e164: z.string().max(32).optional().nullable(),
+  relationship: z.string().max(80).optional().nullable(),
+}).passthrough();
+
 const ActivateSchema = z.object({
-  intake_session_id: z.string().min(8).max(128),
-  role: z.enum(["client", "family"]),
+  intake_session_id: z.string().min(1).max(128).optional(),
+  activation_code: z.string().regex(/^[A-Za-z0-9]{8}$/).optional(),
+  token: z.string().regex(/^[A-Za-z0-9]{8}$/).optional(),
+  role: z.enum(["client", "family"]).default("client"),
   full_name: z.string().min(1).max(200).optional(),
   alert_email: z.string().email().max(200).optional(),
   contact_email: z.string().email().max(200).optional(),
+  contacts: z.array(AppContactSchema).max(20).optional(),
   gps_lat: z.number().min(-90).max(90).optional(),
   gps_lng: z.number().min(-180).max(180).optional(),
   gps_raw: z.string().max(200).optional(),
+  battery_pct: z.number().int().min(0).max(100).optional().nullable(),
+  device_timestamp: z.string().max(80).optional(),
   notes: z.string().max(1000).optional(),
   cancel_of: z.string().uuid().optional(),
+}).refine((data) => data.intake_session_id || data.activation_code || data.token, {
+  message: "intake_session_id_or_activation_code_required",
+  path: ["intake_session_id"],
 });
 
 const FROM = "intake@gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
 const LEGAL_INBOX = "legal@detenciondefensa.com";
 const FORMS_BUCKET = "intake-forms";
+const CORS_HEADERS = {
+  "access-control-allow-origin": "*",
+  "access-control-allow-methods": "POST, OPTIONS",
+  "access-control-allow-headers": "content-type, authorization, apikey, x-client-info",
+};
+
+function jsonResponse(body: unknown, init?: ResponseInit) {
+  const headers = new Headers(init?.headers);
+  headers.set("content-type", "application/json");
+  for (const [key, value] of Object.entries(CORS_HEADERS)) headers.set(key, value);
+  return new Response(JSON.stringify(body), {
+    ...init,
+    headers,
+  });
+}
 
 async function signedPacketLinks(caseId: string): Promise<{ name: string; url: string }[]> {
   const files = [
@@ -57,6 +88,49 @@ function esc(s: unknown): string {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
+}
+
+function normalizeActivationCode(value: string | undefined): string | null {
+  const normalized = value?.trim().toUpperCase() ?? "";
+  return /^[A-Z0-9]{8}$/.test(normalized) ? normalized : null;
+}
+
+async function resolveMirrorToken(caseRef: string, explicitCode?: string | null): Promise<string | null> {
+  if (explicitCode) return explicitCode;
+  const rawToken = caseRef.toUpperCase();
+  if (/^[A-Z0-9]{8}$/.test(rawToken)) return rawToken;
+  try {
+    const { data: clientRow } = await supabaseAdmin
+      .from("app_clients" as never)
+      .select("invite_token")
+      .eq("intake_session_id", caseRef)
+      .maybeSingle();
+    if (clientRow && (clientRow as { invite_token: string }).invite_token) {
+      return (clientRow as { invite_token: string }).invite_token;
+    }
+  } catch (e) {
+    console.error("[activate] invite_token lookup failed", e);
+  }
+  return null;
+}
+
+async function syncContactsForToken(
+  token: string,
+  contacts: z.infer<typeof AppContactSchema>[] | undefined,
+): Promise<{ contacts_saved: number; error?: string }> {
+  if (!contacts?.length) return { contacts_saved: 0 };
+  try {
+    const { data, error } = await supabaseAdmin.rpc("sync_client_contacts" as never, {
+      _token: token,
+      _contacts: contacts,
+    } as never);
+    if (error) throw error;
+    const saved = (data as { contacts_saved?: number } | null)?.contacts_saved;
+    return { contacts_saved: typeof saved === "number" ? saved : 0 };
+  } catch (e) {
+    console.error("[activate] contact sync failed", e);
+    return { contacts_saved: 0, error: "contact_sync_failed" };
+  }
 }
 
 async function getOrCreateUnsubscribeToken(email: string): Promise<string> {
@@ -118,16 +192,18 @@ export const Route = createFileRoute("/api/public/emergency/activate")({
         try {
           body = await request.json();
         } catch {
-          return new Response("Invalid JSON", { status: 400 });
+          return jsonResponse({ ok: false, error: "invalid_json" }, { status: 400 });
         }
         const parsed = ActivateSchema.safeParse(body);
         if (!parsed.success) {
-          return new Response(JSON.stringify({ error: parsed.error.flatten() }), {
-            status: 400,
-            headers: { "content-type": "application/json" },
-          });
+          return jsonResponse({ ok: false, error: parsed.error.flatten() }, { status: 400 });
         }
         const d = parsed.data;
+        const explicitCode = normalizeActivationCode(d.activation_code) ?? normalizeActivationCode(d.token);
+        const caseRef = d.intake_session_id ?? explicitCode;
+        if (!caseRef) {
+          return jsonResponse({ ok: false, error: "missing_activation_code" }, { status: 400 });
+        }
         const ip =
           request.headers.get("cf-connecting-ip") ||
           request.headers.get("x-forwarded-for") ||
@@ -140,29 +216,12 @@ export const Route = createFileRoute("/api/public/emergency/activate")({
             .from("emergency_activations" as never)
             .update({ cancelled_at: new Date().toISOString() } as never)
             .eq("id", d.cancel_of)
-            .eq("intake_session_id", d.intake_session_id);
+            .eq("intake_session_id", caseRef);
 
           // Mirror cancellation into client_sos_alerts (the board schema).
           // Resolve the activation token from intake_session_id directly or by
           // looking up the client row.
-          let cancelToken: string | null = null;
-          const rawCancel = d.intake_session_id.toUpperCase();
-          if (/^[A-Z0-9]{8}$/.test(rawCancel)) {
-            cancelToken = rawCancel;
-          } else {
-            try {
-              const { data: c } = await supabaseAdmin
-                .from("app_clients" as never)
-                .select("invite_token")
-                .eq("intake_session_id", d.intake_session_id)
-                .maybeSingle();
-              if (c && (c as { invite_token: string }).invite_token) {
-                cancelToken = (c as { invite_token: string }).invite_token;
-              }
-            } catch (e) {
-              console.error("[activate] cancel invite_token lookup failed", e);
-            }
-          }
+          const cancelToken = await resolveMirrorToken(caseRef, explicitCode);
           if (cancelToken) {
             try {
               await supabaseAdmin.rpc("cancel_sos_alert" as never, {
@@ -187,10 +246,10 @@ export const Route = createFileRoute("/api/public/emergency/activate")({
 
 
 
-          const subject = `CANCEL EMERGENCY [${d.role.toUpperCase()}] — ${d.full_name ?? d.intake_session_id.slice(0, 12)}`;
+          const subject = `CANCEL EMERGENCY [${d.role.toUpperCase()}] — ${d.full_name ?? caseRef.slice(0, 12)}`;
           const text = `FALSE ALARM — please disregard the previous emergency alert.
 
-Case: ${d.intake_session_id}
+Case: ${caseRef}
 Role: ${d.role}
 Cancelled at (UTC): ${new Date().toISOString()}`;
           const html = `<pre style="font:14px/1.5 monospace">${esc(text)}</pre>`;
@@ -212,10 +271,7 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
               idempotencyKey: `cancel-${d.cancel_of}-alt`,
             });
           }
-          return new Response(JSON.stringify({ ok: true, cancelled: d.cancel_of }), {
-            status: 200,
-            headers: { "content-type": "application/json" },
-          });
+          return jsonResponse({ ok: true, cancelled: d.cancel_of }, { status: 200 });
         }
 
         // Fire path — insert row, compute act-after window, send alert.
@@ -227,7 +283,7 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
         const { data: row, error } = await supabaseAdmin
           .from("emergency_activations" as never)
           .insert({
-            intake_session_id: d.intake_session_id,
+            intake_session_id: caseRef,
             role: d.role,
             fired_at: firedAt.toISOString(),
             act_after: actAfter.toISOString(),
@@ -245,7 +301,7 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
           .single();
         if (error || !row) {
           console.error("emergency_activations insert failed", error);
-          return new Response("Insert failed", { status: 500 });
+          return jsonResponse({ ok: false, error: "insert_failed" }, { status: 500 });
         }
         const activationId = (row as { id: string }).id;
 
@@ -254,38 +310,26 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
         // app_clients.invite_token), not from the legacy emergency_activations
         // table. Resolve the activation token from either the intake_session_id
         // (when it is already an 8-char code) or by looking up the client row.
-        let mirrorToken: string | null = null;
-        const rawToken = d.intake_session_id.toUpperCase();
-        if (/^[A-Z0-9]{8}$/.test(rawToken)) {
-          mirrorToken = rawToken;
-        } else {
-          try {
-            const { data: clientRow } = await supabaseAdmin
-              .from("app_clients" as never)
-              .select("invite_token")
-              .eq("intake_session_id", d.intake_session_id)
-              .maybeSingle();
-            if (clientRow && (clientRow as { invite_token: string }).invite_token) {
-              mirrorToken = (clientRow as { invite_token: string }).invite_token;
-            }
-          } catch (e) {
-            console.error("[activate] invite_token lookup failed", e);
-          }
-        }
+        const mirrorToken = await resolveMirrorToken(caseRef, explicitCode);
+        let contactSyncResult: { contacts_saved: number; error?: string } = { contacts_saved: 0 };
         if (mirrorToken) {
+          contactSyncResult = await syncContactsForToken(mirrorToken, d.contacts);
           try {
             await supabaseAdmin.rpc("record_sos_alert" as never, {
               _token: mirrorToken,
               _lat: d.gps_lat ?? null,
               _lng: d.gps_lng ?? null,
-              _battery_pct: null,
+              _battery_pct: d.battery_pct ?? null,
               _payload: {
                 name: d.full_name ?? null,
                 contact_email: d.contact_email ?? null,
                 alert_email: d.alert_email ?? null,
+                battery_pct: d.battery_pct ?? null,
+                device_timestamp: d.device_timestamp ?? null,
                 notes: d.notes ?? null,
                 role: d.role,
                 source: "web-emergency-activate",
+                contacts_saved: contactSyncResult.contacts_saved,
               },
             } as never);
           } catch (e) {
@@ -326,8 +370,8 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
         const windowLabel = isFamily
           ? "12-HOUR confirmation window (family-triggered — wait before locating)"
           : "2-HOUR window (client-triggered — at-scene alert)";
-        const subject = `EMERGENCY [${roleTag}] — ${d.full_name ?? "case"} — ${d.intake_session_id.slice(0, 12)}`;
-        const packet = await signedPacketLinks(d.intake_session_id);
+        const subject = `EMERGENCY [${roleTag}] — ${d.full_name ?? "case"} — ${caseRef.slice(0, 12)}`;
+        const packet = await signedPacketLinks(caseRef);
         const packetText = packet.length
           ? "\n\nCOURT PACKET (download links — valid 14 days):\n" +
             packet.map((p) => `• ${p.name}: ${p.url}`).join("\n")
@@ -340,14 +384,14 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
                    `<li style="margin:4px 0"><a href="${esc(p.url)}">${esc(p.name)}</a></li>`,
                )
                .join("")}</ul>`
-          : `<p style="margin:0">Court packet on file under <code>${esc(d.intake_session_id)}</code>.</p>`;
+          : `<p style="margin:0">Court packet on file under <code>${esc(caseRef)}</code>.</p>`;
 
         const text = `EMERGENCY ALERT — Triggered from ${isFamily ? "FAMILY CONTACT PHONE" : "CLIENT PHONE"}.
 Response window: ${windowLabel}.
 Begin response at (UTC): ${actAfter.toISOString()}
 
 Detainee/Client: ${d.full_name ?? "(unknown)"}
-Case ID: ${d.intake_session_id}
+Case ID: ${caseRef}
 Activation ID: ${activationId}
 Time (UTC): ${firedAt.toISOString()}
 GPS: ${gps}
@@ -367,7 +411,7 @@ Download the responder app: https://detenciondefensa.com/download`;
           <p style="margin:0 0 4px"><strong>Begin response at (UTC):</strong> ${esc(actAfter.toISOString())}</p>
           <hr style="border:none;border-top:1px solid #ddd;margin:14px 0">
           <p style="margin:0 0 4px"><strong>Detainee/Client:</strong> ${esc(d.full_name ?? "(unknown)")}</p>
-          <p style="margin:0 0 4px"><strong>Case ID:</strong> ${esc(d.intake_session_id)}</p>
+          <p style="margin:0 0 4px"><strong>Case ID:</strong> ${esc(caseRef)}</p>
           <p style="margin:0 0 4px"><strong>Activation ID:</strong> ${esc(activationId)}</p>
           <p style="margin:0 0 4px"><strong>Fired at (UTC):</strong> ${esc(firedAt.toISOString())}</p>
           <p style="margin:0 0 4px"><strong>GPS:</strong> ${esc(gps)} ${mapsUrl ? `&mdash; <a href="${mapsUrl}">open in Maps</a>` : ""}</p>
@@ -416,7 +460,7 @@ Download the responder app: https://detenciondefensa.com/download`;
         // Sentinel Readiness Packet vault release — fire-and-log, never block alert.
         try {
           await triggerVaultRelease({
-            intakeSessionId: d.intake_session_id,
+            intakeSessionId: caseRef,
             emergencyActivationId: activationId,
           });
         } catch (e) {
@@ -439,7 +483,7 @@ Download the responder app: https://detenciondefensa.com/download`;
                 source: "detenciondefensa-site",
                 event: "fire",
                 activation_id: activationId,
-                intake_session_id: d.intake_session_id,
+                intake_session_id: caseRef,
                 role: d.role,
                 full_name: d.full_name ?? null,
                 contact_email: d.contact_email ?? null,
@@ -460,19 +504,12 @@ Download the responder app: https://detenciondefensa.com/download`;
           }
         }
 
-        return new Response(
-          JSON.stringify({ ok: true, activation_id: activationId, act_after: actAfter.toISOString() }),
-          { status: 200, headers: { "content-type": "application/json" } },
-        );
+        return jsonResponse({ ok: true, activation_id: activationId, act_after: actAfter.toISOString(), ...contactSyncResult }, { status: 200 });
       },
       OPTIONS: async () =>
         new Response(null, {
           status: 204,
-          headers: {
-            "access-control-allow-origin": "*",
-            "access-control-allow-methods": "POST, OPTIONS",
-            "access-control-allow-headers": "content-type",
-          },
+          headers: CORS_HEADERS,
         }),
     },
   },
