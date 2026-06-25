@@ -1,76 +1,94 @@
-# Attorney Document Packet — End-to-End Preview
+## What we're building
 
-Goal for this turn: let you log into the firm back end, open a test case that has every form filled in, see the full document packet (including a new Memorandum of Law), and download/email it to yourself. LetterStream comes next as its own phase once you've eyeballed the output.
+A guided, trilingual (ES/EN/PT) **"Configura Mi App"** section on detenciondefensa.com where families enter everything BEFORE installing the app, plus two SOS fixes.
 
-## Phase 1 — Memorandum of Law generator
+---
 
-New file: `src/lib/email/memorandum-of-law.server.ts`
-- `buildMemorandumOfLawPdf(answers, options)` — pdf-lib, same style as existing intake PDFs
-- Sections (auto-filled from intake answers + retainer):
-  1. Caption (Immigration Court / Circuit, A-number, Respondent name)
-  2. Introduction (who, country of origin, date of detention, custody facility)
-  3. Statement of Facts (pulled from intake narrative fields)
-  4. Procedural Posture
-  5. Argument — three default headings:
-     - Bond eligibility under 8 U.S.C. § 1226(a)
-     - Lack of flight risk (community ties from intake)
-     - Lack of danger (no qualifying convictions per intake)
-  6. Prayer for Relief
-  7. Signature block — Rosario Sorrentino, Esq.
-- Long paragraphs wrap; multi-page supported.
-- Where data is missing, prints a bracketed placeholder like `[FACT: date of arrest]` so the attorney sees what they still need to fill in. No silent blanks.
+## 1. Setup hub at `/configurar` (alias `/app-setup`)
 
-## Phase 2 — Dummy intake fixture
+Public landing with big plain-language instructions and a hero video walkthrough. Entry flow:
 
-New file: `src/lib/fixtures/dummy-case.server.ts`
-- Exports `seedDummyCase()` — a server function that:
-  1. Creates an `app_clients` row (full name "Juan Demo Hernández", token `DEMO0001`, language `es`, country Honduras, etc.)
-  2. Inserts a fully populated `intake_submissions.answers` JSON covering every field the PDFs read (personal info, family, employment, community ties, criminal history "none", detention facility, A-number, etc.)
-  3. Inserts two `client_contacts`
-  4. Inserts a signed `legal_retainers` row (so the review screen lets you approve)
-  5. Returns `{ clientId, intakeSessionId }`
-- Idempotent — re-running upserts on the demo token instead of duplicating.
+```text
+Enter email → "Te enviamos un enlace" → click link in email →
+land in dashboard scoped to their activation code (auto-linked by email match,
+or prompt for code if no match)
+```
 
-Trigger: a button on `/firm/queue` labelled "Seed demo case" (firm-role only) that calls the server fn and then routes to the new packet page.
+Magic-link auth via Supabase `signInWithOtp` (email only — no password). Returning user clicks the same link from any device, lands back in their dashboard.
 
-## Phase 3 — Document packet page on the attorney back end
+Once inside, **5 step cards** with a progress checkmark on each:
 
-New route: `src/routes/_firm/firm.packet.$id.tsx` (firm-role only)
-- Lists every generated document for the case with a thumbnail row:
-  - Cover letter (existing)
-  - AO 242 habeas (existing)
-  - JS-44 civil cover (existing)
-  - Motion referral / pro-se brochure (existing)
-  - **Memorandum of Law** (new)
-  - Mailing label PDF (existing)
-- Each row: "Preview" (opens PDF in new tab) and "Download" buttons
-- Top of page: "Email entire packet to me" button → triggers a new server fn that zips/attaches all PDFs and emails them to the logged-in firm user
-- Bottom: placeholder card "Send via LetterStream" (disabled, "Coming in Phase 4")
+1. **Tus datos** — name, A-number, DOB, place of birth, language, phone
+2. **Contactos de emergencia** (up to 8) — name, relationship, phone, email, "notify on SOS" toggle. Drag to reorder priority. Inline help: *"Estas personas recibirán un correo y un mensaje cuando actives la alerta."*
+3. **Documentos legales** — pre-filled toggles for the 10 standard docs (Habeas, POA, Pet Custody, etc.); each shows a preview; user can edit content inline or upload a custom PDF
+4. **Plan para mascotas** — species, name, vet, designated caretaker, feeding notes, vaccine file upload
+5. **PIN de seguridad** — 4-digit PIN to cancel an SOS (new, see §3)
 
-Backed by:
-- `src/lib/firm-packet.functions.ts` — `getPacketManifest({caseId})`, `previewPacketDoc({caseId, docKey})` returns base64 PDF, `emailPacketToMe({caseId})`
-- All require `requireSupabaseAuth` + `has_role('firm' | 'admin')`
+Every field saves on blur to the existing tables (`app_clients`, `client_contacts`, `client_documents`, `client_pet_rescue`). No new schema for §1 — we already have the tables.
 
-## Phase 4 — LetterStream (next turn, after you eyeball Phase 1-3)
+Activation flow change: when the user enters their 8-char code in the installed app, the app calls `get_client_bundle(_token)` (already exists) and everything is already there.
 
-Not building this yet. When you're ready:
-- Add `LETTERSTREAM_API_KEY` + `LETTERSTREAM_API_USER` via add_secret
-- New `src/lib/letterstream.server.ts` wrapping their REST API (`/jobs`, certified mail w/ return receipt)
-- "Send via LetterStream" button on the packet page → uploads PDFs, sets recipient address (detention facility from intake), confirms cost, returns tracking number
-- Log each send in a new `letterstream_jobs` table
+---
 
-## Technical notes
+## 2. Magic-link gate
 
-- All new server fns use `createServerFn` + `requireSupabaseAuth`, gated by `has_role` check inside the handler.
-- PDF builders are pure (answers in, `Uint8Array` out) so they're easy to unit test and reuse for LetterStream later.
-- The "email packet to me" path reuses the existing transactional email queue with attachments — same pattern as `intake-pdfs.server.ts`.
-- No new tables required for Phase 1-3. Phase 4 will need `letterstream_jobs`.
+- New public route `/configurar` — email form + "enviar enlace"
+- New `/configurar/dashboard` under `_authenticated/` — the 5-step UI
+- On first sign-in we look up `app_clients` by email; if found, link `user_id`; if not, prompt for the 8-char code, then link.
 
-## What you'll do after I'm done
+---
 
-1. Open `/firm/queue` → click "Seed demo case"
-2. Land on `/firm/packet/<id>` → preview each PDF, especially the Memorandum of Law
-3. Click "Email packet to me" → check inbox at the firm email on file
-4. Tell me what to tweak before we wire LetterStream
+## 3. SOS PIN-to-cancel
 
-Approve and I'll build Phases 1-3 in one pass.
+- Add `cancel_pin_hash` column to `app_clients` (bcrypt, set during step 5 of setup)
+- New RPC `cancel_sos_alert_with_pin(_token, _pin)` — verifies PIN before flipping `cancelled_at`. Existing `cancel_sos_alert` becomes admin-only.
+- Native app: after SOS fires, the "Cancelar alerta" button opens a PIN keypad. Wrong PIN = alert keeps firing and contacts keep getting follow-ups.
+
+---
+
+## 4. Fix: documents not attached to SOS email
+
+Current `_enqueue_sos_emails` inlines doc content as `<pre>` HTML inside the email body. Gmail/Outlook strip large `<pre>` blocks and many recipients reported empty emails.
+
+Fix: attach each `send_on_alert=true` document as a real PDF attachment via the email queue worker.
+
+- Add `attachments` field to the queued payload: `[{filename, content_base64, content_type}]`
+- Update email worker (`src/lib/email/worker.server.ts`) to pass attachments to Resend
+- Generate the PDF server-side using existing `memorandum-of-law.server.ts` pdf-lib helper for each doc, base64 it, attach it
+- Body of the email becomes a short summary + "Adjuntos: Writ of Habeas Corpus, POA, Pet Custody Plan…"
+
+---
+
+## Files
+
+**New**
+- `src/routes/configurar.tsx` — public magic-link entry
+- `src/routes/_authenticated/configurar.dashboard.tsx` — 5-step hub
+- `src/components/app-setup/StepContacts.tsx`
+- `src/components/app-setup/StepDocuments.tsx`
+- `src/components/app-setup/StepPets.tsx`
+- `src/components/app-setup/StepPin.tsx`
+- `src/components/app-setup/StepProfile.tsx`
+- `src/lib/app-setup.functions.ts` — saveContact, saveDoc, savePin, linkCodeToEmail
+- `src/lib/sos-pdf-bundle.server.ts` — render all client docs to PDF attachments
+
+**Modified**
+- `src/lib/email/worker.server.ts` — pass attachments to Resend
+- `src/routes/api/public/emergency/activate.ts` — call new bundle builder
+- Native app code (Capacitor) — PIN keypad on cancel; pull from `get_client_bundle` on activation (already wired)
+
+**Migrations**
+- Add `cancel_pin_hash text` to `app_clients`
+- Add `user_id uuid references auth.users` to `app_clients` (nullable) + index
+- New RPC `cancel_sos_alert_with_pin`
+- New RPC `link_app_client_to_user(_token, _user_id)`
+
+---
+
+## Out of scope (separate turn)
+
+- Translating every existing legal doc template into Portuguese (we have ES/EN)
+- Push notifications inside the app for setup reminders
+- Family-shared edits (multiple emails on one activation code)
+
+Approve and I'll build everything in this turn.

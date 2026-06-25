@@ -27,6 +27,7 @@ import { Route as IntakeRouteImport } from './routes/intake'
 import { Route as GetAppRouteImport } from './routes/get-app'
 import { Route as DownloadRouteImport } from './routes/download'
 import { Route as DagRouteImport } from './routes/dag'
+import { Route as ConfigurarRouteImport } from './routes/configurar'
 import { Route as CompanyBoardRouteImport } from './routes/company-board'
 import { Route as ComingSoonRouteImport } from './routes/coming-soon'
 import { Route as CheckoutRouteImport } from './routes/checkout'
@@ -46,6 +47,8 @@ import { Route as ReadinessReviewRouteImport } from './routes/readiness/review'
 import { Route as ReadinessIntakeRouteImport } from './routes/readiness/intake'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
+import { Route as AlertaTokenRouteImport } from './routes/alerta.$token'
+import { Route as AuthenticatedMiAppRouteImport } from './routes/_authenticated/mi-app'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCasesRouteImport } from './routes/_authenticated/cases'
 import { Route as AdminAdminRouteImport } from './routes/_admin/admin'
@@ -171,6 +174,11 @@ const DagRoute = DagRouteImport.update({
   path: '/dag',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConfigurarRoute = ConfigurarRouteImport.update({
+  id: '/configurar',
+  path: '/configurar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CompanyBoardRoute = CompanyBoardRouteImport.update({
   id: '/company-board',
   path: '/company-board',
@@ -262,6 +270,16 @@ const AuthCallbackRoute = AuthCallbackRouteImport.update({
   id: '/auth/callback',
   path: '/auth/callback',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AlertaTokenRoute = AlertaTokenRouteImport.update({
+  id: '/alerta/$token',
+  path: '/alerta/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedMiAppRoute = AuthenticatedMiAppRouteImport.update({
+  id: '/mi-app',
+  path: '/mi-app',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
@@ -456,6 +474,7 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
   '/company-board': typeof CompanyBoardRoute
+  '/configurar': typeof ConfigurarRoute
   '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
   '/get-app': typeof GetAppRoute
@@ -477,6 +496,8 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminAdminRouteWithChildren
   '/cases': typeof AuthenticatedCasesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/mi-app': typeof AuthenticatedMiAppRoute
+  '/alerta/$token': typeof AlertaTokenRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/readiness/intake': typeof ReadinessIntakeRoute
@@ -526,6 +547,7 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
   '/company-board': typeof CompanyBoardRoute
+  '/configurar': typeof ConfigurarRoute
   '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
   '/get-app': typeof GetAppRoute
@@ -547,6 +569,8 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminAdminRouteWithChildren
   '/cases': typeof AuthenticatedCasesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/mi-app': typeof AuthenticatedMiAppRoute
+  '/alerta/$token': typeof AlertaTokenRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/readiness/intake': typeof ReadinessIntakeRoute
@@ -600,6 +624,7 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
   '/company-board': typeof CompanyBoardRoute
+  '/configurar': typeof ConfigurarRoute
   '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
   '/get-app': typeof GetAppRoute
@@ -621,6 +646,8 @@ export interface FileRoutesById {
   '/_admin/admin': typeof AdminAdminRouteWithChildren
   '/_authenticated/cases': typeof AuthenticatedCasesRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/mi-app': typeof AuthenticatedMiAppRoute
+  '/alerta/$token': typeof AlertaTokenRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/readiness/intake': typeof ReadinessIntakeRoute
@@ -672,6 +699,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/coming-soon'
     | '/company-board'
+    | '/configurar'
     | '/dag'
     | '/download'
     | '/get-app'
@@ -693,6 +721,8 @@ export interface FileRouteTypes {
     | '/admin'
     | '/cases'
     | '/dashboard'
+    | '/mi-app'
+    | '/alerta/$token'
     | '/auth/callback'
     | '/email/unsubscribe'
     | '/readiness/intake'
@@ -742,6 +772,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/coming-soon'
     | '/company-board'
+    | '/configurar'
     | '/dag'
     | '/download'
     | '/get-app'
@@ -763,6 +794,8 @@ export interface FileRouteTypes {
     | '/admin'
     | '/cases'
     | '/dashboard'
+    | '/mi-app'
+    | '/alerta/$token'
     | '/auth/callback'
     | '/email/unsubscribe'
     | '/readiness/intake'
@@ -815,6 +848,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/coming-soon'
     | '/company-board'
+    | '/configurar'
     | '/dag'
     | '/download'
     | '/get-app'
@@ -836,6 +870,8 @@ export interface FileRouteTypes {
     | '/_admin/admin'
     | '/_authenticated/cases'
     | '/_authenticated/dashboard'
+    | '/_authenticated/mi-app'
+    | '/alerta/$token'
     | '/auth/callback'
     | '/email/unsubscribe'
     | '/readiness/intake'
@@ -889,6 +925,7 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRoute
   ComingSoonRoute: typeof ComingSoonRoute
   CompanyBoardRoute: typeof CompanyBoardRoute
+  ConfigurarRoute: typeof ConfigurarRoute
   DagRoute: typeof DagRoute
   DownloadRoute: typeof DownloadRoute
   GetAppRoute: typeof GetAppRoute
@@ -907,6 +944,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
   VenuesRoute: typeof VenuesRoute
+  AlertaTokenRoute: typeof AlertaTokenRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   ReadinessIntakeRoute: typeof ReadinessIntakeRoute
@@ -1059,6 +1097,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DagRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/configurar': {
+      id: '/configurar'
+      path: '/configurar'
+      fullPath: '/configurar'
+      preLoaderRoute: typeof ConfigurarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/company-board': {
       id: '/company-board'
       path: '/company-board'
@@ -1191,6 +1236,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/auth/callback'
       preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/alerta/$token': {
+      id: '/alerta/$token'
+      path: '/alerta/$token'
+      fullPath: '/alerta/$token'
+      preLoaderRoute: typeof AlertaTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/mi-app': {
+      id: '/_authenticated/mi-app'
+      path: '/mi-app'
+      fullPath: '/mi-app'
+      preLoaderRoute: typeof AuthenticatedMiAppRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
@@ -1483,6 +1542,7 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 interface AuthenticatedRouteChildren {
   AuthenticatedCasesRoute: typeof AuthenticatedCasesRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedMiAppRoute: typeof AuthenticatedMiAppRoute
   AuthenticatedAdminAppBuildsRoute: typeof AuthenticatedAdminAppBuildsRoute
   AuthenticatedCaseIdRoute: typeof AuthenticatedCaseIdRoute
 }
@@ -1490,6 +1550,7 @@ interface AuthenticatedRouteChildren {
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedCasesRoute: AuthenticatedCasesRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedMiAppRoute: AuthenticatedMiAppRoute,
   AuthenticatedAdminAppBuildsRoute: AuthenticatedAdminAppBuildsRoute,
   AuthenticatedCaseIdRoute: AuthenticatedCaseIdRoute,
 }
@@ -1538,6 +1599,7 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRoute,
   ComingSoonRoute: ComingSoonRoute,
   CompanyBoardRoute: CompanyBoardRoute,
+  ConfigurarRoute: ConfigurarRoute,
   DagRoute: DagRoute,
   DownloadRoute: DownloadRoute,
   GetAppRoute: GetAppRoute,
@@ -1556,6 +1618,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   UnsubscribeRoute: UnsubscribeRoute,
   VenuesRoute: VenuesRoute,
+  AlertaTokenRoute: AlertaTokenRoute,
   AuthCallbackRoute: AuthCallbackRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   ReadinessIntakeRoute: ReadinessIntakeRoute,
