@@ -40,10 +40,12 @@ export const signRetainer = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { getRequest, getRequestHeader } = await import("@tanstack/react-start/server");
+    const { createClient } = await import("@supabase/supabase-js");
 
     let ip: string | null = null;
+    let req: Request | undefined;
     try {
-      const req = getRequest();
+      req = getRequest();
       ip =
         req.headers.get("cf-connecting-ip") ||
         req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
@@ -53,10 +55,32 @@ export const signRetainer = createServerFn({ method: "POST" })
     }
     const userAgent = getRequestHeader("user-agent") || null;
 
+    // Resolve user identity server-side from JWT — never trust client-supplied userId.
+    let resolvedUserId: string | null = null;
+    const authHeader = req?.headers.get("authorization") || "";
+    if (authHeader.startsWith("Bearer ")) {
+      const token = authHeader.slice("Bearer ".length).trim();
+      const url = process.env.SUPABASE_URL;
+      const pub = process.env.SUPABASE_PUBLISHABLE_KEY;
+      if (token && url && pub) {
+        try {
+          const sb = createClient(url, pub, {
+            auth: { storage: undefined, persistSession: false, autoRefreshToken: false },
+          });
+          const { data: claimsData, error: claimsError } = await sb.auth.getClaims(token);
+          if (!claimsError && claimsData?.claims?.sub) {
+            resolvedUserId = claimsData.claims.sub as string;
+          }
+        } catch {
+          /* anonymous signer fallback */
+        }
+      }
+    }
+
     const { data: row, error } = await supabaseAdmin
       .from("legal_retainers")
       .insert({
-        user_id: data.userId ?? null,
+        user_id: resolvedUserId,
         intake_session_id: data.intakeSessionId ?? null,
         version: data.version,
         language: data.language,
@@ -71,3 +95,4 @@ export const signRetainer = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { id: (row as { id: string }).id, signedAt: (row as { signed_at: string }).signed_at };
   });
+
