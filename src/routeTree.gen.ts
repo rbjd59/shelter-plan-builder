@@ -47,6 +47,7 @@ import { Route as ReadinessReviewRouteImport } from './routes/readiness/review'
 import { Route as ReadinessIntakeRouteImport } from './routes/readiness/intake'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
+import { Route as AlertaTokenRouteImport } from './routes/alerta.$token'
 import { Route as AuthenticatedMiAppRouteImport } from './routes/_authenticated/mi-app'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCasesRouteImport } from './routes/_authenticated/cases'
@@ -270,6 +271,11 @@ const AuthCallbackRoute = AuthCallbackRouteImport.update({
   path: '/auth/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AlertaTokenRoute = AlertaTokenRouteImport.update({
+  id: '/alerta/$token',
+  path: '/alerta/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedMiAppRoute = AuthenticatedMiAppRouteImport.update({
   id: '/mi-app',
   path: '/mi-app',
@@ -491,6 +497,7 @@ export interface FileRoutesByFullPath {
   '/cases': typeof AuthenticatedCasesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/mi-app': typeof AuthenticatedMiAppRoute
+  '/alerta/$token': typeof AlertaTokenRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/readiness/intake': typeof ReadinessIntakeRoute
@@ -563,6 +570,7 @@ export interface FileRoutesByTo {
   '/cases': typeof AuthenticatedCasesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/mi-app': typeof AuthenticatedMiAppRoute
+  '/alerta/$token': typeof AlertaTokenRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/readiness/intake': typeof ReadinessIntakeRoute
@@ -639,6 +647,7 @@ export interface FileRoutesById {
   '/_authenticated/cases': typeof AuthenticatedCasesRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/mi-app': typeof AuthenticatedMiAppRoute
+  '/alerta/$token': typeof AlertaTokenRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/readiness/intake': typeof ReadinessIntakeRoute
@@ -713,6 +722,7 @@ export interface FileRouteTypes {
     | '/cases'
     | '/dashboard'
     | '/mi-app'
+    | '/alerta/$token'
     | '/auth/callback'
     | '/email/unsubscribe'
     | '/readiness/intake'
@@ -785,6 +795,7 @@ export interface FileRouteTypes {
     | '/cases'
     | '/dashboard'
     | '/mi-app'
+    | '/alerta/$token'
     | '/auth/callback'
     | '/email/unsubscribe'
     | '/readiness/intake'
@@ -860,6 +871,7 @@ export interface FileRouteTypes {
     | '/_authenticated/cases'
     | '/_authenticated/dashboard'
     | '/_authenticated/mi-app'
+    | '/alerta/$token'
     | '/auth/callback'
     | '/email/unsubscribe'
     | '/readiness/intake'
@@ -932,6 +944,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
   VenuesRoute: typeof VenuesRoute
+  AlertaTokenRoute: typeof AlertaTokenRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   ReadinessIntakeRoute: typeof ReadinessIntakeRoute
@@ -1222,6 +1235,13 @@ declare module '@tanstack/react-router' {
       path: '/auth/callback'
       fullPath: '/auth/callback'
       preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/alerta/$token': {
+      id: '/alerta/$token'
+      path: '/alerta/$token'
+      fullPath: '/alerta/$token'
+      preLoaderRoute: typeof AlertaTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/mi-app': {
@@ -1598,6 +1618,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   UnsubscribeRoute: UnsubscribeRoute,
   VenuesRoute: VenuesRoute,
+  AlertaTokenRoute: AlertaTokenRoute,
   AuthCallbackRoute: AuthCallbackRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   ReadinessIntakeRoute: ReadinessIntakeRoute,
