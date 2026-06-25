@@ -195,6 +195,7 @@ export const submitIntakeAnswers = createServerFn({ method: "POST" })
       .eq("stripe_session_id", data.sessionId);
     if (error) throw new Error(error.message);
 
+    let intakeUrls: Awaited<ReturnType<typeof enqueueIntakeNotification>> = null;
     try {
       const language = (session.metadata?.language as string) || "en";
       const a = data.answers as Record<string, unknown>;
@@ -204,17 +205,12 @@ export const submitIntakeAnswers = createServerFn({ method: "POST" })
         (session.customer_email as string | null) ||
         null;
 
-      var __intakeUrls: Awaited<ReturnType<typeof enqueueIntakeNotification>> = null;
-      try {
-        __intakeUrls = await enqueueIntakeNotification({
-          sessionId: data.sessionId,
-          answers: a,
-          language,
-          contactEmail,
-        });
-      } catch (e) {
-        console.error("Intake notification email enqueue failed:", e);
-      }
+      intakeUrls = await enqueueIntakeNotification({
+        sessionId: data.sessionId,
+        answers: a,
+        language,
+        contactEmail,
+      });
     } catch (e) {
       console.error("Intake notification email enqueue failed:", e);
     }
