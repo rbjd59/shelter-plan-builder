@@ -225,9 +225,21 @@ export const Route = createFileRoute("/api/public/emergency/activate")({
           const cancelToken = await resolveMirrorToken(caseRef, explicitCode);
           if (cancelToken) {
             try {
-              await supabaseAdmin.rpc("cancel_sos_alert" as never, {
-                _token: cancelToken,
-              } as never);
+              if (d.cancel_pin) {
+                const { data: pinOk, error: pinErr } = await supabaseAdmin.rpc(
+                  "cancel_sos_alert_with_pin" as never,
+                  { _token: cancelToken, _pin: d.cancel_pin } as never,
+                );
+                if (pinErr || pinOk === false) {
+                  console.warn("[activate] PIN rejected", { pinErr, pinOk });
+                  return jsonResponse({ ok: false, error: "invalid_pin" }, { status: 403 });
+                }
+                console.log("[activate] cancel via PIN ok");
+              } else {
+                await supabaseAdmin.rpc("cancel_sos_alert" as never, {
+                  _token: cancelToken,
+                } as never);
+              }
             } catch (e) {
               console.error("[activate] cancel_sos_alert mirror failed", e);
             }
