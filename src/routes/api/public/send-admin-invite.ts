@@ -26,7 +26,13 @@ function generateToken(): string {
 export const Route = createFileRoute("/api/public/send-admin-invite")({
   server: {
     handlers: {
-      POST: async () => {
+      POST: async ({ request }) => {
+        const expected = process.env.REPLIT_TRIGGER_SECRET?.trim();
+        const incoming = request.headers.get('x-trigger-secret')?.trim() ?? '';
+        if (!expected || incoming !== expected) {
+          return new Response('Unauthorized', { status: 401 });
+        }
+
         const supabaseUrl = process.env.SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL
         const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
