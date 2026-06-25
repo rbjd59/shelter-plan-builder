@@ -208,7 +208,7 @@ export const notifyIntakeWebhook = createServerFn({ method: "POST" })
       console.warn(
         `[intake-webhook] verification/HTTP failure status=${res.status} kind=${kind} session=${data.intakeSessionId} ts=${timestamp} body=${snippet}`,
       );
-      throw new Error(`Intake webhook returned ${res.status}: ${snippet.slice(0, 300)}`);
+      return { ok: false, clientId: null, inviteCode: null, fallback: true, error: `http_${res.status}` } as const;
     }
 
     let json: unknown;
@@ -226,7 +226,7 @@ export const notifyIntakeWebhook = createServerFn({ method: "POST" })
         response_snippet: snippet,
         duration_ms: duration,
       });
-      throw new Error(`Intake webhook returned non-JSON: ${snippet.slice(0, 200)}`);
+      return { ok: false, clientId: null, inviteCode: null, fallback: true, error: "non_json" } as const;
     }
     const parsed = ResponseSchema.safeParse(json);
     if (!parsed.success) {
@@ -241,7 +241,7 @@ export const notifyIntakeWebhook = createServerFn({ method: "POST" })
         response_snippet: snippet,
         duration_ms: duration,
       });
-      throw new Error(`Unexpected webhook response shape: ${snippet.slice(0, 200)}`);
+      return { ok: false, clientId: null, inviteCode: null, fallback: true, error: "bad_shape" } as const;
     }
 
     await logAttempt({
