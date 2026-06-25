@@ -442,11 +442,14 @@ Download the responder app: https://detenciondefensa.com/download`;
           <hr style="border:none;border-top:1px solid #ddd;margin:14px 0">
           ${packetHtml}
           <p style="margin:12px 0 0;color:#7f1d1d"><strong>ACTION:</strong> If not cancelled by ${esc(actAfter.toISOString())}, begin locating, notify contacts, prepare and mail packet.</p>
-          <p style="margin:14px 0 0"><a href="https://detenciondefensa.com/download" style="display:inline-block;background:#b91c1c;color:#fff;padding:10px 16px;border-radius:6px;text-decoration:none;font-weight:600">Download the responder app</a></p>
-          <p style="margin:6px 0 0;font-size:12px;color:#666">Or open: https://detenciondefensa.com/download</p>
         </div>`;
 
 
+        // Full-detail responder email goes ONLY to the attorney / legal inbox.
+        // Family contacts receive a separate plain-language notice via the
+        // database trigger _enqueue_sos_emails (fired on client_sos_alerts
+        // INSERT). Do NOT send the responder packet or any "Download the app"
+        // link to family contacts here.
         await enqueueAlertEmail({
           to: LEGAL_INBOX,
           subject,
@@ -465,20 +468,7 @@ Download the responder app: https://detenciondefensa.com/download`;
             idempotencyKey: `fire-${activationId}-alt`,
           });
         }
-        if (
-          d.contact_email &&
-          d.contact_email !== LEGAL_INBOX &&
-          d.contact_email !== d.alert_email
-        ) {
-          await enqueueAlertEmail({
-            to: d.contact_email,
-            subject,
-            html,
-            text,
-            label: "emergency-activation",
-            idempotencyKey: `fire-${activationId}-contact`,
-          });
-        }
+
 
         // Sentinel Readiness Packet vault release — fire-and-log, never block alert.
         try {
