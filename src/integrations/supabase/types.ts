@@ -1279,6 +1279,10 @@ export type Database = {
         Args: { _client_id: string; _pin: string }
         Returns: undefined
       }
+      set_sos_cancel_pin_admin: {
+        Args: { _client_id: string; _pin: string }
+        Returns: undefined
+      }
       sync_client_contacts: {
         Args: { _contacts: Json; _token: string }
         Returns: Json
