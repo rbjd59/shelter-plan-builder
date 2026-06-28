@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { AssetProtectionComingSoon } from "@/components/AssetProtectionComingSoon";
 
 type Lang = "en" | "es" | "ht";
 
