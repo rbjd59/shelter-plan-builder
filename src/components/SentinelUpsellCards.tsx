@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { AssetProtectionComingSoon } from "@/components/AssetProtectionComingSoon";
 
 type Lang = "en" | "es" | "ht";
 
@@ -222,7 +223,10 @@ export function SentinelUpsellCards({ intakeSessionId, lang, customerEmail }: {
           >{c.packetCta}</Link>
         </article>
 
-        {/* Card 2 — Sentinel Trust */}
+        {/* Card 2 — Asset Protection Trust (Coming Soon, $899, AZ ABS) */}
+        <AssetProtectionComingSoon lang={lang} />
+
+        {/* Card 3 — Sentinel Trust */}
         <article style={{
           background: "#0e1a2b",
           color: "#f4efe6",
