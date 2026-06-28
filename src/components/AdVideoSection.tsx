@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useLang } from "@/context/LanguageContext";
-import enAd from "@/assets/videos/detenciondefensa-v6-en.mp4.asset.json";
-import esAd from "@/assets/videos/detenciondefensa-v6-es.mp4.asset.json";
-import htAd from "@/assets/videos/detenciondefensa-v6-ht.mp4.asset.json";
+import enAd from "@/assets/videos/detenciondefensa_en.mp4.asset.json";
+import esAd from "@/assets/videos/detenciondefensa_es.mp4.asset.json";
+import htAd from "@/assets/videos/detenciondefensa_ht.mp4.asset.json";
 
 const SRC: Record<string, string> = {
   en: enAd.url,
