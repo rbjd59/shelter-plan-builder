@@ -13,7 +13,10 @@ const SyncSchema = z.object({
   activation_code: z.string().regex(/^[A-Za-z0-9]{8}$/).optional(),
   token: z.string().regex(/^[A-Za-z0-9]{8}$/).optional(),
   intake_session_id: z.string().min(1).max(128).optional(),
-  contacts: z.array(ContactSchema).max(20),
+  contacts: z.array(ContactSchema).max(20).optional(),
+  cancel_pin: z.string().regex(/^[0-9]{4,8}$/).optional(),
+  dead_man_switch_hours: z.union([z.literal(24), z.literal(36), z.literal(72), z.null()]).optional(),
+  last_checkin: z.string().datetime().optional(),
 }).refine((data) => data.activation_code || data.token || data.intake_session_id, {
   message: "activation_code_or_intake_session_id_required",
   path: ["activation_code"],
@@ -82,16 +85,65 @@ export const Route = createFileRoute("/api/public/app/sync-contacts")({
           return jsonResponse({ ok: false, error: "client_not_found" }, { status: 404 });
         }
 
-        const { data, error } = await supabaseAdmin.rpc("sync_client_contacts" as never, {
-          _token: token,
-          _contacts: d.contacts,
-        } as never);
-        if (error) {
-          console.error("[sync-contacts] sync failed", error);
-          return jsonResponse({ ok: false, error: "sync_failed" }, { status: 500 });
+        const result: Record<string, unknown> = { ok: true };
+
+        // 1. Contacts (only if provided & non-empty)
+        if (d.contacts && d.contacts.length > 0) {
+          const { data, error } = await supabaseAdmin.rpc("sync_client_contacts" as never, {
+            _token: token,
+            _contacts: d.contacts,
+          } as never);
+          if (error) {
+            console.error("[sync-contacts] sync failed", error);
+            return jsonResponse({ ok: false, error: "sync_failed" }, { status: 500 });
+          }
+          result.contacts = data ?? { ok: true };
         }
 
-        return jsonResponse(data ?? { ok: true });
+        // 2. Dead Man's Switch + last check-in + cancel PIN — direct column updates on app_clients
+        const patch: Record<string, unknown> = {};
+        if (d.dead_man_switch_hours !== undefined) patch.dead_man_switch_hours = d.dead_man_switch_hours;
+        if (d.last_checkin) patch.last_checkin_at = d.last_checkin;
+
+        if (Object.keys(patch).length > 0) {
+          const { error: updErr } = await supabaseAdmin
+            .from("app_clients" as never)
+            .update(patch as never)
+            .eq("invite_token", token);
+          if (updErr) {
+            console.error("[sync-contacts] client update failed", updErr);
+            return jsonResponse({ ok: false, error: "client_update_failed" }, { status: 500 });
+          }
+          result.client_patched = Object.keys(patch);
+        }
+
+        // 3. Cancel PIN — hash via DB function so it matches cancel_sos_alert_with_pin
+        if (d.cancel_pin) {
+          const { data: client, error: cidErr } = await supabaseAdmin
+            .from("app_clients" as never)
+            .select("id")
+            .eq("invite_token", token)
+            .maybeSingle();
+          if (cidErr || !client) {
+            console.error("[sync-contacts] pin client lookup failed", cidErr);
+            return jsonResponse({ ok: false, error: "pin_set_failed" }, { status: 500 });
+          }
+          const clientId = (client as { id: string }).id;
+          // Use raw SQL via rpc-equivalent: hash with pgcrypto
+          const { error: pinErr } = await supabaseAdmin.rpc(
+            "set_sos_cancel_pin_admin" as never,
+            { _client_id: clientId, _pin: d.cancel_pin } as never,
+          );
+          if (pinErr) {
+            // Fallback: silently note — keep older clients working even if RPC missing
+            console.warn("[sync-contacts] pin RPC not available; skipped", pinErr.message);
+            result.cancel_pin = "rpc_missing";
+          } else {
+            result.cancel_pin = "set";
+          }
+        }
+
+        return jsonResponse(result);
       },
       OPTIONS: async () =>
         new Response(null, {
