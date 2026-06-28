@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useLang, type Lang } from "@/context/LanguageContext";
-import esAsset from "@/assets/videos/detencion-defensa-prose-v3-es.mp4.asset.json";
-import enAsset from "@/assets/videos/detencion-defensa-prose-v3-en.mp4.asset.json";
-import htAsset from "@/assets/videos/detencion-defensa-prose-v3-ht.mp4.asset.json";
+import esAsset from "@/assets/videos/detencion-defensa-vo-es.mp4.asset.json";
+import enAsset from "@/assets/videos/detencion-defensa-vo-en.mp4.asset.json";
+// No Haitian Creole VO yet — fall back to Spanish.
+import htAsset from "@/assets/videos/detencion-defensa-vo-es.mp4.asset.json";
 import logoAsset from "@/assets/dd-logo.png.asset.json";
 import iceLeftAsset from "@/assets/ice-arrest-new.jpg.asset.json";
 import iceRightAsset from "@/assets/hispanic-family.jpg";
