@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useLang } from "@/context/LanguageContext";
-import esAsset from "@/assets/videos/detenciondefensa_es.mp4.asset.json";
-import enAsset from "@/assets/videos/detenciondefensa_en.mp4.asset.json";
-import htAsset from "@/assets/videos/detenciondefensa_ht.mp4.asset.json";
+import esAsset from "@/assets/videos/detencion-defensa-vo-es.mp4.asset.json";
+import enAsset from "@/assets/videos/detencion-defensa-vo-en.mp4.asset.json";
 
-const SRC = { es: esAsset.url, en: enAsset.url, ht: htAsset.url };
+// No Haitian Creole VO provided yet — fall back to Spanish.
+const SRC = { es: esAsset.url, en: enAsset.url, ht: esAsset.url };
 
 export default function HeroVideoPortal() {
   const { lang } = useLang();
