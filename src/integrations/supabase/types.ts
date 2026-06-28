@@ -35,6 +35,7 @@ export type Database = {
           cancel_pin_hash: string | null
           country_of_origin: string | null
           created_at: string
+          dead_man_switch_hours: number | null
           device_info: Json | null
           email: string | null
           full_name: string | null
@@ -44,6 +45,7 @@ export type Database = {
           intake_session_id: string | null
           invite_token: string
           language: string
+          last_checkin_at: string | null
           phone_e164: string | null
           place_of_birth: string | null
           setup_completed_at: string | null
@@ -55,6 +57,7 @@ export type Database = {
           cancel_pin_hash?: string | null
           country_of_origin?: string | null
           created_at?: string
+          dead_man_switch_hours?: number | null
           device_info?: Json | null
           email?: string | null
           full_name?: string | null
@@ -64,6 +67,7 @@ export type Database = {
           intake_session_id?: string | null
           invite_token: string
           language?: string
+          last_checkin_at?: string | null
           phone_e164?: string | null
           place_of_birth?: string | null
           setup_completed_at?: string | null
@@ -75,6 +79,7 @@ export type Database = {
           cancel_pin_hash?: string | null
           country_of_origin?: string | null
           created_at?: string
+          dead_man_switch_hours?: number | null
           device_info?: Json | null
           email?: string | null
           full_name?: string | null
@@ -84,6 +89,7 @@ export type Database = {
           intake_session_id?: string | null
           invite_token?: string
           language?: string
+          last_checkin_at?: string | null
           phone_e164?: string | null
           place_of_birth?: string | null
           setup_completed_at?: string | null
