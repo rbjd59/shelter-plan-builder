@@ -343,16 +343,16 @@ export default function HeroIntro() {
           ref={wrapRef}
           style={{
             position: "relative",
-            maxWidth: 900,
+            maxWidth: 1200,
             margin: "0 auto",
-            background: "#000000",
+            background: "#163b73",
             aspectRatio: "16 / 9",
             width: "100%",
             overflow: "hidden",
-            borderRadius: 18,
-            padding: 14,
-            border: "2px solid #e8a04a",
-            boxShadow: "0 0 0 6px #ffffff inset, 0 0 0 1px rgba(0,0,0,0.08) inset, 0 18px 50px rgba(0,0,0,0.6), 0 0 24px rgba(232,160,74,0.25)",
+            borderRadius: 14,
+            padding: 0,
+            border: "3px solid #e8a04a",
+            boxShadow: "0 18px 50px rgba(0,0,0,0.45), 0 0 24px rgba(232,160,74,0.35)",
           }}
         >
           <video
@@ -366,11 +366,12 @@ export default function HeroIntro() {
             style={{
               width: "100%",
               height: "100%",
-              objectFit: "contain",
-              background: "#000000",
+              objectFit: "cover",
+              background: "#163b73",
               display: "block",
             }}
           />
+
 
           {!hasStarted && (
             <PlayOverlay
