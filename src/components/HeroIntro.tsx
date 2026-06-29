@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useLang, type Lang } from "@/context/LanguageContext";
-import esAsset from "@/assets/videos/detencion-defensa-vo-es.mp4.asset.json";
-import enAsset from "@/assets/videos/detencion-defensa-vo-en.mp4.asset.json";
-// No Haitian Creole VO yet — fall back to Spanish.
-import htAsset from "@/assets/videos/detencion-defensa-vo-es.mp4.asset.json";
+import esAsset from "@/assets/videos/detencion-defensa-kinetic-es.mp4.asset.json";
+import enAsset from "@/assets/videos/detencion-defensa-kinetic-en.mp4.asset.json";
+// No Haitian Creole kinetic video yet — fall back to Spanish.
+import htAsset from "@/assets/videos/detencion-defensa-kinetic-es.mp4.asset.json";
 import logoAsset from "@/assets/dd-logo.png.asset.json";
 import iceLeftAsset from "@/assets/ice-arrest-new.jpg.asset.json";
 import iceRightAsset from "@/assets/hispanic-family.jpg";
@@ -343,16 +343,16 @@ export default function HeroIntro() {
           ref={wrapRef}
           style={{
             position: "relative",
-            maxWidth: 900,
+            maxWidth: 1200,
             margin: "0 auto",
-            background: "#000000",
+            background: "#163b73",
             aspectRatio: "16 / 9",
             width: "100%",
             overflow: "hidden",
-            borderRadius: 18,
-            padding: 14,
-            border: "2px solid #e8a04a",
-            boxShadow: "0 0 0 6px #ffffff inset, 0 0 0 1px rgba(0,0,0,0.08) inset, 0 18px 50px rgba(0,0,0,0.6), 0 0 24px rgba(232,160,74,0.25)",
+            borderRadius: 14,
+            padding: 0,
+            border: "3px solid #e8a04a",
+            boxShadow: "0 18px 50px rgba(0,0,0,0.45), 0 0 24px rgba(232,160,74,0.35)",
           }}
         >
           <video
@@ -366,11 +366,12 @@ export default function HeroIntro() {
             style={{
               width: "100%",
               height: "100%",
-              objectFit: "contain",
-              background: "#000000",
+              objectFit: "cover",
+              background: "#163b73",
               display: "block",
             }}
           />
+
 
           {!hasStarted && (
             <PlayOverlay
