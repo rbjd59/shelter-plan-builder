@@ -342,8 +342,8 @@ export default function HeroIntro() {
           ref={wrapRef}
           style={{
             position: "relative",
-            maxWidth: 1200,
-            margin: "0 auto",
+            maxWidth: 760,
+            margin: "0 0 0 auto",
             background: "#163b73",
             aspectRatio: "16 / 9",
             width: "100%",
@@ -366,6 +366,7 @@ export default function HeroIntro() {
               width: "100%",
               height: "100%",
               objectFit: "cover",
+              objectPosition: "center 15%",
               background: "#163b73",
               display: "block",
             }}
