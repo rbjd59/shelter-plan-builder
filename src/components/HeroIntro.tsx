@@ -366,7 +366,7 @@ export default function HeroIntro() {
               width: "100%",
               height: "100%",
               objectFit: "cover",
-              objectPosition: lang === "es" ? "50% 50%" : "50% 100%",
+              objectPosition: "50% 50%",
               background: "#163b73",
               display: "block",
             }}
