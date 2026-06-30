@@ -1272,6 +1272,7 @@ export type Database = {
         Returns: {
           client_id: string
           full_name: string
+          invite_token: string
           language: string
         }[]
       }
