@@ -2,14 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import { useLang, type Lang } from "@/context/LanguageContext";
 import esAsset from "@/assets/videos/detencion-narrative-es.mp4.asset.json";
 import enAsset from "@/assets/videos/detencion-narrative-en.mp4.asset.json";
-import htAsset from "@/assets/videos/detencion-narrative-ht.mp4.asset.json";
+// Haitian Creole VO regenerated 2026-06-30 — previous file had Spanish-leaning
+// pronunciation ("Latino bati Amerik"). Imported directly as a Vite asset URL.
+import htNarrativeUrl from "@/assets/videos/detencion-narrative-ht-v3.mp4?url";
 import logoAsset from "@/assets/dd-logo.png.asset.json";
 import iceLeftAsset from "@/assets/ice-arrest-new.jpg.asset.json";
 import iceRightAsset from "@/assets/hispanic-family.jpg";
 import { PlayOverlay } from "@/components/AdVideoSection";
 
 
-const SRC = { es: esAsset.url, en: enAsset.url, ht: htAsset.url };
+const SRC = { es: esAsset.url, en: enAsset.url, ht: htNarrativeUrl };
 
 const COPY = {
   es: {
