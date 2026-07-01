@@ -1267,15 +1267,7 @@ export type Database = {
         }
         Returns: string
       }
-      redeem_invite_token: {
-        Args: { p_token: string }
-        Returns: {
-          client_id: string
-          full_name: string
-          invite_token: string
-          language: string
-        }[]
-      }
+      redeem_invite_token: { Args: { p_token: string }; Returns: Json }
       set_sos_cancel_pin: {
         Args: { _client_id: string; _pin: string }
         Returns: undefined
