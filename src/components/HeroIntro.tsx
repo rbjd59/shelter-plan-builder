@@ -11,7 +11,7 @@ import iceRightAsset from "@/assets/hispanic-family.jpg";
 import { PlayOverlay } from "@/components/AdVideoSection";
 
 
-const SRC = { es: esAsset.url, en: enAsset.url, ht: htNarrativeUrl };
+const SRC = { es: esAsset.url, en: enAsset.url, ht: htAsset.url };
 
 const COPY = {
   es: {
