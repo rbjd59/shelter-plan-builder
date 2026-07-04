@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { useLang, type Lang } from "@/context/LanguageContext";
 // v3/v4 trims the trailing black tail so audio ends together with the visible
 // content (prior cuts had 3–8s of black while the voiceover finished).
-import esAsset from "@/assets/videos/detencion-narrative-es-v3.mp4.asset.json";
+// ES v4: regenerated VO — "ICE" replaced with "la migra" (was mispronounced "ease").
+import esAsset from "@/assets/videos/detencion-narrative-es-v4.mp4.asset.json";
 import enAsset from "@/assets/videos/detencion-narrative-en-v3.mp4.asset.json";
 import htAsset from "@/assets/videos/detencion-narrative-ht-v4.mp4.asset.json";
 import logoAsset from "@/assets/dd-logo.png.asset.json";
