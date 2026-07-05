@@ -106,7 +106,7 @@ function TermsPage() {
           <input type="checkbox" disabled={!scrolled} checked={checked} onChange={(e) => setChecked(e.target.checked)} style={{ marginTop: 4, width: 18, height: 18 }} />
           <span style={{ fontSize: 15 }}>{t.confirm}</span>
         </label>
-        <button disabled={!canContinue} onClick={() => navigate({ to: "/intake", search: { lang } as never })} style={{ marginTop: "1.5rem", width: "100%", padding: "14px 22px", borderRadius: 999, border: "none", background: canContinue ? "#e8a04a" : "#cbd5e1", color: canContinue ? "#0f1830" : "#64748b", fontWeight: 800, fontSize: 15, letterSpacing: ".08em", textTransform: "uppercase", cursor: canContinue ? "pointer" : "not-allowed", boxShadow: canContinue ? "0 8px 24px rgba(0,0,0,0.18)" : "none" }}>{t.continue}</button>
+        <button disabled={!canContinue} onClick={() => navigate({ to: "/checkout", search: { lang } as never })} style={{ marginTop: "1.5rem", width: "100%", padding: "14px 22px", borderRadius: 999, border: "none", background: canContinue ? "#e8a04a" : "#cbd5e1", color: canContinue ? "#0f1830" : "#64748b", fontWeight: 800, fontSize: 15, letterSpacing: ".08em", textTransform: "uppercase", cursor: canContinue ? "pointer" : "not-allowed", boxShadow: canContinue ? "0 8px 24px rgba(0,0,0,0.18)" : "none" }}>{t.continue}</button>
       </div>
     </main>
   );
