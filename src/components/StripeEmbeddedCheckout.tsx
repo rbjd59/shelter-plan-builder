@@ -37,6 +37,8 @@ export function StripeEmbeddedCheckoutBox({ language, customerEmail, returnUrl, 
         userId: userInfo?.userId,
         returnUrl,
         environment: getStripeEnvironment(),
+        includeReadiness: !!includeReadiness,
+        includePetRescue: !!includePetRescue,
       },
     });
     if (!secret) throw new Error("Failed to create checkout session");
