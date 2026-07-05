@@ -443,6 +443,10 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
           inviteCode: webhookResult?.inviteCode ?? pairResult?.code ?? null,
         },
       }).catch((err) => console.error("SMS notify failed:", err));
+      // Clear the saved draft — this intake is complete.
+      if (user) {
+        clearDraftFn().catch((e) => console.error("Clear draft failed:", e));
+      }
       setStatus("done");
     } catch (err) {
       setErrMsg((err as Error).message);
