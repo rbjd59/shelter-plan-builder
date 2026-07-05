@@ -269,9 +269,22 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
   const [englishAnswers, setEnglishAnswers] = useState<Record<string, string>>({});
   const [approvals, setApprovals] = useState<Record<string, boolean>>({});
   const [smsConsent, setSmsConsent] = useState(false);
-  
+  const [readinessPaid, setReadinessPaid] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const raw = window.localStorage.getItem("dd_addons_v1");
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as { readiness?: boolean };
+      setReadinessPaid(!!parsed.readiness);
+    } catch {
+      /* ignore */
+    }
+  }, []);
 
   const isBilingual = L !== "en";
+
 
   const requiredApprovals = useMemo(() => {
     const keys: string[] = [];
