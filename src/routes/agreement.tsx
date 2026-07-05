@@ -1,9 +1,15 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
+import { useServerFn } from "@tanstack/react-start";
 import { readSiteLang } from "@/lib/site-lang";
+import { getSessionAddons } from "@/utils/payments.functions";
+import { getStripeEnvironment } from "@/lib/stripe";
 
-const searchSchema = z.object({ lang: z.enum(["en", "es", "ht"]).catch("es") });
+const searchSchema = z.object({
+  lang: z.enum(["en", "es", "ht"]).catch("es"),
+  session_id: z.string().optional(),
+});
 
 export const Route = createFileRoute("/agreement")({
   validateSearch: searchSchema,
@@ -110,7 +116,7 @@ const T = {
 } as const;
 
 function AgreementPage() {
-  const { lang } = Route.useSearch();
+  const { lang, session_id } = Route.useSearch();
   const L = lang as Lang;
   const t = T[L];
   const navigate = useNavigate();
@@ -119,6 +125,31 @@ function AgreementPage() {
   const [scrolledToEnd, setScrolledToEnd] = useState(false);
   const [checked, setChecked] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const addonsFn = useServerFn(getSessionAddons);
+
+  // If Stripe returned us with a session_id, persist which add-ons the
+  // customer actually paid for. The intake page reads these flags to gate
+  // add-on-only sections (e.g. Family Readiness contact).
+  useEffect(() => {
+    if (typeof window === "undefined" || !session_id) return;
+    (async () => {
+      try {
+        const result = await addonsFn({
+          data: { sessionId: session_id, environment: getStripeEnvironment() },
+        });
+        window.localStorage.setItem(
+          "dd_addons_v1",
+          JSON.stringify({
+            readiness: !!result.readinessPaid,
+            petRescue: !!result.petRescuePaid,
+          }),
+        );
+      } catch {
+        // non-fatal — intake will fall back to hiding gated sections
+      }
+    })();
+  }, [session_id, addonsFn]);
+
 
   // Fallback: if URL has no valid ?lang=, replace with the site-selected lang.
   useEffect(() => {

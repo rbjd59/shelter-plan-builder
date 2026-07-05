@@ -114,20 +114,24 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
   },
   {
     id: "contact",
-    title: { en: "6. Family Contact (you)", es: "6. Contacto Familiar (usted)", ht: "6. Kontak Fanmi (ou menm)" },
+    title: {
+      en: "6. Where should your forms go if you are detained?",
+      es: "6. ¿A dónde deben enviarse sus formularios si es detenido?",
+      ht: "6. Ki kote fòm yo dwe ale si yo detni w?",
+    },
     intro: {
-      en: "We send the prepared forms to this contact.",
-      es: "Enviamos los formularios a este contacto.",
-      ht: "Nou voye fòm yo bay kontak sa a.",
+      en: "Family Readiness Documents — only available if you purchased the $99 Family Readiness Documents Package. Tell us who receives the prepared forms when your case is activated.",
+      es: "Documentos de Preparación Familiar — solo disponible si compró el Paquete de Documentos de Preparación Familiar de $99. Indíquenos quién recibirá los formularios preparados cuando se active su caso.",
+      ht: "Dokiman Preparasyon Fanmi — sèlman disponib si w te achte Pakè Dokiman Preparasyon Fanmi $99 la. Di nou ki moun k ap resevwa fòm yo lè ka w aktive.",
     },
     fields: [
       { key: "contact_name", label: { en: "Contact name", es: "Nombre del contacto", ht: "Non kontak la" } },
-      { key: "contact_relation", label: { en: "Relationship to petitioner", es: "Parentesco", ht: "Relasyon" } },
-      { key: "contact_phone", label: { en: "Phone (with WhatsApp if applicable)", es: "Teléfono (WhatsApp)", ht: "Telefòn (WhatsApp)" } },
-      { key: "contact_email", label: { en: "Email", es: "Correo electrónico", ht: "Imèl" } },
+      { key: "contact_email", label: { en: "Email address", es: "Correo electrónico", ht: "Imèl" } },
+      { key: "contact_phone", label: { en: "Phone number (with WhatsApp if applicable)", es: "Teléfono (WhatsApp)", ht: "Telefòn (WhatsApp)" } },
       { key: "contact_address", type: "textarea", label: { en: "Mailing address", es: "Dirección postal", ht: "Adrès postal" } },
     ],
   },
+
   {
     id: "second_emergency",
     title: { en: "7. Second Emergency Contact", es: "7. Segundo Contacto de Emergencia", ht: "7. Dezyèm Kontak Ijans" },
@@ -269,9 +273,22 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
   const [englishAnswers, setEnglishAnswers] = useState<Record<string, string>>({});
   const [approvals, setApprovals] = useState<Record<string, boolean>>({});
   const [smsConsent, setSmsConsent] = useState(false);
-  
+  const [readinessPaid, setReadinessPaid] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const raw = window.localStorage.getItem("dd_addons_v1");
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as { readiness?: boolean };
+      setReadinessPaid(!!parsed.readiness);
+    } catch {
+      /* ignore */
+    }
+  }, []);
 
   const isBilingual = L !== "en";
+
 
   const requiredApprovals = useMemo(() => {
     const keys: string[] = [];
@@ -551,7 +568,24 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
           <strong>⚠ {ui.upl}</strong>
         </div>
         <form onSubmit={handleSubmit}>
-          {sections.map((s) => (
+          {sections.map((s) => {
+            // Section 6 (Family Readiness contact) is gated behind the $99
+            // Family Readiness Documents Package add-on.
+            if (s.id === "contact" && !readinessPaid) {
+              return (
+                <section key={s.id} style={{ marginBottom: 32, background: "#1a2436", padding: 24, borderRadius: 6, opacity: 0.6 }}>
+                  <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 6 }}>{s.title[L]}</h2>
+                  <p style={{ fontSize: 13, color: "#e8a04a", marginBottom: 8, fontStyle: "italic" }}>
+                    {L === "es"
+                      ? "🔒 Esta sección requiere el Paquete de Documentos de Preparación Familiar ($99). Regrese al pago para agregarlo."
+                      : L === "ht"
+                      ? "🔒 Seksyon sa a mande Pakè Dokiman Preparasyon Fanmi ($99). Retounen nan peman an pou ajoute li."
+                      : "🔒 This section requires the Family Readiness Documents Package ($99). Go back to checkout to add it."}
+                  </p>
+                </section>
+              );
+            }
+            return (
             <section key={s.id} style={{ marginBottom: 32, background: "#1a2436", padding: 24, borderRadius: 6 }}>
               <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 6 }}>{s.title[L]}</h2>
               <p style={{ fontSize: 13, color: "#a8a59a", marginBottom: 20, fontStyle: "italic" }}>{s.intro[L]}</p>
@@ -608,8 +642,29 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
                   </div>
                 );
               })}
+              {s.id === "contact" && readinessPaid && (
+                <div style={{ marginTop: 12, padding: 14, background: "#0f1a2b", border: "1px solid #3a4458", borderRadius: 4 }}>
+                  <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 8, lineHeight: 1.5 }}>
+                    {L === "es"
+                      ? "Por la presente acepto que, al activarse, estos formularios pueden ser enviados a la persona indicada arriba."
+                      : L === "ht"
+                      ? "Mwen dakò ke, lè yo aktive, fòm sa yo ka voye bay moun ki endike anwo a."
+                      : "I hereby agree that upon activation, these forms can be sent to the above individual."}
+                  </label>
+                  <input
+                    type="text"
+                    maxLength={6}
+                    placeholder={L === "es" ? "Sus iniciales" : L === "ht" ? "Inisyal ou" : "Your initials"}
+                    value={(answers["contact_release_initials"] as string) || ""}
+                    onChange={(e) => setAnswers((a) => ({ ...a, contact_release_initials: e.target.value.toUpperCase() }))}
+                    style={{ ...inputStyle, maxWidth: 160, textTransform: "uppercase", letterSpacing: 2, fontWeight: 700 }}
+                  />
+                </div>
+              )}
             </section>
-          ))}
+            );
+          })}
+
 
           {/* Add-Ons (Asset Protection + Pet Rescue) */}
           <section style={{ marginBottom: 32, background: "#1a2436", padding: 24, borderRadius: 6, borderLeft: "4px solid #e8a04a" }}>
