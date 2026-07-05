@@ -404,11 +404,19 @@ export const emailPacketToMe = createServerFn({ method: "POST" })
     if (!to || !/.+@.+\..+/.test(to)) throw new Error("No email on file for attorney account");
 
     const answers = await loadAnswers(sid);
+    const ai = await getAiNarrativeForSession(sid, answers);
 
     // Build all PDFs in parallel, upload to private bucket, sign URLs.
     const built = await Promise.all(
-      PACKET.map(async (d) => ({ d, bytes: await buildPdfFor(d.key, answers) })),
+      PACKET.map(async (d) => ({
+        d,
+        bytes: await buildPdfFor(d.key, answers, {
+          aiNarrative: d.key === "memorandum" ? ai.narrative : undefined,
+          aiModel: d.key === "memorandum" ? ai.model : undefined,
+        }),
+      })),
     );
+
     const signed: Array<{ label: string; url: string | null; filename: string }> = [];
     for (const { d, bytes } of built) {
       const path = `${sid}/packet/${d.filename}`;
