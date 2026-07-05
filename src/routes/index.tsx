@@ -66,9 +66,11 @@ export const Route = createFileRoute("/")({
   component: () => (
     <>
       <HeroIntro />
+      <ProblemSolutionSection />
       <SiteShell />
     </>
   ),
+
 
 
 });
