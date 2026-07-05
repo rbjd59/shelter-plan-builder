@@ -576,10 +576,10 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
                   <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 6 }}>{s.title[L]}</h2>
                   <p style={{ fontSize: 13, color: "#e8a04a", marginBottom: 8, fontStyle: "italic" }}>
                     {L === "es"
-                      ? "🔒 Esta sección requiere el Paquete de Documentos de Preparación Familiar ($99). Regrese al pago para agregarlo."
+                      ? "🔒 Marque el Paquete de Protección de Bienes ($99) en Complementos opcionales abajo para desbloquear esta sección."
                       : L === "ht"
-                      ? "🔒 Seksyon sa a mande Pakè Dokiman Preparasyon Fanmi ($99). Retounen nan peman an pou ajoute li."
-                      : "🔒 This section requires the Family Readiness Documents Package ($99). Go back to checkout to add it."}
+                      ? "🔒 Tcheke Pakè Pwoteksyon Byen ($99) nan Opsyon adisyonèl anba a pou debloke seksyon sa a."
+                      : "🔒 Check the Asset Protection Package ($99) in Optional Add-Ons below to unlock this section."}
                   </p>
                 </section>
               );
