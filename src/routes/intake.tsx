@@ -458,7 +458,10 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
   const container: React.CSSProperties = { maxWidth: isBilingual ? 1100 : 760, margin: "0 auto", padding: "32px 24px 96px" };
 
   if (status === "done") {
-    const code = inviteCode || pairCode || "PENDING";
+    const rawCode = inviteCode || pairCode || "PENDING";
+    // Language-tagged activation code: phone app reads the suffix to open in
+    // the client's language automatically.
+    const code = rawCode === "PENDING" ? rawCode : `${rawCode}-${L.toUpperCase()}`;
     const T = {
       en: {
         heading: "Your app is ready to download",
