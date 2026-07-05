@@ -47,15 +47,15 @@ async function resolveOrCreateCustomer(
 /**
  * Create the Embedded Checkout session.
  *
- * Base service is $199 one-time (file preparation). The $10/month
- * Document Mailing Add-On is OPTIONAL and only added when the
- * customer opts in AND acknowledges the add-on terms. No trial —
- * mailing is charged immediately upon subscribe. The add-on can be
- * canceled at any time from the customer portal.
+ * Base service is $199 one-time (file preparation).
+ * Optional add-ons (one-time):
+ *   - Family Readiness Documents Package ($99) — split $49 Company / $50 Firm
+ *   - Pet Rescue ($10) — 100% Company
  *
- * Keep this checkout intentionally tax-neutral in test mode. Do not send
- * managed_payments, automatic_tax, billing_cycle_anchor, or proration_behavior
- * here: those options caused Stripe session creation failures in sandbox.
+ * Rule 4-5.4 compliance: attorney portions must go directly to the
+ * Firm's Stripe account via a Stripe Connect destination charge.
+ * Until FIRM_STRIPE_ACCOUNT_ID is set, transfer is stubbed and everything
+ * lands on the Company account (test mode only).
  */
 export const createCheckoutSession = createServerFn({ method: "POST" })
   .inputValidator(
@@ -65,34 +65,36 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       environment: StripeEnv;
       customerEmail?: string;
       userId?: string;
-      includeMailingAddon?: boolean;
-      mailingAddonAcknowledged?: boolean;
+      includeReadiness?: boolean;
+      includePetRescue?: boolean;
     }) => {
       if (!["en", "es", "ht"].includes(data.language)) throw new Error("Invalid language");
       if (typeof data.returnUrl !== "string" || !data.returnUrl.startsWith("http"))
         throw new Error("Invalid returnUrl");
-      if (data.includeMailingAddon && !data.mailingAddonAcknowledged) {
-        throw new Error("Mailing add-on requires acknowledgment of the Terms of Add-On Service.");
-      }
       return data;
     },
   )
   .handler(async ({ data }) => {
     const stripe = createStripeClient(data.environment);
 
-    const includeAddon = !!data.includeMailingAddon;
+    const includeReadiness = !!data.includeReadiness;
+    const includePetRescue = !!data.includePetRescue;
 
-    const priceQueries: Promise<Stripe.ApiList<Stripe.Price>>[] = [
-      stripe.prices.list({ lookup_keys: ["pretransfer_199"], limit: 1 }),
-    ];
-    if (includeAddon) {
-      priceQueries.push(stripe.prices.list({ lookup_keys: ["pretransfer_10mo"], limit: 1 }));
-    }
-    const results = await Promise.all(priceQueries);
-    const oneTime = results[0];
-    const monthly = includeAddon ? results[1] : null;
-    if (!oneTime.data.length) throw new Error("Base price not found");
-    if (includeAddon && (!monthly || !monthly.data.length)) throw new Error("Add-on price not found");
+    const FIRM_SPLIT_BASE = 3500;       // $35 of $199
+    const FIRM_SPLIT_READINESS = 5000;  // $50 of $99
+
+    const lookupKeys: string[] = ["pretransfer_199"];
+    if (includeReadiness) lookupKeys.push("readiness_packet_99");
+    if (includePetRescue) lookupKeys.push("pet_rescue_10");
+
+    const priceResults = await Promise.all(
+      lookupKeys.map((k) => stripe.prices.list({ lookup_keys: [k], limit: 1 })),
+    );
+    const priceByKey: Record<string, string> = {};
+    lookupKeys.forEach((k, i) => {
+      if (!priceResults[i].data.length) throw new Error(`Price not found: ${k}`);
+      priceByKey[k] = priceResults[i].data[0].id;
+    });
 
     const customerId =
       data.customerEmail || data.userId
@@ -103,55 +105,42 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
         : undefined;
 
     const lineItems: Array<{ price: string; quantity: number }> = [
-      { price: oneTime.data[0].id, quantity: 1 },
+      { price: priceByKey["pretransfer_199"], quantity: 1 },
     ];
-    if (includeAddon && monthly) {
-      lineItems.push({ price: monthly.data[0].id, quantity: 1 });
-    }
+    if (includeReadiness) lineItems.push({ price: priceByKey["readiness_packet_99"], quantity: 1 });
+    if (includePetRescue) lineItems.push({ price: priceByKey["pet_rescue_10"], quantity: 1 });
 
-    // Rule 4-5.4 compliance: the $35 attorney portion must go directly to the
-    // Firm's Stripe account, never pool with Company funds. Uses Stripe
-    // Connect destination charge — customer pays $199 in one UX; Stripe
-    // atomically transfers $35 to the Firm's connected account and keeps
-    // $164 on the platform. Until Rosario clicks the Connect authorization
-    // link and FIRM_STRIPE_ACCOUNT_ID is set, transfer is stubbed and all
-    // $199 lands on the Company account (test mode only — do NOT go live
-    // until FIRM_STRIPE_ACCOUNT_ID is populated).
     const firmAccountId = process.env.FIRM_STRIPE_ACCOUNT_ID;
-    const firmTransferCents = 3500; // $35 — keep in sync with PRICE.firmCents
+    const firmTransferCents =
+      FIRM_SPLIT_BASE + (includeReadiness ? FIRM_SPLIT_READINESS : 0);
 
     const sessionParams = {
-      // Subscription mode ONLY when the mailing add-on is included.
-      // Without it, this is a one-time $199 payment.
-      mode: includeAddon ? "subscription" : "payment",
+      mode: "payment",
       ui_mode: "embedded_page",
       return_url: data.returnUrl,
       line_items: lineItems,
-      ...(!includeAddon && firmAccountId && {
-        payment_intent_data: {
+      payment_intent_data: {
+        description: [
+          "DetencionDefensa Pro Se Plan ($199)",
+          includeReadiness && "Family Readiness Documents ($99)",
+          includePetRescue && "Pet Rescue ($10)",
+        ]
+          .filter(Boolean)
+          .join(" + "),
+        ...(firmAccountId && {
           transfer_data: {
             destination: firmAccountId,
             amount: firmTransferCents,
           },
-          description: "DetencionDefensa Pro Se Plan — $164 Company + $35 Firm",
-        },
-      }),
-      ...(includeAddon && {
-        subscription_data: {
-          metadata: {
-            language: data.language,
-            mailing_addon: "true",
-            mailing_addon_acknowledged: "true",
-            ...(data.userId && { userId: data.userId }),
-          },
-        },
-      }),
+        }),
+      },
       ...(customerId && { customer: customerId }),
       metadata: {
         language: data.language,
-        mailing_addon: includeAddon ? "true" : "false",
+        includes_readiness: includeReadiness ? "true" : "false",
+        includes_pet_rescue: includePetRescue ? "true" : "false",
         firm_split: firmAccountId ? "connect_destination" : "stubbed",
-        ...(includeAddon && { mailing_addon_acknowledged: "true" }),
+        firm_split_cents: String(firmTransferCents),
         ...(data.userId && { userId: data.userId }),
       },
     } satisfies Stripe.Checkout.SessionCreateParams;
