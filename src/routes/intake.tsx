@@ -440,7 +440,10 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
           contactPhone: contactPhoneRaw,
           contactName: contactNameRaw,
           language: L,
-          inviteCode: webhookResult?.inviteCode ?? pairResult?.code ?? null,
+          inviteCode: (() => {
+            const raw = webhookResult?.inviteCode ?? pairResult?.code ?? null;
+            return raw ? `${raw}-${L.toUpperCase()}` : null;
+          })(),
         },
       }).catch((err) => console.error("SMS notify failed:", err));
       // Clear the saved draft — this intake is complete.
