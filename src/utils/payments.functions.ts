@@ -109,6 +109,17 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       lineItems.push({ price: monthly.data[0].id, quantity: 1 });
     }
 
+    // Rule 4-5.4 compliance: the $35 attorney portion must go directly to the
+    // Firm's Stripe account, never pool with Company funds. Uses Stripe
+    // Connect destination charge — customer pays $199 in one UX; Stripe
+    // atomically transfers $35 to the Firm's connected account and keeps
+    // $164 on the platform. Until Rosario clicks the Connect authorization
+    // link and FIRM_STRIPE_ACCOUNT_ID is set, transfer is stubbed and all
+    // $199 lands on the Company account (test mode only — do NOT go live
+    // until FIRM_STRIPE_ACCOUNT_ID is populated).
+    const firmAccountId = process.env.FIRM_STRIPE_ACCOUNT_ID;
+    const firmTransferCents = 3500; // $35 — keep in sync with PRICE.firmCents
+
     const sessionParams = {
       // Subscription mode ONLY when the mailing add-on is included.
       // Without it, this is a one-time $199 payment.
@@ -116,6 +127,15 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       ui_mode: "embedded_page",
       return_url: data.returnUrl,
       line_items: lineItems,
+      ...(!includeAddon && firmAccountId && {
+        payment_intent_data: {
+          transfer_data: {
+            destination: firmAccountId,
+            amount: firmTransferCents,
+          },
+          description: "DetencionDefensa Pro Se Plan — $164 Company + $35 Firm",
+        },
+      }),
       ...(includeAddon && {
         subscription_data: {
           metadata: {
@@ -130,6 +150,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       metadata: {
         language: data.language,
         mailing_addon: includeAddon ? "true" : "false",
+        firm_split: firmAccountId ? "connect_destination" : "stubbed",
         ...(includeAddon && { mailing_addon_acknowledged: "true" }),
         ...(data.userId && { userId: data.userId }),
       },
