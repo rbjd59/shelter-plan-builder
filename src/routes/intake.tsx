@@ -265,6 +265,9 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
   const pairFn = useServerFn(pairIntakeWithApp);
   const webhookFn = useServerFn(notifyIntakeWebhook);
   const smsNotifyFn = useServerFn(sendIntakeNotifications);
+  const loadDraftFn = useServerFn(loadIntakeDraft);
+  const saveDraftFn = useServerFn(saveIntakeDraft);
+  const clearDraftFn = useServerFn(clearIntakeDraft);
 
   const [status, setStatus] = useState<"ready" | "submitting" | "done" | "error">("ready");
   const [errMsg, setErrMsg] = useState("");
@@ -275,6 +278,9 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
   const [approvals, setApprovals] = useState<Record<string, boolean>>({});
   const [smsConsent, setSmsConsent] = useState(false);
   const [readinessPaid, setReadinessPaid] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [draftLoaded, setDraftLoaded] = useState(false);
+  const skipNextSaveRef = useRef(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -287,6 +293,65 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
       /* ignore */
     }
   }, []);
+
+  // Track auth state
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setUser(data.user ?? null));
+    const { data: sub } = supabase.auth.onAuthStateChange((_ev, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => sub.subscription.unsubscribe();
+  }, []);
+
+  // Load draft when user signs in
+  useEffect(() => {
+    if (!user) {
+      setDraftLoaded(false);
+      return;
+    }
+    let cancelled = false;
+    loadDraftFn()
+      .then((draft) => {
+        if (cancelled || !draft) {
+          setDraftLoaded(true);
+          return;
+        }
+        skipNextSaveRef.current = true;
+        setAnswers(draft.answers);
+        setEnglishAnswers(draft.englishAnswers);
+        setApprovals(draft.approvals);
+        setDraftLoaded(true);
+      })
+      .catch((e) => {
+        console.error("Load draft failed:", e);
+        setDraftLoaded(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [user, loadDraftFn]);
+
+  // Autosave on changes (debounced) when signed in
+  useEffect(() => {
+    if (!user || !draftLoaded) return;
+    if (skipNextSaveRef.current) {
+      skipNextSaveRef.current = false;
+      return;
+    }
+    const timer = setTimeout(() => {
+      saveDraftFn({
+        data: {
+          answers: answers as Record<string, string | boolean | number | null>,
+          englishAnswers,
+          approvals,
+          language: L,
+          sessionId: _session_id ?? null,
+        },
+      }).catch((e) => console.error("Save draft failed:", e));
+    }, 1200);
+    return () => clearTimeout(timer);
+  }, [answers, englishAnswers, approvals, user, draftLoaded, L, _session_id, saveDraftFn]);
+
 
   const isBilingual = L !== "en";
 
