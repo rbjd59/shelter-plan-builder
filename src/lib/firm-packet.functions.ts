@@ -373,11 +373,18 @@ export const previewPacketDoc = createServerFn({ method: "POST" })
   .handler(async ({ data, context }): Promise<{ filename: string; base64: string }> => {
     await assertFirmOrAdmin(context.userId);
     const answers = await loadAnswers(data.intakeSessionId);
-    const bytes = await buildPdfFor(data.docKey, answers);
+    const ai = data.docKey === "memorandum"
+      ? await getAiNarrativeForSession(data.intakeSessionId, answers)
+      : {};
+    const bytes = await buildPdfFor(data.docKey, answers, {
+      aiNarrative: ai.narrative,
+      aiModel: ai.model,
+    });
     const meta = PACKET.find((d) => d.key === data.docKey)!;
     const base64 = Buffer.from(bytes).toString("base64");
     return { filename: meta.filename, base64 };
   });
+
 
 export const emailPacketToMe = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
