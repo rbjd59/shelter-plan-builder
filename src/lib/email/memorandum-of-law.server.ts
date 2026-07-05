@@ -98,12 +98,23 @@ class Writer {
   }
 }
 
-export async function buildMemorandumOfLawPdf(a: A): Promise<Uint8Array> {
+export interface MemoNarrativeOverride {
+  statement_of_facts?: string;
+  community_ties_argument?: string;
+  dangerousness_rebuttal?: string;
+  aiModel?: string;
+}
+
+export async function buildMemorandumOfLawPdf(
+  a: A,
+  narrative?: MemoNarrativeOverride,
+): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
   const font = await doc.embedFont(StandardFonts.TimesRoman);
   const bold = await doc.embedFont(StandardFonts.TimesRomanBold);
   const italic = await doc.embedFont(StandardFonts.TimesRomanItalic);
   const w = new Writer(doc, font, bold, italic);
+
 
   // -------- Pull values --------
   const petitioner = need(firstText(a, "full_name", "mail_inmate_name"), "petitioner full name");
