@@ -242,42 +242,109 @@ async function loadAnswers(sid: string): Promise<Record<string, unknown>> {
   return ans && typeof ans === "object" ? ans : {};
 }
 
-async function buildPdfFor(key: PacketDocKey, answers: Record<string, unknown>): Promise<Uint8Array> {
+async function buildPdfFor(
+  key: PacketDocKey,
+  answers: Record<string, unknown>,
+  opts?: { aiNarrative?: import("@/lib/ai-legal-drafts.server").MemoNarrative; aiModel?: string; skipWatermark?: boolean },
+): Promise<Uint8Array> {
+  let bytes: Uint8Array;
   switch (key) {
     case "memorandum": {
       const { buildMemorandumOfLawPdf } = await import("@/lib/email/memorandum-of-law.server");
-      return await buildMemorandumOfLawPdf(answers);
+      bytes = await buildMemorandumOfLawPdf(
+        answers,
+        opts?.aiNarrative
+          ? {
+              statement_of_facts: opts.aiNarrative.statement_of_facts,
+              community_ties_argument: opts.aiNarrative.community_ties_argument,
+              dangerousness_rebuttal: opts.aiNarrative.dangerousness_rebuttal,
+              aiModel: opts.aiModel,
+            }
+          : undefined,
+      );
+      break;
     }
     case "ao242": {
       const { buildIntakePdfs } = await import("@/lib/email/intake-pdfs.server");
       const r = await buildIntakePdfs(answers);
-      return r.habeas;
+      bytes = r.habeas;
+      break;
     }
     case "ao240": {
       const { buildIntakePdfs } = await import("@/lib/email/intake-pdfs.server");
       const r = await buildIntakePdfs(answers);
-      return r.ifp;
+      bytes = r.ifp;
+      break;
     }
     case "js44": {
       const { buildJs44Pdf } = await import("@/lib/email/js44.server");
-      return await buildJs44Pdf(answers);
+      bytes = await buildJs44Pdf(answers);
+      break;
     }
     case "motion_referral": {
       const { buildMotionReferralPdf } = await import("@/lib/email/motion-referral.server");
-      return await buildMotionReferralPdf(answers);
+      bytes = await buildMotionReferralPdf(answers);
+      break;
     }
     case "mailing_label": {
       const { buildMailingLabelPdf } = await import("@/lib/mailing-label-pdf.server");
-      return await buildMailingLabelPdf({
+      bytes = await buildMailingLabelPdf({
         inmateName: String(answers.mail_inmate_name ?? answers.full_name ?? ""),
         aNumber: answers.mail_inmate_number ? String(answers.mail_inmate_number) : null,
         facilityName: String(answers.mail_current_location ?? answers.facility_name ?? ""),
         facilityAddress: String(answers.mail_facility_address ?? answers.facility_address ?? ""),
         caseId: "DEMO",
       });
+      break;
     }
   }
+
+  if (!opts?.skipWatermark) {
+    const { applyDraftWatermark } = await import("@/lib/pdf-watermark.server");
+    bytes = await applyDraftWatermark(bytes);
+  }
+  return bytes;
 }
+
+// Per-request cache so a single packet build doesn't call GPT-5 six times.
+async function getAiNarrativeForSession(
+  sid: string,
+  answers: Record<string, unknown>,
+): Promise<{ narrative?: import("@/lib/ai-legal-drafts.server").MemoNarrative; model?: string }> {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data: existing } = await supabaseAdmin
+    .from("client_documents")
+    .select("content, ai_model, ai_generated")
+    .eq("stripe_session_id", sid)
+    .eq("document_type", "memorandum_ai_narrative")
+    .maybeSingle();
+  if (existing && (existing as { content: string }).content) {
+    try {
+      const parsed = JSON.parse((existing as { content: string }).content);
+      return { narrative: parsed, model: (existing as { ai_model?: string }).ai_model ?? undefined };
+    } catch {
+      /* fall through and regenerate */
+    }
+  }
+
+  const { generateMemoNarrative } = await import("@/lib/ai-legal-drafts.server");
+  const { narrative, model, ok } = await generateMemoNarrative(answers);
+  if (ok) {
+    await supabaseAdmin.from("client_documents").insert({
+      client_id: null as never,
+      title: "AI narrative cache — memorandum of law",
+      document_type: "memorandum_ai_narrative",
+      content: JSON.stringify(narrative),
+      ai_generated: true,
+      ai_model: model,
+      review_status: "draft_pending_review",
+      stripe_session_id: sid,
+      send_on_alert: false,
+    } as never);
+  }
+  return { narrative, model };
+}
+
 
 export const getPacketManifest = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
