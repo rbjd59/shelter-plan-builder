@@ -78,6 +78,7 @@ import { Route as ApiPublicEmergencyActivateRouteImport } from './routes/api/pub
 import { Route as ApiPublicDevSendInstallRouteImport } from './routes/api/public/dev/send-install'
 import { Route as ApiPublicCronRetryFailedEmailsRouteImport } from './routes/api/public/cron/retry-failed-emails'
 import { Route as ApiPublicCronProcessDueActivationsRouteImport } from './routes/api/public/cron/process-due-activations'
+import { Route as ApiPublicAppUpdateInfoRouteImport } from './routes/api/public/app/update-info'
 import { Route as ApiPublicAppSyncContactsRouteImport } from './routes/api/public/app/sync-contacts'
 import { Route as ApiPublicAppLatestDotapkRouteImport } from './routes/api/public/app/latest[.]apk'
 import { Route as ApiPublicAppInfoRouteImport } from './routes/api/public/app/info'
@@ -439,6 +440,11 @@ const ApiPublicCronProcessDueActivationsRoute =
     path: '/api/public/cron/process-due-activations',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicAppUpdateInfoRoute = ApiPublicAppUpdateInfoRouteImport.update({
+  id: '/api/public/app/update-info',
+  path: '/api/public/app/update-info',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicAppSyncContactsRoute =
   ApiPublicAppSyncContactsRouteImport.update({
     id: '/api/public/app/sync-contacts',
@@ -542,6 +548,7 @@ export interface FileRoutesByFullPath {
   '/api/public/app/info': typeof ApiPublicAppInfoRoute
   '/api/public/app/latest.apk': typeof ApiPublicAppLatestDotapkRoute
   '/api/public/app/sync-contacts': typeof ApiPublicAppSyncContactsRoute
+  '/api/public/app/update-info': typeof ApiPublicAppUpdateInfoRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/cron/retry-failed-emails': typeof ApiPublicCronRetryFailedEmailsRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
@@ -617,6 +624,7 @@ export interface FileRoutesByTo {
   '/api/public/app/info': typeof ApiPublicAppInfoRoute
   '/api/public/app/latest.apk': typeof ApiPublicAppLatestDotapkRoute
   '/api/public/app/sync-contacts': typeof ApiPublicAppSyncContactsRoute
+  '/api/public/app/update-info': typeof ApiPublicAppUpdateInfoRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/cron/retry-failed-emails': typeof ApiPublicCronRetryFailedEmailsRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
@@ -696,6 +704,7 @@ export interface FileRoutesById {
   '/api/public/app/info': typeof ApiPublicAppInfoRoute
   '/api/public/app/latest.apk': typeof ApiPublicAppLatestDotapkRoute
   '/api/public/app/sync-contacts': typeof ApiPublicAppSyncContactsRoute
+  '/api/public/app/update-info': typeof ApiPublicAppUpdateInfoRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/cron/retry-failed-emails': typeof ApiPublicCronRetryFailedEmailsRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
@@ -773,6 +782,7 @@ export interface FileRouteTypes {
     | '/api/public/app/info'
     | '/api/public/app/latest.apk'
     | '/api/public/app/sync-contacts'
+    | '/api/public/app/update-info'
     | '/api/public/cron/process-due-activations'
     | '/api/public/cron/retry-failed-emails'
     | '/api/public/dev/send-install'
@@ -848,6 +858,7 @@ export interface FileRouteTypes {
     | '/api/public/app/info'
     | '/api/public/app/latest.apk'
     | '/api/public/app/sync-contacts'
+    | '/api/public/app/update-info'
     | '/api/public/cron/process-due-activations'
     | '/api/public/cron/retry-failed-emails'
     | '/api/public/dev/send-install'
@@ -926,6 +937,7 @@ export interface FileRouteTypes {
     | '/api/public/app/info'
     | '/api/public/app/latest.apk'
     | '/api/public/app/sync-contacts'
+    | '/api/public/app/update-info'
     | '/api/public/cron/process-due-activations'
     | '/api/public/cron/retry-failed-emails'
     | '/api/public/dev/send-install'
@@ -985,6 +997,7 @@ export interface RootRouteChildren {
   ApiPublicAppInfoRoute: typeof ApiPublicAppInfoRoute
   ApiPublicAppLatestDotapkRoute: typeof ApiPublicAppLatestDotapkRoute
   ApiPublicAppSyncContactsRoute: typeof ApiPublicAppSyncContactsRoute
+  ApiPublicAppUpdateInfoRoute: typeof ApiPublicAppUpdateInfoRoute
   ApiPublicCronProcessDueActivationsRoute: typeof ApiPublicCronProcessDueActivationsRoute
   ApiPublicCronRetryFailedEmailsRoute: typeof ApiPublicCronRetryFailedEmailsRoute
   ApiPublicDevSendInstallRoute: typeof ApiPublicDevSendInstallRoute
@@ -1481,6 +1494,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicCronProcessDueActivationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/app/update-info': {
+      id: '/api/public/app/update-info'
+      path: '/api/public/app/update-info'
+      fullPath: '/api/public/app/update-info'
+      preLoaderRoute: typeof ApiPublicAppUpdateInfoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/app/sync-contacts': {
       id: '/api/public/app/sync-contacts'
       path: '/api/public/app/sync-contacts'
@@ -1675,6 +1695,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicAppInfoRoute: ApiPublicAppInfoRoute,
   ApiPublicAppLatestDotapkRoute: ApiPublicAppLatestDotapkRoute,
   ApiPublicAppSyncContactsRoute: ApiPublicAppSyncContactsRoute,
+  ApiPublicAppUpdateInfoRoute: ApiPublicAppUpdateInfoRoute,
   ApiPublicCronProcessDueActivationsRoute:
     ApiPublicCronProcessDueActivationsRoute,
   ApiPublicCronRetryFailedEmailsRoute: ApiPublicCronRetryFailedEmailsRoute,
