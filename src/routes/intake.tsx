@@ -1,14 +1,18 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { z } from "zod";
 import { useServerFn } from "@tanstack/react-start";
 import { submitDemoIntake } from "@/utils/payments.functions";
 import { pairIntakeWithApp } from "@/lib/intake-pair.functions";
 import { notifyIntakeWebhook } from "@/lib/intake-webhook.functions";
 import { sendIntakeNotifications } from "@/lib/sms-notifications.functions";
+import { loadIntakeDraft, saveIntakeDraft, clearIntakeDraft } from "@/lib/intake-drafts.functions";
+import { supabase } from "@/integrations/supabase/client";
+import type { User } from "@supabase/supabase-js";
 
 
 import { BilingualField } from "@/components/intake/BilingualField";
+import { AuthSaveBar } from "@/components/intake/AuthSaveBar";
 import { readSiteLang } from "@/lib/site-lang";
 import { resolveIntakeGate } from "@/lib/intake-gate";
 
