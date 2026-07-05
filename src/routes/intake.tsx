@@ -641,7 +641,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
                   </div>
                 );
               })}
-              {s.id === "contact" && readinessPaid && (
+              {s.id === "contact" && assetProtectionUnlocked && (
                 <div style={{ marginTop: 12, padding: 14, background: "#0f1a2b", border: "1px solid #3a4458", borderRadius: 4 }}>
                   <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 8, lineHeight: 1.5 }}>
                     {L === "es"
