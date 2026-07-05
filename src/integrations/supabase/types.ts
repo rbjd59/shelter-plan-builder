@@ -41,6 +41,7 @@ export type Database = {
           full_name: string | null
           has_asset_protection: boolean
           has_pet_rescue: boolean
+          hmac_secret: string | null
           id: string
           intake_session_id: string | null
           invite_token: string
@@ -63,6 +64,7 @@ export type Database = {
           full_name?: string | null
           has_asset_protection?: boolean
           has_pet_rescue?: boolean
+          hmac_secret?: string | null
           id?: string
           intake_session_id?: string | null
           invite_token: string
@@ -85,6 +87,7 @@ export type Database = {
           full_name?: string | null
           has_asset_protection?: boolean
           has_pet_rescue?: boolean
+          hmac_secret?: string | null
           id?: string
           intake_session_id?: string | null
           invite_token?: string
@@ -1387,6 +1390,10 @@ export type Database = {
       }
       sync_client_contacts: {
         Args: { _contacts: Json; _token: string }
+        Returns: Json
+      }
+      verify_app_trigger_signature: {
+        Args: { _body: string; _signature: string; _token: string }
         Returns: Json
       }
     }
