@@ -1,14 +1,18 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { z } from "zod";
 import { useServerFn } from "@tanstack/react-start";
 import { submitDemoIntake } from "@/utils/payments.functions";
 import { pairIntakeWithApp } from "@/lib/intake-pair.functions";
 import { notifyIntakeWebhook } from "@/lib/intake-webhook.functions";
 import { sendIntakeNotifications } from "@/lib/sms-notifications.functions";
+import { loadIntakeDraft, saveIntakeDraft, clearIntakeDraft } from "@/lib/intake-drafts.functions";
+import { supabase } from "@/integrations/supabase/client";
+import type { User } from "@supabase/supabase-js";
 
 
 import { BilingualField } from "@/components/intake/BilingualField";
+import { AuthSaveBar } from "@/components/intake/AuthSaveBar";
 import { readSiteLang } from "@/lib/site-lang";
 import { resolveIntakeGate } from "@/lib/intake-gate";
 
@@ -261,6 +265,9 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
   const pairFn = useServerFn(pairIntakeWithApp);
   const webhookFn = useServerFn(notifyIntakeWebhook);
   const smsNotifyFn = useServerFn(sendIntakeNotifications);
+  const loadDraftFn = useServerFn(loadIntakeDraft);
+  const saveDraftFn = useServerFn(saveIntakeDraft);
+  const clearDraftFn = useServerFn(clearIntakeDraft);
 
   const [status, setStatus] = useState<"ready" | "submitting" | "done" | "error">("ready");
   const [errMsg, setErrMsg] = useState("");
@@ -271,6 +278,9 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
   const [approvals, setApprovals] = useState<Record<string, boolean>>({});
   const [smsConsent, setSmsConsent] = useState(false);
   const [readinessPaid, setReadinessPaid] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [draftLoaded, setDraftLoaded] = useState(false);
+  const skipNextSaveRef = useRef(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -283,6 +293,65 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
       /* ignore */
     }
   }, []);
+
+  // Track auth state
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setUser(data.user ?? null));
+    const { data: sub } = supabase.auth.onAuthStateChange((_ev, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => sub.subscription.unsubscribe();
+  }, []);
+
+  // Load draft when user signs in
+  useEffect(() => {
+    if (!user) {
+      setDraftLoaded(false);
+      return;
+    }
+    let cancelled = false;
+    loadDraftFn()
+      .then((draft) => {
+        if (cancelled || !draft) {
+          setDraftLoaded(true);
+          return;
+        }
+        skipNextSaveRef.current = true;
+        setAnswers(draft.answers);
+        setEnglishAnswers(draft.englishAnswers);
+        setApprovals(draft.approvals);
+        setDraftLoaded(true);
+      })
+      .catch((e) => {
+        console.error("Load draft failed:", e);
+        setDraftLoaded(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [user, loadDraftFn]);
+
+  // Autosave on changes (debounced) when signed in
+  useEffect(() => {
+    if (!user || !draftLoaded) return;
+    if (skipNextSaveRef.current) {
+      skipNextSaveRef.current = false;
+      return;
+    }
+    const timer = setTimeout(() => {
+      saveDraftFn({
+        data: {
+          answers: answers as Record<string, string | boolean | number | null>,
+          englishAnswers,
+          approvals,
+          language: L,
+          sessionId: _session_id ?? null,
+        },
+      }).catch((e) => console.error("Save draft failed:", e));
+    }, 1200);
+    return () => clearTimeout(timer);
+  }, [answers, englishAnswers, approvals, user, draftLoaded, L, _session_id, saveDraftFn]);
+
 
   const isBilingual = L !== "en";
 
@@ -371,9 +440,16 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
           contactPhone: contactPhoneRaw,
           contactName: contactNameRaw,
           language: L,
-          inviteCode: webhookResult?.inviteCode ?? pairResult?.code ?? null,
+          inviteCode: (() => {
+            const raw = webhookResult?.inviteCode ?? pairResult?.code ?? null;
+            return raw ? `${raw}-${L.toUpperCase()}` : null;
+          })(),
         },
       }).catch((err) => console.error("SMS notify failed:", err));
+      // Clear the saved draft — this intake is complete.
+      if (user) {
+        clearDraftFn().catch((e) => console.error("Clear draft failed:", e));
+      }
       setStatus("done");
     } catch (err) {
       setErrMsg((err as Error).message);
@@ -385,7 +461,10 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
   const container: React.CSSProperties = { maxWidth: isBilingual ? 1100 : 760, margin: "0 auto", padding: "32px 24px 96px" };
 
   if (status === "done") {
-    const code = inviteCode || pairCode || "PENDING";
+    const rawCode = inviteCode || pairCode || "PENDING";
+    // Language-tagged activation code: phone app reads the suffix to open in
+    // the client's language automatically.
+    const code = rawCode === "PENDING" ? rawCode : `${rawCode}-${L.toUpperCase()}`;
     const T = {
       en: {
         heading: "Your app is ready to download",
@@ -564,6 +643,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
         <div style={{ background: "#3a2a00", border: "1px solid #e8a04a", padding: 14, borderRadius: 4, marginBottom: 16, fontSize: 14, lineHeight: 1.5, color: "#fff5d6" }}>
           <strong>⚠ {ui.upl}</strong>
         </div>
+        <AuthSaveBar lang={L} user={user} onAuthChange={setUser} />
         <form onSubmit={handleSubmit}>
           {sections.map((s) => {
             // Section 6 (Asset Protection distribution contact) is gated behind

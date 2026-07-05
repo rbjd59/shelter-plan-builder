@@ -798,6 +798,39 @@ export type Database = {
         }
         Relationships: []
       }
+      intake_drafts: {
+        Row: {
+          answers: Json
+          approvals: Json
+          created_at: string
+          english_answers: Json
+          language: string
+          session_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          answers?: Json
+          approvals?: Json
+          created_at?: string
+          english_answers?: Json
+          language?: string
+          session_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          answers?: Json
+          approvals?: Json
+          created_at?: string
+          english_answers?: Json
+          language?: string
+          session_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       intake_pair_logs: {
         Row: {
           code: string | null
