@@ -259,26 +259,42 @@ export async function buildMemorandumOfLawPdf(
   );
 
   w.paragraph("B.  Petitioner Is Not a Flight Risk.", { bold: true });
-  w.paragraph(
-    `Petitioner has substantial community ties to the United States: ${familyTies || need("", "list of U.S. family / sponsor / address")}. ` +
-    `These ties — combined with Petitioner's stable address, ongoing relationship with counsel, ` +
-    `and willingness to appear at all future hearings — establish that release on reasonable ` +
-    `conditions of supervision is sufficient to ensure appearance. See, e.g., Diop v. ICE/Homeland ` +
-    `Security, 656 F.3d 221 (3d Cir. 2011).`,
-    { indent: true },
-  );
+  if (narrative?.community_ties_argument && narrative.community_ties_argument.trim()) {
+    for (const para of narrative.community_ties_argument.split(/\n\s*\n/)) {
+      const trimmed = para.trim();
+      if (trimmed) w.paragraph(trimmed, { indent: true });
+    }
+    w.paragraph("See, e.g., Diop v. ICE/Homeland Security, 656 F.3d 221 (3d Cir. 2011).", { indent: true, size: 10 });
+  } else {
+    w.paragraph(
+      `Petitioner has substantial community ties to the United States: ${familyTies || need("", "list of U.S. family / sponsor / address")}. ` +
+      `These ties — combined with Petitioner's stable address, ongoing relationship with counsel, ` +
+      `and willingness to appear at all future hearings — establish that release on reasonable ` +
+      `conditions of supervision is sufficient to ensure appearance. See, e.g., Diop v. ICE/Homeland ` +
+      `Security, 656 F.3d 221 (3d Cir. 2011).`,
+      { indent: true },
+    );
+  }
 
   w.paragraph("C.  Petitioner Is Not a Danger to the Community.", { bold: true });
-  w.paragraph(
-    noCriminal
-      ? "Petitioner has no qualifying convictions and no record of violence or threatening conduct. " +
-        "The Government cannot meet its burden of showing dangerousness by clear and convincing " +
-        "evidence on this record."
-      : `Petitioner's criminal history is limited to: ${priorCriminal}. None of the foregoing ` +
-        `constitutes an aggravated felony or crime of violence sufficient to support a finding of ` +
-        `dangerousness by clear and convincing evidence.`,
-    { indent: true },
-  );
+  if (narrative?.dangerousness_rebuttal && narrative.dangerousness_rebuttal.trim()) {
+    for (const para of narrative.dangerousness_rebuttal.split(/\n\s*\n/)) {
+      const trimmed = para.trim();
+      if (trimmed) w.paragraph(trimmed, { indent: true });
+    }
+  } else {
+    w.paragraph(
+      noCriminal
+        ? "Petitioner has no qualifying convictions and no record of violence or threatening conduct. " +
+          "The Government cannot meet its burden of showing dangerousness by clear and convincing " +
+          "evidence on this record."
+        : `Petitioner's criminal history is limited to: ${priorCriminal}. None of the foregoing ` +
+          `constitutes an aggravated felony or crime of violence sufficient to support a finding of ` +
+          `dangerousness by clear and convincing evidence.`,
+      { indent: true },
+    );
+  }
+
 
   // -------- VI. Prayer for Relief --------
   w.heading("VI.  PRAYER FOR RELIEF");
