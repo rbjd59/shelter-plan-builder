@@ -42,10 +42,16 @@ The app should:
 
 `POST` to our backend RPC `get_client_bundle` with `{ code: "A3F7B2" }`.
 
-Returns (already implemented on our side):
+Returns (already implemented on our side). The response includes
+`hmac_secret` — a per-client 64-char hex secret. Store it in
+`flutter_secure_storage` on first activation and use it to sign the
+`/api/public/app-trigger` payload. It never leaves the device outbound;
+we rotate it server-side without an app update.
 
 ```json
 {
+  "client_id": "uuid",
+  "hmac_secret": "…64-hex…",
   "client": {
     "first_name": "…",
     "last_name": "…",
