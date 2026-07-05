@@ -95,19 +95,19 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
   {
     id: "mailto",
     title: {
-      en: "5. Emergency Contact for the NOTIFY FAMILY App",
-      es: "5. Contacto de Emergencia para la App AVISAR A FAMILIA",
-      ht: "5. Kontak Ijans pou App AVIZE FANMI",
+      en: "5. Emergency Contact & Asset Protection Distribution (if purchased)",
+      es: "5. Contacto de Emergencia y Distribución de Protección de Bienes (si se compró)",
+      ht: "5. Kontak Ijans ak Distribisyon Pwoteksyon Byen (si w te achte)",
     },
     intro: {
-      en: "This person is notified by email — with a copy of your forms attached — the moment you press the NOTIFY FAMILY button in the app.",
-      es: "Esta persona recibe un aviso por correo electrónico — con copia de los formularios adjunta — en el momento en que usted active el botón AVISAR A FAMILIA en la app móvil.",
-      ht: "Moun sa a resevwa yon notifikasyon imèl — ak yon kopi fòm yo — lè ou aktive bouton AVIZE FANMI nan app la.",
+      en: "This person is notified by SMS and email the moment you press NOTIFY FAMILY in the app. If you purchased the Asset Protection Package, this same person receives the distribution instructions.",
+      es: "Esta persona recibe SMS y correo cuando active AVISAR A FAMILIA en la app. Si compró el Paquete de Protección de Bienes, también recibe las instrucciones de distribución.",
+      ht: "Moun sa a resevwa SMS ak imèl lè ou peze AVIZE FANMI nan app la. Si w te achte Pakè Pwoteksyon Byen, li resevwa enstriksyon distribisyon yo tou.",
     },
     fields: [
-      { key: "emergency_contact_name", label: { en: "Emergency contact full name (notified by the app)", es: "Nombre completo del contacto de emergencia (notificado por la app)", ht: "Non konplè kontak ijans (app la notifye)" } },
-      { key: "emergency_contact_email", label: { en: "Emergency contact email — receives the activation alert + form copies", es: "Correo del contacto de emergencia — recibe la alerta + copia de los formularios", ht: "Imèl kontak ijans — resevwa alèt la + kopi fòm yo" } },
-      { key: "mail_inmate_name", label: { en: "Inmate full name (as on mail)", es: "Nombre completo del recluso", ht: "Non konplè prizonye a" } },
+      { key: "emergency_contact_name", label: { en: "Emergency contact full name", es: "Nombre completo del contacto de emergencia", ht: "Non konplè kontak ijans" } },
+      { key: "emergency_contact_email", label: { en: "Emergency contact email", es: "Correo del contacto de emergencia", ht: "Imèl kontak ijans" } },
+      { key: "emergency_contact_phone", label: { en: "Emergency contact phone (for SMS)", es: "Teléfono del contacto de emergencia (para SMS)", ht: "Telefòn kontak ijans (pou SMS)" } },
     ],
   },
   {
