@@ -570,6 +570,53 @@ export type Database = {
           },
         ]
       }
+      client_update_requests: {
+        Row: {
+          client_id: string
+          created_at: string
+          id: string
+          notes: string | null
+          request_payload: Json
+          reviewed_at: string | null
+          reviewed_by: string | null
+          source: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          request_payload?: Json
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          source?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          request_payload?: Json
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          source?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_update_requests_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "app_clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       defendermicasa_signups: {
         Row: {
           created_at: string
