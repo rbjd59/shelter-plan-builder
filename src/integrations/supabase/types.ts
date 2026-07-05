@@ -374,6 +374,10 @@ export type Database = {
       }
       client_documents: {
         Row: {
+          ai_generated: boolean
+          ai_model: string | null
+          attorney_reviewed_at: string | null
+          attorney_reviewed_by: string | null
           client_id: string
           content: string
           created_at: string
@@ -381,10 +385,18 @@ export type Database = {
           from_app: boolean
           id: string
           loaded_at: string
+          review_notes: string | null
+          review_status: string
           send_on_alert: boolean
+          storage_path: string | null
+          stripe_session_id: string | null
           title: string
         }
         Insert: {
+          ai_generated?: boolean
+          ai_model?: string | null
+          attorney_reviewed_at?: string | null
+          attorney_reviewed_by?: string | null
           client_id: string
           content: string
           created_at?: string
@@ -392,10 +404,18 @@ export type Database = {
           from_app?: boolean
           id?: string
           loaded_at?: string
+          review_notes?: string | null
+          review_status?: string
           send_on_alert?: boolean
+          storage_path?: string | null
+          stripe_session_id?: string | null
           title: string
         }
         Update: {
+          ai_generated?: boolean
+          ai_model?: string | null
+          attorney_reviewed_at?: string | null
+          attorney_reviewed_by?: string | null
           client_id?: string
           content?: string
           created_at?: string
@@ -403,7 +423,11 @@ export type Database = {
           from_app?: boolean
           id?: string
           loaded_at?: string
+          review_notes?: string | null
+          review_status?: string
           send_on_alert?: boolean
+          storage_path?: string | null
+          stripe_session_id?: string | null
           title?: string
         }
         Relationships: [
@@ -720,6 +744,45 @@ export type Database = {
         }
         Relationships: []
       }
+      firm_earnings: {
+        Row: {
+          amount_cents: number
+          created_at: string
+          earned_at: string
+          id: string
+          intake_email: string | null
+          notes: string | null
+          released_to_operating_at: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          stripe_session_id: string
+        }
+        Insert: {
+          amount_cents: number
+          created_at?: string
+          earned_at?: string
+          id?: string
+          intake_email?: string | null
+          notes?: string | null
+          released_to_operating_at?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          stripe_session_id: string
+        }
+        Update: {
+          amount_cents?: number
+          created_at?: string
+          earned_at?: string
+          id?: string
+          intake_email?: string | null
+          notes?: string | null
+          released_to_operating_at?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          stripe_session_id?: string
+        }
+        Relationships: []
+      }
       firm_email_whitelist: {
         Row: {
           created_at: string
@@ -775,6 +838,10 @@ export type Database = {
           email: string | null
           id: string
           language: string
+          packet_generated_at: string | null
+          packet_released_at: string | null
+          packet_released_by: string | null
+          packet_status: string
           paid: boolean
           stripe_session_id: string
           updated_at: string
@@ -785,6 +852,10 @@ export type Database = {
           email?: string | null
           id?: string
           language?: string
+          packet_generated_at?: string | null
+          packet_released_at?: string | null
+          packet_released_by?: string | null
+          packet_status?: string
           paid?: boolean
           stripe_session_id: string
           updated_at?: string
@@ -795,6 +866,10 @@ export type Database = {
           email?: string | null
           id?: string
           language?: string
+          packet_generated_at?: string | null
+          packet_released_at?: string | null
+          packet_released_by?: string | null
+          packet_status?: string
           paid?: boolean
           stripe_session_id?: string
           updated_at?: string
