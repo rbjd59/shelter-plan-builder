@@ -566,9 +566,11 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
         </div>
         <form onSubmit={handleSubmit}>
           {sections.map((s) => {
-            // Section 6 (Family Readiness contact) is gated behind the $99
-            // Family Readiness Documents Package add-on.
-            if (s.id === "contact" && !readinessPaid) {
+            // Section 6 (Asset Protection distribution contact) is gated behind
+            // the $99 Asset Protection Package — either previously purchased
+            // (localStorage) or checked as an add-on in this session.
+            const assetProtectionUnlocked = readinessPaid || !!answers.addon_asset_protection;
+            if (s.id === "contact" && !assetProtectionUnlocked) {
               return (
                 <section key={s.id} style={{ marginBottom: 32, background: "#1a2436", padding: 24, borderRadius: 6, opacity: 0.6 }}>
                   <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 6 }}>{s.title[L]}</h2>
