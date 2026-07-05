@@ -31,10 +31,15 @@ export type Database = {
       }
       app_clients: {
         Row: {
+          a_number: string | null
           activated_at: string | null
+          attorney_email: string | null
+          attorney_name: string | null
+          attorney_phone: string | null
           cancel_pin_hash: string | null
           country_of_origin: string | null
           created_at: string
+          date_of_birth: string | null
           dead_man_switch_hours: number | null
           device_info: Json | null
           email: string | null
@@ -54,10 +59,15 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          a_number?: string | null
           activated_at?: string | null
+          attorney_email?: string | null
+          attorney_name?: string | null
+          attorney_phone?: string | null
           cancel_pin_hash?: string | null
           country_of_origin?: string | null
           created_at?: string
+          date_of_birth?: string | null
           dead_man_switch_hours?: number | null
           device_info?: Json | null
           email?: string | null
@@ -77,10 +87,15 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          a_number?: string | null
           activated_at?: string | null
+          attorney_email?: string | null
+          attorney_name?: string | null
+          attorney_phone?: string | null
           cancel_pin_hash?: string | null
           country_of_origin?: string | null
           created_at?: string
+          date_of_birth?: string | null
           dead_man_switch_hours?: number | null
           device_info?: Json | null
           email?: string | null
