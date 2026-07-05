@@ -150,6 +150,27 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
     return session.client_secret;
   });
 
+/**
+ * Look up which add-ons were paid for on a completed checkout session.
+ * Used by /agreement to persist purchase flags to localStorage so the
+ * intake page can gate readiness-only sections.
+ */
+export const getSessionAddons = createServerFn({ method: "POST" })
+  .inputValidator((data: { sessionId: string; environment: StripeEnv }) => {
+    if (!data.sessionId || typeof data.sessionId !== "string") throw new Error("Invalid sessionId");
+    return data;
+  })
+  .handler(async ({ data }) => {
+    const stripe = createStripeClient(data.environment);
+    const session = await stripe.checkout.sessions.retrieve(data.sessionId);
+    const paid = session.payment_status === "paid";
+    return {
+      paid,
+      readinessPaid: paid && session.metadata?.includes_readiness === "true",
+      petRescuePaid: paid && session.metadata?.includes_pet_rescue === "true",
+    };
+  });
+
 export const verifyAndCreateIntake = createServerFn({ method: "POST" })
   .inputValidator((data: { sessionId: string; environment: StripeEnv }) => {
     if (!data.sessionId || typeof data.sessionId !== "string") throw new Error("Invalid sessionId");
