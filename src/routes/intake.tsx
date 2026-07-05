@@ -142,7 +142,6 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       { key: "emergency_contact_2_name", label: { en: "Full name", es: "Nombre completo", ht: "Non konplè" } },
       { key: "emergency_contact_2_email", label: { en: "Email", es: "Correo electrónico", ht: "Imèl" } },
       { key: "emergency_contact_2_phone", label: { en: "Phone (with WhatsApp if applicable)", es: "Teléfono (WhatsApp)", ht: "Telefòn (WhatsApp)" } },
-      { key: "emergency_contact_2_relation", label: { en: "Relationship to petitioner", es: "Parentesco", ht: "Relasyon" } },
     ],
   },
   {
