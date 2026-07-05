@@ -451,7 +451,7 @@ export const listSosAlertsBoard = createServerFn({ method: "GET" })
       clientIds.length
         ? supabaseAdmin
             .from("app_clients")
-            .select("id, full_name, email, phone_e164, invite_token, language")
+            .select("id, full_name, email, phone_e164, invite_token, language, a_number, date_of_birth, place_of_birth, country_of_origin, has_asset_protection, has_pet_rescue")
             .in("id", clientIds)
         : Promise.resolve({ data: [] as any[] }),
       clientIds.length
@@ -510,6 +510,12 @@ export const listSosAlertsBoard = createServerFn({ method: "GET" })
                 phone: client.phone_e164,
                 activation_code: client.invite_token,
                 language: client.language,
+                a_number: client.a_number,
+                date_of_birth: client.date_of_birth,
+                place_of_birth: client.place_of_birth,
+                country_of_origin: client.country_of_origin,
+                has_asset_protection: client.has_asset_protection,
+                has_pet_rescue: client.has_pet_rescue,
               }
             : null,
           documents: docsByClient.get(a.client_id) ?? [],
