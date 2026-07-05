@@ -568,7 +568,24 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
           <strong>⚠ {ui.upl}</strong>
         </div>
         <form onSubmit={handleSubmit}>
-          {sections.map((s) => (
+          {sections.map((s) => {
+            // Section 6 (Family Readiness contact) is gated behind the $99
+            // Family Readiness Documents Package add-on.
+            if (s.id === "contact" && !readinessPaid) {
+              return (
+                <section key={s.id} style={{ marginBottom: 32, background: "#1a2436", padding: 24, borderRadius: 6, opacity: 0.6 }}>
+                  <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 6 }}>{s.title[L]}</h2>
+                  <p style={{ fontSize: 13, color: "#e8a04a", marginBottom: 8, fontStyle: "italic" }}>
+                    {L === "es"
+                      ? "🔒 Esta sección requiere el Paquete de Documentos de Preparación Familiar ($99). Regrese al pago para agregarlo."
+                      : L === "ht"
+                      ? "🔒 Seksyon sa a mande Pakè Dokiman Preparasyon Fanmi ($99). Retounen nan peman an pou ajoute li."
+                      : "🔒 This section requires the Family Readiness Documents Package ($99). Go back to checkout to add it."}
+                  </p>
+                </section>
+              );
+            }
+            return (
             <section key={s.id} style={{ marginBottom: 32, background: "#1a2436", padding: 24, borderRadius: 6 }}>
               <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 6 }}>{s.title[L]}</h2>
               <p style={{ fontSize: 13, color: "#a8a59a", marginBottom: 20, fontStyle: "italic" }}>{s.intro[L]}</p>
@@ -625,8 +642,29 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
                   </div>
                 );
               })}
+              {s.id === "contact" && readinessPaid && (
+                <div style={{ marginTop: 12, padding: 14, background: "#0f1a2b", border: "1px solid #3a4458", borderRadius: 4 }}>
+                  <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 8, lineHeight: 1.5 }}>
+                    {L === "es"
+                      ? "Por la presente acepto que, al activarse, estos formularios pueden ser enviados a la persona indicada arriba."
+                      : L === "ht"
+                      ? "Mwen dakò ke, lè yo aktive, fòm sa yo ka voye bay moun ki endike anwo a."
+                      : "I hereby agree that upon activation, these forms can be sent to the above individual."}
+                  </label>
+                  <input
+                    type="text"
+                    maxLength={6}
+                    placeholder={L === "es" ? "Sus iniciales" : L === "ht" ? "Inisyal ou" : "Your initials"}
+                    value={(answers["contact_release_initials"] as string) || ""}
+                    onChange={(e) => setAnswers((a) => ({ ...a, contact_release_initials: e.target.value.toUpperCase() }))}
+                    style={{ ...inputStyle, maxWidth: 160, textTransform: "uppercase", letterSpacing: 2, fontWeight: 700 }}
+                  />
+                </div>
+              )}
             </section>
-          ))}
+            );
+          })}
+
 
           {/* Add-Ons (Asset Protection + Pet Rescue) */}
           <section style={{ marginBottom: 32, background: "#1a2436", padding: 24, borderRadius: 6, borderLeft: "4px solid #e8a04a" }}>
