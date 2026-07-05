@@ -494,3 +494,109 @@ export const emailPacketToMe = createServerFn({ method: "POST" })
 
     return { ok: true, to, sent: signed.filter((s) => s.url).length };
   });
+
+// ---------- Approve & release, regenerate AI narrative ----------
+
+export const getPacketReviewStatus = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { intakeSessionId: string }) => {
+    if (!data.intakeSessionId) throw new Error("Missing intakeSessionId");
+    return data;
+  })
+  .handler(async ({ data, context }) => {
+    await assertFirmOrAdmin(context.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: intake } = await supabaseAdmin
+      .from("intake_submissions")
+      .select("packet_status, packet_generated_at, packet_released_at, packet_released_by")
+      .eq("stripe_session_id", data.intakeSessionId)
+      .maybeSingle();
+    const { data: aiRow } = await supabaseAdmin
+      .from("client_documents")
+      .select("ai_model, review_status, attorney_reviewed_at, created_at")
+      .eq("stripe_session_id", data.intakeSessionId)
+      .eq("document_type", "memorandum_ai_narrative")
+      .maybeSingle();
+    return {
+      packet: intake ?? { packet_status: "pending" },
+      aiNarrative: aiRow ?? null,
+    };
+  });
+
+export const regenerateAiNarrative = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { intakeSessionId: string }) => {
+    if (!data.intakeSessionId) throw new Error("Missing intakeSessionId");
+    return data;
+  })
+  .handler(async ({ data, context }) => {
+    await assertFirmOrAdmin(context.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    // Clear cached narrative so the next build regenerates it.
+    await supabaseAdmin
+      .from("client_documents")
+      .delete()
+      .eq("stripe_session_id", data.intakeSessionId)
+      .eq("document_type", "memorandum_ai_narrative");
+    const answers = await loadAnswers(data.intakeSessionId);
+    const { generateMemoNarrative } = await import("@/lib/ai-legal-drafts.server");
+    const { narrative, model, ok, error } = await generateMemoNarrative(answers);
+    if (ok) {
+      await supabaseAdmin.from("client_documents").insert({
+        client_id: null as never,
+        title: "AI narrative cache — memorandum of law",
+        document_type: "memorandum_ai_narrative",
+        content: JSON.stringify(narrative),
+        ai_generated: true,
+        ai_model: model,
+        review_status: "draft_pending_review",
+        stripe_session_id: data.intakeSessionId,
+        send_on_alert: false,
+      } as never);
+    }
+    return { ok, model, error: error ?? null };
+  });
+
+export const approveAndReleasePacket = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { intakeSessionId: string; notes?: string }) => {
+    if (!data.intakeSessionId) throw new Error("Missing intakeSessionId");
+    return data;
+  })
+  .handler(async ({ data, context }) => {
+    await assertFirmOrAdmin(context.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const now = new Date().toISOString();
+
+    await supabaseAdmin
+      .from("intake_submissions")
+      .update({
+        packet_status: "attorney_approved",
+        packet_released_at: now,
+        packet_released_by: context.userId,
+      } as never)
+      .eq("stripe_session_id", data.intakeSessionId);
+
+    await supabaseAdmin
+      .from("client_documents")
+      .update({
+        review_status: "attorney_approved",
+        attorney_reviewed_at: now,
+        attorney_reviewed_by: context.userId,
+        review_notes: data.notes ?? null,
+      } as never)
+      .eq("stripe_session_id", data.intakeSessionId);
+
+    // Mark firm earnings row (if any) as reviewed — attorney's own transfer
+    // from IOLTA to operating is manual outside this system.
+    await supabaseAdmin
+      .from("firm_earnings")
+      .update({
+        reviewed_at: now,
+        reviewed_by: context.userId,
+      } as never)
+      .eq("stripe_session_id", data.intakeSessionId)
+      .is("reviewed_at", null);
+
+    return { ok: true, releasedAt: now };
+  });
