@@ -242,42 +242,109 @@ async function loadAnswers(sid: string): Promise<Record<string, unknown>> {
   return ans && typeof ans === "object" ? ans : {};
 }
 
-async function buildPdfFor(key: PacketDocKey, answers: Record<string, unknown>): Promise<Uint8Array> {
+async function buildPdfFor(
+  key: PacketDocKey,
+  answers: Record<string, unknown>,
+  opts?: { aiNarrative?: import("@/lib/ai-legal-drafts.server").MemoNarrative; aiModel?: string; skipWatermark?: boolean },
+): Promise<Uint8Array> {
+  let bytes: Uint8Array;
   switch (key) {
     case "memorandum": {
       const { buildMemorandumOfLawPdf } = await import("@/lib/email/memorandum-of-law.server");
-      return await buildMemorandumOfLawPdf(answers);
+      bytes = await buildMemorandumOfLawPdf(
+        answers,
+        opts?.aiNarrative
+          ? {
+              statement_of_facts: opts.aiNarrative.statement_of_facts,
+              community_ties_argument: opts.aiNarrative.community_ties_argument,
+              dangerousness_rebuttal: opts.aiNarrative.dangerousness_rebuttal,
+              aiModel: opts.aiModel,
+            }
+          : undefined,
+      );
+      break;
     }
     case "ao242": {
       const { buildIntakePdfs } = await import("@/lib/email/intake-pdfs.server");
       const r = await buildIntakePdfs(answers);
-      return r.habeas;
+      bytes = r.habeas;
+      break;
     }
     case "ao240": {
       const { buildIntakePdfs } = await import("@/lib/email/intake-pdfs.server");
       const r = await buildIntakePdfs(answers);
-      return r.ifp;
+      bytes = r.ifp;
+      break;
     }
     case "js44": {
       const { buildJs44Pdf } = await import("@/lib/email/js44.server");
-      return await buildJs44Pdf(answers);
+      bytes = await buildJs44Pdf(answers);
+      break;
     }
     case "motion_referral": {
       const { buildMotionReferralPdf } = await import("@/lib/email/motion-referral.server");
-      return await buildMotionReferralPdf(answers);
+      bytes = await buildMotionReferralPdf(answers);
+      break;
     }
     case "mailing_label": {
       const { buildMailingLabelPdf } = await import("@/lib/mailing-label-pdf.server");
-      return await buildMailingLabelPdf({
+      bytes = await buildMailingLabelPdf({
         inmateName: String(answers.mail_inmate_name ?? answers.full_name ?? ""),
         aNumber: answers.mail_inmate_number ? String(answers.mail_inmate_number) : null,
         facilityName: String(answers.mail_current_location ?? answers.facility_name ?? ""),
         facilityAddress: String(answers.mail_facility_address ?? answers.facility_address ?? ""),
         caseId: "DEMO",
       });
+      break;
     }
   }
+
+  if (!opts?.skipWatermark) {
+    const { applyDraftWatermark } = await import("@/lib/pdf-watermark.server");
+    bytes = await applyDraftWatermark(bytes);
+  }
+  return bytes;
 }
+
+// Per-request cache so a single packet build doesn't call GPT-5 six times.
+async function getAiNarrativeForSession(
+  sid: string,
+  answers: Record<string, unknown>,
+): Promise<{ narrative?: import("@/lib/ai-legal-drafts.server").MemoNarrative; model?: string }> {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data: existing } = await supabaseAdmin
+    .from("client_documents")
+    .select("content, ai_model, ai_generated")
+    .eq("stripe_session_id", sid)
+    .eq("document_type", "memorandum_ai_narrative")
+    .maybeSingle();
+  if (existing && (existing as { content: string }).content) {
+    try {
+      const parsed = JSON.parse((existing as { content: string }).content);
+      return { narrative: parsed, model: (existing as { ai_model?: string }).ai_model ?? undefined };
+    } catch {
+      /* fall through and regenerate */
+    }
+  }
+
+  const { generateMemoNarrative } = await import("@/lib/ai-legal-drafts.server");
+  const { narrative, model, ok } = await generateMemoNarrative(answers);
+  if (ok) {
+    await supabaseAdmin.from("client_documents").insert({
+      client_id: null as never,
+      title: "AI narrative cache — memorandum of law",
+      document_type: "memorandum_ai_narrative",
+      content: JSON.stringify(narrative),
+      ai_generated: true,
+      ai_model: model,
+      review_status: "draft_pending_review",
+      stripe_session_id: sid,
+      send_on_alert: false,
+    } as never);
+  }
+  return { narrative, model };
+}
+
 
 export const getPacketManifest = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
@@ -306,11 +373,18 @@ export const previewPacketDoc = createServerFn({ method: "POST" })
   .handler(async ({ data, context }): Promise<{ filename: string; base64: string }> => {
     await assertFirmOrAdmin(context.userId);
     const answers = await loadAnswers(data.intakeSessionId);
-    const bytes = await buildPdfFor(data.docKey, answers);
+    const ai = data.docKey === "memorandum"
+      ? await getAiNarrativeForSession(data.intakeSessionId, answers)
+      : {};
+    const bytes = await buildPdfFor(data.docKey, answers, {
+      aiNarrative: ai.narrative,
+      aiModel: ai.model,
+    });
     const meta = PACKET.find((d) => d.key === data.docKey)!;
     const base64 = Buffer.from(bytes).toString("base64");
     return { filename: meta.filename, base64 };
   });
+
 
 export const emailPacketToMe = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -330,11 +404,19 @@ export const emailPacketToMe = createServerFn({ method: "POST" })
     if (!to || !/.+@.+\..+/.test(to)) throw new Error("No email on file for attorney account");
 
     const answers = await loadAnswers(sid);
+    const ai = await getAiNarrativeForSession(sid, answers);
 
     // Build all PDFs in parallel, upload to private bucket, sign URLs.
     const built = await Promise.all(
-      PACKET.map(async (d) => ({ d, bytes: await buildPdfFor(d.key, answers) })),
+      PACKET.map(async (d) => ({
+        d,
+        bytes: await buildPdfFor(d.key, answers, {
+          aiNarrative: d.key === "memorandum" ? ai.narrative : undefined,
+          aiModel: d.key === "memorandum" ? ai.model : undefined,
+        }),
+      })),
     );
+
     const signed: Array<{ label: string; url: string | null; filename: string }> = [];
     for (const { d, bytes } of built) {
       const path = `${sid}/packet/${d.filename}`;
@@ -411,4 +493,110 @@ export const emailPacketToMe = createServerFn({ method: "POST" })
     if (error) throw new Error(`Email enqueue failed: ${error.message}`);
 
     return { ok: true, to, sent: signed.filter((s) => s.url).length };
+  });
+
+// ---------- Approve & release, regenerate AI narrative ----------
+
+export const getPacketReviewStatus = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { intakeSessionId: string }) => {
+    if (!data.intakeSessionId) throw new Error("Missing intakeSessionId");
+    return data;
+  })
+  .handler(async ({ data, context }) => {
+    await assertFirmOrAdmin(context.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: intake } = await supabaseAdmin
+      .from("intake_submissions")
+      .select("packet_status, packet_generated_at, packet_released_at, packet_released_by")
+      .eq("stripe_session_id", data.intakeSessionId)
+      .maybeSingle();
+    const { data: aiRow } = await supabaseAdmin
+      .from("client_documents")
+      .select("ai_model, review_status, attorney_reviewed_at, created_at")
+      .eq("stripe_session_id", data.intakeSessionId)
+      .eq("document_type", "memorandum_ai_narrative")
+      .maybeSingle();
+    return {
+      packet: intake ?? { packet_status: "pending" },
+      aiNarrative: aiRow ?? null,
+    };
+  });
+
+export const regenerateAiNarrative = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { intakeSessionId: string }) => {
+    if (!data.intakeSessionId) throw new Error("Missing intakeSessionId");
+    return data;
+  })
+  .handler(async ({ data, context }) => {
+    await assertFirmOrAdmin(context.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    // Clear cached narrative so the next build regenerates it.
+    await supabaseAdmin
+      .from("client_documents")
+      .delete()
+      .eq("stripe_session_id", data.intakeSessionId)
+      .eq("document_type", "memorandum_ai_narrative");
+    const answers = await loadAnswers(data.intakeSessionId);
+    const { generateMemoNarrative } = await import("@/lib/ai-legal-drafts.server");
+    const { narrative, model, ok, error } = await generateMemoNarrative(answers);
+    if (ok) {
+      await supabaseAdmin.from("client_documents").insert({
+        client_id: null as never,
+        title: "AI narrative cache — memorandum of law",
+        document_type: "memorandum_ai_narrative",
+        content: JSON.stringify(narrative),
+        ai_generated: true,
+        ai_model: model,
+        review_status: "draft_pending_review",
+        stripe_session_id: data.intakeSessionId,
+        send_on_alert: false,
+      } as never);
+    }
+    return { ok, model, error: error ?? null };
+  });
+
+export const approveAndReleasePacket = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { intakeSessionId: string; notes?: string }) => {
+    if (!data.intakeSessionId) throw new Error("Missing intakeSessionId");
+    return data;
+  })
+  .handler(async ({ data, context }) => {
+    await assertFirmOrAdmin(context.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const now = new Date().toISOString();
+
+    await supabaseAdmin
+      .from("intake_submissions")
+      .update({
+        packet_status: "attorney_approved",
+        packet_released_at: now,
+        packet_released_by: context.userId,
+      } as never)
+      .eq("stripe_session_id", data.intakeSessionId);
+
+    await supabaseAdmin
+      .from("client_documents")
+      .update({
+        review_status: "attorney_approved",
+        attorney_reviewed_at: now,
+        attorney_reviewed_by: context.userId,
+        review_notes: data.notes ?? null,
+      } as never)
+      .eq("stripe_session_id", data.intakeSessionId);
+
+    // Mark firm earnings row (if any) as reviewed — attorney's own transfer
+    // from IOLTA to operating is manual outside this system.
+    await supabaseAdmin
+      .from("firm_earnings")
+      .update({
+        reviewed_at: now,
+        reviewed_by: context.userId,
+      } as never)
+      .eq("stripe_session_id", data.intakeSessionId)
+      .is("reviewed_at", null);
+
+    return { ok: true, releasedAt: now };
   });

@@ -1,8 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
-import { emailPacketToMe, getPacketManifest, previewPacketDoc } from "@/lib/firm-packet.functions";
+import {
+  approveAndReleasePacket,
+  emailPacketToMe,
+  getPacketManifest,
+  getPacketReviewStatus,
+  previewPacketDoc,
+  regenerateAiNarrative,
+} from "@/lib/firm-packet.functions";
+
 
 export const Route = createFileRoute("/_firm/firm/packet/$id")({
   head: () => ({
@@ -41,21 +49,39 @@ function downloadFromBase64(base64: string, filename: string, openInline: boolea
 function FirmPacketPage() {
   const { id } = Route.useParams();
   const fetchManifest = useServerFn(getPacketManifest);
+  const fetchReviewStatus = useServerFn(getPacketReviewStatus);
   const preview = useServerFn(previewPacketDoc);
   const emailMe = useServerFn(emailPacketToMe);
+  const regenerate = useServerFn(regenerateAiNarrative);
+  const approve = useServerFn(approveAndReleasePacket);
 
+  const qc = useQueryClient();
   const [busyDoc, setBusyDoc] = useState<string | null>(null);
   const [overrideEmail, setOverrideEmail] = useState("");
+  const [reviewNotes, setReviewNotes] = useState("");
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["firm", "packet", id],
     queryFn: () => fetchManifest({ data: { intakeSessionId: id } }),
+  });
+  const reviewStatus = useQuery({
+    queryKey: ["firm", "packet-review", id],
+    queryFn: () => fetchReviewStatus({ data: { intakeSessionId: id } }),
   });
 
   const emailMutation = useMutation({
     mutationFn: () =>
       emailMe({ data: { intakeSessionId: id, toEmail: overrideEmail.trim() || undefined } }),
   });
+  const regenerateMutation = useMutation({
+    mutationFn: () => regenerate({ data: { intakeSessionId: id } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["firm", "packet-review", id] }),
+  });
+  const approveMutation = useMutation({
+    mutationFn: () => approve({ data: { intakeSessionId: id, notes: reviewNotes.trim() || undefined } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["firm", "packet-review", id] }),
+  });
+
 
   if (isLoading) return <div className="text-sm text-slate-500">Loading packet…</div>;
   if (error) return <div className="text-sm text-red-700">{(error as Error).message}</div>;
@@ -75,6 +101,11 @@ function FirmPacketPage() {
     }
   };
 
+  const packetStatus = (reviewStatus.data?.packet as { packet_status?: string } | null)?.packet_status ?? "pending";
+  const isApproved = packetStatus === "attorney_approved";
+  const releasedAt = (reviewStatus.data?.packet as { packet_released_at?: string } | null)?.packet_released_at ?? null;
+  const aiRow = reviewStatus.data?.aiNarrative as { ai_model?: string; created_at?: string } | null;
+
   return (
     <div className="space-y-6">
       <div>
@@ -86,6 +117,54 @@ function FirmPacketPage() {
         </h1>
         <p className="mt-1 text-xs font-mono text-slate-500">{id}</p>
       </div>
+
+      {/* Review status banner */}
+      <section
+        className={`rounded-lg border-2 p-4 ${
+          isApproved
+            ? "border-emerald-400 bg-emerald-50"
+            : "border-amber-400 bg-amber-50"
+        }`}
+      >
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className={`text-lg ${isApproved ? "text-emerald-800" : "text-amber-800"}`}>
+                {isApproved ? "✓" : "⚠"}
+              </span>
+              <h2 className={`text-sm font-bold uppercase tracking-wide ${isApproved ? "text-emerald-900" : "text-amber-900"}`}>
+                {isApproved ? "Attorney Approved — Released" : "DRAFT — Pending Attorney Review"}
+              </h2>
+            </div>
+            <p className={`mt-1 text-xs ${isApproved ? "text-emerald-800" : "text-amber-800"}`}>
+              {isApproved
+                ? `Released ${releasedAt ? new Date(releasedAt).toLocaleString() : ""}. Firm's $35 fee is earned; move from IOLTA to operating at your discretion.`
+                : "Every document below is watermarked DRAFT. Client and family cannot see them until you approve and release."}
+            </p>
+            {aiRow?.ai_model ? (
+              <p className="mt-1 text-[11px] text-slate-600">
+                Memorandum Statement of Facts drafted by AI ({aiRow.ai_model})
+                {aiRow.created_at ? ` on ${new Date(aiRow.created_at).toLocaleString()}` : ""}.
+              </p>
+            ) : null}
+          </div>
+          {!isApproved ? (
+            <button
+              onClick={() => regenerateMutation.mutate()}
+              disabled={regenerateMutation.isPending}
+              className="shrink-0 rounded border border-amber-600 bg-white px-3 py-1.5 text-xs font-semibold text-amber-800 hover:bg-amber-100 disabled:opacity-50"
+            >
+              {regenerateMutation.isPending ? "Regenerating…" : "Regenerate AI narrative"}
+            </button>
+          ) : null}
+        </div>
+        {regenerateMutation.data && !regenerateMutation.data.ok ? (
+          <p className="mt-2 text-xs text-red-700">
+            AI generation issue: {regenerateMutation.data.error}
+          </p>
+        ) : null}
+      </section>
+
 
       {c ? (
         <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
@@ -182,6 +261,45 @@ function FirmPacketPage() {
         ) : null}
       </section>
 
+      {/* Approve & Release */}
+      {!isApproved ? (
+        <section className="rounded-lg border-2 border-emerald-500 bg-white p-5 shadow-sm">
+          <h2 className="text-sm font-bold uppercase tracking-wide text-emerald-800">
+            Approve &amp; Release Packet
+          </h2>
+          <p className="mt-2 text-sm text-slate-700">
+            By approving, you certify that you have reviewed every document above and accept
+            professional responsibility for their contents. The DRAFT watermark will remain in stored
+            copies for the record, but the packet becomes fileable and the case is marked
+            attorney-approved. This is also your signal that the firm's $35 fee (already in your
+            IOLTA trust) is earned and may be moved to your operating account.
+          </p>
+          <textarea
+            value={reviewNotes}
+            onChange={(e) => setReviewNotes(e.target.value)}
+            placeholder="Optional review notes (audit log)"
+            rows={2}
+            className="mt-3 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-emerald-600 focus:outline-none"
+          />
+          <div className="mt-3 flex items-center gap-3">
+            <button
+              onClick={() => {
+                if (window.confirm("Approve this packet? This releases the firm's fee and marks the case attorney-approved.")) {
+                  approveMutation.mutate();
+                }
+              }}
+              disabled={approveMutation.isPending}
+              className="rounded bg-emerald-700 px-5 py-2 text-sm font-semibold text-white hover:bg-emerald-800 disabled:opacity-50"
+            >
+              {approveMutation.isPending ? "Releasing…" : "Approve & Release"}
+            </button>
+            {approveMutation.error ? (
+              <span className="text-xs text-red-700">{(approveMutation.error as Error).message}</span>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
+
       <section className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-5">
         <h2 className="text-sm font-bold uppercase tracking-wide text-slate-500">
           Send via LetterStream — coming next
@@ -201,3 +319,4 @@ function FirmPacketPage() {
     </div>
   );
 }
+
