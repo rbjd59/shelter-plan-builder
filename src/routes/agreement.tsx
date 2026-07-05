@@ -1,9 +1,15 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
+import { useServerFn } from "@tanstack/react-start";
 import { readSiteLang } from "@/lib/site-lang";
+import { getSessionAddons } from "@/utils/payments.functions";
+import { getStripeEnvironment } from "@/lib/stripe";
 
-const searchSchema = z.object({ lang: z.enum(["en", "es", "ht"]).catch("es") });
+const searchSchema = z.object({
+  lang: z.enum(["en", "es", "ht"]).catch("es"),
+  session_id: z.string().optional(),
+});
 
 export const Route = createFileRoute("/agreement")({
   validateSearch: searchSchema,
