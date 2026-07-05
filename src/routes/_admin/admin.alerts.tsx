@@ -23,6 +23,12 @@ type AlertRow = {
     phone: string | null;
     activation_code: string | null;
     language: string | null;
+    a_number: string | null;
+    date_of_birth: string | null;
+    place_of_birth: string | null;
+    country_of_origin: string | null;
+    has_asset_protection: boolean | null;
+    has_pet_rescue: boolean | null;
   } | null;
   documents: Array<{ id: string; title: string | null; content: string | null; document_type: string | null }>;
   contacts_notified: Array<{ name: string | null; email: string | null; phone_e164: string | null; relationship: string | null }>;
@@ -148,7 +154,7 @@ function AlertCard({ a, muted }: { a: AlertRow; muted?: boolean }) {
             {a.cancelled_at ? (
               <span className="rounded bg-amber-100 px-2 py-0.5 text-xs text-amber-900">CANCELLED</span>
             ) : (
-              <span className="rounded bg-red-600 px-2 py-0.5 text-xs font-bold text-white">ACTIVE</span>
+              <span className="animate-pulse rounded bg-red-600 px-2 py-0.5 text-xs font-bold text-white ring-2 ring-red-300">🔴 ACTIVE</span>
             )}
           </div>
           <div className="mt-1 text-xs text-slate-600">
@@ -157,6 +163,13 @@ function AlertCard({ a, muted }: { a: AlertRow; muted?: boolean }) {
           </div>
           <div className="mt-1 text-xs text-slate-600">
             {a.client?.email ?? "—"} · {a.client?.phone ?? "—"}
+          </div>
+          <div className="mt-1 flex flex-wrap gap-2 text-xs text-slate-700">
+            <span className="font-mono">A# {a.client?.a_number ?? "—"}</span>
+            <span>DOB {a.client?.date_of_birth ?? "—"}</span>
+            <span>Birthplace {a.client?.place_of_birth ?? "—"}</span>
+            {a.client?.has_asset_protection && <span className="rounded bg-amber-100 px-1.5 py-0.5 font-semibold text-amber-900">Asset protection</span>}
+            {a.client?.has_pet_rescue && <span className="rounded bg-emerald-100 px-1.5 py-0.5 font-semibold text-emerald-900">Pet protection</span>}
           </div>
           {a.lat && a.lng && (
             <div className="mt-1 text-xs">

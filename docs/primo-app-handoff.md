@@ -53,11 +53,16 @@ we rotate it server-side without an app update.
   "client_id": "uuid",
   "hmac_secret": "…64-hex…",
   "client": {
+    "name": "…",
+    "full_name": "…",
     "first_name": "…",
     "last_name": "…",
     "date_of_birth": "YYYY-MM-DD",
+    "dob": "YYYY-MM-DD",
     "a_number": "A123456789",
+    "alien_number": "A123456789",
     "place_of_birth": "City, Country",
+    "birth_place": "City, Country",
     "language": "es"
   },
   "emergency_contacts": [
@@ -70,16 +75,39 @@ we rotate it server-side without an app update.
   },
   "asset_protection": {
     "enabled": true,
-    "distribution_contact": { "name": "…", "phone": "…", "email": "…" }
+    "status": "activated"
   },
+  "pet_protection": {
+    "enabled": true,
+    "status": "activated",
+    "details": { "pet_name": "…", "pet_location": "…" }
+  },
+  "forms": [
+    { "title": "…", "content": "…", "document_type": "…", "send_on_alert": true }
+  ],
+  "update_endpoint": "https://detenciondefensa.com/api/public/app-update-request",
   "case_id": "A3F7B2",
   "activated_at": "ISO-8601"
 }
 ```
 
-The app should **display** this information (read-only) and let the user
-confirm. No editing on the phone. If a field is wrong, they call the
-attorney — do not let them mutate the case record from the app.
+The app should **display only the simple user-facing pieces**:
+
+- Name
+- Emergency contacts
+- Forms / documents available
+- Asset protection: Activated / Not activated
+- Pet protection: Activated / Not activated
+- A simple “Update my information” button
+
+Do **not** show an “Immigration profile” section on the phone. The phone app
+may store DOB, A-number, and birthplace internally from the bundle so the user
+can verify if needed, but the main face must stay simple.
+
+For changes, do not directly overwrite the client file on the phone. Send a
+signed request to `update_endpoint` with `{ case_id, changes, note }` using the
+same `x-app-signature` HMAC method. Our team reviews/applies changes on our
+side.
 
 ---
 
@@ -106,15 +134,14 @@ keyed by hmac_secret>`. The secret is delivered via `get_client_bundle`
 on activation — do NOT embed it in the app binary. Sign the exact byte
 sequence you POST (no re-serialization).
 
-Stub response (live now):
+Response:
 ```json
-{ "ok": true, "event_id": "<uuid>", "signature_status": "ok|missing|bad|skipped" }
+{ "ok": true, "event_id": "<uuid>", "alert_id": "<uuid>", "signature_status": "ok" }
 ```
 
-During rollout the stub logs but does not reject `missing` signatures so
-you can wire the round-trip first; once you're signing, `signature_status`
-will flip to `ok`. Real fan-out (SMS/email/board mirror) will move behind
-this same route with no app changes.
+Missing or bad signatures now return `401`. A valid trigger writes directly to
+our alert table for the **exact activation code** in `case_id` and the attorney
+board/company board will blink red on that same activation number.
 
 Our side already has name, DOB, A-number, country of origin, attorney, and
 contacts — do **not** re-send PII in the trigger payload. Just the case ID.

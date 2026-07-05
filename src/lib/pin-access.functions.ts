@@ -152,7 +152,7 @@ export const pinListAttorneyBoard = createServerFn({ method: "POST" })
     const { data: clients } = await supabaseAdmin
       .from("app_clients")
       .select(
-        "id, invite_token, full_name, email, phone_e164, language, created_at, activated_at",
+        "id, invite_token, full_name, email, phone_e164, language, created_at, activated_at, a_number, date_of_birth, place_of_birth, country_of_origin, has_asset_protection, has_pet_rescue",
       )
       .order("created_at", { ascending: false })
       .limit(1000);
@@ -200,7 +200,12 @@ export const pinListAttorneyBoard = createServerFn({ method: "POST" })
           language: string | null;
           created_at: string;
           activated_at: string | null;
-          
+          a_number: string | null;
+          date_of_birth: string | null;
+          place_of_birth: string | null;
+          country_of_origin: string | null;
+          has_asset_protection: boolean;
+          has_pet_rescue: boolean;
         };
         const docs = docsByClient.get(row.id) ?? [];
         return {
@@ -210,9 +215,14 @@ export const pinListAttorneyBoard = createServerFn({ method: "POST" })
           email: row.email,
           phone: row.phone_e164,
           language: row.language,
+          a_number: row.a_number,
+          date_of_birth: row.date_of_birth,
+          place_of_birth: row.place_of_birth,
+          country_of_origin: row.country_of_origin,
+          has_asset_protection: row.has_asset_protection,
+          has_pet_rescue: row.has_pet_rescue,
           registered_at: row.created_at,
           activated_at: row.activated_at,
-          
           draft_forms: docs.filter((d) => !d.from_app),
           app_uploads: docs.filter((d) => d.from_app),
           latest_alert: latestAlert.get(row.id) ?? null,
@@ -237,7 +247,7 @@ export const pinGetAttorneyClient = createServerFn({ method: "POST" })
       supabaseAdmin
         .from("app_clients")
         .select(
-          "id, invite_token, full_name, email, phone_e164, language, created_at, activated_at, place_of_birth, country_of_origin, has_asset_protection, has_pet_rescue",
+          "id, invite_token, full_name, email, phone_e164, language, created_at, activated_at, a_number, date_of_birth, place_of_birth, country_of_origin, has_asset_protection, has_pet_rescue",
         )
         .eq("id", data.clientId)
         .maybeSingle(),

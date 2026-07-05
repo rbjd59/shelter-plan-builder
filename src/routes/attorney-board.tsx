@@ -94,10 +94,10 @@ function AttorneyBoard({ pin }: { pin: string }) {
             <tbody className="divide-y divide-slate-100">
               {rows.map((r) => {
                 const isOpen = openId === r.id;
-                const triggered = !!r.latest_alert;
+                const triggered = !!r.latest_alert && !r.latest_alert.cancelled_at;
                 return (
                   <React.Fragment key={r.id}>
-                    <tr className={triggered ? "bg-red-50/40" : ""}>
+                    <tr className={triggered ? "animate-pulse bg-red-50/80 ring-2 ring-inset ring-red-500" : ""}>
                       <td className="px-4 py-2 font-mono font-bold">{r.activation_code}</td>
                       <td className="px-4 py-2">{r.full_name ?? <span className="text-slate-400">—</span>}</td>
                       <td className="px-4 py-2 text-xs text-slate-600">
@@ -114,7 +114,8 @@ function AttorneyBoard({ pin }: { pin: string }) {
                       </td>
                       <td className="px-4 py-2 text-xs">
                         {r.latest_alert ? (
-                          <span className="text-red-700">
+                          <span className={triggered ? "rounded bg-red-600 px-2 py-1 font-bold text-white" : "text-red-700"}>
+                            {triggered ? "🔴 ACTIVE — " : ""}
                             {new Date(r.latest_alert.triggered_at).toLocaleString()}
                             {r.latest_alert.cancelled_at ? " (cancelled)" : ""}
                           </span>
@@ -190,10 +191,12 @@ function ClientDetail({ pin, clientId }: { pin: string; clientId: string }) {
         <div className="rounded border border-slate-200 bg-white p-3">
           <div className="font-bold uppercase tracking-wide text-slate-500 mb-1">Client</div>
           <div>{client.full_name ?? "—"}</div>
+          <div className="font-mono text-slate-700">A# {client.a_number ?? "—"}</div>
+          <div className="text-slate-600">DOB: {client.date_of_birth ?? "—"}</div>
           <div className="text-slate-600">{client.email ?? "no email"}</div>
           <div className="text-slate-600">{client.phone_e164 ?? "no phone"}</div>
           <div className="mt-1 text-slate-500">
-            DOB place: {client.place_of_birth ?? "—"} · {client.country_of_origin ?? "—"}
+            Birth place: {client.place_of_birth ?? "—"} · {client.country_of_origin ?? "—"}
           </div>
           <div className="mt-1 flex gap-1 flex-wrap">
             {client.has_asset_protection && (

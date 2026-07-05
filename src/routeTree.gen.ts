@@ -55,6 +55,7 @@ import { Route as AdminAdminRouteImport } from './routes/_admin/admin'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicSendAdminInviteRouteImport } from './routes/api/public/send-admin-invite'
 import { Route as ApiPublicMailFromCheckRouteImport } from './routes/api/public/mail-from-check'
+import { Route as ApiPublicAppUpdateRequestRouteImport } from './routes/api/public/app-update-request'
 import { Route as ApiPublicAppTriggerRouteImport } from './routes/api/public/app-trigger'
 import { Route as FirmFirmQueueRouteImport } from './routes/_firm/firm.queue'
 import { Route as FirmFirmDetainedRouteImport } from './routes/_firm/firm.detained'
@@ -313,6 +314,12 @@ const ApiPublicMailFromCheckRoute = ApiPublicMailFromCheckRouteImport.update({
   path: '/api/public/mail-from-check',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicAppUpdateRequestRoute =
+  ApiPublicAppUpdateRequestRouteImport.update({
+    id: '/api/public/app-update-request',
+    path: '/api/public/app-update-request',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicAppTriggerRoute = ApiPublicAppTriggerRouteImport.update({
   id: '/api/public/app-trigger',
   path: '/api/public/app-trigger',
@@ -524,6 +531,7 @@ export interface FileRoutesByFullPath {
   '/firm/detained': typeof FirmFirmDetainedRouteWithChildren
   '/firm/queue': typeof FirmFirmQueueRoute
   '/api/public/app-trigger': typeof ApiPublicAppTriggerRoute
+  '/api/public/app-update-request': typeof ApiPublicAppUpdateRequestRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
   '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
@@ -598,6 +606,7 @@ export interface FileRoutesByTo {
   '/firm/detained': typeof FirmFirmDetainedRouteWithChildren
   '/firm/queue': typeof FirmFirmQueueRoute
   '/api/public/app-trigger': typeof ApiPublicAppTriggerRoute
+  '/api/public/app-update-request': typeof ApiPublicAppUpdateRequestRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
   '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
@@ -676,6 +685,7 @@ export interface FileRoutesById {
   '/_firm/firm/detained': typeof FirmFirmDetainedRouteWithChildren
   '/_firm/firm/queue': typeof FirmFirmQueueRoute
   '/api/public/app-trigger': typeof ApiPublicAppTriggerRoute
+  '/api/public/app-update-request': typeof ApiPublicAppUpdateRequestRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
   '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
@@ -752,6 +762,7 @@ export interface FileRouteTypes {
     | '/firm/detained'
     | '/firm/queue'
     | '/api/public/app-trigger'
+    | '/api/public/app-update-request'
     | '/api/public/mail-from-check'
     | '/api/public/send-admin-invite'
     | '/lovable/email/suppression'
@@ -826,6 +837,7 @@ export interface FileRouteTypes {
     | '/firm/detained'
     | '/firm/queue'
     | '/api/public/app-trigger'
+    | '/api/public/app-update-request'
     | '/api/public/mail-from-check'
     | '/api/public/send-admin-invite'
     | '/lovable/email/suppression'
@@ -903,6 +915,7 @@ export interface FileRouteTypes {
     | '/_firm/firm/detained'
     | '/_firm/firm/queue'
     | '/api/public/app-trigger'
+    | '/api/public/app-update-request'
     | '/api/public/mail-from-check'
     | '/api/public/send-admin-invite'
     | '/lovable/email/suppression'
@@ -965,6 +978,7 @@ export interface RootRouteChildren {
   ReadinessStartRoute: typeof ReadinessStartRoute
   TrackTokenRoute: typeof TrackTokenRoute
   ApiPublicAppTriggerRoute: typeof ApiPublicAppTriggerRoute
+  ApiPublicAppUpdateRequestRoute: typeof ApiPublicAppUpdateRequestRoute
   ApiPublicMailFromCheckRoute: typeof ApiPublicMailFromCheckRoute
   ApiPublicSendAdminInviteRoute: typeof ApiPublicSendAdminInviteRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
@@ -1304,6 +1318,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/mail-from-check'
       fullPath: '/api/public/mail-from-check'
       preLoaderRoute: typeof ApiPublicMailFromCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/app-update-request': {
+      id: '/api/public/app-update-request'
+      path: '/api/public/app-update-request'
+      fullPath: '/api/public/app-update-request'
+      preLoaderRoute: typeof ApiPublicAppUpdateRequestRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/app-trigger': {
@@ -1647,6 +1668,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReadinessStartRoute: ReadinessStartRoute,
   TrackTokenRoute: TrackTokenRoute,
   ApiPublicAppTriggerRoute: ApiPublicAppTriggerRoute,
+  ApiPublicAppUpdateRequestRoute: ApiPublicAppUpdateRequestRoute,
   ApiPublicMailFromCheckRoute: ApiPublicMailFromCheckRoute,
   ApiPublicSendAdminInviteRoute: ApiPublicSendAdminInviteRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
