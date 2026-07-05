@@ -101,12 +101,32 @@ Payload:
 }
 ```
 
-Signature header: `x-app-signature: <HMAC-SHA256 of body with shared secret>`.
-Secret will be provided out of band — do not embed it in the app binary
-in plaintext, load it from remote config on first activation.
+Signature header: `x-app-signature: <hex HMAC-SHA256 of the raw JSON body,
+keyed by hmac_secret>`. The secret is delivered via `get_client_bundle`
+on activation — do NOT embed it in the app binary. Sign the exact byte
+sequence you POST (no re-serialization).
+
+Stub response (live now):
+```json
+{ "ok": true, "event_id": "<uuid>", "signature_status": "ok|missing|bad|skipped" }
+```
+
+During rollout the stub logs but does not reject `missing` signatures so
+you can wire the round-trip first; once you're signing, `signature_status`
+will flip to `ok`. Real fan-out (SMS/email/board mirror) will move behind
+this same route with no app changes.
 
 Our side already has name, DOB, A-number, country of origin, attorney, and
 contacts — do **not** re-send PII in the trigger payload. Just the case ID.
+
+### App-trigger vs. current logAlert flow
+
+`/api/public/app-trigger` **supplements** the current
+`/api/public/emergency/activate` (logAlert) path — it does not replace it
+yet. Keep the existing activate call firing on SOS so all downstream
+consumers (attorney board, company board, SMS/email fan-out) stay live.
+Add `app-trigger` alongside it. Once we cut the fan-out over, we'll ask
+you to drop the activate call in a follow-up release.
 
 ---
 
