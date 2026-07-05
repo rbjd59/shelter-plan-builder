@@ -65,9 +65,7 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       { key: "other_names_used", label: { en: "Other names used", es: "Otros nombres usados", ht: "Lòt non yo te itilize" } },
       { key: "a_number", label: { en: "Alien Registration Number (A#)", es: "Número de Registro de Extranjero (A#)", ht: "Nimewo Anrejistreman Etranje (A#)" } },
       { key: "dob", label: { en: "Date of birth", es: "Fecha de nacimiento", ht: "Dat nesans" }, type: "date" },
-      { key: "place_of_birth", label: { en: "Place of birth (city, state/province)", es: "Lugar de nacimiento (ciudad, estado/provincia)", ht: "Kote ou te fèt (vil, eta/pwovens)" } },
-      { key: "country_of_origin", label: { en: "Country of origin", es: "País de origen", ht: "Peyi orijin" } },
-      { key: "country_of_citizenship", label: { en: "Country of citizenship", es: "País de ciudadanía", ht: "Peyi sitwayènte" } },
+      { key: "place_of_birth", label: { en: "Place of birth / country of origin (city, state/province, country)", es: "Lugar de nacimiento / país de origen (ciudad, estado/provincia, país)", ht: "Kote ou te fèt / peyi orijin (vil, eta/pwovens, peyi)" } },
     ],
   },
   {
@@ -97,19 +95,19 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
   {
     id: "mailto",
     title: {
-      en: "5. Emergency Contact for the NOTIFY FAMILY App",
-      es: "5. Contacto de Emergencia para la App AVISAR A FAMILIA",
-      ht: "5. Kontak Ijans pou App AVIZE FANMI",
+      en: "5. Emergency Contact & Asset Protection Distribution (if purchased)",
+      es: "5. Contacto de Emergencia y Distribución de Protección de Bienes (si se compró)",
+      ht: "5. Kontak Ijans ak Distribisyon Pwoteksyon Byen (si w te achte)",
     },
     intro: {
-      en: "This person is notified by email — with a copy of your forms attached — the moment you press the NOTIFY FAMILY button in the app.",
-      es: "Esta persona recibe un aviso por correo electrónico — con copia de los formularios adjunta — en el momento en que usted active el botón AVISAR A FAMILIA en la app móvil.",
-      ht: "Moun sa a resevwa yon notifikasyon imèl — ak yon kopi fòm yo — lè ou aktive bouton AVIZE FANMI nan app la.",
+      en: "This person is notified by SMS and email the moment you press NOTIFY FAMILY in the app. If you purchased the Asset Protection Package, this same person receives the distribution instructions.",
+      es: "Esta persona recibe SMS y correo cuando active AVISAR A FAMILIA en la app. Si compró el Paquete de Protección de Bienes, también recibe las instrucciones de distribución.",
+      ht: "Moun sa a resevwa SMS ak imèl lè ou peze AVIZE FANMI nan app la. Si w te achte Pakè Pwoteksyon Byen, li resevwa enstriksyon distribisyon yo tou.",
     },
     fields: [
-      { key: "emergency_contact_name", label: { en: "Emergency contact full name (notified by the app)", es: "Nombre completo del contacto de emergencia (notificado por la app)", ht: "Non konplè kontak ijans (app la notifye)" } },
-      { key: "emergency_contact_email", label: { en: "Emergency contact email — receives the activation alert + form copies", es: "Correo del contacto de emergencia — recibe la alerta + copia de los formularios", ht: "Imèl kontak ijans — resevwa alèt la + kopi fòm yo" } },
-      { key: "mail_inmate_name", label: { en: "Inmate full name (as on mail)", es: "Nombre completo del recluso", ht: "Non konplè prizonye a" } },
+      { key: "emergency_contact_name", label: { en: "Emergency contact full name", es: "Nombre completo del contacto de emergencia", ht: "Non konplè kontak ijans" } },
+      { key: "emergency_contact_email", label: { en: "Emergency contact email", es: "Correo del contacto de emergencia", ht: "Imèl kontak ijans" } },
+      { key: "emergency_contact_phone", label: { en: "Emergency contact phone (for SMS)", es: "Teléfono del contacto de emergencia (para SMS)", ht: "Telefòn kontak ijans (pou SMS)" } },
     ],
   },
   {
@@ -120,9 +118,9 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       ht: "6. Ki kote fòm yo dwe ale si yo detni w?",
     },
     intro: {
-      en: "Family Readiness Documents — only available if you purchased the $99 Family Readiness Documents Package. Tell us who receives the prepared forms when your case is activated.",
-      es: "Documentos de Preparación Familiar — solo disponible si compró el Paquete de Documentos de Preparación Familiar de $99. Indíquenos quién recibirá los formularios preparados cuando se active su caso.",
-      ht: "Dokiman Preparasyon Fanmi — sèlman disponib si w te achte Pakè Dokiman Preparasyon Fanmi $99 la. Di nou ki moun k ap resevwa fòm yo lè ka w aktive.",
+      en: "Asset Protection distribution — only available if you purchased the $99 Asset Protection Package (or check it in the add-ons below). Tell us who receives the prepared forms when your case is activated.",
+      es: "Distribución de Protección de Bienes — solo disponible si compró el Paquete de Protección de Bienes de $99 (o márquelo en los complementos abajo). Indíquenos quién recibirá los formularios preparados cuando se active su caso.",
+      ht: "Distribisyon Pwoteksyon Byen — sèlman disponib si w te achte Pakè Pwoteksyon Byen $99 la (oswa tcheke l nan opsyon anba yo). Di nou ki moun k ap resevwa fòm yo lè ka w aktive.",
     },
     fields: [
       { key: "contact_name", label: { en: "Contact name", es: "Nombre del contacto", ht: "Non kontak la" } },
@@ -144,7 +142,6 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       { key: "emergency_contact_2_name", label: { en: "Full name", es: "Nombre completo", ht: "Non konplè" } },
       { key: "emergency_contact_2_email", label: { en: "Email", es: "Correo electrónico", ht: "Imèl" } },
       { key: "emergency_contact_2_phone", label: { en: "Phone (with WhatsApp if applicable)", es: "Teléfono (WhatsApp)", ht: "Telefòn (WhatsApp)" } },
-      { key: "emergency_contact_2_relation", label: { en: "Relationship to petitioner", es: "Parentesco", ht: "Relasyon" } },
     ],
   },
   {
@@ -569,18 +566,20 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
         </div>
         <form onSubmit={handleSubmit}>
           {sections.map((s) => {
-            // Section 6 (Family Readiness contact) is gated behind the $99
-            // Family Readiness Documents Package add-on.
-            if (s.id === "contact" && !readinessPaid) {
+            // Section 6 (Asset Protection distribution contact) is gated behind
+            // the $99 Asset Protection Package — either previously purchased
+            // (localStorage) or checked as an add-on in this session.
+            const assetProtectionUnlocked = readinessPaid || !!answers.addon_asset_protection;
+            if (s.id === "contact" && !assetProtectionUnlocked) {
               return (
                 <section key={s.id} style={{ marginBottom: 32, background: "#1a2436", padding: 24, borderRadius: 6, opacity: 0.6 }}>
                   <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 6 }}>{s.title[L]}</h2>
                   <p style={{ fontSize: 13, color: "#e8a04a", marginBottom: 8, fontStyle: "italic" }}>
                     {L === "es"
-                      ? "🔒 Esta sección requiere el Paquete de Documentos de Preparación Familiar ($99). Regrese al pago para agregarlo."
+                      ? "🔒 Marque el Paquete de Protección de Bienes ($99) en Complementos opcionales abajo para desbloquear esta sección."
                       : L === "ht"
-                      ? "🔒 Seksyon sa a mande Pakè Dokiman Preparasyon Fanmi ($99). Retounen nan peman an pou ajoute li."
-                      : "🔒 This section requires the Family Readiness Documents Package ($99). Go back to checkout to add it."}
+                      ? "🔒 Tcheke Pakè Pwoteksyon Byen ($99) nan Opsyon adisyonèl anba a pou debloke seksyon sa a."
+                      : "🔒 Check the Asset Protection Package ($99) in Optional Add-Ons below to unlock this section."}
                   </p>
                 </section>
               );
@@ -642,7 +641,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
                   </div>
                 );
               })}
-              {s.id === "contact" && readinessPaid && (
+              {s.id === "contact" && assetProtectionUnlocked && (
                 <div style={{ marginTop: 12, padding: 14, background: "#0f1a2b", border: "1px solid #3a4458", borderRadius: 4 }}>
                   <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 8, lineHeight: 1.5 }}>
                     {L === "es"
