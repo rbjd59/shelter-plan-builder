@@ -1,18 +1,12 @@
-// Stub webhook for the Primo phone app dead-man switch / SOS trigger.
+// Webhook for the Primo phone app dead-man switch / SOS trigger.
 //
-// Contract (v0 stub):
+// Contract:
 //   POST /api/public/app-trigger
 //   Headers:
 //     content-type: application/json
 //     x-app-signature: <hex HMAC-SHA256 of raw body, keyed by app_clients.hmac_secret>
 //   Body: { case_id, triggered_at, last_known_location?, arrest_location_hint? }
-//   Response: { ok: true, event_id: "<uuid>" }
-//
-// The full activation/notification flow still runs through
-// /api/public/emergency/activate. This route exists so Primo can wire the
-// Flutter SOS path immediately; the real logic (mirror into
-// client_sos_alerts, fan out SMS/email, etc.) will move behind this route
-// in a follow-up with no app changes required.
+//   Response: { ok: true, event_id: "<uuid>", alert_id: "<uuid>" }
 
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
@@ -41,6 +35,7 @@ const TriggerSchema = z.object({
     .passthrough()
     .optional(),
   arrest_location_hint: z.string().max(500).optional(),
+  battery_pct: z.number().int().min(0).max(100).optional(),
 }).passthrough();
 
 export const Route = createFileRoute("/api/public/app-trigger")({
@@ -61,44 +56,51 @@ export const Route = createFileRoute("/api/public/app-trigger")({
           return json({ ok: false, error: parsed.error.flatten() }, { status: 400 });
         }
 
-        const eventId = crypto.randomUUID();
         const caseId = parsed.data.case_id.trim().toUpperCase();
 
-        // Verify HMAC signature against the client's hmac_secret when the
-        // case_id looks like an 8-char activation token. Missing signatures
-        // are logged but accepted during stub rollout so Primo can wire the
-        // path before HMAC is fully plumbed on the app side.
-        let signatureStatus: "ok" | "missing" | "bad" | "skipped" = "skipped";
-        if (/^[A-Z0-9]{8}$/.test(caseId)) {
-          if (!signature) {
-            signatureStatus = "missing";
-          } else {
-            try {
-              const { supabaseAdmin } = await import(
-                "@/integrations/supabase/client.server"
-              );
-              const { data, error } = await supabaseAdmin.rpc(
-                "verify_app_trigger_signature" as never,
-                { _token: caseId, _body: rawBody, _signature: signature } as never,
-              );
-              const ok = (data as { ok?: boolean } | null)?.ok === true;
-              signatureStatus = error || !ok ? "bad" : "ok";
-            } catch (e) {
-              console.error("[app-trigger] signature verify threw", e);
-              signatureStatus = "bad";
-            }
-          }
+        if (!/^[A-Z0-9]{8}$/.test(caseId)) {
+          return json({ ok: false, error: "invalid_case_id" }, { status: 400 });
         }
 
-        console.log("[app-trigger] stub received", {
-          event_id: eventId,
+        if (!signature) {
+          return json({ ok: false, error: "missing_signature" }, { status: 401 });
+        }
+
+        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+        const { data: signatureData, error: signatureError } = await supabaseAdmin.rpc(
+          "verify_app_trigger_signature" as never,
+          { _token: caseId, _body: rawBody, _signature: signature } as never,
+        );
+        const signatureOk = (signatureData as { ok?: boolean } | null)?.ok === true;
+        if (signatureError || !signatureOk) {
+          return json({ ok: false, error: "bad_signature" }, { status: 401 });
+        }
+
+        const loc = parsed.data.last_known_location;
+        const { data: alertId, error: alertError } = await supabaseAdmin.rpc(
+          "record_sos_alert" as never,
+          {
+            _token: caseId,
+            _lat: typeof loc?.lat === "number" ? loc.lat : null,
+            _lng: typeof loc?.lng === "number" ? loc.lng : null,
+            _battery_pct: parsed.data.battery_pct ?? null,
+            _payload: { ...parsed.data, case_id: caseId, source: "primo_app_trigger" },
+          } as never,
+        );
+
+        if (alertError) {
+          console.error("[app-trigger] alert insert failed", alertError);
+          return json({ ok: false, error: "alert_insert_failed" }, { status: 500 });
+        }
+
+        console.log("[app-trigger] alert recorded", {
+          alert_id: alertId,
           case_id: caseId,
           triggered_at: parsed.data.triggered_at ?? null,
           has_location: !!parsed.data.last_known_location,
-          signature_status: signatureStatus,
         });
 
-        return json({ ok: true, event_id: eventId, signature_status: signatureStatus });
+        return json({ ok: true, event_id: alertId, alert_id: alertId, signature_status: "ok" });
       },
     },
   },
