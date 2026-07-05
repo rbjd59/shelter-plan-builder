@@ -261,6 +261,45 @@ function FirmPacketPage() {
         ) : null}
       </section>
 
+      {/* Approve & Release */}
+      {!isApproved ? (
+        <section className="rounded-lg border-2 border-emerald-500 bg-white p-5 shadow-sm">
+          <h2 className="text-sm font-bold uppercase tracking-wide text-emerald-800">
+            Approve &amp; Release Packet
+          </h2>
+          <p className="mt-2 text-sm text-slate-700">
+            By approving, you certify that you have reviewed every document above and accept
+            professional responsibility for their contents. The DRAFT watermark will remain in stored
+            copies for the record, but the packet becomes fileable and the case is marked
+            attorney-approved. This is also your signal that the firm's $35 fee (already in your
+            IOLTA trust) is earned and may be moved to your operating account.
+          </p>
+          <textarea
+            value={reviewNotes}
+            onChange={(e) => setReviewNotes(e.target.value)}
+            placeholder="Optional review notes (audit log)"
+            rows={2}
+            className="mt-3 w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm focus:border-emerald-600 focus:outline-none"
+          />
+          <div className="mt-3 flex items-center gap-3">
+            <button
+              onClick={() => {
+                if (window.confirm("Approve this packet? This releases the firm's fee and marks the case attorney-approved.")) {
+                  approveMutation.mutate();
+                }
+              }}
+              disabled={approveMutation.isPending}
+              className="rounded bg-emerald-700 px-5 py-2 text-sm font-semibold text-white hover:bg-emerald-800 disabled:opacity-50"
+            >
+              {approveMutation.isPending ? "Releasing…" : "Approve & Release"}
+            </button>
+            {approveMutation.error ? (
+              <span className="text-xs text-red-700">{(approveMutation.error as Error).message}</span>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
+
       <section className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-5">
         <h2 className="text-sm font-bold uppercase tracking-wide text-slate-500">
           Send via LetterStream — coming next
@@ -280,3 +319,4 @@ function FirmPacketPage() {
     </div>
   );
 }
+
