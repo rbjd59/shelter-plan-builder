@@ -101,6 +101,11 @@ function FirmPacketPage() {
     }
   };
 
+  const packetStatus = (reviewStatus.data?.packet as { packet_status?: string } | null)?.packet_status ?? "pending";
+  const isApproved = packetStatus === "attorney_approved";
+  const releasedAt = (reviewStatus.data?.packet as { packet_released_at?: string } | null)?.packet_released_at ?? null;
+  const aiRow = reviewStatus.data?.aiNarrative as { ai_model?: string; created_at?: string } | null;
+
   return (
     <div className="space-y-6">
       <div>
@@ -112,6 +117,54 @@ function FirmPacketPage() {
         </h1>
         <p className="mt-1 text-xs font-mono text-slate-500">{id}</p>
       </div>
+
+      {/* Review status banner */}
+      <section
+        className={`rounded-lg border-2 p-4 ${
+          isApproved
+            ? "border-emerald-400 bg-emerald-50"
+            : "border-amber-400 bg-amber-50"
+        }`}
+      >
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className={`text-lg ${isApproved ? "text-emerald-800" : "text-amber-800"}`}>
+                {isApproved ? "✓" : "⚠"}
+              </span>
+              <h2 className={`text-sm font-bold uppercase tracking-wide ${isApproved ? "text-emerald-900" : "text-amber-900"}`}>
+                {isApproved ? "Attorney Approved — Released" : "DRAFT — Pending Attorney Review"}
+              </h2>
+            </div>
+            <p className={`mt-1 text-xs ${isApproved ? "text-emerald-800" : "text-amber-800"}`}>
+              {isApproved
+                ? `Released ${releasedAt ? new Date(releasedAt).toLocaleString() : ""}. Firm's $35 fee is earned; move from IOLTA to operating at your discretion.`
+                : "Every document below is watermarked DRAFT. Client and family cannot see them until you approve and release."}
+            </p>
+            {aiRow?.ai_model ? (
+              <p className="mt-1 text-[11px] text-slate-600">
+                Memorandum Statement of Facts drafted by AI ({aiRow.ai_model})
+                {aiRow.created_at ? ` on ${new Date(aiRow.created_at).toLocaleString()}` : ""}.
+              </p>
+            ) : null}
+          </div>
+          {!isApproved ? (
+            <button
+              onClick={() => regenerateMutation.mutate()}
+              disabled={regenerateMutation.isPending}
+              className="shrink-0 rounded border border-amber-600 bg-white px-3 py-1.5 text-xs font-semibold text-amber-800 hover:bg-amber-100 disabled:opacity-50"
+            >
+              {regenerateMutation.isPending ? "Regenerating…" : "Regenerate AI narrative"}
+            </button>
+          ) : null}
+        </div>
+        {regenerateMutation.data && !regenerateMutation.data.ok ? (
+          <p className="mt-2 text-xs text-red-700">
+            AI generation issue: {regenerateMutation.data.error}
+          </p>
+        ) : null}
+      </section>
+
 
       {c ? (
         <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
