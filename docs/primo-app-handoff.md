@@ -214,16 +214,42 @@ suffix language and this screen is not shown again.
 
 ## 7. What we (Detencion Defensa) will provide Primo
 
-- Shared HMAC secret for the trigger webhook (out of band)
+- Per-client HMAC secret via `get_client_bundle.hmac_secret` (no remote
+  config or out-of-band handoff needed)
 - A test activation code per language for QA
 - Staging endpoint URL if you want to test without hitting production
 - Updated store listing copy in EN / ES / HT
 
-## 8. Open questions for Primo
+## 8. Confirmed with Primo (2026-07-05)
 
-1. Confirm current app version numbers (iOS + Android) so we know the
-   next bump.
-2. Confirm remote-config mechanism for the HMAC secret (Firebase Remote
-   Config, or your own).
-3. Confirm push provider (APNs directly, FCM) so we can wire server-side
-   alerts if needed later.
+1. **Current version:** iOS + Android both at 0.3.1. Bundle ID
+   `com.detenciondefensa.sosconnect` on both stores. Next release bumps
+   to 0.4.0 with all the changes below.
+2. **HMAC secret delivery:** shipped inside `get_client_bundle` response
+   as `hmac_secret`. App stores in `flutter_secure_storage`, reads at
+   SOS time to sign the app-trigger body. Rotatable server-side.
+3. **Push provider:** FCM (covers iOS + Android from one integration).
+   Primo will add the Firebase config files and wire token registration
+   when server-initiated pushes are needed. Not required for v0.4.0 —
+   `awesome_notifications` handles the local dead-man-switch alerts.
+4. **Webhook stub:** `POST /api/public/app-trigger` is LIVE. Returns
+   `{ ok: true, event_id, signature_status }`. Safe to point the Flutter
+   SOS path at it now.
+5. **App-trigger vs logAlert:** supplements, does not replace. See §3.
+
+## 9. Primo action items for v0.4.0
+
+- [ ] `XXXXXX-<LANG>` code parsing in `ActivationService` (split on last
+      `-`, set `LocaleProvider`, send base code to `get_client_bundle`).
+      Existing no-suffix codes must keep working.
+- [ ] Multilingual first-run screen (EN + ES + HT stacked, per §4).
+- [ ] Read + persist `hmac_secret` from bundle into
+      `flutter_secure_storage`.
+- [ ] New `SupabaseService.postAppTrigger()` — POST to
+      `/api/public/app-trigger`, HMAC-SHA256 sign the raw body with the
+      stored secret using the `crypto` package, set `x-app-signature`
+      header. Fires alongside `logAlert`.
+- [ ] DMS expiry timer fires `postAppTrigger()` in addition to the
+      current local notification.
+- [ ] Bump `versionName` → `0.4.0`, `versionCode` +1, `CFBundleVersion` +1.
+
