@@ -1,8 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
-import { emailPacketToMe, getPacketManifest, previewPacketDoc } from "@/lib/firm-packet.functions";
+import {
+  approveAndReleasePacket,
+  emailPacketToMe,
+  getPacketManifest,
+  getPacketReviewStatus,
+  previewPacketDoc,
+  regenerateAiNarrative,
+} from "@/lib/firm-packet.functions";
+
 
 export const Route = createFileRoute("/_firm/firm/packet/$id")({
   head: () => ({
