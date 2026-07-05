@@ -49,21 +49,39 @@ function downloadFromBase64(base64: string, filename: string, openInline: boolea
 function FirmPacketPage() {
   const { id } = Route.useParams();
   const fetchManifest = useServerFn(getPacketManifest);
+  const fetchReviewStatus = useServerFn(getPacketReviewStatus);
   const preview = useServerFn(previewPacketDoc);
   const emailMe = useServerFn(emailPacketToMe);
+  const regenerate = useServerFn(regenerateAiNarrative);
+  const approve = useServerFn(approveAndReleasePacket);
 
+  const qc = useQueryClient();
   const [busyDoc, setBusyDoc] = useState<string | null>(null);
   const [overrideEmail, setOverrideEmail] = useState("");
+  const [reviewNotes, setReviewNotes] = useState("");
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["firm", "packet", id],
     queryFn: () => fetchManifest({ data: { intakeSessionId: id } }),
+  });
+  const reviewStatus = useQuery({
+    queryKey: ["firm", "packet-review", id],
+    queryFn: () => fetchReviewStatus({ data: { intakeSessionId: id } }),
   });
 
   const emailMutation = useMutation({
     mutationFn: () =>
       emailMe({ data: { intakeSessionId: id, toEmail: overrideEmail.trim() || undefined } }),
   });
+  const regenerateMutation = useMutation({
+    mutationFn: () => regenerate({ data: { intakeSessionId: id } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["firm", "packet-review", id] }),
+  });
+  const approveMutation = useMutation({
+    mutationFn: () => approve({ data: { intakeSessionId: id, notes: reviewNotes.trim() || undefined } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["firm", "packet-review", id] }),
+  });
+
 
   if (isLoading) return <div className="text-sm text-slate-500">Loading packet…</div>;
   if (error) return <div className="text-sm text-red-700">{(error as Error).message}</div>;
