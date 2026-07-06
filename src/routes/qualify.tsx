@@ -66,6 +66,7 @@ function QualifyPage() {
   const [intake, setIntake] = useState(emptyIntake);
   const [submissionId, setSubmissionId] = useState("");
   const [tier, setTier] = useState("");
+  const [discountPct, setDiscountPct] = useState(0);
   const [assessmentReasoning, setAssessmentReasoning] = useState("");
   const [declined, setDeclined] = useState(false);
 
