@@ -7,6 +7,7 @@ import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { buildIntakePdfs } from "@/lib/email/intake-pdfs.server";
 import { buildJs44Pdf } from "@/lib/email/js44.server";
 import { buildMotionReferralPdf } from "@/lib/email/motion-referral.server";
+import { buildMemorandumOfLawPdf } from "@/lib/email/memorandum-of-law.server";
 
 function s(v: unknown): string {
   if (v == null) return "";
