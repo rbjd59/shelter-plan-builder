@@ -104,6 +104,7 @@ function QualifyPage() {
       const res = await assess({ data: intake });
       setSubmissionId(res.submissionId);
       setTier(res.tier);
+      setDiscountPct(res.discountPct ?? 0);
       setAssessmentReasoning(res.reasoning);
       if (!res.qualifies) {
         setDeclined(true);
