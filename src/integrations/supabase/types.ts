@@ -1064,6 +1064,87 @@ export type Database = {
         }
         Relationships: []
       }
+      qualify_submissions: {
+        Row: {
+          attestation_signature: string | null
+          attestation_signed: boolean | null
+          attestation_signed_at: string | null
+          created_at: string
+          dependents_count: number | null
+          email: string | null
+          full_name: string | null
+          household_size: number | null
+          household_state: string | null
+          id: string
+          id_document_url: string | null
+          income_document_url: string | null
+          monthly_income_cents: number | null
+          notes: string | null
+          phone: string | null
+          plaid_access_token_encrypted: string | null
+          plaid_item_id: string | null
+          plaid_linked_at: string | null
+          primary_earner: boolean | null
+          status: string
+          tier: string | null
+          updated_at: string
+          us_citizen_children: boolean | null
+          user_id: string | null
+        }
+        Insert: {
+          attestation_signature?: string | null
+          attestation_signed?: boolean | null
+          attestation_signed_at?: string | null
+          created_at?: string
+          dependents_count?: number | null
+          email?: string | null
+          full_name?: string | null
+          household_size?: number | null
+          household_state?: string | null
+          id?: string
+          id_document_url?: string | null
+          income_document_url?: string | null
+          monthly_income_cents?: number | null
+          notes?: string | null
+          phone?: string | null
+          plaid_access_token_encrypted?: string | null
+          plaid_item_id?: string | null
+          plaid_linked_at?: string | null
+          primary_earner?: boolean | null
+          status?: string
+          tier?: string | null
+          updated_at?: string
+          us_citizen_children?: boolean | null
+          user_id?: string | null
+        }
+        Update: {
+          attestation_signature?: string | null
+          attestation_signed?: boolean | null
+          attestation_signed_at?: string | null
+          created_at?: string
+          dependents_count?: number | null
+          email?: string | null
+          full_name?: string | null
+          household_size?: number | null
+          household_state?: string | null
+          id?: string
+          id_document_url?: string | null
+          income_document_url?: string | null
+          monthly_income_cents?: number | null
+          notes?: string | null
+          phone?: string | null
+          plaid_access_token_encrypted?: string | null
+          plaid_item_id?: string | null
+          plaid_linked_at?: string | null
+          primary_earner?: boolean | null
+          status?: string
+          tier?: string | null
+          updated_at?: string
+          us_citizen_children?: boolean | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       readiness_deliveries: {
         Row: {
           delivered_at: string
