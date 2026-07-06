@@ -69,7 +69,7 @@ export const pinListCompanyBoard = createServerFn({ method: "POST" })
       triggeredClientIds.length
         ? supabaseAdmin
             .from("client_documents")
-            .select("client_id, title, document_type, from_app")
+            .select("id, client_id, title, document_type, from_app")
             .in("client_id", triggeredClientIds)
         : Promise.resolve({ data: [] as any[] }),
     ]);
