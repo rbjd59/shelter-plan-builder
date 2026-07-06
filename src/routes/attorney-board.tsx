@@ -178,16 +178,27 @@ function ClientDetail({ pin, clientId }: { pin: string; clientId: string }) {
     queryFn: () => fn({ data: { pin, clientId } }),
   });
 
-  const handleDownload = async (docId: string, fallbackTitle: string, fallbackContent: string) => {
+  const [busy, setBusy] = React.useState<string | null>(null);
+
+  const runDoc = async (
+    docId: string,
+    mode: "preview" | "download",
+    fallbackTitle: string,
+    fallbackContent: string,
+  ) => {
+    setBusy(`${docId}:${mode}`);
     try {
       const res = await downloadFn({ data: { pin, documentId: docId } });
-      downloadPdfFromBase64(res.filename, res.pdfB64);
+      if (mode === "preview") previewPdfFromBase64(res.pdfB64);
+      else downloadPdfFromBase64(res.filename, res.pdfB64);
     } catch (e) {
-      console.error("PDF download failed, falling back to text", e);
+      console.error("PDF action failed, falling back to text", e);
       downloadText(
         `${fallbackTitle.replace(/[^a-z0-9]+/gi, "_")}.txt`,
         fallbackContent,
       );
+    } finally {
+      setBusy(null);
     }
   };
 
