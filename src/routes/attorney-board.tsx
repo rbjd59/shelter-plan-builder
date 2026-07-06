@@ -328,15 +328,28 @@ function ClientDetail({ pin, clientId }: { pin: string; clientId: string }) {
           <ul className="space-y-1">
             {app_uploads.map((d: any) => (
               <li key={d.id}>
-                <button
-                  onClick={() => handleDownload(d.id, d.title ?? "doc", d.content ?? "")}
-                  className="text-left text-sm text-emerald-700 underline"
-                >
-                  ⬇ {d.title ?? "Document"}
-                  <span className="ml-2 text-xs text-slate-500">
-                    {new Date(d.loaded_at).toLocaleString()}
+                <div className="flex items-center justify-between gap-2 flex-wrap">
+                  <span className="text-sm text-emerald-800">
+                    {d.title ?? "Document"}
+                    <span className="ml-2 text-xs text-slate-500">
+                      {new Date(d.loaded_at).toLocaleString()}
+                    </span>
                   </span>
-                </button>
+                  <span className="flex gap-2 text-xs">
+                    <button
+                      onClick={() => runDoc(d.id, "preview", d.title ?? "doc", d.content ?? "")}
+                      className="rounded border border-slate-300 bg-white px-2 py-0.5 text-slate-700 hover:bg-slate-50"
+                    >
+                      👁 Preview
+                    </button>
+                    <button
+                      onClick={() => runDoc(d.id, "download", d.title ?? "doc", d.content ?? "")}
+                      className="rounded border border-emerald-300 bg-emerald-50 px-2 py-0.5 text-emerald-700 hover:bg-emerald-100"
+                    >
+                      ⬇ Download
+                    </button>
+                  </span>
+                </div>
               </li>
             ))}
             {app_uploads.length === 0 && (
