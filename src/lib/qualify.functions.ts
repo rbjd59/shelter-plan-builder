@@ -225,7 +225,7 @@ export const attachQualifyIdentity = createServerFn({ method: "POST" })
       .object({
         submissionId: z.string().uuid(),
         fullName: z.string().trim().min(2).max(200),
-        email: z.string().trim().email().max(200).optional().default(""),
+        email: z.union([z.string().trim().email().max(200), z.literal("")]).optional().default(""),
         phone: z.string().trim().max(40).optional().default(""),
         idDocumentUrl: z.string().trim().max(1024).optional().default(""),
         incomeDocumentUrl: z.string().trim().max(1024).optional().default(""),
