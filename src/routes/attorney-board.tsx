@@ -36,11 +36,15 @@ function downloadText(filename: string, content: string) {
   URL.revokeObjectURL(url);
 }
 
-function downloadPdfFromBase64(filename: string, b64: string) {
+function pdfBlobFromBase64(b64: string): Blob {
   const bin = atob(b64);
   const bytes = new Uint8Array(bin.length);
   for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-  const blob = new Blob([bytes], { type: "application/pdf" });
+  return new Blob([bytes], { type: "application/pdf" });
+}
+
+function downloadPdfFromBase64(filename: string, b64: string) {
+  const blob = pdfBlobFromBase64(b64);
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
@@ -49,6 +53,14 @@ function downloadPdfFromBase64(filename: string, b64: string) {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
+}
+
+function previewPdfFromBase64(b64: string) {
+  const blob = pdfBlobFromBase64(b64);
+  const url = URL.createObjectURL(blob);
+  // Open in a new tab; give the browser time to load before revoking.
+  window.open(url, "_blank", "noopener,noreferrer");
+  setTimeout(() => URL.revokeObjectURL(url), 60_000);
 }
 
 function AttorneyBoard({ pin }: { pin: string }) {
