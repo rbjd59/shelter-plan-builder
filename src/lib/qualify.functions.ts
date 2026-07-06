@@ -180,18 +180,18 @@ Write a warm 2-3 sentence reasoning addressed to the applicant ("you"), plain En
 export const assessQualification = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => intakeSchema.parse(data))
   .handler(async ({ data }) => {
-    const result = assess(data);
+    const result = await aiAssess(data);
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: row, error } = await supabaseAdmin
       .from("qualify_submissions")
       .insert({
-        full_name: data.firstName, // first name only at this stage
+        full_name: data.firstName,
         household_size: data.householdSize,
         dependents_count: data.dependentsCount,
         us_citizen_children: data.usCitizenChildren,
         primary_earner: data.primaryEarner,
-        monthly_income_cents: Math.round(result.monthlyIncome * 100),
+        monthly_income_cents: Math.round(result.signals.monthlyIncome * 100),
         household_state: data.state || null,
         tier: result.tier,
         qualifies: result.qualifies,
@@ -208,9 +208,10 @@ export const assessQualification = createServerFn({ method: "POST" })
       submissionId: row.id as string,
       qualifies: result.qualifies,
       tier: result.tier,
+      discountPct: result.discountPct,
       reasoning: result.reasoning,
-      monthlyIncome: Math.round(result.monthlyIncome),
-      fpl: result.fpl,
+      monthlyIncome: Math.round(result.signals.monthlyIncome),
+      fpl: result.signals.fpl,
     };
   });
 
