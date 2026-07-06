@@ -270,22 +270,53 @@ function ClientDetail({ pin, clientId }: { pin: string; clientId: string }) {
           <h3 className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-700">
             Draft forms ({draft_forms.length})
           </h3>
-          <ul className="space-y-1">
-            {draft_forms.map((d: any) => (
-              <li key={d.id}>
-                <button
-                  onClick={() => handleDownload(d.id, d.title ?? "doc", d.content ?? "")}
-                  className="text-left text-sm text-blue-700 underline"
+          <ul className="space-y-1.5">
+            {draft_forms.map((d: any) => {
+              const isMemo =
+                d.document_type === "memorandum_of_law" ||
+                d.document_type === "memorandum" ||
+                /memorandum/i.test(d.title ?? "");
+              return (
+                <li
+                  key={d.id}
+                  className={isMemo ? "rounded border border-amber-300 bg-amber-50 px-2 py-1.5" : ""}
                 >
-                  ⬇ {d.title ?? "Document"} <span className="text-xs text-slate-500">(PDF)</span>
-                </button>
-              </li>
-            ))}
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <span className={`text-sm ${isMemo ? "font-semibold text-amber-900" : "text-slate-800"}`}>
+                      {isMemo && <span className="mr-1">📜</span>}
+                      {d.title ?? "Document"}
+                      {isMemo && (
+                        <span className="ml-2 rounded bg-amber-200 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-900">
+                          Memo of Law
+                        </span>
+                      )}
+                    </span>
+                    <span className="flex gap-2 text-xs">
+                      <button
+                        onClick={() => runDoc(d.id, "preview", d.title ?? "doc", d.content ?? "")}
+                        disabled={busy === `${d.id}:preview`}
+                        className="rounded border border-slate-300 bg-white px-2 py-0.5 text-slate-700 hover:bg-slate-50 disabled:opacity-60"
+                      >
+                        {busy === `${d.id}:preview` ? "…" : "👁 Preview"}
+                      </button>
+                      <button
+                        onClick={() => runDoc(d.id, "download", d.title ?? "doc", d.content ?? "")}
+                        disabled={busy === `${d.id}:download`}
+                        className="rounded border border-blue-300 bg-blue-50 px-2 py-0.5 text-blue-700 hover:bg-blue-100 disabled:opacity-60"
+                      >
+                        {busy === `${d.id}:download` ? "…" : "⬇ Download"}
+                      </button>
+                    </span>
+                  </div>
+                </li>
+              );
+            })}
             {draft_forms.length === 0 && (
               <li className="text-sm text-slate-500">None.</li>
             )}
           </ul>
         </div>
+
 
         <div>
           <h3 className="mb-1 text-xs font-bold uppercase tracking-wide text-emerald-800">
