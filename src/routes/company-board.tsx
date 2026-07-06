@@ -4,7 +4,8 @@ import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import PinAccessGate from "@/components/PinAccessGate";
-import { pinListCompanyBoard } from "@/lib/pin-access.functions";
+import { pinListCompanyBoard, pinDownloadDocument } from "@/lib/pin-access.functions";
+import { usePinFromStorage } from "@/components/PinAccessGate";
 
 export const Route = createFileRoute("/company-board")({
   head: () => ({
