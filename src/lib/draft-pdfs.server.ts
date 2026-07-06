@@ -185,6 +185,11 @@ export async function buildDocumentPdf(documentId: string): Promise<{
       const bytes = await buildMotionReferralPdf(answers as any);
       return { bytes, filename };
     }
+    case "memorandum_of_law":
+    case "memorandum": {
+      const bytes = await buildMemorandumOfLawPdf(answers as any);
+      return { bytes, filename };
+    }
     default: {
       const info: Record<string, string> = {
         "Full name": s(answers.full_name),
