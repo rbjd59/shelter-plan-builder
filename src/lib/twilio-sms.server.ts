@@ -143,8 +143,8 @@ export async function sendSosSmsToContacts(opts: {
   const clientName = opts.clientName ?? c.full_name ?? "Your contact";
   const body =
     opts.kind === "alert"
-      ? `ALERT: ${clientName} has triggered their DefensaSiempre emergency. Their attorney and family have been notified.${opts.mapsUrl ? ` Location: ${opts.mapsUrl}` : ""} — DefensaSiempre (866) 880-9183`
-      : `UPDATE: ${clientName} has cancelled the earlier DefensaSiempre emergency alert. No action needed. — DefensaSiempre (866) 880-9183`;
+      ? `ALERT: ${clientName} has triggered their DetencionDefensa emergency app and may have been detained by ICE or police. Their attorney and family have been notified.${opts.mapsUrl ? ` Location: ${opts.mapsUrl}` : ""} — DetencionDefensa`
+      : `UPDATE: ${clientName} has cancelled the earlier DetencionDefensa emergency alert. This was a false alarm — no action needed. — DetencionDefensa`;
 
   let sent = 0;
   let failed = 0;
