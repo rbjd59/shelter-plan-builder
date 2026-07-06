@@ -128,7 +128,7 @@ function CompanyBoard({ pin }: { pin: string }) {
                         {isOpen && (
                           <tr>
                             <td colSpan={8} className="bg-white px-4 py-4">
-                              <TriggerDetail t={t} />
+                              <TriggerDetail t={t} pin={pin} />
                             </td>
                           </tr>
                         )}
