@@ -139,7 +139,7 @@ export const assessQualification = createServerFn({ method: "POST" })
         tier: result.tier,
         qualifies: result.qualifies,
         assessment_reasoning: result.reasoning,
-        intake_data: data as unknown as Record<string, unknown>,
+        intake_data: data as any,
         status: result.qualifies ? "prequalified" : "declined_prequalification",
       })
       .select("id")
