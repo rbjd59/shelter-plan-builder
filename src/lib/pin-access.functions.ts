@@ -128,6 +128,9 @@ export const pinListCompanyBoard = createServerFn({ method: "POST" })
         pet_rescue: petByClient.get(row.client_id) ?? null,
         draft_forms_count: docs.filter((d) => !d.from_app).length,
         app_uploads_count: docs.filter((d) => d.from_app).length,
+        draft_forms: docs
+          .filter((d) => !d.from_app)
+          .map((d) => ({ id: d.id, title: d.title, document_type: d.document_type })),
       };
     });
 
