@@ -64,15 +64,7 @@ function fplMonthly(householdSize: number): number {
   return 1304 + Math.max(0, householdSize - 1) * 460;
 }
 
-function assess(data: IntakeInput): {
-  qualifies: boolean;
-  tier: "nocost" | "reduced" | "standard";
-  monthlyIncome: number;
-  monthlyExpenses: number;
-  fpl: number;
-  ratio: number;
-  reasoning: string;
-} {
+function computeSignals(data: IntakeInput) {
   const monthlyIncome = toMonthly(data.payFrequency, data.payAmountUsd);
   const monthlyExpenses =
     data.rent +
@@ -84,31 +76,96 @@ function assess(data: IntakeInput): {
     data.restaurants +
     data.childrenEntertainment +
     data.otherExpenses;
-
   const fpl = fplMonthly(data.householdSize);
   const ratio = monthlyIncome / fpl;
+  return { monthlyIncome, monthlyExpenses, fpl, ratio };
+}
 
-  const hasKids = data.usCitizenChildren && data.dependentsCount > 0;
-  const eligibleFamily = hasKids && data.primaryEarner;
+type AssessResult = {
+  qualifies: boolean;
+  tier: "nocost" | "reduced" | "standard";
+  discountPct: number;
+  reasoning: string;
+  signals: ReturnType<typeof computeSignals>;
+};
 
-  let tier: "nocost" | "reduced" | "standard" = "standard";
-  if (eligibleFamily && ratio <= 1.5) tier = "nocost";
-  else if (eligibleFamily && ratio <= 2.5) tier = "reduced";
-  else if (ratio <= 2.0 && hasKids) tier = "reduced";
+async function aiAssess(data: IntakeInput): Promise<AssessResult> {
+  const signals = computeSignals(data);
+  const fallback = (reason: string): AssessResult => {
+    const hasKids = data.usCitizenChildren && data.dependentsCount > 0;
+    let tier: "nocost" | "reduced" | "standard" = "standard";
+    let discountPct = 0;
+    if (signals.ratio <= 1.0 && hasKids && data.primaryEarner) {
+      tier = "nocost";
+      discountPct = 100;
+    } else if (signals.ratio <= 1.5) {
+      tier = "reduced";
+      discountPct = 10;
+    }
+    return {
+      qualifies: tier !== "standard",
+      tier,
+      discountPct,
+      reasoning: `${reason} Your income is about ${Math.round(signals.ratio * 100)}% of the federal poverty line for a household of ${data.householdSize}.`,
+      signals,
+    };
+  };
 
-  const qualifies = tier !== "standard";
+  const key = process.env.LOVABLE_API_KEY;
+  if (!key) return fallback("Automatic estimate (AI unavailable).");
 
-  const reasoning = [
-    `Household of ${data.householdSize}. Monthly income ≈ $${Math.round(monthlyIncome)}.`,
-    `Federal poverty line (monthly) for this size ≈ $${fpl}. Income is ${Math.round(ratio * 100)}% of FPL.`,
-    `US-citizen children: ${data.usCitizenChildren ? "yes" : "no"} (${data.dependentsCount} dependents). Primary earner: ${data.primaryEarner ? "yes" : "no"}.`,
-    `Reported monthly expenses ≈ $${Math.round(monthlyExpenses)}.`,
-    qualifies
-      ? `Meets criteria for ${tier.toUpperCase()} tier.`
-      : `Does not meet the 150%-of-FPL threshold for reduced/no-cost pricing.`,
-  ].join(" ");
+  try {
+    const { generateText, Output } = await import("ai");
+    const { z: zod } = await import("zod");
+    const { createLovableAiGatewayProvider } = await import("@/lib/ai-gateway.server");
 
-  return { qualifies, tier, monthlyIncome, monthlyExpenses, fpl, ratio, reasoning };
+    const schema = zod.object({
+      tier: zod.enum(["nocost", "reduced", "standard"]),
+      qualifies: zod.boolean(),
+      discount_pct: zod.number(),
+      reasoning: zod.string(),
+    });
+
+    const gateway = createLovableAiGatewayProvider(key);
+    const model = gateway("google/gemini-2.5-flash");
+
+    const prompt = `You are an eligibility screener for a low-cost immigration legal defense program.
+
+Applicant data:
+- Household size: ${data.householdSize} (${data.dependentsCount} dependents). US-citizen/resident children: ${data.usCitizenChildren ? "yes" : "no"}.
+- Primary household earner: ${data.primaryEarner ? "yes" : "no"}.
+- Monthly income (computed): $${Math.round(signals.monthlyIncome)}.
+- Federal poverty line (FPL) for this household size: $${signals.fpl}/month.
+- Income is ${Math.round(signals.ratio * 100)}% of FPL.
+- Monthly reported expenses total: $${Math.round(signals.monthlyExpenses)}.
+- Job type: ${data.jobType || "(unspecified)"}. Years in US: ${data.yearsInUsSelf}. Years working: ${data.yearsWorking}. State: ${data.state || "(unspecified)"}.
+
+Assign a tier:
+- "nocost" — income at or below 100% of FPL AND has US-citizen/resident children AND is primary earner. Sets qualifies=true, discount_pct=100.
+- "reduced" — income at or below 150% of FPL (or borderline cases where expenses eat income). Sets qualifies=true, discount_pct=10 (a 10% discount off the standard package).
+- "standard" — clearly above 150% of FPL. Sets qualifies=false, discount_pct=0. They will be offered the standard $199 package.
+
+Write a warm 2-3 sentence reasoning addressed to the applicant ("you"), plain English, no legal jargon. If they don't qualify for no-cost, still be encouraging.`;
+
+    const { output } = await generateText({
+      model,
+      output: Output.object({ schema }),
+      prompt,
+    });
+
+    const tier = output.tier;
+    const discountPct = tier === "nocost" ? 100 : tier === "reduced" ? 10 : 0;
+    return {
+      qualifies: tier !== "standard",
+      tier,
+      discountPct,
+      reasoning: output.reasoning,
+      signals,
+    };
+  } catch (error) {
+    const msg = error instanceof Error ? error.message : String(error);
+    return fallback(`Using automatic rules (${msg}).`);
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -123,18 +180,18 @@ function assess(data: IntakeInput): {
 export const assessQualification = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => intakeSchema.parse(data))
   .handler(async ({ data }) => {
-    const result = assess(data);
+    const result = await aiAssess(data);
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: row, error } = await supabaseAdmin
       .from("qualify_submissions")
       .insert({
-        full_name: data.firstName, // first name only at this stage
+        full_name: data.firstName,
         household_size: data.householdSize,
         dependents_count: data.dependentsCount,
         us_citizen_children: data.usCitizenChildren,
         primary_earner: data.primaryEarner,
-        monthly_income_cents: Math.round(result.monthlyIncome * 100),
+        monthly_income_cents: Math.round(result.signals.monthlyIncome * 100),
         household_state: data.state || null,
         tier: result.tier,
         qualifies: result.qualifies,
@@ -151,9 +208,10 @@ export const assessQualification = createServerFn({ method: "POST" })
       submissionId: row.id as string,
       qualifies: result.qualifies,
       tier: result.tier,
+      discountPct: result.discountPct,
       reasoning: result.reasoning,
-      monthlyIncome: Math.round(result.monthlyIncome),
-      fpl: result.fpl,
+      monthlyIncome: Math.round(result.signals.monthlyIncome),
+      fpl: result.signals.fpl,
     };
   });
 

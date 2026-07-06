@@ -66,6 +66,7 @@ function QualifyPage() {
   const [intake, setIntake] = useState(emptyIntake);
   const [submissionId, setSubmissionId] = useState("");
   const [tier, setTier] = useState("");
+  const [discountPct, setDiscountPct] = useState(0);
   const [assessmentReasoning, setAssessmentReasoning] = useState("");
   const [declined, setDeclined] = useState(false);
 
@@ -103,6 +104,7 @@ function QualifyPage() {
       const res = await assess({ data: intake });
       setSubmissionId(res.submissionId);
       setTier(res.tier);
+      setDiscountPct(res.discountPct ?? 0);
       setAssessmentReasoning(res.reasoning);
       if (!res.qualifies) {
         setDeclined(true);
@@ -563,10 +565,12 @@ function QualifyPage() {
 
           {step === 2 && (
             <div className="space-y-4">
-              <div className="rounded bg-green-50 border border-green-300 p-4 text-sm text-green-900">
-                ✓ Preliminary tier:{" "}
-                <strong>{tier.toUpperCase()}</strong>. Now we need your full name
-                and a couple of documents.
+              <div className={`rounded border p-4 text-sm ${tier === "nocost" ? "bg-green-50 border-green-300 text-green-900" : "bg-amber-50 border-amber-300 text-amber-900"}`}>
+                {tier === "nocost" ? (
+                  <>✓ <strong>You qualify for our NO-COST program.</strong> {assessmentReasoning}</>
+                ) : (
+                  <>✓ <strong>You qualify for a {discountPct}% discount</strong> off the standard package. {assessmentReasoning}</>
+                )}
               </div>
               <h2 className="text-xl font-semibold">Step 2 · Identity & documents</h2>
               <div className="grid md:grid-cols-2 gap-4">
