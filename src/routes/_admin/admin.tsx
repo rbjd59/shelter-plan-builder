@@ -34,6 +34,8 @@ function Dashboard() {
 
   return (
     <div className="space-y-6">
+      <FireTestClientCard />
+
       <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
         <Stat label="Views (30d)" value={data.totals.viewsLast30} />
         <Stat label="Signups today" value={data.totals.signupsToday} />
