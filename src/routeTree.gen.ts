@@ -18,6 +18,7 @@ import { Route as SmsTermsRouteImport } from './routes/sms-terms'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SentinelTrustRouteImport } from './routes/sentinel-trust'
 import { Route as RetainerRouteImport } from './routes/retainer'
+import { Route as QualifyRouteImport } from './routes/qualify'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PastorsRouteImport } from './routes/pastors'
 import { Route as PartnersRouteImport } from './routes/partners'
@@ -130,6 +131,11 @@ const SentinelTrustRoute = SentinelTrustRouteImport.update({
 const RetainerRoute = RetainerRouteImport.update({
   id: '/retainer',
   path: '/retainer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QualifyRoute = QualifyRouteImport.update({
+  id: '/qualify',
+  path: '/qualify',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -503,6 +509,7 @@ export interface FileRoutesByFullPath {
   '/partners': typeof PartnersRoute
   '/pastors': typeof PastorsRoute
   '/privacy': typeof PrivacyRoute
+  '/qualify': typeof QualifyRoute
   '/retainer': typeof RetainerRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -579,6 +586,7 @@ export interface FileRoutesByTo {
   '/partners': typeof PartnersRoute
   '/pastors': typeof PastorsRoute
   '/privacy': typeof PrivacyRoute
+  '/qualify': typeof QualifyRoute
   '/retainer': typeof RetainerRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -659,6 +667,7 @@ export interface FileRoutesById {
   '/partners': typeof PartnersRoute
   '/pastors': typeof PastorsRoute
   '/privacy': typeof PrivacyRoute
+  '/qualify': typeof QualifyRoute
   '/retainer': typeof RetainerRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -737,6 +746,7 @@ export interface FileRouteTypes {
     | '/partners'
     | '/pastors'
     | '/privacy'
+    | '/qualify'
     | '/retainer'
     | '/sentinel-trust'
     | '/sitemap.xml'
@@ -813,6 +823,7 @@ export interface FileRouteTypes {
     | '/partners'
     | '/pastors'
     | '/privacy'
+    | '/qualify'
     | '/retainer'
     | '/sentinel-trust'
     | '/sitemap.xml'
@@ -892,6 +903,7 @@ export interface FileRouteTypes {
     | '/partners'
     | '/pastors'
     | '/privacy'
+    | '/qualify'
     | '/retainer'
     | '/sentinel-trust'
     | '/sitemap.xml'
@@ -972,6 +984,7 @@ export interface RootRouteChildren {
   PartnersRoute: typeof PartnersRoute
   PastorsRoute: typeof PastorsRoute
   PrivacyRoute: typeof PrivacyRoute
+  QualifyRoute: typeof QualifyRoute
   RetainerRoute: typeof RetainerRoute
   SentinelTrustRoute: typeof SentinelTrustRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -1072,6 +1085,13 @@ declare module '@tanstack/react-router' {
       path: '/retainer'
       fullPath: '/retainer'
       preLoaderRoute: typeof RetainerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/qualify': {
+      id: '/qualify'
+      path: '/qualify'
+      fullPath: '/qualify'
+      preLoaderRoute: typeof QualifyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -1670,6 +1690,7 @@ const rootRouteChildren: RootRouteChildren = {
   PartnersRoute: PartnersRoute,
   PastorsRoute: PastorsRoute,
   PrivacyRoute: PrivacyRoute,
+  QualifyRoute: QualifyRoute,
   RetainerRoute: RetainerRoute,
   SentinelTrustRoute: SentinelTrustRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,

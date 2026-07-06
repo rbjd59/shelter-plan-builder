@@ -136,7 +136,11 @@ function QualifyPage() {
         },
       });
       const finalTier = res.tier || tier || "standard";
-      navigate({ to: "/checkout", search: { lang: "en", tier: finalTier } as any });
+      // Tier is persisted on the submission; checkout reads it from the DB.
+      // For now, pass lang so checkout's search schema is happy.
+      void finalTier;
+      navigate({ to: "/checkout", search: { lang: "en" } });
+
     } catch (e: any) {
       setError(e?.message || "Failed to finalize submission.");
     } finally {
