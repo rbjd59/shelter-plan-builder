@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { getDashboardStats } from "@/lib/admin.functions";
+import { fireTestDemoClient } from "@/lib/admin-demo.functions";
 
 export const Route = createFileRoute("/_admin/admin")({
   component: Dashboard,
@@ -32,6 +34,8 @@ function Dashboard() {
 
   return (
     <div className="space-y-6">
+      <FireTestClientCard />
+
       <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
         <Stat label="Views (30d)" value={data.totals.viewsLast30} />
         <Stat label="Signups today" value={data.totals.signupsToday} />
@@ -107,3 +111,95 @@ function Dashboard() {
     </div>
   );
 }
+
+function FireTestClientCard() {
+  const fire = useServerFn(fireTestDemoClient);
+  const [label, setLabel] = useState("Test 02 ES");
+  const [language, setLanguage] = useState<"es" | "en" | "ht">("es");
+  const [status, setStatus] = useState<"idle" | "working" | "done" | "error">("idle");
+  const [result, setResult] = useState<
+    { sessionId: string; activationCode: string | null; label: string } | null
+  >(null);
+  const [err, setErr] = useState("");
+
+  const onFire = async () => {
+    setStatus("working");
+    setErr("");
+    setResult(null);
+    try {
+      const res = await fire({ data: { label, language } });
+      setResult({
+        sessionId: res.sessionId,
+        activationCode: res.activationCode,
+        label: res.label,
+      });
+      setStatus("done");
+    } catch (e) {
+      setErr((e as Error).message);
+      setStatus("error");
+    }
+  };
+
+  return (
+    <div className="rounded-lg border border-amber-300 bg-amber-50 p-4">
+      <div className="flex items-start justify-between gap-4 flex-wrap">
+        <div>
+          <h2 className="text-sm font-semibold text-amber-900">Fire fake test client</h2>
+          <p className="text-xs text-amber-800 mt-1">
+            Submits a complete /intake with all forms (Habeas, Memorandum of Law, Motion Referral,
+            JS-44, Brochure). Appears on the company + attorney boards for review.
+          </p>
+        </div>
+        <div className="flex items-center gap-2 flex-wrap">
+          <input
+            className="rounded border border-amber-300 bg-white px-2 py-1 text-sm"
+            value={label}
+            onChange={(e) => setLabel(e.target.value)}
+            placeholder="Test 02 ES"
+          />
+          <select
+            className="rounded border border-amber-300 bg-white px-2 py-1 text-sm"
+            value={language}
+            onChange={(e) => setLanguage(e.target.value as "es" | "en" | "ht")}
+          >
+            <option value="es">ES</option>
+            <option value="en">EN</option>
+            <option value="ht">HT</option>
+          </select>
+          <button
+            onClick={onFire}
+            disabled={status === "working"}
+            className="rounded bg-amber-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-amber-700 disabled:opacity-60"
+          >
+            {status === "working" ? "Firing…" : "Fire client"}
+          </button>
+        </div>
+      </div>
+      {status === "done" && result && (
+        <div className="mt-3 rounded border border-green-300 bg-green-50 p-3 text-sm">
+          <p className="font-semibold text-green-900">✓ Fired {result.label}</p>
+          <p className="text-xs text-green-800 mt-1">
+            Session ID: <code className="font-mono">{result.sessionId}</code>
+          </p>
+          {result.activationCode && (
+            <p className="text-xs text-green-800 mt-1">
+              Activation code: <code className="font-mono font-bold">{result.activationCode}</code>
+            </p>
+          )}
+          <div className="mt-2 flex gap-3 text-xs">
+            <Link to="/company-board" className="text-amber-700 underline">
+              Company board →
+            </Link>
+            <Link to="/attorney-board" className="text-amber-700 underline">
+              Attorney board →
+            </Link>
+          </div>
+        </div>
+      )}
+      {status === "error" && (
+        <p className="mt-3 text-sm text-red-700">Error: {err}</p>
+      )}
+    </div>
+  );
+}
+
