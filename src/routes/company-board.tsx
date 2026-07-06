@@ -155,6 +155,9 @@ function CompanyBoard({ pin }: { pin: string }) {
                 <thead className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
                   <tr>
                     <th className="px-3 py-2">Activation</th>
+                    <th className="px-3 py-2">Name</th>
+                    <th className="px-3 py-2">Contact</th>
+                    <th className="px-3 py-2">Add-ons</th>
                     <th className="px-3 py-2">Registered</th>
                     <th className="px-3 py-2">App activated</th>
                   </tr>
@@ -162,7 +165,24 @@ function CompanyBoard({ pin }: { pin: string }) {
                 <tbody className="divide-y divide-slate-100">
                   {registered.map((r: any) => (
                     <tr key={r.activation_code}>
-                      <td className="px-3 py-2 font-mono font-bold">{r.activation_code}</td>
+                      <td className="px-3 py-2 font-mono font-bold text-slate-900">{r.activation_code}</td>
+                      <td className="px-3 py-2 font-medium">
+                        {r.full_name ?? <span className="text-slate-400">—</span>}
+                      </td>
+                      <td className="px-3 py-2 text-xs text-slate-600">
+                        <div>{r.email ?? "—"}</div>
+                        <div>{r.phone ?? "—"}</div>
+                      </td>
+                      <td className="px-3 py-2 text-xs">
+                        <div className="flex gap-1 flex-wrap">
+                          {r.has_asset_protection && (
+                            <span className="rounded bg-amber-100 px-1.5 py-0.5 font-semibold text-amber-800">Asset</span>
+                          )}
+                          {r.has_pet_rescue && (
+                            <span className="rounded bg-emerald-100 px-1.5 py-0.5 font-semibold text-emerald-800">Pet</span>
+                          )}
+                        </div>
+                      </td>
                       <td className="px-3 py-2 text-xs text-slate-600">
                         {new Date(r.registered_at).toLocaleString()}
                       </td>
@@ -172,7 +192,7 @@ function CompanyBoard({ pin }: { pin: string }) {
                             ✓ {new Date(r.activated_at).toLocaleString()}
                           </span>
                         ) : (
-                          <span className="text-slate-400">—</span>
+                          <span className="text-slate-400">not yet</span>
                         )}
                       </td>
                     </tr>
