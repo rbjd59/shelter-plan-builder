@@ -307,6 +307,59 @@ function TriggerDetail({ t, pin }: { t: any; pin: string }) {
           <div className="text-slate-500">No pet rescue on file.</div>
         )}
       </div>
+
+      <div className="rounded border border-slate-200 p-3 text-xs">
+        <div className="font-bold uppercase tracking-wide text-slate-500 mb-2">
+          Legal forms on file ({draftForms.length})
+        </div>
+        {draftForms.length === 0 ? (
+          <div className="text-slate-500">No draft forms yet.</div>
+        ) : (
+          <ul className="space-y-1.5">
+            {draftForms.map((d) => {
+              const isMemo =
+                d.document_type === "memorandum_of_law" ||
+                d.document_type === "memorandum" ||
+                /memorandum/i.test(d.title ?? "");
+              return (
+                <li
+                  key={d.id}
+                  className={isMemo ? "rounded border border-amber-300 bg-amber-50 px-2 py-1.5" : ""}
+                >
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <span className={isMemo ? "font-semibold text-amber-900" : "text-slate-800"}>
+                      {isMemo && <span className="mr-1">📜</span>}
+                      {d.title ?? "Document"}
+                      {isMemo && (
+                        <span className="ml-2 rounded bg-amber-200 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-900">
+                          Memo of Law
+                        </span>
+                      )}
+                    </span>
+                    <span className="flex gap-2">
+                      <button
+                        onClick={() => runDoc(d.id, "preview")}
+                        disabled={busy === `${d.id}:preview`}
+                        className="rounded border border-slate-300 bg-white px-2 py-0.5 text-slate-700 hover:bg-slate-50 disabled:opacity-60"
+                      >
+                        {busy === `${d.id}:preview` ? "…" : "👁 Preview"}
+                      </button>
+                      <button
+                        onClick={() => runDoc(d.id, "download")}
+                        disabled={busy === `${d.id}:download`}
+                        className="rounded border border-blue-300 bg-blue-50 px-2 py-0.5 text-blue-700 hover:bg-blue-100 disabled:opacity-60"
+                      >
+                        {busy === `${d.id}:download` ? "…" : "⬇ Download"}
+                      </button>
+                    </span>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }
+
