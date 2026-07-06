@@ -7,6 +7,7 @@ import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { buildIntakePdfs } from "@/lib/email/intake-pdfs.server";
 import { buildJs44Pdf } from "@/lib/email/js44.server";
 import { buildMotionReferralPdf } from "@/lib/email/motion-referral.server";
+import { buildMemorandumOfLawPdf } from "@/lib/email/memorandum-of-law.server";
 
 function s(v: unknown): string {
   if (v == null) return "";
@@ -182,6 +183,11 @@ export async function buildDocumentPdf(documentId: string): Promise<{
     case "motion_for_counsel":
     case "motion_counsel": {
       const bytes = await buildMotionReferralPdf(answers as any);
+      return { bytes, filename };
+    }
+    case "memorandum_of_law":
+    case "memorandum": {
+      const bytes = await buildMemorandumOfLawPdf(answers as any);
       return { bytes, filename };
     }
     default: {
