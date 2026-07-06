@@ -180,6 +180,25 @@ export const Route = createFileRoute("/api/public/app-trigger")({
           has_location: !!parsed.data.last_known_location,
         });
 
+        // SMS fan-out to all client_contacts (mirrors the intake fire path).
+        try {
+          const { sendSosSmsToContacts } = await import("@/lib/twilio-sms.server");
+          const mapsUrl =
+            lat != null && lng != null
+              ? `https://maps.google.com/?q=${lat},${lng}`
+              : null;
+          const smsResult = await sendSosSmsToContacts({
+            token: caseId,
+            clientName,
+            kind: "alert",
+            mapsUrl,
+            activationId: alertId as string | null,
+          });
+          console.log("[app-trigger] alert sms fan-out", smsResult);
+        } catch (e) {
+          console.error("[app-trigger] alert sms failed", e);
+        }
+
         await mirrorToReplit({
           source: "detenciondefensa-app",
           event: "fire",
@@ -199,6 +218,7 @@ export const Route = createFileRoute("/api/public/app-trigger")({
           triggered_at: parsed.data.triggered_at ?? new Date().toISOString(),
           fired_at: new Date().toISOString(),
         });
+
 
         return json({ ok: true, event_id: alertId, alert_id: alertId, signature_status: "ok" });
 
