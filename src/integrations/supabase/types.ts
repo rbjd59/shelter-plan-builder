@@ -1086,6 +1086,7 @@ export type Database = {
           plaid_linked_at: string | null
           primary_earner: boolean | null
           status: string
+          support_letter_url: string | null
           tier: string | null
           updated_at: string
           us_citizen_children: boolean | null
@@ -1112,6 +1113,7 @@ export type Database = {
           plaid_linked_at?: string | null
           primary_earner?: boolean | null
           status?: string
+          support_letter_url?: string | null
           tier?: string | null
           updated_at?: string
           us_citizen_children?: boolean | null
@@ -1138,6 +1140,7 @@ export type Database = {
           plaid_linked_at?: string | null
           primary_earner?: boolean | null
           status?: string
+          support_letter_url?: string | null
           tier?: string | null
           updated_at?: string
           us_citizen_children?: boolean | null
