@@ -187,8 +187,42 @@ function CompanyBoard({ pin }: { pin: string }) {
   );
 }
 
-function TriggerDetail({ t }: { t: any }) {
+function TriggerDetail({ t, pin }: { t: any; pin: string }) {
   const hasLoc = typeof t.lat === "number" && typeof t.lng === "number";
+  const downloadFn = useServerFn(pinDownloadDocument);
+  const [busy, setBusy] = useState<string | null>(null);
+  const draftForms: Array<{ id: string; title: string | null; document_type: string | null }> =
+    t.draft_forms ?? [];
+
+  const runDoc = async (docId: string, mode: "preview" | "download") => {
+    setBusy(`${docId}:${mode}`);
+    try {
+      const res = await downloadFn({ data: { pin, documentId: docId } });
+      const bin = atob(res.pdfB64);
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      const blob = new Blob([bytes], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+      if (mode === "preview") {
+        window.open(url, "_blank", "noopener,noreferrer");
+        setTimeout(() => URL.revokeObjectURL(url), 60_000);
+      } else {
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = res.filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+    } catch (e) {
+      console.error("PDF action failed", e);
+      alert("Could not load PDF: " + (e as Error).message);
+    } finally {
+      setBusy(null);
+    }
+  };
+
   return (
     <div className="grid gap-4 sm:grid-cols-3 text-xs">
       <div className="rounded border border-slate-200 p-3">
