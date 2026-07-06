@@ -96,6 +96,11 @@ export const pinListCompanyBoard = createServerFn({ method: "POST" })
         const row = c as any;
         return {
           activation_code: row.invite_token,
+          full_name: row.full_name ?? null,
+          email: row.email ?? null,
+          phone: row.phone_e164 ?? null,
+          has_asset_protection: !!row.has_asset_protection,
+          has_pet_rescue: !!row.has_pet_rescue,
           registered_at: row.created_at,
           activated_at: row.activated_at,
         };
