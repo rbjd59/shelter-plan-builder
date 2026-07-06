@@ -3,6 +3,8 @@ import SiteShell from "@/components/SiteShell";
 
 import HeroIntro from "@/components/HeroIntro";
 import ProblemSolutionSection from "@/components/ProblemSolutionSection";
+import QualifyBand from "@/components/QualifyBand";
+
 
 
 
@@ -66,6 +68,7 @@ export const Route = createFileRoute("/")({
   component: () => (
     <>
       <HeroIntro />
+      <QualifyBand />
       <ProblemSolutionSection />
       <SiteShell />
     </>
