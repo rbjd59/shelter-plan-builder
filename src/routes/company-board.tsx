@@ -224,7 +224,9 @@ function TriggerDetail({ t, pin }: { t: any; pin: string }) {
   };
 
   return (
+    <div className="space-y-4">
     <div className="grid gap-4 sm:grid-cols-3 text-xs">
+
       <div className="rounded border border-slate-200 p-3">
         <div className="font-bold uppercase tracking-wide text-slate-500 mb-1">Client</div>
         <div className="font-semibold">{t.name ?? "—"}</div>
