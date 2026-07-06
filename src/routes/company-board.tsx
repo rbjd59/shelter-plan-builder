@@ -307,8 +307,10 @@ function TriggerDetail({ t, pin }: { t: any; pin: string }) {
           <div className="text-slate-500">No pet rescue on file.</div>
         )}
       </div>
+    </div>
 
-      <div className="rounded border border-slate-200 p-3 text-xs">
+    <div className="rounded border border-slate-200 p-3 text-xs">
+
         <div className="font-bold uppercase tracking-wide text-slate-500 mb-2">
           Legal forms on file ({draftForms.length})
         </div>
