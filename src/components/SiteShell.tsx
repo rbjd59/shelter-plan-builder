@@ -5,6 +5,7 @@ import { useLang, type Lang } from "@/context/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { PARTNERS } from "@/lib/partners-content";
 import AdVideoSection from "@/components/AdVideoSection";
+import HomeProtectionBand from "@/components/HomeProtectionBand";
 
 /**
  * Renders the main marketing page from the reference HTML markup.
@@ -195,6 +196,7 @@ export default function SiteShell() {
     <div ref={ref}>
       <div dangerouslySetInnerHTML={{ __html: beforeAd }} />
       <AdVideoSection />
+      <HomeProtectionBand />
       {afterAd && <div dangerouslySetInnerHTML={{ __html: afterAd }} />}
     </div>
   );
