@@ -26,7 +26,9 @@ function json(body: unknown, init?: ResponseInit) {
 
 const TriggerSchema = z.object({
   case_id: z.string().min(1).max(64),
+  action: z.enum(["trigger", "cancel"]).optional(),
   triggered_at: z.string().max(64).optional(),
+  cancel_pin: z.string().regex(/^\d{4,8}$/).optional(),
   last_known_location: z
     .object({
       lat: z.number().min(-90).max(90).optional(),
@@ -74,6 +76,42 @@ export const Route = createFileRoute("/api/public/app-trigger")({
         const signatureOk = (signatureData as { ok?: boolean } | null)?.ok === true;
         if (signatureError || !signatureOk) {
           return json({ ok: false, error: "bad_signature" }, { status: 401 });
+        }
+
+        // Cancellation path — the phone's "enter cancel PIN" flow hits us here.
+        if (parsed.data.action === "cancel") {
+          const { sendSosSmsToContacts } = await import("@/lib/twilio-sms.server");
+          try {
+            if (parsed.data.cancel_pin) {
+              const { data: pinRes, error: pinErr } = await supabaseAdmin.rpc(
+                "cancel_sos_alert_with_pin" as never,
+                { _token: caseId, _pin: parsed.data.cancel_pin } as never,
+              );
+              if (pinErr) {
+                console.warn("[app-trigger] cancel PIN rejected", pinErr);
+                return json({ ok: false, error: "invalid_pin" }, { status: 403 });
+              }
+              console.log("[app-trigger] cancel via PIN ok", pinRes);
+            } else {
+              await supabaseAdmin.rpc("cancel_sos_alert" as never, {
+                _token: caseId,
+              } as never);
+            }
+          } catch (e) {
+            console.error("[app-trigger] cancel failed", e);
+            return json({ ok: false, error: "cancel_failed" }, { status: 500 });
+          }
+          try {
+            const result = await sendSosSmsToContacts({
+              token: caseId,
+              clientName: null,
+              kind: "cancel",
+            });
+            console.log("[app-trigger] cancel sms fan-out", result);
+          } catch (e) {
+            console.error("[app-trigger] cancel sms failed", e);
+          }
+          return json({ ok: true, cancelled: true });
         }
 
         const loc = parsed.data.last_known_location;
