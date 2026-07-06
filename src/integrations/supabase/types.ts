@@ -1066,6 +1066,7 @@ export type Database = {
       }
       qualify_submissions: {
         Row: {
+          assessment_reasoning: string | null
           attestation_signature: string | null
           attestation_signed: boolean | null
           attestation_signed_at: string | null
@@ -1078,6 +1079,7 @@ export type Database = {
           id: string
           id_document_url: string | null
           income_document_url: string | null
+          intake_data: Json | null
           monthly_income_cents: number | null
           notes: string | null
           phone: string | null
@@ -1085,6 +1087,7 @@ export type Database = {
           plaid_item_id: string | null
           plaid_linked_at: string | null
           primary_earner: boolean | null
+          qualifies: boolean | null
           status: string
           support_letter_url: string | null
           tier: string | null
@@ -1093,6 +1096,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          assessment_reasoning?: string | null
           attestation_signature?: string | null
           attestation_signed?: boolean | null
           attestation_signed_at?: string | null
@@ -1105,6 +1109,7 @@ export type Database = {
           id?: string
           id_document_url?: string | null
           income_document_url?: string | null
+          intake_data?: Json | null
           monthly_income_cents?: number | null
           notes?: string | null
           phone?: string | null
@@ -1112,6 +1117,7 @@ export type Database = {
           plaid_item_id?: string | null
           plaid_linked_at?: string | null
           primary_earner?: boolean | null
+          qualifies?: boolean | null
           status?: string
           support_letter_url?: string | null
           tier?: string | null
@@ -1120,6 +1126,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          assessment_reasoning?: string | null
           attestation_signature?: string | null
           attestation_signed?: boolean | null
           attestation_signed_at?: string | null
@@ -1132,6 +1139,7 @@ export type Database = {
           id?: string
           id_document_url?: string | null
           income_document_url?: string | null
+          intake_data?: Json | null
           monthly_income_cents?: number | null
           notes?: string | null
           phone?: string | null
@@ -1139,6 +1147,7 @@ export type Database = {
           plaid_item_id?: string | null
           plaid_linked_at?: string | null
           primary_earner?: boolean | null
+          qualifies?: boolean | null
           status?: string
           support_letter_url?: string | null
           tier?: string | null
