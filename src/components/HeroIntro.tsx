@@ -32,7 +32,7 @@ const COPY = {
     getStarted: "Get Started",
   },
   ht: {
-    headline: "La migra ap vini\npa tann, aji kounye a",
+    headline: "La migra ap vini.\nPa tann — aji kounye a.",
     subline: "Plan Defans Legal Pro Se Pri Ba $199 Avoka Kreye ak Revize\nPou Moun Ki Pa Kapab Peye $10,000 Si Yo Arestasyon",
     offer: "",
     start: "Kòmanse",
