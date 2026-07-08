@@ -188,7 +188,15 @@ function QualifyPage() {
       await finalize({
         data: { submissionId, attestationSignature: signature.trim() },
       });
-      navigate({ to: "/checkout", search: { lang: "en" } });
+      // Carry the reduced-cost discount + submission id through to checkout.
+      navigate({
+        to: "/checkout",
+        search: {
+          lang: "en",
+          discountPct: discountPct || undefined,
+          submissionId: submissionId || undefined,
+        },
+      });
     } catch (e: any) {
       setError(e?.message || "Failed to finalize.");
     } finally {
