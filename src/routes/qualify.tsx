@@ -8,6 +8,8 @@ import {
   finalizeQualifySubmission,
 } from "@/lib/qualify.functions";
 import { createPlaidLinkToken, exchangePlaidPublicToken } from "@/lib/plaid.functions";
+import { useLang, type Lang } from "@/context/LanguageContext";
+
 
 export const Route = createFileRoute("/qualify")({
   head: () => ({
