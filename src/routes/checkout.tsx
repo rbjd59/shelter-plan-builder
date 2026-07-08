@@ -124,14 +124,16 @@ const T = {
 } as const;
 
 function CheckoutPage() {
-  const { lang } = Route.useSearch();
+  const { lang, discountPct, submissionId } = Route.useSearch();
   const L = lang as Lang;
   const t = T[L];
   const [includeReadiness, setIncludeReadiness] = useState(false);
   const [includePetRescue, setIncludePetRescue] = useState(false);
   const [showPay, setShowPay] = useState(false);
 
-  const total = 199 + (includeReadiness ? 99 : 0) + (includePetRescue ? 10 : 0);
+  const discount = discountPct && discountPct > 0 ? discountPct : 0;
+  const subtotal = 199 + (includeReadiness ? 99 : 0) + (includePetRescue ? 10 : 0);
+  const total = Math.round(subtotal * (1 - discount / 100));
 
   const langs: Lang[] = ["es", "en", "ht"];
   const langBtn = (active: boolean): React.CSSProperties => ({
