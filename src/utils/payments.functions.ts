@@ -67,10 +67,14 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       userId?: string;
       includeReadiness?: boolean;
       includePetRescue?: boolean;
+      discountPct?: number;
+      submissionId?: string;
     }) => {
       if (!["en", "es", "ht"].includes(data.language)) throw new Error("Invalid language");
       if (typeof data.returnUrl !== "string" || !data.returnUrl.startsWith("http"))
         throw new Error("Invalid returnUrl");
+      if (data.discountPct != null && (data.discountPct < 0 || data.discountPct > 100))
+        throw new Error("Invalid discountPct");
       return data;
     },
   )
@@ -79,6 +83,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
 
     const includeReadiness = !!data.includeReadiness;
     const includePetRescue = !!data.includePetRescue;
+    const discountPct = data.discountPct && data.discountPct > 0 ? Math.round(data.discountPct) : 0;
 
     const FIRM_SPLIT_BASE = 3500;       // $35 of $199
     const FIRM_SPLIT_READINESS = 5000;  // $50 of $99
@@ -114,16 +119,36 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
     const firmTransferCents =
       FIRM_SPLIT_BASE + (includeReadiness ? FIRM_SPLIT_READINESS : 0);
 
+    // Reduced-cost applicants (150% FPL or below) get an idempotent Stripe
+    // coupon. Coupon id encodes the percent so callers can't spoof it.
+    let discounts: Array<{ coupon: string }> | undefined;
+    if (discountPct > 0) {
+      const couponId = `dd_reduced_${discountPct}`;
+      try {
+        await stripe.coupons.retrieve(couponId);
+      } catch {
+        await stripe.coupons.create({
+          id: couponId,
+          percent_off: discountPct,
+          duration: "once",
+          name: `DetencionDefensa reduced-cost ${discountPct}%`,
+        });
+      }
+      discounts = [{ coupon: couponId }];
+    }
+
     const sessionParams = {
       mode: "payment",
       ui_mode: "embedded_page",
       return_url: data.returnUrl,
       line_items: lineItems,
+      ...(discounts && { discounts }),
       payment_intent_data: {
         description: [
           "DetencionDefensa Pro Se Plan ($199)",
           includeReadiness && "Family Readiness Documents ($99)",
           includePetRescue && "Pet Rescue ($10)",
+          discountPct > 0 && `Reduced-cost ${discountPct}% off`,
         ]
           .filter(Boolean)
           .join(" + "),
@@ -141,6 +166,8 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
         includes_pet_rescue: includePetRescue ? "true" : "false",
         firm_split: firmAccountId ? "connect_destination" : "stubbed",
         firm_split_cents: String(firmTransferCents),
+        discount_pct: String(discountPct),
+        ...(data.submissionId && { qualify_submission_id: data.submissionId }),
         ...(data.userId && { userId: data.userId }),
       },
     } satisfies Stripe.Checkout.SessionCreateParams;
