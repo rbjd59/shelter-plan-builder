@@ -11,9 +11,11 @@ interface Props {
   returnUrl: string;
   includeReadiness?: boolean;
   includePetRescue?: boolean;
+  discountPct?: number;
+  submissionId?: string;
 }
 
-export function StripeEmbeddedCheckoutBox({ language, customerEmail, returnUrl, includeReadiness, includePetRescue }: Props) {
+export function StripeEmbeddedCheckoutBox({ language, customerEmail, returnUrl, includeReadiness, includePetRescue, discountPct, submissionId }: Props) {
   const [stripePromise, setStripePromise] = useState<Promise<Stripe | null> | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<{ userId?: string; email?: string } | null>(null);
@@ -39,6 +41,8 @@ export function StripeEmbeddedCheckoutBox({ language, customerEmail, returnUrl, 
         environment: getStripeEnvironment(),
         includeReadiness: !!includeReadiness,
         includePetRescue: !!includePetRescue,
+        discountPct: discountPct || 0,
+        submissionId: submissionId || undefined,
       },
     });
     if (!secret) throw new Error("Failed to create checkout session");

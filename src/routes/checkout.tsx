@@ -4,7 +4,11 @@ import { z } from "zod";
 import { StripeEmbeddedCheckoutBox } from "@/components/StripeEmbeddedCheckout";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
-const searchSchema = z.object({ lang: z.enum(["en", "es", "ht"]).catch("es") });
+const searchSchema = z.object({
+  lang: z.enum(["en", "es", "ht"]).catch("es"),
+  discountPct: z.coerce.number().int().min(0).max(100).optional(),
+  submissionId: z.string().optional(),
+});
 
 export const Route = createFileRoute("/checkout")({
   validateSearch: searchSchema,
@@ -120,14 +124,16 @@ const T = {
 } as const;
 
 function CheckoutPage() {
-  const { lang } = Route.useSearch();
+  const { lang, discountPct, submissionId } = Route.useSearch();
   const L = lang as Lang;
   const t = T[L];
   const [includeReadiness, setIncludeReadiness] = useState(false);
   const [includePetRescue, setIncludePetRescue] = useState(false);
   const [showPay, setShowPay] = useState(false);
 
-  const total = 199 + (includeReadiness ? 99 : 0) + (includePetRescue ? 10 : 0);
+  const discount = discountPct && discountPct > 0 ? discountPct : 0;
+  const subtotal = 199 + (includeReadiness ? 99 : 0) + (includePetRescue ? 10 : 0);
+  const total = Math.round(subtotal * (1 - discount / 100));
 
   const langs: Lang[] = ["es", "en", "ht"];
   const langBtn = (active: boolean): React.CSSProperties => ({
@@ -239,6 +245,12 @@ function CheckoutPage() {
           </label>
 
           {/* Total */}
+          {discount > 0 && (
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, color: "#a8c5a8", padding: "4px 4px" }}>
+              <div>Reduced-cost discount ({discount}% off)</div>
+              <div>−${subtotal - total}</div>
+            </div>
+          )}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", padding: "16px 4px", borderTop: "1px solid #3a4458", marginTop: 8, marginBottom: 20 }}>
             <div style={{ fontSize: 14, textTransform: "uppercase", letterSpacing: 1, color: "#a8a59a" }}>{t.total}</div>
             <div style={{ fontSize: 32, fontWeight: 700, color: "#e8a04a", fontFamily: "Fraunces, serif" }}>${total}</div>
@@ -258,6 +270,8 @@ function CheckoutPage() {
                 returnUrl={returnUrl}
                 includeReadiness={includeReadiness}
                 includePetRescue={includePetRescue}
+                discountPct={discount}
+                submissionId={submissionId}
               />
             </div>
           )}
