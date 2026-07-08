@@ -1,94 +1,115 @@
-## What we're building
 
-A guided, trilingual (ES/EN/PT) **"Configura Mi App"** section on detenciondefensa.com where families enter everything BEFORE installing the app, plus two SOS fixes.
+# 5-Day Beta Launch Audit — DetencionDefensa + Primo App
 
----
+**Goal:** By end of Day 5, every screen, email, SMS, PDF, and board is reviewed word-by-word and confirmed working end-to-end for board of directors, legal, and funding partner demo. Zero regressions.
 
-## 1. Setup hub at `/configurar` (alias `/app-setup`)
-
-Public landing with big plain-language instructions and a hero video walkthrough. Entry flow:
-
-```text
-Enter email → "Te enviamos un enlace" → click link in email →
-land in dashboard scoped to their activation code (auto-linked by email match,
-or prompt for code if no match)
-```
-
-Magic-link auth via Supabase `signInWithOtp` (email only — no password). Returning user clicks the same link from any device, lands back in their dashboard.
-
-Once inside, **5 step cards** with a progress checkmark on each:
-
-1. **Tus datos** — name, A-number, DOB, place of birth, language, phone
-2. **Contactos de emergencia** (up to 8) — name, relationship, phone, email, "notify on SOS" toggle. Drag to reorder priority. Inline help: *"Estas personas recibirán un correo y un mensaje cuando actives la alerta."*
-3. **Documentos legales** — pre-filled toggles for the 10 standard docs (Habeas, POA, Pet Custody, etc.); each shows a preview; user can edit content inline or upload a custom PDF
-4. **Plan para mascotas** — species, name, vet, designated caretaker, feeding notes, vaccine file upload
-5. **PIN de seguridad** — 4-digit PIN to cancel an SOS (new, see §3)
-
-Every field saves on blur to the existing tables (`app_clients`, `client_contacts`, `client_documents`, `client_pet_rescue`). No new schema for §1 — we already have the tables.
-
-Activation flow change: when the user enters their 8-char code in the installed app, the app calls `get_client_bundle(_token)` (already exists) and everything is already there.
+**Ground rules (apply every day):**
+- Fix in small, scoped commits — no "while I'm in here" edits.
+- After every fix: re-run the specific flow that was fixed AND the two adjacent flows (upstream trigger, downstream consequence).
+- Keep a running `docs/beta-audit-log.md` — one row per finding: `stage | issue | fix | verified-by`.
+- Language parity check on every user-facing string: EN / ES / HT must all be present, correct, and not fall back to the wrong language.
+- Nothing gets marked "done" until it's been walked through in the live preview by you.
 
 ---
 
-## 2. Magic-link gate
+## Day 1 — Qualify → Intake → Payment
 
-- New public route `/configurar` — email form + "enviar enlace"
-- New `/configurar/dashboard` under `_authenticated/` — the 5-step UI
-- On first sign-in we look up `app_clients` by email; if found, link `user_id`; if not, prompt for the 8-char code, then link.
+**Scope:** everything before the client has an activation code.
 
----
-
-## 3. SOS PIN-to-cancel
-
-- Add `cancel_pin_hash` column to `app_clients` (bcrypt, set during step 5 of setup)
-- New RPC `cancel_sos_alert_with_pin(_token, _pin)` — verifies PIN before flipping `cancelled_at`. Existing `cancel_sos_alert` becomes admin-only.
-- Native app: after SOS fires, the "Cancelar alerta" button opens a PIN keypad. Wrong PIN = alert keeps firing and contacts keep getting follow-ups.
-
----
-
-## 4. Fix: documents not attached to SOS email
-
-Current `_enqueue_sos_emails` inlines doc content as `<pre>` HTML inside the email body. Gmail/Outlook strip large `<pre>` blocks and many recipients reported empty emails.
-
-Fix: attach each `send_on_alert=true` document as a real PDF attachment via the email queue worker.
-
-- Add `attachments` field to the queued payload: `[{filename, content_base64, content_type}]`
-- Update email worker (`src/lib/email/worker.server.ts`) to pass attachments to Resend
-- Generate the PDF server-side using existing `memorandum-of-law.server.ts` pdf-lib helper for each doc, base64 it, attach it
-- Body of the email becomes a short summary + "Adjuntos: Writ of Habeas Corpus, POA, Pet Custody Plan…"
+1. **Qualify wizard** (`/qualify`)
+   - AI 150% FPL check runs before Step 2 (already wired — re-verify with 3 test households: qualifies, reduced-cost, does-not-qualify).
+   - Copy review EN/ES/HT for all three outcomes.
+   - Confirm the "reduced cost" 10% path actually applies a discount at checkout.
+2. **Intake form** (`/intake`)
+   - Every field label, help text, error message reviewed in all 3 languages.
+   - Draft autosave: leave mid-form, come back, resume from same step.
+   - Validation: A-number format, phone format, email optional-but-valid (the recent Zod fix).
+3. **Stripe checkout** (`/checkout`)
+   - Test mode banner visible.
+   - Test card 4242… completes.
+   - Webhook `/api/public/payments/webhook` fires → `intake_submissions` row updated → activation code generated.
+4. **Sign-off:** Walk one full qualify→intake→pay flow in each language. Log receipts.
 
 ---
 
-## Files
+## Day 2 — Activation Emails, SMS, and Documents
 
-**New**
-- `src/routes/configurar.tsx` — public magic-link entry
-- `src/routes/_authenticated/configurar.dashboard.tsx` — 5-step hub
-- `src/components/app-setup/StepContacts.tsx`
-- `src/components/app-setup/StepDocuments.tsx`
-- `src/components/app-setup/StepPets.tsx`
-- `src/components/app-setup/StepPin.tsx`
-- `src/components/app-setup/StepProfile.tsx`
-- `src/lib/app-setup.functions.ts` — saveContact, saveDoc, savePin, linkCodeToEmail
-- `src/lib/sos-pdf-bundle.server.ts` — render all client docs to PDF attachments
+**Scope:** the moment payment succeeds, who gets what.
 
-**Modified**
-- `src/lib/email/worker.server.ts` — pass attachments to Resend
-- `src/routes/api/public/emergency/activate.ts` — call new bundle builder
-- Native app code (Capacitor) — PIN keypad on cancel; pull from `get_client_bundle` on activation (already wired)
-
-**Migrations**
-- Add `cancel_pin_hash text` to `app_clients`
-- Add `user_id uuid references auth.users` to `app_clients` (nullable) + index
-- New RPC `cancel_sos_alert_with_pin`
-- New RPC `link_app_client_to_user(_token, _user_id)`
+1. **Email audit** — read `src/lib/email/activation-emails.server.ts` line by line.
+   - **Client welcome only** — confirm attorney/company/emergency-contact emails are NOT fired on activation (they only fire on SOS). This was the source of "wrong emails going out."
+   - Verify EN/ES/HT subject + body + CTA + doc links + configure-from-web section.
+   - Check every doc link resolves (Habeas, Memorandum, Referral, JS-44, Brochure) — 14-day signed URL still valid.
+2. **SMS audit** — `src/lib/sms-notifications.server.ts`
+   - Client confirmation SMS: correct language, correct invite code, no PII leak.
+   - Staff alert SMS: goes only to staff numbers, contains case ID not client PII.
+3. **PDF audit** — open each generated PDF and eyeball:
+   - AO 242 Habeas
+   - Memorandum of Law
+   - SDFL Motion for Referral
+   - JS-44 Civil Cover Sheet
+   - Pro Se Brochure
+   - Confirm client name / A-number / DOB / detention facility populate correctly.
+4. **Suppression + unsubscribe** — one-click unsubscribe token works, resubscribe path documented.
+5. **Sign-off:** trigger 3 real test activations (one per language), inspect inbox + SMS + PDFs.
 
 ---
 
-## Out of scope (separate turn)
+## Day 3 — App Install (TestFlight + Android) and `/configurar` Setup Hub
 
-- Translating every existing legal doc template into Portuguese (we have ES/EN)
-- Push notifications inside the app for setup reminders
-- Family-shared edits (multiple emails on one activation code)
+**Scope:** client goes from welcome email → installed app with data pre-loaded.
 
-Approve and I'll build everything in this turn.
+1. **`/get-app` redirect** — iOS UA → TestFlight URL, Android → APK, desktop → `/download`. Test on all three.
+2. **TestFlight instructions** — rewrite the iOS pending page + welcome email iOS section into plain-language steps:
+   - Tap link → App Store opens TestFlight → install TestFlight → tap "Accept" → install DetencionDefensa → open → enter 8-char activation code.
+   - Add screenshots.
+3. **`/configurar` magic-link entry** — email → OTP link → `/configurar/dashboard`.
+4. **5-step setup hub** (per `.lovable/plan.md`):
+   - Step 1 Profile, Step 2 Contacts (up to 8), Step 3 Documents, Step 4 Pets, Step 5 PIN.
+   - Every field saves on blur. Progress checkmarks correct.
+5. **App activation** — enter code in native app → `get_client_bundle` returns everything set up in step 4 → no re-entry needed.
+6. **Sign-off:** one tester on iPhone, one on Android, both fully activated.
+
+---
+
+## Day 4 — Attorney Board, Company Board, Admin Console
+
+**Scope:** who sees what, and nothing they shouldn't.
+
+1. **Attorney board** (`/attorney-board`, `/_firm/*`)
+   - Column-by-column review: only case-relevant fields (name, A-number, facility, status, docs, next action).
+   - **Remove:** payment amounts, Stripe IDs, internal notes, unrelated PII.
+   - Detained queue, review queue, packet view all render correctly.
+2. **Company board** (`/company-board`)
+   - Only ops-relevant fields (activation status, install status, contact count, last-seen, alert status).
+   - **Remove:** legal case content, doc contents, attorney notes.
+3. **Admin console** (`/_admin/*`) — spot-check activations, alerts, emails, invite codes, reminders, triggers, webhooks tabs still load and paginate.
+4. **RLS re-audit** — run `security--run_security_scan`, fix any new findings in the same day.
+5. **Sign-off:** log in as attorney role, company role, admin role; confirm role isolation.
+
+---
+
+## Day 5 — SOS End-to-End + Full Dress Rehearsal
+
+**Scope:** the moment that matters most.
+
+1. **SOS trigger** from native app → `/api/public/emergency/activate` → `emergency_activations` row → email queue + SMS queue.
+2. **PIN-to-cancel** — wrong PIN keeps alert firing, correct PIN cancels.
+3. **Emergency contacts receive:**
+   - Email with PDF attachments (Habeas, POA, Pet Plan) — verify Resend attachment path, not inline `<pre>`.
+   - SMS with short message + link to `/alerta/$token`.
+4. **Attorney gets SOS notification** — separate from client welcome flow.
+5. **`/alerta/$token`** public page renders in recipient's language, shows facility info, next steps.
+6. **Full dress rehearsal:** run one complete beta persona from qualify → pay → email → install → configure → SOS → cancel, in each language. Board-of-directors demo script written from this run.
+7. **Publish** to production. Freeze code. Beta open.
+
+---
+
+## What I need from you before Day 1
+
+- Confirm the 3 test personas (name, language, household size, income) so AI qualification has real inputs.
+- Confirm TestFlight public link is live and the Android APK build is current.
+- Confirm which phone numbers can receive test SMS (Twilio A2P).
+- Confirm the demo date so Day 5 lines up.
+
+Approve this plan and I'll start Day 1 in the next message.
