@@ -4,7 +4,11 @@ import { z } from "zod";
 import { StripeEmbeddedCheckoutBox } from "@/components/StripeEmbeddedCheckout";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
-const searchSchema = z.object({ lang: z.enum(["en", "es", "ht"]).catch("es") });
+const searchSchema = z.object({
+  lang: z.enum(["en", "es", "ht"]).catch("es"),
+  discountPct: z.coerce.number().int().min(0).max(100).optional(),
+  submissionId: z.string().optional(),
+});
 
 export const Route = createFileRoute("/checkout")({
   validateSearch: searchSchema,
