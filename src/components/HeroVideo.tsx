@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useLang } from "@/context/LanguageContext";
-import esAsset from "@/assets/videos/detencion-narrative-es-v5.mp4.asset.json";
-import enAsset from "@/assets/videos/detencion-narrative-en-v5.mp4.asset.json";
-import htAsset from "@/assets/videos/detencion-narrative-ht-v5.mp4.asset.json";
+import esAsset from "@/assets/videos/detencion-narrative-es-v4.mp4.asset.json";
+import enAsset from "@/assets/videos/detencion-narrative-en-v3.mp4.asset.json";
+import htAsset from "@/assets/videos/detencion-narrative-ht-v4.mp4.asset.json";
 
-// v5 padded cut with freeze tail + audio fade so the ending lands cleanly.
+// Use the narrative videos with correct Haitian Creole VO (was falling back to Spanish).
 const SRC = { es: esAsset.url, en: enAsset.url, ht: htAsset.url };
 
 export default function HeroVideoPortal() {
