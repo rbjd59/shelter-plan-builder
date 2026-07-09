@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useLang } from "@/context/LanguageContext";
-// v5 padded cut lives in /public/videos/ (bakes in freeze tail + audio fade).
-const SRC = {
-  es: "/videos/detencion-narrative-es-v5.mp4",
-  en: "/videos/detencion-narrative-en-v5.mp4",
-  ht: "/videos/detencion-narrative-ht-v5.mp4",
-};
+import esAsset from "@/assets/videos/detencion-narrative-es-v5.mp4.asset.json";
+import enAsset from "@/assets/videos/detencion-narrative-en-v5.mp4.asset.json";
+import htAsset from "@/assets/videos/detencion-narrative-ht-v5.mp4.asset.json";
+
+// v5 padded cut with freeze tail + audio fade so the ending lands cleanly.
+const SRC = { es: esAsset.url, en: enAsset.url, ht: htAsset.url };
 
 export default function HeroVideoPortal() {
   const { lang } = useLang();

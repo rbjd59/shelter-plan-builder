@@ -2,18 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import { useLang, type Lang } from "@/context/LanguageContext";
 // v5: appended a 2s freeze-frame tail with an audio fade-out so the closing
 // line ("...$199") lands cleanly instead of getting clipped mid-word.
-// Served from /public/videos/ (no CDN asset pipeline needed for the padded cut).
+import esAsset from "@/assets/videos/detencion-narrative-es-v5.mp4.asset.json";
+import enAsset from "@/assets/videos/detencion-narrative-en-v5.mp4.asset.json";
+import htAsset from "@/assets/videos/detencion-narrative-ht-v5.mp4.asset.json";
 import logoAsset from "@/assets/dd-logo.png.asset.json";
 import iceLeftAsset from "@/assets/ice-arrest-new.jpg.asset.json";
 import iceRightAsset from "@/assets/hispanic-family.jpg";
 import { PlayOverlay } from "@/components/AdVideoSection";
 
 
-const SRC = {
-  es: "/videos/detencion-narrative-es-v5.mp4",
-  en: "/videos/detencion-narrative-en-v5.mp4",
-  ht: "/videos/detencion-narrative-ht-v5.mp4",
-};
+const SRC = { es: esAsset.url, en: enAsset.url, ht: htAsset.url };
 
 const COPY = {
   es: {
