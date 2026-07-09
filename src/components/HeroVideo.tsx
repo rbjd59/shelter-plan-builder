@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useLang } from "@/context/LanguageContext";
 import esAsset from "@/assets/videos/detencion-narrative-es-v4-audio-1s-earlier.mp4.asset.json";
-import enAsset from "@/assets/videos/detencion-narrative-en-v3-audio-1s-earlier.mp4.asset.json";
+import enAsset from "@/assets/videos/detencion-narrative-en-v3-audio-3s-earlier.mp4.asset.json";
 import htAsset from "@/assets/videos/detencion-narrative-ht-v4-audio-1s-earlier.mp4.asset.json";
 
 // Use narrative videos with audio shifted one second earlier without trimming the voiceover.
