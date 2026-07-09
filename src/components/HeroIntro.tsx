@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useLang, type Lang } from "@/context/LanguageContext";
-// v3/v4 trims the trailing black tail so audio ends together with the visible
-// content (prior cuts had 3–8s of black while the voiceover finished).
-// ES v4: regenerated VO — "ICE" replaced with "la migra" (was mispronounced "ease").
-import esAsset from "@/assets/videos/detencion-narrative-es-v4.mp4.asset.json";
-import enAsset from "@/assets/videos/detencion-narrative-en-v3.mp4.asset.json";
-import htAsset from "@/assets/videos/detencion-narrative-ht-v4.mp4.asset.json";
+// Audio-shifted copies preserve the full voiceover and add one second of
+// opening video hold, so the audio effectively starts one second earlier
+// without trimming off the ending.
+import esAsset from "@/assets/videos/detencion-narrative-es-v4-audio-1s-earlier.mp4.asset.json";
+import enAsset from "@/assets/videos/detencion-narrative-en-v3-audio-1s-earlier.mp4.asset.json";
+import htAsset from "@/assets/videos/detencion-narrative-ht-v4-audio-1s-earlier.mp4.asset.json";
 import logoAsset from "@/assets/dd-logo.png.asset.json";
 import iceLeftAsset from "@/assets/ice-arrest-new.jpg.asset.json";
 import iceRightAsset from "@/assets/hispanic-family.jpg";
@@ -360,7 +360,7 @@ export default function HeroIntro() {
           <video
             ref={videoRef}
             key={lang}
-            src={`${SRC[lang]}#t=0.1`}
+            src={SRC[lang]}
             controls={hasStarted}
             playsInline
             {...({ "webkit-playsinline": "true" } as Record<string, string>)}
