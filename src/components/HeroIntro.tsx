@@ -1,18 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import { useLang, type Lang } from "@/context/LanguageContext";
-// v3/v4 trims the trailing black tail so audio ends together with the visible
-// content (prior cuts had 3–8s of black while the voiceover finished).
-// ES v4: regenerated VO — "ICE" replaced with "la migra" (was mispronounced "ease").
-import esAsset from "@/assets/videos/detencion-narrative-es-v4.mp4.asset.json";
-import enAsset from "@/assets/videos/detencion-narrative-en-v3.mp4.asset.json";
-import htAsset from "@/assets/videos/detencion-narrative-ht-v4.mp4.asset.json";
+// v5: appended a 2s freeze-frame tail with an audio fade-out so the closing
+// line ("...$199") lands cleanly instead of getting clipped mid-word.
+// Served from /public/videos/ (no CDN asset pipeline needed for the padded cut).
 import logoAsset from "@/assets/dd-logo.png.asset.json";
 import iceLeftAsset from "@/assets/ice-arrest-new.jpg.asset.json";
 import iceRightAsset from "@/assets/hispanic-family.jpg";
 import { PlayOverlay } from "@/components/AdVideoSection";
 
 
-const SRC = { es: esAsset.url, en: enAsset.url, ht: htAsset.url };
+const SRC = {
+  es: "/videos/detencion-narrative-es-v5.mp4",
+  en: "/videos/detencion-narrative-en-v5.mp4",
+  ht: "/videos/detencion-narrative-ht-v5.mp4",
+};
 
 const COPY = {
   es: {
