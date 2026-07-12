@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { usePlaidLink } from "react-plaid-link";
 import {
@@ -7,7 +7,15 @@ import {
   attachQualifyIdentity,
   finalizeQualifySubmission,
 } from "@/lib/qualify.functions";
+import {
+  createIdentityVerification,
+  getIdentityVerification,
+  createQualifyUploadUrl,
+  saveQualifyDocumentPath,
+  type QualifyDocKind,
+} from "@/lib/qualify-identity.functions";
 import { createPlaidLinkToken, exchangePlaidPublicToken } from "@/lib/plaid.functions";
+import { supabase } from "@/integrations/supabase/client";
 import { useLang, type Lang } from "@/context/LanguageContext";
 
 
