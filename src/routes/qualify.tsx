@@ -85,10 +85,19 @@ function QualifyPage() {
     fullName: "",
     email: "",
     phone: "",
-    idDocumentUrl: "",
-    incomeDocumentUrl: "",
-    supportLetterUrl: "",
   });
+  const [verifStatus, setVerifStatus] = useState<string>("not_started");
+  const [verifBusy, setVerifBusy] = useState(false);
+  const [incomeDocKind, setIncomeDocKind] = useState<QualifyDocKind>("pay_stub");
+  const [supportLetterPath, setSupportLetterPath] = useState("");
+  const [incomeDocPath, setIncomeDocPath] = useState("");
+  const [uploadingKind, setUploadingKind] = useState<QualifyDocKind | "">("");
+  const verifPollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const createVerif = useServerFn(createIdentityVerification);
+  const getVerif = useServerFn(getIdentityVerification);
+  const createUploadUrl = useServerFn(createQualifyUploadUrl);
+  const saveDocPath = useServerFn(saveQualifyDocumentPath);
 
   // Step 3 plaid
   const [linkToken, setLinkToken] = useState("");
