@@ -35,7 +35,7 @@ export const createIdentityVerification = createServerFn({ method: "POST" })
       .parse(data),
   )
   .handler(async ({ data }) => {
-    const { createStripeClient, getStripeErrorMessage } = await import("@/lib/stripe.server");
+    const { createStripeClient } = await import("@/lib/stripe.server");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
     try {
@@ -63,7 +63,7 @@ export const createIdentityVerification = createServerFn({ method: "POST" })
 
       return { ok: true as const, sessionId: session.id, url: session.url, status: session.status };
     } catch (err) {
-      return { ok: false as const, error: getStripeErrorMessage(err) };
+      return { ok: false as const, error: err instanceof Error ? err.message : String(err) };
     }
   });
 
@@ -72,7 +72,7 @@ export const getIdentityVerification = createServerFn({ method: "POST" })
     z.object({ submissionId: z.string().uuid() }).parse(data),
   )
   .handler(async ({ data }) => {
-    const { createStripeClient, getStripeErrorMessage } = await import("@/lib/stripe.server");
+    const { createStripeClient } = await import("@/lib/stripe.server");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
     const { data: row } = await supabaseAdmin
@@ -107,7 +107,7 @@ export const getIdentityVerification = createServerFn({ method: "POST" })
 
       return { ok: true as const, status: session.status };
     } catch (err) {
-      return { ok: false as const, error: getStripeErrorMessage(err) };
+      return { ok: false as const, error: err instanceof Error ? err.message : String(err) };
     }
   });
 
