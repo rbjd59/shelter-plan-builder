@@ -4,7 +4,7 @@ import { useLang, type Lang } from "@/context/LanguageContext";
 // opening video hold, so the audio effectively starts one second earlier
 // without trimming off the ending.
 import esAsset from "@/assets/videos/detencion-narrative-es-v4-audio-1s-earlier.mp4.asset.json";
-import enAsset from "@/assets/videos/detencion-narrative-en-v3-audio-3s-earlier.mp4.asset.json";
+import enAsset from "@/assets/videos/detencion-narrative-en-v3-fixed-199.mp4.asset.json";
 import htAsset from "@/assets/videos/detencion-narrative-ht-v4-audio-1s-earlier.mp4.asset.json";
 import logoAsset from "@/assets/dd-logo.png.asset.json";
 import iceLeftAsset from "@/assets/ice-arrest-new.jpg.asset.json";
