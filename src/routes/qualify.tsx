@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { usePlaidLink } from "react-plaid-link";
 import {
@@ -7,7 +7,15 @@ import {
   attachQualifyIdentity,
   finalizeQualifySubmission,
 } from "@/lib/qualify.functions";
+import {
+  createIdentityVerification,
+  getIdentityVerification,
+  createQualifyUploadUrl,
+  saveQualifyDocumentPath,
+  type QualifyDocKind,
+} from "@/lib/qualify-identity.functions";
 import { createPlaidLinkToken, exchangePlaidPublicToken } from "@/lib/plaid.functions";
+import { supabase } from "@/integrations/supabase/client";
 import { useLang, type Lang } from "@/context/LanguageContext";
 
 
@@ -77,10 +85,19 @@ function QualifyPage() {
     fullName: "",
     email: "",
     phone: "",
-    idDocumentUrl: "",
-    incomeDocumentUrl: "",
-    supportLetterUrl: "",
   });
+  const [verifStatus, setVerifStatus] = useState<string>("not_started");
+  const [verifBusy, setVerifBusy] = useState(false);
+  const [incomeDocKind, setIncomeDocKind] = useState<QualifyDocKind>("pay_stub");
+  const [supportLetterPath, setSupportLetterPath] = useState("");
+  const [incomeDocPath, setIncomeDocPath] = useState("");
+  const [uploadingKind, setUploadingKind] = useState<QualifyDocKind | "">("");
+  const verifPollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const createVerif = useServerFn(createIdentityVerification);
+  const getVerif = useServerFn(getIdentityVerification);
+  const createUploadUrl = useServerFn(createQualifyUploadUrl);
+  const saveDocPath = useServerFn(saveQualifyDocumentPath);
 
   // Step 3 plaid
   const [linkToken, setLinkToken] = useState("");
@@ -121,10 +138,96 @@ function QualifyPage() {
   };
 
   /* --------------- step 2 --------------- */
+  const startVerification = async () => {
+    setError("");
+    if (identity.fullName.trim().length < 2) {
+      setError("Please enter your full legal name before starting ID verification.");
+      return;
+    }
+    setVerifBusy(true);
+    try {
+      const res = await createVerif({
+        data: {
+          submissionId,
+          returnUrl: typeof window !== "undefined"
+            ? `${window.location.origin}/qualify?verified=1`
+            : undefined,
+        },
+      });
+      if (!res.ok) throw new Error(res.error);
+      setVerifStatus(res.status || "processing");
+      if (res.url) window.open(res.url, "_blank", "noopener,noreferrer");
+      // Start polling every 4s until verified/failed.
+      if (verifPollRef.current) clearInterval(verifPollRef.current);
+      verifPollRef.current = setInterval(async () => {
+        try {
+          const s = await getVerif({ data: { submissionId } });
+          if (s.ok && s.status) {
+            setVerifStatus(s.status);
+            if (s.status === "verified" || s.status === "canceled") {
+              if (verifPollRef.current) clearInterval(verifPollRef.current);
+              verifPollRef.current = null;
+            }
+          }
+        } catch {}
+      }, 4000);
+    } catch (e: any) {
+      setError(e?.message || "Could not start ID verification.");
+    } finally {
+      setVerifBusy(false);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (verifPollRef.current) clearInterval(verifPollRef.current);
+    };
+  }, []);
+
+  const uploadDoc = async (
+    kind: QualifyDocKind,
+    file: File,
+  ): Promise<string | null> => {
+    setError("");
+    setUploadingKind(kind);
+    try {
+      const sig = await createUploadUrl({
+        data: { submissionId, kind, filename: file.name },
+      });
+      if (!sig.ok) throw new Error(sig.error);
+      const { error: upErr } = await supabase.storage
+        .from("qualify-docs")
+        .uploadToSignedUrl(sig.path, sig.token, file);
+      if (upErr) throw upErr;
+      const saved = await saveDocPath({
+        data: { submissionId, kind, path: sig.path },
+      });
+      if (!saved.ok) throw new Error(saved.error);
+      return sig.path;
+    } catch (e: any) {
+      setError(e?.message || "Upload failed. Please try again.");
+      return null;
+    } finally {
+      setUploadingKind("");
+    }
+  };
+
   const submitIdentity = async () => {
     setError("");
     if (identity.fullName.trim().length < 2) {
       setError("Please enter your full legal name.");
+      return;
+    }
+    if (verifStatus !== "verified") {
+      setError("Please complete the ID + selfie verification on your phone before continuing.");
+      return;
+    }
+    if (!supportLetterPath) {
+      setError("Please upload your church / community support letter.");
+      return;
+    }
+    if (!incomeDocPath) {
+      setError("Please upload one income document (pay stub, tax return, or benefits letter).");
       return;
     }
     setBusy(true);
@@ -611,40 +714,127 @@ function QualifyPage() {
                   onChange={(e) => setIdentity({ ...identity, phone: e.target.value })}
                 />
               </Field>
-              <p className="text-sm text-gray-600 pt-2">
-                Paste a link to a hosted copy of each document. Native file
-                uploads coming next.
+              {/* --- Stripe Identity: phone-based license + selfie liveness --- */}
+              <div className="rounded-lg border border-gray-300 bg-gray-50 p-4">
+                <h3 className="font-semibold text-gray-900 mb-1">
+                  Verify your identity (phone: license + selfie)
+                </h3>
+                <p className="text-sm text-gray-600 mb-3">
+                  We use Stripe Identity to scan your driver's license (or
+                  passport / consular ID) and match it to a live selfie. This
+                  usually takes 2 minutes on your phone. If you're already on
+                  your phone, it opens right here.
+                </p>
+                {verifStatus === "verified" ? (
+                  <div className="rounded bg-green-50 border border-green-300 px-3 py-2 text-green-800 text-sm">
+                    ✓ Identity verified
+                  </div>
+                ) : (
+                  <>
+                    <button
+                      className="btn-primary"
+                      disabled={verifBusy}
+                      onClick={startVerification}
+                    >
+                      {verifBusy
+                        ? "Opening…"
+                        : verifStatus === "not_started"
+                          ? "Start ID verification →"
+                          : "Reopen verification link"}
+                    </button>
+                    {verifStatus !== "not_started" && (
+                      <p className="text-xs text-gray-500 mt-2">
+                        Status: <strong>{verifStatus}</strong>. This box updates
+                        automatically once you finish the flow on your phone.
+                      </p>
+                    )}
+                  </>
+                )}
+              </div>
+
+              {/* --- Church / community support letter (required) --- */}
+              <div className="rounded-lg border border-gray-300 bg-white p-4">
+                <h3 className="font-semibold text-gray-900 mb-1">
+                  Church / community support letter <span className="text-red-700">*</span>
+                </h3>
+                <p className="text-sm text-gray-600 mb-3">
+                  A short signed letter from your pastor, community leader, or
+                  a nonprofit that knows you. PDF or photo is fine.
+                </p>
+                {supportLetterPath ? (
+                  <div className="rounded bg-green-50 border border-green-300 px-3 py-2 text-green-800 text-sm">
+                    ✓ Uploaded
+                  </div>
+                ) : (
+                  <input
+                    type="file"
+                    accept="image/*,application/pdf"
+                    disabled={uploadingKind === "support_letter"}
+                    onChange={async (e) => {
+                      const f = e.target.files?.[0];
+                      if (!f) return;
+                      const p = await uploadDoc("support_letter", f);
+                      if (p) setSupportLetterPath(p);
+                    }}
+                  />
+                )}
+                {uploadingKind === "support_letter" && (
+                  <p className="text-xs text-gray-500 mt-2">Uploading…</p>
+                )}
+              </div>
+
+              {/* --- Income document (one of three) --- */}
+              <div className="rounded-lg border border-gray-300 bg-white p-4">
+                <h3 className="font-semibold text-gray-900 mb-1">
+                  Income document <span className="text-red-700">*</span>
+                </h3>
+                <p className="text-sm text-gray-600 mb-3">
+                  Upload <strong>one</strong> of the following as proof of income.
+                </p>
+                <div className="flex flex-wrap gap-4 text-sm mb-3">
+                  {(
+                    [
+                      { k: "pay_stub", label: "Pay stub" },
+                      { k: "tax_return", label: "Tax return" },
+                      { k: "benefits_letter", label: "Benefits letter (SNAP / Medicaid / WIC)" },
+                    ] as { k: QualifyDocKind; label: string }[]
+                  ).map((opt) => (
+                    <label key={opt.k} className="inline-flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name="incomeDocKind"
+                        checked={incomeDocKind === opt.k}
+                        onChange={() => setIncomeDocKind(opt.k)}
+                      />
+                      {opt.label}
+                    </label>
+                  ))}
+                </div>
+                {incomeDocPath ? (
+                  <div className="rounded bg-green-50 border border-green-300 px-3 py-2 text-green-800 text-sm">
+                    ✓ Uploaded ({incomeDocKind.replace("_", " ")})
+                  </div>
+                ) : (
+                  <input
+                    type="file"
+                    accept="image/*,application/pdf"
+                    disabled={uploadingKind === incomeDocKind}
+                    onChange={async (e) => {
+                      const f = e.target.files?.[0];
+                      if (!f) return;
+                      const p = await uploadDoc(incomeDocKind, f);
+                      if (p) setIncomeDocPath(p);
+                    }}
+                  />
+                )}
+                {uploadingKind && uploadingKind !== "support_letter" && (
+                  <p className="text-xs text-gray-500 mt-2">Uploading…</p>
+                )}
+              </div>
+              <p className="text-xs text-gray-500">
+                All uploads are stored privately. Only you, our qualification
+                team, and your assigned attorney can view them.
               </p>
-              <Field label="Government ID URL">
-                <input
-                  className="input"
-                  placeholder="https://…"
-                  value={identity.idDocumentUrl}
-                  onChange={(e) =>
-                    setIdentity({ ...identity, idDocumentUrl: e.target.value })
-                  }
-                />
-              </Field>
-              <Field label="Income document URL (pay stub, tax return, benefits letter)">
-                <input
-                  className="input"
-                  placeholder="https://…"
-                  value={identity.incomeDocumentUrl}
-                  onChange={(e) =>
-                    setIdentity({ ...identity, incomeDocumentUrl: e.target.value })
-                  }
-                />
-              </Field>
-              <Field label="Letter from church / nonprofit / food bank (optional but strengthens application)">
-                <input
-                  className="input"
-                  placeholder="https://…"
-                  value={identity.supportLetterUrl}
-                  onChange={(e) =>
-                    setIdentity({ ...identity, supportLetterUrl: e.target.value })
-                  }
-                />
-              </Field>
               <div className="flex gap-3">
                 <button className="btn-secondary" onClick={() => setStep(1)}>
                   ← Back

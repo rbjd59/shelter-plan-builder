@@ -1077,7 +1077,10 @@ export type Database = {
           household_size: number | null
           household_state: string | null
           id: string
+          id_document_path: string | null
           id_document_url: string | null
+          income_document_path: string | null
+          income_document_type: string | null
           income_document_url: string | null
           intake_data: Json | null
           monthly_income_cents: number | null
@@ -1089,6 +1092,10 @@ export type Database = {
           primary_earner: boolean | null
           qualifies: boolean | null
           status: string
+          stripe_verification_session_id: string | null
+          stripe_verification_status: string | null
+          stripe_verification_verified_at: string | null
+          support_letter_path: string | null
           support_letter_url: string | null
           tier: string | null
           updated_at: string
@@ -1107,7 +1114,10 @@ export type Database = {
           household_size?: number | null
           household_state?: string | null
           id?: string
+          id_document_path?: string | null
           id_document_url?: string | null
+          income_document_path?: string | null
+          income_document_type?: string | null
           income_document_url?: string | null
           intake_data?: Json | null
           monthly_income_cents?: number | null
@@ -1119,6 +1129,10 @@ export type Database = {
           primary_earner?: boolean | null
           qualifies?: boolean | null
           status?: string
+          stripe_verification_session_id?: string | null
+          stripe_verification_status?: string | null
+          stripe_verification_verified_at?: string | null
+          support_letter_path?: string | null
           support_letter_url?: string | null
           tier?: string | null
           updated_at?: string
@@ -1137,7 +1151,10 @@ export type Database = {
           household_size?: number | null
           household_state?: string | null
           id?: string
+          id_document_path?: string | null
           id_document_url?: string | null
+          income_document_path?: string | null
+          income_document_type?: string | null
           income_document_url?: string | null
           intake_data?: Json | null
           monthly_income_cents?: number | null
@@ -1149,6 +1166,10 @@ export type Database = {
           primary_earner?: boolean | null
           qualifies?: boolean | null
           status?: string
+          stripe_verification_session_id?: string | null
+          stripe_verification_status?: string | null
+          stripe_verification_verified_at?: string | null
+          support_letter_path?: string | null
           support_letter_url?: string | null
           tier?: string | null
           updated_at?: string
