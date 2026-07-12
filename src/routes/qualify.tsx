@@ -138,10 +138,96 @@ function QualifyPage() {
   };
 
   /* --------------- step 2 --------------- */
+  const startVerification = async () => {
+    setError("");
+    if (identity.fullName.trim().length < 2) {
+      setError("Please enter your full legal name before starting ID verification.");
+      return;
+    }
+    setVerifBusy(true);
+    try {
+      const res = await createVerif({
+        data: {
+          submissionId,
+          returnUrl: typeof window !== "undefined"
+            ? `${window.location.origin}/qualify?verified=1`
+            : undefined,
+        },
+      });
+      if (!res.ok) throw new Error(res.error);
+      setVerifStatus(res.status || "processing");
+      if (res.url) window.open(res.url, "_blank", "noopener,noreferrer");
+      // Start polling every 4s until verified/failed.
+      if (verifPollRef.current) clearInterval(verifPollRef.current);
+      verifPollRef.current = setInterval(async () => {
+        try {
+          const s = await getVerif({ data: { submissionId } });
+          if (s.ok && s.status) {
+            setVerifStatus(s.status);
+            if (s.status === "verified" || s.status === "canceled") {
+              if (verifPollRef.current) clearInterval(verifPollRef.current);
+              verifPollRef.current = null;
+            }
+          }
+        } catch {}
+      }, 4000);
+    } catch (e: any) {
+      setError(e?.message || "Could not start ID verification.");
+    } finally {
+      setVerifBusy(false);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (verifPollRef.current) clearInterval(verifPollRef.current);
+    };
+  }, []);
+
+  const uploadDoc = async (
+    kind: QualifyDocKind,
+    file: File,
+  ): Promise<string | null> => {
+    setError("");
+    setUploadingKind(kind);
+    try {
+      const sig = await createUploadUrl({
+        data: { submissionId, kind, filename: file.name },
+      });
+      if (!sig.ok) throw new Error(sig.error);
+      const { error: upErr } = await supabase.storage
+        .from("qualify-docs")
+        .uploadToSignedUrl(sig.path, sig.token, file);
+      if (upErr) throw upErr;
+      const saved = await saveDocPath({
+        data: { submissionId, kind, path: sig.path },
+      });
+      if (!saved.ok) throw new Error(saved.error);
+      return sig.path;
+    } catch (e: any) {
+      setError(e?.message || "Upload failed. Please try again.");
+      return null;
+    } finally {
+      setUploadingKind("");
+    }
+  };
+
   const submitIdentity = async () => {
     setError("");
     if (identity.fullName.trim().length < 2) {
       setError("Please enter your full legal name.");
+      return;
+    }
+    if (verifStatus !== "verified") {
+      setError("Please complete the ID + selfie verification on your phone before continuing.");
+      return;
+    }
+    if (!supportLetterPath) {
+      setError("Please upload your church / community support letter.");
+      return;
+    }
+    if (!incomeDocPath) {
+      setError("Please upload one income document (pay stub, tax return, or benefits letter).");
       return;
     }
     setBusy(true);
