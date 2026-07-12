@@ -131,6 +131,28 @@ export const Route = createFileRoute("/api/public/payments/webhook")({
             case "checkout.session.completed":
               await handleCheckoutCompleted(event.data.object as StripeSession, env);
               break;
+            case "identity.verification_session.verified":
+            case "identity.verification_session.requires_input":
+            case "identity.verification_session.processing":
+            case "identity.verification_session.canceled": {
+              const vs = event.data.object as {
+                id: string;
+                status: string;
+                metadata?: Record<string, string> | null;
+              };
+              const submissionId = vs.metadata?.submissionId;
+              if (submissionId) {
+                const patch: Record<string, unknown> = { stripe_verification_status: vs.status };
+                if (vs.status === "verified") {
+                  patch.stripe_verification_verified_at = new Date().toISOString();
+                }
+                await supabaseAdmin
+                  .from("qualify_submissions")
+                  .update(patch as never)
+                  .eq("id", submissionId);
+              }
+              break;
+            }
             case "invoice.payment_failed":
               console.warn("[stripe-webhook] invoice.payment_failed", (event.data.object as { id: string }).id);
               break;
