@@ -1,12 +1,8 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import SiteShell from "@/components/SiteShell";
-
 import HeroIntro from "@/components/HeroIntro";
 import ProblemSolutionSection from "@/components/ProblemSolutionSection";
-import QualifyBand from "@/components/QualifyBand";
-
-
-
+import AdVideoSection from "@/components/AdVideoSection";
 
 const DEFENDER_HOSTS = new Set([
   "defendermicasa.com",
@@ -19,10 +15,6 @@ export const Route = createFileRoute("/")({
     return lang ? { lang } : {};
   },
   beforeLoad: ({ location }) => {
-    // Note: do NOT redirect first-time visitors to /splash. The homepage must
-    // load real business content immediately for SEO, social previews, and
-    // compliance reviewers (Twilio toll-free verification error 30489).
-    // Users can still pick a language via the on-page ES/EN/HT toggle.
     if (typeof window !== "undefined") {
       const host = window.location.hostname.toLowerCase();
       if (DEFENDER_HOSTS.has(host)) {
@@ -39,7 +31,6 @@ export const Route = createFileRoute("/")({
       /* ignore */
     }
   },
-
   head: () => ({
     meta: [
       { title: "DetencionDefensa.com — Plan de Defensa Pre-Detención · $199" },
@@ -68,12 +59,9 @@ export const Route = createFileRoute("/")({
   component: () => (
     <>
       <HeroIntro />
-      <QualifyBand />
       <ProblemSolutionSection />
+      <AdVideoSection />
       <SiteShell />
     </>
   ),
-
-
-
 });
