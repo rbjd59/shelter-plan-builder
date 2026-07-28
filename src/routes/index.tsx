@@ -1,15 +1,8 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import SiteShell from "@/components/SiteShell";
-
 import HeroIntro from "@/components/HeroIntro";
-
 import ProblemSolutionSection from "@/components/ProblemSolutionSection";
-
-import AssetProtectionVideoSection from "@/components/AssetProtectionVideoSection";
 import AdVideoSection from "@/components/AdVideoSection";
-
-
-
 
 const DEFENDER_HOSTS = new Set([
   "defendermicasa.com",
@@ -38,7 +31,6 @@ export const Route = createFileRoute("/")({
       /* ignore */
     }
   },
-
   head: () => ({
     meta: [
       { title: "DetencionDefensa.com — Plan de Defensa Pre-Detención · $199" },
@@ -67,16 +59,9 @@ export const Route = createFileRoute("/")({
   component: () => (
     <>
       <HeroIntro />
-      
       <ProblemSolutionSection />
-      
-      <AssetProtectionVideoSection />
       <AdVideoSection />
       <SiteShell />
     </>
-
   ),
-
-
-
 });
