@@ -294,21 +294,58 @@ export default function HeroIntro() {
           </div>
         </div>
 
-        <img
-          src={detentionNightAsset.url}
-          alt="ICE detention facility at night behind razor wire fencing"
-          loading="lazy"
+        <div
           style={{
+            position: "relative",
             width: "100%",
             maxWidth: 1200,
             margin: "0 auto 1.75rem",
-            aspectRatio: isMobile ? "16 / 10" : "21 / 9",
-            objectFit: "cover",
             borderRadius: 14,
-            display: "block",
+            overflow: "hidden",
             boxShadow: "0 18px 50px rgba(0,0,0,0.5)",
           }}
-        />
+        >
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              zIndex: 2,
+              padding: isMobile ? "0.75rem 1rem" : "1rem 1.5rem",
+              background: "linear-gradient(180deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.45) 60%, transparent 100%)",
+              textAlign: "center",
+            }}
+          >
+            <span
+              style={{
+                fontFamily: '"Roboto Slab", Georgia, serif',
+                fontSize: isMobile ? "0.95rem" : "clamp(1.1rem, 2vw, 1.6rem)",
+                fontWeight: 700,
+                color: "#e8a04a",
+                letterSpacing: isMobile ? 1 : 2,
+                textTransform: "uppercase",
+                lineHeight: 1.3,
+                display: "block",
+                textShadow: "0 2px 8px rgba(0,0,0,0.6)",
+              }}
+            >
+              ICE ARRESTS OVER 2000 NON-CITIZENS EVERY DAY
+            </span>
+          </div>
+          <img
+            src={detentionNightAsset.url}
+            alt="ICE detention facility at night behind razor wire fencing"
+            loading="lazy"
+            style={{
+              width: "100%",
+              aspectRatio: isMobile ? "16 / 10" : "21 / 9",
+              objectFit: "cover",
+              borderRadius: 14,
+              display: "block",
+            }}
+          />
+        </div>
 
         <div
           aria-hidden
