@@ -11,9 +11,9 @@ const SRC: Record<string, string> = {
 };
 
 const HEADING: Record<string, string> = {
-  en: "Homeowner? Must Watch Video",
-  es: "¿Propietario? Video Obligatorio",
-  ht: "Pwopriyetè? Fòk Ou Gade Videyo a",
+  en: "Homeowner",
+  es: "Propietario",
+  ht: "Pwopriyetè",
 };
 
 const TRUST_SUBLINE: Record<string, string> = {
@@ -66,11 +66,13 @@ export default function AdVideoSection() {
       <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
         <h2
           style={{
-            fontFamily: '"Roboto Slab", Georgia, serif',
-            fontSize: "clamp(1.5rem, 3vw, 2rem)",
-            fontWeight: 700,
+            fontFamily: '"Work Sans", -apple-system, Roboto, Helvetica, Arial, sans-serif',
+            fontSize: "clamp(2rem, 5vw, 3.5rem)",
+            fontWeight: 800,
             margin: "0 0 1.25rem",
             color: "#fff",
+            textTransform: "uppercase",
+            letterSpacing: "0.02em",
           }}
         >
           {HEADING[lang] ?? HEADING.en}
