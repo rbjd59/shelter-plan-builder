@@ -122,9 +122,9 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       ht: "6. Ki kote fòm yo dwe ale si yo detni w?",
     },
     intro: {
-      en: "Asset Protection distribution — only available if you purchased the $99 Asset Protection Package (or check it in the add-ons below). Tell us who receives the prepared forms when your case is activated.",
-      es: "Distribución de Protección de Bienes — solo disponible si compró el Paquete de Protección de Bienes de $99 (o márquelo en los complementos abajo). Indíquenos quién recibirá los formularios preparados cuando se active su caso.",
-      ht: "Distribisyon Pwoteksyon Byen — sèlman disponib si w te achte Pakè Pwoteksyon Byen $99 la (oswa tcheke l nan opsyon anba yo). Di nou ki moun k ap resevwa fòm yo lè ka w aktive.",
+      en: "Asset Protection distribution — included at no charge. Tell us who receives the prepared forms when your case is activated.",
+      es: "Distribución de Protección de Bienes — incluida sin costo. Indíquenos quién recibirá los formularios preparados cuando se active su caso.",
+      ht: "Distribisyon Pwoteksyon Byen — enkli gratis. Di nou ki moun k ap resevwa fòm yo lè ka w aktive.",
     },
     fields: [
       { key: "contact_name", label: { en: "Contact name", es: "Nombre del contacto", ht: "Non kontak la" } },
