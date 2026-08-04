@@ -162,9 +162,9 @@ function FireTestClientCard() {
             value={language}
             onChange={(e) => setLanguage(e.target.value as "es" | "en" | "ht")}
           >
-            <option value="es">ES</option>
-            <option value="en">EN</option>
-            <option value="ht">HT</option>
+            <option value="es">Español</option>
+            <option value="en">English</option>
+            <option value="ht">Kreyòl</option>
           </select>
           <button
             onClick={onFire}
