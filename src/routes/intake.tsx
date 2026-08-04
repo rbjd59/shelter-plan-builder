@@ -646,10 +646,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
         <AuthSaveBar lang={L} user={user} onAuthChange={setUser} />
         <form onSubmit={handleSubmit}>
           {sections.map((s) => {
-            // Section 6 (Asset Protection distribution contact) is gated behind
-            // the $99 Asset Protection Package — either previously purchased
-            // (localStorage) or checked as an add-on in this session.
-            const assetProtectionUnlocked = readinessPaid || !!answers.addon_asset_protection;
+            const assetProtectionUnlocked = true;
             if (s.id === "contact" && !assetProtectionUnlocked) {
               return (
                 <section key={s.id} style={{ marginBottom: 32, background: "#1a2436", padding: 24, borderRadius: 6, opacity: 0.6 }}>
@@ -763,7 +760,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
                 style={{ marginTop: 4, width: 18, height: 18, flexShrink: 0 }}
               />
               <span style={{ fontSize: 14, lineHeight: 1.5, color: "#fff5d6" }}>
-                <strong>{L === "es" ? "Paquete de Protección de Bienes — $99" : L === "ht" ? "Pakè Pwoteksyon Byen — $99" : "Asset Protection Package — $99"}</strong>
+                <strong>{L === "es" ? "Paquete de Protección de Bienes — Sin costo" : L === "ht" ? "Pakè Pwoteksyon Byen — Gratis" : "Asset Protection Package — No charge"}</strong>
                 <br />
                 <span style={{ fontSize: 12, color: "#cfc8b8" }}>
                   {L === "es" ? "Poder notarial y documentos para proteger su propiedad si es detenido." : L === "ht" ? "Manda ak dokiman pou pwoteje pwopriyete ou si yo detni w." : "Power of attorney and documents to protect your property if detained."}
@@ -780,7 +777,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
                 style={{ marginTop: 4, width: 18, height: 18, flexShrink: 0 }}
               />
               <span style={{ fontSize: 14, lineHeight: 1.5, color: "#fff5d6" }}>
-                <strong>{L === "es" ? "Módulo de Rescate de Mascotas — $10" : L === "ht" ? "Modil Sove Bèt Kay — $10" : "Pet Rescue Module — $10"}</strong>
+                <strong>{L === "es" ? "Módulo de Rescate de Mascotas — Incluido" : L === "ht" ? "Modil Sove Bèt Kay — Enkli" : "Pet Rescue Module — Included"}</strong>
                 <br />
                 <span style={{ fontSize: 12, color: "#cfc8b8" }}>
                   {L === "es" ? "Instrucciones para que un contacto recoja a su mascota si es detenido." : L === "ht" ? "Enstriksyon pou yon kontak chèche bèt kay ou a si yo detni w." : "Instructions for a contact to retrieve your pet if you're detained."}
