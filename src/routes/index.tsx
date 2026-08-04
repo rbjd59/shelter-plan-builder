@@ -33,26 +33,23 @@ export const Route = createFileRoute("/")({
   },
   head: () => ({
     meta: [
-      { title: "DetencionDefensa.com — Plan de Defensa Pre-Detención · $199" },
+      { title: "DetencionDefensa.com — Plan de Defensa Pre-Detención · $10/mes" },
       {
         name: "description",
         content:
-          "A pre-detention defense plan for immigrant working families. $199 today + $10/mo from month 3. NOT a law firm.",
+          "A pre-detention defense plan for immigrant working families. Emergency app $10/month; attorney-reviewed documents at no charge. NOT a law firm.",
       },
-      { property: "og:title", content: "DetencionDefensa.com — Plan de Defensa Pre-Detención · $199" },
+      { property: "og:title", content: "DetencionDefensa.com — Plan de Defensa Pre-Detención · $10/mes" },
       {
         property: "og:description",
         content:
-          "Pre-detention defense plan for immigrant working families. $199 today + $10/mo from month 3.",
+          "Pre-detention defense plan for immigrant working families. Emergency app $10/month; attorney-reviewed documents at no charge.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://detenciondefensa.com/" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "DetencionDefensa.com — Plan de Defensa Pre-Detención · $199" },
-      {
-        name: "twitter:description",
-        content: "Pre-detention defense plan for immigrant working families. $199 today.",
-      },
+      { name: "twitter:title", content: "DetencionDefensa.com — Plan de Defensa Pre-Detención · $10/mes" },
+      { name: "twitter:description", content: "Pre-detention defense plan for immigrant working families. Emergency app $10/month; attorney-reviewed documents at no charge." },
     ],
     links: [{ rel: "canonical", href: "https://detenciondefensa.com/" }],
   }),

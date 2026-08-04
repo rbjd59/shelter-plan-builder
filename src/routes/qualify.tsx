@@ -328,12 +328,12 @@ function QualifyPage() {
 
             <div className="rounded-lg border-2 border-red-700 bg-red-50 p-6 mb-6">
               <h2 className="text-xl font-bold text-red-900 mb-2">
-                $199 Legal Defense Package
+                $10/month Emergency App
               </h2>
               <p className="text-gray-800 mb-3">
                 Think of it like car insurance or medical insurance — you need{" "}
                 <strong>ICE / Amiga insurance</strong>. If you or a family member is
-                detained, this package activates a pre-built emergency defense
+                detained, the app activates a pre-built emergency defense
                 packet that gets you out of detention <em>much</em> faster.
               </p>
               <ul className="text-sm text-gray-700 space-y-1 mb-4 list-disc list-inside">
@@ -347,7 +347,7 @@ function QualifyPage() {
                 search={{ lang: "en" }}
                 className="inline-block bg-red-700 hover:bg-red-800 text-white font-bold px-6 py-3 rounded"
               >
-                Get the $199 package →
+                Subscribe — $10/month →
               </Link>
             </div>
 

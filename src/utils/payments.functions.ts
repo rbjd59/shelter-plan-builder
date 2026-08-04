@@ -45,17 +45,10 @@ async function resolveOrCreateCustomer(
 }
 
 /**
- * Create the Embedded Checkout session.
+ * Create the Embedded Checkout session for the DefensaSiempre emergency app.
  *
- * Base service is $199 one-time (file preparation).
- * Optional add-ons (one-time):
- *   - Family Readiness Documents Package ($99) — split $49 Company / $50 Firm
- *   - Pet Rescue ($10) — 100% Company
- *
- * Rule 4-5.4 compliance: attorney portions must go directly to the
- * Firm's Stripe account via a Stripe Connect destination charge.
- * Until FIRM_STRIPE_ACCOUNT_ID is set, transfer is stubbed and everything
- * lands on the Company account (test mode only).
+ * The app is a $10/month subscription. Attorney-created and reviewed documents
+ * are provided at no additional charge.
  */
 export const createCheckoutSession = createServerFn({ method: "POST" })
   .inputValidator(
@@ -65,8 +58,6 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       environment: StripeEnv;
       customerEmail?: string;
       userId?: string;
-      includeReadiness?: boolean;
-      includePetRescue?: boolean;
       discountPct?: number;
       submissionId?: string;
     }) => {
@@ -81,25 +72,28 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const stripe = createStripeClient(data.environment);
 
-    const includeReadiness = !!data.includeReadiness;
-    const includePetRescue = !!data.includePetRescue;
     const discountPct = data.discountPct && data.discountPct > 0 ? Math.round(data.discountPct) : 0;
+    const LOOKUP_KEY = "emergency_app_10_monthly";
 
-    const FIRM_SPLIT_BASE = 3500;       // $35 of $199
-    const FIRM_SPLIT_READINESS = 5000;  // $50 of $99
-
-    const lookupKeys: string[] = ["pretransfer_199"];
-    if (includeReadiness) lookupKeys.push("readiness_packet_99");
-    if (includePetRescue) lookupKeys.push("pet_rescue_10");
-
-    const priceResults = await Promise.all(
-      lookupKeys.map((k) => stripe.prices.list({ lookup_keys: [k], limit: 1 })),
-    );
-    const priceByKey: Record<string, string> = {};
-    lookupKeys.forEach((k, i) => {
-      if (!priceResults[i].data.length) throw new Error(`Price not found: ${k}`);
-      priceByKey[k] = priceResults[i].data[0].id;
-    });
+    // Find the recurring price; create it if missing so the app self-heals.
+    let priceId: string;
+    const priceList = await stripe.prices.list({ lookup_keys: [LOOKUP_KEY], limit: 1 });
+    if (priceList.data.length) {
+      priceId = priceList.data[0].id;
+    } else {
+      const product = await stripe.products.create({
+        name: "DefensaSiempre Emergency App",
+        description: "Monthly subscription for the DefensaSiempre emergency app.",
+      });
+      const price = await stripe.prices.create({
+        product: product.id,
+        unit_amount: 1000,
+        currency: "usd",
+        recurring: { interval: "month" },
+        lookup_key: LOOKUP_KEY,
+      });
+      priceId = price.id;
+    }
 
     const customerId =
       data.customerEmail || data.userId
@@ -109,18 +103,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
           })
         : undefined;
 
-    const lineItems: Array<{ price: string; quantity: number }> = [
-      { price: priceByKey["pretransfer_199"], quantity: 1 },
-    ];
-    if (includeReadiness) lineItems.push({ price: priceByKey["readiness_packet_99"], quantity: 1 });
-    if (includePetRescue) lineItems.push({ price: priceByKey["pet_rescue_10"], quantity: 1 });
-
-    const firmAccountId = process.env.FIRM_STRIPE_ACCOUNT_ID;
-    const firmTransferCents =
-      FIRM_SPLIT_BASE + (includeReadiness ? FIRM_SPLIT_READINESS : 0);
-
-    // Reduced-cost applicants (150% FPL or below) get an idempotent Stripe
-    // coupon. Coupon id encodes the percent so callers can't spoof it.
+    // Reduced-cost applicants get an idempotent percent-off coupon.
     let discounts: Array<{ coupon: string }> | undefined;
     if (discountPct > 0) {
       const couponId = `dd_reduced_${discountPct}`;
@@ -138,34 +121,22 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
     }
 
     const sessionParams = {
-      mode: "payment",
-      ui_mode: "embedded_page",
+      mode: "subscription" as const,
+      ui_mode: "embedded_page" as const,
       return_url: data.returnUrl,
-      line_items: lineItems,
+      line_items: [{ price: priceId, quantity: 1 }],
       ...(discounts && { discounts }),
-      payment_intent_data: {
-        description: [
-          "DetencionDefensa Pro Se Plan ($199)",
-          includeReadiness && "Family Readiness Documents ($99)",
-          includePetRescue && "Pet Rescue ($10)",
-          discountPct > 0 && `Reduced-cost ${discountPct}% off`,
-        ]
-          .filter(Boolean)
-          .join(" + "),
-        ...(firmAccountId && {
-          transfer_data: {
-            destination: firmAccountId,
-            amount: firmTransferCents,
-          },
-        }),
+      subscription_data: {
+        description: "DefensaSiempre Emergency App subscription",
+        metadata: {
+          language: data.language,
+          discount_pct: String(discountPct),
+          ...(data.submissionId && { qualify_submission_id: data.submissionId }),
+        },
       },
       ...(customerId && { customer: customerId }),
       metadata: {
         language: data.language,
-        includes_readiness: includeReadiness ? "true" : "false",
-        includes_pet_rescue: includePetRescue ? "true" : "false",
-        firm_split: firmAccountId ? "connect_destination" : "stubbed",
-        firm_split_cents: String(firmTransferCents),
         discount_pct: String(discountPct),
         ...(data.submissionId && { qualify_submission_id: data.submissionId }),
         ...(data.userId && { userId: data.userId }),
@@ -173,7 +144,6 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
     } satisfies Stripe.Checkout.SessionCreateParams;
 
     const session = await stripe.checkout.sessions.create(sessionParams);
-
     return session.client_secret;
   });
 

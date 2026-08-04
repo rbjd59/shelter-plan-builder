@@ -122,9 +122,9 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       ht: "6. Ki kote fòm yo dwe ale si yo detni w?",
     },
     intro: {
-      en: "Asset Protection distribution — only available if you purchased the $99 Asset Protection Package (or check it in the add-ons below). Tell us who receives the prepared forms when your case is activated.",
-      es: "Distribución de Protección de Bienes — solo disponible si compró el Paquete de Protección de Bienes de $99 (o márquelo en los complementos abajo). Indíquenos quién recibirá los formularios preparados cuando se active su caso.",
-      ht: "Distribisyon Pwoteksyon Byen — sèlman disponib si w te achte Pakè Pwoteksyon Byen $99 la (oswa tcheke l nan opsyon anba yo). Di nou ki moun k ap resevwa fòm yo lè ka w aktive.",
+      en: "Asset Protection distribution — included at no charge. Tell us who receives the prepared forms when your case is activated.",
+      es: "Distribución de Protección de Bienes — incluida sin costo. Indíquenos quién recibirá los formularios preparados cuando se active su caso.",
+      ht: "Distribisyon Pwoteksyon Byen — enkli gratis. Di nou ki moun k ap resevwa fòm yo lè ka w aktive.",
     },
     fields: [
       { key: "contact_name", label: { en: "Contact name", es: "Nombre del contacto", ht: "Non kontak la" } },
@@ -646,10 +646,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
         <AuthSaveBar lang={L} user={user} onAuthChange={setUser} />
         <form onSubmit={handleSubmit}>
           {sections.map((s) => {
-            // Section 6 (Asset Protection distribution contact) is gated behind
-            // the $99 Asset Protection Package — either previously purchased
-            // (localStorage) or checked as an add-on in this session.
-            const assetProtectionUnlocked = readinessPaid || !!answers.addon_asset_protection;
+            const assetProtectionUnlocked = true;
             if (s.id === "contact" && !assetProtectionUnlocked) {
               return (
                 <section key={s.id} style={{ marginBottom: 32, background: "#1a2436", padding: 24, borderRadius: 6, opacity: 0.6 }}>
@@ -763,7 +760,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
                 style={{ marginTop: 4, width: 18, height: 18, flexShrink: 0 }}
               />
               <span style={{ fontSize: 14, lineHeight: 1.5, color: "#fff5d6" }}>
-                <strong>{L === "es" ? "Paquete de Protección de Bienes — $99" : L === "ht" ? "Pakè Pwoteksyon Byen — $99" : "Asset Protection Package — $99"}</strong>
+                <strong>{L === "es" ? "Paquete de Protección de Bienes — Sin costo" : L === "ht" ? "Pakè Pwoteksyon Byen — Gratis" : "Asset Protection Package — No charge"}</strong>
                 <br />
                 <span style={{ fontSize: 12, color: "#cfc8b8" }}>
                   {L === "es" ? "Poder notarial y documentos para proteger su propiedad si es detenido." : L === "ht" ? "Manda ak dokiman pou pwoteje pwopriyete ou si yo detni w." : "Power of attorney and documents to protect your property if detained."}
@@ -780,7 +777,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
                 style={{ marginTop: 4, width: 18, height: 18, flexShrink: 0 }}
               />
               <span style={{ fontSize: 14, lineHeight: 1.5, color: "#fff5d6" }}>
-                <strong>{L === "es" ? "Módulo de Rescate de Mascotas — $10" : L === "ht" ? "Modil Sove Bèt Kay — $10" : "Pet Rescue Module — $10"}</strong>
+                <strong>{L === "es" ? "Módulo de Rescate de Mascotas — Incluido" : L === "ht" ? "Modil Sove Bèt Kay — Enkli" : "Pet Rescue Module — Included"}</strong>
                 <br />
                 <span style={{ fontSize: 12, color: "#cfc8b8" }}>
                   {L === "es" ? "Instrucciones para que un contacto recoja a su mascota si es detenido." : L === "ht" ? "Enstriksyon pou yon kontak chèche bèt kay ou a si yo detni w." : "Instructions for a contact to retrieve your pet if you're detained."}
