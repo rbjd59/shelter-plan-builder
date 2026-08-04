@@ -11,15 +11,9 @@ const SRC: Record<string, string> = {
 };
 
 const HEADING: Record<string, string> = {
-  en: "Homeowner? Must Watch Video",
-  es: "¿Propietario? Video Obligatorio",
-  ht: "Pwopriyetè? Fòk Ou Gade Videyo a",
-};
-
-const TRUST_SUBLINE: Record<string, string> = {
-  en: "Protect your home and assets in an attorney-created trust at",
-  es: "Proteja su casa y bienes en un fideicomiso creado por un abogado en",
-  ht: "Pwoteje kay ou ak byen ou nan yon konfyans kreye pa yon avoka nan",
+  en: "Homeowner",
+  es: "Propietario",
+  ht: "Pwopriyetè",
 };
 
 const DISCLAIMER: Record<string, string> = {
