@@ -78,7 +78,7 @@ export default function HeroIntro() {
         >
           <a
             href="/"
-            aria-label="DetencionDefensa home"
+            aria-label="Community Service Program home"
             style={{
               display: "inline-flex",
               alignItems: "center",
