@@ -4,7 +4,7 @@ import SiteShell from "@/components/SiteShell";
 export const Route = createFileRoute("/alt")({
   head: () => ({
     meta: [
-      { title: "DetencionDefensa.com — Alt · $199" },
+      { title: "DetencionDefensa.com — Alt · $10/month" },
       {
         name: "description",
         content:

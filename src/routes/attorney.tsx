@@ -65,7 +65,7 @@ const PILLARS = [
   },
   {
     h: "Flat fee, no surprises",
-    p: `One ${PRICE.totalUsd} payment — ${PRICE.companyUsd} for platform and translation, ${PRICE.firmUsd} attorney fee charged separately to the firm. No hourly billing.`,
+    p: `$10/month for the emergency app — attorney-reviewed documents are prepared at no charge to the customer. The ${PRICE.firmUsd} attorney fee is paid by the company, not the family. No hourly billing.`,
   },
 ];
 
@@ -165,7 +165,7 @@ function AttorneyPage() {
               fontWeight: 600,
             }}
           >
-            Start my packet — {PRICE.totalUsd}
+            Start my packet — $10/month
           </Link>
           <Link
             to="/retainer"
@@ -411,10 +411,11 @@ function AttorneyPage() {
           <p style={{ fontSize: 15.5, lineHeight: 1.7, color: NAVY }}>
             The firm provides legal services under a written limited-scope
             engagement letter (Florida Bar Rule 4-1.2(c)) at a flat attorney
-            fee of <strong>{PRICE.firmUsd}</strong> per customer. The remaining{" "}
-            <strong>{PRICE.companyUsd}</strong> paid to {COMPANY.legalName}{" "}
-            covers software, professional translation, typing, and secure
-            storage — those funds are not legal fees and are not paid to the firm.
+            fee of <strong>{PRICE.firmUsd}</strong> per customer, paid by{" "}
+            {COMPANY.legalName} — not by the family. Customers pay only{" "}
+            <strong>$10/month</strong> for the emergency app, which covers
+            software, professional translation, typing, and secure storage;
+            those funds are not legal fees and are not paid to the firm.
           </p>
           <p style={{ fontSize: 15.5, lineHeight: 1.7, color: NAVY, margin: 0 }}>
             The attorney fee is earned when the attorney completes review of

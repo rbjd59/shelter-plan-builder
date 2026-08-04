@@ -45,7 +45,7 @@ export const PASTORS: Record<Lang, Copy> = {
     stats: [
       { value: "25×", label: "aumento en detenciones de ICE desde enero 2025" },
       { value: "97%", label: "de casos de habeas corpus migratorio decididos a favor del peticionario" },
-      { value: "$199", label: "vs. $8,500+ que cobra un abogado federal" },
+      { value: "$10/mes", label: "vs. $8,500+ que cobra un abogado federal" },
     ],
     pastorTitle: "Una palabra para el pastor",
     pastorBody: [
@@ -61,7 +61,7 @@ export const PASTORS: Record<Lang, Copy> = {
     ],
     costTitle: "Comparación de costos",
     cost: [
-      { label: "DetencionDefensa (preparación)", value: "$199 + $10/mes" },
+      { label: "DetencionDefensa (app de emergencia)", value: "$10/mes — documentos sin cargo" },
       { label: "Beca patrocinada (primer año)", value: "$3/mes" },
       { label: "Abogado federal de habeas corpus", value: "$8,500 – $15,000" },
     ],
@@ -84,7 +84,7 @@ export const PASTORS: Record<Lang, Copy> = {
     stats: [
       { value: "25×", label: "surge in ICE detentions since January 2025" },
       { value: "97%", label: "of decided immigration habeas cases granted for petitioners" },
-      { value: "$199", label: "vs. $8,500+ from a federal attorney" },
+      { value: "$10/mo", label: "vs. $8,500+ from a federal attorney" },
     ],
     pastorTitle: "A word to the pastor",
     pastorBody: [
@@ -100,7 +100,7 @@ export const PASTORS: Record<Lang, Copy> = {
     ],
     costTitle: "Cost comparison",
     cost: [
-      { label: "DetencionDefensa (preparation)", value: "$199 + $10/mo" },
+      { label: "DetencionDefensa (emergency app)", value: "$10/mo — documents at no charge" },
       { label: "Sponsored scholarship (year one)", value: "$3/mo" },
       { label: "Federal habeas corpus attorney", value: "$8,500 – $15,000" },
     ],
@@ -123,7 +123,7 @@ export const PASTORS: Record<Lang, Copy> = {
     stats: [
       { value: "25×", label: "ogmantasyon detansyon ICE depi janvye 2025" },
       { value: "97%", label: "nan ka habeas corpus imigrasyon yo akòde pou demandè a" },
-      { value: "$199", label: "kont $8,500+ yon avoka federal" },
+      { value: "$10/mwa", label: "kont $8,500+ yon avoka federal" },
     ],
     pastorTitle: "Yon mo pou pastè a",
     pastorBody: [
@@ -139,7 +139,7 @@ export const PASTORS: Record<Lang, Copy> = {
     ],
     costTitle: "Konparezon pri",
     cost: [
-      { label: "DetencionDefensa (preparasyon)", value: "$199 + $10/mwa" },
+      { label: "DetencionDefensa (app dijans)", value: "$10/mwa — dokiman san frè" },
       { label: "Bous patwone (premye ane)", value: "$3/mwa" },
       { label: "Avoka federal habeas corpus", value: "$8,500 – $15,000" },
     ],

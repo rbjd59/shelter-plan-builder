@@ -5,7 +5,7 @@ export const Route = createFileRoute("/dag")({
   head: () => ({
     meta: [
       { title: "DAG — Sentinel Readiness · Protect Your Family & Your Assets" },
-      { name: "description", content: "Sentinel Readiness packet: 8 court-recognized documents translated side-by-side so your family is never unprepared. $99 one-time, optional $5/mo encrypted vault." },
+      { name: "description", content: "Sentinel Readiness packet: 8 court-recognized documents translated side-by-side so your family is never unprepared. Included at no charge with the $10/month emergency app plan." },
       { property: "og:title", content: "DAG — Sentinel Readiness" },
       { property: "og:description", content: "Protect your family and your assets — 8 court-recognized documents, prepared in your language." },
     ],
@@ -75,14 +75,14 @@ function DagPage() {
             marginBottom: "1.8rem",
           }}
         >
-          +$99 one-time · optional $5/mo vault
+          No charge · included with the $10/month app plan
         </div>
 
         <p style={{ fontSize: "1.05rem", lineHeight: 1.6, margin: "0 0 1.5rem" }}>
           Do not leave your family unprepared. We gather the 8 court-recognized documents,
           translate them into English and your language side-by-side, YOU fill them out in
           your own words, we translate your words exactly. YOU print, sign, and notarize.
-          Then: give the packet to your family now — OR for $5/month load it into your
+          Then: give the packet to your family now — OR load it into your
           encrypted vault and we only release it when you trigger NOTIFY FAMILY.
         </p>
 
@@ -125,7 +125,7 @@ function DagPage() {
             letterSpacing: "0.02em",
           }}
         >
-          Add Sentinel Readiness — $99 →
+          Add Sentinel Readiness — no charge →
         </Link>
 
         <p
