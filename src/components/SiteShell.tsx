@@ -4,7 +4,6 @@ import { SITE_HTML } from "@/lib/markup";
 import { useLang, type Lang } from "@/context/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { PARTNERS } from "@/lib/partners-content";
-import HomeProtectionBand from "@/components/HomeProtectionBand";
 
 /**
  * Renders the main marketing page from the reference HTML markup.
@@ -194,8 +193,6 @@ export default function SiteShell() {
   return (
     <div ref={ref}>
       <div dangerouslySetInnerHTML={{ __html: beforeAd }} />
-      
-      <HomeProtectionBand />
       {afterAd && <div dangerouslySetInnerHTML={{ __html: afterAd }} />}
     </div>
   );
