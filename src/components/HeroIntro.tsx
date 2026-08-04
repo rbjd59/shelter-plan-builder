@@ -5,19 +5,19 @@ import detentionNightAsset from "@/assets/detention-night.png.asset.json";
 
 const COPY = {
   es: {
-    subline: "Documentos legales creados y revisados por abogados — SIN COSTO.\nApp de emergencia para su teléfono: $10/mes.",
+    subline: "Plan de defensa contra detención por ICE GRATIS*.\nApp de emergencia, $10 al mes.",
     ice: "ICE ARRESTA MÁS DE 2000 PERSONAS NO CIUDADANOS CADA DÍA",
     getStarted: "Regístrese ahora",
     watchVideos: "Ver videos",
   },
   en: {
-    subline: "Legal documents created & reviewed by attorneys — NO CHARGE.\nEmergency app for your phone: $10/month.",
+    subline: "Free ICE Detention defense plan*.\nEmergency app, $10 a month.",
     ice: "ICE ARRESTS OVER 2000 NON-CITIZENS EVERY DAY",
     getStarted: "Get Started",
     watchVideos: "Watch videos",
   },
   ht: {
-    subline: "Dokiman legal avoka kreye ak revize — GRATIS.\nApp ijans pou telefòn ou: $10/mwa.",
+    subline: "Plan defans kont detansyon ICE gratis*.\nApp ijans, $10 pa mwa.",
     ice: "ICE ARETE PLIS PASE 2000 MOUN KI PA SITWAYEN CHAK JOU",
     getStarted: "Kòmanse",
     watchVideos: "Gade videyo yo",
