@@ -177,12 +177,13 @@ export function PlayOverlay({ onClick }: { onClick: () => void }) {
           display: "inline-flex",
           alignItems: "center",
           justifyContent: "center",
-          width: 96,
-          height: 96,
+          width: 150,
+          height: 150,
           borderRadius: "50%",
-          background: "rgba(232,160,74,0.95)",
-          border: "4px solid #fff",
-          boxShadow: "0 10px 30px rgba(0,0,0,0.55)",
+          background: "rgba(15,24,48,0.85)",
+          border: "6px solid #e8a04a",
+          boxShadow: "0 0 0 0 rgba(232,160,74,0.55), 0 12px 40px rgba(0,0,0,0.55)",
+          animation: "dd-pulse-play 1.6s ease-out infinite",
         }}
       >
         <span
@@ -191,13 +192,21 @@ export function PlayOverlay({ onClick }: { onClick: () => void }) {
             display: "inline-block",
             width: 0,
             height: 0,
-            marginLeft: 8,
-            borderTop: "18px solid transparent",
-            borderBottom: "18px solid transparent",
-            borderLeft: "28px solid #0f1830",
+            marginLeft: 14,
+            borderTop: "28px solid transparent",
+            borderBottom: "28px solid transparent",
+            borderLeft: "44px solid #e8a04a",
+            filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.35))",
           }}
         />
       </span>
+      <style>{`
+        @keyframes dd-pulse-play {
+          0% { box-shadow: 0 0 0 0 rgba(232,160,74,0.55), 0 12px 40px rgba(0,0,0,0.55); transform: scale(1); }
+          50% { box-shadow: 0 0 0 22px rgba(232,160,74,0), 0 12px 40px rgba(0,0,0,0.55); transform: scale(1.05); }
+          100% { box-shadow: 0 0 0 0 rgba(232,160,74,0), 0 12px 40px rgba(0,0,0,0.55); transform: scale(1); }
+        }
+      `}</style>
     </button>
   );
 }
