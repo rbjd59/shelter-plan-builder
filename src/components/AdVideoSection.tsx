@@ -78,21 +78,19 @@ export default function AdVideoSection() {
         <div
           style={{
             position: "relative",
-            background: "#000",
+            background: "#163b73",
             aspectRatio: "16 / 9",
             width: "100%",
             overflow: "hidden",
-            borderRadius: 18,
-            padding: 12,
-            border: "2px solid #e8a04a",
-            boxShadow:
-              "0 0 0 6px #fff inset, 0 18px 50px rgba(0,0,0,0.6), 0 0 24px rgba(232,160,74,0.25)",
+            borderRadius: 14,
+            border: "3px solid #e8a04a",
+            boxShadow: "0 18px 50px rgba(0,0,0,0.45), 0 0 24px rgba(232,160,74,0.35)",
           }}
         >
           <video
             ref={videoRef}
             key={lang}
-            src={`${SRC[lang] ?? SRC.en}#t=0.1`}
+            src={SRC[lang] ?? SRC.en}
             controls={started}
             playsInline
             {...({ "webkit-playsinline": "true" } as Record<string, string>)}
@@ -100,33 +98,42 @@ export default function AdVideoSection() {
             style={{
               width: "100%",
               height: "100%",
-              objectFit: "contain",
-              background: "#000",
+              objectFit: "cover",
+              objectPosition: "50% 0%",
+              background: "#163b73",
               display: "block",
             }}
           />
-          <div
-            aria-hidden
-            style={{
-              position: "absolute",
-              top: 20,
-              right: 20,
-              padding: "4px 10px",
-              background: "rgba(0,0,0,0.55)",
-              color: "#fff",
-              fontSize: 12,
-              fontWeight: 700,
-              letterSpacing: "0.04em",
-              borderRadius: 6,
-              border: "1px solid rgba(232,160,74,0.6)",
-              zIndex: 4,
-              pointerEvents: "none",
-            }}
-          >
-            detenciondefensa.com
-          </div>
           {!started && <PlayOverlay onClick={handlePlay} />}
         </div>
+        <p
+          style={{
+            margin: "1.25rem auto 0.5rem",
+            fontSize: 15,
+            lineHeight: 1.5,
+            color: "#fff",
+            maxWidth: 760,
+          }}
+        >
+          {TRUST_SUBLINE[lang] ?? TRUST_SUBLINE.en}{" "}
+          <a
+            href="https://savemyhometrust.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-block",
+              background: "#e8a04a",
+              color: "#0f1830",
+              padding: "0.5rem 1rem",
+              borderRadius: 6,
+              fontWeight: 700,
+              textDecoration: "none",
+              marginTop: 6,
+            }}
+          >
+            savemyhometrust.com
+          </a>
+        </p>
         <p
           style={{
             margin: "0.75rem auto 0",
