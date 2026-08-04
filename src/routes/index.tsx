@@ -2,7 +2,6 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import SiteShell from "@/components/SiteShell";
 import HeroIntro from "@/components/HeroIntro";
 import ProblemSolutionSection from "@/components/ProblemSolutionSection";
-import AdVideoSection from "@/components/AdVideoSection";
 
 const DEFENDER_HOSTS = new Set([
   "defendermicasa.com",
@@ -57,7 +56,6 @@ export const Route = createFileRoute("/")({
     <>
       <HeroIntro />
       <ProblemSolutionSection />
-      <AdVideoSection />
       <SiteShell />
     </>
   ),

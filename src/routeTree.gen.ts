@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VideosRouteImport } from './routes/videos'
 import { Route as VenuesRouteImport } from './routes/venues'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as TermsRouteImport } from './routes/terms'
@@ -88,6 +89,11 @@ import { Route as FirmFirmPacketIdRouteImport } from './routes/_firm/firm.packet
 import { Route as FirmFirmDetainedIdRouteImport } from './routes/_firm/firm.detained.$id'
 import { Route as AdminAdminClientsIdRouteImport } from './routes/_admin/admin.clients.$id'
 
+const VideosRoute = VideosRouteImport.update({
+  id: '/videos',
+  path: '/videos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VenuesRoute = VenuesRouteImport.update({
   id: '/venues',
   path: '/venues',
@@ -519,6 +525,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/venues': typeof VenuesRoute
+  '/videos': typeof VideosRoute
   '/admin': typeof AdminAdminRouteWithChildren
   '/cases': typeof AuthenticatedCasesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -596,6 +603,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/venues': typeof VenuesRoute
+  '/videos': typeof VideosRoute
   '/admin': typeof AdminAdminRouteWithChildren
   '/cases': typeof AuthenticatedCasesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -677,6 +685,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/venues': typeof VenuesRoute
+  '/videos': typeof VideosRoute
   '/_admin/admin': typeof AdminAdminRouteWithChildren
   '/_authenticated/cases': typeof AuthenticatedCasesRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
@@ -756,6 +765,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/unsubscribe'
     | '/venues'
+    | '/videos'
     | '/admin'
     | '/cases'
     | '/dashboard'
@@ -833,6 +843,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/unsubscribe'
     | '/venues'
+    | '/videos'
     | '/admin'
     | '/cases'
     | '/dashboard'
@@ -913,6 +924,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/unsubscribe'
     | '/venues'
+    | '/videos'
     | '/_admin/admin'
     | '/_authenticated/cases'
     | '/_authenticated/dashboard'
@@ -994,6 +1006,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
   VenuesRoute: typeof VenuesRoute
+  VideosRoute: typeof VideosRoute
   AlertaTokenRoute: typeof AlertaTokenRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
@@ -1024,6 +1037,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/videos': {
+      id: '/videos'
+      path: '/videos'
+      fullPath: '/videos'
+      preLoaderRoute: typeof VideosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/venues': {
       id: '/venues'
       path: '/venues'
@@ -1700,6 +1720,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   UnsubscribeRoute: UnsubscribeRoute,
   VenuesRoute: VenuesRoute,
+  VideosRoute: VideosRoute,
   AlertaTokenRoute: AlertaTokenRoute,
   AuthCallbackRoute: AuthCallbackRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,

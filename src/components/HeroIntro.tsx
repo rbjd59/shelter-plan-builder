@@ -322,102 +322,40 @@ export default function HeroIntro() {
         />
 
 
-        <div
-          ref={wrapRef}
-          style={{
-            position: "relative",
-            maxWidth: 1200,
-            margin: "0 auto",
-            background: "#163b73",
-            aspectRatio: "16 / 9",
-            width: "100%",
-            overflow: "hidden",
-            borderRadius: 14,
-            padding: 0,
-            border: "3px solid #e8a04a",
-            boxShadow: "0 18px 50px rgba(0,0,0,0.45), 0 0 24px rgba(232,160,74,0.35)",
-          }}
-        >
-          <video
-            ref={videoRef}
-            key={lang}
-            src={SRC[lang]}
-            controls={hasStarted}
-            playsInline
-            {...({ "webkit-playsinline": "true" } as Record<string, string>)}
-            preload="metadata"
+        <div ref={wrapRef} style={{ textAlign: "center" }}>
+          <a
+            href="/videos"
             style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              objectPosition: "50% 0%",
-              background: "#163b73",
-              display: "block",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 12,
+              background: "#e8a04a",
+              color: "#0f1830",
+              textDecoration: "none",
+              fontWeight: 800,
+              fontSize: isMobile ? 15 : 17,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              padding: isMobile ? "14px 24px" : "16px 32px",
+              borderRadius: 999,
+              boxShadow: "0 10px 30px rgba(0,0,0,0.4)",
+              fontFamily: "inherit",
             }}
-          />
-
-
-          {!hasStarted && (
-            <PlayOverlay
-              onClick={() => {
-                const v = videoRef.current;
-                if (!v) return;
-                v.muted = false;
-                const p = v.play();
-                if (p && typeof p.then === "function") {
-                  p.catch(() => {
-                    v.muted = true;
-                    v.play().catch(() => {});
-                  });
-                }
+          >
+            <span
+              aria-hidden
+              style={{
+                display: "inline-block",
+                width: 0,
+                height: 0,
+                borderTop: "9px solid transparent",
+                borderBottom: "9px solid transparent",
+                borderLeft: "14px solid #0f1830",
               }}
             />
-          )}
-
-          {isPlaying && (
-            <button
-              type="button"
-              onClick={toggle}
-              aria-label="Pause video"
-              style={{
-                position: "absolute",
-                top: 12,
-                right: 12,
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: 44,
-                height: 44,
-                borderRadius: 999,
-                background: "rgba(15,24,48,0.78)",
-                border: "1px solid rgba(255,255,255,0.4)",
-                color: "#fff",
-                cursor: "pointer",
-                fontFamily: "inherit",
-                padding: 0,
-              }}
-            >
-              <PauseIcon />
-            </button>
-          )}
+            {lang === "es" ? "Ver videos" : lang === "ht" ? "Gade videyo yo" : "Watch videos"}
+          </a>
         </div>
-        <p
-          style={{
-            maxWidth: 900,
-            margin: "0.75rem auto 0",
-            fontSize: 12,
-            lineHeight: 1.45,
-            color: "rgba(255,255,255,0.75)",
-            textAlign: "center",
-            fontStyle: "italic",
-          }}
-        >
-          {lang === "es"
-            ? "Este video es un anuncio publicitario. No garantiza resultados. Cada caso se maneja de manera diferente."
-            : lang === "ht"
-            ? "Videyo sa a se yon piblisite. Li pa garanti rezilta. Chak ka jere yon fason diferan."
-            : "This video is an advertisement. It does not guarantee outcomes. Each case is handled differently."}
-        </p>
       </div>
     </section>
   );
