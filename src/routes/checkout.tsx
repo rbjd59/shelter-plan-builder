@@ -15,8 +15,8 @@ export const Route = createFileRoute("/checkout")({
   component: CheckoutPage,
   head: () => ({
     meta: [
-      { title: "Pay for Service — DetencionDefensa.com" },
-      { name: "description", content: "Pay for your DetencionDefensa.com defense plan and optional family-readiness add-ons." },
+      { title: "Subscribe — DetencionDefensa.com" },
+      { name: "description", content: "Subscribe to the DefensaSiempre emergency app. Attorney-reviewed documents are included at no extra charge." },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -26,99 +26,57 @@ type Lang = "en" | "es" | "ht";
 
 const T = {
   en: {
-    title: "Your Order",
-    sub: "Select the services you need. Attorney review is included on every document. Payment is processed securely by Stripe.",
-    baseTitle: "Pre-Detention Protection Plan",
-    baseSub: "Translation, typing, and Florida-licensed attorney review of your federal forms.",
+    title: "Subscribe to the emergency app",
+    sub: "Attorney-created and reviewed documents are included at no charge. The only fee is the DefensaSiempre emergency app subscription, billed securely by Stripe.",
+    baseTitle: "DefensaSiempre Emergency App",
+    baseSub: "Monthly subscription. One tap notifies your emergency contacts and the DetencionDefensa team if you are detained.",
     baseBullets: [
-      "AO 242 Petition for Writ of Habeas Corpus (28 U.S.C. § 2241)",
-      "AO 240 In Forma Pauperis fee-waiver request",
-      "DefensaSiempre emergency app for your phone",
-      "Attorney review before any document is delivered",
+      "One-tap SOS alert with SMS and email",
+      "GPS location shared with your emergency contacts",
+      "Attorney review of your federal forms before delivery",
+      "Family Readiness and Pet Rescue documents included",
     ],
-    readinessTitle: "Family Readiness Documents Package",
-    readinessSub: "Eight legally-drafted documents so your family can act the moment you are detained. Reviewed by a Florida-licensed attorney.",
-    readinessBullets: [
-      "Power of Attorney",
-      "Standby Guardianship Designation",
-      "School Pickup Authorization",
-      "HIPAA Medical Records Authorization",
-      "Financial Inventory & Bill-Pay Sheet",
-      "Emergency Contact Tree",
-      "Children's Information Sheet",
-      "Important Document Locator",
-    ],
-    petTitle: "Pet Rescue",
-    petSub: "If you are detained, we contact your designated caregiver and coordinate emergency shelter or boarding for your pets.",
-    required: "Required",
-    optional: "Optional add-on",
+    price: "$10",
+    period: "/month",
     total: "Total",
     pay: "Continue to secure payment",
-    note: "After payment you'll be asked to read and accept the Terms of Service and the Limited Attorney-Client Retainer Agreement before starting the intake.",
+    note: "After subscribing you'll be asked to read and accept the Terms of Service and the Limited Attorney-Client Retainer Agreement before starting the intake.",
     back: "← Back to home",
   },
   es: {
-    title: "Su Pedido",
-    sub: "Seleccione los servicios que necesita. Cada documento incluye revisión de un abogado. Pago procesado de forma segura por Stripe.",
-    baseTitle: "Plan de Protección Antes de la Detención",
-    baseSub: "Traducción, mecanografía y revisión por un abogado licenciado en Florida de sus formularios federales.",
+    title: "Suscríbase a la app de emergencia",
+    sub: "Los documentos creados y revisados por un abogado están incluidos sin costo. La única tarifa es la suscripción a la app DefensaSiempre, procesada de forma segura por Stripe.",
+    baseTitle: "App de Emergencia DefensaSiempre",
+    baseSub: "Suscripción mensual. Con un toque se notifica a sus contactos de emergencia y al equipo de DetencionDefensa si lo detienen.",
     baseBullets: [
-      "Petición AO 242 de Habeas Corpus (28 U.S.C. § 2241)",
-      "AO 240 Solicitud de exención de tarifa (In Forma Pauperis)",
-      "App de emergencia DefensaSiempre para su teléfono",
-      "Revisión por abogado antes de entregar cualquier documento",
+      "Alerta SOS con un toque por SMS y correo",
+      "Ubicación GPS compartida con sus contactos",
+      "Revisión de sus formularios federales antes de entregarlos",
+      "Documentos de Preparación Familiar y Rescate de Mascotas incluidos",
     ],
-    readinessTitle: "Paquete de Documentos de Preparación Familiar",
-    readinessSub: "Ocho documentos redactados legalmente para que su familia pueda actuar el momento en que la migra lo detenga. Revisados por un abogado licenciado en Florida.",
-    readinessBullets: [
-      "Poder Notarial",
-      "Designación de Tutela en Espera (Standby Guardianship)",
-      "Autorización de Recogida Escolar",
-      "Autorización HIPAA de Registros Médicos",
-      "Inventario Financiero y Hoja de Pago de Facturas",
-      "Árbol de Contactos de Emergencia",
-      "Hoja de Información de los Niños",
-      "Localizador de Documentos Importantes",
-    ],
-    petTitle: "Rescate de Mascotas",
-    petSub: "Si la migra lo detiene, contactamos a su cuidador designado y coordinamos refugio o alojamiento de emergencia para sus mascotas.",
-    required: "Obligatorio",
-    optional: "Complemento opcional",
+    price: "$10",
+    period: "/mes",
     total: "Total",
     pay: "Continuar al pago seguro",
-    note: "Después del pago se le pedirá leer y aceptar los Términos del Servicio y el Acuerdo Limitado de Retención Abogado-Cliente antes de comenzar el formulario.",
+    note: "Después de suscribirse se le pedirá leer y aceptar los Términos del Servicio y el Acuerdo Limitado de Retención Abogado-Cliente antes de comenzar el formulario.",
     back: "← Volver al inicio",
   },
   ht: {
-    title: "Kòmand ou",
-    sub: "Chwazi sèvis ou bezwen yo. Yon avoka revize chak dokiman. Peman trete an sekirite pa Stripe.",
-    baseTitle: "Plan Pwoteksyon Anvan Detansyon",
-    baseSub: "Tradiksyon, tap, ak revizyon yon avoka ki gen lisans Florida sou fòm federal ou yo.",
+    title: "Abònman app ijans la",
+    sub: "Dokiman kreye ak revize pa avoka yo enkli san frè. Sèl frè a se abònman app DefensaSiempre an, trete an sekirite pa Stripe.",
+    baseTitle: "App Ijans DefensaSiempre",
+    baseSub: "Abònman chak mwa. Yon sèl klik avèti kontak ijans ou ak ekip DetencionDefensa si yo detni w.",
     baseBullets: [
-      "Petisyon AO 242 Habeas Corpus (28 U.S.C. § 2241)",
-      "AO 240 Demann pou anile frè (In Forma Pauperis)",
-      "App ijans DefensaSiempre pou telefòn ou",
-      "Revizyon avoka anvan nenpòt dokiman livre",
+      "Alèt SOS yon sèl klik pa SMS ak imèl",
+      "Lokalizasyon GPS pataje ak kontak ijans ou",
+      "Revizyon fòm federal ou anvan livrezon",
+      "Dokiman pou prepare fanmi ak sekou bèt kay enkli",
     ],
-    readinessTitle: "Pakè Dokiman Preparasyon Fanmi",
-    readinessSub: "Uit dokiman legal pou fanmi ou ka aji lè yo detni w. Revize pa yon avoka ki gen lisans Florida.",
-    readinessBullets: [
-      "Pouvwa Avoka (Power of Attorney)",
-      "Deziyasyon Gadyen Rezèv (Standby Guardianship)",
-      "Otorizasyon pou Ranmase Timoun nan Lekòl",
-      "Otorizasyon HIPAA pou Dosye Medikal",
-      "Envantè Finansye ak Fèy Peman Bòdwo",
-      "Pyebwa Kontak Ijans",
-      "Fèy Enfòmasyon Timoun yo",
-      "Lokalizatè Dokiman Enpòtan",
-    ],
-    petTitle: "Sekou pou Bèt Kay",
-    petSub: "Si yo detni w, nou kontakte moun ou deziyen an epi nou òganize lojman ijans pou bèt kay ou yo.",
-    required: "Obligatwa",
-    optional: "Opsyonèl",
+    price: "$10",
+    period: "/mwa",
     total: "Total",
     pay: "Kontinye nan peman sekirize a",
-    note: "Apre peman an w ap dwe li epi dakò ak Tèm Sèvis la ak Akò Retansyon Limite Avoka-Kliyan an anvan w kòmanse fòm nan.",
+    note: "Apre abònman an w ap dwe li epi dakò ak Tèm Sèvis la ak Akò Retansyon Limite Avoka-Kliyan an anvan w kòmanse fòm nan.",
     back: "← Tounen lakay",
   },
 } as const;
@@ -127,13 +85,11 @@ function CheckoutPage() {
   const { lang, discountPct, submissionId } = Route.useSearch();
   const L = lang as Lang;
   const t = T[L];
-  const [includeReadiness, setIncludeReadiness] = useState(false);
-  const [includePetRescue, setIncludePetRescue] = useState(false);
   const [showPay, setShowPay] = useState(false);
 
   const discount = discountPct && discountPct > 0 ? discountPct : 0;
-  const subtotal = 199 + (includeReadiness ? 99 : 0) + (includePetRescue ? 10 : 0);
-  const total = Math.round(subtotal * (1 - discount / 100));
+  const monthly = 10;
+  const adjusted = Math.round(monthly * (1 - discount / 100));
 
   const langs: Lang[] = ["es", "en", "ht"];
   const langBtn = (active: boolean): React.CSSProperties => ({
@@ -178,15 +134,15 @@ function CheckoutPage() {
           <h1 style={{ fontSize: 30, fontWeight: 700, marginBottom: 10, fontFamily: "Fraunces, serif" }}>{t.title}</h1>
           <p style={{ fontSize: 15, color: "#cfc8b8", lineHeight: 1.6, marginBottom: 24 }}>{t.sub}</p>
 
-          {/* Base — required */}
+          {/* Base subscription */}
           <div style={card}>
             <div style={cardHeader}>
               <div style={{ flex: 1 }}>
-                <span style={tag("#e8a04a", "#0b1220")}>{t.required}</span>
+                <span style={tag("#e8a04a", "#0b1220")}>REQUIRED</span>
                 <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4, fontFamily: "Fraunces, serif" }}>{t.baseTitle}</h2>
                 <p style={{ fontSize: 13, color: "#cfc8b8", lineHeight: 1.5 }}>{t.baseSub}</p>
               </div>
-              <div style={priceTag}>$199</div>
+              <div style={priceTag}>{t.price}<span style={{ fontSize: 14, fontWeight: 500 }}>{t.period}</span></div>
             </div>
             <ul style={{ paddingLeft: 20, marginTop: 10 }}>
               {t.baseBullets.map((b, i) => (
@@ -195,65 +151,16 @@ function CheckoutPage() {
             </ul>
           </div>
 
-          {/* Family Readiness Documents Package — optional */}
-          <label style={{ ...card, cursor: "pointer", display: "block", borderColor: includeReadiness ? "#e8a04a" : "#3a4458" }}>
-            <div style={cardHeader}>
-              <div style={{ flex: 1 }}>
-                <span style={tag("#3a4458", "#f6efe1")}>{t.optional}</span>
-                <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                  <input
-                    type="checkbox"
-                    checked={includeReadiness}
-                    onChange={(e) => setIncludeReadiness(e.target.checked)}
-                    style={{ marginTop: 5, width: 18, height: 18, cursor: "pointer" }}
-                  />
-                  <div>
-                    <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4, fontFamily: "Fraunces, serif" }}>{t.readinessTitle}</h2>
-                    <p style={{ fontSize: 13, color: "#cfc8b8", lineHeight: 1.5 }}>{t.readinessSub}</p>
-                  </div>
-                </div>
-              </div>
-              <div style={priceTag}>$99</div>
-            </div>
-            <ul style={{ paddingLeft: 20, marginTop: 10, columns: 2, columnGap: 24 }}>
-              {t.readinessBullets.map((b, i) => (
-                <li key={i} style={{ fontSize: 12, lineHeight: 1.5, color: "#cfc8b8", breakInside: "avoid" }}>{b}</li>
-              ))}
-            </ul>
-          </label>
-
-          {/* Pet Rescue — optional */}
-          <label style={{ ...card, cursor: "pointer", display: "block", borderColor: includePetRescue ? "#e8a04a" : "#3a4458" }}>
-            <div style={cardHeader}>
-              <div style={{ flex: 1 }}>
-                <span style={tag("#3a4458", "#f6efe1")}>{t.optional}</span>
-                <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                  <input
-                    type="checkbox"
-                    checked={includePetRescue}
-                    onChange={(e) => setIncludePetRescue(e.target.checked)}
-                    style={{ marginTop: 5, width: 18, height: 18, cursor: "pointer" }}
-                  />
-                  <div>
-                    <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4, fontFamily: "Fraunces, serif" }}>{t.petTitle}</h2>
-                    <p style={{ fontSize: 13, color: "#cfc8b8", lineHeight: 1.5 }}>{t.petSub}</p>
-                  </div>
-                </div>
-              </div>
-              <div style={priceTag}>$10</div>
-            </div>
-          </label>
-
           {/* Total */}
           {discount > 0 && (
             <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, color: "#a8c5a8", padding: "4px 4px" }}>
-              <div>Reduced-cost discount ({discount}% off)</div>
-              <div>−${subtotal - total}</div>
+              <div>Reduced-cost discount ({discount}% off first month)</div>
+              <div>−${monthly - adjusted}</div>
             </div>
           )}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", padding: "16px 4px", borderTop: "1px solid #3a4458", marginTop: 8, marginBottom: 20 }}>
             <div style={{ fontSize: 14, textTransform: "uppercase", letterSpacing: 1, color: "#a8a59a" }}>{t.total}</div>
-            <div style={{ fontSize: 32, fontWeight: 700, color: "#e8a04a", fontFamily: "Fraunces, serif" }}>${total}</div>
+            <div style={{ fontSize: 32, fontWeight: 700, color: "#e8a04a", fontFamily: "Fraunces, serif" }}>${adjusted}<span style={{ fontSize: 14, fontWeight: 500, color: "#cfc8b8" }}>{t.period}</span></div>
           </div>
 
           {!showPay ? (
@@ -268,8 +175,6 @@ function CheckoutPage() {
               <StripeEmbeddedCheckoutBox
                 language={L}
                 returnUrl={returnUrl}
-                includeReadiness={includeReadiness}
-                includePetRescue={includePetRescue}
                 discountPct={discount}
                 submissionId={submissionId}
               />
