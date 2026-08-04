@@ -193,8 +193,6 @@ export default function SiteShell() {
   return (
     <div ref={ref}>
       <div dangerouslySetInnerHTML={{ __html: beforeAd }} />
-      
-      <HomeProtectionBand />
       {afterAd && <div dangerouslySetInnerHTML={{ __html: afterAd }} />}
     </div>
   );
