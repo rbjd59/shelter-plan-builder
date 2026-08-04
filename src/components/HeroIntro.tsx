@@ -7,8 +7,8 @@ import esAsset from "@/assets/videos/detencion-narrative-es-v4-audio-1s-earlier.
 import enAsset from "@/assets/videos/detencion-narrative-en-v3-fixed-199.mp4.asset.json";
 import htAsset from "@/assets/videos/detencion-narrative-ht-v4-audio-1s-earlier.mp4.asset.json";
 import logoAsset from "@/assets/dd-logo.png.asset.json";
-import iceLeftAsset from "@/assets/ice-arrest-new.jpg.asset.json";
-import iceRightAsset from "@/assets/hispanic-family.jpg";
+import detentionNightAsset from "@/assets/detention-night.png.asset.json";
+
 import { PlayOverlay } from "@/components/AdVideoSection";
 
 
@@ -248,32 +248,11 @@ export default function HeroIntro() {
 
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: isMobile
-              ? "1fr"
-              : "minmax(90px, 150px) minmax(0, 1fr) minmax(90px, 150px)",
-            alignItems: "center",
-            gap: isMobile ? "1rem" : "clamp(16px, 3vw, 36px)",
-            margin: "0 0 1.75rem",
-            textAlign: "left",
+            margin: "0 0 1.5rem",
+            textAlign: "center",
           }}
         >
-
-          <img
-            src={iceLeftAsset.url}
-            alt="ICE ERO officers conducting a targeted enforcement operation"
-            loading="lazy"
-            style={{
-              width: "100%",
-              aspectRatio: isMobile ? "4 / 3" : "3 / 4",
-              objectFit: "cover",
-              borderRadius: 10,
-              boxShadow: "0 10px 30px rgba(0,0,0,0.45)",
-              display: "block",
-              order: isMobile ? 2 : 0,
-            }}
-          />
-          <div style={{ textAlign: "center", order: isMobile ? 1 : 0 }}>
+          <div style={{ textAlign: "center" }}>
             <h1
               style={{
                 fontFamily: '"Roboto Slab", Georgia, serif',
@@ -313,22 +292,23 @@ export default function HeroIntro() {
               {COPY[lang].subline}
             </p>
           </div>
-          <img
-            src={iceRightAsset}
-            alt="Hispanic family standing together"
-            loading="lazy"
-            style={{
-              width: "100%",
-              aspectRatio: isMobile ? "4 / 3" : "3 / 4",
-              objectFit: "cover",
-              borderRadius: 10,
-              boxShadow: "0 10px 30px rgba(0,0,0,0.45)",
-              display: isMobile ? "none" : "block",
-              order: isMobile ? 3 : 0,
-            }}
-          />
-
         </div>
+
+        <img
+          src={detentionNightAsset.url}
+          alt="ICE detention facility at night behind razor wire fencing"
+          loading="lazy"
+          style={{
+            width: "100%",
+            maxWidth: 1200,
+            margin: "0 auto 1.75rem",
+            aspectRatio: isMobile ? "16 / 10" : "21 / 9",
+            objectFit: "cover",
+            borderRadius: 14,
+            display: "block",
+            boxShadow: "0 18px 50px rgba(0,0,0,0.5)",
+          }}
+        />
 
         <div
           aria-hidden
@@ -340,6 +320,7 @@ export default function HeroIntro() {
             borderRadius: 2,
           }}
         />
+
 
         <div
           ref={wrapRef}
