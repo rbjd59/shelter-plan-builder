@@ -219,28 +219,7 @@ export default function HeroIntro() {
               ))}
             </div>
 
-            <a
-              href="/terms"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 6,
-                background: "#e8a04a",
-                color: "#0f1830",
-                textDecoration: "none",
-                fontWeight: 800,
-                fontSize: isMobile ? 12 : 13,
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                padding: isMobile ? "8px 14px" : "10px 18px",
-                borderRadius: 999,
-                boxShadow: "0 6px 18px rgba(0,0,0,0.3)",
-                fontFamily: "inherit",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {COPY[lang].getStarted} →
-            </a>
+            {/* Get Started CTA moved below the hero image */}
           </div>
 
         </div>
@@ -345,6 +324,37 @@ export default function HeroIntro() {
               display: "block",
             }}
           />
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            margin: "0 0 1rem",
+          }}
+        >
+          <a
+            href="/terms"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              background: "#e8a04a",
+              color: "#0f1830",
+              textDecoration: "none",
+              fontWeight: 800,
+              fontSize: isMobile ? 14 : 16,
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              padding: isMobile ? "12px 22px" : "14px 28px",
+              borderRadius: 999,
+              boxShadow: "0 8px 24px rgba(0,0,0,0.3)",
+              fontFamily: "inherit",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {COPY[lang].getStarted} →
+          </a>
         </div>
 
         <div
