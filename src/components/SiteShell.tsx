@@ -4,7 +4,6 @@ import { SITE_HTML } from "@/lib/markup";
 import { useLang, type Lang } from "@/context/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { PARTNERS } from "@/lib/partners-content";
-import AdVideoSection from "@/components/AdVideoSection";
 import HomeProtectionBand from "@/components/HomeProtectionBand";
 
 /**
