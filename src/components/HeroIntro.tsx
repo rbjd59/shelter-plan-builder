@@ -78,7 +78,7 @@ export default function HeroIntro() {
         >
           <a
             href="/"
-            aria-label="DetencionDefensa home"
+            aria-label="Community Service Program home"
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -90,7 +90,7 @@ export default function HeroIntro() {
           >
             <img
               src={logoAsset.url}
-              alt="DetencionDefensa logo"
+              alt="Community Service Program logo"
               width={40}
               height={40}
               style={{
@@ -102,14 +102,17 @@ export default function HeroIntro() {
             />
             <span
               style={{
-                fontSize: isMobile ? 16 : 20,
+                fontSize: isMobile ? 12 : 15,
                 fontWeight: 700,
                 letterSpacing: -0.3,
                 color: "#ffffff",
-                whiteSpace: "nowrap",
+                whiteSpace: "normal",
+                lineHeight: 1.2,
+                textAlign: "left",
+                maxWidth: isMobile ? 180 : 320,
               }}
             >
-              DetencionDefensa
+              Community Service Program — Developed and funded by DetencionDefensa.com, offered through Refuge Outreach, a 501(c)(3) charity.
             </span>
           </a>
 
