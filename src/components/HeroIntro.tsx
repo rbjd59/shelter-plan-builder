@@ -17,7 +17,7 @@ const SRC = { es: esAsset.url, en: enAsset.url, ht: htAsset.url };
 const COPY = {
   es: {
     headline: "Protéjase antes de la detención.\nActúe hoy — no mañana.",
-    subline: "Plan de Defensa Legal de Bajo Costo $199\nCreado y Revisado por Abogados\nPara Quienes No Pueden Pagar $10,000",
+    subline: "Documentos legales creados y revisados por abogados — SIN COSTO.\nApp de emergencia para su teléfono: $10/mes.",
     offer: "",
     start: "Comenzar",
     play: "Reproducir",
@@ -25,7 +25,7 @@ const COPY = {
   },
   en: {
     headline: "Protect yourself before detention.\nAct today — not tomorrow.",
-    subline: "Attorney Created & Reviewed Low Cost $199\nLegal Defense Plan\nFor Those Who Can Not Afford $10,000",
+    subline: "Legal documents created & reviewed by attorneys — NO CHARGE.\nEmergency app for your phone: $10/month.",
     offer: "",
     start: "Start",
     play: "Play",
@@ -33,7 +33,7 @@ const COPY = {
   },
   ht: {
     headline: "Pwoteje tèt ou anvan arestasyon.\nAji jodi a — pa demen.",
-    subline: "Plan Defans Legal Pro Se Pri Ba $199 Avoka Kreye ak Revize\nPou Moun Ki Pa Kapab Peye $10,000 Si Yo Arestasyon",
+    subline: "Dokiman legal avoka kreye ak revize — GRATIS.\nApp ijans pou telefòn ou: $10/mwa.",
     offer: "",
     start: "Kòmanse",
     play: "Jwe",
