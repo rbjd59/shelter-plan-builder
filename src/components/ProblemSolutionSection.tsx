@@ -10,12 +10,11 @@ const COPY: Record<Lang, {
   es: {
     problemLabel: "El Problema",
     problems: [
-      "ICE te arresta. No estás preparado. El caos comienza.",
-      "ICE te manda a un centro de detención lejos de tu hogar. Nadie sabe dónde estás.",
-      "Puedes estar detenido por meses.",
-      "Tu carro está abandonado y se lo llevan con la grúa.",
-      "No hay ingreso. No puedes hacer los pagos de la casa ni del coche. Corres el riesgo de perderlo todo.",
-      "Abogados de inmigración cobran $5,000–$10,000.",
+      "ICE detiene a dos mil personas al día.",
+      "ICE tiene una cuota mínima que cumplir.",
+      "Si no eres ciudadano, estás en riesgo.",
+      "Una vez detenido, el acceso a la familia y a los abogados es difícil.",
+      "No puedes pagar miles de dólares por un abogado.",
     ],
     solutionLabel: "La Solución: DetencionDefensa",
     solutions: [
@@ -29,12 +28,11 @@ const COPY: Record<Lang, {
   en: {
     problemLabel: "The Problem",
     problems: [
-      "ICE arrests you. You're not prepared. The chaos begins.",
-      "ICE sends you to a detention center far from home. No one knows where you are.",
-      "You can be detained for months.",
-      "Your car is abandoned and towed away.",
-      "No income. You can't make your house or car payments. You risk losing everything.",
-      "Immigration attorneys charge $5,000–$10,000.",
+      "ICE is detaining two thousand persons a day.",
+      "ICE has a minimum quota to meet.",
+      "If you're not a citizen, you are at risk.",
+      "Once detained, access to family and lawyers is difficult.",
+      "You cannot afford thousands for an attorney.",
     ],
     solutionLabel: "The Solution: DetencionDefensa",
     solutions: [
@@ -48,12 +46,11 @@ const COPY: Record<Lang, {
   ht: {
     problemLabel: "Pwoblèm nan",
     problems: [
-      "ICE arete w. Ou pa prepare. Kaos la kòmanse.",
-      "ICE voye w nan yon sant detansyon lwen lakay ou. Pèsòn pa konnen kote w ye.",
-      "Ou ka rete an detansyon pandan plizyè mwa.",
-      "Machin ou abandone epi yo rale l ale.",
-      "Pa gen revni. Ou pa ka peye kay ou oswa machin ou. Ou riske pèdi tout bagay.",
-      "Avoka imigrasyon mande $5,000–$10,000.",
+      "ICE detni de milye moun pa jou.",
+      "ICE gen yon kota minimòm pou li rankontre.",
+      "Si ou pa sitwayen, ou nan risk.",
+      "Yon fwa yo detni ou, aksè a fanmi ak avoka difisil.",
+      "Ou pa ka peye milye dola pou yon avoka.",
     ],
     solutionLabel: "Solisyon an: DetencionDefensa",
     solutions: [
