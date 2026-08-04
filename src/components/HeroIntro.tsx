@@ -5,27 +5,24 @@ import detentionNightAsset from "@/assets/detention-night.png.asset.json";
 
 const COPY = {
   es: {
-    headline: "Protéjase antes de la detención.\nActúe hoy — no mañana.",
     subline: "Documentos legales creados y revisados por abogados — SIN COSTO.\nApp de emergencia para su teléfono: $10/mes.",
     ice: "ICE ARRESTA MÁS DE 2000 PERSONAS NO CIUDADANOS CADA DÍA",
     getStarted: "Regístrese ahora",
     watchVideos: "Ver videos",
   },
   en: {
-    headline: "Protect yourself before detention.\nAct today — not tomorrow.",
     subline: "Legal documents created & reviewed by attorneys — NO CHARGE.\nEmergency app for your phone: $10/month.",
     ice: "ICE ARRESTS OVER 2000 NON-CITIZENS EVERY DAY",
     getStarted: "Get Started",
     watchVideos: "Watch videos",
   },
   ht: {
-    headline: "Pwoteje tèt ou anvan arestasyon.\nAji jodi a — pa demen.",
     subline: "Dokiman legal avoka kreye ak revize — GRATIS.\nApp ijans pou telefòn ou: $10/mwa.",
     ice: "ICE ARETE PLIS PASE 2000 MOUN KI PA SITWAYEN CHAK JOU",
     getStarted: "Kòmanse",
     watchVideos: "Gade videyo yo",
   },
-} satisfies Record<Lang, { headline: string; subline: string; ice: string; getStarted: string; watchVideos: string }>;
+} satisfies Record<Lang, { subline: string; ice: string; getStarted: string; watchVideos: string }>;
 
 export default function HeroIntro() {
   const { lang, setLang } = useLang();
@@ -177,24 +174,6 @@ export default function HeroIntro() {
             gap: isMobile ? "1.25rem" : "1.75rem",
           }}
         >
-          <span
-            style={{
-              fontFamily: '"Roboto Slab", Georgia, serif',
-              fontSize: isMobile ? "0.95rem" : "clamp(1.1rem, 2vw, 1.6rem)",
-              fontWeight: 700,
-              color: "#e8a04a",
-              letterSpacing: isMobile ? 1 : 2,
-              textTransform: "uppercase",
-              lineHeight: 1.3,
-              display: "block",
-              textShadow: "0 2px 8px rgba(0,0,0,0.6)",
-              maxWidth: 900,
-              margin: "0 auto",
-            }}
-          >
-            {COPY[lang].ice}
-          </span>
-
           <h1
             style={{
               fontFamily: '"Roboto Slab", Georgia, serif',
@@ -203,20 +182,15 @@ export default function HeroIntro() {
               lineHeight: 1.08,
               margin: 0,
               letterSpacing: "-0.005em",
-              whiteSpace: "pre-line",
               textAlign: "center",
+              color: "#e8a04a",
+              textShadow: "0 2px 8px rgba(0,0,0,0.6)",
+              textTransform: "uppercase",
+              maxWidth: 900,
+              marginInline: "auto",
             }}
           >
-            {(() => {
-              const [line1, line2] = COPY[lang].headline.split("\n");
-              return (
-                <>
-                  <span style={{ color: "#ffffff" }}>{line1}</span>
-                  {"\n"}
-                  <span style={{ color: "#e85d3a" }}>{line2}</span>
-                </>
-              );
-            })()}
+            {COPY[lang].ice}
           </h1>
 
           <p
