@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useLang } from "@/context/LanguageContext";
-import enAd from "@/assets/videos/detencion-defensa-prose-v3-en.mp4.asset.json";
-import esAd from "@/assets/videos/detencion-defensa-prose-v3-es.mp4.asset.json";
-import htAd from "@/assets/videos/detencion-defensa-prose-v3-ht.mp4.asset.json";
+import enAd from "@/assets/videos/protect-what-you-built-en.mp4.asset.json";
+import esAd from "@/assets/videos/protect-what-you-built-es.mp4.asset.json";
+import htAd from "@/assets/videos/protect-what-you-built-ht.mp4.asset.json";
 
 const SRC: Record<string, string> = {
   en: enAd.url,
@@ -11,9 +11,15 @@ const SRC: Record<string, string> = {
 };
 
 const HEADING: Record<string, string> = {
-  en: "Watch: How DetencionDefensa Works",
-  es: "Vea: Cómo Funciona DetencionDefensa",
-  ht: "Gade: Kijan DetencionDefensa Mache",
+  en: "Homeowner? Must Watch Video",
+  es: "¿Propietario? Video Obligatorio",
+  ht: "Pwopriyetè? Fòk Ou Gade Videyo a",
+};
+
+const TRUST_SUBLINE: Record<string, string> = {
+  en: "Protect your home and assets in an attorney-created trust at",
+  es: "Proteja su casa y bienes en un fideicomiso creado por un abogado en",
+  ht: "Pwoteje kay ou ak byen ou nan yon konfyans kreye pa yon avoka nan",
 };
 
 const DISCLAIMER: Record<string, string> = {
