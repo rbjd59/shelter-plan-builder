@@ -24,9 +24,9 @@ export const Route = createFileRoute("/readiness/start")({
 const COPY = {
   en: {
     title: "Sentinel Readiness Packet",
-    price: "$99 — one-time  ·  optional $5/month vault storage",
+    price: "No charge — included with the $10/month emergency app plan",
     body: "Do not leave your family unprepared. We gather every court-recognized document your family will need, translate them into English and your language side-by-side, you fill them out in your own words, and we type your exact answers onto the official forms. You print, sign, and notarize. You keep 100% control until you need help.",
-    docsTitle: "Exactly what you get for $99",
+    docsTitle: "Exactly what you get, at no charge",
     docs: [
       { name: "Power of Attorney (UPOAA model)", info: "Lets the person you choose pay your bills, talk to your bank, and handle your money while you are detained. Based on the Uniform Power of Attorney Act adopted in most states. Must be notarized." },
       { name: "Standby / Temporary Guardianship for minor children", info: "Names who legally cares for your children if you are detained — without giving up your parental rights. Recognized in Florida, Texas, NY, NJ, GA, IL and most states. Some states require a notary, others a judge's stamp." },
@@ -52,9 +52,9 @@ const COPY = {
   },
   es: {
     title: "Paquete Sentinel Readiness",
-    price: "$99 — pago único  ·  bóveda opcional $5/mes",
+    price: "Sin cargo — incluido con el plan de app de emergencia de $10/mes",
     body: "No deje a su familia desprevenida. Reunimos cada documento reconocido por las cortes que su familia necesitará, los traducimos al inglés y a su idioma lado a lado, usted los llena en sus propias palabras, y nosotros escribimos sus respuestas exactas en los formularios oficiales. Usted imprime, firma y notariza. Usted mantiene el 100% del control hasta que necesite ayuda.",
-    docsTitle: "Esto es exactamente lo que recibe por $99",
+    docsTitle: "Esto es exactamente lo que recibe, sin cargo",
     docs: [
       { name: "Poder Notarial (modelo UPOAA)", info: "Permite a la persona que usted elija pagar sus cuentas, hablar con el banco y manejar su dinero mientras está detenido. Basado en la Ley Uniforme de Poder Notarial adoptada en la mayoría de los estados. Debe notarizarse." },
       { name: "Tutela temporal/en espera de hijos menores", info: "Designa quién cuida legalmente a sus hijos si lo detienen — sin renunciar a sus derechos como padre. Reconocido en Florida, Texas, NY, NJ, GA, IL y la mayoría de los estados. Algunos estados requieren notario, otros sello del juez." },
@@ -80,9 +80,9 @@ const COPY = {
   },
   ht: {
     title: "Pakè Sentinel Readiness",
-    price: "$99 — pèman youn fwa  ·  $5/mwa pou kòfrefò opsyonèl",
+    price: "San frè — enkli ak plan app dijans $10/mwa a",
     body: "Pa kite fanmi w san preparasyon. Nou rasanble chak dokiman tribinal yo rekonèt fanmi w ap bezwen, tradui yo an angle ak lang ou kòt-a-kòt, ou ranpli yo nan pwòp mo w, e nou tape repons egzak ou yo sou fòm ofisyèl yo. Ou enprime, siyen, e notaryze. Ou gen 100% kontwòl jiskaske w bezwen èd.",
-    docsTitle: "Sa egzakteman ou jwenn pou $99",
+    docsTitle: "Sa egzakteman ou jwenn, san frè",
     docs: [
       { name: "Pouvwa Avoka (modèl UPOAA)", info: "Pèmèt moun ou chwazi a peye fakti w, pale ak labank, e jere lajan w pandan ou nan detansyon. Baze sou Lwa Inifòm sou Pouvwa Avoka pifò eta adopte. Dwe notaryze." },
       { name: "Gad legal tanporè/an atant pou timoun minè", info: "Nonmen kiyès ki pran swen timoun ou legalman si yo detni w — san ou pa pèdi dwa paran w. Rekonèt nan Florida, Texas, NY, NJ, GA, IL ak pifò eta. Kèk eta mande notè, lòt mande so jij." },
@@ -196,7 +196,7 @@ function StartPage() {
               <p style={{ margin: 0, fontSize: 13, color: "#6b6b6b" }}>
                 Payments are not yet enabled on this preview. Email{" "}
                 <a href="mailto:info@detenciondefensa.com" style={{ color: "#b8551f" }}>info@detenciondefensa.com</a>{" "}
-                to reserve your $99 Sentinel Readiness Packet.
+                to reserve your Sentinel Readiness Packet.
               </p>
             </div>
           )}

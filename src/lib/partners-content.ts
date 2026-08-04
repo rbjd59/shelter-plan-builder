@@ -110,7 +110,7 @@ export const PARTNERS: Record<Lang, Section> = {
     cost: {
       title: "Affordability & accessibility",
       rows: [
-        { label: "DetencionDefensa pre-detention plan", value: "$199 setup + $10/mo", note: "Typical cost" },
+        { label: "DetencionDefensa pre-detention plan", value: "$10/mo — documents at no charge", note: "Typical cost" },
         { label: "Federal habeas corpus attorney", value: "$8,500 – $15,000", note: "Comparable legal cost" },
         { label: "Scholarship credits (per 20 sign-ups)", value: "Funds 10 families", note: "At no cost to recipients" },
       ],
@@ -209,7 +209,7 @@ export const PARTNERS: Record<Lang, Section> = {
     cost: {
       title: "Asequibilidad y acceso",
       rows: [
-        { label: "Plan pre-detención DetencionDefensa", value: "$199 inicial + $10/mes", note: "Costo típico" },
+        { label: "Plan pre-detención DetencionDefensa", value: "$10/mes — documentos sin cargo", note: "Costo típico" },
         { label: "Abogado federal de habeas corpus", value: "$8,500 – $15,000", note: "Costo legal comparable" },
         { label: "Créditos de becas (por cada 20 inscripciones)", value: "Financia a 10 familias", note: "Sin costo para los beneficiarios" },
       ],
@@ -308,7 +308,7 @@ export const PARTNERS: Record<Lang, Section> = {
     cost: {
       title: "Pri ak aksè",
       rows: [
-        { label: "Plan pre-detansyon DetencionDefensa", value: "$199 enstalasyon + $10/mwa", note: "Pri tipik" },
+        { label: "Plan pre-detansyon DetencionDefensa", value: "$10/mwa — dokiman san frè", note: "Pri tipik" },
         { label: "Avoka federal habeas corpus", value: "$8,500 – $15,000", note: "Konparezon pri legal" },
         { label: "Kredi bous (chak 20 enskripsyon)", value: "Finanse 10 fanmi", note: "San pri pou benefisyè yo" },
       ],
