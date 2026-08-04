@@ -90,7 +90,7 @@ export default function HeroIntro() {
           >
             <img
               src={logoAsset.url}
-              alt="DetencionDefensa logo"
+              alt="Community Service Program logo"
               width={40}
               height={40}
               style={{
