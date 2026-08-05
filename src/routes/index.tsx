@@ -597,7 +597,7 @@ const HOMEOWNER = {
     h: "¿Es propietario de una vivienda?",
     sub: "Proteja su casa ahora. Mire el video.",
     trust: "Proteja su casa y bienes en un fideicomiso creado por un abogado en",
-    disc: "Este video es un anuncio publicitario. Cada caso se maneja de manera independiente y el resultado no está garantizado.",
+    disc: "Este video es un anuncio publicitario. Cada caso se maneja de manera independiente y los resultados no están garantizados, sujetos a la plusvalía de la propiedad, calificaciones y aceptación del fideicomiso. Savemyhometrust.com es una subsidiaria de detenciondefensa.com.",
   },
   ht: {
     src: "https://detenciondefensa.com/__l5e/assets-v1/d670656c-a0b4-449b-ba24-3e9e9301e281/protect-what-you-built-ht.mp4",
