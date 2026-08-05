@@ -426,6 +426,46 @@ function AttorneyPage() {
         </div>
       </section>
 
+      {/* PRO BONO NOTICE */}
+      <section style={{ maxWidth: 980, margin: "0 auto", padding: "0 20px 40px" }}>
+        <div
+          style={{
+            background: CARD,
+            border: `1px solid ${BORDER}`,
+            borderRadius: 12,
+            padding: 28,
+            textAlign: "center",
+          }}
+        >
+          <h2 style={{ fontFamily: "'Libre Baskerville', Georgia, serif", fontSize: 26, margin: "0 0 16px" }}>
+            No one should face detention alone.
+          </h2>
+          <p style={{ fontSize: 15.5, lineHeight: 1.7, color: NAVY, maxWidth: 720, margin: "0 auto 16px" }}>
+            {FIRM.attorney} has agreed to donate his services for review of the habeas corpus form at no charge.
+          </p>
+          <p style={{ fontSize: 15.5, lineHeight: 1.7, color: MUTED, maxWidth: 720, margin: "0 auto 24px" }}>
+            {FIRM.attorney} does additional legal work. For more information, visit his website.
+          </p>
+          <a
+            href={FIRM.website}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              background: ACCENT,
+              color: "#fff",
+              padding: "12px 24px",
+              borderRadius: 999,
+              textDecoration: "none",
+              fontWeight: 700,
+              fontSize: 15,
+              display: "inline-block",
+            }}
+          >
+            Visit Rosario's website ↗
+          </a>
+        </div>
+      </section>
+
       {/* CTA */}
       <section style={{ maxWidth: 980, margin: "0 auto", padding: "20px 20px 80px", textAlign: "center" }}>
         <h2 style={{ fontFamily: "'Libre Baskerville', Georgia, serif", fontSize: 32, margin: "0 0 12px" }}>
