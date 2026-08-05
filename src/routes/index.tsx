@@ -585,7 +585,25 @@ function Hero() {
     <section className="relative overflow-hidden">
       <div className="mx-auto grid max-w-6xl gap-16 px-6 pb-24 pt-4 md:grid-cols-[1.15fr_1fr] md:pt-6 md:pb-32">
         <div className="flex flex-col justify-center">
+          <a
+            href="https://abcnews.com/Politics/ice-arrests-hit-record-high-july-enforcement-quietly/story?id=135356433"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group mb-6 flex max-w-xl flex-col gap-2 rounded-xl border border-urgent/30 bg-urgent/10 p-4 transition hover:bg-urgent/15 sm:flex-row sm:items-center sm:gap-4"
+          >
+            <span className="inline-flex w-fit shrink-0 items-center rounded-full bg-urgent px-3 py-1 text-[0.7rem] font-bold uppercase tracking-wider text-white">
+              {t.hero.newsLabel}
+            </span>
+            <span className="text-sm font-semibold leading-snug text-cvink">
+              {t.hero.newsText}{" "}
+              <span className="whitespace-nowrap underline underline-offset-2 group-hover:no-underline">
+                {t.hero.newsCta}
+              </span>
+            </span>
+          </a>
+
           <h1 className="hero-headline text-[3.5rem] text-cvink sm:text-[5rem] md:text-[6.5rem]">
+
             {t.hero.h1a} <br />
             <span className="italic text-firm">{t.hero.h1b}</span>
             <br />
