@@ -202,7 +202,7 @@ const T = {
       badge: "Pre-detention defense plan · Miami, FL",
       tagline: "The secure one-click emergency pre-deportation plan for people at risk of detention.",
       h1a: "ICE is", h1b: "coming.", h1c: "Don't wait.",
-      sub: "A legal defense plan built and reviewed by attorneys, for those who can't afford a traditional $10,000 retainer.",
+      sub: "A legal defense plan built and reviewed by attorneys, for those not represented by a lawyer.",
       cta: "Get started for $199 →",
       seeHow: "See how it works",
       nowFree: "Now free due to community crisis through Refuge Outreach, a 501(c)(3) nonprofit since 1991.",
