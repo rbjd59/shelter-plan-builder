@@ -630,11 +630,14 @@ function Hero() {
 
         </div>
 
-        <div className="relative flex items-center justify-center">
+        <div className="relative flex flex-col items-center justify-center gap-8">
           <div className="absolute -inset-8 rounded-[3rem] bg-gradient-to-br from-firm/10 via-transparent to-primary/5 blur-2xl" />
           <PhoneFrame>
             <PanicScreen />
           </PhoneFrame>
+          <div className="w-full max-w-md">
+            <PlainBox />
+          </div>
         </div>
       </div>
     </section>
