@@ -16,7 +16,7 @@ const COPY = {
   en: {
     plan: "Attorney-designed and reviewed ICE detention protection plan ",
     price: "$199.",
-    freeText: "Now free due to community crisis.",
+    freeText: "Now free due to community crisis through refugee outreach of 501c3 nonprofits since 1991.",
     ice: "OVER 2,000 PERSONS DAILY",
     tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
     disclaimer:
