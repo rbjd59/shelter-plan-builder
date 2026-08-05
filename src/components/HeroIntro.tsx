@@ -5,27 +5,66 @@ import detentionNightAsset from "@/assets/detention-night.png.asset.json";
 
 const COPY = {
   es: {
-    strikethrough: "Plan de defensa legal con asistencia de abogado $199.",
+    plan: "Plan de defensa legal con asistencia de abogado ",
+    price: "$199.",
     freeText: "Ahora gratis debido a la crisis comunitaria.",
     ice: "ICE ARRESTA MÁS DE 2000 PERSONAS NO CIUDADANAS CADA DÍA",
-    tagline:
-      "Plan seguro de defensa legal con un solo clic y aplicación de alerta de emergencia para personas en riesgo de detención por inmigración",
+    tagline1:
+      "Plan seguro de defensa legal con un solo clic y aplicación de alerta de emergencia",
+    tagline2: "para personas en riesgo de detención por inmigración",
   },
   en: {
-    strikethrough: "Attorney-assisted legal defense plan $199.",
+    plan: "Attorney-assisted legal defense plan ",
+    price: "$199.",
     freeText: "Now free due to community crisis.",
     ice: "ICE ARRESTS OVER 2000 NON-CITIZENS EVERY DAY",
-    tagline:
-      "Secure one-click legal defense plan and emergency alert application for people at risk of immigration enforcement detention",
+    tagline1: "Secure one-click legal defense plan and emergency alert application",
+    tagline2: "for people at risk of immigration enforcement detention",
   },
   ht: {
-    strikethrough: "Plan defans legal avèk asistans avoka $199.",
+    plan: "Plan defans legal avèk asistans avoka ",
+    price: "$199.",
     freeText: "Kounye a gratis akòz kriz kominotè a.",
     ice: "ICE ARETE PLIS PASE 2000 MOUN KI PA SITWAYEN CHAK JOU",
-    tagline:
-      "Plan defans legal sekirize an yon sèl klik ak aplikasyon alèt ijans pou moun ki an risk detansyon imigrasyon",
+    tagline1:
+      "Plan defans legal sekirize an yon sèl klik ak aplikasyon alèt ijans",
+    tagline2: "pou moun ki an risk detansyon imigrasyon",
   },
-} satisfies Record<Lang, { strikethrough: string; freeText: string; ice: string; tagline: string }>;
+} satisfies Record<Lang, { plan: string; price: string; freeText: string; ice: string; tagline1: string; tagline2: string }>;
+
+function PriceWithX({ prefix, price }: { prefix: string; price: string }) {
+  return (
+    <>
+      {prefix}
+      <span
+        style={{
+          position: "relative",
+          display: "inline-block",
+          color: "inherit",
+        }}
+      >
+        {price}
+        <span
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            color: "#ef4444",
+            fontWeight: 900,
+            fontSize: "1.25em",
+            lineHeight: 1,
+            pointerEvents: "none",
+            textShadow: "0 1px 3px rgba(0,0,0,0.5)",
+          }}
+        >
+          ✕
+        </span>
+      </span>
+    </>
+  );
+}
 
 
 export default function HeroIntro() {
@@ -218,11 +257,10 @@ export default function HeroIntro() {
                 fontWeight: 600,
                 color: "#ffffff",
                 margin: 0,
-                textDecoration: "line-through",
                 textShadow: "0 2px 8px rgba(0,0,0,0.5)",
               }}
             >
-              {COPY[lang].strikethrough}
+              <PriceWithX prefix={COPY[lang].plan} price={COPY[lang].price} />
             </p>
             <p
               style={{
@@ -252,7 +290,9 @@ export default function HeroIntro() {
               textShadow: "0 2px 8px rgba(0,0,0,0.6)",
             }}
           >
-            {COPY[lang].tagline}
+            {COPY[lang].tagline1}
+            <br />
+            {COPY[lang].tagline2}
           </p>
 
         </div>
