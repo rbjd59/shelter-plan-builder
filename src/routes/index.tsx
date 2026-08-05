@@ -559,15 +559,16 @@ function HowItWorksVideo() {
   const handlePlay = () => {
     const v = videoRef.current;
     if (!v) return;
+    // Show native controls immediately so the user always has a way to play,
+    // even if the browser blocks the programmatic (unmuted) play attempt.
+    setStarted(true);
     v.muted = false;
     const p = v.play();
     if (p && typeof p.then === "function") {
-      p.then(() => setStarted(true)).catch(() => {
+      p.catch(() => {
         v.muted = true;
-        v.play().then(() => setStarted(true)).catch(() => {});
+        v.play().catch(() => {});
       });
-    } else {
-      setStarted(true);
     }
   };
 
@@ -581,28 +582,28 @@ function HowItWorksVideo() {
             "radial-gradient(circle at 15% 10%, color-mix(in oklab, var(--sand) 70%, transparent), transparent 55%), radial-gradient(circle at 85% 85%, color-mix(in oklab, var(--sand) 55%, transparent), transparent 55%)",
         }}
       />
-      <div className="relative mx-auto max-w-4xl px-6 py-16">
-        <div className="mb-8 text-center">
+      <div className="relative mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16">
+        <div className="mb-6 text-center sm:mb-8">
           <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/70 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
             <Sparkles className="h-3.5 w-3.5" />
             {c.eyebrow}
           </span>
-          <h2 className="mt-4 font-display text-3xl leading-tight md:text-4xl">{c.title}</h2>
+          <h2 className="mt-4 font-display text-2xl leading-tight sm:text-3xl md:text-4xl">{c.title}</h2>
           <p className="mx-auto mt-3 max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
             {c.sub}
           </p>
         </div>
 
-        <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border/70 bg-primary/5 shadow-lg">
+        <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border/70 bg-black shadow-lg">
           <video
             ref={videoRef}
             key={lang}
             src={HIW_VIDEO[lang]}
-            controls={started}
+            controls
             playsInline
-            {...({ "webkit-playsinline": "true" } as Record<string, string>)}
+            {...({ "webkit-playsinline": "true", "x5-playsinline": "true" } as Record<string, string>)}
             preload="metadata"
-            className="block h-full w-full object-cover"
+            className="block h-full w-full object-contain"
           />
           {!started && (
             <button
@@ -611,8 +612,8 @@ function HowItWorksVideo() {
               aria-label={c.play}
               className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-foreground/35 backdrop-blur-[1px] transition hover:bg-foreground/45"
             >
-              <span className="flex h-20 w-20 items-center justify-center rounded-full bg-background/95 shadow-xl transition group-hover:scale-105">
-                <Play className="ml-1 h-8 w-8 text-primary" />
+              <span className="flex h-16 w-16 items-center justify-center rounded-full bg-background/95 shadow-xl sm:h-20 sm:w-20">
+                <Play className="ml-1 h-7 w-7 text-primary sm:h-8 sm:w-8" />
               </span>
               <span className="rounded-full bg-background/90 px-4 py-1.5 text-sm font-bold text-foreground">
                 {c.play}
@@ -620,6 +621,7 @@ function HowItWorksVideo() {
             </button>
           )}
         </div>
+
 
         <p className="mx-auto mt-4 max-w-2xl text-center text-xs italic leading-relaxed text-muted-foreground">
           {c.note}
