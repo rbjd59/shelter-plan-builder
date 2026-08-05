@@ -8,6 +8,10 @@ const COPY = {
     metaDesc: "DetencionDefensa.com utiliza cifrado de grado bancario, verificación de identidad y privacidad para proteger a cada familia.",
     heading: "Su información está protegida",
     intro: "Entendemos lo delicado de su situación. Por eso utilizamos las mismas herramientas de seguridad que los bancos y hospitales.",
+    privateBox: {
+      label: "Datos privados y seguros",
+      desc: "DetencionDefensa utiliza el software de cifrado más avanzado disponible. Una vez que complete el proceso de admisión, toda esa información se transfiere a su teléfono y no se guarda en nuestros servidores. Inmediatamente después de que se completen sus formularios, su abogado los recibe y los revisa. Sus datos de admisión se cifran de extremo a extremo, se transfieren a su teléfono y se eliminan de nuestros servidores una vez que su abogado ha revisado los formularios. Usted controla si alguna vez se comparten.",
+    },
     items: [
       { label: "Cifrado de grado bancario", desc: "Toda la información se transmite y almacena cifrada con TLS 1.3 y AES-256." },
       { label: "Verificación de identidad", desc: "Confirmamos quién accede a cada cuenta para evitar suplantación." },
@@ -22,6 +26,10 @@ const COPY = {
     metaDesc: "DetencionDefensa.com uses bank-grade encryption, identity verification, and privacy safeguards to protect every family.",
     heading: "Your information is protected",
     intro: "We understand how sensitive your situation is. That is why we use the same security tools as banks and hospitals.",
+    privateBox: {
+      label: "Private & Secure Data",
+      desc: "DetencionDefensa uses the highest encryption software available. Once you complete the intake process, all of that information is transferred to your phone and not held on our servers. Immediately after your forms are completed, your attorney receives them and reviews them. Your intake data is encrypted end-to-end, transferred to your phone, and deleted from our servers once your attorney has reviewed the forms. You control whether it is ever shared.",
+    },
     items: [
       { label: "Bank-grade encryption", desc: "All data is transmitted and stored encrypted with TLS 1.3 and AES-256." },
       { label: "Identity verification", desc: "We verify who accesses each account to prevent impersonation." },
@@ -36,6 +44,10 @@ const COPY = {
     metaDesc: "DetencionDefensa.com itilize kriptaj klas bank, verifikasyon idantite, ak pwoteksyon vi prive pou pwoteje chak fanmi.",
     heading: "Enfòmasyon ou pwoteje",
     intro: "Nou konprann ki jan sitiyasyon ou sansib. Se poutèt sa nou itilize menm zouti sekirite ak bank ak lopital.",
+    privateBox: {
+      label: "Done prive ak sekirite",
+      desc: "DetencionDefensa itilize lojisyèl kriptaj ki pi wo ki disponib. Yon fwa ou fin ranpli pwosesis antre a, tout enfòmasyon sa yo transfere nan telefòn ou e yo pa estoke nan sèvè nou yo. Imedyatman apre fòm ou yo fin ranpli, avoka ou resevwa yo e revize yo. Done antre ou yo kripte de bout an bout, transfere nan telefòn ou, e efase nan sèvè nou yo yon fwa avoka ou fin revize fòm yo. Se ou ki kontrole si yo pataje janm.",
+    },
     items: [
       { label: "Kriptaj klas bank", desc: "Tout done transmèt ak estoke kripte ak TLS 1.3 ak AES-256." },
       { label: "Verifikasyon idantite", desc: "Nou verifye ki moun ki aksede chak kont pou anpeche moun pran idantite ou." },
@@ -45,7 +57,7 @@ const COPY = {
     ],
     close: "Retounen nan paj dakèy",
   },
-} satisfies Record<Lang, { title: string; metaDesc: string; heading: string; intro: string; items: { label: string; desc: string }[]; close: string }>;
+} satisfies Record<Lang, { title: string; metaDesc: string; heading: string; intro: string; privateBox: { label: string; desc: string }; items: { label: string; desc: string }[]; close: string }>;
 
 export const Route = createFileRoute("/security")({
   head: () => ({
