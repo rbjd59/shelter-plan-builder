@@ -201,10 +201,7 @@ const T = {
     hero: {
       badge: "Pre-detention defense plan · Miami, FL",
       tagline: "The secure one-click emergency pre-deportation plan for people at risk of detention.",
-      pre: "Pre-Deportation Protection",
-      modern: "Modern Immigrant Protection Plans",
       h1a: "ICE is", h1b: "coming.", h1c: "Don't wait.",
-      blend: "Blending new technology and experienced lawyers to provide low-cost options for non-citizens at risk of detention.",
       sub: "A legal defense plan built and reviewed by attorneys, for those who can't afford a traditional $10,000 retainer.",
       cta: "Get started for $199 →",
       seeHow: "See how it works",
