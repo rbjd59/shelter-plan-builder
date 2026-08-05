@@ -307,10 +307,7 @@ const T = {
     hero: {
       badge: "Plan defans anvan detansyon · Miami, FL",
       tagline: "Plan ijans sekirite pre-deportasyon ak yon sèl klik pou moun ki an ris pou detansyon.",
-      pre: "Pwoteksyon Anvan Deportasyon",
-      modern: "Plan Pwoteksyon Imigran Modèn",
       h1a: "ICE ap", h1b: "vini.", h1c: "Pa tann.",
-      blend: "Konbine nouvo teknoloji ak avoka ki gen eksperyans pou ofri opsyon ki pa chè pou moun ki pa sitwayen ki an risk pou detansyon.",
       sub: "Yon plan defans legal ki fèt epi revize pa avoka, pou moun ki pa ka peye yon retenè tradisyonèl $10,000.",
       cta: "Kòmanse pou $199 →",
       seeHow: "Wè kijan li fonksyone",
