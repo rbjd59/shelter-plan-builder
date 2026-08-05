@@ -502,7 +502,6 @@ function Index() {
         <Nav lang={lang} setLang={setLang} />
         <main>
           <Hero />
-          <PlainBox />
           <TrustBar />
           <FeatureSection idx={0} mockup={<PanicScreen />} reverse={false} />
           <HomeownerVideo />
