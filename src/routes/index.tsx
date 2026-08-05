@@ -953,7 +953,7 @@ function CheckDot({ dark }: { dark?: boolean }) {
 function PhoneFrame({ children }: { children: ReactNode }) {
   const { t } = useT();
   return (
-    <div className="relative w-[280px] rounded-[2.75rem] border-[10px] border-cvink bg-cvink shadow-2xl md:w-[320px]">
+    <div className="relative w-[220px] rounded-[2.5rem] border-[8px] border-cvink bg-cvink shadow-2xl md:w-[260px]">
       <span className="absolute -top-3 left-1/2 z-20 -translate-x-1/2 rounded-full bg-urgent px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-urgent-foreground">
         {t.mock.sim}
       </span>
