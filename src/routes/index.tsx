@@ -507,7 +507,28 @@ function Index() {
   );
 }
 
+/* -------------------- PLAIN LANGUAGE BOX -------------------- */
+function PlainBox() {
+  const { t } = useT();
+  return (
+    <section className="border-y border-border/60 bg-sand/60">
+      <div className="mx-auto max-w-4xl px-6 py-10">
+        <h2 className="mb-5 font-display text-2xl text-foreground">{t.plainBox.title}</h2>
+        <dl className="space-y-4">
+          {t.plainBox.items.map((it) => (
+            <div key={it.k} className="grid gap-1 md:grid-cols-[200px_1fr] md:gap-6">
+              <dt className="font-semibold text-foreground">{it.k}</dt>
+              <dd className="text-[15px] leading-relaxed text-muted-foreground">{it.v}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+  );
+}
+
 /* -------------------- NAV -------------------- */
+
 function Nav({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
   const { t } = useT();
   return (
