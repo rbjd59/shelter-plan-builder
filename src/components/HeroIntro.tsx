@@ -8,7 +8,7 @@ const COPY = {
     plan: "Plan de defensa legal con asistencia de abogado ",
     price: "$199.",
     freeText: "Ahora gratis debido a la crisis comunitaria.",
-    ice: "ICE ARRESTA MÁS DE 2000 PERSONAS NO CIUDADANAS CADA DÍA",
+    ice: "ICE ARRESTA MÁS DE 2,000 PERSONAS CADA DÍA",
     tagline1: "Plan seguro de defensa legal con aplicación de emergencia",
   },
   en: {
