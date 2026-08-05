@@ -24,7 +24,109 @@ export const Route = createFileRoute("/own-property")({
   }),
 });
 
+const COPY = {
+  en: {
+    kicker: "SENTINEL — PROPERTY DIVISION",
+    title: "Own Property",
+    subtitle:
+      "No family in the United States? No one you trust with your property? No one capable of managing real estate?",
+    intro: (
+      <>
+        <strong>Sentinel Trust Property Management Group</strong> is an option to have your
+        property <em>managed</em>, <em>rented</em>, or <em>sold</em> under the supervision of a
+        licensed law group designed to handle foreign-owned real estate.
+      </>
+    ),
+    cards: [
+      {
+        h: "Managed",
+        p: "Ongoing oversight of your home or building — taxes paid, maintenance arranged, tenants vetted, accounting reported across borders.",
+      },
+      {
+        h: "Rented",
+        p: "Income-producing leasing handled end-to-end so your property continues to support your family even while you are outside the United States.",
+      },
+      {
+        h: "Sold",
+        p: "When the time comes to liquidate, sales are conducted under attorney supervision with proceeds routed to the trust or beneficiary you designate.",
+      },
+    ],
+    visit: "Visit Sentinel Trust Services Group at:",
+    linkLabel: "www.defendermicasa.com →",
+    disclaimer:
+      "Sentinel Trust Property Management Group is operated in partnership with a licensed Arizona law firm (launching Spring 2027). This page is informational only and is not legal advice or an offer to provide legal services.",
+    home: "← Return home",
+  },
+  es: {
+    kicker: "SENTINEL — DIVISIÓN DE PROPIEDADES",
+    title: "Sea Propietario",
+    subtitle:
+      "¿No tiene familia en los Estados Unidos? ¿No hay nadie de confianza para su propiedad? ¿Nadie capaz de administrar bienes raíces?",
+    intro: (
+      <>
+        <strong>Sentinel Trust Property Management Group</strong> es una opción para que su
+        propiedad sea <em>administrada</em>, <em>alquilada</em> o <em>vendida</em> bajo la
+        supervisión de un grupo legal con licencia diseñado para manejar bienes raíces
+        propiedad de extranjeros.
+      </>
+    ),
+    cards: [
+      {
+        h: "Administrada",
+        p: "Supervisión continua de su casa o edificio: pago de impuestos, mantenimiento coordinado, inquilinos verificados y contabilidad reportada a través de fronteras.",
+      },
+      {
+        h: "Alquilada",
+        p: "El arrendamiento generador de ingresos se maneja de principio a fin para que su propiedad siga apoyando a su familia incluso mientras usted está fuera de los Estados Unidos.",
+      },
+      {
+        h: "Vendida",
+        p: "Cuando llegue el momento de liquidar, las ventas se realizan bajo la supervisión de un abogado, con las ganancias enviadas al fideicomiso o beneficiario que usted designe.",
+      },
+    ],
+    visit: "Visite Sentinel Trust Services Group en:",
+    linkLabel: "www.defendermicasa.com →",
+    disclaimer:
+      "Sentinel Trust Property Management Group opera en asociación con un bufete de abogados con licencia en Arizona (lanzamiento en primavera de 2027). Esta página es solo informativa y no constituye asesoría legal ni una oferta de servicios legales.",
+    home: "← Volver al inicio",
+  },
+  ht: {
+    kicker: "SENTINEL — DIVIZYON PWOPRIYETE",
+    title: "Posede Pwopriyete",
+    subtitle:
+      "Ou pa gen fanmi ozetazini? Ou pa gen pèsòn ou fè konfyans ak pwopriyete w? Pèsòn ki kapab jere byen imobilye?",
+    intro: (
+      <>
+        <strong>Sentinel Trust Property Management Group</strong> se yon opsyon pou fè
+        pwopriyete w <em>jere</em>, <em>lwe</em>, oswa <em>vann</em> anba sipèvizyon yon gwoup
+        legal ki gen lisans e ki fèt pou jere byen imobilye ki pou moun ki pa sitwayen.
+      </>
+    ),
+    cards: [
+      {
+        h: "Jere",
+        p: "Sipèvizyon kontinyèl sou kay oswa bilding ou — taks peye, antretyen òganize, lokatè verifye, kontablite rapòte atravè fwontyè.",
+      },
+      {
+        h: "Lwe",
+        p: "Lokasyon ki jenere revni jere depi kòmansman jiska fen pou pwopriyete w ka kontinye sipòte fanmi w menm lè ou deyò Etazini.",
+      },
+      {
+        h: "Vann",
+        p: "Lè lè a rive pou likide, vant yo fèt anba sipèvizyon yon avoka ak lajan an voye nan trust oswa benefisyè ou chwazi.",
+      },
+    ],
+    visit: "Vizite Sentinel Trust Services Group nan:",
+    linkLabel: "www.defendermicasa.com →",
+    disclaimer:
+      "Sentinel Trust Property Management Group opere an patenarya avèk yon biwo avoka ki gen lisans nan Arizona (k ap lanse nan Prentan 2027). Paj sa a se sèlman pou enfòmasyon e li pa yon konsèy legal ni yon òf pou bay sèvis legal.",
+    home: "← Retounen lakay",
+  },
+} as const;
+
 function OwnPropertyPage() {
+  const { lang } = Route.useSearch();
+  const t = COPY[(lang as keyof typeof COPY) ?? "es"];
   return (
     <div
       style={{
@@ -44,7 +146,7 @@ function OwnPropertyPage() {
             marginBottom: 10,
           }}
         >
-          SENTINEL — PROPERTY DIVISION
+          {t.kicker}
         </div>
         <h1
           style={{
@@ -56,7 +158,7 @@ function OwnPropertyPage() {
             lineHeight: 1.05,
           }}
         >
-          Own Property
+          {t.title}
         </h1>
         <p
           style={{
@@ -67,31 +169,15 @@ function OwnPropertyPage() {
             margin: "0 0 28px",
           }}
         >
-          No family in the United States? No one you trust with your property? No one capable of
-          managing real estate?
+          {t.subtitle}
         </p>
 
         <p style={{ fontSize: 17, lineHeight: 1.65, maxWidth: 680, color: "#e6e0d2" }}>
-          <strong>Sentinel Trust Property Management Group</strong> is an option to have your
-          property <em>managed</em>, <em>rented</em>, or <em>sold</em> under the supervision of a
-          licensed law group designed to handle foreign-owned real estate.
+          {t.intro}
         </p>
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 18, marginTop: 40 }}>
-          {[
-            {
-              h: "Managed",
-              p: "Ongoing oversight of your home or building — taxes paid, maintenance arranged, tenants vetted, accounting reported across borders.",
-            },
-            {
-              h: "Rented",
-              p: "Income-producing leasing handled end-to-end so your property continues to support your family even while you are outside the United States.",
-            },
-            {
-              h: "Sold",
-              p: "When the time comes to liquidate, sales are conducted under attorney supervision with proceeds routed to the trust or beneficiary you designate.",
-            },
-          ].map((p) => (
+          {t.cards.map((p: { h: string; p: string }) => (
             <div
               key={p.h}
               style={{
@@ -119,7 +205,7 @@ function OwnPropertyPage() {
 
         <div style={{ marginTop: 44 }}>
           <p style={{ fontSize: 15, color: "#e6e0d2", margin: "0 0 14px" }}>
-            Visit Sentinel Trust Services Group at:
+            {t.visit}
           </p>
           <a
             href="https://www.defendermicasa.com"
@@ -136,7 +222,7 @@ function OwnPropertyPage() {
               letterSpacing: "0.02em",
             }}
           >
-            www.defendermicasa.com →
+            {t.linkLabel}
           </a>
         </div>
 
@@ -149,15 +235,13 @@ function OwnPropertyPage() {
             maxWidth: 600,
           }}
         >
-          Sentinel Trust Property Management Group is operated in partnership with a licensed
-          Arizona law firm (launching Spring 2027). This page is informational only and is not
-          legal advice or an offer to provide legal services.
+          {t.disclaimer}
         </p>
         <Link
           to="/"
           style={{ display: "inline-block", marginTop: 20, color: "#c9a961", textDecoration: "none" }}
         >
-          ← Return home
+          {t.home}
         </Link>
       </div>
     </div>
