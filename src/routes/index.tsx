@@ -423,8 +423,8 @@ function Index() {
           <TrustBar />
           <FeatureSection idx={0} mockup={<PanicScreen />} reverse={false} />
           <FeatureSection idx={1} mockup={<DocsMock />} reverse={true} />
-          <FeatureSection idx={2} mockup={<FamilyMock />} reverse={false} />
           <HomeownerVideo />
+          <FeatureSection idx={2} mockup={<FamilyMock />} reverse={false} />
           <AttorneySection />
           <FAQ />
           <FinalCTA />
@@ -590,21 +590,21 @@ const HOMEOWNER = {
     h: "Are you a homeowner?",
     sub: "Protect your home now. Watch the video.",
     trust: "Protect your home and assets in an attorney-created trust at",
-    disc: "This video is an advertisement. Every case can be handled independently, and the outcome is not guaranteed.",
+    disc: "This video is an advertisement. Every case is handled independently, and the outcomes are not guaranteed, subject to property equity and qualifications, trust acceptance. Savemyhometrust.com is a subsidiary of detenciondefensa.com.",
   },
   es: {
     src: "https://detenciondefensa.com/__l5e/assets-v1/16758c57-3542-457c-947e-79324aaa7923/protect-what-you-built-es.mp4",
     h: "¿Es propietario de una vivienda?",
     sub: "Proteja su casa ahora. Mire el video.",
     trust: "Proteja su casa y bienes en un fideicomiso creado por un abogado en",
-    disc: "Este video es un anuncio publicitario. Cada caso se maneja de manera independiente y el resultado no está garantizado.",
+    disc: "Este video es un anuncio publicitario. Cada caso se maneja de manera independiente y los resultados no están garantizados, sujetos a la plusvalía de la propiedad, calificaciones y aceptación del fideicomiso. Savemyhometrust.com es una subsidiaria de detenciondefensa.com.",
   },
   ht: {
     src: "https://detenciondefensa.com/__l5e/assets-v1/d670656c-a0b4-449b-ba24-3e9e9301e281/protect-what-you-built-ht.mp4",
     h: "Èske ou se pwopriyetè yon kay?",
     sub: "Pwoteje kay ou kounye a. Gade videyo a.",
     trust: "Pwoteje kay ou ak byen ou nan yon konfyans kreye pa yon avoka nan",
-    disc: "Videyo sa a se yon piblisite. Chak ka jere endepandamman, e rezilta a pa garanti.",
+    disc: "Videyo sa a se yon piblisite. Chak ka jere endepandamman, e rezilta yo pa garanti, sijè a ekite pwopriyete a, kalifikasyon, ak akseptasyon trust la. Savemyhometrust.com se yon sibsidyè detenciondefensa.com.",
   },
 } as const;
 
@@ -632,9 +632,9 @@ function HomeownerVideo() {
   };
 
   return (
-    <section id="plan" className="bg-cvink py-10 text-primary-foreground md:py-16">
+    <section id="plan" className="bg-sand py-10 text-sand-foreground md:py-16">
       <div className="mx-auto max-w-4xl px-6">
-        <div className="relative aspect-video w-full overflow-hidden rounded-2xl border-[3px] border-firm-foreground shadow-2xl">
+        <div className="relative aspect-video w-full overflow-hidden rounded-2xl border-[3px] border-cvink/40 shadow-2xl">
           <video
             key={v.src}
             ref={videoRef}
@@ -664,12 +664,12 @@ function HomeownerVideo() {
             href="https://savemyhometrust.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-2 inline-block rounded-md bg-firm-foreground px-4 py-2 font-bold text-cvink"
+            className="mt-2 inline-block rounded-md bg-cvink px-4 py-2 font-bold text-primary-foreground"
           >
             savemyhometrust.com
           </a>
         </p>
-        <p className="mx-auto mt-3 max-w-2xl text-center text-xs italic text-primary-foreground/75">{v.disc}</p>
+        <p className="mx-auto mt-3 max-w-2xl text-center text-xs italic text-sand-foreground/80">{v.disc}</p>
       </div>
     </section>
   );
