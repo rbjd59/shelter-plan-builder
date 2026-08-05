@@ -11,9 +11,15 @@ const SRC: Record<string, string> = {
 };
 
 const HEADING: Record<string, string> = {
-  en: "Homeowner",
-  es: "Propietario",
-  ht: "Pwopriyetè",
+  en: "Are you a homeowner?",
+  es: "¿Es propietario de una vivienda?",
+  ht: "Èske ou se pwopriyetè yon kay?",
+};
+
+const SUBHEADING: Record<string, string> = {
+  en: "Protect your home now. Watch the video.",
+  es: "Proteja su casa ahora. Mire el video.",
+  ht: "Pwoteje kay ou kounye a. Gade videyo a.",
 };
 
 const TRUST_SUBLINE: Record<string, string> = {
