@@ -479,16 +479,8 @@ function Hero() {
   const { t, lang } = useT();
   return (
     <section className="relative overflow-hidden">
-      <div className="mx-auto grid max-w-6xl gap-16 px-6 pb-24 pt-20 md:grid-cols-[1.15fr_1fr] md:pt-28 md:pb-32">
+      <div className="mx-auto grid max-w-6xl gap-16 px-6 pb-24 pt-8 md:grid-cols-[1.15fr_1fr] md:pt-12 md:pb-32">
         <div className="flex flex-col justify-center">
-          <div className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-urgent opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-urgent" />
-            </span>
-            {t.hero.badge}
-          </div>
-
           <h1 className="hero-headline text-[3.5rem] text-cvink sm:text-[5rem] md:text-[6.5rem]">
             {t.hero.h1a} <br />
             <span className="italic text-firm">{t.hero.h1b}</span>
