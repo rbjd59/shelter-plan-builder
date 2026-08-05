@@ -94,6 +94,7 @@ const T = {
     nav: { how: "Cómo funciona", plan: "El Plan", attorney: "El Abogado", faq: "Preguntas", cta: "Empezar · $199" },
     hero: {
       badge: "Plan de defensa pre-detención · Miami, FL",
+      tagline: "El plan seguro de emergencia anti-deportación con un solo clic para personas en riesgo de detención.",
       pre: "Protección Antideportación",
       modern: "Planes Modernos de Protección para Inmigrantes",
       h1a: "La migra", h1b: "ya viene.", h1c: "No espere.",
@@ -202,6 +203,7 @@ const T = {
     nav: { how: "How it works", plan: "The Plan", attorney: "The Attorney", faq: "FAQ", cta: "Get started · $199" },
     hero: {
       badge: "Pre-detention defense plan · Miami, FL",
+      tagline: "The secure one-click emergency pre-deportation plan for people at risk of detention.",
       pre: "Pre-Deportation Protection",
       modern: "Modern Immigrant Protection Plans",
       h1a: "ICE is", h1b: "coming.", h1c: "Don't wait.",
@@ -310,6 +312,7 @@ const T = {
     nav: { how: "Kijan sa fonksyone", plan: "Plan an", attorney: "Avoka a", faq: "Kesyon", cta: "Kòmanse · $199" },
     hero: {
       badge: "Plan defans anvan detansyon · Miami, FL",
+      tagline: "Plan ijans sekirite pre-deportasyon ak yon sèl klik pou moun ki an ris pou detansyon.",
       pre: "Pwoteksyon Anvan Deportasyon",
       modern: "Plan Pwoteksyon Imigran Modèn",
       h1a: "ICE ap", h1b: "vini.", h1c: "Pa tann.",
@@ -490,6 +493,9 @@ function Hero() {
     <section className="relative overflow-hidden">
       <div className="mx-auto grid max-w-6xl gap-16 px-6 pb-24 pt-4 md:grid-cols-[1.15fr_1fr] md:pt-6 md:pb-32">
         <div className="flex flex-col justify-center">
+          <p className="mb-4 inline-flex max-w-lg items-center gap-2 rounded-full border border-cvink/30 bg-cvink/10 px-4 py-2 text-sm font-semibold tracking-wide text-cvink uppercase">
+            {t.hero.tagline}
+          </p>
           <h1 className="hero-headline text-[3.5rem] text-cvink sm:text-[5rem] md:text-[6.5rem]">
             {t.hero.h1a} <br />
             <span className="italic text-firm">{t.hero.h1b}</span>
