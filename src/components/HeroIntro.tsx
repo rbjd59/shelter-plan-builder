@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useLang, type Lang } from "@/context/LanguageContext";
 import logoAsset from "@/assets/dd-logo.png.asset.json";
@@ -10,6 +11,8 @@ const COPY = {
     ice: "ICE ARRESTA MÁS DE 2000 PERSONAS NO CIUDADANOS CADA DÍA",
     getStarted: "Regístrese ahora",
     watchVideos: "Ver videos",
+    secureLine: "Sitio web 100% seguro, protección de primer nivel. Para más información, pulse aquí",
+    securityBtn: "Más información",
   },
   en: {
     strikethrough: "Attorney-assisted legal defense plan $199.",
@@ -17,6 +20,8 @@ const COPY = {
     ice: "ICE ARRESTS OVER 2000 NON-CITIZENS EVERY DAY",
     getStarted: "Get Started",
     watchVideos: "Watch videos",
+    secureLine: "100% secure website, best in class protection. More information, press here",
+    securityBtn: "More information",
   },
   ht: {
     strikethrough: "Plan defans legal avèk asistans avoka $199.",
@@ -24,8 +29,10 @@ const COPY = {
     ice: "ICE ARETE PLIS PASE 2000 MOUN KI PA SITWAYEN CHAK JOU",
     getStarted: "Kòmanse",
     watchVideos: "Gade videyo yo",
+    secureLine: "Sitwèb 100% sekirè, pwoteksyon nan klas li. Pou plis enfòmasyon, peze isit la",
+    securityBtn: "Plis enfòmasyon",
   },
-} satisfies Record<Lang, { strikethrough: string; freeText: string; ice: string; getStarted: string; watchVideos: string }>;
+} satisfies Record<Lang, { strikethrough: string; freeText: string; ice: string; getStarted: string; watchVideos: string; secureLine: string; securityBtn: string }>;
 
 export default function HeroIntro() {
   const { lang, setLang } = useLang();
@@ -270,6 +277,53 @@ export default function HeroIntro() {
               />
               {COPY[lang].watchVideos}
             </a>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: isMobile ? 10 : 12,
+              marginTop: isMobile ? "1rem" : "1.25rem",
+            }}
+          >
+            <p
+              style={{
+                margin: 0,
+                fontSize: isMobile ? 13 : 15,
+                lineHeight: 1.45,
+                color: "rgba(255,255,255,0.95)",
+                textAlign: "center",
+                maxWidth: 560,
+                textShadow: "0 1px 4px rgba(0,0,0,0.6)",
+              }}
+            >
+              {COPY[lang].secureLine}
+            </p>
+            <Link
+              to="/security"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 8,
+                background: "transparent",
+                color: "#e8a04a",
+                border: "2px solid #e8a04a",
+                textDecoration: "none",
+                fontWeight: 800,
+                fontSize: isMobile ? 13 : 14,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+                padding: isMobile ? "10px 20px" : "12px 24px",
+                borderRadius: 999,
+                fontFamily: "inherit",
+                transition: "background 0.2s, color 0.2s",
+              }}
+            >
+              {COPY[lang].securityBtn}
+            </Link>
           </div>
         </div>
       </div>
