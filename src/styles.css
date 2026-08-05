@@ -59,7 +59,7 @@ body.splash-has-staff #splash-view { min-height: 0; }
     --rule: rgba(244,239,230,0.15);
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :where(*) { box-sizing: border-box; margin: 0; padding: 0; }
 
   #splash-view {
     background: linear-gradient(180deg, #0d2c54 0%, #081d3a 100%);
@@ -544,7 +544,7 @@ body.splash-has-staff #splash-view { min-height: 0; }
     --rule-strong: rgba(14, 26, 43, 0.4);
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :where(*) { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
 
   body {
