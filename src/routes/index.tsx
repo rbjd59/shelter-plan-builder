@@ -1,5 +1,6 @@
 import { createFileRoute, redirect, Link } from "@tanstack/react-router";
 import { createContext, useContext, useRef, useState, type ReactNode } from "react";
+import { FileText, PackageCheck, BadgeDollarSign, Scale, ShieldAlert, Sparkles } from "lucide-react";
 import rosarioPhoto from "@/assets/rosario-sorrentino.png.asset.json";
 
 const DEFENDER_HOSTS = new Set([
@@ -510,22 +511,71 @@ function Index() {
 /* -------------------- PLAIN LANGUAGE BOX -------------------- */
 function PlainBox() {
   const { t } = useT();
+  const icons = [FileText, PackageCheck, BadgeDollarSign, Scale, ShieldAlert];
   return (
-    <section className="border-y border-border/60 bg-sand/60">
-      <div className="mx-auto max-w-4xl px-6 py-10">
-        <h2 className="mb-5 font-display text-2xl text-foreground">{t.plainBox.title}</h2>
-        <dl className="space-y-4">
-          {t.plainBox.items.map((it) => (
-            <div key={it.k} className="grid gap-1 md:grid-cols-[200px_1fr] md:gap-6">
-              <dt className="font-semibold text-foreground">{it.k}</dt>
-              <dd className="text-[15px] leading-relaxed text-muted-foreground">{it.v}</dd>
-            </div>
-          ))}
-        </dl>
+    <section className="relative border-y border-border/60 bg-sand/40">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.35]"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 15% 10%, color-mix(in oklab, var(--sand) 70%, transparent), transparent 55%), radial-gradient(circle at 85% 85%, color-mix(in oklab, var(--sand) 55%, transparent), transparent 55%)",
+        }}
+      />
+      <div className="relative mx-auto max-w-5xl px-6 py-16">
+        <div className="mb-10 text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/70 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+            <Sparkles className="h-3.5 w-3.5" />
+            {t.plainBox.title}
+          </span>
+          <div className="mx-auto mt-5 h-px w-16 bg-border" />
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          {t.plainBox.items.map((it, i) => {
+            const Icon = icons[i % icons.length];
+            const isLast = i === t.plainBox.items.length - 1;
+            return (
+              <div
+                key={it.k}
+                className={`group relative overflow-hidden rounded-2xl border bg-background/80 p-6 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:shadow-md ${
+                  isLast
+                    ? "border-destructive/35 bg-destructive/[0.04] md:col-span-2"
+                    : "border-border/70"
+                }`}
+              >
+                <div className="flex items-start gap-4">
+                  <span
+                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
+                      isLast
+                        ? "bg-destructive/10 text-destructive"
+                        : "bg-primary/10 text-primary"
+                    }`}
+                  >
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <h3
+                      className={`font-display text-lg leading-tight ${
+                        isLast ? "text-destructive" : "text-foreground"
+                      }`}
+                    >
+                      {it.k}
+                    </h3>
+                    <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
+                      {it.v}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
 }
+
 
 /* -------------------- NAV -------------------- */
 
