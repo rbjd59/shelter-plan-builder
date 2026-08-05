@@ -1,8 +1,11 @@
+@layer theme, base, components, legacy, utilities;
 /* Google Fonts loaded via <link> tag in src/routes/__root.tsx (Lightning CSS can't resolve remote @import). */
 @import "tailwindcss" source(none);
 @import "@fontsource/roboto-slab/400.css";
 @import "@fontsource/roboto-slab/700.css";
 @source "../src";
+
+@layer legacy {
 
 /* ===== ROOT ===== */
 :root {
@@ -3051,6 +3054,9 @@ body:not(.splash-active) .hero-price-line > div {
   max-width: 100% !important;
 }
 html { overflow-x: hidden !important; max-width: 100vw; }
+
+
+}
 
 /* ============================================================
    COVER PAGE (/) DESIGN TOKENS — board-approved wrapper
