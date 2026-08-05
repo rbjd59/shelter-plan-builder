@@ -94,7 +94,10 @@ const T = {
     nav: { how: "Cómo funciona", plan: "El Plan", attorney: "El Abogado", faq: "Preguntas", cta: "Empezar · $199" },
     hero: {
       badge: "Plan de defensa pre-detención · Miami, FL",
+      pre: "Protección Antideportación",
+      modern: "Planes Modernos de Protección para Inmigrantes",
       h1a: "La migra", h1b: "ya viene.", h1c: "No espere.",
+      blend: "Combinando nueva tecnología y abogados experimentados para ofrecer opciones de bajo costo a personas no ciudadanas en riesgo de detención.",
       sub: "Un plan de defensa legal creado y revisado por abogados, para quienes no pueden pagar un retenedor tradicional de $10,000.",
       cta: "Empezar por $199 →",
       seeHow: "Ver cómo funciona",
@@ -199,7 +202,10 @@ const T = {
     nav: { how: "How it works", plan: "The Plan", attorney: "The Attorney", faq: "FAQ", cta: "Get started · $199" },
     hero: {
       badge: "Pre-detention defense plan · Miami, FL",
+      pre: "Pre-Deportation Protection",
+      modern: "Modern Immigrant Protection Plans",
       h1a: "ICE is", h1b: "coming.", h1c: "Don't wait.",
+      blend: "Blending new technology and experienced lawyers to provide low-cost options for non-citizens at risk of detention.",
       sub: "A legal defense plan built and reviewed by attorneys, for those who can't afford a traditional $10,000 retainer.",
       cta: "Get started for $199 →",
       seeHow: "See how it works",
@@ -304,7 +310,10 @@ const T = {
     nav: { how: "Kijan sa fonksyone", plan: "Plan an", attorney: "Avoka a", faq: "Kesyon", cta: "Kòmanse · $199" },
     hero: {
       badge: "Plan defans anvan detansyon · Miami, FL",
+      pre: "Pwoteksyon Anvan Deportasyon",
+      modern: "Plan Pwoteksyon Imigran Modèn",
       h1a: "ICE ap", h1b: "vini.", h1c: "Pa tann.",
+      blend: "Konbine nouvo teknoloji ak avoka ki gen eksperyans pou ofri opsyon ki pa chè pou moun ki pa sitwayen ki an risk pou detansyon.",
       sub: "Yon plan defans legal ki fèt epi revize pa avoka, pou moun ki pa ka peye yon retenè tradisyonèl $10,000.",
       cta: "Kòmanse pou $199 →",
       seeHow: "Wè kijan li fonksyone",
@@ -479,7 +488,7 @@ function Hero() {
   const { t, lang } = useT();
   return (
     <section className="relative overflow-hidden">
-      <div className="mx-auto grid max-w-6xl gap-16 px-6 pb-24 pt-8 md:grid-cols-[1.15fr_1fr] md:pt-12 md:pb-32">
+      <div className="mx-auto grid max-w-6xl gap-16 px-6 pb-24 pt-4 md:grid-cols-[1.15fr_1fr] md:pt-6 md:pb-32">
         <div className="flex flex-col justify-center">
           <h1 className="hero-headline text-[3.5rem] text-cvink sm:text-[5rem] md:text-[6.5rem]">
             {t.hero.h1a} <br />
@@ -488,7 +497,11 @@ function Hero() {
             {t.hero.h1c}
           </h1>
 
-          <p className="mt-8 max-w-lg text-lg leading-relaxed text-muted-foreground">{t.hero.sub}</p>
+          <div className="mt-6 max-w-lg space-y-1">
+            <p className="text-xl font-semibold leading-tight text-foreground md:text-2xl">{t.hero.pre}</p>
+            <p className="text-lg font-semibold leading-tight text-foreground">{t.hero.modern}</p>
+            <p className="text-base leading-relaxed text-muted-foreground">{t.hero.blend}</p>
+          </div>
 
           <div className="mt-6 flex flex-wrap items-center gap-5">
             <div className="relative inline-block">
