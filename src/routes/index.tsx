@@ -645,7 +645,7 @@ function HomeownerVideo() {
           />
           {!playing && (
             <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/45 px-4 text-center">
-              <h2 className="font-display text-3xl uppercase tracking-wide drop-shadow-lg md:text-5xl">{v.h}</h2>
+              <h2 className="font-display text-3xl uppercase tracking-wide text-white drop-shadow-lg md:text-5xl">{v.h}</h2>
               <p className="mt-2 text-base font-semibold text-firm-foreground drop-shadow-md md:text-xl">{v.sub}</p>
               <button
                 type="button"
