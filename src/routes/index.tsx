@@ -697,7 +697,7 @@ function AttorneySection() {
           <h2 className="mt-3 font-display text-4xl leading-tight text-cvink md:text-5xl">{t.attorney.quote}</h2>
           <p className="mt-6 text-lg text-muted-foreground">{t.attorney.body}</p>
           <a
-            href="https://www.sorrentinolawfirm.com"
+            href="https://sorrentinolawfirm.com"
             target="_blank"
             rel="noopener noreferrer"
             className="mt-6 inline-block rounded-full bg-firm px-6 py-3 text-sm font-semibold text-white transition hover:opacity-90"
