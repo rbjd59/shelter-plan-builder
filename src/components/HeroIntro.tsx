@@ -8,31 +8,26 @@ const COPY = {
   es: {
     strikethrough: "Plan de defensa legal con asistencia de abogado $199.",
     freeText: "Ahora gratis debido a la crisis comunitaria.",
-    ice: "ICE ARRESTA MÁS DE 2000 PERSONAS NO CIUDADANOS CADA DÍA",
-    getStarted: "Regístrese ahora",
-    watchVideos: "Ver videos",
-    secureLine: "100% cifrado, protección de primer nivel. Para más información, pulse aquí",
-    securityBtn: "Más información",
+    ice: "ICE ARRESTA MÁS DE 2000 PERSONAS NO CIUDADANAS CADA DÍA",
+    tagline:
+      "Plan seguro de defensa legal con un solo clic y aplicación de alerta de emergencia para personas en riesgo de detención por inmigración",
   },
   en: {
     strikethrough: "Attorney-assisted legal defense plan $199.",
     freeText: "Now free due to community crisis.",
     ice: "ICE ARRESTS OVER 2000 NON-CITIZENS EVERY DAY",
-    getStarted: "Get Started",
-    watchVideos: "Watch videos",
-    secureLine: "100% encrypted, best in class protection. More information, press here",
-    securityBtn: "More information",
+    tagline:
+      "Secure one-click legal defense plan and emergency alert application for people at risk of immigration enforcement detention",
   },
   ht: {
     strikethrough: "Plan defans legal avèk asistans avoka $199.",
     freeText: "Kounye a gratis akòz kriz kominotè a.",
     ice: "ICE ARETE PLIS PASE 2000 MOUN KI PA SITWAYEN CHAK JOU",
-    getStarted: "Kòmanse",
-    watchVideos: "Gade videyo yo",
-    secureLine: "100% kripte, pwoteksyon nan klas li. Pou plis enfòmasyon, peze isit la",
-    securityBtn: "Plis enfòmasyon",
+    tagline:
+      "Plan defans legal sekirize an yon sèl klik ak aplikasyon alèt ijans pou moun ki an risk detansyon imigrasyon",
   },
-} satisfies Record<Lang, { strikethrough: string; freeText: string; ice: string; getStarted: string; watchVideos: string; secureLine: string; securityBtn: string }>;
+} satisfies Record<Lang, { strikethrough: string; freeText: string; ice: string; tagline: string }>;
+
 
 export default function HeroIntro() {
   const { lang, setLang } = useLang();
