@@ -220,16 +220,27 @@ const T = {
 
   },
   en: {
-    nav: { how: "How it works", plan: "The Plan", attorney: "The Attorney", faq: "FAQ", cta: "Get started · $199" },
+    nav: { how: "How it works", plan: "The Plan", attorney: "The Attorney", faq: "FAQ", cta: "Start free →" },
     hero: {
-      badge: "Pre-detention defense plan · Miami, FL",
-      tagline: "The secure one-click emergency pre-deportation plan for people at risk of detention.",
-      h1a: "ICE is", h1b: "coming.", h1c: "Don't wait.",
-      sub: "A legal defense plan built and reviewed by attorneys, for those not represented by a lawyer.",
-      cta: "Get started for $199 →",
+      badge: "Pre-detention readiness plan · Miami, FL",
+      tagline: "The secure one-click emergency readiness plan for people at risk of detention.",
+      h1a: "Detentions", h1b: "are rising.", h1c: "Build your plan today.",
+      sub: "A legal readiness plan built and reviewed by an attorney, for those who don't have their own immigration lawyer.",
+      cta: "Start free →",
       seeHow: "See how it works",
-      nowFree: "Now free due to community crisis through Refuge Outreach, a 501(c)(3) nonprofit since 1991.",
+      nowFree: "Was $199. Now free for families in Broward and Miami-Dade, sponsored by Refuge Outreach, Inc., a 501(c)(3) nonprofit since 2009. Sponsorship limited to 1,000 families and available while sponsorship funding lasts.",
     },
+    plainBox: {
+      title: "In plain words",
+      items: [
+        { k: "What it is", v: "A readiness plan: documents and an emergency app prepared in case you are detained." },
+        { k: "What you get", v: "Emergency app with the NOTIFY FAMILY button · Habeas Corpus (AO 242), IFP and JS 44 prepared · Power of attorney and temporary child custody · Encrypted storage · Español, English, Kreyòl." },
+        { k: "What it costs", v: "Nothing. $0. We do not ask for a credit card. The cost is covered by Refuge Outreach, Inc. (501(c)(3)), and the attorney's $35 fee is paid into the IOLTA trust from sponsorship funds, not by you." },
+        { k: "Who the attorney is", v: "Rosario Sorrentino, Esq. (Fla. Bar No. 1049132) reviews and approves your documents under a written limited-scope agreement. This does not mean he will be your attorney in immigration court." },
+        { k: "What it is NOT", v: "This plan does NOT give you immigration status, does NOT stop a deportation, and does NOT guarantee your release. It is a readiness plan so your family and your documents are ready if you are detained." },
+      ],
+    },
+
     trust: { attorneyName: "Rosario Kyle Sorrentino, Esq.", firm: "Founder, Sorrentino Law Firm PLLC · Fla. Bar No. 1049132", bio: "Miami-based immigration attorney. Practices removal defense before the immigration courts (EOIR), ICE bond hearings, federal Habeas Corpus petitions, motions to reopen, asylum, Withholding of Removal, CAT, and victim-based petitions (VAWA, U, and T). Serves Spanish-speaking families throughout Florida." },
     features: [
       {
