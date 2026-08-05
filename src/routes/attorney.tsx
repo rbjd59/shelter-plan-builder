@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { FIRM, COMPANY, PRICE } from "@/lib/firm-info";
 import { LegalDisclaimerFooter } from "@/components/LegalDisclaimerFooter";
+import { useLang, type Lang } from "@/context/LanguageContext";
+import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/attorney")({
   head: () => ({
@@ -69,7 +71,39 @@ const PILLARS = [
   },
 ];
 
+const PRO_BONO_COPY = {
+  es: {
+    heading: "Nadie debe enfrentar la detención solo.",
+    p1: `${FIRM.attorney} ha aceptado donar sus servicios para la revisión del formulario de habeas corpus sin cargo.`,
+    p2: `${FIRM.attorney} realiza trabajo legal adicional. Para más información, visite su sitio web.`,
+    button: "Visitar el sitio web de Rosario",
+  },
+  en: {
+    heading: "No one should face detention alone.",
+    p1: `${FIRM.attorney} has agreed to donate his services for review of the habeas corpus form at no charge.`,
+    p2: `${FIRM.attorney} does additional legal work. For more information, visit his website.`,
+    button: "Visit Rosario's website",
+  },
+  ht: {
+    heading: "Pa gen moun ki dwe fè fas ak detansyon pou kont li.",
+    p1: `${FIRM.attorney} dako domnen sèvis li yo pou revize fòm habeas corpus la san frè.`,
+    p2: `${FIRM.attorney} fè lòt travay legal ankò. Pou plis enfòmasyon, vizite sit entènèt li.`,
+    button: "Vizite sit entènèt Rosario",
+  },
+} satisfies Record<Lang, { heading: string; p1: string; p2: string; button: string }>;
+
 function AttorneyPage() {
+  const { lang, setLang } = useLang();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mql = window.matchMedia("(max-width: 720px)");
+    const onChange = () => setIsMobile(mql.matches);
+    onChange();
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
   return (
     <div style={{ background: PAGE, color: NAVY, minHeight: "100vh", fontFamily: "Inter, system-ui, sans-serif" }}>
       {/* NAV */}
@@ -91,7 +125,7 @@ function AttorneyPage() {
           <Link to="/" style={{ color: NAVY, fontWeight: 800, letterSpacing: 0.2, textDecoration: "none", fontSize: 18 }}>
             DetencionDefensa<span style={{ color: ACCENT }}>.com</span>
           </Link>
-          <nav style={{ display: "flex", gap: 22, alignItems: "center", fontSize: 14 }}>
+          <nav style={{ display: "flex", gap: 14, alignItems: "center", fontSize: 14, flexWrap: "wrap" }}>
             <Link to="/" style={{ color: NAVY, textDecoration: "none" }}>Home</Link>
             <Link to="/retainer" style={{ color: NAVY, textDecoration: "none" }}>Retainer</Link>
             <a
@@ -102,6 +136,42 @@ function AttorneyPage() {
             >
               FL Bar Profile ↗
             </a>
+            <div
+              style={{
+                display: "inline-flex",
+                gap: 4,
+                background: "#fff",
+                border: `1px solid ${BORDER}`,
+                borderRadius: 999,
+                padding: 3,
+                flexShrink: 0,
+              }}
+            >
+              {(["es", "en", "ht"] as Lang[]).map((code) => (
+                <button
+                  key={code}
+                  type="button"
+                  onClick={() => setLang(code)}
+                  style={{
+                    background: lang === code ? NAVY : "transparent",
+                    color: lang === code ? "#fff" : NAVY,
+                    border: "none",
+                    borderRadius: 999,
+                    padding: isMobile ? "6px 10px" : "7px 13px",
+                    fontSize: isMobile ? 11 : 12,
+                    fontWeight: 700,
+                    letterSpacing: "0.12em",
+                    cursor: "pointer",
+                    fontFamily: "inherit",
+                    textTransform: "uppercase",
+                    touchAction: "manipulation",
+                    WebkitTapHighlightColor: "transparent",
+                  }}
+                >
+                  {code === "es" ? "Español" : code === "en" ? "English" : "Kreyòl"}
+                </button>
+              ))}
+            </div>
             <Link
               to="/intake"
               style={{
@@ -438,13 +508,13 @@ function AttorneyPage() {
           }}
         >
           <h2 style={{ fontFamily: "'Libre Baskerville', Georgia, serif", fontSize: 26, margin: "0 0 16px" }}>
-            No one should face detention alone.
+            {PRO_BONO_COPY[lang].heading}
           </h2>
           <p style={{ fontSize: 15.5, lineHeight: 1.7, color: NAVY, maxWidth: 720, margin: "0 auto 16px" }}>
-            {FIRM.attorney} has agreed to donate his services for review of the habeas corpus form at no charge.
+            {PRO_BONO_COPY[lang].p1}
           </p>
           <p style={{ fontSize: 15.5, lineHeight: 1.7, color: MUTED, maxWidth: 720, margin: "0 auto 24px" }}>
-            {FIRM.attorney} does additional legal work. For more information, visit his website.
+            {PRO_BONO_COPY[lang].p2}
           </p>
           <a
             href={FIRM.website}
@@ -461,7 +531,7 @@ function AttorneyPage() {
               display: "inline-block",
             }}
           >
-            Visit Rosario's website ↗
+            {PRO_BONO_COPY[lang].button} ↗
           </a>
         </div>
       </section>
