@@ -75,7 +75,7 @@ export default function AdVideoSection() {
             fontFamily: '"Work Sans", -apple-system, Roboto, Helvetica, Arial, sans-serif',
             fontSize: "clamp(2rem, 5vw, 3.5rem)",
             fontWeight: 800,
-            margin: "0 0 1.25rem",
+            margin: "0 0 0.35rem",
             color: "#fff",
             textTransform: "uppercase",
             letterSpacing: "0.02em",
@@ -83,6 +83,18 @@ export default function AdVideoSection() {
         >
           {HEADING[lang] ?? HEADING.en}
         </h2>
+        <p
+          style={{
+            fontFamily: '"Work Sans", -apple-system, Roboto, Helvetica, Arial, sans-serif',
+            fontSize: "clamp(1.1rem, 2.2vw, 1.5rem)",
+            fontWeight: 600,
+            margin: "0 0 1.25rem",
+            color: "#e8a04a",
+            letterSpacing: "0.01em",
+          }}
+        >
+          {SUBHEADING[lang] ?? SUBHEADING.en}
+        </p>
         <div
           style={{
             position: "relative",
