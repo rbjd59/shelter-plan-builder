@@ -34,7 +34,6 @@ import { Route as ConfigurarRouteImport } from './routes/configurar'
 import { Route as CompanyBoardRouteImport } from './routes/company-board'
 import { Route as ComingSoonRouteImport } from './routes/coming-soon'
 import { Route as CheckoutRouteImport } from './routes/checkout'
-import { Route as AvisoPublicidadRouteImport } from './routes/aviso-publicidad'
 import { Route as AttorneyBoardRouteImport } from './routes/attorney-board'
 import { Route as AttorneyRouteImport } from './routes/attorney'
 import { Route as AppRouteImport } from './routes/app'
@@ -214,11 +213,6 @@ const ComingSoonRoute = ComingSoonRouteImport.update({
 const CheckoutRoute = CheckoutRouteImport.update({
   id: '/checkout',
   path: '/checkout',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AvisoPublicidadRoute = AvisoPublicidadRouteImport.update({
-  id: '/aviso-publicidad',
-  path: '/aviso-publicidad',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AttorneyBoardRoute = AttorneyBoardRouteImport.update({
@@ -514,7 +508,6 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRoute
   '/attorney': typeof AttorneyRoute
   '/attorney-board': typeof AttorneyBoardRoute
-  '/aviso-publicidad': typeof AvisoPublicidadRoute
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
   '/company-board': typeof CompanyBoardRoute
@@ -594,7 +587,6 @@ export interface FileRoutesByTo {
   '/app': typeof AppRoute
   '/attorney': typeof AttorneyRoute
   '/attorney-board': typeof AttorneyBoardRoute
-  '/aviso-publicidad': typeof AvisoPublicidadRoute
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
   '/company-board': typeof CompanyBoardRoute
@@ -678,7 +670,6 @@ export interface FileRoutesById {
   '/app': typeof AppRoute
   '/attorney': typeof AttorneyRoute
   '/attorney-board': typeof AttorneyBoardRoute
-  '/aviso-publicidad': typeof AvisoPublicidadRoute
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
   '/company-board': typeof CompanyBoardRoute
@@ -760,7 +751,6 @@ export interface FileRouteTypes {
     | '/app'
     | '/attorney'
     | '/attorney-board'
-    | '/aviso-publicidad'
     | '/checkout'
     | '/coming-soon'
     | '/company-board'
@@ -840,7 +830,6 @@ export interface FileRouteTypes {
     | '/app'
     | '/attorney'
     | '/attorney-board'
-    | '/aviso-publicidad'
     | '/checkout'
     | '/coming-soon'
     | '/company-board'
@@ -923,7 +912,6 @@ export interface FileRouteTypes {
     | '/app'
     | '/attorney'
     | '/attorney-board'
-    | '/aviso-publicidad'
     | '/checkout'
     | '/coming-soon'
     | '/company-board'
@@ -1007,7 +995,6 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRoute
   AttorneyRoute: typeof AttorneyRoute
   AttorneyBoardRoute: typeof AttorneyBoardRoute
-  AvisoPublicidadRoute: typeof AvisoPublicidadRoute
   CheckoutRoute: typeof CheckoutRoute
   ComingSoonRoute: typeof ComingSoonRoute
   CompanyBoardRoute: typeof CompanyBoardRoute
@@ -1236,13 +1223,6 @@ declare module '@tanstack/react-router' {
       path: '/checkout'
       fullPath: '/checkout'
       preLoaderRoute: typeof CheckoutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/aviso-publicidad': {
-      id: '/aviso-publicidad'
-      path: '/aviso-publicidad'
-      fullPath: '/aviso-publicidad'
-      preLoaderRoute: typeof AvisoPublicidadRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/attorney-board': {
@@ -1737,7 +1717,6 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRoute,
   AttorneyRoute: AttorneyRoute,
   AttorneyBoardRoute: AttorneyBoardRoute,
-  AvisoPublicidadRoute: AvisoPublicidadRoute,
   CheckoutRoute: CheckoutRoute,
   ComingSoonRoute: ComingSoonRoute,
   CompanyBoardRoute: CompanyBoardRoute,
@@ -1794,13 +1773,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
