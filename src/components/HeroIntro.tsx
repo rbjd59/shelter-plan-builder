@@ -283,11 +283,11 @@ export default function HeroIntro() {
 
           <p
             style={{
-              margin: isMobile ? "auto auto 0.25rem" : "auto auto 0.5rem",
+              margin: isMobile ? "2rem auto 0.25rem" : "2.5rem auto 0.5rem",
               maxWidth: 1100,
               width: "100%",
               fontFamily: '"Roboto Slab", Georgia, serif',
-              fontSize: isMobile ? "0.9rem" : "clamp(0.95rem, 1.5vw, 1.2rem)",
+              fontSize: isMobile ? "0.95rem" : "clamp(1.05rem, 1.7vw, 1.35rem)",
               lineHeight: 1.25,
               fontWeight: 700,
               color: "#e8a04a",
