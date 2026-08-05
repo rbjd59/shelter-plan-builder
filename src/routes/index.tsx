@@ -94,7 +94,10 @@ const T = {
     nav: { how: "Cómo funciona", plan: "El Plan", attorney: "El Abogado", faq: "Preguntas", cta: "Empezar · $199" },
     hero: {
       badge: "Plan de defensa pre-detención · Miami, FL",
+      pre: "Protección Antideportación",
+      modern: "Planes Modernos de Protección para Inmigrantes",
       h1a: "La migra", h1b: "ya viene.", h1c: "No espere.",
+      blend: "Combinando nueva tecnología y abogados experimentados para ofrecer opciones de bajo costo a personas no ciudadanas en riesgo de detención.",
       sub: "Un plan de defensa legal creado y revisado por abogados, para quienes no pueden pagar un retenedor tradicional de $10,000.",
       cta: "Empezar por $199 →",
       seeHow: "Ver cómo funciona",
