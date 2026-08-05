@@ -16,14 +16,14 @@ const COPY = {
     price: "$199.",
     freeText: "Now free due to community crisis.",
     ice: "ICE ARRESTS OVER 2000 NON-CITIZENS EVERY DAY",
-    tagline1: "Secure legal defense plan with emergency application",
+    tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
   },
   ht: {
     plan: "Plan defans legal avèk asistans avoka ",
     price: "$199.",
     freeText: "Kounye a gratis akòz kriz kominotè a.",
     ice: "ICE ARETE PLIS PASE 2000 MOUN KI PA SITWAYEN CHAK JOU",
-    tagline1: "Plan defans legal sekirize ak aplikasyon ijans",
+    tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
   },
 } satisfies Record<Lang, { plan: string; price: string; freeText: string; ice: string; tagline1: string }>;
 
