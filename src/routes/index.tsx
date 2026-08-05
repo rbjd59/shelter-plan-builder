@@ -31,26 +31,27 @@ export const Route = createFileRoute("/")({
   },
   head: () => ({
     meta: [
-      { title: "DetencionDefensa.com — Plan de Defensa Pre-Detención · $10/mes" },
+      { title: "DetencionDefensa.com — Plan de Preparación Pre-Detención · Gratis" },
       {
         name: "description",
         content:
-          "A pre-detention defense plan for immigrant working families. Emergency app $10/month; attorney-reviewed documents at no charge. NOT a law firm.",
+          "A free sponsored pre-detention readiness plan for immigrant families in Broward and Miami-Dade. Documents reviewed by a Florida attorney. NOT a law firm. Does not grant immigration status or stop a deportation.",
       },
-      { property: "og:title", content: "DetencionDefensa.com — Plan de Defensa Pre-Detención · $10/mes" },
+      { property: "og:title", content: "DetencionDefensa.com — Plan de Preparación Pre-Detención · Gratis" },
       {
         property: "og:description",
         content:
-          "Pre-detention defense plan for immigrant working families. Emergency app $10/month; attorney-reviewed documents at no charge.",
+          "Free sponsored pre-detention readiness plan. Documents reviewed by a Florida attorney. NOT a law firm; does not grant immigration status or stop a deportation.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://detenciondefensa.com/" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "DetencionDefensa.com — Plan de Defensa Pre-Detención · $10/mes" },
-      { name: "twitter:description", content: "Pre-detention defense plan for immigrant working families. Emergency app $10/month; attorney-reviewed documents at no charge." },
+      { name: "twitter:title", content: "DetencionDefensa.com — Plan de Preparación Pre-Detención · Gratis" },
+      { name: "twitter:description", content: "Free sponsored pre-detention readiness plan. Documents reviewed by a Florida attorney. NOT a law firm." },
     ],
     links: [{ rel: "canonical", href: "https://detenciondefensa.com/" }],
   }),
+
   component: Index,
 });
 
@@ -91,30 +92,46 @@ function qualifyHref(lang: Lang) {
 
 const T = {
   es: {
-    nav: { how: "Cómo funciona", plan: "El Plan", attorney: "El Abogado", faq: "Preguntas", cta: "Empezar · $199" },
+    nav: { how: "Cómo funciona", plan: "El Plan", attorney: "El Abogado", faq: "Preguntas", cta: "Empezar gratis →" },
     hero: {
-      badge: "Plan de defensa pre-detención · Miami, FL",
-      tagline: "El plan seguro de emergencia anti-deportación con un solo clic para personas en riesgo de detención.",
-      h1a: "La migra", h1b: "ya viene.", h1c: "No espere.",
-      sub: "Un plan de defensa legal creado y revisado por abogados, para quienes no están representados por un abogado.",
-      cta: "Empezar por $199 →",
+      badge: "Plan de preparación pre-detención · Miami, FL",
+      tagline: "El plan seguro de preparación de emergencia con un solo clic para personas en riesgo de detención.",
+      h1a: "Las detenciones", h1b: "han aumentado.", h1c: "Prepare su plan hoy.",
+      sub: "Un plan de preparación legal creado y revisado por un abogado, para quienes no tienen su propio abogado de inmigración.",
+      cta: "Empezar gratis →",
       seeHow: "Ver cómo funciona",
-      nowFree: "Ahora gratis por la crisis comunitaria a través de Refuge Outreach, una organización sin fines de lucro 501(c)(3) desde 1991.",
+      nowFree: "Antes $199. Ahora gratis para familias en Broward y Miami-Dade, patrocinado por Refuge Outreach, Inc., una organización sin fines de lucro 501(c)(3) desde 2009. Patrocinio limitado a 1,000 familias y mientras dure el patrocinio.",
     },
+    plainBox: {
+      title: "En pocas palabras",
+      items: [
+        { k: "Qué es", v: "Un plan de preparación: documentos y una app de emergencia listos por si usted es detenido." },
+        { k: "Qué recibe", v: "App de emergencia con el botón NOTIFY FAMILY · Habeas Corpus (AO 242), IFP y JS 44 preparados · Poder notarial y custodia temporal de menores · Almacenamiento cifrado · Español, English, Kreyòl." },
+        { k: "Qué cuesta", v: "Nada. $0. No pedimos tarjeta de crédito. El costo lo cubre Refuge Outreach, Inc. (501(c)(3)) y el honorario de $35 del abogado se paga al fideicomiso IOLTA con fondos del patrocinio, no por usted." },
+        { k: "Quién es el abogado", v: "Rosario Sorrentino, Esq. (Fla. Bar No. 1049132) revisa y aprueba sus documentos bajo un acuerdo escrito de alcance limitado. Esto no significa que él será su abogado en la corte de inmigración." },
+        { k: "Qué NO es", v: "Este plan NO le da estatus migratorio, NO detiene una deportación y NO garantiza su liberación. Es un plan de preparación para que su familia y sus documentos estén listos si usted es detenido." },
+      ],
+    },
+
     trust: { attorneyName: "Rosario Kyle Sorrentino, Esq.", firm: "Fundador, Sorrentino Law Firm PLLC · Fla. Bar No. 1049132", bio: "Abogado de inmigración con sede en Miami. Practica defensa contra deportación ante los tribunales de inmigración (EOIR), audiencias de fianza en ICE, peticiones de Habeas Corpus en cortes federales, mociones de reapertura, asilo, retención de deportación (Withholding), CAT, y peticiones para víctimas (VAWA, U y T). Atiende familias hispanohablantes en toda Florida." },
     features: [
       {
-        eyebrow: "El botón que salva vidas",
+        eyebrow: "El botón que alerta a su familia y a su abogado en segundos",
         title: "Un botón. Toda su familia y su abogado, alertados en segundos.",
-        body: "Cuando la migra toca a la puerta, no hay tiempo para llamar a nadie. NOTIFY FAMILY envía su ubicación, su plan y su Habeas Corpus a las personas correctas — automáticamente.",
-        bullets: ["Alerta a múltiples contactos de emergencia", "Envía Habeas al abogado de guardia", "Registra la hora y lugar de la detención"],
+        body: "Cuando ICE toca a la puerta, no hay tiempo para llamar a nadie. NOTIFY FAMILY envía su ubicación, su plan y su Habeas Corpus a las personas correctas — automáticamente.",
+        bullets: [
+          "Alerta a múltiples contactos de emergencia",
+          "Envía el paquete al abogado de guardia: el abogado recibe la notificación y los documentos preparados. La representación en corte, si la necesita, requiere un acuerdo aparte.",
+          "Registra la hora y lugar de la detención",
+        ],
       },
       {
-        eyebrow: "Habeas Corpus, listo antes de que lo necesite",
+        eyebrow: "Habeas Corpus, preparado antes de que lo necesite",
         title: "Sus formularios están firmados, guardados y cifrados. Hoy.",
-        body: "Generamos su Habeas Corpus, su AO 242 y su IFP con sus datos. El abogado los revisa. Se guardan cifrados. El día que los necesite, ya están listos para ser presentados.",
-        bullets: ["Documentos generados por IA", "Revisados por Rosario Sorrentino, Esq.", "Cifrados de extremo a extremo"],
+        body: "Generamos borradores de su Habeas Corpus, su AO 242 y su IFP con sus datos. El abogado los revisa y los aprueba. Se guardan cifrados. Están preparados y listos para completarse y presentarse el día que se necesiten.",
+        bullets: ["Borradores generados por IA y revisados por el abogado antes de finalizarse", "Revisados y aprobados por Rosario Sorrentino, Esq.", "Cifrados de extremo a extremo"],
       },
+
       {
         eyebrow: "Su familia, preparada",
         title: "Poder notarial, custodia de menores, cuentas bancarias. Un solo lugar.",
@@ -124,25 +141,26 @@ const T = {
     ],
     pricing: {
       eyebrow: "El plan",
-      h2a: "Un pago.", h2b: "Toda su defensa.",
-      priceNote: "pago único",
-      split: "$164 a DetencionDefensa.com, Inc. · $35 directo al fideicomiso IOLTA del bufete.",
+      h2a: "Sin costo.", h2b: "Toda su preparación.",
+      priceNote: "patrocinado · $0",
+      split: "El costo de la plataforma y el honorario de $35 al fideicomiso IOLTA del bufete los cubre Refuge Outreach, Inc. (501(c)(3)). Usted no paga nada.",
       readinessBadge: "Servicios legales con descuento a través de Sorrentino Law Firm disponibles para clientes. Paquete de formularios de preparación familiar del abogado, noventa y nueve dólares.",
       features: [
-        "Habeas Corpus, AO 242 e IFP generados y revisados",
+        "Habeas Corpus, AO 242 e IFP preparados y revisados por el abogado",
         "Botón de pánico NOTIFY FAMILY",
-        "Carta de compromiso de alcance limitado (Rule 4-1.2(c))",
+        "Acuerdo escrito de alcance limitado con Sorrentino Law Firm PLLC (Regla 4-1.2(c))",
         "Almacenamiento cifrado de extremo a extremo",
         "Disponible en Español, English, Kreyòl",
       ],
-      cta: "Empezar mi plan por $199",
+      cta: "Empezar gratis →",
       addons: [
-        { title: "Family Readiness Forms", price: "$99", body: "Poder notarial, custodia de menores, acceso a cuentas." },
-        { title: "Attorney Form Completion", price: "$50", body: "El bufete completa cada formulario por usted." },
+        { title: "Family Readiness Forms", price: "Incluido", body: "Poder notarial, custodia de menores, acceso a cuentas." },
+        { title: "Attorney Form Completion", price: "Incluido", body: "El bufete completa cada formulario por usted." },
       ],
-      scholarshipTitle: "¿No puede pagar?",
-      scholarshipBody: "Refuge Outreach (501(c)(3)) ofrece becas para el plan completo.",
+      scholarshipTitle: "¿Quién paga esto?",
+      scholarshipBody: "Refuge Outreach, Inc. (501(c)(3)) patrocina el programa. Usted no paga nada.",
     },
+
     eligibility: {
       eyebrow: "Escala móvil · Sin costo o bajo costo",
       title: "¿Califica para el programa reducido?",
@@ -160,27 +178,29 @@ const T = {
       resultLow: "Califica: BAJO COSTO — $49",
       resultLowBody: "Precio reducido por escala móvil. Incluye Habeas Corpus, botón NOTIFY FAMILY y revisión de abogado.",
       resultStandard: "No califica para tarifa reducida",
-      resultStandardBody: "El precio estándar es $199. Refuge Outreach todavía puede ayudarle con becas parciales.",
+      resultStandardBody: "El programa patrocinado por Refuge Outreach, Inc. está dirigido a familias de bajos ingresos en Broward y Miami-Dade. Contáctenos para revisar su caso.",
       disclaimer: "Vista previa. Elegibilidad final verificada por Refuge Outreach (501(c)(3)) con documentación (W-2, prueba de residencia de hijos).",
       heroPitch: "Para quienes tienen hijos estadounidenses o hijos en EE.UU. y son el sostén principal del hogar, usted puede calificar para un programa sin costo o de bajo costo. Para ver si califica, pulse el botón abajo.",
     },
     attorney: {
       eyebrow: "El bufete",
       quote: "\"Nadie debería enfrentar una detención sin un plan.\"",
-      body: "Rosario Sorrentino, Esq. — fundador de Sorrentino Law Firm PLLC, un bufete de Florida especializado en defensa de inmigración. Cada plan de DetencionDefensa es revisado y aprobado por su equipo.",
+      body: "Rosario Sorrentino, Esq. — fundador de Sorrentino Law Firm PLLC, un bufete de Florida especializado en defensa de inmigración. Cada plan de DetencionDefensa es revisado y aprobado por Rosario Sorrentino, Esq. o bajo su supervisión directa.",
       notice: "La contratación de un abogado es una decisión importante que no debe basarse únicamente en anuncios. Antes de decidir, pida información gratuita por escrito sobre nuestras cualificaciones y experiencia. Sorrentino Law Firm PLLC, Miami, FL.",
     },
     faq: {
       eyebrow: "Preguntas frecuentes",
       title: "Lo que la gente pregunta.",
       items: [
-        { q: "¿DetencionDefensa es un bufete de abogados?", a: "No. DetencionDefensa es operado por DetencionDefensa.com, Inc., una corporación de Delaware — no un bufete. Los servicios legales son prestados por Sorrentino Law Firm PLLC, un bufete de Florida separado." },
-        { q: "¿Qué pasa con mi dinero?", a: "$164 van a DetencionDefensa.com, Inc. por la plataforma. $35 van directamente al fideicomiso IOLTA de Sorrentino Law Firm PLLC — nosotros nunca tocamos los honorarios del abogado." },
+        { q: "¿DetencionDefensa es un bufete de abogados?", a: "No. DetencionDefensa es operado por DetencionDefensa.com, Inc., una corporación de Delaware — no un bufete. Los servicios legales son prestados por Sorrentino Law Firm PLLC, un bufete de Florida separado. Al inscribirse, usted contrata a Sorrentino Law Firm PLLC de manera limitada para revisar y aprobar sus documentos, mediante un acuerdo escrito. Esto no significa que el abogado será su representante en la corte de inmigración." },
+        { q: "¿Quién paga esto?", a: "Usted no paga nada. Refuge Outreach, Inc., una organización sin fines de lucro 501(c)(3), patrocina el costo de la plataforma que cobra DetencionDefensa.com, Inc. y también el honorario de $35 del abogado, que se deposita directamente en el fideicomiso IOLTA de Sorrentino Law Firm PLLC. No pedimos tarjeta de crédito y no hay cargos futuros. El patrocinio está limitado a 1,000 familias en Broward y Miami-Dade y dura mientras dure el patrocinio." },
+        { q: "¿Este plan detiene una deportación?", a: "No. Este plan NO le da estatus migratorio, NO detiene una deportación y NO garantiza su liberación. Es un plan de preparación para que su familia y sus documentos estén listos si usted es detenido." },
+        { q: "¿Qué hacen con mi información?", a: "Su información se usa únicamente para preparar y guardar sus documentos y para alertar a sus contactos de emergencia. No vendemos ni compartimos la información de los inscritos patrocinados con prestamistas, inversionistas ni terceros de mercadeo — incluyendo SaveMyHomeTrust — sin su consentimiento por escrito por separado." },
         { q: "¿Necesito estar en Florida?", a: "Fase 1 sirve al mercado de Miami. Fase 2 (2026) expande a Los Ángeles, Houston y Nueva York a través de PLLCs estatales separadas supervisadas por Sorrentino Law Firm PLLC." },
         { q: "¿Qué idiomas soporta?", a: "Español, English y Kreyòl Ayisyen. Toda la documentación legal ha sido traducida profesionalmente." },
       ],
     },
-    finalCta: { h2a: "No espere", h2b: "a la puerta.", sub: "Tome 10 minutos hoy. Tenga su plan listo mañana.", cta: "Empezar mi plan · $199" },
+    finalCta: { h2a: "No espere", h2b: "a la puerta.", sub: "Tome 10 minutos hoy. Tenga su plan listo mañana. Sin costo.", cta: "Empezar gratis →" },
     footer: {
       tag: "Tecnología legal para comunidades vulnerables. Miami, FL.",
       companyHead: "La empresa", companyLinks: ["Cómo funciona", "Precios", "Refuge Outreach"],
@@ -188,39 +208,58 @@ const T = {
       dba: "DetencionDefensa es operado por DetencionDefensa.com, Inc., una corporación de Delaware.",
       notLawFirm: "DetencionDefensa.com, Inc. NO es un bufete de abogados.",
       disclaimer1: "DetencionDefensa.com, Inc. es una corporación de Delaware. NO es un bufete de abogados y NO presta servicios legales. Los servicios legales son prestados por Sorrentino Law Firm PLLC, un bufete de Florida separado, cuyo propietario es Rosario Sorrentino, Esq.",
+      noProtection: "Este plan NO le da estatus migratorio, NO detiene una deportación y NO garantiza su liberación.",
+      dataUse: "Uso de datos: la información de los inscritos patrocinados no se vende ni se comparte con prestamistas, inversionistas ni terceros de mercadeo sin su consentimiento por escrito por separado.",
       dualRoleLabel: "Divulgación de doble rol:",
       dualRole: " Rosario Sorrentino, Esq. tiene una participación tanto en DetencionDefensa.com, Inc. como en Sorrentino Law Firm PLLC. Esta relación ha sido divulgada conforme a la Regla 4-1.7 del Florida Bar.",
       adLabel: "Aviso de publicidad legal:",
       ad: " La contratación de un abogado es una decisión importante que no debe basarse únicamente en anuncios. Sorrentino Law Firm PLLC · Miami, FL.",
       copyright: "© 2026 DetencionDefensa.com, Inc. Todos los derechos reservados.",
     },
-    mock: { panicEyebrow: "Emergencia", panicTitle: "Notificar familia", panicBtn: "PULSE\nAQUÍ", panicFoot: "Envía ubicación + Habeas a múltiples contactos de emergencia", onDuty: "✓ Abogado de guardia · Sorrentino Law Firm", docsEyebrow: "Su expediente", docsTitle: "Documentos", encrypted: "🔒 cifrado", reviewed: "Revisado", ready: "Listo", lastReview: "Última revisión por", today: "hoy 14:22", familyEyebrow: "Su familia", familyTitle: "Todo listo si usted no está.", familyDone: "3 de 4 documentos firmados y notarizados", familyKit: "Family Kit" },
+    mock: { sim: "Simulación", panicEyebrow: "Emergencia", panicTitle: "Notificar familia", panicBtn: "PULSE\nAQUÍ", panicFoot: "Envía ubicación + Habeas a múltiples contactos de emergencia", onDuty: "✓ Abogado de guardia · Sorrentino Law Firm", docsEyebrow: "Su expediente", docsTitle: "Documentos", encrypted: "🔒 cifrado", reviewed: "Revisado", ready: "Listo", lastReview: "Última revisión por", today: "hoy 14:22", familyEyebrow: "Su familia", familyTitle: "Todo listo si usted no está.", familyDone: "3 de 4 documentos firmados y notarizados", familyKit: "Family Kit" },
+
   },
   en: {
-    nav: { how: "How it works", plan: "The Plan", attorney: "The Attorney", faq: "FAQ", cta: "Get started · $199" },
+    nav: { how: "How it works", plan: "The Plan", attorney: "The Attorney", faq: "FAQ", cta: "Start free →" },
     hero: {
-      badge: "Pre-detention defense plan · Miami, FL",
-      tagline: "The secure one-click emergency pre-deportation plan for people at risk of detention.",
-      h1a: "ICE is", h1b: "coming.", h1c: "Don't wait.",
-      sub: "A legal defense plan built and reviewed by attorneys, for those not represented by a lawyer.",
-      cta: "Get started for $199 →",
+      badge: "Pre-detention readiness plan · Miami, FL",
+      tagline: "The secure one-click emergency readiness plan for people at risk of detention.",
+      h1a: "Detentions", h1b: "are rising.", h1c: "Build your plan today.",
+      sub: "A legal readiness plan built and reviewed by an attorney, for those who don't have their own immigration lawyer.",
+      cta: "Start free →",
       seeHow: "See how it works",
-      nowFree: "Now free due to community crisis through Refuge Outreach, a 501(c)(3) nonprofit since 1991.",
+      nowFree: "Was $199. Now free for families in Broward and Miami-Dade, sponsored by Refuge Outreach, Inc., a 501(c)(3) nonprofit since 2009. Sponsorship limited to 1,000 families and available while sponsorship funding lasts.",
     },
+    plainBox: {
+      title: "In plain words",
+      items: [
+        { k: "What it is", v: "A readiness plan: documents and an emergency app prepared in case you are detained." },
+        { k: "What you get", v: "Emergency app with the NOTIFY FAMILY button · Habeas Corpus (AO 242), IFP and JS 44 prepared · Power of attorney and temporary child custody · Encrypted storage · Español, English, Kreyòl." },
+        { k: "What it costs", v: "Nothing. $0. We do not ask for a credit card. The cost is covered by Refuge Outreach, Inc. (501(c)(3)), and the attorney's $35 fee is paid into the IOLTA trust from sponsorship funds, not by you." },
+        { k: "Who the attorney is", v: "Rosario Sorrentino, Esq. (Fla. Bar No. 1049132) reviews and approves your documents under a written limited-scope agreement. This does not mean he will be your attorney in immigration court." },
+        { k: "What it is NOT", v: "This plan does NOT give you immigration status, does NOT stop a deportation, and does NOT guarantee your release. It is a readiness plan so your family and your documents are ready if you are detained." },
+      ],
+    },
+
     trust: { attorneyName: "Rosario Kyle Sorrentino, Esq.", firm: "Founder, Sorrentino Law Firm PLLC · Fla. Bar No. 1049132", bio: "Miami-based immigration attorney. Practices removal defense before the immigration courts (EOIR), ICE bond hearings, federal Habeas Corpus petitions, motions to reopen, asylum, Withholding of Removal, CAT, and victim-based petitions (VAWA, U, and T). Serves Spanish-speaking families throughout Florida." },
     features: [
       {
-        eyebrow: "The button that saves lives",
+        eyebrow: "The button that alerts your family and your attorney in seconds",
         title: "One button. Your whole family and your attorney, alerted in seconds.",
         body: "When ICE knocks on the door, there's no time to call anyone. NOTIFY FAMILY sends your location, your plan, and your Habeas Corpus to the right people — automatically.",
-        bullets: ["Alerts multiple emergency contacts", "Sends Habeas to the on-duty attorney", "Logs time and location of the detention"],
+        bullets: [
+          "Alerts multiple emergency contacts",
+          "Sends the packet to the on-call attorney: the attorney receives the notification and the prepared documents. Court representation, if needed, requires a separate engagement.",
+          "Logs time and location of the detention",
+        ],
       },
       {
-        eyebrow: "Habeas Corpus, ready before you need it",
+        eyebrow: "Habeas Corpus, prepared before you need it",
         title: "Your forms are signed, stored, and encrypted. Today.",
-        body: "We generate your Habeas Corpus, your AO 242, and your IFP with your information. The attorney reviews them. They're stored encrypted. The day you need them, they're ready to file.",
-        bullets: ["AI-generated documents", "Reviewed by Rosario Sorrentino, Esq.", "End-to-end encrypted"],
+        body: "We generate drafts of your Habeas Corpus, your AO 242, and your IFP with your information. The attorney reviews and approves them. They're stored encrypted, prepared and ready to be completed and filed the day they are needed.",
+        bullets: ["AI-generated drafts reviewed by the attorney before they are final", "Reviewed and approved by Rosario Sorrentino, Esq.", "End-to-end encrypted"],
       },
+
       {
         eyebrow: "Your family, prepared",
         title: "Power of attorney, child custody, bank accounts. One place.",
@@ -230,25 +269,26 @@ const T = {
     ],
     pricing: {
       eyebrow: "The plan",
-      h2a: "One payment.", h2b: "Your whole defense.",
-      priceNote: "one-time",
-      split: "$164 to DetencionDefensa.com, Inc. · $35 direct to the firm's IOLTA trust.",
+      h2a: "No cost.", h2b: "Your whole readiness plan.",
+      priceNote: "sponsored · $0",
+      split: "The platform cost and the $35 fee paid into the firm's IOLTA trust are both covered by Refuge Outreach, Inc. (501(c)(3)). You pay nothing.",
       readinessBadge: "Discounted legal services through Sorrentino Law Firm available for clients. Attorney family readiness form packet, ninety-nine dollars.",
       features: [
-        "Habeas Corpus, AO 242, and IFP generated and reviewed",
+        "Habeas Corpus, AO 242, and IFP prepared and attorney-reviewed",
         "NOTIFY FAMILY panic button",
-        "Limited-scope engagement letter (Rule 4-1.2(c))",
+        "Written limited-scope engagement with Sorrentino Law Firm PLLC (Rule 4-1.2(c))",
         "End-to-end encrypted storage",
         "Available in Spanish, English, Kreyòl",
       ],
-      cta: "Start my plan for $199",
+      cta: "Start free →",
       addons: [
-        { title: "Family Readiness Forms", price: "$99", body: "Power of attorney, child custody, account access." },
-        { title: "Attorney Form Completion", price: "$50", body: "The firm completes each form for you." },
+        { title: "Family Readiness Forms", price: "Included", body: "Power of attorney, child custody, account access." },
+        { title: "Attorney Form Completion", price: "Included", body: "The firm completes each form for you." },
       ],
-      scholarshipTitle: "Can't afford it?",
-      scholarshipBody: "Refuge Outreach (501(c)(3)) offers scholarships for the full plan.",
+      scholarshipTitle: "Who pays for this?",
+      scholarshipBody: "Refuge Outreach, Inc. (501(c)(3)) sponsors the program. You pay nothing.",
     },
+
     eligibility: {
       eyebrow: "Sliding scale · No-cost or low-cost",
       title: "Do you qualify for the reduced program?",
@@ -266,27 +306,29 @@ const T = {
       resultLow: "You qualify: LOW COST — $49",
       resultLowBody: "Reduced sliding-scale price. Includes Habeas Corpus, NOTIFY FAMILY button, and attorney review.",
       resultStandard: "You don't qualify for the reduced rate",
-      resultStandardBody: "Standard price is $199. Refuge Outreach may still help with partial scholarships.",
+      resultStandardBody: "The Refuge Outreach, Inc. sponsored program targets low-income families in Broward and Miami-Dade. Contact us to review your case.",
       disclaimer: "Preview. Final eligibility verified by Refuge Outreach (501(c)(3)) with documentation (W-2, proof of children's residency).",
       heroPitch: "For those with American children or children in the U.S. who are the household's primary income earner, you may qualify for a no-cost or low-cost program. To see if you qualify, press the button below.",
     },
     attorney: {
       eyebrow: "The firm",
       quote: "\"No one should face a detention without a plan.\"",
-      body: "Rosario Sorrentino, Esq. — founder of Sorrentino Law Firm PLLC, a Florida firm specializing in immigration defense. Every DetencionDefensa plan is reviewed and approved by his team.",
+      body: "Rosario Sorrentino, Esq. — founder of Sorrentino Law Firm PLLC, a Florida firm specializing in immigration defense. Every DetencionDefensa plan is reviewed and approved by Rosario Sorrentino, Esq. or under his direct supervision.",
       notice: "The hiring of a lawyer is an important decision that should not be based solely upon advertisements. Before you decide, ask us to send you free written information about our qualifications and experience. Sorrentino Law Firm PLLC, Miami, FL.",
     },
     faq: {
       eyebrow: "Frequently asked",
       title: "What people ask.",
       items: [
-        { q: "Is DetencionDefensa a law firm?", a: "No. DetencionDefensa is operated by DetencionDefensa.com, Inc., a Delaware corporation — not a law firm. Legal services are provided by Sorrentino Law Firm PLLC, a separate Florida law firm." },
-        { q: "Where does my money go?", a: "$164 goes to DetencionDefensa.com, Inc. for the platform. $35 goes directly to the IOLTA trust of Sorrentino Law Firm PLLC — we never touch the attorney's fees." },
+        { q: "Is DetencionDefensa a law firm?", a: "No. DetencionDefensa is operated by DetencionDefensa.com, Inc., a Delaware corporation — not a law firm. Legal services are provided by Sorrentino Law Firm PLLC, a separate Florida law firm. When you enroll, you retain Sorrentino Law Firm PLLC on a limited-scope basis to review and approve your documents, under a written agreement. That does not mean the attorney will represent you in immigration court." },
+        { q: "Who pays for this?", a: "You pay nothing. Refuge Outreach, Inc., a 501(c)(3) nonprofit, sponsors the platform cost charged by DetencionDefensa.com, Inc. and also the attorney's $35 fee, which is deposited directly into the IOLTA trust of Sorrentino Law Firm PLLC. We do not ask for a credit card and there are no future charges. Sponsorship is limited to 1,000 families in Broward and Miami-Dade and lasts while sponsorship funding lasts." },
+        { q: "Does this plan stop a deportation?", a: "No. This plan does NOT give you immigration status, does NOT stop a deportation, and does NOT guarantee your release. It is a readiness plan so your family and your documents are ready if you are detained." },
+        { q: "What do you do with my information?", a: "Your information is used only to prepare and store your documents and to alert your emergency contacts. We do not sell or share sponsored enrollees' information with lenders, investors, or marketing third parties — including SaveMyHomeTrust — without your separate written opt-in." },
         { q: "Do I need to be in Florida?", a: "Phase 1 serves the Miami market. Phase 2 (2026) expands to Los Angeles, Houston, and New York through separate state PLLCs supervised by Sorrentino Law Firm PLLC." },
         { q: "What languages are supported?", a: "Spanish, English, and Haitian Creole. All legal documentation has been professionally translated." },
       ],
     },
-    finalCta: { h2a: "Don't wait", h2b: "at the door.", sub: "Take 10 minutes today. Have your plan ready tomorrow.", cta: "Start my plan · $199" },
+    finalCta: { h2a: "Don't wait", h2b: "at the door.", sub: "Take 10 minutes today. Have your plan ready tomorrow. At no cost.", cta: "Start free →" },
     footer: {
       tag: "Legal technology for vulnerable communities. Miami, FL.",
       companyHead: "Company", companyLinks: ["How it works", "Pricing", "Refuge Outreach"],
@@ -294,39 +336,58 @@ const T = {
       dba: "DetencionDefensa is operated by DetencionDefensa.com, Inc., a Delaware corporation.",
       notLawFirm: "DetencionDefensa.com, Inc. is NOT a law firm.",
       disclaimer1: "DetencionDefensa.com, Inc. is a Delaware corporation. It is NOT a law firm and does NOT provide legal services. Legal services are provided by Sorrentino Law Firm PLLC, a separate Florida law firm, wholly owned by Rosario Sorrentino, Esq.",
+      noProtection: "This plan does NOT give you immigration status, does NOT stop a deportation, and does NOT guarantee your release.",
+      dataUse: "Data use: sponsored enrollees' information is not sold or shared with lenders, investors, or marketing third parties without separate written opt-in.",
       dualRoleLabel: "Dual-role disclosure:",
       dualRole: " Rosario Sorrentino, Esq. holds an interest in both DetencionDefensa.com, Inc. and Sorrentino Law Firm PLLC. This relationship has been disclosed pursuant to Florida Bar Rule 4-1.7.",
       adLabel: "Attorney advertising notice:",
       ad: " The hiring of a lawyer is an important decision that should not be based solely upon advertisements. Sorrentino Law Firm PLLC · Miami, FL.",
       copyright: "© 2026 DetencionDefensa.com, Inc. All rights reserved.",
     },
-    mock: { panicEyebrow: "Emergency", panicTitle: "Notify family", panicBtn: "PRESS\nHERE", panicFoot: "Sends location + Habeas to multiple emergency contacts", onDuty: "✓ On-duty attorney · Sorrentino Law Firm", docsEyebrow: "Your file", docsTitle: "Documents", encrypted: "🔒 encrypted", reviewed: "Reviewed", ready: "Ready", lastReview: "Last reviewed by", today: "today 2:22 PM", familyEyebrow: "Your family", familyTitle: "All set if you're not here.", familyDone: "3 of 4 documents signed and notarized", familyKit: "Family Kit" },
+    mock: { sim: "Simulation", panicEyebrow: "Emergency", panicTitle: "Notify family", panicBtn: "PRESS\nHERE", panicFoot: "Sends location + Habeas to multiple emergency contacts", onDuty: "✓ On-call attorney · Sorrentino Law Firm", docsEyebrow: "Your file", docsTitle: "Documents", encrypted: "🔒 encrypted", reviewed: "Reviewed", ready: "Ready", lastReview: "Last reviewed by", today: "today 2:22 PM", familyEyebrow: "Your family", familyTitle: "All set if you're not here.", familyDone: "3 of 4 documents signed and notarized", familyKit: "Family Kit" },
+
   },
   ht: {
-    nav: { how: "Kijan sa fonksyone", plan: "Plan an", attorney: "Avoka a", faq: "Kesyon", cta: "Kòmanse · $199" },
+    nav: { how: "Kijan sa fonksyone", plan: "Plan an", attorney: "Avoka a", faq: "Kesyon", cta: "Kòmanse gratis →" },
     hero: {
-      badge: "Plan defans anvan detansyon · Miami, FL",
-      tagline: "Plan ijans sekirite pre-deportasyon ak yon sèl klik pou moun ki an ris pou detansyon.",
-      h1a: "ICE ap", h1b: "vini.", h1c: "Pa tann.",
-      sub: "Yon plan defans legal ki fèt epi revize pa avoka, pou moun ki pa reprezante pa yon avoka.",
-      cta: "Kòmanse pou $199 →",
+      badge: "Plan preparasyon anvan detansyon · Miami, FL",
+      tagline: "Plan preparasyon ijans sekirize ak yon sèl klik pou moun ki an ris pou detansyon.",
+      h1a: "Detansyon yo", h1b: "ap ogmante.", h1c: "Prepare plan w jodi a.",
+      sub: "Yon plan preparasyon legal ki fèt epi revize pa yon avoka, pou moun ki pa gen pwòp avoka imigrasyon pa yo.",
+      cta: "Kòmanse gratis →",
       seeHow: "Wè kijan li fonksyone",
-      nowFree: "Kounye a gratis akòz kriz kominotè a atravè Refuge Outreach, yon òganizasyon san bi likratif 501(c)(3) depi 1991.",
+      nowFree: "Anvan $199. Kounye a gratis pou fanmi nan Broward ak Miami-Dade, patwone pa Refuge Outreach, Inc., yon òganizasyon san bi likratif 501(c)(3) depi 2009. Patwonaj la limite a 1,000 fanmi epi li dire toutotan finansman patwonaj la dire.",
     },
+    plainBox: {
+      title: "An mo senp",
+      items: [
+        { k: "Kisa li ye", v: "Yon plan preparasyon: dokiman ak yon app ijans ki pare si yo detni w." },
+        { k: "Kisa w resevwa", v: "App ijans ak bouton NOTIFY FAMILY · Habeas Corpus (AO 242), IFP ak JS 44 prepare · Pouvwa notarye ak gad tanporè timoun · Stokaj chiffré · Español, English, Kreyòl." },
+        { k: "Konbyen li koute", v: "Anyen. $0. Nou pa mande kat kredi. Refuge Outreach, Inc. (501(c)(3)) kouvri kou a, epi frè $35 avoka a peye nan kont IOLTA ak lajan patwonaj la, pa ak lajan w." },
+        { k: "Kilès avoka a ye", v: "Rosario Sorrentino, Esq. (Fla. Bar No. 1049132) revize epi apwouve dokiman w yo anba yon akò ekri ak pòte limite. Sa pa vle di li ap avoka w nan tribinal imigrasyon." },
+        { k: "Kisa li PA ye", v: "Plan sa a PA ba w estati imigrasyon, li PA rete yon depòtasyon epi li PA garanti liberasyon w. Se yon plan preparasyon pou fanmi w ak dokiman w yo pare si yo detni w." },
+      ],
+    },
+
     trust: { attorneyName: "Rosario Kyle Sorrentino, Esq.", firm: "Fondatè, Sorrentino Law Firm PLLC · Fla. Bar No. 1049132", bio: "Avoka imigrasyon ki baze Miami. Li pratike defans kont depòtasyon devan tribinal imigrasyon (EOIR), odyans kosyon ICE, petisyon Habeas Corpus nan tribinal federal, mosyon pou re-ouvri, azil, Withholding of Removal, CAT, ak petisyon pou viktim (VAWA, U, ak T). Li sèvi fanmi ki pale Panyòl atravè tout Florida." },
     features: [
       {
-        eyebrow: "Bouton ki sove lavi",
+        eyebrow: "Bouton ki alète fanmi w ak avoka w nan segonn",
         title: "Yon bouton. Tout fanmi w ak avoka w, alète nan segonn.",
         body: "Lè ICE frape pòt la, pa gen tan pou rele pèsonn. NOTIFY FAMILY voye pozisyon w, plan w, ak Habeas Corpus w bay bon moun yo — otomatikman.",
-        bullets: ["Alète plizyè kontak dijans", "Voye Habeas bay avoka an sèvis", "Anrejistre lè ak kote detansyon an"],
+        bullets: [
+          "Alète plizyè kontak dijans",
+          "Voye pake a bay avoka an sèvis la: avoka a resevwa notifikasyon an ak dokiman prepare yo. Reprezantasyon nan tribinal, si w bezwen l, mande yon akò separe.",
+          "Anrejistre lè ak kote detansyon an",
+        ],
       },
       {
-        eyebrow: "Habeas Corpus, pare anvan w bezwen l",
+        eyebrow: "Habeas Corpus, prepare anvan w bezwen l",
         title: "Fòm ou yo siyen, sere, epi chiffré. Jodi a.",
-        body: "Nou jenere Habeas Corpus w, AO 242 w, ak IFP w ak enfòmasyon w. Avoka a revize yo. Yo sere chiffré. Jou w bezwen yo, yo pare pou depoze.",
-        bullets: ["Dokiman jenere pa IA", "Revize pa Rosario Sorrentino, Esq.", "Chiffré bout an bout"],
+        body: "Nou jenere bouyon Habeas Corpus w, AO 242 w, ak IFP w ak enfòmasyon w. Avoka a revize epi apwouve yo. Yo sere chiffré, prepare epi pare pou konplete ak depoze jou yo bezwen yo.",
+        bullets: ["Bouyon jenere pa IA epi revize pa avoka a anvan yo final", "Revize epi apwouve pa Rosario Sorrentino, Esq.", "Chiffré bout an bout"],
       },
+
       {
         eyebrow: "Fanmi w, prepare",
         title: "Pouvwa notarye, gad timoun, kont labank. Yon sèl kote.",
@@ -336,25 +397,26 @@ const T = {
     ],
     pricing: {
       eyebrow: "Plan an",
-      h2a: "Yon peman.", h2b: "Tout defans ou.",
-      priceNote: "yon sèl fwa",
-      split: "$164 bay DetencionDefensa.com, Inc. · $35 dirèk nan kont IOLTA biwo a.",
+      h2a: "San kou.", h2b: "Tout preparasyon w.",
+      priceNote: "patwone · $0",
+      split: "Refuge Outreach, Inc. (501(c)(3)) kouvri kou platfòm nan ak frè $35 la ki ale nan kont IOLTA biwo a. Ou pa peye anyen.",
       readinessBadge: "Sèvis legal ak reduiksyon atravè Sorrentino Law Firm disponib pou kliyan. Pake fòm preparasyon fanmi avoka a, swasan-nèf dola.",
       features: [
-        "Habeas Corpus, AO 242, ak IFP jenere epi revize",
+        "Habeas Corpus, AO 242, ak IFP prepare epi revize pa avoka a",
         "Bouton panik NOTIFY FAMILY",
-        "Lèt angajman limite (Rule 4-1.2(c))",
+        "Akò ekri ak pòte limite ak Sorrentino Law Firm PLLC (Rule 4-1.2(c))",
         "Stokaj chiffré bout an bout",
         "Disponib nan Panyòl, Anglè, Kreyòl",
       ],
-      cta: "Kòmanse plan mwen pou $199",
+      cta: "Kòmanse gratis →",
       addons: [
-        { title: "Family Readiness Forms", price: "$99", body: "Pouvwa notarye, gad timoun, aksè kont." },
-        { title: "Attorney Form Completion", price: "$50", body: "Biwo a ranpli chak fòm pou ou." },
+        { title: "Family Readiness Forms", price: "Enkli", body: "Pouvwa notarye, gad timoun, aksè kont." },
+        { title: "Attorney Form Completion", price: "Enkli", body: "Biwo a ranpli chak fòm pou ou." },
       ],
-      scholarshipTitle: "Ou pa ka peye?",
-      scholarshipBody: "Refuge Outreach (501(c)(3)) ofri bous pou plan konplè a.",
+      scholarshipTitle: "Kilès ki peye pou sa?",
+      scholarshipBody: "Refuge Outreach, Inc. (501(c)(3)) patwone pwogram nan. Ou pa peye anyen.",
     },
+
     eligibility: {
       eyebrow: "Echèl mobil · San kou oswa ba kou",
       title: "Èske w kalifye pou pwogram redwi a?",
@@ -372,27 +434,29 @@ const T = {
       resultLow: "W kalifye: BA KOU — $49",
       resultLowBody: "Pri redwi echèl mobil. Gen ladan Habeas Corpus, bouton NOTIFY FAMILY, ak revizyon avoka.",
       resultStandard: "W pa kalifye pou to redwi",
-      resultStandardBody: "Pri estanda a se $199. Refuge Outreach ka toujou ede ak bous pasyèl.",
+      resultStandardBody: "Pwogram Refuge Outreach, Inc. patwone a vize fanmi ki gen ti revni nan Broward ak Miami-Dade. Kontakte nou pou nou revize ka w.",
       disclaimer: "Apèsi. Kalifikasyon final verifye pa Refuge Outreach (501(c)(3)) ak dokiman (W-2, prèv rezidans timoun yo).",
       heroPitch: "Pou moun ki gen pitit Ameriken oswa pitit Ozetazini epi ki se sipò prensipal fanmi an, ou ka kalifye pou yon pwogram san kou oswa ba kou. Pou wè si w kalifye, peze bouton anba a.",
     },
     attorney: {
       eyebrow: "Biwo a",
       quote: "\"Pèsonn pa ta dwe fè fas ak yon detansyon san yon plan.\"",
-      body: "Rosario Sorrentino, Esq. — fondatè Sorrentino Law Firm PLLC, yon biwo Florida ki espesyalize nan defans imigrasyon. Chak plan DetencionDefensa revize epi apwouve pa ekip li a.",
+      body: "Rosario Sorrentino, Esq. — fondatè Sorrentino Law Firm PLLC, yon biwo Florida ki espesyalize nan defans imigrasyon. Chak plan DetencionDefensa revize epi apwouve pa Rosario Sorrentino, Esq. oswa anba sipèvizyon dirèk li.",
       notice: "Anboche yon avoka se yon desizyon enpòtan ki pa ta dwe baze sèlman sou reklam. Anvan w deside, mande enfòmasyon gratis alekri sou kalifikasyon ak eksperyans nou. Sorrentino Law Firm PLLC, Miami, FL.",
     },
     faq: {
       eyebrow: "Kesyon souvan",
       title: "Sa moun mande.",
       items: [
-        { q: "Èske DetencionDefensa se yon biwo avoka?", a: "Non. DetencionDefensa opere pa DetencionDefensa.com, Inc., yon kòporasyon Delaware, opere — se pa yon biwo avoka. Sèvis legal yo bay pa Sorrentino Law Firm PLLC, yon biwo Florida separe." },
-        { q: "Kote lajan m ale?", a: "$164 ale nan DetencionDefensa.com, Inc. pou platfòm nan. $35 ale dirèk nan kont IOLTA Sorrentino Law Firm PLLC — nou pa janm manyen frè avoka a." },
+        { q: "Èske DetencionDefensa se yon biwo avoka?", a: "Non. DetencionDefensa opere pa DetencionDefensa.com, Inc., yon kòporasyon Delaware — se pa yon biwo avoka. Sèvis legal yo bay pa Sorrentino Law Firm PLLC, yon biwo Florida separe. Lè w enskri, ou anboche Sorrentino Law Firm PLLC yon fason limite pou revize epi apwouve dokiman w yo, anba yon akò ekri. Sa pa vle di avoka a ap reprezante w nan tribinal imigrasyon." },
+        { q: "Kilès ki peye pou sa?", a: "Ou pa peye anyen. Refuge Outreach, Inc., yon òganizasyon 501(c)(3), patwone kou platfòm nan ke DetencionDefensa.com, Inc. chaje a, epi tou frè $35 avoka a, ki depoze dirèk nan kont IOLTA Sorrentino Law Firm PLLC. Nou pa mande kat kredi epi pa gen okenn chaj nan lavni. Patwonaj la limite a 1,000 fanmi nan Broward ak Miami-Dade epi li dire toutotan finansman patwonaj la dire." },
+        { q: "Èske plan sa a rete yon depòtasyon?", a: "Non. Plan sa a PA ba w estati imigrasyon, li PA rete yon depòtasyon epi li PA garanti liberasyon w. Se yon plan preparasyon pou fanmi w ak dokiman w yo pare si yo detni w." },
+        { q: "Kisa nou fè ak enfòmasyon m?", a: "Nou sèvi ak enfòmasyon w sèlman pou prepare epi sere dokiman w yo ak pou alète kontak ijans ou yo. Nou pa vann ni pataje enfòmasyon moun ki enskri anba patwonaj la ak prete kòb, envestisè, oswa twazyèm pati maketing — enkli SaveMyHomeTrust — san yon konsantman ekri separe." },
         { q: "Èske m bezwen nan Florida?", a: "Faz 1 sèvi mache Miami. Faz 2 (2026) elaji nan Los Angeles, Houston, ak New York atravè PLLC eta separe sipèvize pa Sorrentino Law Firm PLLC." },
         { q: "Ki lang ki sipòte?", a: "Panyòl, Anglè, ak Kreyòl Ayisyen. Tout dokiman legal yo tradwi pwofesyonèlman." },
       ],
     },
-    finalCta: { h2a: "Pa tann", h2b: "nan pòt la.", sub: "Pran 10 minit jodi a. Gen plan w pare demen.", cta: "Kòmanse plan mwen · $199" },
+    finalCta: { h2a: "Pa tann", h2b: "nan pòt la.", sub: "Pran 10 minit jodi a. Gen plan w pare demen. San kou.", cta: "Kòmanse gratis →" },
     footer: {
       tag: "Teknoloji legal pou kominote vilnerab. Miami, FL.",
       companyHead: "Konpayi", companyLinks: ["Kijan li fonksyone", "Pri", "Refuge Outreach"],
@@ -400,13 +464,16 @@ const T = {
       dba: "DetencionDefensa opere pa DetencionDefensa.com, Inc., yon kòporasyon Delaware.",
       notLawFirm: "DetencionDefensa.com, Inc. PA yon biwo avoka.",
       disclaimer1: "DetencionDefensa.com, Inc. se yon kòporasyon Delaware. Li PA yon biwo avoka epi li PA bay sèvis legal. Sèvis legal yo bay pa Sorrentino Law Firm PLLC, yon biwo Florida separe, ki apatni a Rosario Sorrentino, Esq.",
+      noProtection: "Plan sa a PA ba w estati imigrasyon, li PA rete yon depòtasyon epi li PA garanti liberasyon w.",
+      dataUse: "Itilizasyon done: enfòmasyon moun ki enskri anba patwonaj la pa vann ni pataje ak prete kòb, envestisè, oswa twazyèm pati maketing san yon konsantman ekri separe.",
       dualRoleLabel: "Divilgasyon doub-wòl:",
       dualRole: " Rosario Sorrentino, Esq. gen enterè nan tou de DetencionDefensa.com, Inc. ak Sorrentino Law Firm PLLC. Relasyon sa a divilge dapre Rule 4-1.7 Florida Bar la.",
       adLabel: "Avi piblisite avoka:",
       ad: " Anboche yon avoka se yon desizyon enpòtan ki pa ta dwe baze sèlman sou reklam. Sorrentino Law Firm PLLC · Miami, FL.",
       copyright: "© 2026 DetencionDefensa.com, Inc. Tout dwa rezève.",
     },
-    mock: { panicEyebrow: "Ijans", panicTitle: "Avèti fanmi", panicBtn: "PRESE\nLA A", panicFoot: "Voye pozisyon + Habeas bay plizyè kontak dijans", onDuty: "✓ Avoka an sèvis · Sorrentino Law Firm", docsEyebrow: "Dosye w", docsTitle: "Dokiman", encrypted: "🔒 chiffré", reviewed: "Revize", ready: "Pare", lastReview: "Dènye revizyon pa", today: "jodi 14:22", familyEyebrow: "Fanmi w", familyTitle: "Tout pare si ou pa la.", familyDone: "3 sou 4 dokiman siyen epi notarye", familyKit: "Family Kit" },
+    mock: { sim: "Similasyon", panicEyebrow: "Ijans", panicTitle: "Avèti fanmi", panicBtn: "PRESE\nLA A", panicFoot: "Voye pozisyon + Habeas bay plizyè kontak dijans", onDuty: "✓ Avoka an sèvis · Sorrentino Law Firm", docsEyebrow: "Dosye w", docsTitle: "Dokiman", encrypted: "🔒 chiffré", reviewed: "Revize", ready: "Pare", lastReview: "Dènye revizyon pa", today: "jodi 14:22", familyEyebrow: "Fanmi w", familyTitle: "Tout pare si ou pa la.", familyDone: "3 sou 4 dokiman siyen epi notarye", familyKit: "Family Kit" },
+
   },
 };
 
@@ -423,6 +490,7 @@ function Index() {
         <Nav lang={lang} setLang={setLang} />
         <main>
           <Hero />
+          <PlainBox />
           <TrustBar />
           <FeatureSection idx={0} mockup={<PanicScreen />} reverse={false} />
           <HomeownerVideo />
@@ -439,7 +507,28 @@ function Index() {
   );
 }
 
+/* -------------------- PLAIN LANGUAGE BOX -------------------- */
+function PlainBox() {
+  const { t } = useT();
+  return (
+    <section className="border-y border-border/60 bg-sand/60">
+      <div className="mx-auto max-w-4xl px-6 py-10">
+        <h2 className="mb-5 font-display text-2xl text-foreground">{t.plainBox.title}</h2>
+        <dl className="space-y-4">
+          {t.plainBox.items.map((it) => (
+            <div key={it.k} className="grid gap-1 md:grid-cols-[200px_1fr] md:gap-6">
+              <dt className="font-semibold text-foreground">{it.k}</dt>
+              <dd className="text-[15px] leading-relaxed text-muted-foreground">{it.v}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+  );
+}
+
 /* -------------------- NAV -------------------- */
+
 function Nav({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
   const { t } = useT();
   return (
@@ -590,21 +679,21 @@ const HOMEOWNER = {
     h: "Are you a homeowner?",
     sub: "Protect your home now. Watch the video.",
     trust: "Protect your home and assets in an attorney-created trust at",
-    disc: "This video is an advertisement. Every case is handled independently, and the outcomes are not guaranteed, subject to property equity and qualifications, trust acceptance. Savemyhometrust.com is a subsidiary of detenciondefensa.com.",
+    disc: "This video is an advertisement. Every case is handled independently, and the outcomes are not guaranteed, subject to property equity and qualifications, trust acceptance. Savemyhometrust.com is an affiliated company of detenciondefensa.com under common ownership.",
   },
   es: {
     src: "https://detenciondefensa.com/__l5e/assets-v1/16758c57-3542-457c-947e-79324aaa7923/protect-what-you-built-es.mp4",
     h: "¿Es propietario de una vivienda?",
     sub: "Proteja su casa ahora. Mire el video.",
     trust: "Proteja su casa y bienes en un fideicomiso creado por un abogado en",
-    disc: "Este video es un anuncio publicitario. Cada caso se maneja de manera independiente y los resultados no están garantizados, sujetos a la plusvalía de la propiedad, calificaciones y aceptación del fideicomiso. Savemyhometrust.com es una subsidiaria de detenciondefensa.com.",
+    disc: "Este video es un anuncio publicitario. Cada caso se maneja de manera independiente y los resultados no están garantizados, sujetos a la plusvalía de la propiedad, calificaciones y aceptación del fideicomiso. Savemyhometrust.com es una empresa afiliada de detenciondefensa.com bajo propiedad común.",
   },
   ht: {
     src: "https://detenciondefensa.com/__l5e/assets-v1/d670656c-a0b4-449b-ba24-3e9e9301e281/protect-what-you-built-ht.mp4",
     h: "Èske ou se pwopriyetè yon kay?",
     sub: "Pwoteje kay ou kounye a. Gade videyo a.",
     trust: "Pwoteje kay ou ak byen ou nan yon konfyans kreye pa yon avoka nan",
-    disc: "Videyo sa a se yon piblisite. Chak ka jere endepandamman, e rezilta yo pa garanti, sijè a ekite pwopriyete a, kalifikasyon, ak akseptasyon trust la. Savemyhometrust.com se yon sibsidyè detenciondefensa.com.",
+    disc: "Videyo sa a se yon piblisite. Chak ka jere endepandamman, e rezilta yo pa garanti, sijè a ekite pwopriyete a, kalifikasyon, ak akseptasyon trust la. Savemyhometrust.com se yon konpayi afilye ak detenciondefensa.com anba menm pwopriyetè.",
   },
 } as const;
 
@@ -786,7 +875,7 @@ function Footer() {
               <ul className="space-y-2 text-muted-foreground">
                 <li><Link to="/terms" className="hover:text-firm">{t.footer.legalLinks[0]}</Link></li>
                 <li><Link to="/privacy" className="hover:text-firm">{t.footer.legalLinks[1]}</Link></li>
-                {t.footer.legalLinks.slice(2).map((l) => <li key={l}>{l}</li>)}
+                <li><Link to="/aviso-publicidad" className="hover:text-firm">{t.footer.legalLinks[2]}</Link></li>
               </ul>
             </div>
           </div>
@@ -795,7 +884,9 @@ function Footer() {
         <div className="mt-16 space-y-4 border-t border-border pt-8 text-xs leading-relaxed text-muted-foreground">
           <p className="font-semibold uppercase tracking-widest text-foreground">{t.footer.notLawFirm}</p>
           <p className="italic">{t.footer.dba}</p>
+          <p className="font-semibold text-foreground">{t.footer.noProtection}</p>
           <p>{t.footer.disclaimer1}</p>
+          <p>{t.footer.dataUse}</p>
           <p><strong>{t.footer.dualRoleLabel}</strong>{t.footer.dualRole}</p>
           <p><strong>{t.footer.adLabel}</strong>{t.footer.ad}</p>
           <p className="pt-4">{t.footer.copyright}</p>
@@ -828,8 +919,12 @@ function CheckDot({ dark }: { dark?: boolean }) {
 
 /* -------------------- PHONE MOCKUPS -------------------- */
 function PhoneFrame({ children }: { children: ReactNode }) {
+  const { t } = useT();
   return (
     <div className="relative w-[280px] rounded-[2.75rem] border-[10px] border-cvink bg-cvink shadow-2xl md:w-[320px]">
+      <span className="absolute -top-3 left-1/2 z-20 -translate-x-1/2 rounded-full bg-urgent px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-urgent-foreground">
+        {t.mock.sim}
+      </span>
       <div className="absolute left-1/2 top-2 z-10 h-5 w-24 -translate-x-1/2 rounded-b-2xl bg-cvink" />
       <div className="relative aspect-[9/19.5] overflow-hidden rounded-[2rem] bg-background">
         {children}
@@ -907,19 +1002,19 @@ function DocsMock() {
 const FAMILY_ITEMS: Record<Lang, { icon: string; label: string; done: boolean }[]> = {
   es: [
     { icon: "👨‍👩‍👧", label: "Custodia de Alex (7) y María (4)", done: true },
-    { icon: "🏦", label: "Poder para cuenta Wells Fargo", done: true },
+    { icon: "🏦", label: "Poder para cuenta bancaria", done: true },
     { icon: "🏠", label: "Autorización de arrendamiento", done: false },
     { icon: "📞", label: "Lista de contactos de emergencia", done: true },
   ],
   en: [
     { icon: "👨‍👩‍👧", label: "Custody of Alex (7) and María (4)", done: true },
-    { icon: "🏦", label: "Power over Wells Fargo account", done: true },
+    { icon: "🏦", label: "Power over bank account", done: true },
     { icon: "🏠", label: "Lease authorization", done: false },
     { icon: "📞", label: "Emergency contacts list", done: true },
   ],
   ht: [
     { icon: "👨‍👩‍👧", label: "Gad Alex (7) ak María (4)", done: true },
-    { icon: "🏦", label: "Pouvwa sou kont Wells Fargo", done: true },
+    { icon: "🏦", label: "Pouvwa sou kont labank", done: true },
     { icon: "🏠", label: "Otorizasyon lwaye", done: false },
     { icon: "📞", label: "Lis kontak ijans", done: true },
   ],
