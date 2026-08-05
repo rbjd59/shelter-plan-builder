@@ -3113,7 +3113,7 @@ html { overflow-x: hidden !important; max-width: 100vw; }
   --sand: oklch(0.82 0.045 70);
   --sand-foreground: oklch(0.25 0.045 55);
 
-
+  --card: oklch(1 0 0);
   --card-foreground: oklch(0.18 0.03 260);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.18 0.03 260);
