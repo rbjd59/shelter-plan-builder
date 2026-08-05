@@ -92,16 +92,27 @@ function qualifyHref(lang: Lang) {
 
 const T = {
   es: {
-    nav: { how: "Cómo funciona", plan: "El Plan", attorney: "El Abogado", faq: "Preguntas", cta: "Empezar · $199" },
+    nav: { how: "Cómo funciona", plan: "El Plan", attorney: "El Abogado", faq: "Preguntas", cta: "Empezar gratis →" },
     hero: {
-      badge: "Plan de defensa pre-detención · Miami, FL",
-      tagline: "El plan seguro de emergencia anti-deportación con un solo clic para personas en riesgo de detención.",
-      h1a: "La migra", h1b: "ya viene.", h1c: "No espere.",
-      sub: "Un plan de defensa legal creado y revisado por abogados, para quienes no están representados por un abogado.",
-      cta: "Empezar por $199 →",
+      badge: "Plan de preparación pre-detención · Miami, FL",
+      tagline: "El plan seguro de preparación de emergencia con un solo clic para personas en riesgo de detención.",
+      h1a: "Las detenciones", h1b: "han aumentado.", h1c: "Prepare su plan hoy.",
+      sub: "Un plan de preparación legal creado y revisado por un abogado, para quienes no tienen su propio abogado de inmigración.",
+      cta: "Empezar gratis →",
       seeHow: "Ver cómo funciona",
-      nowFree: "Ahora gratis por la crisis comunitaria a través de Refuge Outreach, una organización sin fines de lucro 501(c)(3) desde 1991.",
+      nowFree: "Antes $199. Ahora gratis para familias en Broward y Miami-Dade, patrocinado por Refuge Outreach, Inc., una organización sin fines de lucro 501(c)(3) desde 2009. Patrocinio limitado a 1,000 familias y mientras dure el patrocinio.",
     },
+    plainBox: {
+      title: "En pocas palabras",
+      items: [
+        { k: "Qué es", v: "Un plan de preparación: documentos y una app de emergencia listos por si usted es detenido." },
+        { k: "Qué recibe", v: "App de emergencia con el botón NOTIFY FAMILY · Habeas Corpus (AO 242), IFP y JS 44 preparados · Poder notarial y custodia temporal de menores · Almacenamiento cifrado · Español, English, Kreyòl." },
+        { k: "Qué cuesta", v: "Nada. $0. No pedimos tarjeta de crédito. El costo lo cubre Refuge Outreach, Inc. (501(c)(3)) y el honorario de $35 del abogado se paga al fideicomiso IOLTA con fondos del patrocinio, no por usted." },
+        { k: "Quién es el abogado", v: "Rosario Sorrentino, Esq. (Fla. Bar No. 1049132) revisa y aprueba sus documentos bajo un acuerdo escrito de alcance limitado. Esto no significa que él será su abogado en la corte de inmigración." },
+        { k: "Qué NO es", v: "Este plan NO le da estatus migratorio, NO detiene una deportación y NO garantiza su liberación. Es un plan de preparación para que su familia y sus documentos estén listos si usted es detenido." },
+      ],
+    },
+
     trust: { attorneyName: "Rosario Kyle Sorrentino, Esq.", firm: "Fundador, Sorrentino Law Firm PLLC · Fla. Bar No. 1049132", bio: "Abogado de inmigración con sede en Miami. Practica defensa contra deportación ante los tribunales de inmigración (EOIR), audiencias de fianza en ICE, peticiones de Habeas Corpus en cortes federales, mociones de reapertura, asilo, retención de deportación (Withholding), CAT, y peticiones para víctimas (VAWA, U y T). Atiende familias hispanohablantes en toda Florida." },
     features: [
       {
