@@ -602,11 +602,9 @@ function Hero() {
           </a>
 
           <h1 className="hero-headline text-[3.5rem] text-cvink sm:text-[5rem] md:text-[6.5rem]">
-
             {t.hero.h1a} <br />
             <span className="italic text-firm">{t.hero.h1b}</span>
-            <br />
-            {t.hero.h1c}
+            {t.hero.h1c && <><br />{t.hero.h1c}</>}
           </h1>
 
           <div className="mt-6 max-w-lg space-y-3">
