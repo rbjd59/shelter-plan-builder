@@ -214,12 +214,13 @@ export default function HeroIntro() {
           >
             <p
               style={{
-                fontSize: isMobile ? "1rem" : "clamp(1.05rem, 1.7vw, 1.35rem)",
-                lineHeight: 1.4,
-                fontWeight: 500,
+                fontSize: isMobile ? "2rem" : "clamp(2.1rem, 3.4vw, 2.7rem)",
+                lineHeight: 1.2,
+                fontWeight: 600,
                 color: "#ffffff",
                 margin: 0,
                 textDecoration: "line-through",
+                textShadow: "0 2px 8px rgba(0,0,0,0.5)",
               }}
             >
               {COPY[lang].strikethrough}
@@ -238,91 +239,23 @@ export default function HeroIntro() {
             </p>
           </div>
 
-
-          <div style={{ display: "flex", justifyContent: "center", marginTop: isMobile ? "4rem" : "5rem" }}>
-            <a
-              href="/videos"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 12,
-                background: "#e8a04a",
-                color: "#0f1830",
-                textDecoration: "none",
-                fontWeight: 800,
-                fontSize: isMobile ? 15 : 17,
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                padding: isMobile ? "14px 24px" : "16px 32px",
-                borderRadius: 999,
-                boxShadow: "0 10px 30px rgba(0,0,0,0.4)",
-                fontFamily: "inherit",
-              }}
-            >
-              <span
-                aria-hidden
-                style={{
-                  display: "inline-block",
-                  width: 0,
-                  height: 0,
-                  borderTop: "9px solid transparent",
-                  borderBottom: "9px solid transparent",
-                  borderLeft: "14px solid #0f1830",
-                }}
-              />
-              {COPY[lang].watchVideos}
-            </a>
-          </div>
-
-          <div
+          <p
             style={{
-              display: "inline-flex",
-              flexWrap: "nowrap",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: isMobile ? "0.5rem" : "0.75rem",
-              marginTop: isMobile ? "1rem" : "1.25rem",
-              whiteSpace: "nowrap",
-              overflow: "visible",
+              margin: isMobile ? "2.5rem auto 0" : "3.5rem auto 0",
+              maxWidth: 1100,
+              width: "100%",
+              fontFamily: '"Roboto Slab", Georgia, serif',
+              fontSize: isMobile ? "1.05rem" : "clamp(1.15rem, 2vw, 1.6rem)",
+              lineHeight: 1.3,
+              fontWeight: 700,
+              color: "#e8a04a",
+              textAlign: "center",
+              textShadow: "0 2px 8px rgba(0,0,0,0.6)",
             }}
           >
-            <p
-              style={{
-                margin: 0,
-                fontSize: isMobile ? "0.95rem" : "clamp(1rem, 1.5vw, 1.25rem)",
-                lineHeight: 1.4,
-                fontWeight: 700,
-                color: "#ffffff",
-                textAlign: "center",
-                textShadow: "0 1px 4px rgba(0,0,0,0.6)",
-              }}
-            >
-              {COPY[lang].secureLine}
-            </p>
-            <Link
-              to="/security"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                background: "transparent",
-                color: "#e8a04a",
-                border: "1px solid #e8a04a",
-                textDecoration: "none",
-                fontWeight: 700,
-                fontSize: isMobile ? 11 : 12,
-                letterSpacing: "0.04em",
-                textTransform: "uppercase",
-                padding: isMobile ? "4px 10px" : "5px 12px",
-                borderRadius: 999,
-                fontFamily: "inherit",
-                flexShrink: 0,
-                transition: "background 0.2s, color 0.2s",
-              }}
-            >
-              {COPY[lang].securityBtn}
-            </Link>
-          </div>
+            {COPY[lang].tagline}
+          </p>
+
         </div>
       </div>
     </section>
