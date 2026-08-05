@@ -177,7 +177,7 @@ function OwnPropertyPage() {
         </p>
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 18, marginTop: 40 }}>
-          {t.cards.map((p) => (
+          {t.cards.map((p: { h: string; p: string }) => (
             <div
               key={p.h}
               style={{
