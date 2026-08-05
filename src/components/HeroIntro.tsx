@@ -5,19 +5,19 @@ import detentionNightAsset from "@/assets/detention-night.png.asset.json";
 
 const COPY = {
   es: {
-    subline: "Plan de defensa contra detención por ICE GRATIS*.\nApp de emergencia, $10 al mes.",
+    subline: "Plan de defensa legal con asistencia de abogado $199.\nApp de emergencia, $10 al mes.",
     ice: "ICE ARRESTA MÁS DE 2000 PERSONAS NO CIUDADANOS CADA DÍA",
     getStarted: "Regístrese ahora",
     watchVideos: "Ver videos",
   },
   en: {
-    subline: "Free ICE Detention defense plan*.\nEmergency app, $10 a month.",
+    subline: "Attorney-assisted legal defense plan $199.\nEmergency app, $10 a month.",
     ice: "ICE ARRESTS OVER 2000 NON-CITIZENS EVERY DAY",
     getStarted: "Get Started",
     watchVideos: "Watch videos",
   },
   ht: {
-    subline: "Plan defans kont detansyon ICE gratis*.\nApp ijans, $10 pa mwa.",
+    subline: "Plan defans legal avèk asistans avoka $199.\nApp ijans, $10 pa mwa.",
     ice: "ICE ARETE PLIS PASE 2000 MOUN KI PA SITWAYEN CHAK JOU",
     getStarted: "Kòmanse",
     watchVideos: "Gade videyo yo",
@@ -213,7 +213,7 @@ export default function HeroIntro() {
           </p>
 
 
-          <div style={{ display: "flex", justifyContent: "center", marginTop: isMobile ? "2rem" : "3rem" }}>
+          <div style={{ display: "flex", justifyContent: "center", marginTop: isMobile ? "4rem" : "5rem" }}>
             <a
               href="/videos"
               style={{
