@@ -359,6 +359,10 @@ const T = {
     nav: { how: "Kijan sa fonksyone", plan: "Plan an", attorney: "Avoka a", faq: "Kesyon", cta: "Kòmanse gratis →" },
     hero: {
       badge: "Plan preparasyon anvan detansyon · Miami, FL",
+      newsLabel: "NOUVÈL ANFLASH",
+      newsText: "ICE arete apeprè 51,000 moun nan mwa jiyè 2026 (ABC News). Yon plan anvan detansyon ka ede w prepare.",
+      newsCta: "Gade sou ABC News →",
+
       tagline: "Plan preparasyon ijans sekirize ak yon sèl klik pou moun ki an ris pou detansyon.",
       h1a: "Detansyon yo", h1b: "ap ogmante.", h1c: "Prepare plan w jodi a.",
       sub: "Yon plan preparasyon legal ki fèt epi revize pa yon avoka, pou moun ki pa gen pwòp avoka imigrasyon pa yo.",
