@@ -257,11 +257,10 @@ export default function HeroIntro() {
                 fontWeight: 600,
                 color: "#ffffff",
                 margin: 0,
-                textDecoration: "line-through",
                 textShadow: "0 2px 8px rgba(0,0,0,0.5)",
               }}
             >
-              {COPY[lang].strikethrough}
+              <PriceWithX prefix={COPY[lang].plan} price={COPY[lang].price} />
             </p>
             <p
               style={{
@@ -291,7 +290,9 @@ export default function HeroIntro() {
               textShadow: "0 2px 8px rgba(0,0,0,0.6)",
             }}
           >
-            {COPY[lang].tagline}
+            {COPY[lang].tagline1}
+            <br />
+            {COPY[lang].tagline2}
           </p>
 
         </div>
