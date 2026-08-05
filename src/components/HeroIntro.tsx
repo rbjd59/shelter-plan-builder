@@ -11,6 +11,8 @@ const COPY = {
     ice: "ICE ARRESTA MÁS DE 2000 PERSONAS NO CIUDADANOS CADA DÍA",
     getStarted: "Regístrese ahora",
     watchVideos: "Ver videos",
+    secureLine: "Sitio web 100% seguro, protección de primer nivel. Para más información, pulse aquí",
+    securityBtn: "Más información",
   },
   en: {
     strikethrough: "Attorney-assisted legal defense plan $199.",
@@ -18,6 +20,8 @@ const COPY = {
     ice: "ICE ARRESTS OVER 2000 NON-CITIZENS EVERY DAY",
     getStarted: "Get Started",
     watchVideos: "Watch videos",
+    secureLine: "100% secure website, best in class protection. More information, press here",
+    securityBtn: "More information",
   },
   ht: {
     strikethrough: "Plan defans legal avèk asistans avoka $199.",
@@ -25,8 +29,10 @@ const COPY = {
     ice: "ICE ARETE PLIS PASE 2000 MOUN KI PA SITWAYEN CHAK JOU",
     getStarted: "Kòmanse",
     watchVideos: "Gade videyo yo",
+    secureLine: "Sitwèb 100% sekirè, pwoteksyon nan klas li. Pou plis enfòmasyon, peze isit la",
+    securityBtn: "Plis enfòmasyon",
   },
-} satisfies Record<Lang, { strikethrough: string; freeText: string; ice: string; getStarted: string; watchVideos: string }>;
+} satisfies Record<Lang, { strikethrough: string; freeText: string; ice: string; getStarted: string; watchVideos: string; secureLine: string; securityBtn: string }>;
 
 export default function HeroIntro() {
   const { lang, setLang } = useLang();
