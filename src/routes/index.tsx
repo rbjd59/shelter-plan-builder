@@ -306,7 +306,7 @@ const T = {
       resultLow: "You qualify: LOW COST — $49",
       resultLowBody: "Reduced sliding-scale price. Includes Habeas Corpus, NOTIFY FAMILY button, and attorney review.",
       resultStandard: "You don't qualify for the reduced rate",
-      resultStandardBody: "Standard price is $199. Refuge Outreach may still help with partial scholarships.",
+      resultStandardBody: "The Refuge Outreach, Inc. sponsored program targets low-income families in Broward and Miami-Dade. Contact us to review your case.",
       disclaimer: "Preview. Final eligibility verified by Refuge Outreach (501(c)(3)) with documentation (W-2, proof of children's residency).",
       heroPitch: "For those with American children or children in the U.S. who are the household's primary income earner, you may qualify for a no-cost or low-cost program. To see if you qualify, press the button below.",
     },
