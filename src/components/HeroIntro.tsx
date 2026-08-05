@@ -291,7 +291,46 @@ export default function HeroIntro() {
             {COPY[lang].tagline1}
           </p>
 
+        </div>
 
+        {/* Bottom notice */}
+        <div
+          style={{
+            padding: isMobile ? "0.75rem 0 0.5rem" : "1rem 0 0.5rem",
+            marginTop: "auto",
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.5rem",
+          }}
+        >
+          <p
+            style={{
+              fontFamily: '"Roboto Slab", Georgia, serif',
+              fontSize: isMobile ? "0.95rem" : "1.05rem",
+              lineHeight: 1.2,
+              fontWeight: 800,
+              color: "#ef4444",
+              margin: 0,
+              textShadow: "0 2px 8px rgba(0,0,0,0.6)",
+            }}
+          >
+            {COPY[lang].freeText}
+          </p>
+          <p
+            style={{
+              fontFamily: "Inter, system-ui, sans-serif",
+              fontSize: "8pt",
+              lineHeight: 1.4,
+              color: "#ffffff",
+              margin: 0,
+              maxWidth: 900,
+              marginInline: "auto",
+              textShadow: "0 1px 3px rgba(0,0,0,0.6)",
+            }}
+          >
+            {COPY[lang].disclaimer}
+          </p>
         </div>
       </div>
     </section>
