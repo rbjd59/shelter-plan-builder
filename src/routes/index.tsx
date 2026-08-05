@@ -632,9 +632,9 @@ function HomeownerVideo() {
   };
 
   return (
-    <section id="plan" className="bg-cvink py-10 text-primary-foreground md:py-16">
+    <section id="plan" className="bg-sand py-10 text-sand-foreground md:py-16">
       <div className="mx-auto max-w-4xl px-6">
-        <div className="relative aspect-video w-full overflow-hidden rounded-2xl border-[3px] border-firm-foreground shadow-2xl">
+        <div className="relative aspect-video w-full overflow-hidden rounded-2xl border-[3px] border-cvink/40 shadow-2xl">
           <video
             key={v.src}
             ref={videoRef}
