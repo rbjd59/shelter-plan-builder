@@ -590,7 +590,7 @@ const HOMEOWNER = {
     h: "Are you a homeowner?",
     sub: "Protect your home now. Watch the video.",
     trust: "Protect your home and assets in an attorney-created trust at",
-    disc: "This video is an advertisement. Every case can be handled independently, and the outcome is not guaranteed.",
+    disc: "This video is an advertisement. Every case is handled independently, and the outcomes are not guaranteed, subject to property equity and qualifications, trust acceptance. Savemyhometrust.com is a subsidiary of detenciondefensa.com.",
   },
   es: {
     src: "https://detenciondefensa.com/__l5e/assets-v1/16758c57-3542-457c-947e-79324aaa7923/protect-what-you-built-es.mp4",
