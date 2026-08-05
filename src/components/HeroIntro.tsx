@@ -281,21 +281,24 @@ export default function HeroIntro() {
 
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
+              display: "inline-flex",
+              flexWrap: "nowrap",
               alignItems: "center",
-              gap: isMobile ? 10 : 12,
+              justifyContent: "center",
+              gap: isMobile ? "0.5rem" : "0.75rem",
               marginTop: isMobile ? "1rem" : "1.25rem",
+              whiteSpace: "nowrap",
+              overflow: "visible",
             }}
           >
             <p
               style={{
                 margin: 0,
-                fontSize: isMobile ? 13 : 15,
-                lineHeight: 1.45,
-                color: "rgba(255,255,255,0.95)",
+                fontSize: isMobile ? "0.95rem" : "clamp(1rem, 1.5vw, 1.25rem)",
+                lineHeight: 1.4,
+                fontWeight: 700,
+                color: "#ffffff",
                 textAlign: "center",
-                maxWidth: 560,
                 textShadow: "0 1px 4px rgba(0,0,0,0.6)",
               }}
             >
@@ -307,18 +310,18 @@ export default function HeroIntro() {
                 display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",
-                gap: 8,
                 background: "transparent",
                 color: "#e8a04a",
-                border: "2px solid #e8a04a",
+                border: "1px solid #e8a04a",
                 textDecoration: "none",
-                fontWeight: 800,
-                fontSize: isMobile ? 13 : 14,
-                letterSpacing: "0.06em",
+                fontWeight: 700,
+                fontSize: isMobile ? 11 : 12,
+                letterSpacing: "0.04em",
                 textTransform: "uppercase",
-                padding: isMobile ? "10px 20px" : "12px 24px",
+                padding: isMobile ? "4px 10px" : "5px 12px",
                 borderRadius: 999,
                 fontFamily: "inherit",
+                flexShrink: 0,
                 transition: "background 0.2s, color 0.2s",
               }}
             >
