@@ -1037,34 +1037,6 @@ function PhoneFrame({ children }: { children: ReactNode }) {
   );
 }
 
-function PanicScreen() {
-  const { t, lang } = useT();
-  return (
-    <div className="flex h-full flex-col bg-gradient-to-b from-cream to-background p-5">
-      <div className="flex items-center justify-between text-[10px] font-semibold text-foreground">
-        <span>9:41</span>
-        <div className="flex items-center gap-1">
-          <span className="h-1.5 w-1.5 rounded-full bg-foreground" />
-          <span className="h-1.5 w-1.5 rounded-full bg-foreground" />
-          <span className="h-1.5 w-1.5 rounded-full bg-foreground/40" />
-        </div>
-      </div>
-      <div className="mt-6 flex-1 flex flex-col items-center justify-center text-center">
-        <div className="eyebrow text-firm">{t.mock.panicEyebrow}</div>
-        <div className="mt-2 font-display text-2xl text-cvink">{t.mock.panicTitle}</div>
-        <div className="relative mt-8">
-          <span className="absolute inset-0 animate-ping rounded-full bg-urgent/40" />
-          <button className="relative flex h-36 w-36 items-center justify-center rounded-full bg-urgent text-urgent-foreground shadow-lg">
-            <span className="font-display text-xl leading-tight whitespace-pre-line">{t.mock.panicBtn}</span>
-          </button>
-        </div>
-        <div className="mt-8 text-[10px] text-muted-foreground">{t.mock.panicFoot}</div>
-      </div>
-      <div className="mt-4 rounded-2xl bg-cvink p-3 text-[10px] text-primary-foreground">{t.mock.onDuty}</div>
-    </div>
-  );
-}
-
 function DocsMock() {
   const { t, lang } = useT();
   const docs = [
