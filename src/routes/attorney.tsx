@@ -508,13 +508,13 @@ function AttorneyPage() {
           }}
         >
           <h2 style={{ fontFamily: "'Libre Baskerville', Georgia, serif", fontSize: 26, margin: "0 0 16px" }}>
-            No one should face detention alone.
+            {PRO_BONO_COPY[lang].heading}
           </h2>
           <p style={{ fontSize: 15.5, lineHeight: 1.7, color: NAVY, maxWidth: 720, margin: "0 auto 16px" }}>
-            {FIRM.attorney} has agreed to donate his services for review of the habeas corpus form at no charge.
+            {PRO_BONO_COPY[lang].p1}
           </p>
           <p style={{ fontSize: 15.5, lineHeight: 1.7, color: MUTED, maxWidth: 720, margin: "0 auto 24px" }}>
-            {FIRM.attorney} does additional legal work. For more information, visit his website.
+            {PRO_BONO_COPY[lang].p2}
           </p>
           <a
             href={FIRM.website}
@@ -531,7 +531,7 @@ function AttorneyPage() {
               display: "inline-block",
             }}
           >
-            Visit Rosario's website ↗
+            {PRO_BONO_COPY[lang].button} ↗
           </a>
         </div>
       </section>
