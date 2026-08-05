@@ -5,24 +5,27 @@ import detentionNightAsset from "@/assets/detention-night.png.asset.json";
 
 const COPY = {
   es: {
-    subline: "Plan de defensa legal con asistencia de abogado $199.\nApp de emergencia, $10 al mes.",
+    strikethrough: "Plan de defensa legal con asistencia de abogado $199.",
+    freeText: "Ahora gratis debido a la crisis comunitaria.",
     ice: "ICE ARRESTA MÁS DE 2000 PERSONAS NO CIUDADANOS CADA DÍA",
     getStarted: "Regístrese ahora",
     watchVideos: "Ver videos",
   },
   en: {
-    subline: "Attorney-assisted legal defense plan $199.\nEmergency app, $10 a month.",
+    strikethrough: "Attorney-assisted legal defense plan $199.",
+    freeText: "Now free due to community crisis.",
     ice: "ICE ARRESTS OVER 2000 NON-CITIZENS EVERY DAY",
     getStarted: "Get Started",
     watchVideos: "Watch videos",
   },
   ht: {
-    subline: "Plan defans legal avèk asistans avoka $199.\nApp ijans, $10 pa mwa.",
+    strikethrough: "Plan defans legal avèk asistans avoka $199.",
+    freeText: "Kounye a gratis akòz kriz kominotè a.",
     ice: "ICE ARETE PLIS PASE 2000 MOUN KI PA SITWAYEN CHAK JOU",
     getStarted: "Kòmanse",
     watchVideos: "Gade videyo yo",
   },
-} satisfies Record<Lang, { subline: string; ice: string; getStarted: string; watchVideos: string }>;
+} satisfies Record<Lang, { strikethrough: string; freeText: string; ice: string; getStarted: string; watchVideos: string }>;
 
 export default function HeroIntro() {
   const { lang, setLang } = useLang();
