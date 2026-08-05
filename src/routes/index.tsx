@@ -178,7 +178,7 @@ const T = {
       resultLow: "Califica: BAJO COSTO — $49",
       resultLowBody: "Precio reducido por escala móvil. Incluye Habeas Corpus, botón NOTIFY FAMILY y revisión de abogado.",
       resultStandard: "No califica para tarifa reducida",
-      resultStandardBody: "El precio estándar es $199. Refuge Outreach todavía puede ayudarle con becas parciales.",
+      resultStandardBody: "El programa patrocinado por Refuge Outreach, Inc. está dirigido a familias de bajos ingresos en Broward y Miami-Dade. Contáctenos para revisar su caso.",
       disclaimer: "Vista previa. Elegibilidad final verificada por Refuge Outreach (501(c)(3)) con documentación (W-2, prueba de residencia de hijos).",
       heroPitch: "Para quienes tienen hijos estadounidenses o hijos en EE.UU. y son el sostén principal del hogar, usted puede calificar para un programa sin costo o de bajo costo. Para ver si califica, pulse el botón abajo.",
     },
