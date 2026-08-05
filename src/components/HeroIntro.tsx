@@ -7,7 +7,7 @@ const COPY = {
   es: {
     plan: "Plan de protección ante detención ICE diseñado y revisado por abogado ",
     price: "$199.",
-    freeText: "Ahora gratis debido a la crisis comunitaria.",
+    freeText: "Ahora gratis por la crisis comunitaria a través del alcance a refugiados de organizaciones 501c3 sin fines de lucro desde 1991.",
     ice: "MÁS DE 2,000 PERSONAS DIARIAMENTE",
     tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
     disclaimer:
@@ -16,7 +16,7 @@ const COPY = {
   en: {
     plan: "Attorney-designed and reviewed ICE detention protection plan ",
     price: "$199.",
-    freeText: "Now free due to community crisis.",
+    freeText: "Now free due to community crisis through refugee outreach of 501c3 nonprofits since 1991.",
     ice: "OVER 2,000 PERSONS DAILY",
     tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
     disclaimer:
@@ -25,7 +25,7 @@ const COPY = {
   ht: {
     plan: "Plan pwoteksyon pou arestasyon ICE ki konsevwa ak revize pa avoka ",
     price: "$199.",
-    freeText: "Kounye a gratis akòz kriz kominotè a.",
+    freeText: "Kounye a gratis akòz kriz kominotè a nan patenarya ak òganizasyon 501c3 ki ede refijye depi 1991.",
     ice: "PLIS PASE 2,000 MOUN CHAK JOU",
     tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
     disclaimer:
@@ -276,12 +276,16 @@ export default function HeroIntro() {
             <p
               style={{
                 fontFamily: '"Roboto Slab", Georgia, serif',
-                fontSize: isMobile ? "0.95rem" : "1.05rem",
-                lineHeight: 1.2,
-                fontWeight: 800,
+                fontSize: isMobile ? "1.1rem" : "clamp(1.4rem, 2.8vw, 2rem)",
+                lineHeight: 1.25,
+                fontWeight: 900,
                 color: "#ef4444",
                 margin: 0,
+                padding: isMobile ? "0.4rem 0.8rem" : "0.5rem 1rem",
+                background: "rgba(239, 68, 68, 0.12)",
+                borderRadius: 8,
                 textShadow: "0 2px 8px rgba(0,0,0,0.6)",
+                display: "inline-block",
               }}
             >
               {COPY[lang].freeText}
