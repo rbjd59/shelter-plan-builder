@@ -604,7 +604,7 @@ const HOMEOWNER = {
     h: "Èske ou se pwopriyetè yon kay?",
     sub: "Pwoteje kay ou kounye a. Gade videyo a.",
     trust: "Pwoteje kay ou ak byen ou nan yon konfyans kreye pa yon avoka nan",
-    disc: "Videyo sa a se yon piblisite. Chak ka jere endepandamman, e rezilta a pa garanti.",
+    disc: "Videyo sa a se yon piblisite. Chak ka jere endepandamman, e rezilta yo pa garanti, sijè a ekite pwopriyete a, kalifikasyon, ak akseptasyon trust la. Savemyhometrust.com se yon sibsidyè detenciondefensa.com.",
   },
 } as const;
 
