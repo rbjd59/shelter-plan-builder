@@ -9,7 +9,7 @@ const COPY = {
     price: "$199.",
     freeText: "Ahora gratis debido a la crisis comunitaria.",
     ice: "ICE ARRESTA MÁS DE 2,000",
-    tagline1: "Plan seguro de defensa legal con aplicación de emergencia",
+    tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
   },
   en: {
     plan: "Attorney-assisted legal defense plan ",
@@ -283,11 +283,11 @@ export default function HeroIntro() {
 
           <p
             style={{
-              margin: isMobile ? "auto auto 0.25rem" : "auto auto 0.5rem",
+              margin: isMobile ? "2rem auto 0.25rem" : "2.5rem auto 0.5rem",
               maxWidth: 1100,
               width: "100%",
               fontFamily: '"Roboto Slab", Georgia, serif',
-              fontSize: isMobile ? "0.9rem" : "clamp(0.95rem, 1.5vw, 1.2rem)",
+              fontSize: isMobile ? "0.95rem" : "clamp(1.05rem, 1.7vw, 1.35rem)",
               lineHeight: 1.25,
               fontWeight: 700,
               color: "#e8a04a",
