@@ -116,17 +116,22 @@ const T = {
     trust: { attorneyName: "Rosario Kyle Sorrentino, Esq.", firm: "Fundador, Sorrentino Law Firm PLLC · Fla. Bar No. 1049132", bio: "Abogado de inmigración con sede en Miami. Practica defensa contra deportación ante los tribunales de inmigración (EOIR), audiencias de fianza en ICE, peticiones de Habeas Corpus en cortes federales, mociones de reapertura, asilo, retención de deportación (Withholding), CAT, y peticiones para víctimas (VAWA, U y T). Atiende familias hispanohablantes en toda Florida." },
     features: [
       {
-        eyebrow: "El botón que salva vidas",
+        eyebrow: "El botón que alerta a su familia y a su abogado en segundos",
         title: "Un botón. Toda su familia y su abogado, alertados en segundos.",
-        body: "Cuando la migra toca a la puerta, no hay tiempo para llamar a nadie. NOTIFY FAMILY envía su ubicación, su plan y su Habeas Corpus a las personas correctas — automáticamente.",
-        bullets: ["Alerta a múltiples contactos de emergencia", "Envía Habeas al abogado de guardia", "Registra la hora y lugar de la detención"],
+        body: "Cuando ICE toca a la puerta, no hay tiempo para llamar a nadie. NOTIFY FAMILY envía su ubicación, su plan y su Habeas Corpus a las personas correctas — automáticamente.",
+        bullets: [
+          "Alerta a múltiples contactos de emergencia",
+          "Envía el paquete al abogado de guardia: el abogado recibe la notificación y los documentos preparados. La representación en corte, si la necesita, requiere un acuerdo aparte.",
+          "Registra la hora y lugar de la detención",
+        ],
       },
       {
-        eyebrow: "Habeas Corpus, listo antes de que lo necesite",
+        eyebrow: "Habeas Corpus, preparado antes de que lo necesite",
         title: "Sus formularios están firmados, guardados y cifrados. Hoy.",
-        body: "Generamos su Habeas Corpus, su AO 242 y su IFP con sus datos. El abogado los revisa. Se guardan cifrados. El día que los necesite, ya están listos para ser presentados.",
-        bullets: ["Documentos generados por IA", "Revisados por Rosario Sorrentino, Esq.", "Cifrados de extremo a extremo"],
+        body: "Generamos borradores de su Habeas Corpus, su AO 242 y su IFP con sus datos. El abogado los revisa y los aprueba. Se guardan cifrados. Están preparados y listos para completarse y presentarse el día que se necesiten.",
+        bullets: ["Borradores generados por IA y revisados por el abogado antes de finalizarse", "Revisados y aprobados por Rosario Sorrentino, Esq.", "Cifrados de extremo a extremo"],
       },
+
       {
         eyebrow: "Su familia, preparada",
         title: "Poder notarial, custodia de menores, cuentas bancarias. Un solo lugar.",
