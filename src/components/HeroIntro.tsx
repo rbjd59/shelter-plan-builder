@@ -8,7 +8,7 @@ const COPY = {
     plan: "Plan de protección ante detención ICE diseñado y revisado por abogado ",
     price: "$199.",
     freeText: "Ahora gratis debido a la crisis comunitaria.",
-    ice: "ICE ARRESTA MÁS DE 2,000",
+    ice: "MÁS DE 2,000 PERSONAS DIARIAMENTE",
     tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
     disclaimer:
       "DetencionDefensa.com proporciona software de admisión seguro, traducción y servicios automatizados de preparación de documentos. No somos una firma de abogados y no proporcionamos asesoramiento legal.",
@@ -17,7 +17,7 @@ const COPY = {
     plan: "Attorney-designed and reviewed ICE detention protection plan ",
     price: "$199.",
     freeText: "Now free due to community crisis.",
-    ice: "ICE ARRESTS OVER 2000 NON-CITIZENS EVERY DAY",
+    ice: "OVER 2,000 PERSONS DAILY",
     tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
     disclaimer:
       "DetencionDefensa.com provides secure admission software, translation, and automated document preparation services. We are not a law firm and do not provide legal advice.",
@@ -26,7 +26,7 @@ const COPY = {
     plan: "Plan pwoteksyon pou arestasyon ICE ki konsevwa ak revize pa avoka ",
     price: "$199.",
     freeText: "Kounye a gratis akòz kriz kominotè a.",
-    ice: "ICE ARETE PLIS PASE 2000 MOUN KI PA SITWAYEN CHAK JOU",
+    ice: "PLIS PASE 2,000 MOUN CHAK JOU",
     tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
     disclaimer:
       "DetencionDefensa.com ofri lojisyèl admisyon ki an sekirite, tradiksyon, ak sèvis preparasyon dokiman otomatik. Nou pa yon kabinè avoka e nou pa bay konsèy legal.",
