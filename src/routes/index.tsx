@@ -1,7 +1,10 @@
 import { createFileRoute, redirect, Link } from "@tanstack/react-router";
-import { createContext, useContext, useRef, useState, type ReactNode } from "react";
-import { FileText, PackageCheck, BadgeDollarSign, Scale, ShieldAlert, Sparkles } from "lucide-react";
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import { FileText, PackageCheck, BadgeDollarSign, Scale, ShieldAlert, Sparkles, Play } from "lucide-react";
 import rosarioPhoto from "@/assets/rosario-sorrentino.png.asset.json";
+import hiwEs from "@/assets/videos/how-it-works-es.mp4.asset.json";
+import hiwEn from "@/assets/videos/how-it-works-en.mp4.asset.json";
+import hiwHt from "@/assets/videos/how-it-works-ht.mp4.asset.json";
 
 const DEFENDER_HOSTS = new Set([
   "defendermicasa.com",
