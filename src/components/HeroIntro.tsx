@@ -278,6 +278,53 @@ export default function HeroIntro() {
               {COPY[lang].watchVideos}
             </a>
           </div>
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: isMobile ? 10 : 12,
+              marginTop: isMobile ? "1rem" : "1.25rem",
+            }}
+          >
+            <p
+              style={{
+                margin: 0,
+                fontSize: isMobile ? 13 : 15,
+                lineHeight: 1.45,
+                color: "rgba(255,255,255,0.95)",
+                textAlign: "center",
+                maxWidth: 560,
+                textShadow: "0 1px 4px rgba(0,0,0,0.6)",
+              }}
+            >
+              {COPY[lang].secureLine}
+            </p>
+            <Link
+              to="/security"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 8,
+                background: "transparent",
+                color: "#e8a04a",
+                border: "2px solid #e8a04a",
+                textDecoration: "none",
+                fontWeight: 800,
+                fontSize: isMobile ? 13 : 14,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+                padding: isMobile ? "10px 20px" : "12px 24px",
+                borderRadius: 999,
+                fontFamily: "inherit",
+                transition: "background 0.2s, color 0.2s",
+              }}
+            >
+              {COPY[lang].securityBtn}
+            </Link>
+          </div>
         </div>
       </div>
     </section>
