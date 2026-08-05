@@ -92,7 +92,7 @@ const COPY = {
     liBilingual: "Bilingual case tracking for your family",
     subscribeBtn: "{t.subscribeBtn}",
     recheck: "{t.recheck}",
-    backHome: "{t.backHome}",
+    backHome: "← Back to home",
     pageTitle: "See if you qualify",
     pageSubtitle: "A quick questionnaire to see if you qualify for our no-cost or low-cost pre-detention defense program. Your information is confidential.",
     step1Heading: "Step 1 · Household & finances",
@@ -716,7 +716,7 @@ function QualifyPage() {
       <div className="mx-auto max-w-3xl px-4 py-10">
         <div className="mb-6">
           <Link to="/" className="text-sm text-red-700 hover:underline">
-            ← Back to home
+            {t.backHome}
           </Link>
         </div>
 
