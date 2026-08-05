@@ -5,27 +5,33 @@ import detentionNightAsset from "@/assets/detention-night.png.asset.json";
 
 const COPY = {
   es: {
-    plan: "Plan de defensa legal con asistencia de abogado ",
+    plan: "Plan de protección ante detención ICE diseñado y revisado por abogado ",
     price: "$199.",
     freeText: "Ahora gratis debido a la crisis comunitaria.",
     ice: "ICE ARRESTA MÁS DE 2,000",
     tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
+    disclaimer:
+      "DetencionDefensa.com proporciona software de admisión seguro, traducción y servicios automatizados de preparación de documentos. No somos una firma de abogados y no proporcionamos asesoramiento legal.",
   },
   en: {
-    plan: "Attorney-assisted legal defense plan ",
+    plan: "Attorney-designed and reviewed ICE detention protection plan ",
     price: "$199.",
     freeText: "Now free due to community crisis.",
     ice: "ICE ARRESTS OVER 2000 NON-CITIZENS EVERY DAY",
     tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
+    disclaimer:
+      "DetencionDefensa.com provides secure admission software, translation, and automated document preparation services. We are not a law firm and do not provide legal advice.",
   },
   ht: {
-    plan: "Plan defans legal avèk asistans avoka ",
+    plan: "Plan pwoteksyon pou arestasyon ICE ki konsevwa ak revize pa avoka ",
     price: "$199.",
     freeText: "Kounye a gratis akòz kriz kominotè a.",
     ice: "ICE ARETE PLIS PASE 2000 MOUN KI PA SITWAYEN CHAK JOU",
     tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
+    disclaimer:
+      "DetencionDefensa.com ofri lojisyèl admisyon ki an sekirite, tradiksyon, ak sèvis preparasyon dokiman otomatik. Nou pa yon kabinè avoka e nou pa bay konsèy legal.",
   },
-} satisfies Record<Lang, { plan: string; price: string; freeText: string; ice: string; tagline1: string }>;
+} satisfies Record<Lang, { plan: string; price: string; freeText: string; ice: string; tagline1: string; disclaimer: string }>;
 
 function PriceWithX({ prefix, price }: { prefix: string; price: string }) {
   return (
@@ -266,19 +272,6 @@ export default function HeroIntro() {
             >
               <PriceWithX prefix={COPY[lang].plan} price={COPY[lang].price} />
             </p>
-            <p
-              style={{
-                fontSize: isMobile ? "1.7rem" : "clamp(2.2rem, 4.6vw, 3.6rem)",
-                lineHeight: 1.1,
-                fontWeight: 900,
-                color: "#ef4444",
-                margin: 0,
-                whiteSpace: isMobile ? "normal" : "nowrap",
-                textShadow: "0 2px 10px rgba(0,0,0,0.6)",
-              }}
-            >
-              {COPY[lang].freeText}
-            </p>
           </div>
 
           <p
@@ -298,7 +291,46 @@ export default function HeroIntro() {
             {COPY[lang].tagline1}
           </p>
 
+        </div>
 
+        {/* Bottom notice */}
+        <div
+          style={{
+            padding: isMobile ? "0.75rem 0 0.5rem" : "1rem 0 0.5rem",
+            marginTop: "auto",
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.5rem",
+          }}
+        >
+          <p
+            style={{
+              fontFamily: '"Roboto Slab", Georgia, serif',
+              fontSize: isMobile ? "0.95rem" : "1.05rem",
+              lineHeight: 1.2,
+              fontWeight: 800,
+              color: "#ef4444",
+              margin: 0,
+              textShadow: "0 2px 8px rgba(0,0,0,0.6)",
+            }}
+          >
+            {COPY[lang].freeText}
+          </p>
+          <p
+            style={{
+              fontFamily: "Inter, system-ui, sans-serif",
+              fontSize: "8pt",
+              lineHeight: 1.4,
+              color: "#ffffff",
+              margin: 0,
+              maxWidth: 900,
+              marginInline: "auto",
+              textShadow: "0 1px 3px rgba(0,0,0,0.6)",
+            }}
+          >
+            {COPY[lang].disclaimer}
+          </p>
         </div>
       </div>
     </section>
