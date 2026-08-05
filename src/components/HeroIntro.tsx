@@ -121,7 +121,7 @@ export default function HeroIntro() {
         >
           <a
             href="/"
-            aria-label="Community Service Program home"
+            aria-label="DetencionDefensa.com home"
             style={{
               display: "inline-flex",
               alignItems: "center",
