@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { FIRM, COMPANY, PRICE } from "@/lib/firm-info";
 import { LegalDisclaimerFooter } from "@/components/LegalDisclaimerFooter";
+import { useLang, type Lang } from "@/context/LanguageContext";
+import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/attorney")({
   head: () => ({
