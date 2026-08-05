@@ -1,5 +1,6 @@
 import { createFileRoute, redirect, Link } from "@tanstack/react-router";
 import { createContext, useContext, useRef, useState, type ReactNode } from "react";
+import { FileText, PackageCheck, BadgeDollarSign, Scale, ShieldAlert, Sparkles } from "lucide-react";
 import rosarioPhoto from "@/assets/rosario-sorrentino.png.asset.json";
 
 const DEFENDER_HOSTS = new Set([
