@@ -496,7 +496,6 @@ function Index() {
           <Hero />
           <HowItWorksVideo />
           <TrustBar />
-          <FeatureSection idx={0} mockup={<PanicScreen />} reverse={false} />
           <HomeownerVideo />
           <FeatureSection idx={1} mockup={<DocsMock />} reverse={true} />
           <FeatureSection idx={2} mockup={<FamilyMock />} reverse={false} />
@@ -644,7 +643,7 @@ function Nav({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
           <span className="font-display text-xl leading-none">DetencionDefensa</span>
         </a>
         <nav className="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
-          <a href="#como-funciona" className="hover:text-foreground">{t.nav.how}</a>
+          <a href="#video-como-funciona" className="hover:text-foreground">{t.nav.how}</a>
           <a href={ctaHref(lang)} className="hover:text-foreground">{t.nav.plan}</a>
           <a href="#abogado" className="hover:text-foreground">{t.nav.attorney}</a>
           <a href="#preguntas" className="hover:text-foreground">{t.nav.faq}</a>
@@ -742,7 +741,7 @@ function FeatureSection({ idx, mockup, reverse }: { idx: number; mockup: ReactNo
   const { t, lang } = useT();
   const f = t.features[idx];
   return (
-    <section id={idx === 0 ? "como-funciona" : undefined} className="py-24 md:py-32">
+    <section className="py-24 md:py-32">
       <div className={`mx-auto grid max-w-6xl gap-16 px-6 md:grid-cols-2 md:items-center ${reverse ? "md:[&>*:first-child]:order-2" : ""}`}>
         <div>
           <div className="eyebrow text-firm">{f.eyebrow}</div>
