@@ -31,26 +31,27 @@ export const Route = createFileRoute("/")({
   },
   head: () => ({
     meta: [
-      { title: "DetencionDefensa.com — Plan de Defensa Pre-Detención · $10/mes" },
+      { title: "DetencionDefensa.com — Plan de Preparación Pre-Detención · Gratis" },
       {
         name: "description",
         content:
-          "A pre-detention defense plan for immigrant working families. Emergency app $10/month; attorney-reviewed documents at no charge. NOT a law firm.",
+          "A free sponsored pre-detention readiness plan for immigrant families in Broward and Miami-Dade. Documents reviewed by a Florida attorney. NOT a law firm. Does not grant immigration status or stop a deportation.",
       },
-      { property: "og:title", content: "DetencionDefensa.com — Plan de Defensa Pre-Detención · $10/mes" },
+      { property: "og:title", content: "DetencionDefensa.com — Plan de Preparación Pre-Detención · Gratis" },
       {
         property: "og:description",
         content:
-          "Pre-detention defense plan for immigrant working families. Emergency app $10/month; attorney-reviewed documents at no charge.",
+          "Free sponsored pre-detention readiness plan. Documents reviewed by a Florida attorney. NOT a law firm; does not grant immigration status or stop a deportation.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://detenciondefensa.com/" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "DetencionDefensa.com — Plan de Defensa Pre-Detención · $10/mes" },
-      { name: "twitter:description", content: "Pre-detention defense plan for immigrant working families. Emergency app $10/month; attorney-reviewed documents at no charge." },
+      { name: "twitter:title", content: "DetencionDefensa.com — Plan de Preparación Pre-Detención · Gratis" },
+      { name: "twitter:description", content: "Free sponsored pre-detention readiness plan. Documents reviewed by a Florida attorney. NOT a law firm." },
     ],
     links: [{ rel: "canonical", href: "https://detenciondefensa.com/" }],
   }),
+
   component: Index,
 });
 
