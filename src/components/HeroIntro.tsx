@@ -145,17 +145,16 @@ export default function HeroIntro() {
             />
             <span
               style={{
-                fontSize: isMobile ? 12 : 15,
+                fontSize: isMobile ? 14 : 16,
                 fontWeight: 700,
-                letterSpacing: -0.3,
+                letterSpacing: -0.2,
                 color: "#ffffff",
-                whiteSpace: "normal",
+                whiteSpace: "nowrap",
                 lineHeight: 1.2,
                 textAlign: "left",
-                maxWidth: isMobile ? 180 : 320,
               }}
             >
-              Community Service Program — Developed and funded by DetencionDefensa.com, offered through Refuge Outreach, a 501(c)(3) charity.
+              DetencionDefensa.com
             </span>
           </a>
 
