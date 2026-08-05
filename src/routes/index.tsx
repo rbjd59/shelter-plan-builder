@@ -202,7 +202,10 @@ const T = {
     nav: { how: "How it works", plan: "The Plan", attorney: "The Attorney", faq: "FAQ", cta: "Get started · $199" },
     hero: {
       badge: "Pre-detention defense plan · Miami, FL",
+      pre: "Pre-Deportation Protection",
+      modern: "Modern Immigrant Protection Plans",
       h1a: "ICE is", h1b: "coming.", h1c: "Don't wait.",
+      blend: "Blending new technology and experienced lawyers to provide low-cost options for non-citizens at risk of detention.",
       sub: "A legal defense plan built and reviewed by attorneys, for those who can't afford a traditional $10,000 retainer.",
       cta: "Get started for $199 →",
       seeHow: "See how it works",
@@ -307,7 +310,10 @@ const T = {
     nav: { how: "Kijan sa fonksyone", plan: "Plan an", attorney: "Avoka a", faq: "Kesyon", cta: "Kòmanse · $199" },
     hero: {
       badge: "Plan defans anvan detansyon · Miami, FL",
+      pre: "Pwoteksyon Anvan Deportasyon",
+      modern: "Plan Pwoteksyon Imigran Modèn",
       h1a: "ICE ap", h1b: "vini.", h1c: "Pa tann.",
+      blend: "Konbine nouvo teknoloji ak avoka ki gen eksperyans pou ofri opsyon ki pa chè pou moun ki pa sitwayen ki an risk pou detansyon.",
       sub: "Yon plan defans legal ki fèt epi revize pa avoka, pou moun ki pa ka peye yon retenè tradisyonèl $10,000.",
       cta: "Kòmanse pou $199 →",
       seeHow: "Wè kijan li fonksyone",
