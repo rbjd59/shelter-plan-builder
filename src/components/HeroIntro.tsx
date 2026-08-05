@@ -7,7 +7,7 @@ const COPY = {
   es: {
     plan: "Plan de protección ante detención ICE diseñado y revisado por abogado ",
     price: "$199.",
-    freeText: "Ahora gratis debido a la crisis comunitaria.",
+    freeText: "Ahora gratis por la crisis comunitaria a través del alcance a refugiados de organizaciones 501c3 sin fines de lucro desde 1991.",
     ice: "MÁS DE 2,000 PERSONAS DIARIAMENTE",
     tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
     disclaimer:
