@@ -348,16 +348,27 @@ const T = {
 
   },
   ht: {
-    nav: { how: "Kijan sa fonksyone", plan: "Plan an", attorney: "Avoka a", faq: "Kesyon", cta: "Kòmanse · $199" },
+    nav: { how: "Kijan sa fonksyone", plan: "Plan an", attorney: "Avoka a", faq: "Kesyon", cta: "Kòmanse gratis →" },
     hero: {
-      badge: "Plan defans anvan detansyon · Miami, FL",
-      tagline: "Plan ijans sekirite pre-deportasyon ak yon sèl klik pou moun ki an ris pou detansyon.",
-      h1a: "ICE ap", h1b: "vini.", h1c: "Pa tann.",
-      sub: "Yon plan defans legal ki fèt epi revize pa avoka, pou moun ki pa reprezante pa yon avoka.",
-      cta: "Kòmanse pou $199 →",
+      badge: "Plan preparasyon anvan detansyon · Miami, FL",
+      tagline: "Plan preparasyon ijans sekirize ak yon sèl klik pou moun ki an ris pou detansyon.",
+      h1a: "Detansyon yo", h1b: "ap ogmante.", h1c: "Prepare plan w jodi a.",
+      sub: "Yon plan preparasyon legal ki fèt epi revize pa yon avoka, pou moun ki pa gen pwòp avoka imigrasyon pa yo.",
+      cta: "Kòmanse gratis →",
       seeHow: "Wè kijan li fonksyone",
-      nowFree: "Kounye a gratis akòz kriz kominotè a atravè Refuge Outreach, yon òganizasyon san bi likratif 501(c)(3) depi 1991.",
+      nowFree: "Anvan $199. Kounye a gratis pou fanmi nan Broward ak Miami-Dade, patwone pa Refuge Outreach, Inc., yon òganizasyon san bi likratif 501(c)(3) depi 2009. Patwonaj la limite a 1,000 fanmi epi li dire toutotan finansman patwonaj la dire.",
     },
+    plainBox: {
+      title: "An mo senp",
+      items: [
+        { k: "Kisa li ye", v: "Yon plan preparasyon: dokiman ak yon app ijans ki pare si yo detni w." },
+        { k: "Kisa w resevwa", v: "App ijans ak bouton NOTIFY FAMILY · Habeas Corpus (AO 242), IFP ak JS 44 prepare · Pouvwa notarye ak gad tanporè timoun · Stokaj chiffré · Español, English, Kreyòl." },
+        { k: "Konbyen li koute", v: "Anyen. $0. Nou pa mande kat kredi. Refuge Outreach, Inc. (501(c)(3)) kouvri kou a, epi frè $35 avoka a peye nan kont IOLTA ak lajan patwonaj la, pa ak lajan w." },
+        { k: "Kilès avoka a ye", v: "Rosario Sorrentino, Esq. (Fla. Bar No. 1049132) revize epi apwouve dokiman w yo anba yon akò ekri ak pòte limite. Sa pa vle di li ap avoka w nan tribinal imigrasyon." },
+        { k: "Kisa li PA ye", v: "Plan sa a PA ba w estati imigrasyon, li PA rete yon depòtasyon epi li PA garanti liberasyon w. Se yon plan preparasyon pou fanmi w ak dokiman w yo pare si yo detni w." },
+      ],
+    },
+
     trust: { attorneyName: "Rosario Kyle Sorrentino, Esq.", firm: "Fondatè, Sorrentino Law Firm PLLC · Fla. Bar No. 1049132", bio: "Avoka imigrasyon ki baze Miami. Li pratike defans kont depòtasyon devan tribinal imigrasyon (EOIR), odyans kosyon ICE, petisyon Habeas Corpus nan tribinal federal, mosyon pou re-ouvri, azil, Withholding of Removal, CAT, ak petisyon pou viktim (VAWA, U, ak T). Li sèvi fanmi ki pale Panyòl atravè tout Florida." },
     features: [
       {
