@@ -1,6 +1,6 @@
 import { createFileRoute, redirect, Link } from "@tanstack/react-router";
 import { createContext, useContext, useRef, useState, type ReactNode } from "react";
-import rosarioPhoto from "@/assets/rosario-sorrentino.jpg.asset.json";
+import rosarioPhoto from "@/assets/rosario-sorrentino.png.asset.json";
 
 const DEFENDER_HOSTS = new Set([
   "defendermicasa.com",
