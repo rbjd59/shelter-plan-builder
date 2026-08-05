@@ -9,28 +9,23 @@ const COPY = {
     price: "$199.",
     freeText: "Ahora gratis debido a la crisis comunitaria.",
     ice: "ICE ARRESTA MÁS DE 2000 PERSONAS NO CIUDADANAS CADA DÍA",
-    tagline1:
-      "Plan seguro de defensa legal con un solo clic y aplicación de alerta de emergencia",
-    tagline2: "para personas en riesgo de detención por inmigración",
+    tagline1: "Plan seguro de defensa legal con aplicación de emergencia",
   },
   en: {
     plan: "Attorney-assisted legal defense plan ",
     price: "$199.",
     freeText: "Now free due to community crisis.",
     ice: "ICE ARRESTS OVER 2000 NON-CITIZENS EVERY DAY",
-    tagline1: "Secure one-click legal defense plan and emergency alert application",
-    tagline2: "for people at risk of immigration enforcement detention",
+    tagline1: "Secure legal defense plan with emergency application",
   },
   ht: {
     plan: "Plan defans legal avèk asistans avoka ",
     price: "$199.",
     freeText: "Kounye a gratis akòz kriz kominotè a.",
     ice: "ICE ARETE PLIS PASE 2000 MOUN KI PA SITWAYEN CHAK JOU",
-    tagline1:
-      "Plan defans legal sekirize an yon sèl klik ak aplikasyon alèt ijans",
-    tagline2: "pou moun ki an risk detansyon imigrasyon",
+    tagline1: "Plan defans legal sekirize ak aplikasyon ijans",
   },
-} satisfies Record<Lang, { plan: string; price: string; freeText: string; ice: string; tagline1: string; tagline2: string }>;
+} satisfies Record<Lang, { plan: string; price: string; freeText: string; ice: string; tagline1: string }>;
 
 function PriceWithX({ prefix, price }: { prefix: string; price: string }) {
   return (
