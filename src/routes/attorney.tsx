@@ -125,7 +125,7 @@ function AttorneyPage() {
           <Link to="/" style={{ color: NAVY, fontWeight: 800, letterSpacing: 0.2, textDecoration: "none", fontSize: 18 }}>
             DetencionDefensa<span style={{ color: ACCENT }}>.com</span>
           </Link>
-          <nav style={{ display: "flex", gap: 22, alignItems: "center", fontSize: 14 }}>
+          <nav style={{ display: "flex", gap: 14, alignItems: "center", fontSize: 14, flexWrap: "wrap" }}>
             <Link to="/" style={{ color: NAVY, textDecoration: "none" }}>Home</Link>
             <Link to="/retainer" style={{ color: NAVY, textDecoration: "none" }}>Retainer</Link>
             <a
@@ -136,6 +136,42 @@ function AttorneyPage() {
             >
               FL Bar Profile ↗
             </a>
+            <div
+              style={{
+                display: "inline-flex",
+                gap: 4,
+                background: "#fff",
+                border: `1px solid ${BORDER}`,
+                borderRadius: 999,
+                padding: 3,
+                flexShrink: 0,
+              }}
+            >
+              {(["es", "en", "ht"] as Lang[]).map((code) => (
+                <button
+                  key={code}
+                  type="button"
+                  onClick={() => setLang(code)}
+                  style={{
+                    background: lang === code ? NAVY : "transparent",
+                    color: lang === code ? "#fff" : NAVY,
+                    border: "none",
+                    borderRadius: 999,
+                    padding: isMobile ? "6px 10px" : "7px 13px",
+                    fontSize: isMobile ? 11 : 12,
+                    fontWeight: 700,
+                    letterSpacing: "0.12em",
+                    cursor: "pointer",
+                    fontFamily: "inherit",
+                    textTransform: "uppercase",
+                    touchAction: "manipulation",
+                    WebkitTapHighlightColor: "transparent",
+                  }}
+                >
+                  {code === "es" ? "Español" : code === "en" ? "English" : "Kreyòl"}
+                </button>
+              ))}
+            </div>
             <Link
               to="/intake"
               style={{
