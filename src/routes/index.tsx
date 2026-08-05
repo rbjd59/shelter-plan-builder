@@ -100,7 +100,7 @@ const T = {
       newsCta: "Ver en ABC News →",
 
       tagline: "El plan seguro de preparación de emergencia con un solo clic para personas en riesgo de detención.",
-      h1a: "Las detenciones", h1b: "han aumentado.", h1c: "Prepare su plan hoy.",
+      h1a: "Preocupado por la detención de ICE?", h1b: "Prepare su plan hoy.", h1c: "",
       sub: "Un plan de preparación legal creado y revisado por un abogado, para quienes no tienen su propio abogado de inmigración.",
       cta: "Empezar gratis →",
       seeHow: "Ver cómo funciona",
