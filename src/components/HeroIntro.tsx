@@ -217,7 +217,7 @@ export default function HeroIntro() {
           <h1
             style={{
               fontFamily: '"Roboto Slab", Georgia, serif',
-              fontSize: isMobile ? "1.5rem" : "clamp(1.8rem, 4vw, 2.9rem)",
+              fontSize: isMobile ? (lang === "es" ? "1.75rem" : "1.5rem") : (lang === "es" ? "clamp(2.2rem, 4.8vw, 3.4rem)" : "clamp(1.8rem, 4vw, 2.9rem)"),
               fontWeight: 700,
               lineHeight: 1.1,
               margin: 0,
