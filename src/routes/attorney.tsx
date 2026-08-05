@@ -71,6 +71,27 @@ const PILLARS = [
   },
 ];
 
+const PRO_BONO_COPY = {
+  es: {
+    heading: "Nadie debe enfrentar la detención solo.",
+    p1: `${FIRM.attorney} ha aceptado donar sus servicios para la revisión del formulario de habeas corpus sin cargo.`,
+    p2: `${FIRM.attorney} realiza trabajo legal adicional. Para más información, visite su sitio web.`,
+    button: "Visitar el sitio web de Rosario",
+  },
+  en: {
+    heading: "No one should face detention alone.",
+    p1: `${FIRM.attorney} has agreed to donate his services for review of the habeas corpus form at no charge.`,
+    p2: `${FIRM.attorney} does additional legal work. For more information, visit his website.`,
+    button: "Visit Rosario's website",
+  },
+  ht: {
+    heading: "Pa gen moun ki dwe fè fas ak detansyon pou kont li.",
+    p1: `${FIRM.attorney} dako domnen sèvis li yo pou revize fòm habeas corpus la san frè.`,
+    p2: `${FIRM.attorney} fè lòt travay legal ankò. Pou plis enfòmasyon, vizite sit entènèt li.`,
+    button: "Vizite sit entènèt Rosario",
+  },
+} satisfies Record<Lang, { heading: string; p1: string; p2: string; button: string }>;
+
 function AttorneyPage() {
   return (
     <div style={{ background: PAGE, color: NAVY, minHeight: "100vh", fontFamily: "Inter, system-ui, sans-serif" }}>
