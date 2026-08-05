@@ -9,28 +9,23 @@ const COPY = {
     price: "$199.",
     freeText: "Ahora gratis debido a la crisis comunitaria.",
     ice: "ICE ARRESTA MÁS DE 2000 PERSONAS NO CIUDADANAS CADA DÍA",
-    tagline1:
-      "Plan seguro de defensa legal con un solo clic y aplicación de alerta de emergencia",
-    tagline2: "para personas en riesgo de detención por inmigración",
+    tagline1: "Plan seguro de defensa legal con aplicación de emergencia",
   },
   en: {
     plan: "Attorney-assisted legal defense plan ",
     price: "$199.",
     freeText: "Now free due to community crisis.",
     ice: "ICE ARRESTS OVER 2000 NON-CITIZENS EVERY DAY",
-    tagline1: "Secure one-click legal defense plan and emergency alert application",
-    tagline2: "for people at risk of immigration enforcement detention",
+    tagline1: "Secure legal defense plan with emergency application",
   },
   ht: {
     plan: "Plan defans legal avèk asistans avoka ",
     price: "$199.",
     freeText: "Kounye a gratis akòz kriz kominotè a.",
     ice: "ICE ARETE PLIS PASE 2000 MOUN KI PA SITWAYEN CHAK JOU",
-    tagline1:
-      "Plan defans legal sekirize an yon sèl klik ak aplikasyon alèt ijans",
-    tagline2: "pou moun ki an risk detansyon imigrasyon",
+    tagline1: "Plan defans legal sekirize ak aplikasyon ijans",
   },
-} satisfies Record<Lang, { plan: string; price: string; freeText: string; ice: string; tagline1: string; tagline2: string }>;
+} satisfies Record<Lang, { plan: string; price: string; freeText: string; ice: string; tagline1: string }>;
 
 function PriceWithX({ prefix, price }: { prefix: string; price: string }) {
   return (
@@ -222,16 +217,16 @@ export default function HeroIntro() {
           <h1
             style={{
               fontFamily: '"Roboto Slab", Georgia, serif',
-              fontSize: isMobile ? "1.9rem" : "clamp(2.25rem, 5.4vw, 3.75rem)",
+              fontSize: isMobile ? "1.5rem" : "clamp(1.8rem, 4vw, 2.9rem)",
               fontWeight: 700,
-              lineHeight: 1.08,
+              lineHeight: 1.1,
               margin: 0,
               letterSpacing: "-0.005em",
               textAlign: "center",
               color: "#e8a04a",
               textShadow: "0 2px 8px rgba(0,0,0,0.6)",
               textTransform: "uppercase",
-              maxWidth: 900,
+              maxWidth: 1000,
               marginInline: "auto",
             }}
           >
@@ -241,21 +236,23 @@ export default function HeroIntro() {
           <div
             style={{
               fontFamily: '"Roboto Slab", Georgia, serif',
-              maxWidth: 720,
+              maxWidth: 1100,
               margin: "0 auto",
+              width: "100%",
               textAlign: "center",
               display: "flex",
               flexDirection: "column",
-              gap: isMobile ? "0.35rem" : "0.5rem",
+              gap: isMobile ? "0.5rem" : "0.75rem",
             }}
           >
             <p
               style={{
-                fontSize: isMobile ? "2rem" : "clamp(2.1rem, 3.4vw, 2.7rem)",
+                fontSize: isMobile ? "0.95rem" : "clamp(1.05rem, 1.9vw, 1.5rem)",
                 lineHeight: 1.2,
                 fontWeight: 600,
                 color: "#ffffff",
                 margin: 0,
+                whiteSpace: "nowrap",
                 textShadow: "0 2px 8px rgba(0,0,0,0.5)",
               }}
             >
@@ -263,12 +260,13 @@ export default function HeroIntro() {
             </p>
             <p
               style={{
-                fontSize: isMobile ? "1.45rem" : "clamp(1.6rem, 3vw, 2.25rem)",
-                lineHeight: 1.15,
-                fontWeight: 800,
+                fontSize: isMobile ? "1.7rem" : "clamp(2.2rem, 4.6vw, 3.6rem)",
+                lineHeight: 1.1,
+                fontWeight: 900,
                 color: "#ef4444",
                 margin: 0,
-                textShadow: "0 2px 8px rgba(0,0,0,0.5)",
+                whiteSpace: isMobile ? "normal" : "nowrap",
+                textShadow: "0 2px 10px rgba(0,0,0,0.6)",
               }}
             >
               {COPY[lang].freeText}
@@ -277,12 +275,12 @@ export default function HeroIntro() {
 
           <p
             style={{
-              margin: isMobile ? "2.5rem auto 0" : "3.5rem auto 0",
+              margin: isMobile ? "auto auto 0.25rem" : "auto auto 0.5rem",
               maxWidth: 1100,
               width: "100%",
               fontFamily: '"Roboto Slab", Georgia, serif',
-              fontSize: isMobile ? "1.05rem" : "clamp(1.15rem, 2vw, 1.6rem)",
-              lineHeight: 1.3,
+              fontSize: isMobile ? "0.9rem" : "clamp(0.95rem, 1.5vw, 1.2rem)",
+              lineHeight: 1.25,
               fontWeight: 700,
               color: "#e8a04a",
               textAlign: "center",
@@ -290,9 +288,8 @@ export default function HeroIntro() {
             }}
           >
             {COPY[lang].tagline1}
-            <br />
-            {COPY[lang].tagline2}
           </p>
+
 
         </div>
       </div>
