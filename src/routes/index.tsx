@@ -1,6 +1,6 @@
 import { createFileRoute, redirect, Link } from "@tanstack/react-router";
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
-import { FileText, PackageCheck, BadgeDollarSign, Scale, ShieldAlert, Sparkles, Play } from "lucide-react";
+import { Sparkles, Play } from "lucide-react";
 import rosarioPhoto from "@/assets/rosario-sorrentino.png.asset.json";
 import hiwEs from "@/assets/videos/how-it-works-es.mp4.asset.json";
 import hiwEn from "@/assets/videos/how-it-works-en.mp4.asset.json";
