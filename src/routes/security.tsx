@@ -131,6 +131,41 @@ function SecurityPage() {
 
         <div
           style={{
+            background: "rgba(232,160,74,0.12)",
+            border: "2px solid #e8a04a",
+            borderRadius: 16,
+            padding: isMobile ? "1.25rem" : "1.75rem",
+            marginBottom: isMobile ? 28 : 36,
+          }}
+        >
+          <h2
+            style={{
+              margin: "0 0 0.75rem",
+              fontSize: isMobile ? "1.25rem" : "1.5rem",
+              fontWeight: 800,
+              color: "#e8a04a",
+              textTransform: "uppercase",
+              letterSpacing: "0.04em",
+              textAlign: "center",
+            }}
+          >
+            {t.privateBox.label}
+          </h2>
+          <p
+            style={{
+              margin: 0,
+              fontSize: isMobile ? 15 : 16,
+              lineHeight: 1.6,
+              color: "rgba(255,255,255,0.95)",
+              textAlign: "center",
+            }}
+          >
+            {t.privateBox.desc}
+          </p>
+        </div>
+
+        <div
+          style={{
             display: "grid",
             gap: isMobile ? 14 : 18,
             gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
