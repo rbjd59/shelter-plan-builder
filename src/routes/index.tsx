@@ -1,7 +1,10 @@
 import { createFileRoute, redirect, Link } from "@tanstack/react-router";
-import { createContext, useContext, useRef, useState, type ReactNode } from "react";
-import { FileText, PackageCheck, BadgeDollarSign, Scale, ShieldAlert, Sparkles } from "lucide-react";
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import { Sparkles, Play } from "lucide-react";
 import rosarioPhoto from "@/assets/rosario-sorrentino.png.asset.json";
+import hiwEs from "@/assets/videos/how-it-works-es.mp4.asset.json";
+import hiwEn from "@/assets/videos/how-it-works-en.mp4.asset.json";
+import hiwHt from "@/assets/videos/how-it-works-ht.mp4.asset.json";
 
 const DEFENDER_HOSTS = new Set([
   "defendermicasa.com",
@@ -491,7 +494,7 @@ function Index() {
         <Nav lang={lang} setLang={setLang} />
         <main>
           <Hero />
-          <PlainBox />
+          <HowItWorksVideo />
           <TrustBar />
           <FeatureSection idx={0} mockup={<PanicScreen />} reverse={false} />
           <HomeownerVideo />
@@ -508,12 +511,69 @@ function Index() {
   );
 }
 
-/* -------------------- PLAIN LANGUAGE BOX -------------------- */
-function PlainBox() {
-  const { t } = useT();
-  const icons = [FileText, PackageCheck, BadgeDollarSign, Scale, ShieldAlert];
+/* -------------------- HOW IT WORKS VIDEO -------------------- */
+const HIW_VIDEO: Record<Lang, string> = {
+  es: hiwEs.url,
+  en: hiwEn.url,
+  ht: hiwHt.url,
+};
+
+const HIW_COPY: Record<Lang, { eyebrow: string; title: string; sub: string; play: string; note: string }> = {
+  es: {
+    eyebrow: "Cómo funciona",
+    title: "Vea el video de 1 minuto",
+    sub: "Aprenda cómo DetencionDefensa.com ayuda a las familias a estar protegidas, conectadas y apoyadas si alguien es detenido.",
+    play: "Ver el video",
+    note: "Este video es informativo y publicitario. No es asesoría legal y no garantiza resultados. Este plan no otorga estatus migratorio ni detiene una deportación.",
+  },
+  en: {
+    eyebrow: "How it works",
+    title: "Watch the 1-minute video",
+    sub: "Learn how DetencionDefensa.com helps families stay protected, connected, and supported if someone is detained.",
+    play: "Play video",
+    note: "This video is informational advertising. It is not legal advice and does not guarantee outcomes. This plan does not grant immigration status or stop a deportation.",
+  },
+  ht: {
+    eyebrow: "Kijan li mache",
+    title: "Gade videyo 1 minit la",
+    sub: "Aprann kijan DetencionDefensa.com ede fanmi yo rete pwoteje, konekte, e sipòte si yo arete yon moun.",
+    play: "Jwe videyo a",
+    note: "Videyo sa a se enfòmasyon ak piblisite. Li pa konsèy legal e li pa garanti rezilta. Plan sa a pa bay estati imigrasyon e li pa rete yon depòtasyon.",
+  },
+};
+
+function HowItWorksVideo() {
+  const { lang } = useT();
+  const c = HIW_COPY[lang];
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [started, setStarted] = useState(false);
+
+  useEffect(() => {
+    setStarted(false);
+    const v = videoRef.current;
+    if (v) {
+      v.pause();
+      v.currentTime = 0;
+    }
+  }, [lang]);
+
+  const handlePlay = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = false;
+    const p = v.play();
+    if (p && typeof p.then === "function") {
+      p.then(() => setStarted(true)).catch(() => {
+        v.muted = true;
+        v.play().then(() => setStarted(true)).catch(() => {});
+      });
+    } else {
+      setStarted(true);
+    }
+  };
+
   return (
-    <section className="relative border-y border-border/60 bg-sand/40">
+    <section id="video-como-funciona" className="relative border-y border-border/60 bg-sand/40">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-[0.35]"
@@ -522,59 +582,54 @@ function PlainBox() {
             "radial-gradient(circle at 15% 10%, color-mix(in oklab, var(--sand) 70%, transparent), transparent 55%), radial-gradient(circle at 85% 85%, color-mix(in oklab, var(--sand) 55%, transparent), transparent 55%)",
         }}
       />
-      <div className="relative mx-auto max-w-5xl px-6 py-16">
-        <div className="mb-10 text-center">
+      <div className="relative mx-auto max-w-4xl px-6 py-16">
+        <div className="mb-8 text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/70 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
             <Sparkles className="h-3.5 w-3.5" />
-            {t.plainBox.title}
+            {c.eyebrow}
           </span>
-          <div className="mx-auto mt-5 h-px w-16 bg-border" />
+          <h2 className="mt-4 font-display text-3xl leading-tight md:text-4xl">{c.title}</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
+            {c.sub}
+          </p>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
-          {t.plainBox.items.map((it, i) => {
-            const Icon = icons[i % icons.length];
-            const isLast = i === t.plainBox.items.length - 1;
-            return (
-              <div
-                key={it.k}
-                className={`group relative overflow-hidden rounded-2xl border bg-background/80 p-6 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:shadow-md ${
-                  isLast
-                    ? "border-destructive/35 bg-destructive/[0.04] md:col-span-2"
-                    : "border-border/70"
-                }`}
-              >
-                <div className="flex items-start gap-4">
-                  <span
-                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
-                      isLast
-                        ? "bg-destructive/10 text-destructive"
-                        : "bg-primary/10 text-primary"
-                    }`}
-                  >
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <div>
-                    <h3
-                      className={`font-display text-lg leading-tight ${
-                        isLast ? "text-destructive" : "text-foreground"
-                      }`}
-                    >
-                      {it.k}
-                    </h3>
-                    <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
-                      {it.v}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+        <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border/70 bg-primary/5 shadow-lg">
+          <video
+            ref={videoRef}
+            key={lang}
+            src={HIW_VIDEO[lang]}
+            controls={started}
+            playsInline
+            {...({ "webkit-playsinline": "true" } as Record<string, string>)}
+            preload="metadata"
+            className="block h-full w-full object-cover"
+          />
+          {!started && (
+            <button
+              type="button"
+              onClick={handlePlay}
+              aria-label={c.play}
+              className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-foreground/35 backdrop-blur-[1px] transition hover:bg-foreground/45"
+            >
+              <span className="flex h-20 w-20 items-center justify-center rounded-full bg-background/95 shadow-xl transition group-hover:scale-105">
+                <Play className="ml-1 h-8 w-8 text-primary" />
+              </span>
+              <span className="rounded-full bg-background/90 px-4 py-1.5 text-sm font-bold text-foreground">
+                {c.play}
+              </span>
+            </button>
+          )}
         </div>
+
+        <p className="mx-auto mt-4 max-w-2xl text-center text-xs italic leading-relaxed text-muted-foreground">
+          {c.note}
+        </p>
       </div>
     </section>
   );
 }
+
 
 
 /* -------------------- NAV -------------------- */
