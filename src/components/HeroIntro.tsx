@@ -272,6 +272,20 @@ export default function HeroIntro() {
             >
               <PriceWithX prefix={COPY[lang].plan} price={COPY[lang].price} />
             </p>
+
+            <p
+              style={{
+                fontFamily: '"Roboto Slab", Georgia, serif',
+                fontSize: isMobile ? "0.95rem" : "1.05rem",
+                lineHeight: 1.2,
+                fontWeight: 800,
+                color: "#ef4444",
+                margin: 0,
+                textShadow: "0 2px 8px rgba(0,0,0,0.6)",
+              }}
+            >
+              {COPY[lang].freeText}
+            </p>
           </div>
 
           <p
@@ -304,19 +318,6 @@ export default function HeroIntro() {
             gap: "0.5rem",
           }}
         >
-          <p
-            style={{
-              fontFamily: '"Roboto Slab", Georgia, serif',
-              fontSize: isMobile ? "0.95rem" : "1.05rem",
-              lineHeight: 1.2,
-              fontWeight: 800,
-              color: "#ef4444",
-              margin: 0,
-              textShadow: "0 2px 8px rgba(0,0,0,0.6)",
-            }}
-          >
-            {COPY[lang].freeText}
-          </p>
           <p
             style={{
               fontFamily: "Inter, system-ui, sans-serif",
