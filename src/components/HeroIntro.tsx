@@ -213,7 +213,7 @@ export default function HeroIntro() {
           </p>
 
 
-          <div style={{ display: "flex", justifyContent: "center", marginTop: isMobile ? "2rem" : "3rem" }}>
+          <div style={{ display: "flex", justifyContent: "center", marginTop: isMobile ? "4rem" : "5rem" }}>
             <a
               href="/videos"
               style={{
