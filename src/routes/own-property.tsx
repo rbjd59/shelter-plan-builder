@@ -126,7 +126,7 @@ const COPY = {
 
 function OwnPropertyPage() {
   const { lang } = Route.useSearch();
-  const t = COPY[lang];
+  const t = COPY[(lang as keyof typeof COPY) ?? "es"];
   return (
     <div
       style={{
