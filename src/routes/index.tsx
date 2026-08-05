@@ -100,7 +100,7 @@ const T = {
       newsCta: "Ver en ABC News →",
 
       tagline: "El plan seguro de preparación de emergencia con un solo clic para personas en riesgo de detención.",
-      h1a: "Las detenciones", h1b: "han aumentado.", h1c: "Prepare su plan hoy.",
+      h1a: "Preocupado por la detención de ICE?", h1b: "Prepare su plan hoy.", h1c: "",
       sub: "Un plan de preparación legal creado y revisado por un abogado, para quienes no tienen su propio abogado de inmigración.",
       cta: "Empezar gratis →",
       seeHow: "Ver cómo funciona",
@@ -502,7 +502,6 @@ function Index() {
         <Nav lang={lang} setLang={setLang} />
         <main>
           <Hero />
-          <PlainBox />
           <TrustBar />
           <FeatureSection idx={0} mockup={<PanicScreen />} reverse={false} />
           <HomeownerVideo />
@@ -603,11 +602,9 @@ function Hero() {
           </a>
 
           <h1 className="hero-headline text-[3.5rem] text-cvink sm:text-[5rem] md:text-[6.5rem]">
-
             {t.hero.h1a} <br />
             <span className="italic text-firm">{t.hero.h1b}</span>
-            <br />
-            {t.hero.h1c}
+            {t.hero.h1c && <><br />{t.hero.h1c}</>}
           </h1>
 
           <div className="mt-6 max-w-lg space-y-3">
@@ -631,11 +628,14 @@ function Hero() {
 
         </div>
 
-        <div className="relative flex items-center justify-center">
+        <div className="relative flex flex-col items-center justify-center gap-8">
           <div className="absolute -inset-8 rounded-[3rem] bg-gradient-to-br from-firm/10 via-transparent to-primary/5 blur-2xl" />
           <PhoneFrame>
             <PanicScreen />
           </PhoneFrame>
+          <div className="w-full max-w-md">
+            <PlainBox />
+          </div>
         </div>
       </div>
     </section>
@@ -951,7 +951,7 @@ function CheckDot({ dark }: { dark?: boolean }) {
 function PhoneFrame({ children }: { children: ReactNode }) {
   const { t } = useT();
   return (
-    <div className="relative w-[280px] rounded-[2.75rem] border-[10px] border-cvink bg-cvink shadow-2xl md:w-[320px]">
+    <div className="relative w-[220px] rounded-[2.5rem] border-[8px] border-cvink bg-cvink shadow-2xl md:w-[260px]">
       <span className="absolute -top-3 left-1/2 z-20 -translate-x-1/2 rounded-full bg-urgent px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-urgent-foreground">
         {t.mock.sim}
       </span>
