@@ -95,6 +95,10 @@ const T = {
     nav: { how: "Cómo funciona", plan: "El Plan", attorney: "El Abogado", faq: "Preguntas", cta: "Empezar gratis →" },
     hero: {
       badge: "Plan de preparación pre-detención · Miami, FL",
+      newsLabel: "ÚLTIMA HORA",
+      newsText: "ICE arrestó aproximadamente 51,000 personas en julio de 2026 (ABC News). Un plan de pre-detención puede ayudarle a prepararse.",
+      newsCta: "Ver en ABC News →",
+
       tagline: "El plan seguro de preparación de emergencia con un solo clic para personas en riesgo de detención.",
       h1a: "Las detenciones", h1b: "han aumentado.", h1c: "Prepare su plan hoy.",
       sub: "Un plan de preparación legal creado y revisado por un abogado, para quienes no tienen su propio abogado de inmigración.",
