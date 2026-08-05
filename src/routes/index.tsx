@@ -488,7 +488,7 @@ function Hero() {
   const { t, lang } = useT();
   return (
     <section className="relative overflow-hidden">
-      <div className="mx-auto grid max-w-6xl gap-16 px-6 pb-24 pt-8 md:grid-cols-[1.15fr_1fr] md:pt-12 md:pb-32">
+      <div className="mx-auto grid max-w-6xl gap-16 px-6 pb-24 pt-4 md:grid-cols-[1.15fr_1fr] md:pt-6 md:pb-32">
         <div className="flex flex-col justify-center">
           <h1 className="hero-headline text-[3.5rem] text-cvink sm:text-[5rem] md:text-[6.5rem]">
             {t.hero.h1a} <br />
@@ -497,7 +497,11 @@ function Hero() {
             {t.hero.h1c}
           </h1>
 
-          <p className="mt-8 max-w-lg text-lg leading-relaxed text-muted-foreground">{t.hero.sub}</p>
+          <div className="mt-6 max-w-lg space-y-1">
+            <p className="text-xl font-semibold leading-tight text-foreground md:text-2xl">{t.hero.pre}</p>
+            <p className="text-lg font-semibold leading-tight text-foreground">{t.hero.modern}</p>
+            <p className="text-base leading-relaxed text-muted-foreground">{t.hero.blend}</p>
+          </div>
 
           <div className="mt-6 flex flex-wrap items-center gap-5">
             <div className="relative inline-block">
