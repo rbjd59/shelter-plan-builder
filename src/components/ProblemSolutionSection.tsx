@@ -11,7 +11,6 @@ const COPY: Record<Lang, {
     problemLabel: "El Problema",
     problems: [
       "ICE detiene a dos mil personas al día.",
-      "ICE tiene una cuota mínima que cumplir.",
       "Si no eres ciudadano, estás en riesgo.",
       "Una vez detenido, el acceso a la familia y a los abogados es difícil.",
       "No puedes pagar miles de dólares por un abogado.",
@@ -29,7 +28,6 @@ const COPY: Record<Lang, {
     problemLabel: "The Problem",
     problems: [
       "ICE is detaining two thousand persons a day.",
-      "ICE has a minimum quota to meet.",
       "If you're not a citizen, you are at risk.",
       "Once detained, access to family and lawyers is difficult.",
       "You cannot afford thousands for an attorney.",
@@ -47,7 +45,6 @@ const COPY: Record<Lang, {
     problemLabel: "Pwoblèm nan",
     problems: [
       "ICE detni de milye moun pa jou.",
-      "ICE gen yon kota minimòm pou li rankontre.",
       "Si ou pa sitwayen, ou nan risk.",
       "Yon fwa yo detni ou, aksè a fanmi ak avoka difisil.",
       "Ou pa ka peye milye dola pou yon avoka.",
