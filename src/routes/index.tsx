@@ -422,8 +422,8 @@ function Index() {
           <Hero />
           <TrustBar />
           <FeatureSection idx={0} mockup={<PanicScreen />} reverse={false} />
-          <FeatureSection idx={1} mockup={<DocsMock />} reverse={true} />
           <HomeownerVideo />
+          <FeatureSection idx={1} mockup={<DocsMock />} reverse={true} />
           <FeatureSection idx={2} mockup={<FamilyMock />} reverse={false} />
           <AttorneySection />
           <FAQ />
@@ -696,6 +696,18 @@ function AttorneySection() {
           <div className="eyebrow text-firm">{t.attorney.eyebrow}</div>
           <h2 className="mt-3 font-display text-4xl leading-tight text-cvink md:text-5xl">{t.attorney.quote}</h2>
           <p className="mt-6 text-lg text-muted-foreground">{t.attorney.body}</p>
+          <a
+            href="https://sorrentinolawfirm.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-6 inline-block rounded-full bg-firm px-6 py-3 text-sm font-semibold text-white transition hover:opacity-90"
+          >
+            {lang === "es"
+              ? "Visitar el sitio web de Rosario ↗"
+              : lang === "ht"
+              ? "Vizite sit entènèt Rosario ↗"
+              : "Visit Rosario's website ↗"}
+          </a>
           <p className="mt-4 text-xs text-muted-foreground">{t.attorney.notice}</p>
         </div>
       </div>
