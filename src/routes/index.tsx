@@ -203,6 +203,7 @@ const T = {
     nav: { how: "How it works", plan: "The Plan", attorney: "The Attorney", faq: "FAQ", cta: "Get started · $199" },
     hero: {
       badge: "Pre-detention defense plan · Miami, FL",
+      tagline: "The secure one-click emergency pre-deportation plan for people at risk of detention.",
       pre: "Pre-Deportation Protection",
       modern: "Modern Immigrant Protection Plans",
       h1a: "ICE is", h1b: "coming.", h1c: "Don't wait.",
