@@ -244,17 +244,22 @@ const T = {
     trust: { attorneyName: "Rosario Kyle Sorrentino, Esq.", firm: "Founder, Sorrentino Law Firm PLLC · Fla. Bar No. 1049132", bio: "Miami-based immigration attorney. Practices removal defense before the immigration courts (EOIR), ICE bond hearings, federal Habeas Corpus petitions, motions to reopen, asylum, Withholding of Removal, CAT, and victim-based petitions (VAWA, U, and T). Serves Spanish-speaking families throughout Florida." },
     features: [
       {
-        eyebrow: "The button that saves lives",
+        eyebrow: "The button that alerts your family and your attorney in seconds",
         title: "One button. Your whole family and your attorney, alerted in seconds.",
         body: "When ICE knocks on the door, there's no time to call anyone. NOTIFY FAMILY sends your location, your plan, and your Habeas Corpus to the right people — automatically.",
-        bullets: ["Alerts multiple emergency contacts", "Sends Habeas to the on-duty attorney", "Logs time and location of the detention"],
+        bullets: [
+          "Alerts multiple emergency contacts",
+          "Sends the packet to the on-call attorney: the attorney receives the notification and the prepared documents. Court representation, if needed, requires a separate engagement.",
+          "Logs time and location of the detention",
+        ],
       },
       {
-        eyebrow: "Habeas Corpus, ready before you need it",
+        eyebrow: "Habeas Corpus, prepared before you need it",
         title: "Your forms are signed, stored, and encrypted. Today.",
-        body: "We generate your Habeas Corpus, your AO 242, and your IFP with your information. The attorney reviews them. They're stored encrypted. The day you need them, they're ready to file.",
-        bullets: ["AI-generated documents", "Reviewed by Rosario Sorrentino, Esq.", "End-to-end encrypted"],
+        body: "We generate drafts of your Habeas Corpus, your AO 242, and your IFP with your information. The attorney reviews and approves them. They're stored encrypted, prepared and ready to be completed and filed the day they are needed.",
+        bullets: ["AI-generated drafts reviewed by the attorney before they are final", "Reviewed and approved by Rosario Sorrentino, Esq.", "End-to-end encrypted"],
       },
+
       {
         eyebrow: "Your family, prepared",
         title: "Power of attorney, child custody, bank accounts. One place.",
