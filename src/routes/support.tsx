@@ -20,7 +20,7 @@ export const Route = createFileRoute("/support")({
 
 const COPY = {
   en: {
-    home: "← Home / Inicio",
+    home: "← Home",
     pageTitle: "Support / Ayuda / Sipò",
     langLabel: "English",
     intro1: "Need help with the DetencionDefensa app?",
@@ -44,7 +44,7 @@ const COPY = {
     copyright: "© 2026 DetencionDefensa",
   },
   es: {
-    home: "← Home / Inicio",
+    home: "← Inicio",
     pageTitle: "Support / Ayuda / Sipò",
     langLabel: "Español",
     intro1: "¿Necesita ayuda con la aplicación DetencionDefensa?",
@@ -68,7 +68,7 @@ const COPY = {
     copyright: "© 2026 DetencionDefensa",
   },
   ht: {
-    home: "← Home / Inicio",
+    home: "← Akèy",
     pageTitle: "Support / Ayuda / Sipò",
     langLabel: "Kreyòl Ayisyen",
     intro1: "Ou bezwen èd ak aplikasyon DetencionDefensa?",
