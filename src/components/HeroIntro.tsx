@@ -9,7 +9,7 @@ const COPY = {
     price: "$199.",
     freeText: "Ahora gratis debido a la crisis comunitaria.",
     ice: "ICE ARRESTA MÁS DE 2,000",
-    tagline1: "Plan seguro de defensa legal con aplicación de emergencia",
+    tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
   },
   en: {
     plan: "Attorney-assisted legal defense plan ",
