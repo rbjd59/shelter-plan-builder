@@ -496,7 +496,6 @@ function Index() {
           <Hero />
           <HowItWorksVideo />
           <TrustBar />
-          <FeatureSection idx={0} mockup={<PanicScreen />} reverse={false} />
           <HomeownerVideo />
           <FeatureSection idx={1} mockup={<DocsMock />} reverse={true} />
           <FeatureSection idx={2} mockup={<FamilyMock />} reverse={false} />
