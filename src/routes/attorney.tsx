@@ -93,6 +93,17 @@ const PRO_BONO_COPY = {
 } satisfies Record<Lang, { heading: string; p1: string; p2: string; button: string }>;
 
 function AttorneyPage() {
+  const { lang, setLang } = useLang();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mql = window.matchMedia("(max-width: 720px)");
+    const onChange = () => setIsMobile(mql.matches);
+    onChange();
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
   return (
     <div style={{ background: PAGE, color: NAVY, minHeight: "100vh", fontFamily: "Inter, system-ui, sans-serif" }}>
       {/* NAV */}
