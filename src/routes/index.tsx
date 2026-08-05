@@ -490,6 +490,7 @@ function Index() {
         <Nav lang={lang} setLang={setLang} />
         <main>
           <Hero />
+          <PlainBox />
           <TrustBar />
           <FeatureSection idx={0} mockup={<PanicScreen />} reverse={false} />
           <HomeownerVideo />
@@ -657,21 +658,21 @@ const HOMEOWNER = {
     h: "Are you a homeowner?",
     sub: "Protect your home now. Watch the video.",
     trust: "Protect your home and assets in an attorney-created trust at",
-    disc: "This video is an advertisement. Every case is handled independently, and the outcomes are not guaranteed, subject to property equity and qualifications, trust acceptance. Savemyhometrust.com is a subsidiary of detenciondefensa.com.",
+    disc: "This video is an advertisement. Every case is handled independently, and the outcomes are not guaranteed, subject to property equity and qualifications, trust acceptance. Savemyhometrust.com is an affiliated company of detenciondefensa.com under common ownership.",
   },
   es: {
     src: "https://detenciondefensa.com/__l5e/assets-v1/16758c57-3542-457c-947e-79324aaa7923/protect-what-you-built-es.mp4",
     h: "¿Es propietario de una vivienda?",
     sub: "Proteja su casa ahora. Mire el video.",
     trust: "Proteja su casa y bienes en un fideicomiso creado por un abogado en",
-    disc: "Este video es un anuncio publicitario. Cada caso se maneja de manera independiente y los resultados no están garantizados, sujetos a la plusvalía de la propiedad, calificaciones y aceptación del fideicomiso. Savemyhometrust.com es una subsidiaria de detenciondefensa.com.",
+    disc: "Este video es un anuncio publicitario. Cada caso se maneja de manera independiente y los resultados no están garantizados, sujetos a la plusvalía de la propiedad, calificaciones y aceptación del fideicomiso. Savemyhometrust.com es una empresa afiliada de detenciondefensa.com bajo propiedad común.",
   },
   ht: {
     src: "https://detenciondefensa.com/__l5e/assets-v1/d670656c-a0b4-449b-ba24-3e9e9301e281/protect-what-you-built-ht.mp4",
     h: "Èske ou se pwopriyetè yon kay?",
     sub: "Pwoteje kay ou kounye a. Gade videyo a.",
     trust: "Pwoteje kay ou ak byen ou nan yon konfyans kreye pa yon avoka nan",
-    disc: "Videyo sa a se yon piblisite. Chak ka jere endepandamman, e rezilta yo pa garanti, sijè a ekite pwopriyete a, kalifikasyon, ak akseptasyon trust la. Savemyhometrust.com se yon sibsidyè detenciondefensa.com.",
+    disc: "Videyo sa a se yon piblisite. Chak ka jere endepandamman, e rezilta yo pa garanti, sijè a ekite pwopriyete a, kalifikasyon, ak akseptasyon trust la. Savemyhometrust.com se yon konpayi afilye ak detenciondefensa.com anba menm pwopriyetè.",
   },
 } as const;
 
@@ -853,7 +854,7 @@ function Footer() {
               <ul className="space-y-2 text-muted-foreground">
                 <li><Link to="/terms" className="hover:text-firm">{t.footer.legalLinks[0]}</Link></li>
                 <li><Link to="/privacy" className="hover:text-firm">{t.footer.legalLinks[1]}</Link></li>
-                {t.footer.legalLinks.slice(2).map((l) => <li key={l}>{l}</li>)}
+                <li><Link to="/aviso-publicidad" className="hover:text-firm">{t.footer.legalLinks[2]}</Link></li>
               </ul>
             </div>
           </div>
@@ -862,7 +863,9 @@ function Footer() {
         <div className="mt-16 space-y-4 border-t border-border pt-8 text-xs leading-relaxed text-muted-foreground">
           <p className="font-semibold uppercase tracking-widest text-foreground">{t.footer.notLawFirm}</p>
           <p className="italic">{t.footer.dba}</p>
+          <p className="font-semibold text-foreground">{t.footer.noProtection}</p>
           <p>{t.footer.disclaimer1}</p>
+          <p>{t.footer.dataUse}</p>
           <p><strong>{t.footer.dualRoleLabel}</strong>{t.footer.dualRole}</p>
           <p><strong>{t.footer.adLabel}</strong>{t.footer.ad}</p>
           <p className="pt-4">{t.footer.copyright}</p>
@@ -895,8 +898,12 @@ function CheckDot({ dark }: { dark?: boolean }) {
 
 /* -------------------- PHONE MOCKUPS -------------------- */
 function PhoneFrame({ children }: { children: ReactNode }) {
+  const { t } = useT();
   return (
     <div className="relative w-[280px] rounded-[2.75rem] border-[10px] border-cvink bg-cvink shadow-2xl md:w-[320px]">
+      <span className="absolute -top-3 left-1/2 z-20 -translate-x-1/2 rounded-full bg-urgent px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-urgent-foreground">
+        {t.mock.sim}
+      </span>
       <div className="absolute left-1/2 top-2 z-10 h-5 w-24 -translate-x-1/2 rounded-b-2xl bg-cvink" />
       <div className="relative aspect-[9/19.5] overflow-hidden rounded-[2rem] bg-background">
         {children}
@@ -974,19 +981,19 @@ function DocsMock() {
 const FAMILY_ITEMS: Record<Lang, { icon: string; label: string; done: boolean }[]> = {
   es: [
     { icon: "👨‍👩‍👧", label: "Custodia de Alex (7) y María (4)", done: true },
-    { icon: "🏦", label: "Poder para cuenta Wells Fargo", done: true },
+    { icon: "🏦", label: "Poder para cuenta bancaria", done: true },
     { icon: "🏠", label: "Autorización de arrendamiento", done: false },
     { icon: "📞", label: "Lista de contactos de emergencia", done: true },
   ],
   en: [
     { icon: "👨‍👩‍👧", label: "Custody of Alex (7) and María (4)", done: true },
-    { icon: "🏦", label: "Power over Wells Fargo account", done: true },
+    { icon: "🏦", label: "Power over bank account", done: true },
     { icon: "🏠", label: "Lease authorization", done: false },
     { icon: "📞", label: "Emergency contacts list", done: true },
   ],
   ht: [
     { icon: "👨‍👩‍👧", label: "Gad Alex (7) ak María (4)", done: true },
-    { icon: "🏦", label: "Pouvwa sou kont Wells Fargo", done: true },
+    { icon: "🏦", label: "Pouvwa sou kont labank", done: true },
     { icon: "🏠", label: "Otorizasyon lwaye", done: false },
     { icon: "📞", label: "Lis kontak ijans", done: true },
   ],
