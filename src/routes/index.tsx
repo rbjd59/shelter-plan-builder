@@ -94,6 +94,7 @@ const T = {
     nav: { how: "Cómo funciona", plan: "El Plan", attorney: "El Abogado", faq: "Preguntas", cta: "Empezar · $199" },
     hero: {
       badge: "Plan de defensa pre-detención · Miami, FL",
+      tagline: "El plan seguro de emergencia anti-deportación con un solo clic para personas en riesgo de detención.",
       pre: "Protección Antideportación",
       modern: "Planes Modernos de Protección para Inmigrantes",
       h1a: "La migra", h1b: "ya viene.", h1c: "No espere.",
@@ -310,6 +311,7 @@ const T = {
     nav: { how: "Kijan sa fonksyone", plan: "Plan an", attorney: "Avoka a", faq: "Kesyon", cta: "Kòmanse · $199" },
     hero: {
       badge: "Plan defans anvan detansyon · Miami, FL",
+      tagline: "Plan ijans sekirite pre-deportasyon ak yon sèl klik pou moun ki an ris pou detansyon.",
       pre: "Pwoteksyon Anvan Deportasyon",
       modern: "Plan Pwoteksyon Imigran Modèn",
       h1a: "ICE ap", h1b: "vini.", h1c: "Pa tann.",
