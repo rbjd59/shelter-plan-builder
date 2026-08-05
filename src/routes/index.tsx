@@ -664,12 +664,12 @@ function HomeownerVideo() {
             href="https://savemyhometrust.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-2 inline-block rounded-md bg-firm-foreground px-4 py-2 font-bold text-cvink"
+            className="mt-2 inline-block rounded-md bg-cvink px-4 py-2 font-bold text-primary-foreground"
           >
             savemyhometrust.com
           </a>
         </p>
-        <p className="mx-auto mt-3 max-w-2xl text-center text-xs italic text-primary-foreground/75">{v.disc}</p>
+        <p className="mx-auto mt-3 max-w-2xl text-center text-xs italic text-sand-foreground/80">{v.disc}</p>
       </div>
     </section>
   );
