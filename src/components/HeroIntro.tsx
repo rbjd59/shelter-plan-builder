@@ -25,7 +25,7 @@ const COPY = {
   ht: {
     plan: "Plan pwoteksyon pou arestasyon ICE ki konsevwa ak revize pa avoka ",
     price: "$199.",
-    freeText: "Kounye a gratis akòz kriz kominotè a.",
+    freeText: "Kounye a gratis akòz kriz kominotè a nan patenarya ak òganizasyon 501c3 ki ede refijye depi 1991.",
     ice: "PLIS PASE 2,000 MOUN CHAK JOU",
     tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
     disclaimer:
