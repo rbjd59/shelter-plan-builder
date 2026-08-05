@@ -372,17 +372,22 @@ const T = {
     trust: { attorneyName: "Rosario Kyle Sorrentino, Esq.", firm: "Fondatè, Sorrentino Law Firm PLLC · Fla. Bar No. 1049132", bio: "Avoka imigrasyon ki baze Miami. Li pratike defans kont depòtasyon devan tribinal imigrasyon (EOIR), odyans kosyon ICE, petisyon Habeas Corpus nan tribinal federal, mosyon pou re-ouvri, azil, Withholding of Removal, CAT, ak petisyon pou viktim (VAWA, U, ak T). Li sèvi fanmi ki pale Panyòl atravè tout Florida." },
     features: [
       {
-        eyebrow: "Bouton ki sove lavi",
+        eyebrow: "Bouton ki alète fanmi w ak avoka w nan segonn",
         title: "Yon bouton. Tout fanmi w ak avoka w, alète nan segonn.",
         body: "Lè ICE frape pòt la, pa gen tan pou rele pèsonn. NOTIFY FAMILY voye pozisyon w, plan w, ak Habeas Corpus w bay bon moun yo — otomatikman.",
-        bullets: ["Alète plizyè kontak dijans", "Voye Habeas bay avoka an sèvis", "Anrejistre lè ak kote detansyon an"],
+        bullets: [
+          "Alète plizyè kontak dijans",
+          "Voye pake a bay avoka an sèvis la: avoka a resevwa notifikasyon an ak dokiman prepare yo. Reprezantasyon nan tribinal, si w bezwen l, mande yon akò separe.",
+          "Anrejistre lè ak kote detansyon an",
+        ],
       },
       {
-        eyebrow: "Habeas Corpus, pare anvan w bezwen l",
+        eyebrow: "Habeas Corpus, prepare anvan w bezwen l",
         title: "Fòm ou yo siyen, sere, epi chiffré. Jodi a.",
-        body: "Nou jenere Habeas Corpus w, AO 242 w, ak IFP w ak enfòmasyon w. Avoka a revize yo. Yo sere chiffré. Jou w bezwen yo, yo pare pou depoze.",
-        bullets: ["Dokiman jenere pa IA", "Revize pa Rosario Sorrentino, Esq.", "Chiffré bout an bout"],
+        body: "Nou jenere bouyon Habeas Corpus w, AO 242 w, ak IFP w ak enfòmasyon w. Avoka a revize epi apwouve yo. Yo sere chiffré, prepare epi pare pou konplete ak depoze jou yo bezwen yo.",
+        bullets: ["Bouyon jenere pa IA epi revize pa avoka a anvan yo final", "Revize epi apwouve pa Rosario Sorrentino, Esq.", "Chiffré bout an bout"],
       },
+
       {
         eyebrow: "Fanmi w, prepare",
         title: "Pouvwa notarye, gad timoun, kont labank. Yon sèl kote.",
