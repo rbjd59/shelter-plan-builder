@@ -276,12 +276,16 @@ export default function HeroIntro() {
             <p
               style={{
                 fontFamily: '"Roboto Slab", Georgia, serif',
-                fontSize: isMobile ? "0.95rem" : "1.05rem",
-                lineHeight: 1.2,
-                fontWeight: 800,
+                fontSize: isMobile ? "1.1rem" : "clamp(1.4rem, 2.8vw, 2rem)",
+                lineHeight: 1.25,
+                fontWeight: 900,
                 color: "#ef4444",
                 margin: 0,
+                padding: isMobile ? "0.4rem 0.8rem" : "0.5rem 1rem",
+                background: "rgba(239, 68, 68, 0.12)",
+                borderRadius: 8,
                 textShadow: "0 2px 8px rgba(0,0,0,0.6)",
+                display: "inline-block",
               }}
             >
               {COPY[lang].freeText}
