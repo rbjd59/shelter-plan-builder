@@ -202,7 +202,7 @@ export default function HeroIntro() {
                     WebkitTapHighlightColor: "transparent",
                   }}
                 >
-                  {code === "es" ? "Español" : code === "en" ? "English" : "Kreyòl"}
+                  {code === "es" ? "ES" : code === "en" ? "EN" : "HT"}
                 </button>
               ))}
             </div>

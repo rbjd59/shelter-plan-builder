@@ -62,9 +62,9 @@ export default function SiteShell() {
       float = document.createElement("div");
       float.id = "pp-lang-float";
       float.innerHTML = `
-        <button data-lang="es">Español</button>
-        <button data-lang="en">English</button>
-        <button data-lang="ht">Kreyòl</button>
+        <button data-lang="es">ES</button>
+        <button data-lang="en">EN</button>
+        <button data-lang="ht">HT</button>
       `;
       float.addEventListener("click", (e) => {
         const b = (e.target as HTMLElement).closest<HTMLButtonElement>("button[data-lang]");

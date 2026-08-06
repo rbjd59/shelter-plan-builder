@@ -498,11 +498,19 @@ function detectBrowserLang(): Lang | null {
 }
 
 function Index() {
-  const [lang, setLang] = useState<Lang>("es");
+  const [lang, setLangState] = useState<Lang>("es");
   useEffect(() => {
-    const detected = detectBrowserLang();
-    if (detected) setLang(detected);
+    const url = new URLSearchParams(window.location.search).get("lang");
+    const stored = window.localStorage.getItem("dd_lang");
+    const pick = (url === "es" || url === "en" || url === "ht") ? url
+      : (stored === "es" || stored === "en" || stored === "ht") ? stored
+      : detectBrowserLang();
+    if (pick) setLangState(pick as Lang);
   }, []);
+  const setLang = (l: Lang) => {
+    try { window.localStorage.setItem("dd_lang", l); } catch {}
+    setLangState(l);
+  };
   const t: TDict = T[lang];
 
   return (
@@ -697,7 +705,7 @@ function Hero() {
           <h1 className="hero-headline flex flex-col gap-1 leading-[1.05]">
             <span className="text-[1.75rem] uppercase text-urgent sm:text-[2.5rem] md:text-[3.5rem]">{h1aFirst}</span>
             <span className="text-[1.75rem] uppercase text-urgent sm:text-[2.5rem] md:text-[3.5rem]">{h1aSecond}</span>
-            <span className="text-[0.95rem] font-semibold leading-relaxed italic text-firm md:text-lg">{t.hero.h1b}</span>
+            <span className="text-[1.9rem] font-semibold leading-tight text-foreground sm:text-[2.2rem] md:text-[2.6rem]">{t.hero.h1b}</span>
           </h1>
 
           <div className="mt-5 max-w-lg space-y-3">

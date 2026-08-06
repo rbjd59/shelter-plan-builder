@@ -8,13 +8,27 @@ const Ctx = createContext<{ lang: Lang; setLang: (l: Lang) => void }>({
   setLang: () => {},
 });
 
+function detectBrowserLang(): Lang | null {
+  if (typeof navigator === "undefined") return null;
+  const list = (navigator.languages && navigator.languages.length
+    ? navigator.languages
+    : [navigator.language]) as string[];
+  for (const raw of list) {
+    const code = (raw || "").toLowerCase();
+    if (code.startsWith("es")) return "es";
+    if (code.startsWith("ht")) return "ht";
+    if (code.startsWith("en")) return "en";
+  }
+  return null;
+}
+
 function readInitial(): Lang {
   if (typeof window === "undefined") return "es";
   const url = new URLSearchParams(window.location.search).get("lang");
   if (url === "es" || url === "en" || url === "ht") return url;
   const ls = window.localStorage.getItem(LS_KEY);
   if (ls === "es" || ls === "en" || ls === "ht") return ls;
-  return "es";
+  return detectBrowserLang() ?? "es";
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
