@@ -703,33 +703,35 @@ function Hero() {
   const h1aSecond = h1aParts.slice(1).join(',').trim();
   return (
     <section className="relative overflow-hidden">
-      <div className="mx-auto grid max-w-6xl gap-10 px-5 pb-16 pt-4 sm:px-6 md:grid-cols-[1.15fr_1fr] md:gap-16 md:pt-6 md:pb-32">
-        <div className="flex min-w-0 flex-col justify-center">
-          <h1 className="hero-headline flex flex-col gap-1 leading-[1.05]">
-            <span className="text-[1.75rem] uppercase text-urgent sm:text-[2.5rem] md:text-[3.5rem]">{h1aFirst}</span>
-            <span className="text-[1.75rem] uppercase text-urgent sm:text-[2.5rem] md:text-[3.5rem]">{h1aSecond}</span>
-            <span className="text-[1.05rem] leading-tight text-foreground sm:text-[1.25rem] md:text-[1.5rem]">
-              {t.hero.h1b}{" "}
-              <span className="inline-flex items-center gap-0.5 align-middle font-normal text-foreground">
-                <span className="line-through decoration-urgent decoration-2">$199</span>
-                <span className="text-urgent" aria-hidden="true">✕</span>
-              </span>
-            </span>
+      <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 pb-16 pt-10 sm:px-6 md:grid-cols-[1.05fr_1fr] md:gap-14 md:pb-16 md:pt-14">
+        <div className="flex min-w-0 flex-col">
+          <h1 className="hero-headline flex flex-col gap-1 leading-[1.03] tracking-tight">
+            <span className="text-[2rem] uppercase text-urgent sm:text-[2.75rem] md:text-[3.25rem]">{h1aFirst}</span>
+            <span className="text-[2rem] uppercase text-urgent sm:text-[2.75rem] md:text-[3.25rem]">{h1aSecond}</span>
           </h1>
 
-          <p className="mt-10 max-w-lg text-[0.7rem] leading-snug text-muted-foreground sm:text-xs md:text-sm">
+          <p className="mt-6 max-w-xl font-display text-[1.15rem] leading-snug text-foreground sm:text-[1.35rem] md:text-[1.5rem]">
+            {t.hero.h1b}{" "}
+            <span className="inline-flex items-center gap-1 align-middle text-[0.8em] font-normal">
+              <span className="line-through decoration-urgent decoration-2">$199</span>
+              <span className="text-urgent" aria-hidden="true">✕</span>
+            </span>
+          </p>
+
+          <div className="mt-6 h-px w-16 bg-border" />
+
+          <p className="mt-6 max-w-lg text-sm leading-relaxed text-muted-foreground">
             {t.hero.sub}
           </p>
 
-          <p className="mt-auto pt-10 text-[0.6rem] font-normal leading-snug text-urgent sm:text-[0.7rem] md:text-[0.8rem]">
+          <p className="mt-8 max-w-lg rounded-xl border border-urgent/25 bg-urgent/5 px-4 py-3 text-[0.72rem] leading-relaxed text-urgent sm:text-[0.8rem]">
             {t.hero.nowFree}
           </p>
-
         </div>
 
         <div className="relative flex items-center justify-center">
           <div className="absolute -inset-8 hidden rounded-[3rem] bg-gradient-to-br from-firm/10 via-transparent to-primary/5 blur-2xl md:block" />
-          <div className="origin-top scale-[0.82] sm:scale-90 md:scale-100">
+          <div className="origin-center scale-[0.82] sm:scale-90 md:scale-100">
             <PhoneFrame>
               <PanicScreen />
             </PhoneFrame>
