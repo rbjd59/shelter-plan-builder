@@ -714,20 +714,12 @@ function Hero() {
             </span>
           </h1>
 
-          <div className="mt-24">
-            <p className="text-xs font-semibold leading-snug text-urgent sm:text-sm md:text-base">
-              {t.hero.nowFree}
-            </p>
-          </div>
-
-          <div className="mt-6">
-            <a href={ctaHref(lang)} className="inline-block rounded-full bg-primary px-6 py-3.5 text-base font-semibold text-primary-foreground transition hover:bg-primary/90">
-              {t.hero.cta}
-            </a>
-          </div>
-
-          <p className="mt-8 max-w-lg text-[0.7rem] leading-snug text-muted-foreground sm:text-xs md:text-sm">
+          <p className="mt-10 max-w-lg text-[0.7rem] leading-snug text-muted-foreground sm:text-xs md:text-sm">
             {t.hero.sub}
+          </p>
+
+          <p className="mt-auto pt-10 text-[0.6rem] font-normal leading-snug text-urgent sm:text-[0.7rem] md:text-[0.8rem]">
+            {t.hero.nowFree}
           </p>
 
         </div>
