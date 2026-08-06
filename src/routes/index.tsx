@@ -498,11 +498,19 @@ function detectBrowserLang(): Lang | null {
 }
 
 function Index() {
-  const [lang, setLang] = useState<Lang>("es");
+  const [lang, setLangState] = useState<Lang>("es");
   useEffect(() => {
-    const detected = detectBrowserLang();
-    if (detected) setLang(detected);
+    const url = new URLSearchParams(window.location.search).get("lang");
+    const stored = window.localStorage.getItem("dd_lang");
+    const pick = (url === "es" || url === "en" || url === "ht") ? url
+      : (stored === "es" || stored === "en" || stored === "ht") ? stored
+      : detectBrowserLang();
+    if (pick) setLangState(pick as Lang);
   }, []);
+  const setLang = (l: Lang) => {
+    try { window.localStorage.setItem("dd_lang", l); } catch {}
+    setLangState(l);
+  };
   const t: TDict = T[lang];
 
   return (
