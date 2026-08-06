@@ -99,8 +99,8 @@ const T = {
     nav: { how: "Cómo funciona", plan: "El Plan", attorney: "El Abogado", faq: "Preguntas", cta: "Empezar gratis →" },
     hero: {
       badge: "Plan de preparación pre-detención · Miami, FL",
-      tagline: "The secure one-click emergency readiness plan for people at risk of detention.",
-      h1a: "If ICE comes, do not run, do not hide.", h1b: "The secure one-click emergency readiness plan for people at risk of detention.", h1c: "",
+      tagline: "El plan seguro de preparación de emergencia con un solo clic para personas en riesgo de detención.",
+      h1a: "Si viene ICE, no corra, no se esconda.", h1b: "El plan seguro de preparación de emergencia con un solo clic para personas en riesgo de detención.", h1c: "",
       sub: "Plan diseñado para impugnar la detención tras el arresto. No está diseñado para criminales, miembros de pandillas u otras personas consideradas indeseables por el gobierno de EE. UU.",
       cta: "Empezar gratis →",
       seeHow: "Ver cómo funciona",
