@@ -1102,7 +1102,7 @@ function PanicScreen() {
         </div>
         <div className="mt-8 text-[10px] text-muted-foreground">{t.mock.panicFoot}</div>
       </div>
-      <div className="mt-4 rounded-2xl bg-cvink p-3 text-[10px] text-primary-foreground">{t.mock.onDuty}</div>
+      <div className="mt-4 rounded-2xl bg-cvink p-3 text-center text-[10px] text-primary-foreground">{t.mock.onDuty}</div>
     </div>
   );
 }
