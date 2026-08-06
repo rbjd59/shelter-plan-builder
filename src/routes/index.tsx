@@ -1093,7 +1093,7 @@ function PanicScreen() {
         </div>
       </div>
       <div className="mt-6 flex-1 flex flex-col items-center justify-center text-center">
-        <div className="font-display text-2xl text-urgent">{t.mock.panicEyebrow}</div>
+        <div className="font-display text-4xl font-bold uppercase text-urgent">{t.mock.panicEyebrow}</div>
         <div className="relative mt-8">
           <span className="absolute inset-0 animate-ping rounded-full bg-urgent/40" />
           <button className="relative flex h-36 w-36 items-center justify-center rounded-full bg-urgent text-urgent-foreground shadow-lg">
