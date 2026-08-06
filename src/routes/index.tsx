@@ -687,13 +687,17 @@ function Nav({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
 /* -------------------- HERO -------------------- */
 function Hero() {
   const { t, lang } = useT();
+  const h1aParts = t.hero.h1a.split(',');
+  const h1aFirst = h1aParts[0] + ',';
+  const h1aSecond = h1aParts.slice(1).join(',').trim();
   return (
     <section className="relative overflow-hidden">
       <div className="mx-auto grid max-w-6xl gap-10 px-5 pb-16 pt-4 sm:px-6 md:grid-cols-[1.15fr_1fr] md:gap-16 md:pt-6 md:pb-32">
         <div className="flex min-w-0 flex-col justify-center">
-          <h1 className="hero-headline text-[1.25rem] leading-[1.05] text-cvink sm:text-[1.75rem] md:text-[3rem]">
-            <span className="uppercase text-urgent">{t.hero.h1a}</span> <br />
-            <span className="text-sm italic text-firm sm:text-base md:text-lg">{t.hero.h1b}</span>
+          <h1 className="hero-headline flex flex-col gap-1 leading-[1.05]">
+            <span className="text-[1.75rem] uppercase text-urgent sm:text-[2.5rem] md:text-[3.5rem]">{h1aFirst}</span>
+            <span className="text-[1.75rem] uppercase text-urgent sm:text-[2.5rem] md:text-[3.5rem]">{h1aSecond}</span>
+            <span className="text-[0.95rem] font-semibold leading-relaxed italic text-firm md:text-lg">{t.hero.h1b}</span>
           </h1>
 
           <div className="mt-5 max-w-lg space-y-3">
