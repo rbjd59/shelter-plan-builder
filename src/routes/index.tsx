@@ -694,7 +694,7 @@ function Nav({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
 
 /* -------------------- HERO -------------------- */
 function Hero() {
-  const { t, lang } = useT();
+  const { t } = useT();
   const h1aParts = t.hero.h1a.split(',');
   const h1aFirst = h1aParts[0] + ',';
   const h1aSecond = h1aParts.slice(1).join(',').trim();
