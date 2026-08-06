@@ -716,13 +716,10 @@ function Hero() {
           </div>
 
           <div className="mt-6 flex flex-col items-start gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">
-            <div className="relative inline-block">
-              <a href={ctaHref(lang)} className="inline-block rounded-full bg-primary px-6 py-3.5 text-base font-semibold text-primary-foreground transition hover:bg-primary/90">
-                {t.hero.cta}
-              </a>
-              <RedX />
-            </div>
-            <p className="max-w-sm text-sm font-semibold leading-snug text-urgent">
+            <a href={ctaHref(lang)} className="inline-block rounded-full bg-primary px-6 py-3.5 text-base font-semibold text-primary-foreground transition hover:bg-primary/90">
+              {t.hero.cta}
+            </a>
+            <p className="max-w-md text-base font-semibold leading-snug text-urgent sm:text-lg md:text-xl">
               {t.hero.nowFree}
             </p>
           </div>
