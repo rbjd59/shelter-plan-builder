@@ -356,7 +356,7 @@ const T = {
     hero: {
       badge: "Plan preparasyon anvan detansyon · Miami, FL",
       tagline: "Plan preparasyon ijans sekirize ak yon sèl klik pou moun ki an ris pou detansyon.",
-      h1a: "Si ICE vini, pa kouri, pa kache.", h1b: "Preparé ak yon plan defans kont detansyon.", h1c: "",
+      h1a: "Si ICE vini, pa kouri, pa kache.", h1b: "Plan preparasyon ijans sekirize ak yon sèl klik pou moun ki an ris pou detansyon.", h1c: "",
       sub: "Plan konsevwa pou defi detansyon apre arestasyon. Pa fèt pou kriminèl, manm gang, oubyen lòt moun ki konsidere kòm endezirab pa gouvènman Etazini.",
       cta: "Kòmanse gratis →",
       seeHow: "Wè kijan li fonksyone",
