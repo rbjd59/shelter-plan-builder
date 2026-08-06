@@ -342,6 +342,8 @@ const T = {
       legalHead: "Legal", legalLinks: ["Terms", "Privacy", "Advertising notice"],
       dba: "DetencionDefensa is operated by DetencionDefensa.com, Inc., a Delaware corporation.",
       notLawFirm: "DetencionDefensa.com, Inc. is NOT a law firm.",
+      secureInfo: "Information is 100% secure, protected by encryption.",
+      lawFirmDisclaimer: "Disclaimer for the law firm: Sorrentino Law Firm PLLC is a separate Florida law firm. Document review under a limited-scope agreement does not create an attorney-client relationship for court representation.",
       noAdvice: "Disclaimer: We are not a law firm and we do not provide legal advice. Information on this site is for general information only and does not create an attorney-client relationship.",
       disclaimer1: "DetencionDefensa.com, Inc. is a Delaware corporation. It is NOT a law firm and does NOT provide legal services. Legal services are provided by Sorrentino Law Firm PLLC, a separate Florida law firm, wholly owned by Rosario Sorrentino, Esq.",
       noProtection: "This plan does NOT give you immigration status, does NOT stop a deportation, and does NOT guarantee your release.",
