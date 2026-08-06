@@ -672,30 +672,30 @@ function Hero() {
   const { t, lang } = useT();
   return (
     <section className="relative overflow-hidden">
-      <div className="mx-auto grid max-w-6xl gap-16 px-6 pb-24 pt-4 md:grid-cols-[1.15fr_1fr] md:pt-6 md:pb-32">
-        <div className="flex flex-col justify-center">
-          <h1 className="hero-headline text-[3.5rem] text-cvink sm:text-[5rem] md:text-[6.5rem]">
+      <div className="mx-auto grid max-w-6xl gap-10 px-5 pb-16 pt-4 sm:px-6 md:grid-cols-[1.15fr_1fr] md:gap-16 md:pt-6 md:pb-32">
+        <div className="flex min-w-0 flex-col justify-center">
+          <h1 className="hero-headline text-[2.25rem] leading-[1.02] text-cvink sm:text-[3.5rem] md:text-[6rem]">
             {t.hero.h1a} <br />
             <span className="italic text-firm">{t.hero.h1b}</span>
             <br />
             {t.hero.h1c}
           </h1>
 
-          <div className="mt-6 max-w-lg space-y-3">
-            <p className="text-base font-semibold leading-relaxed text-cvink md:text-lg">
+          <div className="mt-5 max-w-lg space-y-3">
+            <p className="text-[0.95rem] font-semibold leading-relaxed text-cvink md:text-lg">
               {t.hero.tagline}
             </p>
-            <p className="text-base leading-relaxed text-muted-foreground">{t.hero.sub}</p>
+            <p className="text-sm leading-relaxed text-muted-foreground md:text-base">{t.hero.sub}</p>
           </div>
 
-          <div className="mt-6 flex flex-wrap items-center gap-5">
+          <div className="mt-6 flex flex-col items-start gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">
             <div className="relative inline-block">
-              <a href={ctaHref(lang)} className="inline-block rounded-full bg-primary px-7 py-4 text-base font-semibold text-primary-foreground transition hover:bg-primary/90">
+              <a href={ctaHref(lang)} className="inline-block rounded-full bg-primary px-6 py-3.5 text-base font-semibold text-primary-foreground transition hover:bg-primary/90">
                 {t.hero.cta}
               </a>
               <RedX />
             </div>
-            <p className="max-w-xs text-sm font-semibold leading-snug text-urgent">
+            <p className="max-w-sm text-sm font-semibold leading-snug text-urgent">
               {t.hero.nowFree}
             </p>
           </div>
@@ -703,13 +703,16 @@ function Hero() {
         </div>
 
         <div className="relative flex items-center justify-center">
-          <div className="absolute -inset-8 rounded-[3rem] bg-gradient-to-br from-firm/10 via-transparent to-primary/5 blur-2xl" />
-          <PhoneFrame>
-            <PanicScreen />
-          </PhoneFrame>
+          <div className="absolute -inset-8 hidden rounded-[3rem] bg-gradient-to-br from-firm/10 via-transparent to-primary/5 blur-2xl md:block" />
+          <div className="origin-top scale-[0.82] sm:scale-90 md:scale-100">
+            <PhoneFrame>
+              <PanicScreen />
+            </PhoneFrame>
+          </div>
         </div>
       </div>
     </section>
+
   );
 }
 
