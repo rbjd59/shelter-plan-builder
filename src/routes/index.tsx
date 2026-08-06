@@ -228,7 +228,7 @@ const T = {
     hero: {
       badge: "Pre-detention readiness plan · Miami, FL",
       tagline: "The secure one-click emergency readiness plan for people at risk of detention.",
-      h1a: "If ICE comes, do not run, do not hide.", h1b: "Be prepared with a detention defense plan.", h1c: "",
+      h1a: "If ICE comes, do not run, do not hide.", h1b: "The secure one-click emergency readiness plan for people at risk of detention.", h1c: "",
       sub: "Plan designed to challenge detention upon arrest. Not designed for criminals, gang members, or other persons deemed undesirable by the US government.",
       cta: "Start free →",
       seeHow: "See how it works",
