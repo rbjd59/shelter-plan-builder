@@ -529,7 +529,6 @@ function Index() {
         <main>
           <Hero />
           <HowItWorksVideo />
-          <TrustBar />
           <HomeownerVideo />
           <FeatureSection idx={1} mockup={<DocsMock />} reverse={true} />
           <FeatureSection idx={2} mockup={<FamilyMock />} reverse={false} />
@@ -742,26 +741,6 @@ function Hero() {
               <PanicScreen />
             </PhoneFrame>
           </div>
-        </div>
-      </div>
-    </section>
-
-  );
-}
-
-/* -------------------- TRUST BAR -------------------- */
-function TrustBar() {
-  const { t, lang } = useT();
-  return (
-    <section className="border-y border-border bg-cream">
-      <div className="mx-auto flex max-w-6xl items-start gap-4 px-6 py-5 text-sm">
-        <div className="h-11 w-11 shrink-0 overflow-hidden rounded-full ring-1 ring-firm/40">
-          <img src={rosarioPhoto.url} alt={t.trust.attorneyName} width={44} height={44} fetchPriority="high" decoding="async" className="h-full w-full object-cover object-[center_45%] scale-[1.6] origin-center" />
-        </div>
-        <div className="min-w-0">
-          <div className="font-semibold text-foreground leading-tight">{t.trust.attorneyName}</div>
-          <div className="text-xs text-muted-foreground leading-tight">{t.trust.firm}</div>
-          <p className="mt-1 text-xs leading-snug text-muted-foreground">{t.trust.bio}</p>
         </div>
       </div>
     </section>
