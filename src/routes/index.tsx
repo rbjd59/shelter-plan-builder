@@ -1007,15 +1007,36 @@ function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 space-y-4 border-t border-border pt-8 text-xs leading-relaxed text-muted-foreground">
-          <p className="font-semibold uppercase tracking-widest text-foreground">{t.footer.notLawFirm}</p>
-          <p className="italic">{t.footer.dba}</p>
-          <p className="font-semibold text-foreground">{t.footer.noProtection}</p>
-          <p>{t.footer.disclaimer1}</p>
-          <p>{t.footer.dataUse}</p>
-          <p><strong>{t.footer.dualRoleLabel}</strong>{t.footer.dualRole}</p>
-          <p><strong>{t.footer.adLabel}</strong>{t.footer.ad}</p>
-          <p className="pt-4">{t.footer.copyright}</p>
+        <div className="mt-16 space-y-6 border-t border-border pt-8">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="inline-flex items-center gap-2 rounded-full border border-alert/30 bg-alert/5 px-3 py-1.5">
+              <span className="inline-block h-2 w-2 rounded-full bg-alert" />
+              <span className="text-xs font-semibold uppercase tracking-wider text-foreground">{t.footer.notLawFirm}</span>
+            </div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-paper/50 px-3 py-1.5">
+              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-firm" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+              <span className="text-xs font-medium text-foreground">{t.footer.secureInfo}</span>
+            </div>
+          </div>
+
+          <div className="grid gap-4 text-xs leading-relaxed text-muted-foreground md:grid-cols-2">
+            <p>{t.footer.lawFirmDisclaimer}</p>
+            <p>{t.footer.noAdvice}</p>
+          </div>
+
+          <div className="space-y-3 border-t border-border/60 pt-6 text-xs leading-relaxed text-muted-foreground">
+            <p className="italic">{t.footer.dba}</p>
+            <p className="font-semibold text-foreground">{t.footer.noProtection}</p>
+            <p>{t.footer.disclaimer1}</p>
+            <p>{t.footer.dataUse}</p>
+            <p><strong>{t.footer.dualRoleLabel}</strong>{t.footer.dualRole}</p>
+            <p><strong>{t.footer.adLabel}</strong>{t.footer.ad}</p>
+          </div>
+
+          <p className="pt-2 text-xs text-muted-foreground">{t.footer.copyright}</p>
         </div>
       </div>
       <div className="border-t border-border/60 bg-cream">
