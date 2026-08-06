@@ -223,7 +223,7 @@ const T = {
       ad: " La contratación de un abogado es una decisión importante que no debe basarse únicamente en anuncios. Sorrentino Law Firm PLLC · Miami, FL.",
       copyright: "© 2026 DetencionDefensa.com, Inc. Todos los derechos reservados.",
     },
-    mock: { sim: "Simulación", panicEyebrow: "Emergencia", panicTitle: "Notificar familia", panicBtn: "PULSE\nAQUÍ", panicFoot: "Envía ubicación + Habeas a múltiples contactos de emergencia", onDuty: "✓ Abogado de guardia · Sorrentino Law Firm", docsEyebrow: "Su expediente", docsTitle: "Documentos", encrypted: "🔒 cifrado", reviewed: "Revisado", ready: "Listo", lastReview: "Última revisión por", today: "hoy 14:22", familyEyebrow: "Su familia", familyTitle: "Todo listo si usted no está.", familyDone: "3 de 4 documentos firmados y notarizados", familyKit: "Family Kit" },
+    mock: { sim: "Simulación", panicEyebrow: "Emergencia", panicTitle: "Notificar familia", panicBtn: "PULSE\nAQUÍ", panicFoot: "Activa su plan de emergencia: notifica a la familia, a su abogado y a detenciondefensa.com", onDuty: "Planes revisados por Sorrentino Law Firm", docsEyebrow: "Su expediente", docsTitle: "Documentos", encrypted: "🔒 cifrado", reviewed: "Revisado", ready: "Listo", lastReview: "Última revisión por", today: "hoy 14:22", familyEyebrow: "Su familia", familyTitle: "Todo listo si usted no está.", familyDone: "3 de 4 documentos firmados y notarizados", familyKit: "Family Kit" },
 
   },
   en: {
@@ -354,7 +354,7 @@ const T = {
       ad: " The hiring of a lawyer is an important decision that should not be based solely upon advertisements. Sorrentino Law Firm PLLC · Miami, FL.",
       copyright: "© 2026 DetencionDefensa.com, Inc. All rights reserved.",
     },
-    mock: { sim: "Simulation", panicEyebrow: "Emergency", panicTitle: "Notify family", panicBtn: "PRESS\nHERE", panicFoot: "Sends location + Habeas to multiple emergency contacts", onDuty: "✓ On-call attorney · Sorrentino Law Firm", docsEyebrow: "Your file", docsTitle: "Documents", encrypted: "🔒 encrypted", reviewed: "Reviewed", ready: "Ready", lastReview: "Last reviewed by", today: "today 2:22 PM", familyEyebrow: "Your family", familyTitle: "All set if you're not here.", familyDone: "3 of 4 documents signed and notarized", familyKit: "Family Kit" },
+    mock: { sim: "Simulation", panicEyebrow: "Emergency", panicTitle: "Notify family", panicBtn: "PRESS\nHERE", panicFoot: "Activates your emergency plan, notifies family, your attorney, and detenciondefensa.com", onDuty: "Plans reviewed by Sorrentino Law Firm", docsEyebrow: "Your file", docsTitle: "Documents", encrypted: "🔒 encrypted", reviewed: "Reviewed", ready: "Ready", lastReview: "Last reviewed by", today: "today 2:22 PM", familyEyebrow: "Your family", familyTitle: "All set if you're not here.", familyDone: "3 of 4 documents signed and notarized", familyKit: "Family Kit" },
 
   },
   ht: {
@@ -485,7 +485,7 @@ const T = {
       ad: " Anboche yon avoka se yon desizyon enpòtan ki pa ta dwe baze sèlman sou reklam. Sorrentino Law Firm PLLC · Miami, FL.",
       copyright: "© 2026 DetencionDefensa.com, Inc. Tout dwa rezève.",
     },
-    mock: { sim: "Similasyon", panicEyebrow: "Ijans", panicTitle: "Avèti fanmi", panicBtn: "PRESE\nLA A", panicFoot: "Voye pozisyon + Habeas bay plizyè kontak dijans", onDuty: "✓ Avoka an sèvis · Sorrentino Law Firm", docsEyebrow: "Dosye w", docsTitle: "Dokiman", encrypted: "🔒 chiffré", reviewed: "Revize", ready: "Pare", lastReview: "Dènye revizyon pa", today: "jodi 14:22", familyEyebrow: "Fanmi w", familyTitle: "Tout pare si ou pa la.", familyDone: "3 sou 4 dokiman siyen epi notarye", familyKit: "Family Kit" },
+    mock: { sim: "Similasyon", panicEyebrow: "Ijans", panicTitle: "Avèti fanmi", panicBtn: "PRESE\nLA A", panicFoot: "Aktive plan ijans ou: avèti fanmi, avoka w, ak detenciondefensa.com", onDuty: "Plan revize pa Sorrentino Law Firm", docsEyebrow: "Dosye w", docsTitle: "Dokiman", encrypted: "🔒 chiffré", reviewed: "Revize", ready: "Pare", lastReview: "Dènye revizyon pa", today: "jodi 14:22", familyEyebrow: "Fanmi w", familyTitle: "Tout pare si ou pa la.", familyDone: "3 sou 4 dokiman siyen epi notarye", familyKit: "Family Kit" },
 
   },
 };
