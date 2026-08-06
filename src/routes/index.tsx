@@ -705,14 +705,8 @@ function Hero() {
           <h1 className="hero-headline flex flex-col gap-1 leading-[1.05]">
             <span className="text-[1.75rem] uppercase text-urgent sm:text-[2.5rem] md:text-[3.5rem]">{h1aFirst}</span>
             <span className="text-[1.75rem] uppercase text-urgent sm:text-[2.5rem] md:text-[3.5rem]">{h1aSecond}</span>
-            <span className="text-[1.9rem] font-semibold leading-tight text-foreground sm:text-[2.2rem] md:text-[2.6rem]">{t.hero.h1b}</span>
+            <span className="text-[2.1rem] font-semibold leading-tight text-foreground sm:text-[2.5rem] md:text-[3rem]">{t.hero.h1b}</span>
           </h1>
-
-          <div className="mt-5 max-w-lg space-y-3">
-            <p className="text-[0.95rem] font-semibold leading-relaxed text-cvink md:text-lg">
-              {t.hero.tagline}
-            </p>
-          </div>
 
           <div className="mt-6 flex flex-col items-start gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">
             <a href={ctaHref(lang)} className="inline-block rounded-full bg-primary px-6 py-3.5 text-base font-semibold text-primary-foreground transition hover:bg-primary/90">
