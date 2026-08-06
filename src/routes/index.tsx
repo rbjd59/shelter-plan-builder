@@ -649,24 +649,19 @@ function Nav({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
           <a href={ctaHref(lang)} className="hover:text-foreground">{t.nav.plan}</a>
           <a href="#abogado" className="hover:text-foreground">{t.nav.attorney}</a>
           <a href="#preguntas" className="hover:text-foreground">{t.nav.faq}</a>
-          <div className="flex items-center gap-1 rounded-full border border-border p-0.5 text-xs font-semibold">
-            {(["es", "en", "ht"] as Lang[]).map((code) => (
-              <button
-                key={code}
-                onClick={() => setLang(code)}
-                className={`rounded-full px-2.5 py-1 uppercase transition ${lang === code ? "bg-cvink text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
-              >
-                {code}
-              </button>
-            ))}
-          </div>
         </nav>
-        <div className="relative inline-block">
-          <a href={ctaHref(lang)} className="inline-block rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90">
-            {t.nav.cta}
-          </a>
-          <RedX />
+        <div className="flex items-center gap-1 rounded-full border border-border p-0.5 text-xs font-semibold">
+          {(["es", "en", "ht"] as Lang[]).map((code) => (
+            <button
+              key={code}
+              onClick={() => setLang(code)}
+              className={`rounded-full px-3 py-1.5 uppercase transition ${lang === code ? "bg-cvink text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
+            >
+              {code}
+            </button>
+          ))}
         </div>
+
       </div>
     </header>
   );
