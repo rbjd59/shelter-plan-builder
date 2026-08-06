@@ -211,6 +211,8 @@ const T = {
       legalHead: "Legal", legalLinks: ["Términos", "Privacidad", "Aviso de publicidad"],
       dba: "DetencionDefensa es operado por DetencionDefensa.com, Inc., una corporación de Delaware.",
       notLawFirm: "DetencionDefensa.com, Inc. NO es un bufete de abogados.",
+      secureInfo: "La información es 100% segura, protegida por cifrado.",
+      lawFirmDisclaimer: "Aviso legal para el bufete: Sorrentino Law Firm PLLC es un bufete de Florida separado. La revisión de documentos bajo un acuerdo de alcance limitado no crea una relación abogado-cliente para representación en corte.",
       noAdvice: "Aviso legal: No somos un bufete de abogados y no brindamos asesoría legal. La información de este sitio es solo informativa y no crea una relación abogado-cliente.",
       disclaimer1: "DetencionDefensa.com, Inc. es una corporación de Delaware. NO es un bufete de abogados y NO presta servicios legales. Los servicios legales son prestados por Sorrentino Law Firm PLLC, un bufete de Florida separado, cuyo propietario es Rosario Sorrentino, Esq.",
       noProtection: "Este plan NO le da estatus migratorio, NO detiene una deportación y NO garantiza su liberación.",
