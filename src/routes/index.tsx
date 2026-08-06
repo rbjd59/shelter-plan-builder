@@ -223,7 +223,7 @@ const T = {
       ad: " La contratación de un abogado es una decisión importante que no debe basarse únicamente en anuncios. Sorrentino Law Firm PLLC · Miami, FL.",
       copyright: "© 2026 DetencionDefensa.com, Inc. Todos los derechos reservados.",
     },
-    mock: { sim: "Simulación", panicEyebrow: "Si viene ICE", panicTitle: "Emergencia · notificar familia", panicBtn: "OPRIMA", panicFoot: "Activa su plan de emergencia: notifica a la familia, a su abogado y a detenciondefensa.com", onDuty: "Planes revisados por Sorrentino Law Firm", docsEyebrow: "Su expediente", docsTitle: "Documentos", encrypted: "🔒 cifrado", reviewed: "Revisado", ready: "Listo", lastReview: "Última revisión por", today: "hoy 14:22", familyEyebrow: "Su familia", familyTitle: "Todo listo si usted no está.", familyDone: "3 de 4 documentos firmados y notarizados", familyKit: "Family Kit" },
+    mock: { sim: "Simulación", panicEyebrow: "Si viene ICE", panicTitle: "Emergencia · notificar familia", panicBtn: "OPRIMA\nAQUÍ", panicFoot: "Activa su plan de emergencia: notifica a la familia, a su abogado y a detenciondefensa.com", onDuty: "Planes revisados por Sorrentino Law Firm", docsEyebrow: "Su expediente", docsTitle: "Documentos", encrypted: "🔒 cifrado", reviewed: "Revisado", ready: "Listo", lastReview: "Última revisión por", today: "hoy 14:22", familyEyebrow: "Su familia", familyTitle: "Todo listo si usted no está.", familyDone: "3 de 4 documentos firmados y notarizados", familyKit: "Family Kit" },
 
   },
   en: {
