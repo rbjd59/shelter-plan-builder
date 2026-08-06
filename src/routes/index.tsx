@@ -473,6 +473,8 @@ const T = {
       legalHead: "Legal", legalLinks: ["Kondisyon", "Konfidansyalite", "Avi piblisite"],
       dba: "DetencionDefensa opere pa DetencionDefensa.com, Inc., yon kòporasyon Delaware.",
       notLawFirm: "DetencionDefensa.com, Inc. PA yon biwo avoka.",
+      secureInfo: "Enfòmasyon an se 100% sekir, pwoteje pa ankriptaj.",
+      lawFirmDisclaimer: "Avètisman pou biwo avoka a: Sorrentino Law Firm PLLC se yon biwo avoka Florida separe. Revizyon dokiman anba yon akò limit pa kreye yon relasyon avoka-kliyan pou reprezantasyon nan tribinal.",
       noAdvice: "Avètisman legal: Nou pa yon biwo avoka epi nou pa bay konsèy legal. Enfòmasyon sou sit sa a se sèlman pou enfòmasyon jeneral e li pa kreye yon relasyon avoka-kliyan.",
       disclaimer1: "DetencionDefensa.com, Inc. se yon kòporasyon Delaware. Li PA yon biwo avoka epi li PA bay sèvis legal. Sèvis legal yo bay pa Sorrentino Law Firm PLLC, yon biwo Florida separe, ki apatni a Rosario Sorrentino, Esq.",
       noProtection: "Plan sa a PA ba w estati imigrasyon, li PA rete yon depòtasyon epi li PA garanti liberasyon w.",
