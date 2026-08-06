@@ -714,7 +714,7 @@ function Hero() {
             </span>
           </h1>
 
-          <div className="mt-6">
+          <div className="mt-24">
             <p className="text-xs font-semibold leading-snug text-urgent sm:text-sm md:text-base">
               {t.hero.nowFree}
             </p>
