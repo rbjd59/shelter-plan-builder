@@ -100,7 +100,7 @@ const T = {
     hero: {
       badge: "Plan de preparación pre-detención · Miami, FL",
       tagline: "El plan seguro de preparación de emergencia con un solo clic para personas en riesgo de detención.",
-      h1a: "Si viene ICE, no corra, no se esconda.", h1b: "El plan seguro de preparación de emergencia con un solo clic para personas en riesgo de detención.", h1c: "",
+      h1a: "Plan gratuito de defensa contra la detención migratoria, y app de emergencia", h1b: "El plan seguro de preparación de emergencia con un solo clic para personas en riesgo de detención.", h1c: "",
       sub: "Plan diseñado para impugnar la detención tras el arresto. No está diseñado para criminales, miembros de pandillas u otras personas consideradas indeseables por el gobierno de EE. UU.",
       cta: "Empezar gratis →",
       seeHow: "Ver cómo funciona",
@@ -231,7 +231,7 @@ const T = {
     hero: {
       badge: "Pre-detention readiness plan · Miami, FL",
       tagline: "The secure one-click emergency readiness plan for people at risk of detention.",
-      h1a: "If ICE comes, do not run, do not hide.", h1b: "The secure one-click emergency readiness plan for people at risk of detention.", h1c: "",
+      h1a: "Free immigration detention defense plan, and emergency app", h1b: "The secure one-click emergency readiness plan for people at risk of detention.", h1c: "",
       sub: "Plan designed to challenge detention upon arrest. Not designed for criminals, gang members, or other persons deemed undesirable by the US government.",
       cta: "Start free →",
       seeHow: "See how it works",
@@ -362,7 +362,7 @@ const T = {
     hero: {
       badge: "Plan preparasyon anvan detansyon · Miami, FL",
       tagline: "Plan preparasyon ijans sekirize ak yon sèl klik pou moun ki an ris pou detansyon.",
-      h1a: "Si ICE vini, pa kouri, pa kache.", h1b: "Plan preparasyon ijans sekirize ak yon sèl klik pou moun ki an ris pou detansyon.", h1c: "",
+      h1a: "Plan gratis defans kont detansyon imigrasyon, ak app ijans", h1b: "Plan preparasyon ijans sekirize ak yon sèl klik pou moun ki an ris pou detansyon.", h1c: "",
       sub: "Plan konsevwa pou defi detansyon apre arestasyon. Pa fèt pou kriminèl, manm gang, oubyen lòt moun ki konsidere kòm endezirab pa gouvènman Etazini.",
       cta: "Kòmanse gratis →",
       seeHow: "Wè kijan li fonksyone",
