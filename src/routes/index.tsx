@@ -100,7 +100,7 @@ const T = {
     hero: {
       badge: "Plan de preparación pre-detención · Miami, FL",
       tagline: "El plan seguro de preparación de emergencia con un solo clic para personas en riesgo de detención.",
-      h1a: "Si ICE viene, no corra.", h1b: "No se esconda.", h1c: "Prepárese con un plan legal gratis.",
+      h1a: "Si ICE viene, no corra, no se esconda.", h1b: "Prepárese con un plan de defensa contra detención.", h1c: "",
       sub: "Un plan de preparación legal creado y revisado por un abogado, para quienes no tienen su propio abogado de inmigración.",
       cta: "Empezar gratis →",
       seeHow: "Ver cómo funciona",
