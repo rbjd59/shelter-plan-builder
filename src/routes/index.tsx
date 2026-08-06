@@ -716,13 +716,10 @@ function Hero() {
           </div>
 
           <div className="mt-6 flex flex-col items-start gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">
-            <div className="relative inline-block">
-              <a href={ctaHref(lang)} className="inline-block rounded-full bg-primary px-6 py-3.5 text-base font-semibold text-primary-foreground transition hover:bg-primary/90">
-                {t.hero.cta}
-              </a>
-              <RedX />
-            </div>
-            <p className="max-w-sm text-sm font-semibold leading-snug text-urgent">
+            <a href={ctaHref(lang)} className="inline-block rounded-full bg-primary px-6 py-3.5 text-base font-semibold text-primary-foreground transition hover:bg-primary/90">
+              {t.hero.cta}
+            </a>
+            <p className="max-w-md text-base font-semibold leading-snug text-urgent sm:text-lg md:text-xl">
               {t.hero.nowFree}
             </p>
           </div>
@@ -792,16 +789,6 @@ function FeatureSection({ idx, mockup, reverse }: { idx: number; mockup: ReactNo
 }
 
 /* -------------------- RED X OVERLAY -------------------- */
-function RedX() {
-  return (
-    <span aria-hidden="true" className="pointer-events-none absolute inset-0 flex items-center justify-center text-urgent">
-      <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="h-[112%] w-[112%] overflow-visible">
-        <line x1="2" y1="8" x2="98" y2="92" stroke="currentColor" strokeWidth="5" strokeLinecap="round" />
-        <line x1="98" y1="8" x2="2" y2="92" stroke="currentColor" strokeWidth="5" strokeLinecap="round" />
-      </svg>
-    </span>
-  );
-}
 
 /* -------------------- HOMEOWNER VIDEO -------------------- */
 const HOMEOWNER = {
@@ -969,11 +956,10 @@ function FinalCTA() {
           {t.finalCta.h2a} <span className="italic text-firm-foreground/70">{t.finalCta.h2b}</span>
         </h2>
         <p className="mx-auto mt-6 max-w-xl text-lg text-primary-foreground/70">{t.finalCta.sub}</p>
-        <div className="relative mt-10 inline-block">
+        <div className="mt-10 inline-block">
           <a href={ctaHref(lang)} className="inline-flex rounded-full bg-primary-foreground px-8 py-4 font-semibold text-cvink hover:bg-primary-foreground/90">
             {t.finalCta.cta}
           </a>
-          <RedX />
         </div>
       </div>
     </section>
