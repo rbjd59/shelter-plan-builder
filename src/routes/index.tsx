@@ -101,7 +101,7 @@ const T = {
       badge: "Plan de preparación pre-detención · Miami, FL",
       tagline: "El plan seguro de preparación de emergencia con un solo clic para personas en riesgo de detención.",
       h1a: "Si ICE viene, no corra, no se esconda.", h1b: "Prepárese con un plan de defensa contra detención.", h1c: "",
-      sub: "Plan diseñado para impugnar la detención tras el arresto.\n\nNo está diseñado para criminales, miembros de pandillas u otras personas consideradas indeseables por el gobierno de EE. UU.",
+      sub: "Plan diseñado para impugnar la detención tras el arresto. No está diseñado para criminales, miembros de pandillas u otras personas consideradas indeseables por el gobierno de EE. UU.",
       cta: "Empezar gratis →",
       seeHow: "Ver cómo funciona",
       nowFree: "Antes $199. Ahora gratis para familias en Broward y Miami-Dade, patrocinado por Refuge Outreach, Inc., una organización sin fines de lucro 501(c)(3) desde 2009. Patrocinio limitado a 1,000 familias y mientras dure el patrocinio.",
@@ -229,7 +229,7 @@ const T = {
       badge: "Pre-detention readiness plan · Miami, FL",
       tagline: "The secure one-click emergency readiness plan for people at risk of detention.",
       h1a: "If ICE comes, do not run, do not hide.", h1b: "Be prepared with a detention defense plan.", h1c: "",
-      sub: "Plan designed to challenge detention upon arrest.\n\nNot designed for criminals, gang members, or other persons deemed undesirable by the US government.",
+      sub: "Plan designed to challenge detention upon arrest. Not designed for criminals, gang members, or other persons deemed undesirable by the US government.",
       cta: "Start free →",
       seeHow: "See how it works",
       nowFree: "Was $199. Now free for families in Broward and Miami-Dade, sponsored by Refuge Outreach, Inc., a 501(c)(3) nonprofit since 2009. Sponsorship limited to 1,000 families and available while sponsorship funding lasts.",
@@ -357,7 +357,7 @@ const T = {
       badge: "Plan preparasyon anvan detansyon · Miami, FL",
       tagline: "Plan preparasyon ijans sekirize ak yon sèl klik pou moun ki an ris pou detansyon.",
       h1a: "Si ICE vini, pa kouri, pa kache.", h1b: "Preparé ak yon plan defans kont detansyon.", h1c: "",
-      sub: "Plan konsevwa pou defi detansyon apre arestasyon.\n\nPa fèt pou kriminèl, manm gang, oubyen lòt moun ki konsidere kòm endezirab pa gouvènman Etazini.",
+      sub: "Plan konsevwa pou defi detansyon apre arestasyon. Pa fèt pou kriminèl, manm gang, oubyen lòt moun ki konsidere kòm endezirab pa gouvènman Etazini.",
       cta: "Kòmanse gratis →",
       seeHow: "Wè kijan li fonksyone",
       nowFree: "Anvan $199. Kounye a gratis pou fanmi nan Broward ak Miami-Dade, patwone pa Refuge Outreach, Inc., yon òganizasyon san bi likratif 501(c)(3) depi 2009. Patwonaj la limite a 1,000 fanmi epi li dire toutotan finansman patwonaj la dire.",
@@ -712,7 +712,6 @@ function Hero() {
             <p className="text-[0.95rem] font-semibold leading-relaxed text-cvink md:text-lg">
               {t.hero.tagline}
             </p>
-            <p className="text-sm leading-relaxed whitespace-pre-line text-muted-foreground md:text-base">{t.hero.sub}</p>
           </div>
 
           <div className="mt-6 flex flex-col items-start gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">
@@ -723,6 +722,10 @@ function Hero() {
               {t.hero.nowFree}
             </p>
           </div>
+
+          <p className="mt-8 max-w-lg text-[0.7rem] leading-snug text-muted-foreground sm:text-xs md:text-sm">
+            {t.hero.sub}
+          </p>
 
         </div>
 
