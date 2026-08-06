@@ -966,11 +966,10 @@ function FinalCTA() {
           {t.finalCta.h2a} <span className="italic text-firm-foreground/70">{t.finalCta.h2b}</span>
         </h2>
         <p className="mx-auto mt-6 max-w-xl text-lg text-primary-foreground/70">{t.finalCta.sub}</p>
-        <div className="relative mt-10 inline-block">
+        <div className="mt-10 inline-block">
           <a href={ctaHref(lang)} className="inline-flex rounded-full bg-primary-foreground px-8 py-4 font-semibold text-cvink hover:bg-primary-foreground/90">
             {t.finalCta.cta}
           </a>
-          <RedX />
         </div>
       </div>
     </section>
