@@ -691,7 +691,7 @@ function Hero() {
     <section className="relative overflow-hidden">
       <div className="mx-auto grid max-w-6xl gap-10 px-5 pb-16 pt-4 sm:px-6 md:grid-cols-[1.15fr_1fr] md:gap-16 md:pt-6 md:pb-32">
         <div className="flex min-w-0 flex-col justify-center">
-          <h1 className="hero-headline text-[2.25rem] leading-[1.02] text-cvink sm:text-[3.5rem] md:text-[6rem]">
+          <h1 className="hero-headline text-[1.25rem] leading-[1.05] text-cvink sm:text-[1.75rem] md:text-[3rem]">
             {t.hero.h1a} <br />
             <span className="italic text-firm">{t.hero.h1b}</span>
           </h1>
