@@ -100,7 +100,7 @@ const T = {
     hero: {
       badge: "Plan de preparación pre-detención · Miami, FL",
       tagline: "El plan seguro de preparación de emergencia con un solo clic para personas en riesgo de detención.",
-      h1a: "Las detenciones", h1b: "han aumentado.", h1c: "Prepare su plan hoy.",
+      h1a: "Si ICE viene, no corra.", h1b: "No se esconda.", h1c: "Prepárese con un plan legal gratis.",
       sub: "Un plan de preparación legal creado y revisado por un abogado, para quienes no tienen su propio abogado de inmigración.",
       cta: "Empezar gratis →",
       seeHow: "Ver cómo funciona",
@@ -228,7 +228,7 @@ const T = {
     hero: {
       badge: "Pre-detention readiness plan · Miami, FL",
       tagline: "The secure one-click emergency readiness plan for people at risk of detention.",
-      h1a: "Detentions", h1b: "are rising.", h1c: "Build your plan today.",
+      h1a: "If ICE comes, do not run.", h1b: "Do not hide.", h1c: "Be prepared with a legal plan for free.",
       sub: "A legal readiness plan built and reviewed by an attorney, for those who don't have their own immigration lawyer.",
       cta: "Start free →",
       seeHow: "See how it works",
@@ -356,7 +356,7 @@ const T = {
     hero: {
       badge: "Plan preparasyon anvan detansyon · Miami, FL",
       tagline: "Plan preparasyon ijans sekirize ak yon sèl klik pou moun ki an ris pou detansyon.",
-      h1a: "Detansyon yo", h1b: "ap ogmante.", h1c: "Prepare plan w jodi a.",
+      h1a: "Si ICE vini, pa kouri.", h1b: "Pa kache.", h1c: "Preparé ak yon plan legal gratis.",
       sub: "Yon plan preparasyon legal ki fèt epi revize pa yon avoka, pou moun ki pa gen pwòp avoka imigrasyon pa yo.",
       cta: "Kòmanse gratis →",
       seeHow: "Wè kijan li fonksyone",
