@@ -211,6 +211,8 @@ const T = {
       legalHead: "Legal", legalLinks: ["Términos", "Privacidad", "Aviso de publicidad"],
       dba: "DetencionDefensa es operado por DetencionDefensa.com, Inc., una corporación de Delaware.",
       notLawFirm: "DetencionDefensa.com, Inc. NO es un bufete de abogados.",
+      secureInfo: "La información es 100% segura, protegida por cifrado.",
+      lawFirmDisclaimer: "Aviso legal para el bufete: Sorrentino Law Firm PLLC es un bufete de Florida separado. La revisión de documentos bajo un acuerdo de alcance limitado no crea una relación abogado-cliente para representación en corte.",
       noAdvice: "Aviso legal: No somos un bufete de abogados y no brindamos asesoría legal. La información de este sitio es solo informativa y no crea una relación abogado-cliente.",
       disclaimer1: "DetencionDefensa.com, Inc. es una corporación de Delaware. NO es un bufete de abogados y NO presta servicios legales. Los servicios legales son prestados por Sorrentino Law Firm PLLC, un bufete de Florida separado, cuyo propietario es Rosario Sorrentino, Esq.",
       noProtection: "Este plan NO le da estatus migratorio, NO detiene una deportación y NO garantiza su liberación.",
@@ -340,6 +342,8 @@ const T = {
       legalHead: "Legal", legalLinks: ["Terms", "Privacy", "Advertising notice"],
       dba: "DetencionDefensa is operated by DetencionDefensa.com, Inc., a Delaware corporation.",
       notLawFirm: "DetencionDefensa.com, Inc. is NOT a law firm.",
+      secureInfo: "Information is 100% secure, protected by encryption.",
+      lawFirmDisclaimer: "Disclaimer for the law firm: Sorrentino Law Firm PLLC is a separate Florida law firm. Document review under a limited-scope agreement does not create an attorney-client relationship for court representation.",
       noAdvice: "Disclaimer: We are not a law firm and we do not provide legal advice. Information on this site is for general information only and does not create an attorney-client relationship.",
       disclaimer1: "DetencionDefensa.com, Inc. is a Delaware corporation. It is NOT a law firm and does NOT provide legal services. Legal services are provided by Sorrentino Law Firm PLLC, a separate Florida law firm, wholly owned by Rosario Sorrentino, Esq.",
       noProtection: "This plan does NOT give you immigration status, does NOT stop a deportation, and does NOT guarantee your release.",
@@ -469,6 +473,8 @@ const T = {
       legalHead: "Legal", legalLinks: ["Kondisyon", "Konfidansyalite", "Avi piblisite"],
       dba: "DetencionDefensa opere pa DetencionDefensa.com, Inc., yon kòporasyon Delaware.",
       notLawFirm: "DetencionDefensa.com, Inc. PA yon biwo avoka.",
+      secureInfo: "Enfòmasyon an se 100% sekir, pwoteje pa ankriptaj.",
+      lawFirmDisclaimer: "Avètisman pou biwo avoka a: Sorrentino Law Firm PLLC se yon biwo avoka Florida separe. Revizyon dokiman anba yon akò limit pa kreye yon relasyon avoka-kliyan pou reprezantasyon nan tribinal.",
       noAdvice: "Avètisman legal: Nou pa yon biwo avoka epi nou pa bay konsèy legal. Enfòmasyon sou sit sa a se sèlman pou enfòmasyon jeneral e li pa kreye yon relasyon avoka-kliyan.",
       disclaimer1: "DetencionDefensa.com, Inc. se yon kòporasyon Delaware. Li PA yon biwo avoka epi li PA bay sèvis legal. Sèvis legal yo bay pa Sorrentino Law Firm PLLC, yon biwo Florida separe, ki apatni a Rosario Sorrentino, Esq.",
       noProtection: "Plan sa a PA ba w estati imigrasyon, li PA rete yon depòtasyon epi li PA garanti liberasyon w.",
@@ -1001,20 +1007,36 @@ function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 space-y-4 border-t border-border pt-8 text-xs leading-relaxed text-muted-foreground">
-          <p className="font-semibold uppercase tracking-widest text-foreground">{t.footer.notLawFirm}</p>
-          <p className="italic">{t.footer.dba}</p>
-          <p className="font-semibold text-foreground">{t.footer.noProtection}</p>
-          <p>{t.footer.disclaimer1}</p>
-          <p>{t.footer.dataUse}</p>
-          <p><strong>{t.footer.dualRoleLabel}</strong>{t.footer.dualRole}</p>
-          <p><strong>{t.footer.adLabel}</strong>{t.footer.ad}</p>
-          <p className="pt-4">{t.footer.copyright}</p>
-        </div>
-      </div>
-      <div className="border-t border-border/60 bg-cream">
-        <div className="mx-auto max-w-6xl px-6 py-4">
-          <p className="text-center text-[0.65rem] leading-snug text-muted-foreground">{t.footer.noAdvice}</p>
+        <div className="mt-16 space-y-6 border-t border-border pt-8">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="inline-flex items-center gap-2 rounded-full border border-alert/30 bg-alert/5 px-3 py-1.5">
+              <span className="inline-block h-2 w-2 rounded-full bg-alert" />
+              <span className="text-xs font-semibold uppercase tracking-wider text-foreground">{t.footer.notLawFirm}</span>
+            </div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-paper/50 px-3 py-1.5">
+              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-firm" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+              <span className="text-xs font-medium text-foreground">{t.footer.secureInfo}</span>
+            </div>
+          </div>
+
+          <div className="grid gap-4 text-xs leading-relaxed text-muted-foreground md:grid-cols-2">
+            <p>{t.footer.lawFirmDisclaimer}</p>
+            <p>{t.footer.noAdvice}</p>
+          </div>
+
+          <div className="space-y-3 border-t border-border/60 pt-6 text-xs leading-relaxed text-muted-foreground">
+            <p className="italic">{t.footer.dba}</p>
+            <p className="font-semibold text-foreground">{t.footer.noProtection}</p>
+            <p>{t.footer.disclaimer1}</p>
+            <p>{t.footer.dataUse}</p>
+            <p><strong>{t.footer.dualRoleLabel}</strong>{t.footer.dualRole}</p>
+            <p><strong>{t.footer.adLabel}</strong>{t.footer.ad}</p>
+          </div>
+
+          <p className="pt-2 text-xs text-muted-foreground">{t.footer.copyright}</p>
         </div>
       </div>
     </footer>
