@@ -485,9 +485,26 @@ type TDict = typeof T.es;
 const LangCtx = createContext<{ lang: Lang; t: TDict }>({ lang: "es", t: T.es });
 const useT = () => useContext(LangCtx);
 
+function detectBrowserLang(): Lang | null {
+  if (typeof navigator === "undefined") return null;
+  const list = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language]) as string[];
+  for (const raw of list) {
+    const code = (raw || "").toLowerCase();
+    if (code.startsWith("es")) return "es";
+    if (code.startsWith("ht")) return "ht";
+    if (code.startsWith("en")) return "en";
+  }
+  return null;
+}
+
 function Index() {
   const [lang, setLang] = useState<Lang>("es");
+  useEffect(() => {
+    const detected = detectBrowserLang();
+    if (detected) setLang(detected);
+  }, []);
   const t: TDict = T[lang];
+
   return (
     <LangCtx.Provider value={{ lang, t }}>
       <div className="min-h-screen bg-background text-foreground">
