@@ -694,8 +694,6 @@ function Hero() {
           <h1 className="hero-headline text-[2.25rem] leading-[1.02] text-cvink sm:text-[3.5rem] md:text-[6rem]">
             {t.hero.h1a} <br />
             <span className="italic text-firm">{t.hero.h1b}</span>
-            <br />
-            {t.hero.h1c}
           </h1>
 
           <div className="mt-5 max-w-lg space-y-3">
