@@ -1039,11 +1039,6 @@ function Footer() {
           <p className="pt-2 text-xs text-muted-foreground">{t.footer.copyright}</p>
         </div>
       </div>
-      <div className="border-t border-border/60 bg-cream">
-        <div className="mx-auto max-w-6xl px-6 py-4">
-          <p className="text-center text-[0.65rem] leading-snug text-muted-foreground">{t.footer.noAdvice}</p>
-        </div>
-      </div>
     </footer>
   );
 }
