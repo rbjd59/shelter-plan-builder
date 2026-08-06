@@ -100,7 +100,7 @@ const T = {
     hero: {
       badge: "Plan de preparación pre-detención · Miami, FL",
       tagline: "El plan seguro de preparación de emergencia con un solo clic para personas en riesgo de detención.",
-      h1a: "Si ICE viene, no corra.", h1b: "No se esconda.", h1c: "Prepárese con un plan legal gratis.",
+      h1a: "Si ICE viene, no corra, no se esconda.", h1b: "Prepárese con un plan de defensa contra detención.", h1c: "",
       sub: "Un plan de preparación legal creado y revisado por un abogado, para quienes no tienen su propio abogado de inmigración.",
       cta: "Empezar gratis →",
       seeHow: "Ver cómo funciona",
@@ -228,7 +228,7 @@ const T = {
     hero: {
       badge: "Pre-detention readiness plan · Miami, FL",
       tagline: "The secure one-click emergency readiness plan for people at risk of detention.",
-      h1a: "If ICE comes, do not run.", h1b: "Do not hide.", h1c: "Be prepared with a legal plan for free.",
+      h1a: "If ICE comes, do not run, do not hide.", h1b: "Be prepared with a detention defense plan.", h1c: "",
       sub: "A legal readiness plan built and reviewed by an attorney, for those who don't have their own immigration lawyer.",
       cta: "Start free →",
       seeHow: "See how it works",
@@ -356,7 +356,7 @@ const T = {
     hero: {
       badge: "Plan preparasyon anvan detansyon · Miami, FL",
       tagline: "Plan preparasyon ijans sekirize ak yon sèl klik pou moun ki an ris pou detansyon.",
-      h1a: "Si ICE vini, pa kouri.", h1b: "Pa kache.", h1c: "Preparé ak yon plan legal gratis.",
+      h1a: "Si ICE vini, pa kouri, pa kache.", h1b: "Preparé ak yon plan defans kont detansyon.", h1c: "",
       sub: "Yon plan preparasyon legal ki fèt epi revize pa yon avoka, pou moun ki pa gen pwòp avoka imigrasyon pa yo.",
       cta: "Kòmanse gratis →",
       seeHow: "Wè kijan li fonksyone",
@@ -694,8 +694,6 @@ function Hero() {
           <h1 className="hero-headline text-[2.25rem] leading-[1.02] text-cvink sm:text-[3.5rem] md:text-[6rem]">
             {t.hero.h1a} <br />
             <span className="italic text-firm">{t.hero.h1b}</span>
-            <br />
-            {t.hero.h1c}
           </h1>
 
           <div className="mt-5 max-w-lg space-y-3">
