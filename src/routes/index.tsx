@@ -703,7 +703,7 @@ function Hero() {
   const h1aSecond = h1aParts.slice(1).join(',').trim();
   return (
     <section className="relative overflow-hidden">
-      <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 pb-16 pt-10 sm:px-6 md:grid-cols-[1.05fr_1fr] md:gap-14 md:pb-24 md:pt-16">
+      <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 pb-16 pt-10 sm:px-6 md:grid-cols-[1.05fr_1fr] md:gap-14 md:pb-16 md:pt-14">
         <div className="flex min-w-0 flex-col">
           <h1 className="hero-headline flex flex-col gap-1 leading-[1.03] tracking-tight">
             <span className="text-[2rem] uppercase text-urgent sm:text-[2.75rem] md:text-[3.25rem]">{h1aFirst}</span>
@@ -731,7 +731,7 @@ function Hero() {
 
         <div className="relative flex items-center justify-center">
           <div className="absolute -inset-8 hidden rounded-[3rem] bg-gradient-to-br from-firm/10 via-transparent to-primary/5 blur-2xl md:block" />
-          <div className="origin-top scale-[0.82] sm:scale-90 md:scale-100">
+          <div className="origin-center scale-[0.82] sm:scale-90 md:scale-100">
             <PhoneFrame>
               <PanicScreen />
             </PhoneFrame>
