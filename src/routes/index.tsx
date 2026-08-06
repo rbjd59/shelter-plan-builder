@@ -712,7 +712,6 @@ function Hero() {
             <p className="text-[0.95rem] font-semibold leading-relaxed text-cvink md:text-lg">
               {t.hero.tagline}
             </p>
-            <p className="text-sm leading-relaxed whitespace-pre-line text-muted-foreground md:text-base">{t.hero.sub}</p>
           </div>
 
           <div className="mt-6 flex flex-col items-start gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">
@@ -723,6 +722,10 @@ function Hero() {
               {t.hero.nowFree}
             </p>
           </div>
+
+          <p className="mt-8 max-w-lg text-[0.7rem] leading-snug text-muted-foreground sm:text-xs md:text-sm">
+            {t.hero.sub}
+          </p>
 
         </div>
 
