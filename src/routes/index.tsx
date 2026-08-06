@@ -99,8 +99,8 @@ const T = {
     nav: { how: "Cómo funciona", plan: "El Plan", attorney: "El Abogado", faq: "Preguntas", cta: "Empezar gratis →" },
     hero: {
       badge: "Plan de preparación pre-detención · Miami, FL",
-      tagline: "El plan seguro de preparación de emergencia con un solo clic para personas en riesgo de detención.",
-      h1a: "Si ICE viene, no corra, no se esconda.", h1b: "Prepárese con un plan de defensa contra detención.", h1c: "",
+      tagline: "The secure one-click emergency readiness plan for people at risk of detention.",
+      h1a: "If ICE comes, do not run, do not hide.", h1b: "The secure one-click emergency readiness plan for people at risk of detention.", h1c: "",
       sub: "Plan diseñado para impugnar la detención tras el arresto. No está diseñado para criminales, miembros de pandillas u otras personas consideradas indeseables por el gobierno de EE. UU.",
       cta: "Empezar gratis →",
       seeHow: "Ver cómo funciona",
@@ -228,7 +228,7 @@ const T = {
     hero: {
       badge: "Pre-detention readiness plan · Miami, FL",
       tagline: "The secure one-click emergency readiness plan for people at risk of detention.",
-      h1a: "If ICE comes, do not run, do not hide.", h1b: "Be prepared with a detention defense plan.", h1c: "",
+      h1a: "If ICE comes, do not run, do not hide.", h1b: "The secure one-click emergency readiness plan for people at risk of detention.", h1c: "",
       sub: "Plan designed to challenge detention upon arrest. Not designed for criminals, gang members, or other persons deemed undesirable by the US government.",
       cta: "Start free →",
       seeHow: "See how it works",
@@ -356,7 +356,7 @@ const T = {
     hero: {
       badge: "Plan preparasyon anvan detansyon · Miami, FL",
       tagline: "Plan preparasyon ijans sekirize ak yon sèl klik pou moun ki an ris pou detansyon.",
-      h1a: "Si ICE vini, pa kouri, pa kache.", h1b: "Preparé ak yon plan defans kont detansyon.", h1c: "",
+      h1a: "Si ICE vini, pa kouri, pa kache.", h1b: "Plan preparasyon ijans sekirize ak yon sèl klik pou moun ki an ris pou detansyon.", h1c: "",
       sub: "Plan konsevwa pou defi detansyon apre arestasyon. Pa fèt pou kriminèl, manm gang, oubyen lòt moun ki konsidere kòm endezirab pa gouvènman Etazini.",
       cta: "Kòmanse gratis →",
       seeHow: "Wè kijan li fonksyone",
@@ -705,14 +705,8 @@ function Hero() {
           <h1 className="hero-headline flex flex-col gap-1 leading-[1.05]">
             <span className="text-[1.75rem] uppercase text-urgent sm:text-[2.5rem] md:text-[3.5rem]">{h1aFirst}</span>
             <span className="text-[1.75rem] uppercase text-urgent sm:text-[2.5rem] md:text-[3.5rem]">{h1aSecond}</span>
-            <span className="text-[1.9rem] font-semibold leading-tight text-foreground sm:text-[2.2rem] md:text-[2.6rem]">{t.hero.h1b}</span>
+            <span className="text-[2.1rem] font-semibold leading-tight text-foreground sm:text-[2.5rem] md:text-[3rem]">{t.hero.h1b}</span>
           </h1>
-
-          <div className="mt-5 max-w-lg space-y-3">
-            <p className="text-[0.95rem] font-semibold leading-relaxed text-cvink md:text-lg">
-              {t.hero.tagline}
-            </p>
-          </div>
 
           <div className="mt-6 flex flex-col items-start gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">
             <a href={ctaHref(lang)} className="inline-block rounded-full bg-primary px-6 py-3.5 text-base font-semibold text-primary-foreground transition hover:bg-primary/90">
