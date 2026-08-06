@@ -99,8 +99,8 @@ const T = {
     nav: { how: "Cómo funciona", plan: "El Plan", attorney: "El Abogado", faq: "Preguntas", cta: "Empezar gratis →" },
     hero: {
       badge: "Plan de preparación pre-detención · Miami, FL",
-      tagline: "The secure one-click emergency readiness plan for people at risk of detention.",
-      h1a: "If ICE comes, do not run, do not hide.", h1b: "The secure one-click emergency readiness plan for people at risk of detention.", h1c: "",
+      tagline: "El plan seguro de preparación de emergencia con un solo clic para personas en riesgo de detención.",
+      h1a: "Si viene ICE, no corra, no se esconda.", h1b: "El plan seguro de preparación de emergencia con un solo clic para personas en riesgo de detención.", h1c: "",
       sub: "Plan diseñado para impugnar la detención tras el arresto. No está diseñado para criminales, miembros de pandillas u otras personas consideradas indeseables por el gobierno de EE. UU.",
       cta: "Empezar gratis →",
       seeHow: "Ver cómo funciona",
@@ -211,6 +211,7 @@ const T = {
       legalHead: "Legal", legalLinks: ["Términos", "Privacidad", "Aviso de publicidad"],
       dba: "DetencionDefensa es operado por DetencionDefensa.com, Inc., una corporación de Delaware.",
       notLawFirm: "DetencionDefensa.com, Inc. NO es un bufete de abogados.",
+      noAdvice: "Aviso legal: No somos un bufete de abogados y no brindamos asesoría legal. La información de este sitio es solo informativa y no crea una relación abogado-cliente.",
       disclaimer1: "DetencionDefensa.com, Inc. es una corporación de Delaware. NO es un bufete de abogados y NO presta servicios legales. Los servicios legales son prestados por Sorrentino Law Firm PLLC, un bufete de Florida separado, cuyo propietario es Rosario Sorrentino, Esq.",
       noProtection: "Este plan NO le da estatus migratorio, NO detiene una deportación y NO garantiza su liberación.",
       dataUse: "Uso de datos: la información de los inscritos patrocinados no se vende ni se comparte con prestamistas, inversionistas ni terceros de mercadeo sin su consentimiento por escrito por separado.",
@@ -339,6 +340,7 @@ const T = {
       legalHead: "Legal", legalLinks: ["Terms", "Privacy", "Advertising notice"],
       dba: "DetencionDefensa is operated by DetencionDefensa.com, Inc., a Delaware corporation.",
       notLawFirm: "DetencionDefensa.com, Inc. is NOT a law firm.",
+      noAdvice: "Disclaimer: We are not a law firm and we do not provide legal advice. Information on this site is for general information only and does not create an attorney-client relationship.",
       disclaimer1: "DetencionDefensa.com, Inc. is a Delaware corporation. It is NOT a law firm and does NOT provide legal services. Legal services are provided by Sorrentino Law Firm PLLC, a separate Florida law firm, wholly owned by Rosario Sorrentino, Esq.",
       noProtection: "This plan does NOT give you immigration status, does NOT stop a deportation, and does NOT guarantee your release.",
       dataUse: "Data use: sponsored enrollees' information is not sold or shared with lenders, investors, or marketing third parties without separate written opt-in.",
@@ -467,6 +469,7 @@ const T = {
       legalHead: "Legal", legalLinks: ["Kondisyon", "Konfidansyalite", "Avi piblisite"],
       dba: "DetencionDefensa opere pa DetencionDefensa.com, Inc., yon kòporasyon Delaware.",
       notLawFirm: "DetencionDefensa.com, Inc. PA yon biwo avoka.",
+      noAdvice: "Avètisman legal: Nou pa yon biwo avoka epi nou pa bay konsèy legal. Enfòmasyon sou sit sa a se sèlman pou enfòmasyon jeneral e li pa kreye yon relasyon avoka-kliyan.",
       disclaimer1: "DetencionDefensa.com, Inc. se yon kòporasyon Delaware. Li PA yon biwo avoka epi li PA bay sèvis legal. Sèvis legal yo bay pa Sorrentino Law Firm PLLC, yon biwo Florida separe, ki apatni a Rosario Sorrentino, Esq.",
       noProtection: "Plan sa a PA ba w estati imigrasyon, li PA rete yon depòtasyon epi li PA garanti liberasyon w.",
       dataUse: "Itilizasyon done: enfòmasyon moun ki enskri anba patwonaj la pa vann ni pataje ak prete kòb, envestisè, oswa twazyèm pati maketing san yon konsantman ekri separe.",
@@ -694,7 +697,7 @@ function Nav({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
 
 /* -------------------- HERO -------------------- */
 function Hero() {
-  const { t, lang } = useT();
+  const { t } = useT();
   const h1aParts = t.hero.h1a.split(',');
   const h1aFirst = h1aParts[0] + ',';
   const h1aSecond = h1aParts.slice(1).join(',').trim();
@@ -714,20 +717,12 @@ function Hero() {
             </span>
           </h1>
 
-          <div className="mt-24">
-            <p className="text-xs font-semibold leading-snug text-urgent sm:text-sm md:text-base">
-              {t.hero.nowFree}
-            </p>
-          </div>
-
-          <div className="mt-6">
-            <a href={ctaHref(lang)} className="inline-block rounded-full bg-primary px-6 py-3.5 text-base font-semibold text-primary-foreground transition hover:bg-primary/90">
-              {t.hero.cta}
-            </a>
-          </div>
-
-          <p className="mt-8 max-w-lg text-[0.7rem] leading-snug text-muted-foreground sm:text-xs md:text-sm">
+          <p className="mt-10 max-w-lg text-[0.7rem] leading-snug text-muted-foreground sm:text-xs md:text-sm">
             {t.hero.sub}
+          </p>
+
+          <p className="mt-auto pt-10 text-[0.6rem] font-normal leading-snug text-urgent sm:text-[0.7rem] md:text-[0.8rem]">
+            {t.hero.nowFree}
           </p>
 
         </div>
@@ -1013,6 +1008,11 @@ function Footer() {
           <p><strong>{t.footer.dualRoleLabel}</strong>{t.footer.dualRole}</p>
           <p><strong>{t.footer.adLabel}</strong>{t.footer.ad}</p>
           <p className="pt-4">{t.footer.copyright}</p>
+        </div>
+      </div>
+      <div className="border-t border-border/60 bg-cream">
+        <div className="mx-auto max-w-6xl px-6 py-4">
+          <p className="text-center text-[0.65rem] leading-snug text-muted-foreground">{t.footer.noAdvice}</p>
         </div>
       </div>
     </footer>
