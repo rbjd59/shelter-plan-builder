@@ -789,16 +789,6 @@ function FeatureSection({ idx, mockup, reverse }: { idx: number; mockup: ReactNo
 }
 
 /* -------------------- RED X OVERLAY -------------------- */
-function RedX() {
-  return (
-    <span aria-hidden="true" className="pointer-events-none absolute inset-0 flex items-center justify-center text-urgent">
-      <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="h-[112%] w-[112%] overflow-visible">
-        <line x1="2" y1="8" x2="98" y2="92" stroke="currentColor" strokeWidth="5" strokeLinecap="round" />
-        <line x1="98" y1="8" x2="2" y2="92" stroke="currentColor" strokeWidth="5" strokeLinecap="round" />
-      </svg>
-    </span>
-  );
-}
 
 /* -------------------- HOMEOWNER VIDEO -------------------- */
 const HOMEOWNER = {
