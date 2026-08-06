@@ -692,8 +692,8 @@ function Hero() {
       <div className="mx-auto grid max-w-6xl gap-10 px-5 pb-16 pt-4 sm:px-6 md:grid-cols-[1.15fr_1fr] md:gap-16 md:pt-6 md:pb-32">
         <div className="flex min-w-0 flex-col justify-center">
           <h1 className="hero-headline text-[1.25rem] leading-[1.05] text-cvink sm:text-[1.75rem] md:text-[3rem]">
-            {t.hero.h1a} <br />
-            <span className="italic text-firm">{t.hero.h1b}</span>
+            <span className="uppercase text-urgent">{t.hero.h1a}</span> <br />
+            <span className="text-sm italic text-firm sm:text-base md:text-lg">{t.hero.h1b}</span>
           </h1>
 
           <div className="mt-5 max-w-lg space-y-3">
