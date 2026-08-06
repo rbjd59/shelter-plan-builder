@@ -104,7 +104,7 @@ const T = {
       sub: "Plan diseñado para impugnar la detención tras el arresto. No está diseñado para criminales, miembros de pandillas u otras personas consideradas indeseables por el gobierno de EE. UU.",
       cta: "Empezar gratis →",
       seeHow: "Ver cómo funciona",
-      nowFree: "Antes $199. Ahora gratis para familias en Broward y Miami-Dade, patrocinado por Refuge Outreach, Inc., una organización sin fines de lucro 501(c)(3) desde 2009. Patrocinio limitado a 1,000 familias y mientras dure el patrocinio.",
+      nowFree: "Debido a la crisis comunitaria, detenciondefensa.com y el Sorrentino Law Firm han donado 1,000 planes GRATIS a Refuge Outreach, una organización 501(c)(3). Estos planes están disponibles para residentes del sur de Florida hasta el 31 de diciembre de 2026 en este sitio web.",
     },
     plainBox: {
       title: "En pocas palabras",
@@ -235,7 +235,7 @@ const T = {
       sub: "Plan designed to challenge detention upon arrest. Not designed for criminals, gang members, or other persons deemed undesirable by the US government.",
       cta: "Start free →",
       seeHow: "See how it works",
-      nowFree: "Was $199. Now free for families in Broward and Miami-Dade, sponsored by Refuge Outreach, Inc., a 501(c)(3) nonprofit since 2009. Sponsorship limited to 1,000 families and available while sponsorship funding lasts.",
+      nowFree: "Due to community crisis detenciondefensa.com and the Sorrentino Law Firm have donated 1,000 plans FREE OF CHARGE to Refuge Outreach, a 501(c)(3). These plans are available for South Florida residents through December 31, 2026 on this website.",
     },
     plainBox: {
       title: "In plain words",
@@ -366,7 +366,7 @@ const T = {
       sub: "Plan konsevwa pou defi detansyon apre arestasyon. Pa fèt pou kriminèl, manm gang, oubyen lòt moun ki konsidere kòm endezirab pa gouvènman Etazini.",
       cta: "Kòmanse gratis →",
       seeHow: "Wè kijan li fonksyone",
-      nowFree: "Anvan $199. Kounye a gratis pou fanmi nan Broward ak Miami-Dade, patwone pa Refuge Outreach, Inc., yon òganizasyon san bi likratif 501(c)(3) depi 2009. Patwonaj la limite a 1,000 fanmi epi li dire toutotan finansman patwonaj la dire.",
+      nowFree: "Akòz kriz kominotè a, detenciondefensa.com ak Sorrentino Law Firm te bay Refuge Outreach, yon òganizasyon 501(c)(3), 1,000 plan GRATIS. Plan sa yo disponib pou rezidan Sid Florid jiska 31 desanm 2026 sou sit sa a.",
     },
     plainBox: {
       title: "An mo senp",
