@@ -705,21 +705,22 @@ function Hero() {
           <h1 className="hero-headline flex flex-col gap-1 leading-[1.05]">
             <span className="text-[1.75rem] uppercase text-urgent sm:text-[2.5rem] md:text-[3.5rem]">{h1aFirst}</span>
             <span className="text-[1.75rem] uppercase text-urgent sm:text-[2.5rem] md:text-[3.5rem]">{h1aSecond}</span>
-            <span className="text-[1.05rem] font-semibold leading-tight text-foreground sm:text-[1.25rem] md:text-[1.5rem]">{t.hero.h1b}</span>
+            <span className="text-[1.05rem] leading-tight text-foreground sm:text-[1.25rem] md:text-[1.5rem]">
+              {t.hero.h1b}{" "}
+              <span className="inline-flex items-center gap-0.5 align-middle font-normal text-foreground">
+                <span className="line-through decoration-urgent decoration-2">$199</span>
+                <span className="text-urgent" aria-hidden="true">✕</span>
+              </span>
+            </span>
           </h1>
 
-          <div className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-urgent/30 bg-urgent/5 px-3 py-1 text-sm font-semibold text-urgent">
-            <span className="line-through">$199</span>
-            <span aria-hidden="true">✕</span>
-          </div>
-
-          <div className="mt-4">
-            <p className="text-sm font-semibold leading-snug text-urgent sm:text-base md:text-lg">
+          <div className="mt-6">
+            <p className="text-xs font-semibold leading-snug text-urgent sm:text-sm md:text-base">
               {t.hero.nowFree}
             </p>
           </div>
 
-          <div className="mt-4">
+          <div className="mt-6">
             <a href={ctaHref(lang)} className="inline-block rounded-full bg-primary px-6 py-3.5 text-base font-semibold text-primary-foreground transition hover:bg-primary/90">
               {t.hero.cta}
             </a>
