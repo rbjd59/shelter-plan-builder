@@ -779,11 +779,97 @@ function FeatureSection({ idx, mockup, reverse }: { idx: number; mockup: ReactNo
 
 /* -------------------- RED X OVERLAY -------------------- */
 
-/* -------------------- ATTORNEY -------------------- */
+/* -------------------- HOMEOWNER VIDEO -------------------- */
+const HOMEOWNER = {
+  en: {
+    src: "https://detenciondefensa.com/__l5e/assets-v1/79637105-8f9f-4e06-95a6-88def4387a95/protect-what-you-built-en.mp4",
+    h: "Are you a homeowner?",
+    sub: "Protect your home now. Watch the video.",
+    trust: "Protect your home and assets in an attorney-created trust at",
+    disc: "This video is an advertisement. Every case is handled independently, and the outcomes are not guaranteed, subject to property equity and qualifications, trust acceptance. Savemyhometrust.com is an affiliated company of detenciondefensa.com under common ownership.",
+  },
+  es: {
+    src: "https://detenciondefensa.com/__l5e/assets-v1/16758c57-3542-457c-947e-79324aaa7923/protect-what-you-built-es.mp4",
+    h: "¿Es propietario de una vivienda?",
+    sub: "Proteja su casa ahora. Mire el video.",
+    trust: "Proteja su casa y bienes en un fideicomiso creado por un abogado en",
+    disc: "Este video es un anuncio publicitario. Cada caso se maneja de manera independiente y los resultados no están garantizados, sujetos a la plusvalía de la propiedad, calificaciones y aceptación del fideicomiso. Savemyhometrust.com es una empresa afiliada de detenciondefensa.com bajo propiedad común.",
+  },
+  ht: {
+    src: "https://detenciondefensa.com/__l5e/assets-v1/d670656c-a0b4-449b-ba24-3e9e9301e281/protect-what-you-built-ht.mp4",
+    h: "Èske ou se pwopriyetè yon kay?",
+    sub: "Pwoteje kay ou kounye a. Gade videyo a.",
+    trust: "Pwoteje kay ou ak byen ou nan yon konfyans kreye pa yon avoka nan",
+    disc: "Videyo sa a se yon piblisite. Chak ka jere endepandamman, e rezilta yo pa garanti, sijè a ekite pwopriyete a, kalifikasyon, ak akseptasyon trust la. Savemyhometrust.com se yon konpayi afilye ak detenciondefensa.com anba menm pwopriyetè.",
+  },
+} as const;
 
+function HomeownerVideo() {
+  const { lang } = useT();
+  const v = HOMEOWNER[lang as keyof typeof HOMEOWNER] ?? HOMEOWNER.es;
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(false);
 
+  const play = () => {
+    const el = videoRef.current;
+    if (!el) return;
+    el.muted = false;
+    const ok = () => {
+      setPlaying(true);
+      el.controls = true;
+    };
+    const p = el.play();
+    if (p && p.then) {
+      p.then(ok).catch(() => {
+        el.muted = true;
+        el.play().then(ok).catch(() => {});
+      });
+    } else ok();
+  };
 
-
+  return (
+    <section id="plan" className="bg-sand py-10 text-sand-foreground md:py-16">
+      <div className="mx-auto max-w-4xl px-6">
+        <div className="relative aspect-video w-full overflow-hidden rounded-2xl border-[3px] border-cvink/40 shadow-2xl">
+          <video
+            key={v.src}
+            ref={videoRef}
+            src={v.src}
+            playsInline
+            preload="metadata"
+            className="h-full w-full object-cover object-top"
+          />
+          {!playing && (
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/45 px-4 text-center">
+              <h2 className="font-display text-3xl uppercase tracking-wide text-white drop-shadow-lg md:text-5xl">{v.h}</h2>
+              <p className="mt-2 text-base font-semibold text-firm-foreground drop-shadow-md md:text-xl">{v.sub}</p>
+              <button
+                type="button"
+                onClick={play}
+                aria-label="Play video"
+                className="mt-6 flex h-24 w-24 items-center justify-center rounded-full border-[6px] border-firm-foreground bg-cvink/85 transition hover:scale-105 hover:bg-cvink"
+              >
+                <span className="ml-2 h-0 w-0 border-y-[18px] border-l-[28px] border-y-transparent border-l-firm-foreground" />
+              </button>
+            </div>
+          )}
+        </div>
+        <p className="mx-auto mt-6 max-w-2xl text-center text-[15px] leading-relaxed">
+          {v.trust}{" "}
+          <a
+            href="https://savemyhometrust.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 inline-block rounded-md bg-cvink px-4 py-2 font-bold text-primary-foreground"
+          >
+            savemyhometrust.com
+          </a>
+        </p>
+        <p className="mx-auto mt-3 max-w-2xl text-center text-xs italic text-sand-foreground/80">{v.disc}</p>
+      </div>
+    </section>
+  );
+}
 
 /* -------------------- ATTORNEY -------------------- */
 function AttorneySection() {
