@@ -529,7 +529,7 @@ function Index() {
         <main>
           <Hero />
           <HowItWorksVideo />
-          <HomeownerVideo />
+
           <FeatureSection idx={1} mockup={<DocsMock />} reverse={true} />
           <FeatureSection idx={2} mockup={<FamilyMock />} reverse={false} />
           <AttorneySection />
