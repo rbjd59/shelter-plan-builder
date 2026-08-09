@@ -253,16 +253,16 @@ export default function HeroIntro() {
         </div>
 
         {/* Hero content over the image */}
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            padding: isMobile ? "0.75rem 0" : "1.25rem 0",
-            gap: isMobile ? "0.9rem" : "1.1rem",
-          }}
-        >
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-start",
+              padding: isMobile ? "0.5rem 0" : "0.75rem 0",
+              gap: isMobile ? "0.9rem" : "1.1rem",
+            }}
+          >
           <div
             style={{
               fontFamily: '"Roboto Slab", Georgia, serif',
@@ -284,6 +284,7 @@ export default function HeroIntro() {
                 margin: 0,
                 whiteSpace: "normal",
                 textShadow: "0 1px 2px rgba(255,255,255,0.6)",
+                textTransform: "uppercase",
               }}
             >
               <PriceWithX prefix={COPY[lang].plan} price={COPY[lang].price} />
@@ -312,7 +313,7 @@ export default function HeroIntro() {
               gap: isMobile ? "0.6rem" : "0.9rem",
               maxWidth: 860,
               width: "100%",
-              margin: "calc(1.8rem + 24px) auto 0",
+              margin: "calc(2.5rem + 40px) auto 0",
             }}
           >
             <div
