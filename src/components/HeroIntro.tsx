@@ -313,19 +313,20 @@ export default function HeroIntro() {
             style={{
               display: "grid",
               gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-              gap: isMobile ? "0.6rem" : "0.9rem",
-              maxWidth: 860,
+              gap: isMobile ? "0.35rem" : "0.5rem",
+              maxWidth: 700,
               width: "100%",
               margin: "calc(2.5rem + 40px) auto 0",
             }}
           >
+            {/* Free app */}
             <div
               style={{
                 background: "rgba(255,255,255,0.10)",
                 backdropFilter: "blur(4px)",
                 border: "1px solid rgba(232,160,74,0.7)",
                 borderRadius: 12,
-                padding: isMobile ? "0.75rem 0.9rem" : "0.85rem 1.1rem",
+                padding: isMobile ? "0.6rem 0.8rem" : "0.7rem 1rem",
                 textAlign: "center",
                 boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
               }}
@@ -335,7 +336,7 @@ export default function HeroIntro() {
                   margin: 0,
                   fontFamily: '"Roboto Slab", Georgia, serif',
                   fontWeight: 900,
-                  fontSize: isMobile ? "1.4rem" : "clamp(1.25rem, 2.4vw, 1.6rem)",
+                  fontSize: isMobile ? "1.15rem" : "clamp(1.1rem, 2vw, 1.4rem)",
                   letterSpacing: "0.06em",
                   color: "#00d4ff",
                   textTransform: "uppercase",
@@ -349,15 +350,15 @@ export default function HeroIntro() {
                 href="#how-it-works-video"
                 style={{
                   display: "inline-block",
-                  marginTop: "0.55rem",
+                  marginTop: "0.45rem",
                   background: "#e8a04a",
                   color: "#0f1830",
                   textDecoration: "none",
                   fontWeight: 800,
-                  fontSize: isMobile ? "0.85rem" : "0.78rem",
+                  fontSize: isMobile ? "0.8rem" : "0.74rem",
                   letterSpacing: "0.05em",
                   textTransform: "uppercase",
-                  padding: "7px 16px",
+                  padding: "6px 14px",
                   borderRadius: 999,
                 }}
               >
@@ -365,54 +366,150 @@ export default function HeroIntro() {
               </a>
             </div>
 
+            {/* Protect your home */}
             <div
               style={{
                 background: "rgba(255,255,255,0.10)",
                 backdropFilter: "blur(4px)",
                 border: "1px solid rgba(232,160,74,0.7)",
                 borderRadius: 12,
-                padding: isMobile ? "0.75rem 0.9rem" : "0.85rem 1.1rem",
+                padding: isMobile ? "0.6rem 0.8rem" : "0.7rem 1rem",
                 textAlign: "center",
                 boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
               }}
             >
-              <div
+              <h3
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.6rem",
-                  justifyContent: "center",
+                  margin: 0,
+                  fontFamily: '"Roboto Slab", Georgia, serif',
+                  fontWeight: 900,
+                  fontSize: isMobile ? "1.15rem" : "clamp(1.1rem, 2vw, 1.4rem)",
+                  letterSpacing: "0.06em",
+                  color: "#00d4ff",
+                  textTransform: "uppercase",
+                  width: "100%",
+                  lineHeight: 1.2,
                 }}
               >
-                <h3
-                  style={{
-                    margin: 0,
-                    fontFamily: '"Roboto Slab", Georgia, serif',
-                    fontWeight: 900,
-                    fontSize: isMobile ? "1.4rem" : "clamp(1.25rem, 2.4vw, 1.6rem)",
-                    letterSpacing: "0.06em",
-                    color: "#00d4ff",
-                    textTransform: "uppercase",
-                    width: "100%",
-                    lineHeight: 1.2,
-                  }}
-                >
-                  {COPY[lang].homeBoxHeading}
-                </h3>
-              </div>
+                {COPY[lang].homeBoxHeading}
+              </h3>
               <a
                 href="#homeowner-video"
                 style={{
                   display: "inline-block",
-                  marginTop: "0.55rem",
+                  marginTop: "0.45rem",
                   background: "#e8a04a",
                   color: "#0f1830",
                   textDecoration: "none",
                   fontWeight: 800,
-                  fontSize: isMobile ? "0.85rem" : "0.78rem",
+                  fontSize: isMobile ? "0.8rem" : "0.74rem",
                   letterSpacing: "0.05em",
                   textTransform: "uppercase",
-                  padding: "7px 16px",
+                  padding: "6px 14px",
+                  borderRadius: 999,
+                }}
+              >
+                {COPY[lang].appBoxBtn}
+              </a>
+            </div>
+
+            {/* Best in class */}
+            <a
+              href="/security-faq"
+              style={{
+                display: "block",
+                textDecoration: "none",
+                background: "rgba(255,255,255,0.10)",
+                backdropFilter: "blur(4px)",
+                border: "1px solid rgba(232,160,74,0.7)",
+                borderRadius: 12,
+                padding: isMobile ? "0.6rem 0.8rem" : "0.7rem 1rem",
+                textAlign: "center",
+                boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
+                transition: "transform 0.15s ease, box-shadow 0.15s ease",
+                WebkitTapHighlightColor: "transparent",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.02)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+              }}
+            >
+              <h3
+                style={{
+                  margin: 0,
+                  fontFamily: '"Roboto Slab", Georgia, serif',
+                  fontWeight: 900,
+                  fontSize: isMobile ? "1.15rem" : "clamp(1.1rem, 2vw, 1.4rem)",
+                  letterSpacing: "0.06em",
+                  color: "#00d4ff",
+                  textTransform: "uppercase",
+                  width: "100%",
+                  lineHeight: 1.2,
+                }}
+              >
+                {COPY[lang].secBoxHeading}
+              </h3>
+              <span
+                style={{
+                  display: "inline-block",
+                  marginTop: "0.45rem",
+                  background: "#e8a04a",
+                  color: "#0f1830",
+                  textDecoration: "none",
+                  fontWeight: 800,
+                  fontSize: isMobile ? "0.8rem" : "0.74rem",
+                  letterSpacing: "0.05em",
+                  textTransform: "uppercase",
+                  padding: "6px 14px",
+                  borderRadius: 999,
+                }}
+              >
+                {COPY[lang].secBoxBtn}
+              </span>
+            </a>
+
+            {/* Employers & churches */}
+            <div
+              style={{
+                background: "rgba(255,255,255,0.10)",
+                backdropFilter: "blur(4px)",
+                border: "1px solid rgba(232,160,74,0.7)",
+                borderRadius: 12,
+                padding: isMobile ? "0.6rem 0.8rem" : "0.7rem 1rem",
+                textAlign: "center",
+                boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
+              }}
+            >
+              <h3
+                style={{
+                  margin: 0,
+                  fontFamily: '"Roboto Slab", Georgia, serif',
+                  fontWeight: 900,
+                  fontSize: isMobile ? "1.15rem" : "clamp(1.1rem, 2vw, 1.4rem)",
+                  letterSpacing: "0.06em",
+                  color: "#00d4ff",
+                  textTransform: "uppercase",
+                  width: "100%",
+                  lineHeight: 1.2,
+                }}
+              >
+                {COPY[lang].employerHeading}
+              </h3>
+              <a
+                href="#how-it-works-video"
+                style={{
+                  display: "inline-block",
+                  marginTop: "0.45rem",
+                  background: "#e8a04a",
+                  color: "#0f1830",
+                  textDecoration: "none",
+                  fontWeight: 800,
+                  fontSize: isMobile ? "0.8rem" : "0.74rem",
+                  letterSpacing: "0.05em",
+                  textTransform: "uppercase",
+                  padding: "6px 14px",
                   borderRadius: 999,
                 }}
               >
@@ -421,65 +518,6 @@ export default function HeroIntro() {
             </div>
           </div>
 
-          {/* Security box */}
-          <a
-            href="/security-faq"
-            style={{
-              display: "block",
-              textDecoration: "none",
-              background: "rgba(255,255,255,0.10)",
-              backdropFilter: "blur(4px)",
-              border: "1px solid rgba(232,160,74,0.7)",
-              borderRadius: 12,
-              padding: isMobile ? "0.75rem 0.9rem" : "0.85rem 1.1rem",
-              textAlign: "center",
-              maxWidth: 1100,
-              width: "100%",
-              margin: "0.9rem auto 0",
-              boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
-              transition: "transform 0.15s ease, box-shadow 0.15s ease",
-              WebkitTapHighlightColor: "transparent",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "scale(1.02)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "scale(1)";
-            }}
-          >
-            <h3
-              style={{
-                margin: 0,
-                fontFamily: '"Roboto Slab", Georgia, serif',
-                fontWeight: 900,
-                fontSize: isMobile ? "1.4rem" : "clamp(1.25rem, 2.4vw, 1.6rem)",
-                letterSpacing: "0.06em",
-                color: "#00d4ff",
-                textTransform: "uppercase",
-                width: "100%",
-                lineHeight: 1.2,
-              }}
-            >
-              {COPY[lang].secBoxHeading}
-            </h3>
-            <span
-              style={{
-                display: "inline-block",
-                marginTop: "0.55rem",
-                background: "#e8a04a",
-                color: "#0f1830",
-                textDecoration: "none",
-                fontWeight: 800,
-                fontSize: isMobile ? "0.85rem" : "0.78rem",
-                letterSpacing: "0.05em",
-                textTransform: "uppercase",
-                padding: "7px 16px",
-                borderRadius: 999,
-              }}
-            >
-              {COPY[lang].secBoxBtn}
-            </span>
-          </a>
 
         </div>
 
