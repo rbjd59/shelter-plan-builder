@@ -458,18 +458,6 @@ export default function HeroIntro() {
             >
               {COPY[lang].secBoxHeading}
             </h3>
-            <p
-              style={{
-                margin: "0.25rem 0 0",
-                fontFamily: '"Work Sans", sans-serif',
-                fontWeight: 600,
-                fontSize: isMobile ? "0.95rem" : "0.9rem",
-                lineHeight: 1.3,
-                color: "#ffffff",
-              }}
-            >
-              {COPY[lang].secBoxBody}
-            </p>
             <span
               style={{
                 display: "inline-block",
