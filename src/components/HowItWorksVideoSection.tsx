@@ -41,6 +41,7 @@ export default function HowItWorksVideoSection() {
 
   return (
     <section
+      id={'how-it-works-video'}
       style={{
         padding: "3rem 1rem 1rem",
         background: "#081d3a",
