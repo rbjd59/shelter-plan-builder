@@ -62,6 +62,7 @@ export default function AdVideoSection() {
 
   return (
     <section
+      id={'homeowner-video'}
       style={{
         padding: "3rem 1rem 1rem",
         background: "#0d2c54",
