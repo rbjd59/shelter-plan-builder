@@ -35,6 +35,7 @@ const COPY: Record<Lang, {
       "You cannot afford thousands for an attorney.",
     ],
     solutionLabel: "The Solution: DetencionDefensa",
+    watchMore: "Watch More Videos",
     solutions: [
       "DetencionDefensa gives you an emergency button on your phone.",
       "If ICE or the police arrive, press the button for 3 seconds.",
