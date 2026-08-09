@@ -280,7 +280,7 @@ export default function HeroIntro() {
                 fontSize: isMobile ? "1.5rem" : "clamp(2rem, 5vw, 3.4rem)",
                 lineHeight: 1.15,
                 fontWeight: 800,
-                color: "#ffffff",
+                color: "#00d4ff",
                 margin: 0,
                 whiteSpace: "normal",
                 textShadow: "0 1px 2px rgba(255,255,255,0.6)",
