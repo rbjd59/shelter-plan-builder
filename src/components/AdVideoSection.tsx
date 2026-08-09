@@ -23,9 +23,9 @@ const SUBHEADING: Record<string, string> = {
 };
 
 const TRUST_SUBLINE: Record<string, string> = {
-  en: "Protect your home and assets in an attorney-created trust at",
-  es: "Proteja su casa y bienes en un fideicomiso creado por un abogado en",
-  ht: "Pwoteje kay ou ak byen ou nan yon konfyans kreye pa yon avoka nan",
+  en: "Protect your home and assets in an attorney-created trust",
+  es: "Proteja su casa y bienes en un fideicomiso creado por un abogado",
+  ht: "Pwoteje kay ou ak byen ou nan yon konfyans kreye pa yon avoka",
 };
 
 const CTA: Record<string, string> = {
