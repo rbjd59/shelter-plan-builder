@@ -36,6 +36,7 @@ const COPY = {
     secBoxBtn: "More on security",
     appBoxHeading: "Free app for phone",
     appBoxBody: "Instantly notify contacts and attorney if faced with arrest.",
+    appBoxBtn: "Watch the video",
     disclaimer:
       "DetencionDefensa.com provides secure admission software, translation, and automated document preparation services. We are not a law firm and do not provide legal advice.",
   },
