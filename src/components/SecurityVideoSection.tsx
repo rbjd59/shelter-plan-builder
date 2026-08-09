@@ -128,10 +128,17 @@ export default function SecurityVideoSection() {
           href="/security-faq"
           style={{
             display: "inline-block",
-            marginTop: "1.25rem",
-            color: "#8ed3ff",
-            fontWeight: 700,
+            marginTop: "1.4rem",
+            background: "#e8a04a",
+            color: "#0f1830",
+            fontWeight: 800,
+            fontSize: "0.82rem",
+            letterSpacing: "0.05em",
+            textTransform: "uppercase",
             textDecoration: "none",
+            padding: "12px 26px",
+            borderRadius: 999,
+            boxShadow: "0 6px 18px rgba(0,0,0,0.35)",
           }}
         >
           {FAQ_LINK[lang] ?? FAQ_LINK.en}
