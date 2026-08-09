@@ -236,16 +236,23 @@ export default function HeroIntro() {
               marginInline: "auto",
             }}
           >
-            {lang === "es" ? (
-              <>
-                MÁS DE 2,000
-                <br />
-                PERSONAS CADA DÍA
-              </>
-            ) : (
-              COPY[lang].ice
-            )}
+            {COPY[lang].ice}
           </h1>
+
+          <p
+            style={{
+              fontFamily: '"Roboto Slab", Georgia, serif',
+              fontSize: isMobile ? "0.75rem" : "0.85rem",
+              lineHeight: 1.2,
+              fontWeight: 400,
+              color: "rgba(255,255,255,0.75)",
+              margin: "0.25rem auto 0",
+              textAlign: "center",
+              textShadow: "0 1px 6px rgba(0,0,0,0.6)",
+            }}
+          >
+            ABC News
+          </p>
 
           <div
             style={{
