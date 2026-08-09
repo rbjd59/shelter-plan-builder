@@ -159,24 +159,6 @@ export default function AdVideoSection() {
             rel="noopener noreferrer"
             style={{
               display: "inline-block",
-              background: "#e8a04a",
-              color: "#0f1830",
-              padding: "0.85rem 1.6rem",
-              borderRadius: 999,
-              fontWeight: 800,
-              fontSize: "1.05rem",
-              textDecoration: "none",
-              boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
-            }}
-          >
-            savemyhometrust.com
-          </a>
-          <a
-            href="https://savemyhometrust.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: "inline-block",
               background: "#fff",
               color: "#0f1830",
               padding: "0.7rem 2rem",
