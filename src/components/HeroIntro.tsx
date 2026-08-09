@@ -101,7 +101,7 @@ export default function HeroIntro() {
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         color: "#ffffff",
-        minHeight: "85vh",
+        minHeight: "78vh",
         display: "flex",
         flexDirection: "column",
         fontFamily:
