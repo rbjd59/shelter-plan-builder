@@ -16,6 +16,7 @@ const COPY = {
     secBoxHeading: "Seguridad de primera clase",
     secBoxBody: "Diseñada con la privacidad y la seguridad en su núcleo.",
     secBoxBtn: "Más sobre seguridad",
+    employerHeading: "Empleadores e iglesias",
     appBoxHeading: "App gratuita para el teléfono",
     appBoxBody: "Notifica al instante a tus contactos y abogado si enfrentas un arresto.",
     appBoxBtn: "Mira el video",
