@@ -326,7 +326,7 @@ export default function HeroIntro() {
               display: "grid",
               gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
               gap: isMobile ? "0.6rem" : "0.9rem",
-              maxWidth: 760,
+              maxWidth: 1100,
               width: "100%",
               margin: "1rem auto 0",
             }}
