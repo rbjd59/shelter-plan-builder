@@ -29,7 +29,7 @@ const COPY = {
     plan: "ICE detention protection plan ",
     price: "$199.",
     freeText: "Now free due to community crisis.",
-    tagline: "One-click emergency alert and attorney-reviewed legal defense plan",
+    tagline: "Alerta de emergencia",
     btn1: "How Protection Plan Works",
     btn2: "If You're a Homeowner",
     watchVideo: "Watch a one-minute video",
