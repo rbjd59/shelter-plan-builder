@@ -111,6 +111,8 @@ export interface ActivationEmailParams {
     referralUrl?: string | null;
     js44Url?: string | null;
     brochureUrl?: string | null;
+    ifpUrl?: string | null;
+    assetProtectionUrls?: Array<{ label: string; url: string }>;
   } | null;
 }
 
@@ -181,7 +183,9 @@ export async function enqueueActivationEmails(p: ActivationEmailParams): Promise
   const clientName = String(
     a.full_name || a.mail_inmate_name || a.contact_name || "Client",
   );
-  const clientEmailRaw = typeof a.contact_email === "string" ? a.contact_email.trim().toLowerCase() : "";
+  const clientEmailRaw =
+    typeof a.client_email === "string" ? a.client_email.trim().toLowerCase() :
+    typeof a.contact_email === "string" ? a.contact_email.trim().toLowerCase() : "";
   const clientEmail = clientEmailRaw && clientEmailRaw.includes("@") ? clientEmailRaw : null;
   const lang = (p.language || (typeof a.language === "string" ? a.language : "en") || "en").toLowerCase();
 
@@ -203,10 +207,12 @@ export async function enqueueActivationEmails(p: ActivationEmailParams): Promise
     const d = p.documentUrls ?? {};
     const docRows: Array<{ label: string; url: string }> = [];
     if (d.habeasUrl) docRows.push({ label: "AO 242 — Petition for Writ of Habeas Corpus.pdf", url: d.habeasUrl });
+    if (d.ifpUrl) docRows.push({ label: "AO 240 — Application to Proceed In Forma Pauperis.pdf", url: d.ifpUrl });
     if (d.memorandumUrl) docRows.push({ label: "Memorandum of Law in Support of Petition.pdf", url: d.memorandumUrl });
     if (d.referralUrl) docRows.push({ label: "SDFL Motion for Referral to Volunteer Attorney.pdf", url: d.referralUrl });
     if (d.js44Url) docRows.push({ label: "JS-44 — Civil Cover Sheet.pdf", url: d.js44Url });
     if (d.brochureUrl) docRows.push({ label: "Habeas Explainer (NIP guide).pdf", url: d.brochureUrl });
+    for (const item of d.assetProtectionUrls ?? []) docRows.push(item);
 
     const docsHtml = docRows.length
       ? `<div style="border:1px solid #d0d7de;border-radius:8px;padding:16px;background:#f6f8fa;margin:0 0 22px;">

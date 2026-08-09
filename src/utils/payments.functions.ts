@@ -272,10 +272,12 @@ export const submitIntakeAnswers = createServerFn({ method: "POST" })
         documentUrls: typeof intakeUrls === "object" && intakeUrls
           ? {
               habeasUrl: intakeUrls.habeasUrl,
+              ifpUrl: intakeUrls.ifpUrl,
               memorandumUrl: intakeUrls.memorandumUrl,
               referralUrl: intakeUrls.referralUrl,
               js44Url: intakeUrls.js44Url,
               brochureUrl: intakeUrls.brochureUrl,
+              assetProtectionUrls: intakeUrls.assetProtectionUrls,
             }
           : null,
       });
@@ -299,6 +301,7 @@ export const submitDemoIntake = createServerFn({ method: "POST" })
       answers: Record<string, unknown>;
       language: string;
       inviteCode?: string | null;
+      intakeSessionId?: string;
     }) => {
       if (!data.answers || typeof data.answers !== "object") throw new Error("Invalid answers");
       if (!["en", "es", "ht"].includes(data.language)) throw new Error("Invalid language");
@@ -306,9 +309,10 @@ export const submitDemoIntake = createServerFn({ method: "POST" })
     },
   )
   .handler(async ({ data }) => {
-    const sessionId = `demo-${crypto.randomUUID()}`;
+    const sessionId = data.intakeSessionId || `demo-${crypto.randomUUID()}`;
     const a = data.answers as Record<string, unknown>;
     const contactEmail =
+      (typeof a.client_email === "string" && a.client_email) ||
       (typeof a.contact_email === "string" && a.contact_email) || null;
 
     const { error } = await supabaseAdmin.from("intake_submissions").insert({
@@ -358,10 +362,12 @@ export const submitDemoIntake = createServerFn({ method: "POST" })
         documentUrls: demoIntakeUrls
           ? {
               habeasUrl: demoIntakeUrls.habeasUrl,
+              ifpUrl: demoIntakeUrls.ifpUrl,
               memorandumUrl: demoIntakeUrls.memorandumUrl,
               referralUrl: demoIntakeUrls.referralUrl,
               js44Url: demoIntakeUrls.js44Url,
               brochureUrl: demoIntakeUrls.brochureUrl,
+              assetProtectionUrls: demoIntakeUrls.assetProtectionUrls,
             }
           : null,
       });
@@ -370,5 +376,5 @@ export const submitDemoIntake = createServerFn({ method: "POST" })
     }
 
 
-    return { ok: true, sessionId };
+    return { ok: true, sessionId, activationCode };
   });

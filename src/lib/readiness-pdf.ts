@@ -229,7 +229,7 @@ function getT(lang: Lang): T {
 async function renderPOA(answers: Answers, lang: Lang, recipient: Recipient): Promise<Uint8Array> {
   const ctx = await newDoc("Durable Power of Attorney");
   const t = getT(lang);
-  const principal = s(answers.full_legal_name ?? answers.principal_name);
+  const principal = s(answers.full_legal_name ?? answers.full_name ?? answers.principal_name);
   const agent = s(recipient.name);
   const agentRel = s(recipient.relationship);
 
@@ -287,7 +287,7 @@ async function renderPOA(answers: Answers, lang: Lang, recipient: Recipient): Pr
 async function renderGuardianship(answers: Answers, lang: Lang, recipient: Recipient): Promise<Uint8Array> {
   const ctx = await newDoc("Standby Guardianship Designation");
   const t = getT(lang);
-  const parent = s(answers.full_legal_name);
+  const parent = s(answers.full_legal_name ?? answers.full_name);
   const guardian = s(recipient.name);
   const childrenList = Array.isArray(answers.children) ? (answers.children as Array<{ name?: string; dob?: string }>) : [];
   const childrenStr = childrenList.length
@@ -343,7 +343,7 @@ async function renderGuardianship(answers: Answers, lang: Lang, recipient: Recip
 async function renderSchoolPickup(answers: Answers, lang: Lang, recipient: Recipient): Promise<Uint8Array> {
   const ctx = await newDoc("School Pickup Authorization");
   const t = getT(lang);
-  const parent = s(answers.full_legal_name);
+  const parent = s(answers.full_legal_name ?? answers.full_name);
   const auth = s(recipient.name);
   const childrenList = Array.isArray(answers.children) ? (answers.children as Array<{ name?: string; school?: string }>) : [];
   drawTitle(ctx, "SCHOOL PICKUP AUTHORIZATION", lang === "es" ? "AUTORIZACIÓN PARA RECOGER DE LA ESCUELA" : lang === "ht" ? "OTORIZASYON POU CHACHE NAN LEKÒL" : "SCHOOL PICKUP AUTHORIZATION");
@@ -373,7 +373,7 @@ async function renderSchoolPickup(answers: Answers, lang: Lang, recipient: Recip
 async function renderHIPAA(answers: Answers, lang: Lang, recipient: Recipient): Promise<Uint8Array> {
   const ctx = await newDoc("HIPAA Authorization");
   const t = getT(lang);
-  const patient = s(answers.full_legal_name);
+  const patient = s(answers.full_legal_name ?? answers.full_name);
   const rep = s(recipient.name);
   drawTitle(ctx, "HIPAA AUTHORIZATION FOR RELEASE OF MEDICAL INFORMATION", lang === "es" ? "AUTORIZACIÓN HIPAA PARA DIVULGACIÓN DE INFORMACIÓN MÉDICA" : lang === "ht" ? "OTORIZASYON HIPAA POU LIBÈRE ENFÒMASYON MEDIKAL" : "HIPAA AUTHORIZATION");
   drawBilingual(
@@ -491,6 +491,34 @@ async function renderDocumentLocator(answers: Answers, lang: Lang): Promise<Uint
   return await ctx.doc.save();
 }
 
+async function renderLandlordAuthorization(answers: Answers, lang: Lang, recipient: Recipient): Promise<Uint8Array> {
+  const ctx = await newDoc("Landlord and Property Access Authorization");
+  const t = getT(lang);
+  const principal = s(answers.full_legal_name ?? answers.full_name);
+  const agent = s(recipient.name);
+  drawTitle(ctx, "LANDLORD / PROPERTY ACCESS AUTHORIZATION", lang === "es" ? "AUTORIZACIÓN PARA ARRENDADOR Y ACCESO A LA PROPIEDAD" : lang === "ht" ? "OTORIZASYON POU PWOPRIYETÈ AK AKSÈ PWOPRIYETE" : "LANDLORD / PROPERTY ACCESS AUTHORIZATION");
+  drawBilingual(ctx,
+    `I, ${principal}, authorize ${agent} to communicate with my landlord, obtain account and lease information, pay rent and utilities from funds I make available, enter my residence, secure my belongings, receive notices, and arrange lawful removal or storage of my personal property while I am detained or unavailable.`,
+    lang === "es" ? `Yo, ${principal}, autorizo a ${agent} a comunicarse con mi arrendador, obtener información de la cuenta y contrato, pagar alquiler y servicios con fondos que yo proporcione, entrar a mi residencia, proteger mis pertenencias, recibir avisos y organizar legalmente el retiro o almacenamiento de mis bienes mientras esté detenido o no disponible.` : lang === "ht" ? `Mwen menm, ${principal}, otorize ${agent} pou kominike ak pwopriyetè kay mwen, jwenn enfòmasyon sou kont ak kontra lwaye, peye lwaye ak sèvis ak lajan mwen bay, antre lakay mwen, pwoteje byen mwen, resevwa avi, epi òganize retire oswa depoze byen mwen legalman pandan yo detni mwen oswa mwen pa disponib.` : "");
+  drawSignatureBlock(ctx, t);
+  drawDisclaimer(ctx, t);
+  return await ctx.doc.save();
+}
+
+async function renderVehicleRetrieval(answers: Answers, lang: Lang, recipient: Recipient): Promise<Uint8Array> {
+  const ctx = await newDoc("Vehicle Retrieval Authorization");
+  const t = getT(lang);
+  const principal = s(answers.full_legal_name ?? answers.full_name);
+  const agent = s(recipient.name);
+  drawTitle(ctx, "VEHICLE RETRIEVAL / IMPOUND AUTHORIZATION", lang === "es" ? "AUTORIZACIÓN PARA RETIRAR VEHÍCULO DEL DEPÓSITO" : lang === "ht" ? "OTORIZASYON POU REKIPERE MACHIN NAN DEPO" : "VEHICLE RETRIEVAL AUTHORIZATION");
+  drawBilingual(ctx,
+    `I, ${principal}, authorize ${agent} to locate, retrieve, receive, tow, store, and take possession of any vehicle owned or lawfully used by me, including from a police or private impound lot, and to receive property from the vehicle. Vehicle: ${s(answers.vehicle_description)}. VIN / plate: ${s(answers.vehicle_vin_plate)}.`,
+    lang === "es" ? `Yo, ${principal}, autorizo a ${agent} a localizar, retirar, recibir, remolcar, almacenar y tomar posesión de cualquier vehículo de mi propiedad o uso legal, incluso de un depósito policial o privado, y recibir los bienes dentro del vehículo. Vehículo: ${s(answers.vehicle_description)}. VIN / placa: ${s(answers.vehicle_vin_plate)}.` : lang === "ht" ? `Mwen menm, ${principal}, otorize ${agent} pou lokalize, rekipere, resevwa, remoke, estoke epi pran posesyon nenpòt machin mwen posede oswa itilize legalman, menm nan depo lapolis oswa prive, epi resevwa byen ki nan machin nan. Machin: ${s(answers.vehicle_description)}. VIN / plak: ${s(answers.vehicle_vin_plate)}.` : "");
+  drawSignatureBlock(ctx, t);
+  drawDisclaimer(ctx, t);
+  return await ctx.doc.save();
+}
+
 // ====================== PUBLIC API ======================
 
 export interface GeneratedDoc {
@@ -508,5 +536,7 @@ export async function generateAllDocs(answers: Answers, lang: Lang, recipient: R
     { filename: "6-emergency-contact-tree.pdf", bytes: await renderContactTree(answers, lang, recipient) },
     { filename: "7-childrens-info.pdf", bytes: await renderChildrenInfo(answers, lang) },
     { filename: "8-document-locator.pdf", bytes: await renderDocumentLocator(answers, lang) },
+    { filename: "9-landlord-authorization.pdf", bytes: await renderLandlordAuthorization(answers, lang, recipient) },
+    { filename: "10-vehicle-retrieval.pdf", bytes: await renderVehicleRetrieval(answers, lang, recipient) },
   ];
 }

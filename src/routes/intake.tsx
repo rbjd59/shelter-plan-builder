@@ -51,7 +51,7 @@ type FieldDef = {
   key: string;
   label: Record<Lang, string>;
   hint?: Record<Lang, string>;
-  type?: "text" | "textarea" | "date" | "checkbox" | "number";
+  type?: "text" | "textarea" | "date" | "checkbox" | "number" | "email" | "tel";
   disabled?: boolean;
 };
 
@@ -66,6 +66,8 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
     },
     fields: [
       { key: "full_name", label: { en: "Name on U.S. Documents / Immigration Forms", es: "Nombre legal completo", ht: "Non legal konplè" } },
+      { key: "client_email", type: "email", label: { en: "Your email (app link and case notices)", es: "Su correo electrónico (enlace de la app y avisos del caso)", ht: "Imèl ou (lyen app la ak avi sou dosye a)" } },
+      { key: "client_mobile", type: "tel", label: { en: "Your mobile phone (app link by SMS)", es: "Su teléfono celular (enlace de la app por SMS)", ht: "Telefòn mobil ou (lyen app la pa SMS)" } },
       { key: "other_names_used", label: { en: "Other names used", es: "Otros nombres usados", ht: "Lòt non yo te itilize" } },
       { key: "a_number", label: { en: "Alien Registration Number (A#)", es: "Número de Registro de Extranjero (A#)", ht: "Nimewo Anrejistreman Etranje (A#)" } },
       { key: "dob", label: { en: "Date of birth", es: "Fecha de nacimiento", ht: "Dat nesans" }, type: "date" },
@@ -408,12 +410,18 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
           }
         }
       }
-      // Fire pairing + webhook first (in parallel) so we can pass the
-      // DefensaSiempre invite_code into the welcome email as a deep link.
-      // Pairing/webhook failures are non-fatal — we still submit so PDFs go out.
+      // Persist and provision locally first. This guarantees the paying client
+      // appears on both boards and gives every downstream system the same code.
       const hasPairableData =
         !!(merged.full_name || merged.a_number || merged.dob);
       const intakeSessionId = `lovable_session_${crypto.randomUUID()}`;
+      const submission = await submitFn({
+        data: {
+          answers: merged,
+          language: L,
+          intakeSessionId,
+        },
+      });
       const [pairResult, webhookResult] = await Promise.all([
         hasPairableData
           ? pairFn({ data: { answers: merged, intakeSessionId } }).catch((err) => {
@@ -430,17 +438,11 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
             })
           : Promise.resolve(null),
       ]);
-      await submitFn({
-        data: {
-          answers: merged,
-          language: L,
-          inviteCode: webhookResult?.inviteCode ?? null,
-        },
-      });
+      const canonicalCode = submission.activationCode ?? webhookResult?.inviteCode ?? pairResult?.code ?? null;
       if (pairResult?.code) setPairCode(pairResult.code);
-      if (webhookResult?.inviteCode) setInviteCode(webhookResult.inviteCode);
+      if (canonicalCode) setInviteCode(canonicalCode);
       // Fire-and-forget SMS notifications (client confirmation + staff alert).
-      const contactPhoneRaw = typeof merged.contact_phone === "string" ? merged.contact_phone : null;
+       const contactPhoneRaw = typeof merged.client_mobile === "string" ? merged.client_mobile : null;
       const contactNameRaw = typeof merged.full_name === "string" ? merged.full_name : null;
       const intakeSessionIdForSms = intakeSessionId;
       smsNotifyFn({
@@ -450,7 +452,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
           contactName: contactNameRaw,
           language: L,
           inviteCode: (() => {
-            const raw = webhookResult?.inviteCode ?? pairResult?.code ?? null;
+             const raw = canonicalCode;
             return raw ? `${raw}-${L.toUpperCase()}` : null;
           })(),
         },
@@ -555,15 +557,14 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
       },
     }[L];
 
-    const btnDisabled: React.CSSProperties = {
+    const downloadBtn: React.CSSProperties = {
       flex: "1 1 220px",
       padding: "18px 22px",
       borderRadius: 10,
       textAlign: "center",
       fontSize: 17,
       fontWeight: 800,
-      cursor: "not-allowed",
-      opacity: 0.85,
+      cursor: "pointer",
       border: 0,
       display: "block",
     };
@@ -587,16 +588,14 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
         {/* Download buttons */}
         <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 8 }}>
           <div style={{ flex: "1 1 220px" }}>
-            <button type="button" disabled style={{ ...btnDisabled, background: "#000", color: "#fff" }}>
+            <a href={`/download?p=ios&code=${encodeURIComponent(code)}`} style={{ ...downloadBtn, background: "#000", color: "#fff", textDecoration: "none" }}>
               {T.iphone}
-            </button>
-            <p style={{ margin: "6px 0 0", textAlign: "center", fontSize: 11, color: "#a8a59a", letterSpacing: 1 }}>{T.soon}</p>
+            </a>
           </div>
           <div style={{ flex: "1 1 220px" }}>
-            <button type="button" disabled style={{ ...btnDisabled, background: "#1b8a3a", color: "#fff" }}>
+            <a href={`/download?p=android&code=${encodeURIComponent(code)}`} style={{ ...downloadBtn, background: "#1b8a3a", color: "#fff", textDecoration: "none" }}>
               {T.android}
-            </button>
-            <p style={{ margin: "6px 0 0", textAlign: "center", fontSize: 11, color: "#a8a59a", letterSpacing: 1 }}>{T.soon}</p>
+            </a>
           </div>
         </div>
 
@@ -722,7 +721,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
                         )}
                       </>
                     ) : (
-                      <input type={f.type || "text"} value={(answers[f.key] as string) || ""} onChange={(e) => setAnswers((a) => ({ ...a, [f.key]: e.target.value }))} disabled={f.disabled} style={{ ...inputStyle, ...(f.disabled ? disabledStyle : null) }} />
+                      <input type={f.type || "text"} required={f.key === "client_email" || f.key === "client_mobile"} value={(answers[f.key] as string) || ""} onChange={(e) => setAnswers((a) => ({ ...a, [f.key]: e.target.value }))} disabled={f.disabled} style={{ ...inputStyle, ...(f.disabled ? disabledStyle : null) }} />
                     )}
                   </div>
                 );

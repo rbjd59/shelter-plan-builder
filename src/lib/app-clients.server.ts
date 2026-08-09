@@ -61,10 +61,12 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
     (typeof a.contact_name === "string" && a.contact_name) ||
     null;
   const email =
+    (typeof a.client_email === "string" && a.client_email) ||
     (typeof a.contact_email === "string" && a.contact_email) ||
     (typeof a.email === "string" && a.email) ||
     null;
   const phone =
+    (typeof a.client_mobile === "string" && a.client_mobile) ||
     (typeof a.contact_phone === "string" && a.contact_phone) ||
     (typeof a.phone === "string" && a.phone) ||
     null;
@@ -91,6 +93,8 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
         email,
         phone_e164: phone,
         language: params.language,
+        date_of_birth: typeof a.dob === "string" ? a.dob : null,
+        a_number: typeof a.a_number === "string" ? a.a_number : null,
         place_of_birth: placeOfBirth,
         country_of_origin: countryOfOrigin,
         has_asset_protection: hasAssetProtection,
@@ -181,9 +185,55 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
     );
   }
 
-  // Seed typed document placeholders so the Premio app can route each
-  // document to the right recipient. Content is filled in later during
-  // attorney review; document_type strings MUST match Premio's router.
+  // Generate the actual PDFs before the bundle is exposed to the phone.
+  // The phone expects raw base64 in `content`; placeholder prose causes its
+  // PDF viewer to open a blank white screen.
+  const toB64 = (bytes: Uint8Array) => Buffer.from(bytes).toString("base64");
+  const generated = new Map<string, string>();
+  try {
+    const [{ buildIntakePdfs }, { buildMotionReferralPdf }, { buildJs44Pdf }, { buildMemorandumOfLawPdf }] = await Promise.all([
+      import("@/lib/email/intake-pdfs.server"),
+      import("@/lib/email/motion-referral.server"),
+      import("@/lib/email/js44.server"),
+      import("@/lib/email/memorandum-of-law.server"),
+    ]);
+    const intake = await buildIntakePdfs(a);
+    generated.set("ao_242", toB64(intake.habeas));
+    generated.set("ao_240", toB64(intake.ifp));
+    generated.set("motion_for_counsel", toB64(await buildMotionReferralPdf(a)));
+    generated.set("civil_cover_sheet", toB64(await buildJs44Pdf(a)));
+    generated.set("memorandum_of_law", toB64(await buildMemorandumOfLawPdf(a)));
+  } catch (e) {
+    console.error("core app PDF generation failed", e);
+  }
+
+  if (hasAssetProtection) {
+    try {
+      const { generateAllDocs } = await import("@/lib/readiness-pdf");
+      const recipient = {
+        name: typeof a.contact_name === "string" ? a.contact_name : undefined,
+        phone: typeof a.contact_phone === "string" ? a.contact_phone : undefined,
+        email: typeof a.contact_email === "string" ? a.contact_email : undefined,
+        relationship: typeof a.contact_relation === "string" ? a.contact_relation : undefined,
+      };
+      const docs = await generateAllDocs(a, params.language === "es" || params.language === "ht" ? params.language : "en", recipient);
+      const byFile: Record<string, string> = {
+        "1-power-of-attorney.pdf": "power_of_attorney",
+        "3-school-pickup.pdf": "school_authorization",
+        "9-landlord-authorization.pdf": "property_access_permission",
+        "10-vehicle-retrieval.pdf": "vehicle_impound_auth",
+        "5-financial-inventory.pdf": "bank_account_access",
+      };
+      for (const doc of docs) {
+        const type = byFile[doc.filename];
+        if (type) generated.set(type, toB64(doc.bytes));
+      }
+    } catch (e) {
+      console.error("asset-protection PDF generation failed", e);
+    }
+  }
+
+  // document_type strings MUST match Premio's router.
   const coreLegalDocs: Array<{ type: string; title: string }> = [
     { type: "ao_242", title: "AO 242 — Petition for Writ of Habeas Corpus" },
     { type: "ao_240", title: "AO 240 — Application to Proceed In Forma Pauperis" },
@@ -207,28 +257,13 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
   const seedDocs = docSet.map((d) => ({
     client_id: clientId,
     title: d.title,
-    content: "Pending attorney review. This document will be populated from your intake answers.",
+    content: generated.get(d.type) ?? "",
     document_type: d.type,
     send_on_alert: true,
     from_app: false,
   }));
 
-  // Mirror the same set into the attorney's "From client's file" column so
-  // the attorney has the full file the moment the client activates — not
-  // dependent on the phone surviving an arrest. The app may later overwrite
-  // the `content` of these rows with the personalized PDF text.
-  const mirrorDocs = docSet.map((d) => ({
-    client_id: clientId,
-    title: d.title,
-    content:
-      `Captured at activation on ${new Date().toISOString().slice(0, 10)}. ` +
-      "The client's app will overwrite this with the personalized copy once it generates it locally.",
-    document_type: d.type,
-    send_on_alert: false,
-    from_app: true,
-  }));
-
-  await sb.from("client_documents").insert([...seedDocs, ...mirrorDocs] as never);
+  await sb.from("client_documents").insert(seedDocs as never);
 
 
   // Send activation email
@@ -272,8 +307,8 @@ async function sendActivationEmail(params: {
   const template = TEMPLATES["app-activation"];
   if (!template) throw new Error("app-activation template not registered");
 
-  const apkUrl = process.env.APK_URL || null;
-  const testflightUrl = process.env.TESTFLIGHT_URL || null;
+  const apkUrl = "https://detenciondefensa.com/get-app";
+  const testflightUrl = "https://detenciondefensa.com/get-app";
 
   const templateData = {
     code: params.code,

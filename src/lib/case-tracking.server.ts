@@ -134,10 +134,13 @@ export async function createOrUpdateCaseTracking(params: {
 }): Promise<{ token: string; contactEmail: string | null } | null> {
   const a = params.answers;
   const contactEmail =
+    (typeof a.client_email === "string" && a.client_email) ||
     (typeof a.contact_email === "string" && a.contact_email) ||
     params.contactEmailFromStripe ||
     null;
-  const contactPhone = (typeof a.contact_phone === "string" && a.contact_phone) || null;
+  const contactPhone =
+    (typeof a.client_mobile === "string" && a.client_mobile) ||
+    (typeof a.contact_phone === "string" && a.contact_phone) || null;
   const contactName = (typeof a.contact_name === "string" && a.contact_name) || null;
   const inmateName =
     (typeof a.mail_inmate_name === "string" && a.mail_inmate_name) ||
