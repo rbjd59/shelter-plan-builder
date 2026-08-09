@@ -119,7 +119,22 @@ async function logAttempt(row: LogRow) {
   } catch (e) {
     console.error("[intake-webhook] failed to write log row", e);
   }
+  try {
+    const { logDelivery } = await import("@/lib/delivery-log.server");
+    await logDelivery({
+      intakeSessionId: row.intake_session_id ?? null,
+      step: "partner_webhook",
+      status: row.ok ? "success" : "failed",
+      target: row.endpoint,
+      errorMessage: row.ok ? null : (row.error_message ?? row.error_kind ?? "webhook failed"),
+      durationMs: row.duration_ms ?? null,
+      metadata: { status_code: row.status_code ?? null, error_kind: row.error_kind ?? null },
+    });
+  } catch (e) {
+    console.error("[intake-webhook] failed to mirror delivery log", e);
+  }
 }
+
 
 export const notifyIntakeWebhook = createServerFn({ method: "POST" })
   .inputValidator((input) => InputSchema.parse(input))
