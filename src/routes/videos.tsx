@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import NarrativeVideoSection from "@/components/NarrativeVideoSection";
 import AdVideoSection from "@/components/AdVideoSection";
+import EmployerVideoSection from "@/components/EmployerVideoSection";
 import { useLang } from "@/context/LanguageContext";
 
 export const Route = createFileRoute("/videos")({
@@ -55,6 +56,7 @@ function VideosPage() {
       </div>
       <NarrativeVideoSection />
       <AdVideoSection />
+      <EmployerVideoSection />
     </main>
   );
 }
