@@ -232,42 +232,6 @@ export default function HeroIntro() {
             gap: isMobile ? "0.9rem" : "1.1rem",
           }}
         >
-          <div>
-            <h1
-              style={{
-                fontFamily: '"Roboto Slab", Georgia, serif',
-                fontSize: isMobile ? (lang === "es" ? "1.3rem" : "1.1rem") : (lang === "es" ? "clamp(1.7rem, 3.4vw, 2.5rem)" : "clamp(1.25rem, 2.6vw, 1.9rem)"),
-                fontWeight: 700,
-                lineHeight: lang === "es" ? 1.05 : 1.1,
-                margin: 0,
-                letterSpacing: "-0.005em",
-                textAlign: "center",
-                color: "#e8a04a",
-                textShadow: "0 2px 8px rgba(0,0,0,0.6)",
-                textTransform: "uppercase",
-                maxWidth: 1000,
-                marginInline: "auto",
-              }}
-            >
-              {COPY[lang].ice}
-            </h1>
-
-            <p
-              style={{
-                fontFamily: '"Roboto Slab", Georgia, serif',
-                fontSize: isMobile ? "0.7rem" : "0.8rem",
-                lineHeight: 1.2,
-                fontWeight: 400,
-                color: "rgba(255,255,255,0.7)",
-                margin: "0.1rem auto 0",
-                textAlign: "center",
-                textShadow: "0 1px 6px rgba(0,0,0,0.6)",
-              }}
-            >
-              ABC News
-            </p>
-          </div>
-
           <div
             style={{
               fontFamily: '"Roboto Slab", Georgia, serif',
