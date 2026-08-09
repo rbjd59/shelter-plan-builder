@@ -253,16 +253,16 @@ export default function HeroIntro() {
         </div>
 
         {/* Hero content over the image */}
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            padding: isMobile ? "0.75rem 0" : "1.25rem 0",
-            gap: isMobile ? "0.9rem" : "1.1rem",
-          }}
-        >
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-start",
+              padding: isMobile ? "0.5rem 0" : "0.75rem 0",
+              gap: isMobile ? "0.9rem" : "1.1rem",
+            }}
+          >
           <div
             style={{
               fontFamily: '"Roboto Slab", Georgia, serif',
