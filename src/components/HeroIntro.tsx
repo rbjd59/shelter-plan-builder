@@ -10,6 +10,10 @@ const COPY = {
     freeText: "Ahora gratis debido a la crisis comunitaria.",
     ice: "ICE ARRESTÓ A 51,000 PERSONAS EN JULIO",
     tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
+    secBoxHeading: "SEGURIDAD DE PRIMERA CLASE",
+    secBoxBody: "Esta app fue diseñada con la privacidad y la seguridad en su núcleo.",
+    appBoxHeading: "APP GRATUITA PARA EL TELÉFONO",
+    appBoxBody: "Notifica al instante a tus contactos y abogado si enfrentas un arresto.",
     disclaimer:
       "DetencionDefensa.com proporciona software de admisión seguro, traducción y servicios automatizados de preparación de documentos. No somos una firma de abogados y no proporcionamos asesoramiento legal.",
   },
@@ -19,6 +23,10 @@ const COPY = {
     freeText: "Now free due to community crisis.",
     ice: "ICE arrests 51,000 people in July",
     tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
+    secBoxHeading: "BEST IN CLASS SECURITY",
+    secBoxBody: "This app was designed with privacy and security at its very core.",
+    appBoxHeading: "FREE APP FOR PHONE",
+    appBoxBody: "Instantly notify contacts and attorney if you are faced with arrest.",
     disclaimer:
       "DetencionDefensa.com provides secure admission software, translation, and automated document preparation services. We are not a law firm and do not provide legal advice.",
   },
@@ -28,10 +36,14 @@ const COPY = {
     freeText: "Kounye a gratis akòz kriz kominotè a.",
     ice: "ICE arete 51,000 moun an jiyè",
     tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
+    secBoxHeading: "SEKIRITE PI BON KLAS",
+    secBoxBody: "Aplikasyon sa a fèt ak vi prive ak sekirite kòm nwayo li.",
+    appBoxHeading: "APP GRATIS POU TELEFÒN",
+    appBoxBody: "Fè kontak ak avoka w konnen imedyatman si yo arete w.",
     disclaimer:
       "DetencionDefensa.com ofri lojisyèl admisyon ki an sekirite, tradiksyon, ak sèvis preparasyon dokiman otomatik. Nou pa yon kabinè avoka e nou pa bay konsèy legal.",
   },
-} satisfies Record<Lang, { plan: string; price: string; freeText: string; ice: string; tagline1: string; disclaimer: string }>;
+} satisfies Record<Lang, { plan: string; price: string; freeText: string; ice: string; tagline1: string; secBoxHeading: string; secBoxBody: string; appBoxHeading: string; appBoxBody: string; disclaimer: string }>;
 
 function PriceWithX({ prefix, price }: { prefix: string; price: string }) {
   return (
@@ -385,6 +397,92 @@ export default function HeroIntro() {
             >
               If You're a Homeowner
             </a>
+          </div>
+
+          {/* Feature boxes */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+              gap: isMobile ? "0.9rem" : "1.5rem",
+              maxWidth: 1100,
+              width: "100%",
+              margin: "1.25rem auto 0",
+            }}
+          >
+            <div
+              style={{
+                background: "rgba(17,46,81,0.55)",
+                border: "2px solid #e8a04a",
+                borderRadius: 16,
+                padding: isMobile ? "1rem 1.1rem" : "1.35rem 1.6rem",
+                textAlign: "left",
+                boxShadow: "0 6px 20px rgba(0,0,0,0.4)",
+              }}
+            >
+              <h3
+                style={{
+                  margin: 0,
+                  fontFamily: '"Roboto Slab", Georgia, serif',
+                  fontWeight: 900,
+                  fontSize: isMobile ? "0.95rem" : "1.15rem",
+                  letterSpacing: "0.06em",
+                  color: "#e8a04a",
+                  textTransform: "uppercase",
+                }}
+              >
+                {COPY[lang].secBoxHeading}
+              </h3>
+              <p
+                style={{
+                  margin: "0.4rem 0 0",
+                  fontFamily: '"Work Sans", sans-serif',
+                  fontWeight: 500,
+                  fontSize: isMobile ? "0.85rem" : "0.98rem",
+                  lineHeight: 1.35,
+                  color: "#ffffff",
+                }}
+              >
+                {COPY[lang].secBoxBody}
+              </p>
+            </div>
+
+            <div
+              style={{
+                background: "rgba(17,46,81,0.55)",
+                border: "2px solid #e8a04a",
+                borderRadius: 16,
+                padding: isMobile ? "1rem 1.1rem" : "1.35rem 1.6rem",
+                textAlign: "left",
+                boxShadow: "0 6px 20px rgba(0,0,0,0.4)",
+              }}
+            >
+              <h3
+                style={{
+                  margin: 0,
+                  fontFamily: '"Roboto Slab", Georgia, serif',
+                  fontWeight: 900,
+                  fontSize: isMobile ? "0.95rem" : "1.15rem",
+                  letterSpacing: "0.06em",
+                  color: "#e8a04a",
+                  textTransform: "uppercase",
+                }}
+              >
+                {COPY[lang].appBoxHeading}
+              </h3>
+              <p
+                style={{
+                  margin: "0.4rem 0 0",
+                  fontFamily: '"Work Sans", sans-serif',
+                  fontWeight: 500,
+                  fontSize: isMobile ? "0.85rem" : "0.98rem",
+                  lineHeight: 1.35,
+                  color: "#ffffff",
+                }}
+              >
+                {COPY[lang].appBoxBody}
+              </p>
+            </div>
           </div>
 
         </div>
