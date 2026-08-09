@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "@tanstack/react-router";
 import { useLang, type Lang } from "@/context/LanguageContext";
 
 import logoAsset from "@/assets/dd-logo.png.asset.json";
@@ -354,63 +353,6 @@ export default function HeroIntro() {
                   textTransform: "uppercase",
                 }}
               >
-                {COPY[lang].secBoxHeading}
-              </h3>
-              <p
-                style={{
-                  margin: "0.25rem 0 0",
-                  fontFamily: '"Work Sans", sans-serif',
-                  fontWeight: 500,
-                  fontSize: isMobile ? "0.8rem" : "0.9rem",
-                  lineHeight: 1.3,
-                  color: "#ffffff",
-                }}
-              >
-                {COPY[lang].secBoxBody}
-              </p>
-              <Link
-                to="/security-faq"
-                style={{
-                  display: "inline-block",
-                  marginTop: "0.55rem",
-                  background: "#e8a04a",
-                  color: "#0f1830",
-                  textDecoration: "none",
-                  fontWeight: 800,
-                  fontSize: isMobile ? "0.72rem" : "0.78rem",
-                  letterSpacing: "0.05em",
-                  textTransform: "uppercase",
-                  padding: "7px 16px",
-                  borderRadius: 999,
-                }}
-              >
-                {COPY[lang].secBoxBtn}
-              </Link>
-            </div>
-
-
-            <div
-              style={{
-                background: "rgba(255,255,255,0.10)",
-                backdropFilter: "blur(4px)",
-                border: "1px solid rgba(232,160,74,0.7)",
-                borderRadius: 12,
-                padding: isMobile ? "0.75rem 0.9rem" : "0.85rem 1.1rem",
-                textAlign: "center",
-                boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
-              }}
-            >
-              <h3
-                style={{
-                  margin: 0,
-                  fontFamily: '"Roboto Slab", Georgia, serif',
-                  fontWeight: 900,
-                  fontSize: isMobile ? "0.8rem" : "0.95rem",
-                  letterSpacing: "0.08em",
-                  color: "#f5b860",
-                  textTransform: "uppercase",
-                }}
-              >
                 {COPY[lang].appBoxHeading}
               </h3>
               <p
@@ -444,11 +386,93 @@ export default function HeroIntro() {
                 {COPY[lang].appBoxBtn}
               </a>
             </div>
+
+            <div
+              style={{
+                background: "rgba(255,255,255,0.10)",
+                backdropFilter: "blur(4px)",
+                border: "1px solid rgba(232,160,74,0.7)",
+                borderRadius: 12,
+                padding: isMobile ? "0.75rem 0.9rem" : "0.85rem 1.1rem",
+                textAlign: "center",
+                boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.6rem",
+                  justifyContent: "center",
+                }}
+              >
+                <span
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 30,
+                    height: 30,
+                    borderRadius: "50%",
+                    background: "#e8a04a",
+                    color: "#0f1830",
+                    flexShrink: 0,
+                  }}
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </span>
+                <h3
+                  style={{
+                    margin: 0,
+                    fontFamily: '"Roboto Slab", Georgia, serif',
+                    fontWeight: 900,
+                    fontSize: isMobile ? "0.8rem" : "0.95rem",
+                    letterSpacing: "0.08em",
+                    color: "#f5b860",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {COPY[lang].homeBoxHeading}
+                </h3>
+              </div>
+              <p
+                style={{
+                  margin: "0.25rem 0 0",
+                  fontFamily: '"Work Sans", sans-serif',
+                  fontWeight: 500,
+                  fontSize: isMobile ? "0.8rem" : "0.9rem",
+                  lineHeight: 1.3,
+                  color: "#ffffff",
+                }}
+              >
+                {COPY[lang].homeBoxBody}
+              </p>
+              <a
+                href="#homeowner-video"
+                style={{
+                  display: "inline-block",
+                  marginTop: "0.55rem",
+                  background: "#e8a04a",
+                  color: "#0f1830",
+                  textDecoration: "none",
+                  fontWeight: 800,
+                  fontSize: isMobile ? "0.72rem" : "0.78rem",
+                  letterSpacing: "0.05em",
+                  textTransform: "uppercase",
+                  padding: "7px 16px",
+                  borderRadius: 999,
+                }}
+              >
+                {COPY[lang].appBoxBtn}
+              </a>
+            </div>
           </div>
 
-          {/* Homeowner video box */}
+          {/* Security box */}
           <a
-            href="#homeowner-video"
+            href="/security-faq"
             style={{
               display: "block",
               textDecoration: "none",
@@ -471,45 +495,19 @@ export default function HeroIntro() {
               e.currentTarget.style.transform = "scale(1)";
             }}
           >
-            <div
+            <h3
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.6rem",
-                justifyContent: "center",
+                margin: 0,
+                fontFamily: '"Roboto Slab", Georgia, serif',
+                fontWeight: 900,
+                fontSize: isMobile ? "0.8rem" : "0.95rem",
+                letterSpacing: "0.08em",
+                color: "#f5b860",
+                textTransform: "uppercase",
               }}
             >
-              <span
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: 30,
-                  height: 30,
-                  borderRadius: "50%",
-                  background: "#e8a04a",
-                  color: "#0f1830",
-                  flexShrink: 0,
-                }}
-              >
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </span>
-              <h3
-                style={{
-                  margin: 0,
-                  fontFamily: '"Roboto Slab", Georgia, serif',
-                  fontWeight: 900,
-                  fontSize: isMobile ? "0.8rem" : "0.95rem",
-                  letterSpacing: "0.08em",
-                  color: "#f5b860",
-                  textTransform: "uppercase",
-                }}
-              >
-                {COPY[lang].homeBoxHeading}
-              </h3>
-            </div>
+              {COPY[lang].secBoxHeading}
+            </h3>
             <p
               style={{
                 margin: "0.25rem 0 0",
@@ -520,13 +518,11 @@ export default function HeroIntro() {
                 color: "#ffffff",
               }}
             >
-              {COPY[lang].homeBoxBody}
+              {COPY[lang].secBoxBody}
             </p>
             <span
               style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "0.5rem",
+                display: "inline-block",
                 marginTop: "0.55rem",
                 background: "#e8a04a",
                 color: "#0f1830",
@@ -539,7 +535,7 @@ export default function HeroIntro() {
                 borderRadius: 999,
               }}
             >
-              {COPY[lang].appBoxBtn}
+              {COPY[lang].secBoxBtn}
             </span>
           </a>
 
