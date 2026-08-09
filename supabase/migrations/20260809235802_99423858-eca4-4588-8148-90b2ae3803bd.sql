@@ -1,0 +1,10 @@
+DELETE FROM public.client_sos_alerts;
+DELETE FROM public.client_documents;
+DELETE FROM public.client_contacts;
+DELETE FROM public.client_pet_rescue;
+DELETE FROM public.client_detention_info;
+DELETE FROM public.client_update_requests;
+DELETE FROM public.app_clients;
+DELETE FROM public.intake_delivery_log;
+DELETE FROM public.emergency_activations;
+DELETE FROM public.case_tracking;
