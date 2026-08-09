@@ -4,6 +4,7 @@ import HeroIntro from "@/components/HeroIntro";
 import ProblemSolutionSection from "@/components/ProblemSolutionSection";
 import HowItWorksVideoSection from "@/components/HowItWorksVideoSection";
 import AdVideoSection from "@/components/AdVideoSection";
+import SecurityVideoSection from "@/components/SecurityVideoSection";
 
 const DEFENDER_HOSTS = new Set([
   "defendermicasa.com",
@@ -59,7 +60,9 @@ export const Route = createFileRoute("/")({
       <HeroIntro />
       <HowItWorksVideoSection />
       <AdVideoSection />
+      <SecurityVideoSection />
       <ProblemSolutionSection />
+
       <SiteShell />
     </>
   ),
