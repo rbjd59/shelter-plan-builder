@@ -228,8 +228,8 @@ export default function HeroIntro() {
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            padding: isMobile ? "2rem 0" : "3rem 0",
-            gap: isMobile ? "1.25rem" : "1.75rem",
+            padding: isMobile ? "0.75rem 0" : "1.25rem 0",
+            gap: isMobile ? "0.9rem" : "1.1rem",
           }}
         >
           <div>
