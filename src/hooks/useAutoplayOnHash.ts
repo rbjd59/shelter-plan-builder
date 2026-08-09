@@ -15,6 +15,8 @@ export function useAutoplayOnHash(id: string, play: () => void) {
       if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
       // give the DOM a beat so the <video> element is mounted
       window.setTimeout(() => play(), 350);
+      window.setTimeout(() => play(), 1200);
+      window.setTimeout(() => play(), 2500);
     };
 
     const t = window.setTimeout(run, 120);
