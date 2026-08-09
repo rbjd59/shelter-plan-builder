@@ -19,6 +19,7 @@ const COPY = {
     secBoxBtn: "Más sobre seguridad",
     appBoxHeading: "App gratuita para el teléfono",
     appBoxBody: "Notifica al instante a tus contactos y abogado si enfrentas un arresto.",
+    appBoxBtn: "Mira el video",
     disclaimer:
       "DetencionDefensa.com proporciona software de admisión seguro, traducción y servicios automatizados de preparación de documentos. No somos una firma de abogados y no proporcionamos asesoramiento legal.",
   },
