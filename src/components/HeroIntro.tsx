@@ -404,10 +404,10 @@ export default function HeroIntro() {
             style={{
               display: "grid",
               gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-              gap: isMobile ? "0.9rem" : "1.5rem",
+              gap: isMobile ? "0.75rem" : "1.25rem",
               maxWidth: 1100,
               width: "100%",
-              margin: "1.25rem auto 0",
+              margin: "1rem auto 0",
             }}
           >
             <div
