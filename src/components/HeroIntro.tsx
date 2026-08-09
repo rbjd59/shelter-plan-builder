@@ -313,7 +313,7 @@ export default function HeroIntro() {
               gap: isMobile ? "0.6rem" : "0.9rem",
               maxWidth: 860,
               width: "100%",
-              margin: "calc(1.8rem + 24px) auto 0",
+              margin: "calc(2.5rem + 40px) auto 0",
             }}
           >
             <div
