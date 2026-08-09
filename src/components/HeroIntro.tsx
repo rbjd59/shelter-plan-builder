@@ -349,7 +349,7 @@ export default function HeroIntro() {
                   fontWeight: 900,
                   fontSize: isMobile ? "1.05rem" : "0.95rem",
                   letterSpacing: "0.08em",
-                  color: "#f5b860",
+                  color: "#ff3b3b",
                   textTransform: "uppercase",
                 }}
               >
@@ -413,7 +413,7 @@ export default function HeroIntro() {
                     fontWeight: 900,
                     fontSize: isMobile ? "1.05rem" : "0.95rem",
                     letterSpacing: "0.08em",
-                    color: "#f5b860",
+                    color: "#ff3b3b",
                     textTransform: "uppercase",
                   }}
                 >
@@ -485,7 +485,7 @@ export default function HeroIntro() {
                 fontWeight: 900,
                 fontSize: isMobile ? "1.05rem" : "0.95rem",
                 letterSpacing: "0.08em",
-                color: "#f5b860",
+                color: "#ff3b3b",
                 textTransform: "uppercase",
               }}
             >
