@@ -73,6 +73,7 @@ import { Route as AdminAdminInviteCodesRouteImport } from './routes/_admin/admin
 import { Route as AdminAdminEmailsRouteImport } from './routes/_admin/admin.emails'
 import { Route as AdminAdminDeliveriesRouteImport } from './routes/_admin/admin.deliveries'
 import { Route as AdminAdminClientsRouteImport } from './routes/_admin/admin.clients'
+import { Route as AdminAdminAppReleaseRouteImport } from './routes/_admin/admin.app-release'
 import { Route as AdminAdminAlertsRouteImport } from './routes/_admin/admin.alerts'
 import { Route as AdminAdminActivationsRouteImport } from './routes/_admin/admin.activations'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
@@ -414,6 +415,11 @@ const AdminAdminClientsRoute = AdminAdminClientsRouteImport.update({
   path: '/clients',
   getParentRoute: () => AdminAdminRoute,
 } as any)
+const AdminAdminAppReleaseRoute = AdminAdminAppReleaseRouteImport.update({
+  id: '/app-release',
+  path: '/app-release',
+  getParentRoute: () => AdminAdminRoute,
+} as any)
 const AdminAdminAlertsRoute = AdminAdminAlertsRouteImport.update({
   id: '/alerts',
   path: '/alerts',
@@ -574,6 +580,7 @@ export interface FileRoutesByFullPath {
   '/track/$token': typeof TrackTokenRoute
   '/admin/activations': typeof AdminAdminActivationsRoute
   '/admin/alerts': typeof AdminAdminAlertsRoute
+  '/admin/app-release': typeof AdminAdminAppReleaseRoute
   '/admin/clients': typeof AdminAdminClientsRouteWithChildren
   '/admin/deliveries': typeof AdminAdminDeliveriesRoute
   '/admin/emails': typeof AdminAdminEmailsRoute
@@ -657,6 +664,7 @@ export interface FileRoutesByTo {
   '/track/$token': typeof TrackTokenRoute
   '/admin/activations': typeof AdminAdminActivationsRoute
   '/admin/alerts': typeof AdminAdminAlertsRoute
+  '/admin/app-release': typeof AdminAdminAppReleaseRoute
   '/admin/clients': typeof AdminAdminClientsRouteWithChildren
   '/admin/deliveries': typeof AdminAdminDeliveriesRoute
   '/admin/emails': typeof AdminAdminEmailsRoute
@@ -744,6 +752,7 @@ export interface FileRoutesById {
   '/track/$token': typeof TrackTokenRoute
   '/_admin/admin/activations': typeof AdminAdminActivationsRoute
   '/_admin/admin/alerts': typeof AdminAdminAlertsRoute
+  '/_admin/admin/app-release': typeof AdminAdminAppReleaseRoute
   '/_admin/admin/clients': typeof AdminAdminClientsRouteWithChildren
   '/_admin/admin/deliveries': typeof AdminAdminDeliveriesRoute
   '/_admin/admin/emails': typeof AdminAdminEmailsRoute
@@ -829,6 +838,7 @@ export interface FileRouteTypes {
     | '/track/$token'
     | '/admin/activations'
     | '/admin/alerts'
+    | '/admin/app-release'
     | '/admin/clients'
     | '/admin/deliveries'
     | '/admin/emails'
@@ -912,6 +922,7 @@ export interface FileRouteTypes {
     | '/track/$token'
     | '/admin/activations'
     | '/admin/alerts'
+    | '/admin/app-release'
     | '/admin/clients'
     | '/admin/deliveries'
     | '/admin/emails'
@@ -998,6 +1009,7 @@ export interface FileRouteTypes {
     | '/track/$token'
     | '/_admin/admin/activations'
     | '/_admin/admin/alerts'
+    | '/_admin/admin/app-release'
     | '/_admin/admin/clients'
     | '/_admin/admin/deliveries'
     | '/_admin/admin/emails'
@@ -1550,6 +1562,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminClientsRouteImport
       parentRoute: typeof AdminAdminRoute
     }
+    '/_admin/admin/app-release': {
+      id: '/_admin/admin/app-release'
+      path: '/app-release'
+      fullPath: '/admin/app-release'
+      preLoaderRoute: typeof AdminAdminAppReleaseRouteImport
+      parentRoute: typeof AdminAdminRoute
+    }
     '/_admin/admin/alerts': {
       id: '/_admin/admin/alerts'
       path: '/alerts'
@@ -1707,6 +1726,7 @@ const AdminAdminClientsRouteWithChildren =
 interface AdminAdminRouteChildren {
   AdminAdminActivationsRoute: typeof AdminAdminActivationsRoute
   AdminAdminAlertsRoute: typeof AdminAdminAlertsRoute
+  AdminAdminAppReleaseRoute: typeof AdminAdminAppReleaseRoute
   AdminAdminClientsRoute: typeof AdminAdminClientsRouteWithChildren
   AdminAdminDeliveriesRoute: typeof AdminAdminDeliveriesRoute
   AdminAdminEmailsRoute: typeof AdminAdminEmailsRoute
@@ -1719,6 +1739,7 @@ interface AdminAdminRouteChildren {
 const AdminAdminRouteChildren: AdminAdminRouteChildren = {
   AdminAdminActivationsRoute: AdminAdminActivationsRoute,
   AdminAdminAlertsRoute: AdminAdminAlertsRoute,
+  AdminAdminAppReleaseRoute: AdminAdminAppReleaseRoute,
   AdminAdminClientsRoute: AdminAdminClientsRouteWithChildren,
   AdminAdminDeliveriesRoute: AdminAdminDeliveriesRoute,
   AdminAdminEmailsRoute: AdminAdminEmailsRoute,
@@ -1858,3 +1879,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
