@@ -16,6 +16,7 @@ const COPY = {
     watchVideo: "Mira un video de un minuto",
     secBoxHeading: "Seguridad de primera clase",
     secBoxBody: "Diseñada con la privacidad y la seguridad en su núcleo.",
+    secBoxBtn: "Más sobre seguridad",
     appBoxHeading: "App gratuita para el teléfono",
     appBoxBody: "Notifica al instante a tus contactos y abogado si enfrentas un arresto.",
     disclaimer:
@@ -31,6 +32,7 @@ const COPY = {
     watchVideo: "Watch a one-minute video",
     secBoxHeading: "Best in class security",
     secBoxBody: "Designed with privacy and security at its very core.",
+    secBoxBtn: "More on security",
     appBoxHeading: "Free app for phone",
     appBoxBody: "Instantly notify contacts and attorney if faced with arrest.",
     disclaimer:
@@ -46,6 +48,7 @@ const COPY = {
     watchVideo: "Gade yon videyo yon minit",
     secBoxHeading: "Sekirite pi bon klas",
     secBoxBody: "Fèt ak vi prive ak sekirite kòm nwayo li.",
+    secBoxBtn: "Plis sou sekirite",
     appBoxHeading: "App gratis pou telefòn",
     appBoxBody: "Fè kontak ak avoka w konnen imedyatman si yo arete w.",
     disclaimer:
@@ -53,7 +56,7 @@ const COPY = {
   },
 } satisfies Record<
   Lang,
-  { plan: string; price: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; appBoxHeading: string; appBoxBody: string; disclaimer: string }
+  { plan: string; price: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; appBoxHeading: string; appBoxBody: string; disclaimer: string }
 >;
 
 function PriceWithX({ prefix, price }: { prefix: string; price: string }) {
