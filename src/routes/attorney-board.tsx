@@ -132,7 +132,9 @@ function AttorneyBoard({ pin }: { pin: string }) {
                             {r.latest_alert.cancelled_at ? " (cancelled)" : ""}
                           </span>
                         ) : (
-                          <span className="text-slate-400">—</span>
+                          <span className="rounded bg-slate-100 px-2 py-1 font-semibold text-slate-600">
+                            New signup — no trigger
+                          </span>
                         )}
                       </td>
                       <td className="px-4 py-2 text-right">
