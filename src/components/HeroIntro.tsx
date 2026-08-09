@@ -224,7 +224,7 @@ export default function HeroIntro() {
             <h1
               style={{
                 fontFamily: '"Roboto Slab", Georgia, serif',
-                fontSize: isMobile ? (lang === "es" ? "1.9rem" : "1.5rem") : (lang === "es" ? "clamp(2.5rem, 6.2vw, 4.2rem)" : "clamp(1.8rem, 4vw, 2.9rem)"),
+                fontSize: isMobile ? (lang === "es" ? "1.3rem" : "1.1rem") : (lang === "es" ? "clamp(1.7rem, 3.4vw, 2.5rem)" : "clamp(1.25rem, 2.6vw, 1.9rem)"),
                 fontWeight: 700,
                 lineHeight: lang === "es" ? 1.05 : 1.1,
                 margin: 0,
@@ -270,7 +270,7 @@ export default function HeroIntro() {
           >
             <p
               style={{
-                fontSize: isMobile ? "1.35rem" : "clamp(1.6rem, 3.8vw, 2.7rem)",
+                fontSize: isMobile ? "1.5rem" : "clamp(2rem, 5vw, 3.4rem)",
                 lineHeight: 1.15,
                 fontWeight: 800,
                 color: "#ffffff",
@@ -285,7 +285,7 @@ export default function HeroIntro() {
             <p
               style={{
                 fontFamily: '"Roboto Slab", Georgia, serif',
-                fontSize: isMobile ? "1.1rem" : "clamp(1.2rem, 2.6vw, 1.9rem)",
+                fontSize: isMobile ? "1.25rem" : "clamp(1.4rem, 3vw, 2.2rem)",
                 lineHeight: 1.2,
                 fontWeight: 800,
                 color: "#ef4444",
