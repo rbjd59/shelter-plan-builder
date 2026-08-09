@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLang } from "@/context/LanguageContext";
+import { useAutoplayOnHash } from "@/hooks/useAutoplayOnHash";
 import { PlayOverlay } from "@/components/AdVideoSection";
 import enAd from "@/assets/videos/employers-churches-en-v2.mp4.asset.json";
 import esAd from "@/assets/videos/employers-churches-es-v2.mp4.asset.json";
@@ -60,6 +61,8 @@ export default function EmployerVideoSection() {
       setStarted(true);
     }
   };
+
+  useAutoplayOnHash("employer-video", handlePlay);
 
   return (
     <section

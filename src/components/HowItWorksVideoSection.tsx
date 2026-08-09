@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { useLang } from "@/context/LanguageContext";
+import { useAutoplayOnHash } from "@/hooks/useAutoplayOnHash";
 import enAsset from "@/assets/videos/how-it-works-en-v3.mp4.asset.json";
 import esAsset from "@/assets/videos/how-it-works-es-v3.mp4.asset.json";
 import htAsset from "@/assets/videos/how-it-works-ht-v3.mp4.asset.json";
@@ -44,6 +45,8 @@ export default function HowItWorksVideoSection() {
       setStarted(true);
     }
   };
+
+  useAutoplayOnHash("how-it-works-video", handlePlay);
 
   return (
     <section
