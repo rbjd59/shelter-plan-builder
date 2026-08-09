@@ -142,24 +142,7 @@ export default function AdVideoSection() {
             maxWidth: 760,
           }}
         >
-          {TRUST_SUBLINE[lang] ?? TRUST_SUBLINE.en}{" "}
-          <a
-            href="https://savemyhometrust.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: "inline-block",
-              background: "#e8a04a",
-              color: "#0f1830",
-              padding: "0.5rem 1rem",
-              borderRadius: 6,
-              fontWeight: 700,
-              textDecoration: "none",
-              marginTop: 6,
-            }}
-          >
-            savemyhometrust.com
-          </a>
+          {TRUST_SUBLINE[lang] ?? TRUST_SUBLINE.en}
         </p>
         <div
           style={{
