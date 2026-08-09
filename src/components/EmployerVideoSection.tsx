@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useLang } from "@/context/LanguageContext";
 import { PlayOverlay } from "@/components/AdVideoSection";
-import enAd from "@/assets/videos/employers-churches-en-v1.mp4.asset.json";
-import esAd from "@/assets/videos/employers-churches-es-v1.mp4.asset.json";
-import htAd from "@/assets/videos/employers-churches-ht-v1.mp4.asset.json";
+import enAd from "@/assets/videos/employers-churches-en-v2.mp4.asset.json";
+import esAd from "@/assets/videos/employers-churches-es-v2.mp4.asset.json";
+import htAd from "@/assets/videos/employers-churches-ht-v2.mp4.asset.json";
 
 const SRC: Record<string, string> = {
   en: enAd.url,
