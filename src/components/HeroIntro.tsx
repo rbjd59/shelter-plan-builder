@@ -386,6 +386,124 @@ export default function HeroIntro() {
             </div>
           </div>
 
+          {/* CTA buttons */}
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              alignItems: "flex-start",
+              gap: isMobile ? "1.25rem" : "2rem",
+              marginTop: "1.25rem",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "0.45rem",
+              }}
+            >
+              <a
+                href="#how-it-works-video"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: isMobile ? "0.7rem 1.6rem" : "0.9rem 2.2rem",
+                  borderRadius: 999,
+                  border: "2px solid #e8a04a",
+                  background: "#e8a04a",
+                  color: "#112e51",
+                  fontWeight: 800,
+                  fontSize: isMobile ? "0.9rem" : "1.02rem",
+                  letterSpacing: "0.01em",
+                  textDecoration: "none",
+                  fontFamily: "inherit",
+                  boxShadow: "0 4px 16px rgba(0,0,0,0.35)",
+                  transition: "transform 0.15s ease, box-shadow 0.15s ease",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = "0 8px 22px rgba(0,0,0,0.45)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.35)";
+                }}
+              >
+                {COPY[lang].btn1}
+              </a>
+              <span
+                style={{
+                  fontFamily: '"Work Sans", sans-serif',
+                  fontSize: isMobile ? "0.72rem" : "0.82rem",
+                  fontWeight: 600,
+                  color: "rgba(255,255,255,0.9)",
+                  textShadow: "0 1px 4px rgba(0,0,0,0.6)",
+                  textAlign: "center",
+                }}
+              >
+                ▶ {COPY[lang].watchVideo}
+              </span>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "0.45rem",
+              }}
+            >
+              <a
+                href="#homeowner-video"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: isMobile ? "0.7rem 1.6rem" : "0.9rem 2.2rem",
+                  borderRadius: 999,
+                  border: "2px solid #ffffff",
+                  background: "transparent",
+                  color: "#ffffff",
+                  fontWeight: 800,
+                  fontSize: isMobile ? "0.9rem" : "1.02rem",
+                  letterSpacing: "0.01em",
+                  textDecoration: "none",
+                  fontFamily: "inherit",
+                  boxShadow: "0 4px 16px rgba(0,0,0,0.35)",
+                  transition: "transform 0.15s ease, box-shadow 0.15s ease",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = "0 8px 22px rgba(0,0,0,0.45)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.35)";
+                }}
+              >
+                {COPY[lang].btn2}
+              </a>
+              <span
+                style={{
+                  fontFamily: '"Work Sans", sans-serif',
+                  fontSize: isMobile ? "0.72rem" : "0.82rem",
+                  fontWeight: 600,
+                  color: "rgba(255,255,255,0.9)",
+                  textShadow: "0 1px 4px rgba(0,0,0,0.6)",
+                  textAlign: "center",
+                }}
+              >
+                ▶ {COPY[lang].watchVideo}
+              </span>
+            </div>
+          </div>
+
         </div>
 
         {/* Bottom notice */}
