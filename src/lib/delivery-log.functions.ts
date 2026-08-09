@@ -25,7 +25,7 @@ export interface DeliveryRow {
   error_message: string | null;
   duration_ms: number | null;
   created_at: string;
-  metadata: Record<string, unknown> | null;
+  metadata: Record<string, string | number | boolean | null> | null;
 }
 
 export interface DeliveryCase {
