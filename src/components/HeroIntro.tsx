@@ -476,7 +476,7 @@ export default function HeroIntro() {
                 display: "flex",
                 alignItems: "center",
                 gap: "0.6rem",
-                justifyContent: isMobile ? "center" : "flex-start",
+                justifyContent: "center",
               }}
             >
               <span
