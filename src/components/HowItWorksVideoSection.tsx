@@ -1,8 +1,8 @@
 import { useRef, useState, useEffect } from "react";
 import { useLang } from "@/context/LanguageContext";
-import enAsset from "@/assets/videos/how-it-works-en-v2.mp4.asset.json";
-import esAsset from "@/assets/videos/how-it-works-es-v2.mp4.asset.json";
-import htAsset from "@/assets/videos/how-it-works-ht-v2.mp4.asset.json";
+import enAsset from "@/assets/videos/how-it-works-en-v3.mp4.asset.json";
+import esAsset from "@/assets/videos/how-it-works-es-v3.mp4.asset.json";
+import htAsset from "@/assets/videos/how-it-works-ht-v3.mp4.asset.json";
 import { PlayOverlay } from "@/components/AdVideoSection";
 
 const SRC: Record<string, string> = { en: enAsset.url, es: esAsset.url, ht: htAsset.url };
