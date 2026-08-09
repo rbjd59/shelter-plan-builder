@@ -60,7 +60,9 @@ export const Route = createFileRoute("/")({
       <HeroIntro />
       <HowItWorksVideoSection />
       <AdVideoSection />
+      <SecurityVideoSection />
       <ProblemSolutionSection />
+
       <SiteShell />
     </>
   ),
