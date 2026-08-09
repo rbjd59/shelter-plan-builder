@@ -19,6 +19,7 @@ const COPY = {
     secBoxBtn: "Más sobre seguridad",
     appBoxHeading: "App gratuita para el teléfono",
     appBoxBody: "Notifica al instante a tus contactos y abogado si enfrentas un arresto.",
+    appBoxBtn: "Mira el video",
     disclaimer:
       "DetencionDefensa.com proporciona software de admisión seguro, traducción y servicios automatizados de preparación de documentos. No somos una firma de abogados y no proporcionamos asesoramiento legal.",
   },
@@ -35,6 +36,7 @@ const COPY = {
     secBoxBtn: "More on security",
     appBoxHeading: "Free app for phone",
     appBoxBody: "Instantly notify contacts and attorney if faced with arrest.",
+    appBoxBtn: "Watch the video",
     disclaimer:
       "DetencionDefensa.com provides secure admission software, translation, and automated document preparation services. We are not a law firm and do not provide legal advice.",
   },
@@ -51,12 +53,13 @@ const COPY = {
     secBoxBtn: "Plis sou sekirite",
     appBoxHeading: "App gratis pou telefòn",
     appBoxBody: "Fè kontak ak avoka w konnen imedyatman si yo arete w.",
+    appBoxBtn: "Gade videyo a",
     disclaimer:
       "DetencionDefensa.com ofri lojisyèl admisyon ki an sekirite, tradiksyon, ak sèvis preparasyon dokiman otomatik. Nou pa yon kabinè avoka e nou pa bay konsèy legal.",
   },
 } satisfies Record<
   Lang,
-  { plan: string; price: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; appBoxHeading: string; appBoxBody: string; disclaimer: string }
+  { plan: string; price: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; disclaimer: string }
 >;
 
 function PriceWithX({ prefix, price }: { prefix: string; price: string }) {
@@ -413,6 +416,24 @@ export default function HeroIntro() {
               >
                 {COPY[lang].appBoxBody}
               </p>
+              <a
+                href="#how-it-works-video"
+                style={{
+                  display: "inline-block",
+                  marginTop: "0.55rem",
+                  background: "#e8a04a",
+                  color: "#0f1830",
+                  textDecoration: "none",
+                  fontWeight: 800,
+                  fontSize: isMobile ? "0.72rem" : "0.78rem",
+                  letterSpacing: "0.05em",
+                  textTransform: "uppercase",
+                  padding: "7px 16px",
+                  borderRadius: 999,
+                }}
+              >
+                {COPY[lang].appBoxBtn}
+              </a>
             </div>
           </div>
 
