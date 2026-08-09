@@ -18,6 +18,7 @@ import { Route as SplashRouteImport } from './routes/splash'
 import { Route as SmsTermsRouteImport } from './routes/sms-terms'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SentinelTrustRouteImport } from './routes/sentinel-trust'
+import { Route as SecurityFaqRouteImport } from './routes/security-faq'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as RetainerRouteImport } from './routes/retainer'
 import { Route as QualifyRouteImport } from './routes/qualify'
@@ -133,6 +134,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const SentinelTrustRoute = SentinelTrustRouteImport.update({
   id: '/sentinel-trust',
   path: '/sentinel-trust',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SecurityFaqRoute = SecurityFaqRouteImport.update({
+  id: '/security-faq',
+  path: '/security-faq',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SecurityRoute = SecurityRouteImport.update({
@@ -524,6 +530,7 @@ export interface FileRoutesByFullPath {
   '/qualify': typeof QualifyRoute
   '/retainer': typeof RetainerRoute
   '/security': typeof SecurityRoute
+  '/security-faq': typeof SecurityFaqRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sms-terms': typeof SmsTermsRoute
@@ -603,6 +610,7 @@ export interface FileRoutesByTo {
   '/qualify': typeof QualifyRoute
   '/retainer': typeof RetainerRoute
   '/security': typeof SecurityRoute
+  '/security-faq': typeof SecurityFaqRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sms-terms': typeof SmsTermsRoute
@@ -686,6 +694,7 @@ export interface FileRoutesById {
   '/qualify': typeof QualifyRoute
   '/retainer': typeof RetainerRoute
   '/security': typeof SecurityRoute
+  '/security-faq': typeof SecurityFaqRoute
   '/sentinel-trust': typeof SentinelTrustRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sms-terms': typeof SmsTermsRoute
@@ -767,6 +776,7 @@ export interface FileRouteTypes {
     | '/qualify'
     | '/retainer'
     | '/security'
+    | '/security-faq'
     | '/sentinel-trust'
     | '/sitemap.xml'
     | '/sms-terms'
@@ -846,6 +856,7 @@ export interface FileRouteTypes {
     | '/qualify'
     | '/retainer'
     | '/security'
+    | '/security-faq'
     | '/sentinel-trust'
     | '/sitemap.xml'
     | '/sms-terms'
@@ -928,6 +939,7 @@ export interface FileRouteTypes {
     | '/qualify'
     | '/retainer'
     | '/security'
+    | '/security-faq'
     | '/sentinel-trust'
     | '/sitemap.xml'
     | '/sms-terms'
@@ -1011,6 +1023,7 @@ export interface RootRouteChildren {
   QualifyRoute: typeof QualifyRoute
   RetainerRoute: typeof RetainerRoute
   SecurityRoute: typeof SecurityRoute
+  SecurityFaqRoute: typeof SecurityFaqRoute
   SentinelTrustRoute: typeof SentinelTrustRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SmsTermsRoute: typeof SmsTermsRoute
@@ -1111,6 +1124,13 @@ declare module '@tanstack/react-router' {
       path: '/sentinel-trust'
       fullPath: '/sentinel-trust'
       preLoaderRoute: typeof SentinelTrustRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/security-faq': {
+      id: '/security-faq'
+      path: '/security-faq'
+      fullPath: '/security-faq'
+      preLoaderRoute: typeof SecurityFaqRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/security': {
@@ -1733,6 +1753,7 @@ const rootRouteChildren: RootRouteChildren = {
   QualifyRoute: QualifyRoute,
   RetainerRoute: RetainerRoute,
   SecurityRoute: SecurityRoute,
+  SecurityFaqRoute: SecurityFaqRoute,
   SentinelTrustRoute: SentinelTrustRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SmsTermsRoute: SmsTermsRoute,
