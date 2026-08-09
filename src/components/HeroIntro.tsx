@@ -396,7 +396,7 @@ export default function HeroIntro() {
                 border: "1px solid rgba(232,160,74,0.7)",
                 borderRadius: 12,
                 padding: isMobile ? "0.75rem 0.9rem" : "0.85rem 1.1rem",
-                textAlign: isMobile ? "center" : "left",
+                textAlign: "center",
                 boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
               }}
             >
