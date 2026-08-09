@@ -98,7 +98,7 @@ export default function HowItWorksVideoSection() {
           {!started && <PlayOverlay onClick={handlePlay} />}
         </div>
         <a
-          href="/signup"
+          href="/intake"
           style={{
             display: "inline-block",
             marginTop: "1.75rem",
