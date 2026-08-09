@@ -97,6 +97,23 @@ export default function HowItWorksVideoSection() {
           />
           {!started && <PlayOverlay onClick={handlePlay} />}
         </div>
+        <a
+          href="/signup"
+          style={{
+            display: "inline-block",
+            marginTop: "1.75rem",
+            background: "#e8a04a",
+            color: "#0f1830",
+            padding: "0.9rem 2.4rem",
+            borderRadius: 999,
+            fontWeight: 800,
+            fontSize: "1.1rem",
+            textDecoration: "none",
+            boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
+          }}
+        >
+          {CTA[lang] ?? CTA.en}
+        </a>
       </div>
     </section>
   );
