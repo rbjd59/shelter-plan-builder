@@ -13,6 +13,12 @@ const HEADING: Record<string, string> = {
   ht: "Kijan Li Fonksyone",
 };
 
+const CTA: Record<string, string> = {
+  en: "Start Now →",
+  es: "Comience Ahora →",
+  ht: "Kòmanse Kounye a →",
+};
+
 export default function HowItWorksVideoSection() {
   const { lang } = useLang();
   const videoRef = useRef<HTMLVideoElement>(null);
