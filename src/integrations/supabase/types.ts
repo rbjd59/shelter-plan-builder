@@ -863,6 +863,48 @@ export type Database = {
         }
         Relationships: []
       }
+      intake_delivery_log: {
+        Row: {
+          activation_code: string | null
+          client_id: string | null
+          created_at: string
+          duration_ms: number | null
+          error_message: string | null
+          id: string
+          intake_session_id: string | null
+          metadata: Json
+          status: string
+          step: string
+          target: string | null
+        }
+        Insert: {
+          activation_code?: string | null
+          client_id?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          id?: string
+          intake_session_id?: string | null
+          metadata?: Json
+          status?: string
+          step: string
+          target?: string | null
+        }
+        Update: {
+          activation_code?: string | null
+          client_id?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          id?: string
+          intake_session_id?: string | null
+          metadata?: Json
+          status?: string
+          step?: string
+          target?: string | null
+        }
+        Relationships: []
+      }
       intake_drafts: {
         Row: {
           answers: Json
