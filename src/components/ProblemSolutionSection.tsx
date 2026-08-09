@@ -53,6 +53,7 @@ const COPY: Record<Lang, {
       "Ou pa ka peye milye dola pou yon avoka.",
     ],
     solutionLabel: "Solisyon an: DetencionDefensa",
+    watchMore: "Gade Plis Videyo",
     solutions: [
       "DetencionDefensa ba w yon bouton dijans sou telefòn ou.",
       "Si ICE oswa lapolis rive, peze bouton an pandan 3 segond.",
