@@ -101,7 +101,7 @@ export default function HeroIntro() {
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         color: "#ffffff",
-        minHeight: "85vh",
+        minHeight: "78vh",
         display: "flex",
         flexDirection: "column",
         fontFamily:
@@ -228,8 +228,8 @@ export default function HeroIntro() {
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            padding: isMobile ? "2rem 0" : "3rem 0",
-            gap: isMobile ? "1.25rem" : "1.75rem",
+            padding: isMobile ? "0.75rem 0" : "1.25rem 0",
+            gap: isMobile ? "0.9rem" : "1.1rem",
           }}
         >
           <div>
@@ -311,7 +311,7 @@ export default function HeroIntro() {
 
           <p
             style={{
-              margin: isMobile ? "2rem auto 0.25rem" : "2.5rem auto 0.5rem",
+              margin: isMobile ? "0.25rem auto 0.15rem" : "0.35rem auto 0.4rem",
               maxWidth: 1100,
               width: "100%",
               fontFamily: '"Roboto Slab", Georgia, serif',
@@ -331,8 +331,8 @@ export default function HeroIntro() {
               display: "flex",
               flexWrap: "wrap",
               justifyContent: "center",
-              gap: isMobile ? "0.9rem" : "1.5rem",
-              marginTop: "0.75rem",
+              gap: isMobile ? "0.75rem" : "1.25rem",
+              marginTop: "0.25rem",
             }}
           >
             <a
@@ -404,10 +404,10 @@ export default function HeroIntro() {
             style={{
               display: "grid",
               gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-              gap: isMobile ? "0.9rem" : "1.5rem",
+              gap: isMobile ? "0.75rem" : "1.25rem",
               maxWidth: 1100,
               width: "100%",
-              margin: "1.25rem auto 0",
+              margin: "1rem auto 0",
             }}
           >
             <div
