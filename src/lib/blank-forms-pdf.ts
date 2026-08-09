@@ -351,6 +351,7 @@ async function vehicleImpound(lang: Lang) {
     ctx,
     pick({ en: "VEHICLE IMPOUND RELEASE AUTHORIZATION", es: "AUTORIZACIÓN PARA LIBERAR VEHÍCULO DEL DEPÓSITO", ht: "OTORIZASYON POU LIBERE MACHIN NAN DEPO" }, lang),
     pick({ en: "To be presented to a police, municipal, or private tow / impound lot", es: "Para presentar a un depósito policial, municipal o privado de grúas", ht: "Pou prezante bay yon depo lapolis, minisipal, oswa prive" }, lang),
+    BANNER[lang],
   );
   field(ctx, pick({ en: "Registered owner (full name):", es: "Propietario registrado (nombre completo):", ht: "Pwopriyetè anrejistre (non konplè):" }, lang), 0.95);
   field(ctx, pick({ en: "Driver license / ID number:", es: "Licencia / número de identificación:", ht: "Lisans / nimewo ID:" }, lang), 0.9);
@@ -383,6 +384,7 @@ async function bankAccess(lang: Lang) {
     ctx,
     pick({ en: "BANK ACCOUNT ACCESS AUTHORIZATION", es: "AUTORIZACIÓN DE ACCESO A CUENTA BANCARIA", ht: "OTORIZASYON POU AKSÈ KONT LABANK" }, lang),
     pick({ en: "To be presented to the financial institution", es: "Para presentar a la institución financiera", ht: "Pou prezante bay enstitisyon finansye a" }, lang),
+    BANNER[lang],
   );
   field(ctx, pick({ en: "Account holder (full name):", es: "Titular de la cuenta (nombre completo):", ht: "Moun ki gen kont lan (non konplè):" }, lang), 0.95);
   field(ctx, pick({ en: "Address / phone:", es: "Dirección / teléfono:", ht: "Adrès / telefòn:" }, lang), 0.95);
@@ -428,6 +430,7 @@ async function propertyAccess(lang: Lang) {
     ctx,
     pick({ en: "PROPERTY ACCESS PERMISSION", es: "PERMISO DE ACCESO A LA PROPIEDAD", ht: "PÈMISYON POU AKSÈ NAN PWOPRIYETE" }, lang),
     pick({ en: "To be presented to a landlord, property manager, storage facility, or law enforcement", es: "Para presentar al arrendador, administrador, bodega o autoridades", ht: "Pou prezante bay pwopriyetè, jesyonè, depo, oswa lapolis" }, lang),
+    BANNER[lang],
   );
   field(ctx, pick({ en: "Resident / owner (full name):", es: "Residente / propietario (nombre completo):", ht: "Rezidan / pwopriyetè (non konplè):" }, lang), 0.95);
   field(ctx, pick({ en: "Property address / unit:", es: "Dirección de la propiedad / unidad:", ht: "Adrès pwopriyete / inite:" }, lang), 0.95);
