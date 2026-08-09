@@ -2,6 +2,7 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import SiteShell from "@/components/SiteShell";
 import HeroIntro from "@/components/HeroIntro";
 import ProblemSolutionSection from "@/components/ProblemSolutionSection";
+import HowItWorksVideoSection from "@/components/HowItWorksVideoSection";
 
 const DEFENDER_HOSTS = new Set([
   "defendermicasa.com",
