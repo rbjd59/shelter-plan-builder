@@ -10,6 +10,7 @@ import { buildJs44Pdf } from "./js44.server";
 import { buildNativeCopies } from "./native-copies.server";
 import { buildBilingualForms } from "./bilingual-forms.server";
 import { buildMemorandumOfLawPdf } from "./memorandum-of-law.server";
+import { generateAllDocs } from "@/lib/readiness-pdf";
 import { createOrUpdateCaseTracking, sendWelcomeEmail } from "@/lib/case-tracking.server";
 import { buildSelfHelpLibraryHtml, buildSelfHelpLibraryText } from "@/lib/self-help-library";
 
@@ -46,6 +47,7 @@ interface UploadedUrls {
   bilingualIfpUrl: string | null;
   bilingualMotionUrl: string | null;
   bilingualJs44Url: string | null;
+  assetProtectionUrls: Array<{ label: string; url: string }>;
   errors: string[];
 }
 
@@ -62,6 +64,7 @@ async function uploadFormsAndSign(
     memorandumUrl: null,
     nativeHabeasUrl: null, nativeIfpUrl: null, nativeMotionUrl: null, nativeJs44Url: null,
     bilingualHabeasUrl: null, bilingualIfpUrl: null, bilingualMotionUrl: null, bilingualJs44Url: null,
+    assetProtectionUrls: [],
     errors,
   };
 
@@ -97,6 +100,21 @@ async function uploadFormsAndSign(
     ];
     if (js44) uploads.push({ key: "js44Url", path: `${sessionId}/JS44-Civil-Cover-Sheet.pdf`, bytes: js44 });
     if (memorandum) uploads.push({ key: "memorandumUrl", path: `${sessionId}/Memorandum-of-Law.pdf`, bytes: memorandum });
+    if (answers.addon_asset_protection === true || answers.addon_asset_protection === "yes") {
+      const readiness = await generateAllDocs(answers, lang, {
+        name: typeof answers.contact_name === "string" ? answers.contact_name : undefined,
+        phone: typeof answers.contact_phone === "string" ? answers.contact_phone : undefined,
+        email: typeof answers.contact_email === "string" ? answers.contact_email : undefined,
+        relationship: typeof answers.contact_relation === "string" ? answers.contact_relation : undefined,
+      });
+      for (const doc of readiness) {
+        const path = `${sessionId}/asset-protection/${doc.filename}`;
+        const uploaded = await supabaseAdmin.storage.from(FORMS_BUCKET).upload(path, doc.bytes, { contentType: "application/pdf", upsert: true });
+        if (uploaded.error) { errors.push(`${doc.filename} upload: ${uploaded.error.message}`); continue; }
+        const signed = await supabaseAdmin.storage.from(FORMS_BUCKET).createSignedUrl(path, SIGNED_URL_TTL_SECONDS);
+        if (signed.data?.signedUrl) out.assetProtectionUrls.push({ label: doc.filename, url: signed.data.signedUrl });
+      }
+    }
     if (native) {
       uploads.push(
         { key: "nativeHabeasUrl", path: `${sessionId}/AO242-${lang}-copy.pdf`, bytes: native.ao242 },
@@ -201,10 +219,11 @@ export async function enqueueIntakeNotification(params: {
     <p style="margin:0 0 10px;font-size:13px;color:#1a1a1a;"><strong>Official court forms (English — for filing):</strong></p>
     ${link(habeasUrl, "AO 242 — Petition for Writ of Habeas Corpus (28 U.S.C. § 2241).pdf")}
     ${link(memorandumUrl, "Memorandum of Law in Support of Petition (built from intake answers).pdf")}
-    <!-- AO 240 IFP attachment suppressed: intake no longer collects IFP financial questions. Form is still generated server-side but not surfaced until those questions are restored. -->
+    ${link(ifpUrl, "AO 240 — Application to Proceed In Forma Pauperis (blank official form).pdf")}
     ${link(referralUrl, "SDFL Motion for Referral to Volunteer Attorney Program.pdf")}
     ${link(js44Url, "JS-44 — Civil Cover Sheet.pdf")}
     ${brochureUrl ? `<p style="margin:8px 0 6px;"><a href="${brochureUrl}" style="color:#0a58ca;text-decoration:underline;font-size:14px;font-weight:600;">📘 INCLUDE WITH MAILED PACKAGE — Habeas Explainer (${language === "es" ? "Español" : "English"}, NIP guide).pdf</a></p>` : ""}
+    ${urls.assetProtectionUrls.length ? `<p style="margin:14px 0 8px;font-size:13px;"><strong>Asset Protection Package:</strong></p>${urls.assetProtectionUrls.map((d) => link(d.url, d.label)).join("")}` : ""}
     ${(bilingualHabeasUrl || bilingualIfpUrl || bilingualMotionUrl || bilingualJs44Url) ? `
       <p style="margin:14px 0 8px;font-size:13px;color:#1a1a1a;"><strong>Side-by-side bilingual forms (English left / ${escapeHtml(language)} right — for petitioner reference, NOT for filing):</strong></p>
       ${link(bilingualHabeasUrl, `AO 242 — bilingual (EN / ${language}).pdf`)}
@@ -270,6 +289,8 @@ Language: ${language}
 ${contactEmail ? `Contact: ${contactEmail}\n` : ""}
 ${habeasUrl ? `AO 242 Habeas: ${habeasUrl}` : "AO 242 Habeas: (unavailable)"}
 ${memorandumUrl ? `Memorandum of Law: ${memorandumUrl}` : "Memorandum of Law: (unavailable)"}
+${ifpUrl ? `AO 240 IFP: ${ifpUrl}` : "AO 240 IFP: (unavailable)"}
+${urls.assetProtectionUrls.map((d) => `${d.label}: ${d.url}`).join("\n")}
 
 ${referralUrl ? `Motion Ref:    ${referralUrl}` : ""}
 ${js44Url ? `JS-44:         ${js44Url}` : ""}

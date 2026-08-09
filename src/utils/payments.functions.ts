@@ -299,6 +299,7 @@ export const submitDemoIntake = createServerFn({ method: "POST" })
       answers: Record<string, unknown>;
       language: string;
       inviteCode?: string | null;
+      intakeSessionId?: string;
     }) => {
       if (!data.answers || typeof data.answers !== "object") throw new Error("Invalid answers");
       if (!["en", "es", "ht"].includes(data.language)) throw new Error("Invalid language");
@@ -306,9 +307,10 @@ export const submitDemoIntake = createServerFn({ method: "POST" })
     },
   )
   .handler(async ({ data }) => {
-    const sessionId = `demo-${crypto.randomUUID()}`;
+    const sessionId = data.intakeSessionId || `demo-${crypto.randomUUID()}`;
     const a = data.answers as Record<string, unknown>;
     const contactEmail =
+      (typeof a.client_email === "string" && a.client_email) ||
       (typeof a.contact_email === "string" && a.contact_email) || null;
 
     const { error } = await supabaseAdmin.from("intake_submissions").insert({
@@ -370,5 +372,5 @@ export const submitDemoIntake = createServerFn({ method: "POST" })
     }
 
 
-    return { ok: true, sessionId };
+    return { ok: true, sessionId, activationCode };
   });
