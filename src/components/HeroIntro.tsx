@@ -134,11 +134,13 @@ export default function HeroIntro() {
         <div
           style={{
             display: "flex",
+            flexDirection: isMobile ? "column" : "row",
             alignItems: "center",
-            justifyContent: "space-between",
-            gap: 12,
+            justifyContent: isMobile ? "center" : "space-between",
+            gap: isMobile ? 10 : 12,
             flexWrap: "wrap",
             paddingTop: 4,
+            textAlign: "center",
           }}
         >
           <a
@@ -151,6 +153,7 @@ export default function HeroIntro() {
               textDecoration: "none",
               color: "#ffffff",
               minWidth: 0,
+              justifyContent: "center",
             }}
           >
             <img
@@ -173,7 +176,7 @@ export default function HeroIntro() {
                 color: "#ffffff",
                 whiteSpace: "nowrap",
                 lineHeight: 1.2,
-                textAlign: "left",
+                textAlign: isMobile ? "center" : "left",
               }}
             >
               DetencionDefensa.com
@@ -182,23 +185,26 @@ export default function HeroIntro() {
 
           <div
             style={{
-              display: "inline-flex",
+              display: "flex",
               alignItems: "center",
               gap: 10,
               flexShrink: 0,
               flexWrap: "wrap",
-              justifyContent: "flex-end",
+              justifyContent: "center",
+              width: isMobile ? "100%" : "auto",
             }}
           >
             <div
               style={{
                 display: "inline-flex",
+                justifyContent: "center",
                 gap: 4,
                 background: "#fff",
                 border: "1px solid rgba(10,22,51,0.15)",
                 borderRadius: 999,
                 padding: 3,
                 flexShrink: 0,
+                maxWidth: "100%",
               }}
             >
               {(["es", "en", "ht"] as Lang[]).map((code) => (
@@ -216,7 +222,7 @@ export default function HeroIntro() {
                     padding: isMobile ? "6px 10px" : "8px 16px",
                     fontSize: isMobile ? 12 : 13,
                     fontWeight: 700,
-                    letterSpacing: "0.14em",
+                    letterSpacing: isMobile ? "0.04em" : "0.14em",
                     cursor: "pointer",
                     fontFamily: "inherit",
                     touchAction: "manipulation",
@@ -316,7 +322,7 @@ export default function HeroIntro() {
                 border: "1px solid rgba(232,160,74,0.7)",
                 borderRadius: 12,
                 padding: isMobile ? "0.75rem 0.9rem" : "0.85rem 1.1rem",
-                textAlign: "left",
+                textAlign: isMobile ? "center" : "left",
                 boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
               }}
             >
@@ -354,7 +360,7 @@ export default function HeroIntro() {
                 border: "1px solid rgba(232,160,74,0.7)",
                 borderRadius: 12,
                 padding: isMobile ? "0.75rem 0.9rem" : "0.85rem 1.1rem",
-                textAlign: "left",
+                textAlign: isMobile ? "center" : "left",
                 boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
               }}
             >
