@@ -134,11 +134,13 @@ export default function HeroIntro() {
         <div
           style={{
             display: "flex",
+            flexDirection: isMobile ? "column" : "row",
             alignItems: "center",
-            justifyContent: "space-between",
-            gap: 12,
+            justifyContent: isMobile ? "center" : "space-between",
+            gap: isMobile ? 10 : 12,
             flexWrap: "wrap",
             paddingTop: 4,
+            textAlign: "center",
           }}
         >
           <a
@@ -151,6 +153,7 @@ export default function HeroIntro() {
               textDecoration: "none",
               color: "#ffffff",
               minWidth: 0,
+              justifyContent: "center",
             }}
           >
             <img
