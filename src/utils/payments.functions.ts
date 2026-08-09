@@ -224,7 +224,7 @@ export const submitIntakeAnswers = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
 
     let intakeUrls: Awaited<ReturnType<typeof enqueueIntakeNotification>> = null;
-    try {
+    {
       const language = (session.metadata?.language as string) || "en";
       const a = data.answers as Record<string, unknown>;
       const contactEmail =
@@ -232,16 +232,25 @@ export const submitIntakeAnswers = createServerFn({ method: "POST" })
         (session.customer_details && session.customer_details.email) ||
         (session.customer_email as string | null) ||
         null;
-
-      intakeUrls = await enqueueIntakeNotification({
-        sessionId: data.sessionId,
-        answers: a,
-        language,
-        contactEmail,
-      });
-    } catch (e) {
-      console.error("Intake notification email enqueue failed:", e);
+      const { trackDelivery } = await import("@/lib/delivery-log.server");
+      const res = await trackDelivery(
+        {
+          intakeSessionId: data.sessionId,
+          step: "staff_notification_email",
+          target: "internal staff + client welcome",
+        },
+        () =>
+          enqueueIntakeNotification({
+            sessionId: data.sessionId,
+            answers: a,
+            language,
+            contactEmail,
+          }),
+      );
+      intakeUrls = res.value ?? null;
+      if (!res.ok) console.error("Intake notification email enqueue failed:", res.error);
     }
+
 
     // Provision the mobile-app client: 8-char activation code, contacts mirror,
     // activation email + SMS. Non-blocking — never fail intake on this.
