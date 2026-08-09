@@ -29,6 +29,7 @@ import { Route as OwnPropertyRouteImport } from './routes/own-property'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IntakeRouteImport } from './routes/intake'
 import { Route as GetAppRouteImport } from './routes/get-app'
+import { Route as FirmarRouteImport } from './routes/firmar'
 import { Route as DownloadRouteImport } from './routes/download'
 import { Route as DagRouteImport } from './routes/dag'
 import { Route as ConfigurarRouteImport } from './routes/configurar'
@@ -191,6 +192,11 @@ const IntakeRoute = IntakeRouteImport.update({
 const GetAppRoute = GetAppRouteImport.update({
   id: '/get-app',
   path: '/get-app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FirmarRoute = FirmarRouteImport.update({
+  id: '/firmar',
+  path: '/firmar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DownloadRoute = DownloadRouteImport.update({
@@ -533,6 +539,7 @@ export interface FileRoutesByFullPath {
   '/configurar': typeof ConfigurarRoute
   '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
+  '/firmar': typeof FirmarRoute
   '/get-app': typeof GetAppRoute
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
@@ -615,6 +622,7 @@ export interface FileRoutesByTo {
   '/configurar': typeof ConfigurarRoute
   '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
+  '/firmar': typeof FirmarRoute
   '/get-app': typeof GetAppRoute
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
@@ -701,6 +709,7 @@ export interface FileRoutesById {
   '/configurar': typeof ConfigurarRoute
   '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
+  '/firmar': typeof FirmarRoute
   '/get-app': typeof GetAppRoute
   '/intake': typeof IntakeRoute
   '/login': typeof LoginRoute
@@ -785,6 +794,7 @@ export interface FileRouteTypes {
     | '/configurar'
     | '/dag'
     | '/download'
+    | '/firmar'
     | '/get-app'
     | '/intake'
     | '/login'
@@ -867,6 +877,7 @@ export interface FileRouteTypes {
     | '/configurar'
     | '/dag'
     | '/download'
+    | '/firmar'
     | '/get-app'
     | '/intake'
     | '/login'
@@ -952,6 +963,7 @@ export interface FileRouteTypes {
     | '/configurar'
     | '/dag'
     | '/download'
+    | '/firmar'
     | '/get-app'
     | '/intake'
     | '/login'
@@ -1038,6 +1050,7 @@ export interface RootRouteChildren {
   ConfigurarRoute: typeof ConfigurarRoute
   DagRoute: typeof DagRoute
   DownloadRoute: typeof DownloadRoute
+  FirmarRoute: typeof FirmarRoute
   GetAppRoute: typeof GetAppRoute
   IntakeRoute: typeof IntakeRoute
   LoginRoute: typeof LoginRoute
@@ -1227,6 +1240,13 @@ declare module '@tanstack/react-router' {
       path: '/get-app'
       fullPath: '/get-app'
       preLoaderRoute: typeof GetAppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/firmar': {
+      id: '/firmar'
+      path: '/firmar'
+      fullPath: '/firmar'
+      preLoaderRoute: typeof FirmarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/download': {
@@ -1785,6 +1805,7 @@ const rootRouteChildren: RootRouteChildren = {
   ConfigurarRoute: ConfigurarRoute,
   DagRoute: DagRoute,
   DownloadRoute: DownloadRoute,
+  FirmarRoute: FirmarRoute,
   GetAppRoute: GetAppRoute,
   IntakeRoute: IntakeRoute,
   LoginRoute: LoginRoute,
