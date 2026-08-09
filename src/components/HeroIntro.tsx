@@ -106,11 +106,11 @@ export default function HeroIntro() {
   return (
     <section
       style={{
-        backgroundImage: `linear-gradient(155deg, rgba(8,22,45,0.82) 0%, rgba(8,22,45,0.55) 48%, rgba(8,22,45,0.85) 100%), url(${detentionNightAsset.url})`,
+        backgroundImage: `linear-gradient(155deg, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0.55) 48%, rgba(255,255,255,0.78) 100%), url(${detentionNightAsset.url})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        color: "#ffffff",
+        color: "#0b1622",
         minHeight: "78vh",
         display: "flex",
         flexDirection: "column",
