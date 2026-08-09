@@ -5,7 +5,7 @@ import detentionNightAsset from "@/assets/detention-night.png.asset.json";
 
 const COPY = {
   es: {
-    plan: "Plan de protección ante detención ICE diseñado y revisado por abogado ",
+    plan: "Plan de protección ante detención ICE ",
     price: "$199.",
     freeText: "Ahora gratis debido a la crisis comunitaria.",
     ice: "ICE ARRESTÓ A 51,000 PERSONAS EN JULIO",
@@ -14,7 +14,7 @@ const COPY = {
       "DetencionDefensa.com proporciona software de admisión seguro, traducción y servicios automatizados de preparación de documentos. No somos una firma de abogados y no proporcionamos asesoramiento legal.",
   },
   en: {
-    plan: "Attorney-designed and reviewed ICE detention protection plan ",
+    plan: "ICE detention protection plan ",
     price: "$199.",
     freeText: "Now free due to community crisis.",
     ice: "ICE arrests 51,000 people in July",
@@ -23,7 +23,7 @@ const COPY = {
       "DetencionDefensa.com provides secure admission software, translation, and automated document preparation services. We are not a law firm and do not provide legal advice.",
   },
   ht: {
-    plan: "Plan pwoteksyon pou arestasyon ICE ki konsevwa ak revize pa avoka ",
+    plan: "Plan pwoteksyon pou arestasyon ICE ",
     price: "$199.",
     freeText: "Kounye a gratis akòz kriz kominotè a.",
     ice: "ICE arete 51,000 moun an jiyè",
