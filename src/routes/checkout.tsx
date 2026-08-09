@@ -1,8 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
-import { StripeEmbeddedCheckoutBox } from "@/components/StripeEmbeddedCheckout";
-import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
+
 
 const searchSchema = z.object({
   lang: z.enum(["en", "es", "ht"]).catch("es"),
@@ -27,7 +25,7 @@ type Lang = "en" | "es" | "ht";
 const T = {
   en: {
     title: "Subscribe to the emergency app",
-    sub: "Attorney-created and reviewed documents are included at no charge. The only fee is the DefensaSiempre emergency app subscription, billed securely by Stripe.",
+    sub: "Due to the emergency crisis in our community, all fees are waived. The $199 plan fee and the $10/month app subscription cost you nothing at this time. No payment or card is required.",
     baseTitle: "DefensaSiempre Emergency App",
     baseSub: "Monthly subscription. One tap notifies your emergency contacts and the DetencionDefensa team if you are detained.",
     baseBullets: [
@@ -38,14 +36,17 @@ const T = {
     ],
     price: "$10",
     period: "/month",
+    plan: "$199",
+    waived: "Fee waived",
     total: "Total",
-    pay: "Continue to secure payment",
-    note: "After subscribing you'll be asked to read and accept the Terms of Service and the Limited Attorney-Client Retainer Agreement before starting the intake.",
+    free: "FREE",
+    pay: "Continue — no payment required",
+    note: "No payment is collected. Next you'll be asked to read and accept the Terms of Service and the Limited Attorney-Client Retainer Agreement before starting the intake.",
     back: "← Back to home",
   },
   es: {
     title: "Suscríbase a la app de emergencia",
-    sub: "Los documentos creados y revisados por un abogado están incluidos sin costo. La única tarifa es la suscripción a la app DefensaSiempre, procesada de forma segura por Stripe.",
+    sub: "Debido a la crisis de emergencia en nuestra comunidad, todas las tarifas están exoneradas. La tarifa del plan de $199 y la suscripción de $10/mes no tienen costo en este momento. No se requiere pago ni tarjeta.",
     baseTitle: "App de Emergencia DefensaSiempre",
     baseSub: "Suscripción mensual. Con un toque se notifica a sus contactos de emergencia y al equipo de DetencionDefensa si lo detienen.",
     baseBullets: [
@@ -56,14 +57,17 @@ const T = {
     ],
     price: "$10",
     period: "/mes",
+    plan: "$199",
+    waived: "Tarifa exonerada",
     total: "Total",
-    pay: "Continuar al pago seguro",
-    note: "Después de suscribirse se le pedirá leer y aceptar los Términos del Servicio y el Acuerdo Limitado de Retención Abogado-Cliente antes de comenzar el formulario.",
+    free: "GRATIS",
+    pay: "Continuar — no se requiere pago",
+    note: "No se cobra ningún pago. A continuación se le pedirá leer y aceptar los Términos del Servicio y el Acuerdo Limitado de Retención Abogado-Cliente antes de comenzar el formulario.",
     back: "← Volver al inicio",
   },
   ht: {
     title: "Abònman app ijans la",
-    sub: "Dokiman kreye ak revize pa avoka yo enkli san frè. Sèl frè a se abònman app DefensaSiempre an, trete an sekirite pa Stripe.",
+    sub: "Akòz kriz ijans nan kominote a, tout frè yo anile. Frè plan $199 la ak abònman $10/mwa a pa koute w anyen kounye a. Pa gen peman ni kat ki nesesè.",
     baseTitle: "App Ijans DefensaSiempre",
     baseSub: "Abònman chak mwa. Yon sèl klik avèti kontak ijans ou ak ekip DetencionDefensa si yo detni w.",
     baseBullets: [
@@ -74,22 +78,21 @@ const T = {
     ],
     price: "$10",
     period: "/mwa",
+    plan: "$199",
+    waived: "Frè anile",
     total: "Total",
-    pay: "Kontinye nan peman sekirize a",
-    note: "Apre abònman an w ap dwe li epi dakò ak Tèm Sèvis la ak Akò Retansyon Limite Avoka-Kliyan an anvan w kòmanse fòm nan.",
+    free: "GRATIS",
+    pay: "Kontinye — pa gen peman",
+    note: "Nou pa pran okenn peman. Apre sa w ap dwe li epi dakò ak Tèm Sèvis la ak Akò Retansyon Limite Avoka-Kliyan an anvan w kòmanse fòm nan.",
     back: "← Tounen lakay",
   },
 } as const;
 
 function CheckoutPage() {
-  const { lang, discountPct, submissionId } = Route.useSearch();
+  const { lang } = Route.useSearch();
   const L = lang as Lang;
   const t = T[L];
-  const [showPay, setShowPay] = useState(false);
-
-  const discount = discountPct && discountPct > 0 ? discountPct : 0;
-  const monthly = 10;
-  const adjusted = Math.round(monthly * (1 - discount / 100));
+  const navigate = useNavigate();
 
   const langs: Lang[] = ["es", "en", "ht"];
   const langBtn = (active: boolean): React.CSSProperties => ({
@@ -97,11 +100,6 @@ function CheckoutPage() {
     border: "1px solid #3a4458", background: active ? "#e8a04a" : "transparent",
     color: active ? "#0b1220" : "#f6efe1", textDecoration: "none",
   });
-
-  const returnUrl =
-    typeof window !== "undefined"
-      ? `${window.location.origin}/agreement?lang=${L}&session_id={CHECKOUT_SESSION_ID}`
-      : `/agreement?lang=${L}&session_id={CHECKOUT_SESSION_ID}`;
 
   const card: React.CSSProperties = {
     background: "#0b1220", border: "1px solid #3a4458", borderRadius: 6,
@@ -115,6 +113,17 @@ function CheckoutPage() {
     fontSize: 22, fontWeight: 700, color: "#e8a04a", fontFamily: "Fraunces, serif",
     whiteSpace: "nowrap",
   };
+  const struck: React.CSSProperties = {
+    textDecoration: "line-through",
+    textDecorationColor: "#e02b2b",
+    textDecorationThickness: 3,
+    color: "#a8a59a",
+  };
+  const waivedTag: React.CSSProperties = {
+    display: "inline-block", marginTop: 6, fontSize: 11, fontWeight: 800,
+    letterSpacing: 1, textTransform: "uppercase", padding: "3px 8px",
+    borderRadius: 3, background: "#1f4d2a", color: "#b9f2c4",
+  };
   const tag = (bg: string, color: string): React.CSSProperties => ({
     display: "inline-block", fontSize: 10, fontWeight: 700, letterSpacing: 1,
     textTransform: "uppercase", padding: "3px 8px", borderRadius: 3,
@@ -123,7 +132,6 @@ function CheckoutPage() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#0b1220", color: "#f6efe1", fontFamily: "Inter Tight, system-ui, sans-serif" }}>
-      <PaymentTestModeBanner />
       <div style={{ maxWidth: 640, margin: "0 auto", padding: "48px 24px" }}>
         <div style={{ display: "flex", gap: 8, justifyContent: "flex-end", marginBottom: 16 }}>
           {langs.map((l) => (
@@ -142,7 +150,13 @@ function CheckoutPage() {
                 <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4, fontFamily: "Fraunces, serif" }}>{t.baseTitle}</h2>
                 <p style={{ fontSize: 13, color: "#cfc8b8", lineHeight: 1.5 }}>{t.baseSub}</p>
               </div>
-              <div style={priceTag}>{t.price}<span style={{ fontSize: 14, fontWeight: 500 }}>{t.period}</span></div>
+              <div style={{ textAlign: "right" }}>
+                <div style={priceTag}>
+                  <span style={struck}>{t.plan}</span>
+                  <span style={{ ...struck, marginLeft: 8 }}>{t.price}<span style={{ fontSize: 14, fontWeight: 500 }}>{t.period}</span></span>
+                </div>
+                <div style={waivedTag}>{t.waived}</div>
+              </div>
             </div>
             <ul style={{ paddingLeft: 20, marginTop: 10 }}>
               {t.baseBullets.map((b, i) => (
@@ -152,34 +166,24 @@ function CheckoutPage() {
           </div>
 
           {/* Total */}
-          {discount > 0 && (
-            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, color: "#a8c5a8", padding: "4px 4px" }}>
-              <div>Reduced-cost discount ({discount}% off first month)</div>
-              <div>−${monthly - adjusted}</div>
-            </div>
-          )}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", padding: "16px 4px", borderTop: "1px solid #3a4458", marginTop: 8, marginBottom: 20 }}>
             <div style={{ fontSize: 14, textTransform: "uppercase", letterSpacing: 1, color: "#a8a59a" }}>{t.total}</div>
-            <div style={{ fontSize: 32, fontWeight: 700, color: "#e8a04a", fontFamily: "Fraunces, serif" }}>${adjusted}<span style={{ fontSize: 14, fontWeight: 500, color: "#cfc8b8" }}>{t.period}</span></div>
+            <div style={{ textAlign: "right" }}>
+              <div style={{ fontSize: 18, fontWeight: 700, color: "#a8a59a", fontFamily: "Fraunces, serif" }}>
+                <span style={struck}>$199</span>
+                <span style={{ ...struck, marginLeft: 8 }}>$10{t.period}</span>
+              </div>
+              <div style={{ fontSize: 32, fontWeight: 700, color: "#7fd18a", fontFamily: "Fraunces, serif" }}>{t.free}</div>
+              <div style={waivedTag}>{t.waived}</div>
+            </div>
           </div>
 
-          {!showPay ? (
-            <button
-              onClick={() => setShowPay(true)}
-              style={{ background: "#e8a04a", color: "#0b1220", padding: "16px 28px", fontSize: 16, fontWeight: 700, border: "none", borderRadius: 4, cursor: "pointer", width: "100%" }}
-            >
-              {t.pay}
-            </button>
-          ) : (
-            <div style={{ background: "#fff", borderRadius: 6, padding: 12 }}>
-              <StripeEmbeddedCheckoutBox
-                language={L}
-                returnUrl={returnUrl}
-                discountPct={discount}
-                submissionId={submissionId}
-              />
-            </div>
-          )}
+          <button
+            onClick={() => navigate({ to: "/agreement", search: { lang: L } as never })}
+            style={{ background: "#e8a04a", color: "#0b1220", padding: "16px 28px", fontSize: 16, fontWeight: 700, border: "none", borderRadius: 4, cursor: "pointer", width: "100%" }}
+          >
+            {t.pay}
+          </button>
 
           <p style={{ fontSize: 12, color: "#a8a59a", marginTop: 16, lineHeight: 1.5 }}>{t.note}</p>
         </div>
