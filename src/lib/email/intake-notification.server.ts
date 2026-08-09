@@ -205,7 +205,7 @@ export async function enqueueIntakeNotification(params: {
     `[invite-code] enqueueIntakeNotification session=${sessionId} scope=${scope} demo=${!!demoMode} invite_code=${inviteCode ?? "null"} invite_code_len=${inviteCode?.length ?? 0} contactEmail=${contactEmail ?? "null"}`,
   );
 
-  const subject = `New Intake Submission — ${String(a.mail_inmate_name || a.contact_name || sessionId)}`;
+  const subject = `New client signup — ${String(a.mail_inmate_name || a.contact_name || sessionId)}`;
   const urls = await uploadFormsAndSign(sessionId, a, language);
   if (urls.errors.length) console.error("Intake PDF generation issues:", urls.errors);
   const { habeasUrl, ifpUrl, brochureUrl, referralUrl, js44Url, memorandumUrl } = urls;
@@ -331,7 +331,7 @@ ${Object.entries(a)
         html,
         text,
         purpose: "transactional",
-        label: "intake-submission",
+        label: "client-signup",
         idempotency_key: `intake-${sessionId}-${recipient}-${messageId}`,
         message_id: messageId,
         unsubscribe_token: unsubscribeToken,
