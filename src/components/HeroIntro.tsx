@@ -59,7 +59,7 @@ const COPY = {
   },
 } satisfies Record<
   Lang,
-  { plan: string; price: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; appBoxHeading: string; appBoxBody: string; disclaimer: string }
+  { plan: string; price: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; disclaimer: string }
 >;
 
 function PriceWithX({ prefix, price }: { prefix: string; price: string }) {
