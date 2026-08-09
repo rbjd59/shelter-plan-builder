@@ -310,9 +310,9 @@ export default function HeroIntro() {
               display: "grid",
               gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
               gap: isMobile ? "0.6rem" : "0.9rem",
-              maxWidth: 1100,
+              maxWidth: 860,
               width: "100%",
-              margin: "1rem auto 0",
+              margin: "1.8rem auto 0",
             }}
           >
             <div
