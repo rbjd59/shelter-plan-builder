@@ -254,9 +254,18 @@ function IntakePage() {
     setResolvedLang(decision.lang);
   }, [lang, navigate]);
 
+  // The gate renders nothing on the first pass, so the browser keeps the
+  // scroll offset from the page the user came from and the intake appears
+  // to open half-way down. Force the top once the form is ready.
+  useEffect(() => {
+    if (!resolvedLang || typeof window === "undefined") return;
+    window.scrollTo(0, 0);
+  }, [resolvedLang]);
+
   if (!resolvedLang) return null;
   return <IntakeInner sessionId={session_id} L={resolvedLang} ui={UI[resolvedLang]} />;
 }
+
 
 
 function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | undefined; L: Lang; ui: typeof UI[Lang] }) {

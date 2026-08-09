@@ -150,6 +150,12 @@ function AgreementPage() {
     })();
   }, [session_id, addonsFn]);
 
+  // Always open this page at the top, even when arriving from a button that
+  // was far down the previous page.
+  useEffect(() => {
+    if (typeof window !== "undefined") window.scrollTo(0, 0);
+  }, []);
+
 
   // Fallback: if URL has no valid ?lang=, replace with the site-selected lang.
   useEffect(() => {
