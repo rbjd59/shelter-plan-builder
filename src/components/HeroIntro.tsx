@@ -21,6 +21,8 @@ const COPY = {
     appBoxBody: "Notifica al instante a tus contactos y abogado si enfrentas un arresto.",
     appBoxBtn: "Mira el video",
     homeBox: "Video de Protección para Propietarios",
+    homeBoxHeading: "Proteja su casa",
+    homeBoxBody: "Protección de fideicomiso de bajo costo diseñada por un abogado para proteger su casa.",
     disclaimer:
       "DetencionDefensa.com proporciona software de admisión seguro, traducción y servicios automatizados de preparación de documentos. No somos una firma de abogados y no proporcionamos asesoramiento legal.",
   },
@@ -39,6 +41,8 @@ const COPY = {
     appBoxBody: "Instantly notify contacts and attorney if faced with arrest.",
     appBoxBtn: "Watch the video",
     homeBox: "Homeowner Protection Video",
+    homeBoxHeading: "Protect your home",
+    homeBoxBody: "Low-cost trust protection designed by an attorney to protect your home.",
     disclaimer:
       "DetencionDefensa.com provides secure admission software, translation, and automated document preparation services. We are not a law firm and do not provide legal advice.",
   },
@@ -57,6 +61,8 @@ const COPY = {
     appBoxBody: "Fè kontak ak avoka w konnen imedyatman si yo arete w.",
     appBoxBtn: "Gade videyo a",
     homeBox: "Videyo Pwoteksyon Pwopriyetè Kay",
+    homeBoxHeading: "Pwoteje kay ou",
+    homeBoxBody: "Pwoteksyon fidisyè ki ba pri ki fèt pa yon avoka pou pwoteje kay ou.",
     disclaimer:
       "DetencionDefensa.com ofri lojisyèl admisyon ki an sekirite, tradiksyon, ak sèvis preparasyon dokiman otomatik. Nou pa yon kabinè avoka e nou pa bay konsèy legal.",
   },
