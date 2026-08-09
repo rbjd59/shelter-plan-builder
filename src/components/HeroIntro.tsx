@@ -246,7 +246,7 @@ export default function HeroIntro() {
               lineHeight: 1.2,
               fontWeight: 400,
               color: "rgba(255,255,255,0.75)",
-              margin: "0.25rem auto 0",
+              margin: "0.1rem auto 0",
               textAlign: "center",
               textShadow: "0 1px 6px rgba(0,0,0,0.6)",
             }}
