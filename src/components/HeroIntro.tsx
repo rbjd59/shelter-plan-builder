@@ -351,7 +351,26 @@ export default function HeroIntro() {
               >
                 {COPY[lang].secBoxBody}
               </p>
+              <Link
+                to="/security-faq"
+                style={{
+                  display: "inline-block",
+                  marginTop: "0.55rem",
+                  background: "#e8a04a",
+                  color: "#0f1830",
+                  textDecoration: "none",
+                  fontWeight: 800,
+                  fontSize: isMobile ? "0.72rem" : "0.78rem",
+                  letterSpacing: "0.05em",
+                  textTransform: "uppercase",
+                  padding: "7px 16px",
+                  borderRadius: 999,
+                }}
+              >
+                {COPY[lang].secBoxBtn}
+              </Link>
             </div>
+
 
             <div
               style={{
