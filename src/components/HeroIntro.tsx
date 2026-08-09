@@ -9,6 +9,9 @@ const COPY = {
     price: "$199.",
     freeText: "Ahora gratis debido a la crisis comunitaria.",
     tagline: "Alerta de emergencia de un clic y plan de defensa legal revisado por un abogado",
+    btn1: "Cómo funciona el plan de protección",
+    btn2: "Si eres propietario de una vivienda",
+    watchVideo: "Mira un video de un minuto",
     secBoxHeading: "Seguridad de primera clase",
     secBoxBody: "Diseñada con la privacidad y la seguridad en su núcleo.",
     appBoxHeading: "App gratuita para el teléfono",
@@ -21,6 +24,9 @@ const COPY = {
     price: "$199.",
     freeText: "Now free due to community crisis.",
     tagline: "One-click emergency alert and attorney-reviewed legal defense plan",
+    btn1: "How Protection Plan Works",
+    btn2: "If You're a Homeowner",
+    watchVideo: "Watch a one-minute video",
     secBoxHeading: "Best in class security",
     secBoxBody: "Designed with privacy and security at its very core.",
     appBoxHeading: "Free app for phone",
@@ -33,6 +39,9 @@ const COPY = {
     price: "$199.",
     freeText: "Kounye a gratis akòz kriz kominotè a.",
     tagline: "Sijè a alèt dijans yon sèl kli epi plan defans legal revize pa yon avoka",
+    btn1: "Ki jan plan pwoteksyon an fonksyone",
+    btn2: "Si w se yon pwopriyetè kay",
+    watchVideo: "Gade yon videyo yon minit",
     secBoxHeading: "Sekirite pi bon klas",
     secBoxBody: "Fèt ak vi prive ak sekirite kòm nwayo li.",
     appBoxHeading: "App gratis pou telefòn",
@@ -42,7 +51,7 @@ const COPY = {
   },
 } satisfies Record<
   Lang,
-  { plan: string; price: string; freeText: string; tagline: string; secBoxHeading: string; secBoxBody: string; appBoxHeading: string; appBoxBody: string; disclaimer: string }
+  { plan: string; price: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; appBoxHeading: string; appBoxBody: string; disclaimer: string }
 >;
 
 function PriceWithX({ prefix, price }: { prefix: string; price: string }) {
