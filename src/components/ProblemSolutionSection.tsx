@@ -1,66 +1,134 @@
+import type { ReactNode } from "react";
 import { useLang, type Lang } from "@/context/LanguageContext";
 
-const COPY: Record<Lang, {
-  problemLabel: string;
-  problems: string[];
-  solutionLabel: string;
-  solutions: string[];
-  faqNote: string;
-  watchMore: string;
-}> = {
+const withLang = (url: string, lang: Lang) => {
+  const sep = url.includes("?") ? "&" : "?";
+  return `${url}${sep}lang=${lang}`;
+};
+
+const pillStyle: React.CSSProperties = {
+  display: "inline-block",
+  marginTop: 10,
+  padding: "8px 14px",
+  background: "#e8a04a",
+  color: "#0f1830",
+  borderRadius: 999,
+  fontSize: 13,
+  fontWeight: 800,
+  textDecoration: "none",
+  letterSpacing: "0.02em",
+};
+
+function SaveMyHomeButton({ tld = "com", lang }: { tld?: "com" | "io"; lang: Lang }) {
+  return (
+    <a href={withLang(`https://savemyhometrust.${tld}`, lang)} target="_blank" rel="noopener noreferrer" style={pillStyle}>
+      SaveMyHomeTrust.{tld} →
+    </a>
+  );
+}
+
+function DefensaSiempreButton({ lang }: { lang: Lang }) {
+  return (
+    <a href={withLang("https://defensasiempre.com", lang)} target="_blank" rel="noopener noreferrer" style={pillStyle}>
+      DefensaSiempre.com →
+    </a>
+  );
+}
+
+const COPY: Record<
+  Lang,
+  {
+    problemLabel: string;
+    problems: ReactNode[];
+    solutionLabel: string;
+    solutions: (lang: Lang) => ReactNode[];
+    faqNote: string;
+    watchMore: string;
+  }
+> = {
   es: {
     problemLabel: "El Problema",
     watchMore: "Mira Más Videos",
     problems: [
-      "ICE detiene a dos mil personas al día.",
-      "Si no eres ciudadano, estás en riesgo.",
-      "Una vez detenido, el acceso a la familia y a los abogados es difícil.",
-      "No puedes pagar miles de dólares por un abogado.",
+      "ICE lo arresta. Usted no está listo. Todo se descontrola.",
+      "Lo llevan a un centro de detención lejos. Nadie sabe dónde está.",
+      "Puede quedar detenido por meses.",
+      "Su auto queda tirado y la grúa se lo lleva.",
+      "Sin trabajo, no puede pagar casa ni auto. Puede perder todo.",
+      "Un abogado cobra entre $5,000 y $10,000.",
     ],
     solutionLabel: "La Solución: DetencionDefensa",
-    solutions: [
-      "DetencionDefensa te proporciona un botón de emergencia en tu teléfono.",
-      "Si ICE o la policía llega, presiona el botón por 3 segundos.",
-      "Inmediatamente tu familia, amigos, abogado y DetencionDefensa serán notificados de que fuiste detenido.",
-      "Te localizamos en el sistema de ICE. El abogado te manda todo lo que necesitas para presentar un recurso de Habeas Corpus ante la Corte.",
+    solutions: (l) => [
+      "Preparamos su carta al juez para pedir su liberación. La guardamos en una app en su teléfono.",
+      "Si lo detienen, presione el botón de la app. Avisamos a su familia y activamos su plan.",
+      "Lo ubicamos en el sistema de ICE y enviamos los papeles al abogado y a su familia para proteger su casa.",
+      <>
+        ICE puede multarlo $998 por día si no sale del país. Con <strong>SaveMyHomeTrust.com</strong> usted protege su casa, puede sacar un préstamo HELOC, rentarla o venderla. <SaveMyHomeButton lang={l} />
+      </>,
+      <>
+        ¿Tiene abogado de inmigración? Pídale que lo inscriba en <strong>SaveMyHomeTrust.io</strong> para proteger su casa. LLÁMELO HOY. <SaveMyHomeButton tld="io" lang={l} />
+      </>,
+      <>
+        ¿Tiene miedo de perder su trabajo? Muéstrele <strong>DefensaSiempre.com</strong> a su jefe. Si lo detienen, vuelve al trabajo más rápido y su jefe no pierde tiempo entrenando a otro empleado. <DefensaSiempreButton lang={l} />
+      </>,
     ],
-    faqNote: "Consulta la sección de preguntas frecuentes para obtener todos los detalles sobre cómo funciona DetencionDefensa.",
+    faqNote: "Vea las preguntas frecuentes para más detalles.",
   },
   en: {
     problemLabel: "The Problem",
+    watchMore: "Watch More Videos",
     problems: [
-      "ICE is detaining two thousand persons a day.",
-      "If you're not a citizen, you are at risk.",
-      "Once detained, access to family and lawyers is difficult.",
-      "You cannot afford thousands for an attorney.",
+      "ICE arrests you. You're not ready. Everything falls apart.",
+      "They send you to a detention center far away. No one knows where you are.",
+      "You can be locked up for months.",
+      "Your car gets left behind and towed.",
+      "No income. You can't pay your house or car. You can lose it all.",
+      "Immigration lawyers charge $5,000–$10,000.",
     ],
     solutionLabel: "The Solution: DetencionDefensa",
-    watchMore: "Watch More Videos",
-    solutions: [
-      "DetencionDefensa gives you an emergency button on your phone.",
-      "If ICE or the police arrive, press the button for 3 seconds.",
-      "Your family, friends, attorney, and DetencionDefensa are immediately notified that you have been detained.",
-      "We locate you in the ICE system, and the attorney sends you everything you need to file a Habeas Corpus petition in court.",
+    solutions: (l) => [
+      "We prepare your release request to the judge and keep it on an app on your phone.",
+      "If you're detained, press the button in the app. We alert your family and start your plan.",
+      "We find you in the ICE system and send the paperwork to your lawyer and family to protect your home.",
+      <>
+        ICE can fine you $998 a day if you don't leave. With <strong>SaveMyHomeTrust.com</strong> you protect your home, get a HELOC loan, rent it or sell it. <SaveMyHomeButton lang={l} />
+      </>,
+      <>
+        Have an immigration lawyer? Ask them to sign you up at <strong>SaveMyHomeTrust.io</strong> to protect your home. CALL TODAY. <SaveMyHomeButton tld="io" lang={l} />
+      </>,
+      <>
+        Afraid to lose your job? Show <strong>DefensaSiempre.com</strong> to your boss. If detained, you get back to work faster and your boss doesn't lose time training someone new. <DefensaSiempreButton lang={l} />
+      </>,
     ],
-    faqNote: "See the FAQ section for full details on how DetencionDefensa works.",
+    faqNote: "See the FAQ for more details.",
   },
   ht: {
     problemLabel: "Pwoblèm nan",
+    watchMore: "Gade Plis Videyo",
     problems: [
-      "ICE detni de milye moun pa jou.",
-      "Si ou pa sitwayen, ou nan risk.",
-      "Yon fwa yo detni ou, aksè a fanmi ak avoka difisil.",
-      "Ou pa ka peye milye dola pou yon avoka.",
+      "ICE arete w. Ou pa pare. Tout bagay tonbe.",
+      "Yo voye w nan yon sant detansyon lwen. Pèsòn pa konnen kote w ye.",
+      "Ou ka rete fèmen pandan plizyè mwa.",
+      "Machin ou rete atè epi yo rale l ale.",
+      "Pa gen lajan. Ou pa ka peye kay ou oswa machin ou. Ou ka pèdi tout.",
+      "Avoka imigrasyon mande $5,000–$10,000.",
     ],
     solutionLabel: "Solisyon an: DetencionDefensa",
-    watchMore: "Gade Plis Videyo",
-    solutions: [
-      "DetencionDefensa ba w yon bouton dijans sou telefòn ou.",
-      "Si ICE oswa lapolis rive, peze bouton an pandan 3 segond.",
-      "Fanmi w, zanmi w, avoka w, ak DetencionDefensa ap resevwa notifikasyon imedyatman ke yo detni w.",
-      "Nou jwenn kote w ye nan sistèm ICE la, epi avoka a voye ba w tout sa w bezwen pou depoze yon petisyon Habeas Corpus nan tribinal.",
+    solutions: (l) => [
+      "Nou prepare demann liberasyon w pou jij la epi kenbe l nan yon app sou telefòn ou.",
+      "Si yo detni w, peze bouton an nan app la. Nou avize fanmi w epi kòmanse plan w.",
+      "Nou jwenn kote w ye nan sistèm ICE la epi voye papye yo bay avoka w ak fanmi w pou pwoteje kay ou.",
+      <>
+        ICE ka bay ou amann $998 pa jou si w pa ale. Avèk <strong>SaveMyHomeTrust.com</strong> ou pwoteje kay ou, jwenn yon prè HELOC, lwe l oswa vann li. <SaveMyHomeButton lang={l} />
+      </>,
+      <>
+        Ou gen yon avoka imigrasyon? Mande l enskri w nan <strong>SaveMyHomeTrust.io</strong> pou pwoteje kay ou. RELE JODI A. <SaveMyHomeButton tld="io" lang={l} />
+      </>,
+      <>
+        Pè pou pèdi travay ou? Montre <strong>DefensaSiempre.com</strong> bay patwon w. Si yo detni w, ou retounen travay pi vit epi patwon w pa pèdi tan fòme lòt moun. <DefensaSiempreButton lang={l} />
+      </>,
     ],
-    faqNote: "Gade seksyon kesyon yo poze souvan pou tout detay sou kijan DetencionDefensa fonksyone.",
+    faqNote: "Gade kesyon yo poze souvan pou plis detay.",
   },
 };
 
@@ -73,35 +141,27 @@ export default function ProblemSolutionSection() {
       style={{
         background: "linear-gradient(180deg, #081d3a 0%, #0d2c54 100%)",
         color: "#ffffff",
-        padding: "3rem 1rem 3.5rem",
+        padding: "72px 24px 80px",
         fontFamily: '"Work Sans", -apple-system, Roboto, Helvetica, Arial, sans-serif',
       }}
     >
-      <div style={{ maxWidth: 1000, margin: "0 auto", display: "grid", gap: "2.5rem" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gap: "48px" }}>
         <Block
-          badgeColor="#c81f1f"
-          badgeShape="octagon"
           label={t.problemLabel}
           items={t.problems}
-          bulletColor="#ff6b6b"
+          accent="#7fc4ff"
           action={<WatchMoreButton label={t.watchMore} />}
         />
-        <Block
-          badgeColor="#4aa8e8"
-          badgeShape="circle"
-          label={t.solutionLabel}
-          items={t.solutions}
-          bulletColor="#8ed3ff"
-        />
+        <Block label={t.solutionLabel} items={t.solutions(lang)} accent="#8ed3ff" />
         <p
           style={{
             textAlign: "center",
-            fontStyle: "italic",
-            fontSize: "1rem",
-            color: "rgba(255,255,255,0.85)",
-            maxWidth: 780,
+            fontSize: 14,
+            color: "rgba(255,255,255,0.7)",
+            maxWidth: 720,
             margin: "0 auto",
-            lineHeight: 1.5,
+            lineHeight: 1.6,
+            fontStyle: "italic",
           }}
         >
           {t.faqNote}
@@ -112,43 +172,40 @@ export default function ProblemSolutionSection() {
 }
 
 function Block({
-  badgeColor,
-  badgeShape,
   label,
   items,
-  bulletColor,
+  accent,
   action,
 }: {
-  badgeColor: string;
-  badgeShape: "circle" | "octagon";
   label: string;
-  items: string[];
-  bulletColor: string;
-  action?: React.ReactNode;
+  items: ReactNode[];
+  accent: string;
+  action?: ReactNode;
 }) {
   return (
     <div>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "1rem",
-          marginBottom: "1.25rem",
-          flexWrap: "wrap",
-        }}
-      >
-        <Badge color={badgeColor} shape={badgeShape} />
-        <h2
+      <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 22, flexWrap: "wrap" }}>
+        <span
+          aria-hidden
           style={{
-            fontFamily: '"Roboto Slab", Georgia, serif',
-            fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
+            width: 10,
+            height: 10,
+            borderRadius: "50%",
+            background: accent,
+            boxShadow: `0 0 0 4px ${accent}22`,
+          }}
+        />
+        <span
+          style={{
+            fontSize: 11,
             fontWeight: 700,
-            margin: 0,
-            letterSpacing: "-0.01em",
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            color: accent,
           }}
         >
           {label}
-        </h2>
+        </span>
         {action && <div style={{ marginLeft: "auto" }}>{action}</div>}
       </div>
       <ul
@@ -157,69 +214,44 @@ function Block({
           padding: 0,
           margin: 0,
           display: "grid",
-          gap: "0.75rem",
+          gap: 12,
+          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
         }}
       >
         {items.map((it, i) => (
           <li
             key={i}
             style={{
-              display: "flex",
-              gap: "0.75rem",
-              alignItems: "flex-start",
-              fontSize: "clamp(1rem, 1.6vw, 1.15rem)",
+              background: "rgba(255,255,255,0.06)",
+              border: "1px solid rgba(255,255,255,0.12)",
+              borderRadius: 14,
+              padding: "20px 22px",
+              fontSize: 15,
               lineHeight: 1.5,
-              background: "rgba(255,255,255,0.05)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              borderRadius: 8,
-              padding: "0.85rem 1rem",
+              color: "rgba(255,255,255,0.92)",
+              display: "flex",
+              gap: 12,
+              alignItems: "flex-start",
             }}
           >
             <span
               aria-hidden
               style={{
-                color: bulletColor,
-                fontWeight: 900,
-                fontSize: "1.1rem",
-                lineHeight: 1.4,
+                fontFamily: '"Roboto Slab", Georgia, serif',
+                fontSize: 18,
+                color: accent,
+                lineHeight: 1.3,
                 flexShrink: 0,
+                minWidth: 22,
               }}
             >
-              ●
+              {String(i + 1).padStart(2, "0")}
             </span>
             <span>{it}</span>
           </li>
         ))}
       </ul>
     </div>
-  );
-}
-
-function Badge({ color, shape }: { color: string; shape: "circle" | "octagon" }) {
-  const size = 72;
-  const style: React.CSSProperties = {
-    width: size,
-    height: size,
-    background: color,
-    boxShadow: `0 8px 24px ${color}55`,
-    flexShrink: 0,
-    border: "3px solid rgba(255,255,255,0.9)",
-  };
-  if (shape === "circle") {
-    return <div style={{ ...style, borderRadius: "50%" }} aria-hidden />;
-  }
-  // Octagon via clip-path
-  return (
-    <div
-      aria-hidden
-      style={{
-        ...style,
-        clipPath:
-          "polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)",
-        border: "none",
-        boxShadow: `0 8px 24px ${color}55, inset 0 0 0 3px rgba(255,255,255,0.9)`,
-      }}
-    />
   );
 }
 
