@@ -347,7 +347,7 @@ export default function HeroIntro() {
                 {COPY[lang].appBoxHeading}
               </h3>
               <a
-                href="/videos"
+                href="#how-it-works-video"
                 style={{
                   display: "inline-block",
                   marginTop: "0.45rem",
@@ -498,7 +498,7 @@ export default function HeroIntro() {
                 {COPY[lang].employerHeading}
               </h3>
               <a
-                href="/videos"
+                href="/videos#employer-video"
                 style={{
                   display: "inline-block",
                   marginTop: "0.45rem",
