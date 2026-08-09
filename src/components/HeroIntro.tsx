@@ -331,8 +331,8 @@ export default function HeroIntro() {
               display: "flex",
               flexWrap: "wrap",
               justifyContent: "center",
-              gap: isMobile ? "0.9rem" : "1.5rem",
-              marginTop: "0.75rem",
+              gap: isMobile ? "0.75rem" : "1.25rem",
+              marginTop: "0.25rem",
             }}
           >
             <a
