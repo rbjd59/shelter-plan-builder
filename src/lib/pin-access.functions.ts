@@ -89,22 +89,34 @@ export const pinListCompanyBoard = createServerFn({ method: "POST" })
       docsByClient.set(d.client_id, list);
     }
 
-    const triggeredSet = new Set(triggeredClientIds);
-    const registered = (clientsRes.data ?? [])
-      .filter((c) => !triggeredSet.has((c as any).id))
-      .map((c) => {
-        const row = c as any;
-        return {
-          activation_code: row.invite_token,
-          full_name: row.full_name ?? null,
-          email: row.email ?? null,
-          phone: row.phone_e164 ?? null,
-          has_asset_protection: !!row.has_asset_protection,
-          has_pet_rescue: !!row.has_pet_rescue,
-          registered_at: row.created_at,
-          activated_at: row.activated_at,
-        };
-      });
+    // Latest alert per client (alerts are ordered newest first).
+    const latestAlertByClient = new Map<string, any>();
+    for (const a of (alertsRes.data ?? []) as any[]) {
+      if (!latestAlertByClient.has(a.client_id)) latestAlertByClient.set(a.client_id, a);
+    }
+
+    // Every signup shows on the board; trigger status rides on the same row.
+    const registered = (clientsRes.data ?? []).map((c) => {
+      const row = c as any;
+      const alert = latestAlertByClient.get(row.id) ?? null;
+      return {
+        activation_code: row.invite_token,
+        full_name: row.full_name ?? null,
+        email: row.email ?? null,
+        phone: row.phone_e164 ?? null,
+        has_asset_protection: !!row.has_asset_protection,
+        has_pet_rescue: !!row.has_pet_rescue,
+        registered_at: row.created_at,
+        activated_at: row.activated_at,
+        latest_alert: alert
+          ? {
+              id: alert.id,
+              triggered_at: alert.triggered_at,
+              cancelled_at: alert.cancelled_at,
+            }
+          : null,
+      };
+    });
 
     const triggered = (alertsRes.data ?? []).map((a) => {
       const row = a as any;
