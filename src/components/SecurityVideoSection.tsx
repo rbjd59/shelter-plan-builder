@@ -25,9 +25,9 @@ const SUBHEADING: Record<string, string> = {
 };
 
 const FAQ_LINK: Record<string, string> = {
-  en: "Read the full security FAQ →",
-  es: "Lea las preguntas frecuentes de seguridad →",
-  ht: "Li tout kesyon sekirite yo →",
+  en: "More security information",
+  es: "Más información de seguridad",
+  ht: "Plis enfòmasyon sou sekirite",
 };
 
 export default function SecurityVideoSection() {
