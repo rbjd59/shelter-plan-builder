@@ -20,6 +20,7 @@ const COPY = {
     appBoxHeading: "App gratuita para el teléfono",
     appBoxBody: "Notifica al instante a tus contactos y abogado si enfrentas un arresto.",
     appBoxBtn: "Mira el video",
+    homeBox: "Video de Protección para Propietarios",
     disclaimer:
       "DetencionDefensa.com proporciona software de admisión seguro, traducción y servicios automatizados de preparación de documentos. No somos una firma de abogados y no proporcionamos asesoramiento legal.",
   },
@@ -37,6 +38,7 @@ const COPY = {
     appBoxHeading: "Free app for phone",
     appBoxBody: "Instantly notify contacts and attorney if faced with arrest.",
     appBoxBtn: "Watch the video",
+    homeBox: "Homeowner Protection Video",
     disclaimer:
       "DetencionDefensa.com provides secure admission software, translation, and automated document preparation services. We are not a law firm and do not provide legal advice.",
   },
@@ -54,12 +56,13 @@ const COPY = {
     appBoxHeading: "App gratis pou telefòn",
     appBoxBody: "Fè kontak ak avoka w konnen imedyatman si yo arete w.",
     appBoxBtn: "Gade videyo a",
+    homeBox: "Videyo Pwoteksyon Pwopriyetè Kay",
     disclaimer:
       "DetencionDefensa.com ofri lojisyèl admisyon ki an sekirite, tradiksyon, ak sèvis preparasyon dokiman otomatik. Nou pa yon kabinè avoka e nou pa bay konsèy legal.",
   },
 } satisfies Record<
   Lang,
-  { plan: string; price: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; disclaimer: string }
+  { plan: string; price: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; homeBox: string; disclaimer: string }
 >;
 
 function PriceWithX({ prefix, price }: { prefix: string; price: string }) {
@@ -437,7 +440,54 @@ export default function HeroIntro() {
             </div>
           </div>
 
-          {/* CTA buttons */}
+          {/* Homeowner video button */}
+          <div style={{ display: "flex", justifyContent: "center", marginTop: "0.6rem" }}>
+            <a
+              href="#homeowner-video"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.6rem",
+                background: "#e8a04a",
+                color: "#0f1830",
+                textDecoration: "none",
+                fontWeight: 800,
+                fontSize: isMobile ? "0.8rem" : "0.9rem",
+                letterSpacing: "0.04em",
+                textTransform: "uppercase",
+                padding: isMobile ? "8px 18px" : "10px 22px",
+                borderRadius: 999,
+                boxShadow: "0 4px 14px rgba(0,0,0,0.3)",
+                transition: "transform 0.15s ease, box-shadow 0.15s ease",
+                WebkitTapHighlightColor: "transparent",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.03)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+              }}
+            >
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 30,
+                  height: 30,
+                  borderRadius: "50%",
+                  background: "#0f1830",
+                  color: "#e8a04a",
+                  flexShrink: 0,
+                }}
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </span>
+              {COPY[lang].homeBox}
+            </a>
+          </div>
         </div>
 
         {/* Bottom notice */}
