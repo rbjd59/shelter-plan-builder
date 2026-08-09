@@ -284,6 +284,7 @@ export default function HeroIntro() {
                 margin: 0,
                 whiteSpace: "normal",
                 textShadow: "0 1px 2px rgba(255,255,255,0.6)",
+                textTransform: "uppercase",
               }}
             >
               <PriceWithX prefix={COPY[lang].plan} price={COPY[lang].price} />
