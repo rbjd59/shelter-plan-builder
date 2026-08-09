@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLang, type Lang } from "@/context/LanguageContext";
 import logoAsset from "@/assets/dd-logo.png.asset.json";
-import detentionNightAsset from "@/assets/ice-detention-facility.jpg.asset.json";
 
 const COPY = {
   es: {
