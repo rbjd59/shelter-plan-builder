@@ -28,6 +28,12 @@ const TRUST_SUBLINE: Record<string, string> = {
   ht: "Pwoteje kay ou ak byen ou nan yon konfyans kreye pa yon avoka nan",
 };
 
+const CTA: Record<string, string> = {
+  en: "Start Now →",
+  es: "Comience Ahora →",
+  ht: "Kòmanse Kounye a →",
+};
+
 const DISCLAIMER: Record<string, string> = {
   en: "This video is an advertisement. Every case can be handled independently, and the outcome is not guaranteed.",
   es: "Este video es un anuncio publicitario. Cada caso se maneja de manera independiente y el resultado no está garantizado.",
