@@ -191,8 +191,27 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
   addContact(a.contact_name, a.contact_phone, a.contact_email, "family", 3);
 
   if (contactsToInsert.length) {
-    await sb.from("client_contacts").insert(contactsToInsert);
+    const { error: contactErr } = await sb.from("client_contacts").insert(contactsToInsert);
+    await logDelivery({
+      intakeSessionId: params.intakeSessionId,
+      clientId,
+      activationCode: code,
+      step: "contacts_synced",
+      status: contactErr ? "failed" : "success",
+      errorMessage: contactErr?.message ?? null,
+      metadata: { count: contactsToInsert.length, names: contactsToInsert.map((c) => c.name) },
+    });
+  } else {
+    await logDelivery({
+      intakeSessionId: params.intakeSessionId,
+      clientId,
+      activationCode: code,
+      step: "contacts_synced",
+      status: "skipped",
+      errorMessage: "no emergency contacts captured on the intake form",
+    });
   }
+
 
   // Persist pet rescue row if the add-on was selected
   if (hasPetRescue) {
