@@ -3,6 +3,7 @@ import SiteShell from "@/components/SiteShell";
 import HeroIntro from "@/components/HeroIntro";
 import ProblemSolutionSection from "@/components/ProblemSolutionSection";
 import HowItWorksVideoSection from "@/components/HowItWorksVideoSection";
+import AdVideoSection from "@/components/AdVideoSection";
 
 const DEFENDER_HOSTS = new Set([
   "defendermicasa.com",
@@ -57,6 +58,7 @@ export const Route = createFileRoute("/")({
     <>
       <HeroIntro />
       <HowItWorksVideoSection />
+      <AdVideoSection />
       <ProblemSolutionSection />
       <SiteShell />
     </>
