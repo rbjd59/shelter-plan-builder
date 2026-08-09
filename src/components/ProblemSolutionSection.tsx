@@ -6,9 +6,11 @@ const COPY: Record<Lang, {
   solutionLabel: string;
   solutions: string[];
   faqNote: string;
+  watchMore: string;
 }> = {
   es: {
     problemLabel: "El Problema",
+    watchMore: "Mira Más Videos",
     problems: [
       "ICE detiene a dos mil personas al día.",
       "Si no eres ciudadano, estás en riesgo.",
