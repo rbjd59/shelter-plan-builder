@@ -511,7 +511,7 @@ export default function HeroIntro() {
                 color: "#0f1830",
                 textDecoration: "none",
                 fontWeight: 800,
-                fontSize: isMobile ? "0.72rem" : "0.78rem",
+                fontSize: isMobile ? "0.85rem" : "0.78rem",
                 letterSpacing: "0.05em",
                 textTransform: "uppercase",
                 padding: "7px 16px",
