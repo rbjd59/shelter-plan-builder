@@ -415,7 +415,7 @@ export default function HeroIntro() {
 
             {/* Best in class */}
             <a
-              href="/security-faq"
+              href="#security-video"
               style={{
                 display: "block",
                 textDecoration: "none",
