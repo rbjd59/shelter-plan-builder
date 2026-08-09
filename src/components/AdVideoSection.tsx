@@ -28,6 +28,12 @@ const TRUST_SUBLINE: Record<string, string> = {
   ht: "Pwoteje kay ou ak byen ou nan yon konfyans kreye pa yon avoka nan",
 };
 
+const CTA: Record<string, string> = {
+  en: "Start Now →",
+  es: "Comience Ahora →",
+  ht: "Kòmanse Kounye a →",
+};
+
 const DISCLAIMER: Record<string, string> = {
   en: "This video is an advertisement. Every case can be handled independently, and the outcome is not guaranteed.",
   es: "Este video es un anuncio publicitario. Cada caso se maneja de manera independiente y el resultado no está garantizado.",
@@ -136,7 +142,17 @@ export default function AdVideoSection() {
             maxWidth: 760,
           }}
         >
-          {TRUST_SUBLINE[lang] ?? TRUST_SUBLINE.en}{" "}
+          {TRUST_SUBLINE[lang] ?? TRUST_SUBLINE.en}
+        </p>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "0.75rem",
+            margin: "1.1rem auto 0",
+          }}
+        >
           <a
             href="https://savemyhometrust.com"
             target="_blank"
@@ -145,19 +161,38 @@ export default function AdVideoSection() {
               display: "inline-block",
               background: "#e8a04a",
               color: "#0f1830",
-              padding: "0.5rem 1rem",
-              borderRadius: 6,
-              fontWeight: 700,
+              padding: "0.85rem 1.6rem",
+              borderRadius: 999,
+              fontWeight: 800,
+              fontSize: "1.05rem",
               textDecoration: "none",
-              marginTop: 6,
+              boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
             }}
           >
             savemyhometrust.com
           </a>
-        </p>
+          <a
+            href="https://savemyhometrust.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-block",
+              background: "#fff",
+              color: "#0f1830",
+              padding: "0.7rem 2rem",
+              borderRadius: 999,
+              fontWeight: 800,
+              fontSize: "0.95rem",
+              textDecoration: "none",
+              boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
+            }}
+          >
+            {CTA[lang] ?? CTA.en}
+          </a>
+        </div>
         <p
           style={{
-            margin: "0.75rem auto 0",
+            margin: "1rem auto 0",
             fontSize: 12,
             lineHeight: 1.45,
             color: "rgba(255,255,255,0.75)",
