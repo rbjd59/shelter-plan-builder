@@ -399,6 +399,92 @@ export default function HeroIntro() {
             </a>
           </div>
 
+          {/* Feature boxes */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+              gap: isMobile ? "0.9rem" : "1.5rem",
+              maxWidth: 1100,
+              width: "100%",
+              margin: "1.25rem auto 0",
+            }}
+          >
+            <div
+              style={{
+                background: "rgba(17,46,81,0.55)",
+                border: "2px solid #e8a04a",
+                borderRadius: 16,
+                padding: isMobile ? "1rem 1.1rem" : "1.35rem 1.6rem",
+                textAlign: "left",
+                boxShadow: "0 6px 20px rgba(0,0,0,0.4)",
+              }}
+            >
+              <h3
+                style={{
+                  margin: 0,
+                  fontFamily: '"Roboto Slab", Georgia, serif',
+                  fontWeight: 900,
+                  fontSize: isMobile ? "0.95rem" : "1.15rem",
+                  letterSpacing: "0.06em",
+                  color: "#e8a04a",
+                  textTransform: "uppercase",
+                }}
+              >
+                {COPY[lang].secBoxHeading}
+              </h3>
+              <p
+                style={{
+                  margin: "0.4rem 0 0",
+                  fontFamily: '"Work Sans", sans-serif',
+                  fontWeight: 500,
+                  fontSize: isMobile ? "0.85rem" : "0.98rem",
+                  lineHeight: 1.35,
+                  color: "#ffffff",
+                }}
+              >
+                {COPY[lang].secBoxBody}
+              </p>
+            </div>
+
+            <div
+              style={{
+                background: "rgba(17,46,81,0.55)",
+                border: "2px solid #e8a04a",
+                borderRadius: 16,
+                padding: isMobile ? "1rem 1.1rem" : "1.35rem 1.6rem",
+                textAlign: "left",
+                boxShadow: "0 6px 20px rgba(0,0,0,0.4)",
+              }}
+            >
+              <h3
+                style={{
+                  margin: 0,
+                  fontFamily: '"Roboto Slab", Georgia, serif',
+                  fontWeight: 900,
+                  fontSize: isMobile ? "0.95rem" : "1.15rem",
+                  letterSpacing: "0.06em",
+                  color: "#e8a04a",
+                  textTransform: "uppercase",
+                }}
+              >
+                {COPY[lang].appBoxHeading}
+              </h3>
+              <p
+                style={{
+                  margin: "0.4rem 0 0",
+                  fontFamily: '"Work Sans", sans-serif',
+                  fontWeight: 500,
+                  fontSize: isMobile ? "0.85rem" : "0.98rem",
+                  lineHeight: 1.35,
+                  color: "#ffffff",
+                }}
+              >
+                {COPY[lang].appBoxBody}
+              </p>
+            </div>
+          </div>
+
         </div>
 
         {/* Bottom notice */}
