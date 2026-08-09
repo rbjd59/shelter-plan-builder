@@ -406,23 +406,6 @@ export default function HeroIntro() {
                   justifyContent: "center",
                 }}
               >
-                <span
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: 30,
-                    height: 30,
-                    borderRadius: "50%",
-                    background: "#e8a04a",
-                    color: "#0f1830",
-                    flexShrink: 0,
-                  }}
-                >
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </span>
                 <h3
                   style={{
                     margin: 0,
