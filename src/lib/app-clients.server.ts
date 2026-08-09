@@ -188,7 +188,27 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
     typeof a.emergency_contact_2_relation === "string" ? a.emergency_contact_2_relation : "emergency-2",
     2,
   );
-  addContact(a.contact_name, a.contact_phone, a.contact_email, "family", 3);
+  addContact(
+    a.emergency_contact_3_name,
+    a.emergency_contact_3_phone,
+    a.emergency_contact_3_email,
+    typeof a.emergency_contact_3_relation === "string" ? a.emergency_contact_3_relation : "emergency-3",
+    3,
+  );
+  addContact(a.contact_name, a.contact_phone, a.contact_email, "family", 4);
+
+  // De-duplicate: the family contact is often the same person as emergency #1.
+  {
+    const seen = new Set<string>();
+    for (let i = contactsToInsert.length - 1; i >= 0; i--) {
+      const c = contactsToInsert[i]!;
+      const key = `${String(c.name).toLowerCase()}|${c.phone_e164 ?? ""}`;
+      if (seen.has(key)) contactsToInsert.splice(i, 1);
+      else seen.add(key);
+    }
+    contactsToInsert.forEach((c, i) => (c.priority = i + 1));
+  }
+
 
   if (contactsToInsert.length) {
     const { error: contactErr } = await sb.from("client_contacts").insert(contactsToInsert);

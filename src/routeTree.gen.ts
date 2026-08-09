@@ -81,6 +81,7 @@ import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/publi
 import { Route as ApiPublicEmergencyTestMirrorRouteImport } from './routes/api/public/emergency/test-mirror'
 import { Route as ApiPublicEmergencyActivateRouteImport } from './routes/api/public/emergency/activate'
 import { Route as ApiPublicDevSendInstallRouteImport } from './routes/api/public/dev/send-install'
+import { Route as ApiPublicDevFireDemoClientRouteImport } from './routes/api/public/dev/fire-demo-client'
 import { Route as ApiPublicCronRetryFailedEmailsRouteImport } from './routes/api/public/cron/retry-failed-emails'
 import { Route as ApiPublicCronProcessDueActivationsRouteImport } from './routes/api/public/cron/process-due-activations'
 import { Route as ApiPublicAppUpdateInfoRouteImport } from './routes/api/public/app/update-info'
@@ -458,6 +459,12 @@ const ApiPublicDevSendInstallRoute = ApiPublicDevSendInstallRouteImport.update({
   path: '/api/public/dev/send-install',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicDevFireDemoClientRoute =
+  ApiPublicDevFireDemoClientRouteImport.update({
+    id: '/api/public/dev/fire-demo-client',
+    path: '/api/public/dev/fire-demo-client',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicCronRetryFailedEmailsRoute =
   ApiPublicCronRetryFailedEmailsRouteImport.update({
     id: '/api/public/cron/retry-failed-emails',
@@ -586,6 +593,7 @@ export interface FileRoutesByFullPath {
   '/api/public/app/update-info': typeof ApiPublicAppUpdateInfoRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/cron/retry-failed-emails': typeof ApiPublicCronRetryFailedEmailsRoute
+  '/api/public/dev/fire-demo-client': typeof ApiPublicDevFireDemoClientRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
   '/api/public/emergency/test-mirror': typeof ApiPublicEmergencyTestMirrorRoute
@@ -667,6 +675,7 @@ export interface FileRoutesByTo {
   '/api/public/app/update-info': typeof ApiPublicAppUpdateInfoRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/cron/retry-failed-emails': typeof ApiPublicCronRetryFailedEmailsRoute
+  '/api/public/dev/fire-demo-client': typeof ApiPublicDevFireDemoClientRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
   '/api/public/emergency/test-mirror': typeof ApiPublicEmergencyTestMirrorRoute
@@ -752,6 +761,7 @@ export interface FileRoutesById {
   '/api/public/app/update-info': typeof ApiPublicAppUpdateInfoRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/cron/retry-failed-emails': typeof ApiPublicCronRetryFailedEmailsRoute
+  '/api/public/dev/fire-demo-client': typeof ApiPublicDevFireDemoClientRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
   '/api/public/emergency/test-mirror': typeof ApiPublicEmergencyTestMirrorRoute
@@ -835,6 +845,7 @@ export interface FileRouteTypes {
     | '/api/public/app/update-info'
     | '/api/public/cron/process-due-activations'
     | '/api/public/cron/retry-failed-emails'
+    | '/api/public/dev/fire-demo-client'
     | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
     | '/api/public/emergency/test-mirror'
@@ -916,6 +927,7 @@ export interface FileRouteTypes {
     | '/api/public/app/update-info'
     | '/api/public/cron/process-due-activations'
     | '/api/public/cron/retry-failed-emails'
+    | '/api/public/dev/fire-demo-client'
     | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
     | '/api/public/emergency/test-mirror'
@@ -1000,6 +1012,7 @@ export interface FileRouteTypes {
     | '/api/public/app/update-info'
     | '/api/public/cron/process-due-activations'
     | '/api/public/cron/retry-failed-emails'
+    | '/api/public/dev/fire-demo-client'
     | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
     | '/api/public/emergency/test-mirror'
@@ -1064,6 +1077,7 @@ export interface RootRouteChildren {
   ApiPublicAppUpdateInfoRoute: typeof ApiPublicAppUpdateInfoRoute
   ApiPublicCronProcessDueActivationsRoute: typeof ApiPublicCronProcessDueActivationsRoute
   ApiPublicCronRetryFailedEmailsRoute: typeof ApiPublicCronRetryFailedEmailsRoute
+  ApiPublicDevFireDemoClientRoute: typeof ApiPublicDevFireDemoClientRoute
   ApiPublicDevSendInstallRoute: typeof ApiPublicDevSendInstallRoute
   ApiPublicEmergencyActivateRoute: typeof ApiPublicEmergencyActivateRoute
   ApiPublicEmergencyTestMirrorRoute: typeof ApiPublicEmergencyTestMirrorRoute
@@ -1579,6 +1593,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicDevSendInstallRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/dev/fire-demo-client': {
+      id: '/api/public/dev/fire-demo-client'
+      path: '/api/public/dev/fire-demo-client'
+      fullPath: '/api/public/dev/fire-demo-client'
+      preLoaderRoute: typeof ApiPublicDevFireDemoClientRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/cron/retry-failed-emails': {
       id: '/api/public/cron/retry-failed-emails'
       path: '/api/public/cron/retry-failed-emails'
@@ -1804,6 +1825,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicCronProcessDueActivationsRoute:
     ApiPublicCronProcessDueActivationsRoute,
   ApiPublicCronRetryFailedEmailsRoute: ApiPublicCronRetryFailedEmailsRoute,
+  ApiPublicDevFireDemoClientRoute: ApiPublicDevFireDemoClientRoute,
   ApiPublicDevSendInstallRoute: ApiPublicDevSendInstallRoute,
   ApiPublicEmergencyActivateRoute: ApiPublicEmergencyActivateRoute,
   ApiPublicEmergencyTestMirrorRoute: ApiPublicEmergencyTestMirrorRoute,
