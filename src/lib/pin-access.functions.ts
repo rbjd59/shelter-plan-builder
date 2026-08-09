@@ -26,68 +26,15 @@ export const pinListCompanyBoard = createServerFn({ method: "POST" })
     const [clientsRes, alertsRes] = await Promise.all([
       supabaseAdmin
         .from("app_clients")
-        .select(
-          "id, invite_token, created_at, activated_at, full_name, email, phone_e164, place_of_birth, country_of_origin, has_asset_protection, has_pet_rescue",
-        )
+        .select("id, invite_token, created_at, activated_at")
         .order("created_at", { ascending: false })
         .limit(1000),
       supabaseAdmin
         .from("client_sos_alerts")
-        .select(
-          "id, client_id, triggered_at, cancelled_at, lat, lng, app_reported_name, app_reported_a_number, app_reported_place_of_birth, app_reported_date_of_birth",
-        )
+        .select("id, client_id, triggered_at, cancelled_at")
         .order("triggered_at", { ascending: false })
         .limit(500),
     ]);
-
-    const clientById = new Map<string, any>();
-    for (const c of clientsRes.data ?? []) {
-      clientById.set((c as any).id, c);
-    }
-
-    const triggeredClientIds = Array.from(
-      new Set((alertsRes.data ?? []).map((a) => (a as { client_id: string }).client_id)),
-    );
-
-    // Fetch contacts + pet rescue + draft form counts only for triggered clients.
-    const [contactsRes, petsRes, docsRes] = await Promise.all([
-      triggeredClientIds.length
-        ? supabaseAdmin
-            .from("client_contacts")
-            .select("client_id, name, phone_e164, email, relationship, priority")
-            .in("client_id", triggeredClientIds)
-            .order("priority", { ascending: true })
-        : Promise.resolve({ data: [] as any[] }),
-      triggeredClientIds.length
-        ? supabaseAdmin
-            .from("client_pet_rescue")
-            .select(
-              "client_id, pet_name, pet_type, pet_location, access_instructions, who_to_notify, no_kill_shelter_preferred, no_kill_shelter_address",
-            )
-            .in("client_id", triggeredClientIds)
-        : Promise.resolve({ data: [] as any[] }),
-      triggeredClientIds.length
-        ? supabaseAdmin
-            .from("client_documents")
-            .select("id, client_id, title, document_type, from_app")
-            .in("client_id", triggeredClientIds)
-        : Promise.resolve({ data: [] as any[] }),
-    ]);
-
-    const contactsByClient = new Map<string, any[]>();
-    for (const c of (contactsRes.data ?? []) as any[]) {
-      const list = contactsByClient.get(c.client_id) ?? [];
-      list.push(c);
-      contactsByClient.set(c.client_id, list);
-    }
-    const petByClient = new Map<string, any>();
-    for (const p of (petsRes.data ?? []) as any[]) petByClient.set(p.client_id, p);
-    const docsByClient = new Map<string, any[]>();
-    for (const d of (docsRes.data ?? []) as any[]) {
-      const list = docsByClient.get(d.client_id) ?? [];
-      list.push(d);
-      docsByClient.set(d.client_id, list);
-    }
 
     // Latest alert per client (alerts are ordered newest first).
     const latestAlertByClient = new Map<string, any>();
@@ -95,17 +42,14 @@ export const pinListCompanyBoard = createServerFn({ method: "POST" })
       if (!latestAlertByClient.has(a.client_id)) latestAlertByClient.set(a.client_id, a);
     }
 
-    // Every signup shows on the board; trigger status rides on the same row.
+    // MINIMUM VISIBILITY: activation code + dates only. No names, emails,
+    // phones, contacts, documents or GPS ever reach the company board, so a
+    // subpoena against the company yields nothing identifying about a client.
     const registered = (clientsRes.data ?? []).map((c) => {
       const row = c as any;
       const alert = latestAlertByClient.get(row.id) ?? null;
       return {
         activation_code: row.invite_token,
-        full_name: row.full_name ?? null,
-        email: row.email ?? null,
-        phone: row.phone_e164 ?? null,
-        has_asset_protection: !!row.has_asset_protection,
-        has_pet_rescue: !!row.has_pet_rescue,
         registered_at: row.created_at,
         activated_at: row.activated_at,
         latest_alert: alert
@@ -118,41 +62,9 @@ export const pinListCompanyBoard = createServerFn({ method: "POST" })
       };
     });
 
-    const triggered = (alertsRes.data ?? []).map((a) => {
-      const row = a as any;
-      const client = clientById.get(row.client_id) ?? {};
-      const docs = docsByClient.get(row.client_id) ?? [];
-      return {
-        alert_id: row.id,
-        client_id: row.client_id,
-        activation_code: client.invite_token ?? "—",
-        triggered_at: row.triggered_at,
-        cancelled_at: row.cancelled_at,
-        lat: row.lat,
-        lng: row.lng,
-        // App-reported (entered on phone) — preferred when present
-        name: row.app_reported_name ?? client.full_name ?? null,
-        a_number: row.app_reported_a_number,
-        place_of_birth: row.app_reported_place_of_birth ?? client.place_of_birth ?? null,
-        date_of_birth: row.app_reported_date_of_birth,
-        // From intake / file
-        email: client.email ?? null,
-        phone: client.phone_e164 ?? null,
-        country_of_origin: client.country_of_origin ?? null,
-        has_asset_protection: !!client.has_asset_protection,
-        has_pet_rescue: !!client.has_pet_rescue,
-        contacts: contactsByClient.get(row.client_id) ?? [],
-        pet_rescue: petByClient.get(row.client_id) ?? null,
-        draft_forms_count: docs.filter((d) => !d.from_app).length,
-        app_uploads_count: docs.filter((d) => d.from_app).length,
-        draft_forms: docs
-          .filter((d) => !d.from_app)
-          .map((d) => ({ id: d.id, title: d.title, document_type: d.document_type })),
-      };
-    });
-
-    return { registered, triggered };
+    return { registered, triggered: [] as Array<Record<string, never>> };
   });
+
 
 /**
  * ATTORNEY BOARD — every client, keyed by activation code.

@@ -358,57 +358,20 @@ ${Object.entries(a)
 
   if (!doWelcome) return urls;
 
-
-  // Family welcome + case tracking record.
+  // Case-tracking record only. NOTHING is emailed to emergency/family contacts
+  // at signup — contacts are only ever contacted when an SOS actually fires.
+  // The client alone receives the welcome + activation-code email
+  // (see enqueueActivationEmails in activation-emails.server.ts).
   try {
-    const tracking = await createOrUpdateCaseTracking({
+    await createOrUpdateCaseTracking({
       sessionId,
       answers,
       language,
       contactEmailFromStripe: contactEmail,
     });
-    const familyEmail =
-      (typeof answers.contact_email === "string" && answers.contact_email) || contactEmail;
-    const emergencyEmail =
-      typeof answers.emergency_contact_email === "string" && answers.emergency_contact_email
-        ? answers.emergency_contact_email
-        : null;
-    const recipientsSet = new Set<string>();
-    if (familyEmail) recipientsSet.add(String(familyEmail).toLowerCase());
-    if (emergencyEmail) recipientsSet.add(String(emergencyEmail).toLowerCase());
-
-    if (tracking && recipientsSet.size > 0) {
-      const { issueAppInstallToken, buildAppInstallUrl } = await import("@/lib/app-install.server");
-      const [clientToken, familyToken] = await Promise.all([
-        issueAppInstallToken(sessionId, "client"),
-        issueAppInstallToken(sessionId, "family"),
-      ]);
-      const clientInstallUrl = clientToken ? buildAppInstallUrl(clientToken, "client") : null;
-      const familyInstallUrl = familyToken ? buildAppInstallUrl(familyToken, "family") : null;
-      const inmateName =
-        (typeof answers.mail_inmate_name === "string" && answers.mail_inmate_name) ||
-        (typeof answers.full_name === "string" && answers.full_name) ||
-        "su ser querido";
-      for (const to of recipientsSet) {
-        console.info(
-          `[invite-code] sendWelcomeEmail session=${sessionId} to=${to} invite_code=${inviteCode ?? "MISSING"} invite_code_len=${inviteCode?.length ?? 0} path=${inviteCode ? "defensasiempre_deeplink" : "pwa_install_fallback"}`,
-        );
-        await sendWelcomeEmail({
-          to,
-          trackingToken: tracking.token,
-          language,
-          clientInstallUrl,
-          familyInstallUrl,
-          habeasUrl,
-          ifpUrl,
-          inmateName,
-          demoMode,
-          inviteCode,
-        });
-      }
-    }
   } catch (e) {
-    console.error("Family welcome / case tracking failed:", e);
+    console.error("Case tracking upsert failed:", e);
   }
+
   return urls;
 }
