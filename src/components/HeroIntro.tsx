@@ -8,11 +8,10 @@ const COPY = {
     plan: "Plan de protección ante detención ICE ",
     price: "$199.",
     freeText: "Ahora gratis debido a la crisis comunitaria.",
-    ice: "ICE ARRESTÓ A 51,000 PERSONAS EN JULIO",
-    tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
-    secBoxHeading: "SEGURIDAD DE PRIMERA CLASE",
-    secBoxBody: "Esta app fue diseñada con la privacidad y la seguridad en su núcleo.",
-    appBoxHeading: "APP GRATUITA PARA EL TELÉFONO",
+    tagline: "Alerta de emergencia de un clic y plan de defensa legal revisado por un abogado",
+    secBoxHeading: "Seguridad de primera clase",
+    secBoxBody: "Diseñada con la privacidad y la seguridad en su núcleo.",
+    appBoxHeading: "App gratuita para el teléfono",
     appBoxBody: "Notifica al instante a tus contactos y abogado si enfrentas un arresto.",
     disclaimer:
       "DetencionDefensa.com proporciona software de admisión seguro, traducción y servicios automatizados de preparación de documentos. No somos una firma de abogados y no proporcionamos asesoramiento legal.",
@@ -21,12 +20,11 @@ const COPY = {
     plan: "ICE detention protection plan ",
     price: "$199.",
     freeText: "Now free due to community crisis.",
-    ice: "ICE arrests 51,000 people in July",
-    tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
-    secBoxHeading: "BEST IN CLASS SECURITY",
-    secBoxBody: "This app was designed with privacy and security at its very core.",
-    appBoxHeading: "FREE APP FOR PHONE",
-    appBoxBody: "Instantly notify contacts and attorney if you are faced with arrest.",
+    tagline: "One-click emergency alert and attorney-reviewed legal defense plan",
+    secBoxHeading: "Best in class security",
+    secBoxBody: "Designed with privacy and security at its very core.",
+    appBoxHeading: "Free app for phone",
+    appBoxBody: "Instantly notify contacts and attorney if faced with arrest.",
     disclaimer:
       "DetencionDefensa.com provides secure admission software, translation, and automated document preparation services. We are not a law firm and do not provide legal advice.",
   },
@@ -34,16 +32,18 @@ const COPY = {
     plan: "Plan pwoteksyon pou arestasyon ICE ",
     price: "$199.",
     freeText: "Kounye a gratis akòz kriz kominotè a.",
-    ice: "ICE arete 51,000 moun an jiyè",
-    tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
-    secBoxHeading: "SEKIRITE PI BON KLAS",
-    secBoxBody: "Aplikasyon sa a fèt ak vi prive ak sekirite kòm nwayo li.",
-    appBoxHeading: "APP GRATIS POU TELEFÒN",
+    tagline: "Sijè a alèt dijans yon sèl kli epi plan defans legal revize pa yon avoka",
+    secBoxHeading: "Sekirite pi bon klas",
+    secBoxBody: "Fèt ak vi prive ak sekirite kòm nwayo li.",
+    appBoxHeading: "App gratis pou telefòn",
     appBoxBody: "Fè kontak ak avoka w konnen imedyatman si yo arete w.",
     disclaimer:
       "DetencionDefensa.com ofri lojisyèl admisyon ki an sekirite, tradiksyon, ak sèvis preparasyon dokiman otomatik. Nou pa yon kabinè avoka e nou pa bay konsèy legal.",
   },
-} satisfies Record<Lang, { plan: string; price: string; freeText: string; ice: string; tagline1: string; secBoxHeading: string; secBoxBody: string; appBoxHeading: string; appBoxBody: string; disclaimer: string }>;
+} satisfies Record<
+  Lang,
+  { plan: string; price: string; freeText: string; tagline: string; secBoxHeading: string; secBoxBody: string; appBoxHeading: string; appBoxBody: string; disclaimer: string }
+>;
 
 function PriceWithX({ prefix, price }: { prefix: string; price: string }) {
   return (
