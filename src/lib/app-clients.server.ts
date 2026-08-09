@@ -287,34 +287,79 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
     from_app: false,
   }));
 
-  await sb.from("client_documents").insert(seedDocs as never);
-
+  const docInsert = await sb.from("client_documents").insert(seedDocs as never);
+  await logDelivery({
+    intakeSessionId: params.intakeSessionId,
+    clientId,
+    activationCode: code,
+    step: "documents_generated",
+    status: docInsert.error ? "failed" : "success",
+    errorMessage: docInsert.error?.message ?? null,
+    target: "phone bundle",
+    metadata: {
+      documents: docSet.map((d) => d.type),
+      empty: docSet.filter((d) => !generated.get(d.type)).map((d) => d.type),
+    },
+  });
 
   // Send activation email
-  try {
-    await sendActivationEmail({
-      to: email,
-      code,
-      language: params.language,
-      fullName: fullName ?? "",
+  if (email) {
+    await trackDelivery(
+      {
+        intakeSessionId: params.intakeSessionId,
+        clientId,
+        activationCode: code,
+        step: "activation_email",
+        target: email,
+      },
+      () =>
+        sendActivationEmail({
+          to: email,
+          code,
+          language: params.language,
+          fullName: fullName ?? "",
+        }),
+    );
+  } else {
+    await logDelivery({
+      intakeSessionId: params.intakeSessionId,
+      clientId,
+      activationCode: code,
+      step: "activation_email",
+      status: "skipped",
+      errorMessage: "no client email captured on the intake form",
     });
-  } catch (e) {
-    console.error("activation email failed", e);
   }
 
   // Send activation SMS
   if (phone) {
-    try {
-      await sendSms({
-        to: phone,
-        body: activationSmsBody(code, params.language),
-        purpose: "activation",
-        metadata: { client_id: clientId },
-      });
-    } catch (e) {
-      console.error("activation SMS failed", e);
-    }
+    await trackDelivery(
+      {
+        intakeSessionId: params.intakeSessionId,
+        clientId,
+        activationCode: code,
+        step: "activation_sms",
+        target: phone,
+      },
+      () =>
+        sendSms({
+          to: phone,
+          body: activationSmsBody(code, params.language),
+          purpose: "activation",
+          metadata: { client_id: clientId },
+        }),
+    );
+  } else {
+    await logDelivery({
+      intakeSessionId: params.intakeSessionId,
+      clientId,
+      activationCode: code,
+      step: "activation_sms",
+      status: "skipped",
+      errorMessage: "no client mobile number captured on the intake form",
+    });
   }
+
 
   return { ok: true, clientId, code };
 }
