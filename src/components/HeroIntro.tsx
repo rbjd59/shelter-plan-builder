@@ -176,7 +176,7 @@ export default function HeroIntro() {
                 color: "#ffffff",
                 whiteSpace: "nowrap",
                 lineHeight: 1.2,
-                textAlign: "left",
+                textAlign: isMobile ? "center" : "left",
               }}
             >
               DetencionDefensa.com
@@ -185,23 +185,26 @@ export default function HeroIntro() {
 
           <div
             style={{
-              display: "inline-flex",
+              display: "flex",
               alignItems: "center",
               gap: 10,
               flexShrink: 0,
               flexWrap: "wrap",
-              justifyContent: "flex-end",
+              justifyContent: "center",
+              width: isMobile ? "100%" : "auto",
             }}
           >
             <div
               style={{
                 display: "inline-flex",
+                justifyContent: "center",
                 gap: 4,
                 background: "#fff",
                 border: "1px solid rgba(10,22,51,0.15)",
                 borderRadius: 999,
                 padding: 3,
                 flexShrink: 0,
+                maxWidth: "100%",
               }}
             >
               {(["es", "en", "ht"] as Lang[]).map((code) => (
