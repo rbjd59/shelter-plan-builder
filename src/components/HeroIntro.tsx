@@ -266,7 +266,7 @@ export default function HeroIntro() {
                 fontWeight: 600,
                 color: "#ffffff",
                 margin: 0,
-                whiteSpace: "nowrap",
+                whiteSpace: "normal",
                 textShadow: "0 2px 8px rgba(0,0,0,0.5)",
               }}
             >
