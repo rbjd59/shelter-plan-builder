@@ -487,10 +487,12 @@ export default function HeroIntro() {
                 margin: 0,
                 fontFamily: '"Roboto Slab", Georgia, serif',
                 fontWeight: 900,
-                fontSize: isMobile ? "1.05rem" : "0.95rem",
-                letterSpacing: "0.08em",
+                fontSize: isMobile ? "1.4rem" : "clamp(1.25rem, 2.4vw, 1.6rem)",
+                letterSpacing: "0.06em",
                 color: "#ff3b3b",
                 textTransform: "uppercase",
+                width: "100%",
+                lineHeight: 1.2,
               }}
             >
               {COPY[lang].secBoxHeading}
