@@ -5,7 +5,7 @@
 
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
-const FROM = "intake@gohomesooner.com";
+const FROM = "info@gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
 
 const COMPANY_EMAIL = "alerts@detenciondefensa.com";
