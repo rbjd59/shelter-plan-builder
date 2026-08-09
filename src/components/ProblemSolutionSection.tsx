@@ -84,6 +84,7 @@ export default function ProblemSolutionSection() {
           label={t.problemLabel}
           items={t.problems}
           bulletColor="#ff6b6b"
+          action={<WatchMoreButton label={t.watchMore} />}
         />
         <Block
           badgeColor="#4aa8e8"
