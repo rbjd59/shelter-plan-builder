@@ -259,7 +259,7 @@ export default function HeroIntro() {
           <div
             style={{
               fontFamily: '"Roboto Slab", Georgia, serif',
-              maxWidth: 1100,
+              maxWidth: 1240,
               margin: "0 auto",
               width: "100%",
               textAlign: "center",
@@ -270,13 +270,13 @@ export default function HeroIntro() {
           >
             <p
               style={{
-                fontSize: isMobile ? "0.95rem" : "clamp(1.05rem, 1.9vw, 1.5rem)",
-                lineHeight: 1.2,
-                fontWeight: 600,
+                fontSize: isMobile ? "1.35rem" : "clamp(1.6rem, 3.8vw, 2.7rem)",
+                lineHeight: 1.15,
+                fontWeight: 800,
                 color: "#ffffff",
                 margin: 0,
                 whiteSpace: "normal",
-                textShadow: "0 2px 8px rgba(0,0,0,0.5)",
+                textShadow: "0 2px 10px rgba(0,0,0,0.6)",
               }}
             >
               <PriceWithX prefix={COPY[lang].plan} price={COPY[lang].price} />
@@ -285,12 +285,12 @@ export default function HeroIntro() {
             <p
               style={{
                 fontFamily: '"Roboto Slab", Georgia, serif',
-                fontSize: isMobile ? "0.95rem" : "1.05rem",
+                fontSize: isMobile ? "1.1rem" : "clamp(1.2rem, 2.6vw, 1.9rem)",
                 lineHeight: 1.2,
                 fontWeight: 800,
                 color: "#ef4444",
                 margin: 0,
-                textShadow: "0 2px 8px rgba(0,0,0,0.6)",
+                textShadow: "0 2px 10px rgba(0,0,0,0.6)",
               }}
             >
               {COPY[lang].freeText}
