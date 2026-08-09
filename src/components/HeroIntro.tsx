@@ -307,12 +307,12 @@ export default function HeroIntro() {
           <p
             style={{
               fontFamily: '"Work Sans", sans-serif',
-              fontSize: isMobile ? "1.15rem" : "1.15rem",
+              fontSize: isMobile ? "1.55rem" : "clamp(1.5rem, 2.6vw, 2.1rem)",
               lineHeight: 1.35,
-              fontWeight: 700,
+              fontWeight: 800,
               color: "#ffffff",
               margin: 0,
-              maxWidth: 820,
+              maxWidth: 900,
               marginInline: "auto",
               textShadow: "0 1px 2px rgba(255,255,255,0.6)",
             }}
@@ -326,7 +326,7 @@ export default function HeroIntro() {
               display: "grid",
               gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
               gap: isMobile ? "0.6rem" : "0.9rem",
-              maxWidth: 760,
+              maxWidth: 1100,
               width: "100%",
               margin: "1rem auto 0",
             }}
@@ -347,10 +347,12 @@ export default function HeroIntro() {
                   margin: 0,
                   fontFamily: '"Roboto Slab", Georgia, serif',
                   fontWeight: 900,
-                  fontSize: isMobile ? "1.05rem" : "0.95rem",
-                  letterSpacing: "0.08em",
+                  fontSize: isMobile ? "1.4rem" : "clamp(1.25rem, 2.4vw, 1.6rem)",
+                  letterSpacing: "0.06em",
                   color: "#ff3b3b",
                   textTransform: "uppercase",
+                  width: "100%",
+                  lineHeight: 1.2,
                 }}
               >
                 {COPY[lang].appBoxHeading}
@@ -411,10 +413,12 @@ export default function HeroIntro() {
                     margin: 0,
                     fontFamily: '"Roboto Slab", Georgia, serif',
                     fontWeight: 900,
-                    fontSize: isMobile ? "1.05rem" : "0.95rem",
-                    letterSpacing: "0.08em",
+                    fontSize: isMobile ? "1.4rem" : "clamp(1.25rem, 2.4vw, 1.6rem)",
+                    letterSpacing: "0.06em",
                     color: "#ff3b3b",
                     textTransform: "uppercase",
+                    width: "100%",
+                    lineHeight: 1.2,
                   }}
                 >
                   {COPY[lang].homeBoxHeading}
@@ -465,7 +469,8 @@ export default function HeroIntro() {
               borderRadius: 12,
               padding: isMobile ? "0.75rem 0.9rem" : "0.85rem 1.1rem",
               textAlign: "center",
-              maxWidth: isMobile ? "100%" : 370,
+              maxWidth: 1100,
+              width: "100%",
               margin: "0.9rem auto 0",
               boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
               transition: "transform 0.15s ease, box-shadow 0.15s ease",
@@ -483,10 +488,12 @@ export default function HeroIntro() {
                 margin: 0,
                 fontFamily: '"Roboto Slab", Georgia, serif',
                 fontWeight: 900,
-                fontSize: isMobile ? "1.05rem" : "0.95rem",
-                letterSpacing: "0.08em",
+                fontSize: isMobile ? "1.4rem" : "clamp(1.25rem, 2.4vw, 1.6rem)",
+                letterSpacing: "0.06em",
                 color: "#ff3b3b",
                 textTransform: "uppercase",
+                width: "100%",
+                lineHeight: 1.2,
               }}
             >
               {COPY[lang].secBoxHeading}
