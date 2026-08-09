@@ -238,9 +238,9 @@ export default function HeroIntro() {
           >
             {lang === "es" ? (
               <>
-                <span style={{ whiteSpace: "nowrap" }}>{COPY[lang].ice}</span>
+                MÁS DE 2,000
                 <br />
-                <span style={{ whiteSpace: "nowrap" }}>PERSONAS CADA DÍA</span>
+                PERSONAS CADA DÍA
               </>
             ) : (
               COPY[lang].ice
