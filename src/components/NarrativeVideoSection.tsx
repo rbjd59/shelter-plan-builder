@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { useLang } from "@/context/LanguageContext";
+import { useAutoplayOnHash } from "@/hooks/useAutoplayOnHash";
 import esAsset from "@/assets/videos/detencion-narrative-es-v4-audio-1s-earlier.mp4.asset.json";
 import enAsset from "@/assets/videos/detencion-narrative-en-v3-fixed-199.mp4.asset.json";
 import htAsset from "@/assets/videos/detencion-narrative-ht-v4-audio-1s-earlier.mp4.asset.json";
@@ -45,8 +46,11 @@ export default function NarrativeVideoSection() {
     }
   };
 
+  useAutoplayOnHash("story-video", handlePlay);
+
   return (
     <section
+      id="story-video"
       style={{
         padding: "3rem 1rem 1rem",
         background: "#0d2c54",
