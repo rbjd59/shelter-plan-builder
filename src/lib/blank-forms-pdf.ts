@@ -187,6 +187,7 @@ function signatureBlock(ctx: Ctx, c: Chrome, opts: { witnesses?: boolean } = {})
   ensure(ctx, 96);
   ctx.y -= 8;
   para(ctx, c.signature, { bold: true, size: 11, gap: 10 });
+  ctx.y -= 26; // headroom so a stamped signature never collides with the heading
 
   const size = 10.5;
   const anchorY = ctx.y - size - 2;

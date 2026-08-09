@@ -149,7 +149,7 @@ export async function signBlankForms(input: SignInput) {
     const png = await pdf.embedPng(pngBytes);
     const page = pdf.getPage(form.anchor.pageIndex);
     const maxW = 220;
-    const scale = Math.min(maxW / png.width, 46 / png.height);
+    const scale = Math.min(maxW / png.width, 30 / png.height);
     page.drawImage(png, {
       x: form.anchor.x,
       y: form.anchor.y,
