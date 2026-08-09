@@ -9,6 +9,9 @@ const COPY = {
     price: "$199.",
     freeText: "Ahora gratis debido a la crisis comunitaria.",
     tagline: "Alerta de emergencia de un clic y plan de defensa legal revisado por un abogado",
+    btn1: "Cómo funciona el plan de protección",
+    btn2: "Si eres propietario de una vivienda",
+    watchVideo: "Mira un video de un minuto",
     secBoxHeading: "Seguridad de primera clase",
     secBoxBody: "Diseñada con la privacidad y la seguridad en su núcleo.",
     appBoxHeading: "App gratuita para el teléfono",
@@ -22,6 +25,9 @@ const COPY = {
     price: "$199.",
     freeText: "Now free due to community crisis.",
     tagline: "One-click emergency alert and attorney-reviewed legal defense plan",
+    btn1: "How Protection Plan Works",
+    btn2: "If You're a Homeowner",
+    watchVideo: "Watch a one-minute video",
     secBoxHeading: "Best in class security",
     secBoxBody: "Designed with privacy and security at its very core.",
     appBoxHeading: "Free app for phone",
@@ -34,6 +40,9 @@ const COPY = {
     price: "$199.",
     freeText: "Kounye a gratis akòz kriz kominotè a.",
     tagline: "Sijè a alèt dijans yon sèl kli epi plan defans legal revize pa yon avoka",
+    btn1: "Ki jan plan pwoteksyon an fonksyone",
+    btn2: "Si w se yon pwopriyetè kay",
+    watchVideo: "Gade yon videyo yon minit",
     secBoxHeading: "Sekirite pi bon klas",
     secBoxBody: "Fèt ak vi prive ak sekirite kòm nwayo li.",
     appBoxHeading: "App gratis pou telefòn",
@@ -43,7 +52,7 @@ const COPY = {
   },
 } satisfies Record<
   Lang,
-  { plan: string; price: string; freeText: string; tagline: string; secBoxHeading: string; secBoxBody: string; appBoxHeading: string; appBoxBody: string; disclaimer: string }
+  { plan: string; price: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; appBoxHeading: string; appBoxBody: string; disclaimer: string }
 >;
 
 function PriceWithX({ prefix, price }: { prefix: string; price: string }) {
@@ -290,79 +299,6 @@ export default function HeroIntro() {
             {COPY[lang].tagline}
           </p>
 
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "center",
-              gap: isMobile ? "0.75rem" : "1.25rem",
-              marginTop: "0.25rem",
-            }}
-          >
-            <a
-              href="#how-it-works-video"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: isMobile ? "0.7rem 1.6rem" : "0.95rem 2.4rem",
-                borderRadius: 999,
-                border: "2px solid #e8a04a",
-                background: "#e8a04a",
-                color: "#112e51",
-                fontWeight: 800,
-                fontSize: isMobile ? "0.9rem" : "1.05rem",
-                letterSpacing: "0.01em",
-                textDecoration: "none",
-                fontFamily: "inherit",
-                boxShadow: "0 4px 16px rgba(0,0,0,0.35)",
-                transition: "transform 0.15s ease, box-shadow 0.15s ease",
-                cursor: "pointer",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.boxShadow = "0 8px 22px rgba(0,0,0,0.45)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.35)";
-              }}
-            >
-              How Protection Plan Works
-            </a>
-            <a
-              href="#homeowner-video"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: isMobile ? "0.7rem 1.6rem" : "0.95rem 2.4rem",
-                borderRadius: 999,
-                border: "2px solid #ffffff",
-                background: "transparent",
-                color: "#ffffff",
-                fontWeight: 800,
-                fontSize: isMobile ? "0.9rem" : "1.05rem",
-                letterSpacing: "0.01em",
-                textDecoration: "none",
-                fontFamily: "inherit",
-                boxShadow: "0 4px 16px rgba(0,0,0,0.35)",
-                transition: "transform 0.15s ease, box-shadow 0.15s ease",
-                cursor: "pointer",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.boxShadow = "0 8px 22px rgba(0,0,0,0.45)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.35)";
-              }}
-            >
-              If You're a Homeowner
-            </a>
-          </div>
-
           {/* Feature boxes */}
           <div
             style={{
@@ -448,6 +384,124 @@ export default function HeroIntro() {
               >
                 {COPY[lang].appBoxBody}
               </p>
+            </div>
+          </div>
+
+          {/* CTA buttons */}
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              alignItems: "flex-start",
+              gap: isMobile ? "1.25rem" : "2rem",
+              marginTop: "1.25rem",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "0.45rem",
+              }}
+            >
+              <a
+                href="#how-it-works-video"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: isMobile ? "0.7rem 1.6rem" : "0.9rem 2.2rem",
+                  borderRadius: 999,
+                  border: "2px solid #e8a04a",
+                  background: "#e8a04a",
+                  color: "#112e51",
+                  fontWeight: 800,
+                  fontSize: isMobile ? "0.9rem" : "1.02rem",
+                  letterSpacing: "0.01em",
+                  textDecoration: "none",
+                  fontFamily: "inherit",
+                  boxShadow: "0 4px 16px rgba(0,0,0,0.35)",
+                  transition: "transform 0.15s ease, box-shadow 0.15s ease",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = "0 8px 22px rgba(0,0,0,0.45)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.35)";
+                }}
+              >
+                {COPY[lang].btn1}
+              </a>
+              <span
+                style={{
+                  fontFamily: '"Work Sans", sans-serif',
+                  fontSize: isMobile ? "0.72rem" : "0.82rem",
+                  fontWeight: 600,
+                  color: "rgba(255,255,255,0.9)",
+                  textShadow: "0 1px 4px rgba(0,0,0,0.6)",
+                  textAlign: "center",
+                }}
+              >
+                ▶ {COPY[lang].watchVideo}
+              </span>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "0.45rem",
+              }}
+            >
+              <a
+                href="#homeowner-video"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: isMobile ? "0.7rem 1.6rem" : "0.9rem 2.2rem",
+                  borderRadius: 999,
+                  border: "2px solid #ffffff",
+                  background: "transparent",
+                  color: "#ffffff",
+                  fontWeight: 800,
+                  fontSize: isMobile ? "0.9rem" : "1.02rem",
+                  letterSpacing: "0.01em",
+                  textDecoration: "none",
+                  fontFamily: "inherit",
+                  boxShadow: "0 4px 16px rgba(0,0,0,0.35)",
+                  transition: "transform 0.15s ease, box-shadow 0.15s ease",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = "0 8px 22px rgba(0,0,0,0.45)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.35)";
+                }}
+              >
+                {COPY[lang].btn2}
+              </a>
+              <span
+                style={{
+                  fontFamily: '"Work Sans", sans-serif',
+                  fontSize: isMobile ? "0.72rem" : "0.82rem",
+                  fontWeight: 600,
+                  color: "rgba(255,255,255,0.9)",
+                  textShadow: "0 1px 4px rgba(0,0,0,0.6)",
+                  textAlign: "center",
+                }}
+              >
+                ▶ {COPY[lang].watchVideo}
+              </span>
             </div>
           </div>
 
