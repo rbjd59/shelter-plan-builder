@@ -101,7 +101,7 @@ function field(ctx: Ctx, label: string, widthRatio = 1) {
   ctx.y -= size + 14;
 }
 
-function title(ctx: Ctx, main: string, sub: string) {
+function title(ctx: Ctx, main: string, sub: string, banner: string) {
   ensure(ctx, 60);
   ctx.page.drawText(main, { x: MARGIN, y: ctx.y - 16, size: 15, font: ctx.bold });
   ctx.y -= 22;
@@ -114,7 +114,7 @@ function title(ctx: Ctx, main: string, sub: string) {
     color: rgb(0.72, 0.33, 0.12),
   });
   ctx.y -= 16;
-  ctx.page.drawText("BLANK FORM — complete and sign before it is needed.", {
+  ctx.page.drawText(banner, {
     x: MARGIN,
     y: ctx.y - 9,
     size: 9,
@@ -184,7 +184,7 @@ const CHROME: Record<Lang, Chrome> = {
 
 /** Signature + witness + notary block. Returns the signature-line anchor. */
 function signatureBlock(ctx: Ctx, c: Chrome, opts: { witnesses?: boolean } = {}) {
-  ensure(ctx, opts.witnesses ? 230 : 170);
+  ensure(ctx, 96);
   ctx.y -= 8;
   para(ctx, c.signature, { bold: true, size: 11, gap: 10 });
 
@@ -216,6 +216,12 @@ function signatureBlock(ctx: Ctx, c: Chrome, opts: { witnesses?: boolean } = {})
   return anchor;
 }
 
+const BANNER: Record<Lang, string> = {
+  en: "BLANK FORM — complete and sign before it is needed.",
+  es: "FORMULARIO EN BLANCO — complételo y fírmelo antes de necesitarlo.",
+  ht: "FÒM VID — ranpli epi siyen li anvan ou bezwen l.",
+};
+
 type Copy = Record<Lang, string>;
 const pick = (c: Copy, lang: Lang) => c[lang] || c.en;
 
@@ -235,6 +241,7 @@ async function floridaPOA(lang: Lang) {
       lang,
     ),
     "Fla. Stat. ch. 709 (Florida Power of Attorney Act) — blank template",
+    BANNER[lang],
   );
   para(
     ctx,
@@ -308,6 +315,7 @@ async function schoolPickup(lang: Lang) {
     ctx,
     pick({ en: "SCHOOL PICKUP & EDUCATIONAL AUTHORIZATION", es: "AUTORIZACIÓN ESCOLAR Y DE RECOGIDA", ht: "OTORIZASYON POU CHACHE TIMOUN LEKÒL" }, lang),
     pick({ en: "To be presented to the school, daycare, or after-school program", es: "Para presentar a la escuela, guardería o programa extraescolar", ht: "Pou prezante bay lekòl, gadri, oswa pwogram apre lekòl" }, lang),
+    BANNER[lang],
   );
   field(ctx, pick({ en: "Parent / legal guardian (full name):", es: "Padre/madre o tutor legal (nombre completo):", ht: "Paran / gadyen legal (non konplè):" }, lang), 0.95);
   field(ctx, pick({ en: "Phone / email:", es: "Teléfono / correo:", ht: "Telefòn / imèl:" }, lang), 0.9);
