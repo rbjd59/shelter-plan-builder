@@ -3,7 +3,7 @@
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
 
-const FROM = "intake@gohomesooner.com";
+const FROM = "info@gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
 const SITE_BASE = "https://detenciondefensa.com";
 

@@ -143,11 +143,11 @@ function CompanyBoard({ pin }: { pin: string }) {
 
         <section>
           <h2 className="mb-3 text-sm font-bold uppercase tracking-wide text-slate-700">
-            Registered, no trigger ({registered.length})
+            New client signups — no trigger ({registered.length})
           </h2>
           {registered.length === 0 ? (
             <p className="rounded border border-dashed border-slate-300 bg-white p-4 text-sm text-slate-500">
-              No registered clients yet.
+              No client signups yet.
             </p>
           ) : (
             <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">

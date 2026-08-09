@@ -19,8 +19,10 @@ import { buildSelfHelpLibraryHtml, buildSelfHelpLibraryText } from "@/lib/self-h
 const FORMS_BUCKET = "intake-forms";
 const SIGNED_URL_TTL_SECONDS = 60 * 60 * 24 * 14;
 
-const RECIPIENTS = ["intake@detenciondefensa.com", "legal@detenciondefensa.com"];
-const FROM = "intake@gohomesooner.com";
+// Signup notifications go to info@ only. Nothing else is sent to this address —
+// SOS/trigger traffic goes to alerts@, legal packets go to legal@.
+const RECIPIENTS = ["info@detenciondefensa.com"];
+const FROM = "info@gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
 
 function escapeHtml(s: unknown): string {
@@ -203,7 +205,7 @@ export async function enqueueIntakeNotification(params: {
     `[invite-code] enqueueIntakeNotification session=${sessionId} scope=${scope} demo=${!!demoMode} invite_code=${inviteCode ?? "null"} invite_code_len=${inviteCode?.length ?? 0} contactEmail=${contactEmail ?? "null"}`,
   );
 
-  const subject = `New Intake Submission — ${String(a.mail_inmate_name || a.contact_name || sessionId)}`;
+  const subject = `New client signup — ${String(a.mail_inmate_name || a.contact_name || sessionId)}`;
   const urls = await uploadFormsAndSign(sessionId, a, language);
   if (urls.errors.length) console.error("Intake PDF generation issues:", urls.errors);
   const { habeasUrl, ifpUrl, brochureUrl, referralUrl, js44Url, memorandumUrl } = urls;
@@ -329,7 +331,7 @@ ${Object.entries(a)
         html,
         text,
         purpose: "transactional",
-        label: "intake-submission",
+        label: "client-signup",
         idempotency_key: `intake-${sessionId}-${recipient}-${messageId}`,
         message_id: messageId,
         unsubscribe_token: unsubscribeToken,
