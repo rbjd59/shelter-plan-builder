@@ -272,10 +272,12 @@ export const submitIntakeAnswers = createServerFn({ method: "POST" })
         documentUrls: typeof intakeUrls === "object" && intakeUrls
           ? {
               habeasUrl: intakeUrls.habeasUrl,
+              ifpUrl: intakeUrls.ifpUrl,
               memorandumUrl: intakeUrls.memorandumUrl,
               referralUrl: intakeUrls.referralUrl,
               js44Url: intakeUrls.js44Url,
               brochureUrl: intakeUrls.brochureUrl,
+              assetProtectionUrls: intakeUrls.assetProtectionUrls,
             }
           : null,
       });
@@ -360,10 +362,12 @@ export const submitDemoIntake = createServerFn({ method: "POST" })
         documentUrls: demoIntakeUrls
           ? {
               habeasUrl: demoIntakeUrls.habeasUrl,
+              ifpUrl: demoIntakeUrls.ifpUrl,
               memorandumUrl: demoIntakeUrls.memorandumUrl,
               referralUrl: demoIntakeUrls.referralUrl,
               js44Url: demoIntakeUrls.js44Url,
               brochureUrl: demoIntakeUrls.brochureUrl,
+              assetProtectionUrls: demoIntakeUrls.assetProtectionUrls,
             }
           : null,
       });

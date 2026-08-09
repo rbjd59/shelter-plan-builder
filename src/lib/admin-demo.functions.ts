@@ -45,6 +45,8 @@ export const fireTestDemoClient = createServerFn({ method: "POST" })
     // Preset answers. Fake but complete enough to render every form.
     const answers: Record<string, unknown> = {
       full_name: `Cliente ${label}`,
+      client_email: "intake@detenciondefensa.com",
+      client_mobile: "+13055551234",
       a_number: "A123456789",
       dob: "1985-04-12",
       place_of_birth: "San Salvador, El Salvador",
@@ -74,6 +76,7 @@ export const fireTestDemoClient = createServerFn({ method: "POST" })
       emergency_contact_2_name: `Segundo Contacto ${label}`,
       emergency_contact_2_email: "intake@detenciondefensa.com",
       emergency_contact_2_phone: "+13055559012",
+      addon_asset_protection: true,
       atty_immigration_history:
         "Entró a EE.UU. en 2015. Solicitó asilo en 2016. Caso pendiente en Corte de Inmigración de Miami.",
       atty_criminal_history: "Sin antecedentes penales.",
@@ -130,10 +133,12 @@ export const fireTestDemoClient = createServerFn({ method: "POST" })
         documentUrls: intakeUrls
           ? {
               habeasUrl: intakeUrls.habeasUrl,
+              ifpUrl: intakeUrls.ifpUrl,
               memorandumUrl: intakeUrls.memorandumUrl,
               referralUrl: intakeUrls.referralUrl,
               js44Url: intakeUrls.js44Url,
               brochureUrl: intakeUrls.brochureUrl,
+              assetProtectionUrls: intakeUrls.assetProtectionUrls,
             }
           : null,
       });
