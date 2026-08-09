@@ -6,9 +6,11 @@ const COPY: Record<Lang, {
   solutionLabel: string;
   solutions: string[];
   faqNote: string;
+  watchMore: string;
 }> = {
   es: {
     problemLabel: "El Problema",
+    watchMore: "Mira Más Videos",
     problems: [
       "ICE detiene a dos mil personas al día.",
       "Si no eres ciudadano, estás en riesgo.",
@@ -33,6 +35,7 @@ const COPY: Record<Lang, {
       "You cannot afford thousands for an attorney.",
     ],
     solutionLabel: "The Solution: DetencionDefensa",
+    watchMore: "Watch More Videos",
     solutions: [
       "DetencionDefensa gives you an emergency button on your phone.",
       "If ICE or the police arrive, press the button for 3 seconds.",
@@ -50,6 +53,7 @@ const COPY: Record<Lang, {
       "Ou pa ka peye milye dola pou yon avoka.",
     ],
     solutionLabel: "Solisyon an: DetencionDefensa",
+    watchMore: "Gade Plis Videyo",
     solutions: [
       "DetencionDefensa ba w yon bouton dijans sou telefòn ou.",
       "Si ICE oswa lapolis rive, peze bouton an pandan 3 segond.",
@@ -80,6 +84,7 @@ export default function ProblemSolutionSection() {
           label={t.problemLabel}
           items={t.problems}
           bulletColor="#ff6b6b"
+          action={<WatchMoreButton label={t.watchMore} />}
         />
         <Block
           badgeColor="#4aa8e8"
@@ -112,12 +117,14 @@ function Block({
   label,
   items,
   bulletColor,
+  action,
 }: {
   badgeColor: string;
   badgeShape: "circle" | "octagon";
   label: string;
   items: string[];
   bulletColor: string;
+  action?: React.ReactNode;
 }) {
   return (
     <div>
@@ -142,6 +149,7 @@ function Block({
         >
           {label}
         </h2>
+        {action && <div style={{ marginLeft: "auto" }}>{action}</div>}
       </div>
       <ul
         style={{
@@ -212,5 +220,27 @@ function Badge({ color, shape }: { color: string; shape: "circle" | "octagon" })
         boxShadow: `0 8px 24px ${color}55, inset 0 0 0 3px rgba(255,255,255,0.9)`,
       }}
     />
+  );
+}
+
+function WatchMoreButton({ label }: { label: string }) {
+  return (
+    <a
+      href="/videos"
+      style={{
+        display: "inline-block",
+        background: "#e8a04a",
+        color: "#0f1830",
+        padding: "0.7rem 1.4rem",
+        borderRadius: 999,
+        fontWeight: 800,
+        fontSize: "0.95rem",
+        textDecoration: "none",
+        whiteSpace: "nowrap",
+        boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
+      }}
+    >
+      {label}
+    </a>
   );
 }
