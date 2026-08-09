@@ -222,7 +222,7 @@ export default function HeroIntro() {
                     padding: isMobile ? "6px 10px" : "8px 16px",
                     fontSize: isMobile ? 12 : 13,
                     fontWeight: 700,
-                    letterSpacing: "0.14em",
+                    letterSpacing: isMobile ? "0.04em" : "0.14em",
                     cursor: "pointer",
                     fontFamily: "inherit",
                     touchAction: "manipulation",
@@ -322,7 +322,7 @@ export default function HeroIntro() {
                 border: "1px solid rgba(232,160,74,0.7)",
                 borderRadius: 12,
                 padding: isMobile ? "0.75rem 0.9rem" : "0.85rem 1.1rem",
-                textAlign: "left",
+                textAlign: isMobile ? "center" : "left",
                 boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
               }}
             >
@@ -360,7 +360,7 @@ export default function HeroIntro() {
                 border: "1px solid rgba(232,160,74,0.7)",
                 borderRadius: 12,
                 padding: isMobile ? "0.75rem 0.9rem" : "0.85rem 1.1rem",
-                textAlign: "left",
+                textAlign: isMobile ? "center" : "left",
                 boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
               }}
             >
