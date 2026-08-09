@@ -440,7 +440,54 @@ export default function HeroIntro() {
             </div>
           </div>
 
-          {/* CTA buttons */}
+          {/* Homeowner video button */}
+          <div style={{ display: "flex", justifyContent: "center", marginTop: "0.6rem" }}>
+            <a
+              href="#homeowner-video"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.6rem",
+                background: "#e8a04a",
+                color: "#0f1830",
+                textDecoration: "none",
+                fontWeight: 800,
+                fontSize: isMobile ? "0.8rem" : "0.9rem",
+                letterSpacing: "0.04em",
+                textTransform: "uppercase",
+                padding: isMobile ? "8px 18px" : "10px 22px",
+                borderRadius: 999,
+                boxShadow: "0 4px 14px rgba(0,0,0,0.3)",
+                transition: "transform 0.15s ease, box-shadow 0.15s ease",
+                WebkitTapHighlightColor: "transparent",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.03)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+              }}
+            >
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 30,
+                  height: 30,
+                  borderRadius: "50%",
+                  background: "#0f1830",
+                  color: "#e8a04a",
+                  flexShrink: 0,
+                }}
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </span>
+              {COPY[lang].homeBox}
+            </a>
+          </div>
         </div>
 
         {/* Bottom notice */}
