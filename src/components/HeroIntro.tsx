@@ -16,7 +16,7 @@ const COPY = {
     secBoxBody: "Diseñada con la privacidad y la seguridad en su núcleo.",
     appBoxHeading: "App gratuita para el teléfono",
     appBoxBody: "Notifica al instante a tus contactos y abogado si enfrentas un arresto.",
-    watchVideo: "Mira el video de un minuto",
+    watchVideo: "Mira un video de un minuto",
     disclaimer:
       "DetencionDefensa.com proporciona software de admisión seguro, traducción y servicios automatizados de preparación de documentos. No somos una firma de abogados y no proporcionamos asesoramiento legal.",
   },
@@ -150,7 +150,7 @@ export default function HeroIntro() {
               alignItems: "center",
               gap: 10,
               textDecoration: "none",
-              color: "#ffffff",
+              color: "#0b1622",
               minWidth: 0,
             }}
           >
@@ -171,7 +171,7 @@ export default function HeroIntro() {
                 fontSize: isMobile ? 14 : 16,
                 fontWeight: 700,
                 letterSpacing: -0.2,
-                color: "#ffffff",
+                color: "#0b1622",
                 whiteSpace: "nowrap",
                 lineHeight: 1.2,
                 textAlign: "left",
@@ -259,10 +259,10 @@ export default function HeroIntro() {
                 fontSize: isMobile ? "1.5rem" : "clamp(2rem, 5vw, 3.4rem)",
                 lineHeight: 1.15,
                 fontWeight: 800,
-                color: "#ffffff",
+                color: "#0b1622",
                 margin: 0,
                 whiteSpace: "normal",
-                textShadow: "0 2px 10px rgba(0,0,0,0.6)",
+                textShadow: "0 1px 2px rgba(255,255,255,0.6)",
               }}
             >
               <PriceWithX prefix={COPY[lang].plan} price={COPY[lang].price} />
@@ -289,11 +289,11 @@ export default function HeroIntro() {
               fontSize: isMobile ? "0.95rem" : "1.15rem",
               lineHeight: 1.35,
               fontWeight: 500,
-              color: "rgba(255,255,255,0.94)",
+              color: "#0b1622",
               margin: 0,
               maxWidth: 820,
               marginInline: "auto",
-              textShadow: "0 1px 6px rgba(0,0,0,0.6)",
+              textShadow: "0 1px 2px rgba(255,255,255,0.6)",
             }}
           >
             {COPY[lang].tagline}
@@ -341,7 +341,7 @@ export default function HeroIntro() {
                   fontWeight: 500,
                   fontSize: isMobile ? "0.8rem" : "0.9rem",
                   lineHeight: 1.3,
-                  color: "#ffffff",
+                  color: "#0b1622",
                 }}
               >
                 {COPY[lang].secBoxBody}
@@ -379,7 +379,7 @@ export default function HeroIntro() {
                   fontWeight: 500,
                   fontSize: isMobile ? "0.8rem" : "0.9rem",
                   lineHeight: 1.3,
-                  color: "#ffffff",
+                  color: "#0b1622",
                 }}
               >
                 {COPY[lang].appBoxBody}
@@ -442,8 +442,8 @@ export default function HeroIntro() {
                   fontFamily: '"Work Sans", sans-serif',
                   fontSize: isMobile ? "0.72rem" : "0.82rem",
                   fontWeight: 600,
-                  color: "rgba(255,255,255,0.9)",
-                  textShadow: "0 1px 4px rgba(0,0,0,0.6)",
+                  color: "#0b1622",
+                  textShadow: "0 1px 2px rgba(255,255,255,0.6)",
                   textAlign: "center",
                 }}
               >
@@ -467,9 +467,9 @@ export default function HeroIntro() {
                   justifyContent: "center",
                   padding: isMobile ? "0.7rem 1.6rem" : "0.9rem 2.2rem",
                   borderRadius: 999,
-                  border: "2px solid #ffffff",
+                  border: "2px solid #0b1622",
                   background: "transparent",
-                  color: "#ffffff",
+                  color: "#0b1622",
                   fontWeight: 800,
                   fontSize: isMobile ? "0.9rem" : "1.02rem",
                   letterSpacing: "0.01em",
@@ -495,8 +495,8 @@ export default function HeroIntro() {
                   fontFamily: '"Work Sans", sans-serif',
                   fontSize: isMobile ? "0.72rem" : "0.82rem",
                   fontWeight: 600,
-                  color: "rgba(255,255,255,0.9)",
-                  textShadow: "0 1px 4px rgba(0,0,0,0.6)",
+                  color: "#0b1622",
+                  textShadow: "0 1px 2px rgba(255,255,255,0.6)",
                   textAlign: "center",
                 }}
               >
@@ -523,7 +523,7 @@ export default function HeroIntro() {
               fontFamily: "Inter, system-ui, sans-serif",
               fontSize: "8pt",
               lineHeight: 1.4,
-              color: "#ffffff",
+              color: "#0b1622",
               margin: 0,
               maxWidth: 900,
               marginInline: "auto",
