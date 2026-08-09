@@ -295,7 +295,7 @@ export default function HeroIntro() {
                 fontSize: isMobile ? "1.25rem" : "clamp(1.4rem, 3vw, 2.2rem)",
                 lineHeight: 1.2,
                 fontWeight: 800,
-                color: "#ef4444",
+                color: "#ff2ecc",
                 margin: 0,
                 textShadow: "0 2px 10px rgba(0,0,0,0.6)",
               }}
