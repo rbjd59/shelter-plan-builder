@@ -307,7 +307,14 @@ export default function HeroIntro() {
           <p
             style={{
               fontFamily: '"Work Sans", sans-serif',
-              fontSize: isMobile ? "1.55rem" : "clamp(1.5rem, 2.6vw, 2.1rem)",
+              fontSize:
+                lang === "es"
+                  ? isMobile
+                    ? "1.1rem"
+                    : "clamp(1.05rem, 1.9vw, 1.5rem)"
+                  : isMobile
+                    ? "1.55rem"
+                    : "clamp(1.5rem, 2.6vw, 2.1rem)",
               lineHeight: 1.35,
               fontWeight: 800,
               color: "#ffffff",
