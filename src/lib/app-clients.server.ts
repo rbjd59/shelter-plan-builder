@@ -10,6 +10,8 @@ import * as React from "react";
 import { createClient } from "@supabase/supabase-js";
 import { TEMPLATES } from "@/lib/email-templates/registry";
 import { activationSmsBody, sendSms } from "@/lib/sms.server";
+import { logDelivery, trackDelivery } from "@/lib/delivery-log.server";
+
 
 const SITE_NAME = "DetencionDefensa";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
@@ -127,11 +129,35 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
         };
       }
     }
+    await logDelivery({
+      intakeSessionId: params.intakeSessionId,
+      step: "board_registration",
+      status: "failed",
+      errorMessage: error?.message ?? "insert failed",
+    });
     return { ok: false, error: error?.message ?? "insert failed" };
   }
 
-  if (!inserted) return { ok: false, error: "could not allocate activation code" };
+  if (!inserted) {
+    await logDelivery({
+      intakeSessionId: params.intakeSessionId,
+      step: "board_registration",
+      status: "failed",
+      errorMessage: "could not allocate activation code",
+    });
+    return { ok: false, error: "could not allocate activation code" };
+  }
   const clientId = inserted.id;
+  await logDelivery({
+    intakeSessionId: params.intakeSessionId,
+    clientId,
+    activationCode: code,
+    step: "board_registration",
+    status: "success",
+    target: "admin boards",
+    metadata: { full_name: fullName, language: params.language },
+  });
+
 
   // Mirror emergency contacts from intake answers (sections 6 + 7 + 8)
   const contactsToInsert: Array<Record<string, any>> = [];
@@ -165,8 +191,27 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
   addContact(a.contact_name, a.contact_phone, a.contact_email, "family", 3);
 
   if (contactsToInsert.length) {
-    await sb.from("client_contacts").insert(contactsToInsert);
+    const { error: contactErr } = await sb.from("client_contacts").insert(contactsToInsert);
+    await logDelivery({
+      intakeSessionId: params.intakeSessionId,
+      clientId,
+      activationCode: code,
+      step: "contacts_synced",
+      status: contactErr ? "failed" : "success",
+      errorMessage: contactErr?.message ?? null,
+      metadata: { count: contactsToInsert.length, names: contactsToInsert.map((c) => c.name) },
+    });
+  } else {
+    await logDelivery({
+      intakeSessionId: params.intakeSessionId,
+      clientId,
+      activationCode: code,
+      step: "contacts_synced",
+      status: "skipped",
+      errorMessage: "no emergency contacts captured on the intake form",
+    });
   }
+
 
   // Persist pet rescue row if the add-on was selected
   if (hasPetRescue) {
@@ -263,34 +308,79 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
     from_app: false,
   }));
 
-  await sb.from("client_documents").insert(seedDocs as never);
-
+  const docInsert = await sb.from("client_documents").insert(seedDocs as never);
+  await logDelivery({
+    intakeSessionId: params.intakeSessionId,
+    clientId,
+    activationCode: code,
+    step: "documents_generated",
+    status: docInsert.error ? "failed" : "success",
+    errorMessage: docInsert.error?.message ?? null,
+    target: "phone bundle",
+    metadata: {
+      documents: docSet.map((d) => d.type),
+      empty: docSet.filter((d) => !generated.get(d.type)).map((d) => d.type),
+    },
+  });
 
   // Send activation email
-  try {
-    await sendActivationEmail({
-      to: email,
-      code,
-      language: params.language,
-      fullName: fullName ?? "",
+  if (email) {
+    await trackDelivery(
+      {
+        intakeSessionId: params.intakeSessionId,
+        clientId,
+        activationCode: code,
+        step: "activation_email",
+        target: email,
+      },
+      () =>
+        sendActivationEmail({
+          to: email,
+          code,
+          language: params.language,
+          fullName: fullName ?? "",
+        }),
+    );
+  } else {
+    await logDelivery({
+      intakeSessionId: params.intakeSessionId,
+      clientId,
+      activationCode: code,
+      step: "activation_email",
+      status: "skipped",
+      errorMessage: "no client email captured on the intake form",
     });
-  } catch (e) {
-    console.error("activation email failed", e);
   }
 
   // Send activation SMS
   if (phone) {
-    try {
-      await sendSms({
-        to: phone,
-        body: activationSmsBody(code, params.language),
-        purpose: "activation",
-        metadata: { client_id: clientId },
-      });
-    } catch (e) {
-      console.error("activation SMS failed", e);
-    }
+    await trackDelivery(
+      {
+        intakeSessionId: params.intakeSessionId,
+        clientId,
+        activationCode: code,
+        step: "activation_sms",
+        target: phone,
+      },
+      () =>
+        sendSms({
+          to: phone,
+          body: activationSmsBody(code, params.language),
+          purpose: "activation",
+          metadata: { client_id: clientId },
+        }),
+    );
+  } else {
+    await logDelivery({
+      intakeSessionId: params.intakeSessionId,
+      clientId,
+      activationCode: code,
+      step: "activation_sms",
+      status: "skipped",
+      errorMessage: "no client mobile number captured on the intake form",
+    });
   }
+
 
   return { ok: true, clientId, code };
 }
