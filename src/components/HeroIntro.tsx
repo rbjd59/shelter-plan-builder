@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLang, type Lang } from "@/context/LanguageContext";
 import logoAsset from "@/assets/dd-logo.png.asset.json";
-import detentionNightAsset from "@/assets/ice-hero-flickr.jpg.asset.json";
+import detentionNightAsset from "@/assets/ice-arrest-hero.jpg.asset.json";
 
 const COPY = {
   es: {
@@ -105,11 +105,11 @@ export default function HeroIntro() {
   return (
     <section
       style={{
-        backgroundImage: `linear-gradient(155deg, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0.55) 48%, rgba(255,255,255,0.78) 100%), url(${detentionNightAsset.url})`,
+        backgroundImage: `linear-gradient(155deg, rgba(8,22,45,0.80) 0%, rgba(8,22,45,0.55) 48%, rgba(8,22,45,0.86) 100%), url(${detentionNightAsset.url})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        color: "#0b1622",
+        color: "#ffffff",
         minHeight: "78vh",
         display: "flex",
         flexDirection: "column",
@@ -149,7 +149,7 @@ export default function HeroIntro() {
               alignItems: "center",
               gap: 10,
               textDecoration: "none",
-              color: "#0b1622",
+              color: "#ffffff",
               minWidth: 0,
             }}
           >
@@ -170,7 +170,7 @@ export default function HeroIntro() {
                 fontSize: isMobile ? 14 : 16,
                 fontWeight: 700,
                 letterSpacing: -0.2,
-                color: "#0b1622",
+                color: "#ffffff",
                 whiteSpace: "nowrap",
                 lineHeight: 1.2,
                 textAlign: "left",
@@ -258,7 +258,7 @@ export default function HeroIntro() {
                 fontSize: isMobile ? "1.5rem" : "clamp(2rem, 5vw, 3.4rem)",
                 lineHeight: 1.15,
                 fontWeight: 800,
-                color: "#0b1622",
+                color: "#ffffff",
                 margin: 0,
                 whiteSpace: "normal",
                 textShadow: "0 1px 2px rgba(255,255,255,0.6)",
@@ -288,7 +288,7 @@ export default function HeroIntro() {
               fontSize: isMobile ? "0.95rem" : "1.15rem",
               lineHeight: 1.35,
               fontWeight: 500,
-              color: "#0b1622",
+              color: "#ffffff",
               margin: 0,
               maxWidth: 820,
               marginInline: "auto",
@@ -340,7 +340,7 @@ export default function HeroIntro() {
                   fontWeight: 500,
                   fontSize: isMobile ? "0.8rem" : "0.9rem",
                   lineHeight: 1.3,
-                  color: "#0b1622",
+                  color: "#ffffff",
                 }}
               >
                 {COPY[lang].secBoxBody}
@@ -378,7 +378,7 @@ export default function HeroIntro() {
                   fontWeight: 500,
                   fontSize: isMobile ? "0.8rem" : "0.9rem",
                   lineHeight: 1.3,
-                  color: "#0b1622",
+                  color: "#ffffff",
                 }}
               >
                 {COPY[lang].appBoxBody}
@@ -441,7 +441,7 @@ export default function HeroIntro() {
                   fontFamily: '"Work Sans", sans-serif',
                   fontSize: isMobile ? "0.72rem" : "0.82rem",
                   fontWeight: 600,
-                  color: "#0b1622",
+                  color: "#ffffff",
                   textShadow: "0 1px 2px rgba(255,255,255,0.6)",
                   textAlign: "center",
                 }}
@@ -466,9 +466,9 @@ export default function HeroIntro() {
                   justifyContent: "center",
                   padding: isMobile ? "0.7rem 1.6rem" : "0.9rem 2.2rem",
                   borderRadius: 999,
-                  border: "2px solid #0b1622",
+                  border: "2px solid #ffffff",
                   background: "transparent",
-                  color: "#0b1622",
+                  color: "#ffffff",
                   fontWeight: 800,
                   fontSize: isMobile ? "0.9rem" : "1.02rem",
                   letterSpacing: "0.01em",
@@ -494,7 +494,7 @@ export default function HeroIntro() {
                   fontFamily: '"Work Sans", sans-serif',
                   fontSize: isMobile ? "0.72rem" : "0.82rem",
                   fontWeight: 600,
-                  color: "#0b1622",
+                  color: "#ffffff",
                   textShadow: "0 1px 2px rgba(255,255,255,0.6)",
                   textAlign: "center",
                 }}
@@ -522,7 +522,7 @@ export default function HeroIntro() {
               fontFamily: "Inter, system-ui, sans-serif",
               fontSize: "8pt",
               lineHeight: 1.4,
-              color: "#0b1622",
+              color: "#ffffff",
               margin: 0,
               maxWidth: 900,
               marginInline: "auto",
