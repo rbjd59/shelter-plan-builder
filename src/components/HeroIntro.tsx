@@ -446,32 +446,36 @@ export default function HeroIntro() {
             </div>
           </div>
 
-          {/* Homeowner video button */}
-          <div style={{ display: "flex", justifyContent: "center", marginTop: "0.6rem" }}>
-            <a
-              href="#homeowner-video"
+          {/* Homeowner video box */}
+          <a
+            href="#homeowner-video"
+            style={{
+              display: "block",
+              textDecoration: "none",
+              background: "rgba(255,255,255,0.10)",
+              backdropFilter: "blur(4px)",
+              border: "1px solid rgba(232,160,74,0.7)",
+              borderRadius: 12,
+              padding: isMobile ? "0.75rem 0.9rem" : "0.85rem 1.1rem",
+              textAlign: isMobile ? "center" : "left",
+              boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
+              marginTop: "0.6rem",
+              transition: "transform 0.15s ease, box-shadow 0.15s ease",
+              WebkitTapHighlightColor: "transparent",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "scale(1.02)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "scale(1)";
+            }}
+          >
+            <div
               style={{
-                display: "inline-flex",
+                display: "flex",
                 alignItems: "center",
                 gap: "0.6rem",
-                background: "#e8a04a",
-                color: "#0f1830",
-                textDecoration: "none",
-                fontWeight: 800,
-                fontSize: isMobile ? "0.8rem" : "0.9rem",
-                letterSpacing: "0.04em",
-                textTransform: "uppercase",
-                padding: isMobile ? "8px 18px" : "10px 22px",
-                borderRadius: 999,
-                boxShadow: "0 4px 14px rgba(0,0,0,0.3)",
-                transition: "transform 0.15s ease, box-shadow 0.15s ease",
-                WebkitTapHighlightColor: "transparent",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "scale(1.03)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "scale(1)";
+                justifyContent: isMobile ? "center" : "flex-start",
               }}
             >
               <span
@@ -482,8 +486,8 @@ export default function HeroIntro() {
                   width: 30,
                   height: 30,
                   borderRadius: "50%",
-                  background: "#0f1830",
-                  color: "#e8a04a",
+                  background: "#e8a04a",
+                  color: "#0f1830",
                   flexShrink: 0,
                 }}
               >
@@ -491,9 +495,34 @@ export default function HeroIntro() {
                   <path d="M8 5v14l11-7z" />
                 </svg>
               </span>
-              {COPY[lang].homeBox}
-            </a>
-          </div>
+              <h3
+                style={{
+                  margin: 0,
+                  fontFamily: '"Roboto Slab", Georgia, serif',
+                  fontWeight: 900,
+                  fontSize: isMobile ? "0.8rem" : "0.95rem",
+                  letterSpacing: "0.08em",
+                  color: "#f5b860",
+                  textTransform: "uppercase",
+                }}
+              >
+                {COPY[lang].homeBoxHeading}
+              </h3>
+            </div>
+            <p
+              style={{
+                margin: "0.25rem 0 0",
+                fontFamily: '"Work Sans", sans-serif',
+                fontWeight: 500,
+                fontSize: isMobile ? "0.8rem" : "0.9rem",
+                lineHeight: 1.3,
+                color: "#ffffff",
+              }}
+            >
+              {COPY[lang].homeBoxBody}
+            </p>
+          </a>
+
         </div>
 
         {/* Bottom notice */}
