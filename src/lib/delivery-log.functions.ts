@@ -25,7 +25,8 @@ export interface DeliveryRow {
   error_message: string | null;
   duration_ms: number | null;
   created_at: string;
-  metadata: Record<string, string | number | boolean | null> | null;
+  /** JSON-encoded for safe transport. */
+  metadata: string | null;
 }
 
 export interface DeliveryCase {
@@ -77,7 +78,13 @@ export const listIntakeDeliveryLog = createServerFn({ method: "POST" })
 
     const { data: rows, error } = await query;
     if (error) throw new Error(error.message);
-    const list = (rows ?? []) as unknown as DeliveryRow[];
+    const list = ((rows ?? []) as unknown as Array<Record<string, unknown>>).map((r) => ({
+      ...r,
+      metadata:
+        r.metadata && Object.keys(r.metadata as object).length
+          ? JSON.stringify(r.metadata)
+          : null,
+    })) as unknown as DeliveryRow[];
 
     // Enrich with mobile delivery (activation on the phone) from app_clients
     const codes = Array.from(
