@@ -167,7 +167,7 @@ export default function HeroIntro() {
               alignItems: "center",
               gap: 10,
               textDecoration: "none",
-              color: "#0f1830",
+              color: "#ffffff",
               minWidth: 0,
               justifyContent: "center",
             }}
@@ -189,7 +189,7 @@ export default function HeroIntro() {
                 fontSize: isMobile ? 14 : 16,
                 fontWeight: 700,
                 letterSpacing: -0.2,
-                color: "#0f1830",
+                color: "#ffffff",
                 whiteSpace: "nowrap",
                 lineHeight: 1.2,
                 textAlign: isMobile ? "center" : "left",
@@ -307,12 +307,12 @@ export default function HeroIntro() {
           <p
             style={{
               fontFamily: '"Work Sans", sans-serif',
-              fontSize: isMobile ? "0.95rem" : "1.15rem",
+              fontSize: isMobile ? "1.15rem" : "1.15rem",
               lineHeight: 1.35,
-                fontWeight: 500,
-                color: "#0f1830",
-                margin: 0,
-                maxWidth: 820,
+              fontWeight: 700,
+              color: "#ffffff",
+              margin: 0,
+              maxWidth: 820,
               marginInline: "auto",
               textShadow: "0 1px 2px rgba(255,255,255,0.6)",
             }}
@@ -347,7 +347,7 @@ export default function HeroIntro() {
                   margin: 0,
                   fontFamily: '"Roboto Slab", Georgia, serif',
                   fontWeight: 900,
-                  fontSize: isMobile ? "0.8rem" : "0.95rem",
+                  fontSize: isMobile ? "1.05rem" : "0.95rem",
                   letterSpacing: "0.08em",
                   color: "#f5b860",
                   textTransform: "uppercase",
@@ -359,10 +359,10 @@ export default function HeroIntro() {
                 style={{
                   margin: "0.25rem 0 0",
                   fontFamily: '"Work Sans", sans-serif',
-                  fontWeight: 500,
-                  fontSize: isMobile ? "0.8rem" : "0.9rem",
+                  fontWeight: 600,
+                  fontSize: isMobile ? "0.95rem" : "0.9rem",
                   lineHeight: 1.3,
-                  color: "#0f1830",
+                  color: "#ffffff",
                 }}
               >
                 {COPY[lang].appBoxBody}
@@ -376,7 +376,7 @@ export default function HeroIntro() {
                   color: "#0f1830",
                   textDecoration: "none",
                   fontWeight: 800,
-                  fontSize: isMobile ? "0.72rem" : "0.78rem",
+                  fontSize: isMobile ? "0.85rem" : "0.78rem",
                   letterSpacing: "0.05em",
                   textTransform: "uppercase",
                   padding: "7px 16px",
@@ -411,7 +411,7 @@ export default function HeroIntro() {
                     margin: 0,
                     fontFamily: '"Roboto Slab", Georgia, serif',
                     fontWeight: 900,
-                    fontSize: isMobile ? "0.8rem" : "0.95rem",
+                    fontSize: isMobile ? "1.05rem" : "0.95rem",
                     letterSpacing: "0.08em",
                     color: "#f5b860",
                     textTransform: "uppercase",
@@ -424,10 +424,10 @@ export default function HeroIntro() {
                 style={{
                   margin: "0.25rem 0 0",
                   fontFamily: '"Work Sans", sans-serif',
-                  fontWeight: 500,
-                  fontSize: isMobile ? "0.8rem" : "0.9rem",
+                  fontWeight: 600,
+                  fontSize: isMobile ? "0.95rem" : "0.9rem",
                   lineHeight: 1.3,
-                  color: "#0f1830",
+                  color: "#ffffff",
                 }}
               >
                 {COPY[lang].homeBoxBody}
@@ -441,7 +441,7 @@ export default function HeroIntro() {
                   color: "#0f1830",
                   textDecoration: "none",
                   fontWeight: 800,
-                  fontSize: isMobile ? "0.72rem" : "0.78rem",
+                  fontSize: isMobile ? "0.85rem" : "0.78rem",
                   letterSpacing: "0.05em",
                   textTransform: "uppercase",
                   padding: "7px 16px",
@@ -483,7 +483,7 @@ export default function HeroIntro() {
                 margin: 0,
                 fontFamily: '"Roboto Slab", Georgia, serif',
                 fontWeight: 900,
-                fontSize: isMobile ? "0.8rem" : "0.95rem",
+                fontSize: isMobile ? "1.05rem" : "0.95rem",
                 letterSpacing: "0.08em",
                 color: "#f5b860",
                 textTransform: "uppercase",
@@ -495,13 +495,13 @@ export default function HeroIntro() {
               style={{
                 margin: "0.25rem 0 0",
                 fontFamily: '"Work Sans", sans-serif',
-                fontWeight: 500,
-                  fontSize: isMobile ? "0.8rem" : "0.9rem",
-                  lineHeight: 1.3,
-                  color: "#0f1830",
-                }}
-              >
-                {COPY[lang].secBoxBody}
+                fontWeight: 600,
+                fontSize: isMobile ? "0.95rem" : "0.9rem",
+                lineHeight: 1.3,
+                color: "#ffffff",
+              }}
+            >
+              {COPY[lang].secBoxBody}
             </p>
             <span
               style={{
@@ -511,7 +511,7 @@ export default function HeroIntro() {
                 color: "#0f1830",
                 textDecoration: "none",
                 fontWeight: 800,
-                fontSize: isMobile ? "0.72rem" : "0.78rem",
+                fontSize: isMobile ? "0.85rem" : "0.78rem",
                 letterSpacing: "0.05em",
                 textTransform: "uppercase",
                 padding: "7px 16px",
@@ -540,7 +540,7 @@ export default function HeroIntro() {
               fontFamily: "Inter, system-ui, sans-serif",
               fontSize: "8pt",
               lineHeight: 1.4,
-              color: "#0f1830",
+              color: "#ffffff",
               margin: 0,
               maxWidth: 900,
               marginInline: "auto",
