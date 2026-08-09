@@ -220,39 +220,41 @@ export default function HeroIntro() {
             gap: isMobile ? "1.25rem" : "1.75rem",
           }}
         >
-          <h1
-            style={{
-              fontFamily: '"Roboto Slab", Georgia, serif',
-              fontSize: isMobile ? (lang === "es" ? "1.9rem" : "1.5rem") : (lang === "es" ? "clamp(2.5rem, 6.2vw, 4.2rem)" : "clamp(1.8rem, 4vw, 2.9rem)"),
-              fontWeight: 700,
-              lineHeight: lang === "es" ? 1.05 : 1.1,
-              margin: 0,
-              letterSpacing: "-0.005em",
-              textAlign: "center",
-              color: "#e8a04a",
-              textShadow: "0 2px 8px rgba(0,0,0,0.6)",
-              textTransform: "uppercase",
-              maxWidth: 1000,
-              marginInline: "auto",
-            }}
-          >
-            {COPY[lang].ice}
-          </h1>
+          <div>
+            <h1
+              style={{
+                fontFamily: '"Roboto Slab", Georgia, serif',
+                fontSize: isMobile ? (lang === "es" ? "1.9rem" : "1.5rem") : (lang === "es" ? "clamp(2.5rem, 6.2vw, 4.2rem)" : "clamp(1.8rem, 4vw, 2.9rem)"),
+                fontWeight: 700,
+                lineHeight: lang === "es" ? 1.05 : 1.1,
+                margin: 0,
+                letterSpacing: "-0.005em",
+                textAlign: "center",
+                color: "#e8a04a",
+                textShadow: "0 2px 8px rgba(0,0,0,0.6)",
+                textTransform: "uppercase",
+                maxWidth: 1000,
+                marginInline: "auto",
+              }}
+            >
+              {COPY[lang].ice}
+            </h1>
 
-          <p
-            style={{
-              fontFamily: '"Roboto Slab", Georgia, serif',
-              fontSize: isMobile ? "0.75rem" : "0.85rem",
-              lineHeight: 1.2,
-              fontWeight: 400,
-              color: "rgba(255,255,255,0.75)",
-              margin: "0.1rem auto 0",
-              textAlign: "center",
-              textShadow: "0 1px 6px rgba(0,0,0,0.6)",
-            }}
-          >
-            ABC News
-          </p>
+            <p
+              style={{
+                fontFamily: '"Roboto Slab", Georgia, serif',
+                fontSize: isMobile ? "0.7rem" : "0.8rem",
+                lineHeight: 1.2,
+                fontWeight: 400,
+                color: "rgba(255,255,255,0.7)",
+                margin: "0.1rem auto 0",
+                textAlign: "center",
+                textShadow: "0 1px 6px rgba(0,0,0,0.6)",
+              }}
+            >
+              ABC News
+            </p>
+          </div>
 
           <div
             style={{
