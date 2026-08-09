@@ -37,6 +37,7 @@ const COPY = {
     secBoxHeading: "Best in class security",
     secBoxBody: "Designed with privacy and security at its very core.",
     secBoxBtn: "More on security",
+    employerHeading: "Employers & churches",
     appBoxHeading: "Free app for phone",
     appBoxBody: "Instantly notify contacts and attorney if faced with arrest.",
     appBoxBtn: "Watch the video",
@@ -57,6 +58,7 @@ const COPY = {
     secBoxHeading: "Sekirite pi bon klas",
     secBoxBody: "Fèt ak vi prive ak sekirite kòm nwayo li.",
     secBoxBtn: "Plis sou sekirite",
+    employerHeading: "Anplwayè ak legliz",
     appBoxHeading: "App gratis pou telefòn",
     appBoxBody: "Fè kontak ak avoka w konnen imedyatman si yo arete w.",
     appBoxBtn: "Gade videyo a",
@@ -68,7 +70,7 @@ const COPY = {
   },
 } satisfies Record<
   Lang,
-  { plan: string; price: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; homeBox: string; homeBoxHeading: string; homeBoxBody: string; disclaimer: string }
+  { plan: string; price: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; employerHeading: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; homeBox: string; homeBoxHeading: string; homeBoxBody: string; disclaimer: string }
 >;
 
 function PriceWithX({ prefix, price }: { prefix: string; price: string }) {
