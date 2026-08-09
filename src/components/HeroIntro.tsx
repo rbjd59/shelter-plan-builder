@@ -522,6 +522,25 @@ export default function HeroIntro() {
             >
               {COPY[lang].homeBoxBody}
             </p>
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                marginTop: "0.55rem",
+                background: "#e8a04a",
+                color: "#0f1830",
+                textDecoration: "none",
+                fontWeight: 800,
+                fontSize: isMobile ? "0.72rem" : "0.78rem",
+                letterSpacing: "0.05em",
+                textTransform: "uppercase",
+                padding: "7px 16px",
+                borderRadius: 999,
+              }}
+            >
+              {COPY[lang].appBoxBtn}
+            </span>
           </a>
 
         </div>
