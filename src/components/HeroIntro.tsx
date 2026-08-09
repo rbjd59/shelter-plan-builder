@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "@tanstack/react-router";
 import { useLang, type Lang } from "@/context/LanguageContext";
 
 import logoAsset from "@/assets/dd-logo.png.asset.json";
