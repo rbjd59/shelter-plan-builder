@@ -222,3 +222,25 @@ function Badge({ color, shape }: { color: string; shape: "circle" | "octagon" })
     />
   );
 }
+
+function WatchMoreButton({ label }: { label: string }) {
+  return (
+    <a
+      href="/videos"
+      style={{
+        display: "inline-block",
+        background: "#e8a04a",
+        color: "#0f1830",
+        padding: "0.7rem 1.4rem",
+        borderRadius: 999,
+        fontWeight: 800,
+        fontSize: "0.95rem",
+        textDecoration: "none",
+        whiteSpace: "nowrap",
+        boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
+      }}
+    >
+      {label}
+    </a>
+  );
+}
