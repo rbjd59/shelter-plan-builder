@@ -117,12 +117,14 @@ function Block({
   label,
   items,
   bulletColor,
+  action,
 }: {
   badgeColor: string;
   badgeShape: "circle" | "octagon";
   label: string;
   items: string[];
   bulletColor: string;
+  action?: React.ReactNode;
 }) {
   return (
     <div>
@@ -147,6 +149,7 @@ function Block({
         >
           {label}
         </h2>
+        {action && <div style={{ marginLeft: "auto" }}>{action}</div>}
       </div>
       <ul
         style={{
