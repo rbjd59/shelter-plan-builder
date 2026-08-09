@@ -64,12 +64,19 @@ export function BilingualField({
   const [status, setStatus] = useState<"idle" | "translating" | "error">("idle");
   const lastTranslatedRef = useRef<string>(nativeValue);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const reqIdRef = useRef(0);
+  // Always keep the freshest props so async callbacks never write stale values.
+  const latestRef = useRef({ nativeValue, englishValue, approved, onChange });
+  latestRef.current = { nativeValue, englishValue, approved, onChange };
   const ui = UI[lang];
 
   const runTranslate = async (text: string) => {
+    const myReq = ++reqIdRef.current;
     if (!text.trim()) {
-      onChange({ native: text, english: "", approved: false });
       lastTranslatedRef.current = text;
+      const cur = latestRef.current;
+      if (cur.nativeValue === text) cur.onChange({ native: text, english: "", approved: false });
+      setStatus("idle");
       return;
     }
     setStatus("translating");
@@ -81,12 +88,16 @@ export function BilingualField({
           fields: { [fieldKey]: text },
         },
       });
+      // Ignore out-of-order / superseded responses.
+      if (myReq !== reqIdRef.current) return;
       const eng = res.translations?.[fieldKey] ?? text;
-      onChange({ native: text, english: eng, approved: false });
       lastTranslatedRef.current = text;
+      const cur = latestRef.current;
+      // Never overwrite what the user has typed since the request started.
+      cur.onChange({ native: cur.nativeValue, english: eng, approved: false });
       setStatus(res.error ? "error" : "idle");
     } catch {
-      setStatus("error");
+      if (myReq === reqIdRef.current) setStatus("error");
     }
   };
 
@@ -105,11 +116,18 @@ export function BilingualField({
     onChange({ native: v, english: englishValue, approved: false });
   };
   const handleEnglishChange = (v: string) => {
+    // Manual English edits are authoritative: stop the pending auto-translation
+    // from clobbering them.
+    reqIdRef.current++;
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    lastTranslatedRef.current = nativeValue;
+    setStatus("idle");
     onChange({ native: nativeValue, english: v, approved: approved });
   };
   const toggleApprove = (a: boolean) => {
     onChange({ native: nativeValue, english: englishValue, approved: a });
   };
+
 
   if (lang === "en") {
     return (
