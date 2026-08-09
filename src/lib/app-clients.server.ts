@@ -127,11 +127,35 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
         };
       }
     }
+    await logDelivery({
+      intakeSessionId: params.intakeSessionId,
+      step: "board_registration",
+      status: "failed",
+      errorMessage: error?.message ?? "insert failed",
+    });
     return { ok: false, error: error?.message ?? "insert failed" };
   }
 
-  if (!inserted) return { ok: false, error: "could not allocate activation code" };
+  if (!inserted) {
+    await logDelivery({
+      intakeSessionId: params.intakeSessionId,
+      step: "board_registration",
+      status: "failed",
+      errorMessage: "could not allocate activation code",
+    });
+    return { ok: false, error: "could not allocate activation code" };
+  }
   const clientId = inserted.id;
+  await logDelivery({
+    intakeSessionId: params.intakeSessionId,
+    clientId,
+    activationCode: code,
+    step: "board_registration",
+    status: "success",
+    target: "admin boards",
+    metadata: { full_name: fullName, language: params.language },
+  });
+
 
   // Mirror emergency contacts from intake answers (sections 6 + 7 + 8)
   const contactsToInsert: Array<Record<string, any>> = [];
