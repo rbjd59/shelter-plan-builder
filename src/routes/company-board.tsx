@@ -143,7 +143,7 @@ function CompanyBoard({ pin }: { pin: string }) {
 
         <section>
           <h2 className="mb-3 text-sm font-bold uppercase tracking-wide text-slate-700">
-            New client signups — no trigger ({registered.length})
+            Client signups ({registered.length})
           </h2>
           {registered.length === 0 ? (
             <p className="rounded border border-dashed border-slate-300 bg-white p-4 text-sm text-slate-500">
@@ -160,11 +160,18 @@ function CompanyBoard({ pin }: { pin: string }) {
                     <th className="px-3 py-2">Add-ons</th>
                     <th className="px-3 py-2">Registered</th>
                     <th className="px-3 py-2">App activated</th>
+                    <th className="px-3 py-2">Trigger</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {registered.map((r: any) => (
-                    <tr key={r.activation_code}>
+                  {registered.map((r: any) => {
+                    const alert = r.latest_alert;
+                    const isActive = !!alert && !alert.cancelled_at;
+                    return (
+                    <tr
+                      key={r.activation_code}
+                      className={isActive ? "bg-red-50 ring-2 ring-inset ring-red-400" : ""}
+                    >
                       <td className="px-3 py-2 font-mono font-bold text-slate-900">{r.activation_code}</td>
                       <td className="px-3 py-2 font-medium">
                         {r.full_name ?? <span className="text-slate-400">—</span>}
@@ -195,8 +202,27 @@ function CompanyBoard({ pin }: { pin: string }) {
                           <span className="text-slate-400">not yet</span>
                         )}
                       </td>
+                      <td className="px-3 py-2 text-xs">
+                        {alert ? (
+                          <span
+                            className={
+                              isActive
+                                ? "rounded bg-red-600 px-2 py-1 font-bold text-white"
+                                : "rounded bg-amber-100 px-2 py-1 font-semibold text-amber-900"
+                            }
+                          >
+                            {isActive ? "🔴 TRIGGERED — " : "CANCELLED — "}
+                            {new Date(alert.triggered_at).toLocaleString()}
+                          </span>
+                        ) : (
+                          <span className="rounded bg-slate-100 px-2 py-1 font-semibold text-slate-600">
+                            No trigger
+                          </span>
+                        )}
+                      </td>
                     </tr>
-                  ))}
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

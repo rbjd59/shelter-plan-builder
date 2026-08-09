@@ -8,7 +8,7 @@ import { supabaseAdmin } from "@/integrations/supabase/client.server";
 const FROM = "info@gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
 
-const COMPANY_EMAIL = "alerts@detenciondefensa.com";
+const COMPANY_EMAIL = "info@detenciondefensa.com";
 const ATTORNEY_EMAIL = "intake@sorrentinolawfirm.com";
 
 const CORE_LEGAL_FORMS = [
