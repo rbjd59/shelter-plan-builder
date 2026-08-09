@@ -49,7 +49,7 @@ const COPY = {
     plan: "Plan pwoteksyon pou arestasyon ICE ",
     price: "$199.",
     freeText: "Kounye a gratis akòz kriz kominotè a.",
-    tagline: "Sijè a alèt dijans yon sèl kli epi plan defans legal revize pa yon avoka",
+    tagline: "Alerta de emergencia",
     btn1: "Ki jan plan pwoteksyon an fonksyone",
     btn2: "Si w se yon pwopriyetè kay",
     watchVideo: "Gade yon videyo yon minit",
