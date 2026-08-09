@@ -10,6 +10,8 @@ import * as React from "react";
 import { createClient } from "@supabase/supabase-js";
 import { TEMPLATES } from "@/lib/email-templates/registry";
 import { activationSmsBody, sendSms } from "@/lib/sms.server";
+import { logDelivery, trackDelivery } from "@/lib/delivery-log.server";
+
 
 const SITE_NAME = "DetencionDefensa";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
