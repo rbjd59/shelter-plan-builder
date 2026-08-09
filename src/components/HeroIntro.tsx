@@ -458,8 +458,9 @@ export default function HeroIntro() {
               borderRadius: 12,
               padding: isMobile ? "0.75rem 0.9rem" : "0.85rem 1.1rem",
               textAlign: isMobile ? "center" : "left",
+              maxWidth: isMobile ? "100%" : 370,
+              margin: "0.9rem auto 0",
               boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
-              marginTop: "0.6rem",
               transition: "transform 0.15s ease, box-shadow 0.15s ease",
               WebkitTapHighlightColor: "transparent",
             }}
