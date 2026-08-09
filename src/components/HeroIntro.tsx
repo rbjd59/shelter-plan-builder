@@ -367,20 +367,21 @@ export default function HeroIntro() {
             style={{
               display: "grid",
               gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-              gap: isMobile ? "0.75rem" : "1.25rem",
-              maxWidth: 1100,
+              gap: isMobile ? "0.6rem" : "0.9rem",
+              maxWidth: 760,
               width: "100%",
               margin: "1rem auto 0",
             }}
           >
             <div
               style={{
-                background: "rgba(17,46,81,0.55)",
-                border: "2px solid #e8a04a",
-                borderRadius: 16,
-                padding: isMobile ? "1rem 1.1rem" : "1.35rem 1.6rem",
+                background: "rgba(255,255,255,0.10)",
+                backdropFilter: "blur(4px)",
+                border: "1px solid rgba(232,160,74,0.7)",
+                borderRadius: 12,
+                padding: isMobile ? "0.75rem 0.9rem" : "0.85rem 1.1rem",
                 textAlign: "left",
-                boxShadow: "0 6px 20px rgba(0,0,0,0.4)",
+                boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
               }}
             >
               <h3
@@ -388,9 +389,9 @@ export default function HeroIntro() {
                   margin: 0,
                   fontFamily: '"Roboto Slab", Georgia, serif',
                   fontWeight: 900,
-                  fontSize: isMobile ? "0.95rem" : "1.15rem",
-                  letterSpacing: "0.06em",
-                  color: "#e8a04a",
+                  fontSize: isMobile ? "0.8rem" : "0.95rem",
+                  letterSpacing: "0.08em",
+                  color: "#f5b860",
                   textTransform: "uppercase",
                 }}
               >
@@ -398,11 +399,11 @@ export default function HeroIntro() {
               </h3>
               <p
                 style={{
-                  margin: "0.4rem 0 0",
+                  margin: "0.25rem 0 0",
                   fontFamily: '"Work Sans", sans-serif',
                   fontWeight: 500,
-                  fontSize: isMobile ? "0.85rem" : "0.98rem",
-                  lineHeight: 1.35,
+                  fontSize: isMobile ? "0.8rem" : "0.9rem",
+                  lineHeight: 1.3,
                   color: "#ffffff",
                 }}
               >
@@ -412,12 +413,13 @@ export default function HeroIntro() {
 
             <div
               style={{
-                background: "rgba(17,46,81,0.55)",
-                border: "2px solid #e8a04a",
-                borderRadius: 16,
-                padding: isMobile ? "1rem 1.1rem" : "1.35rem 1.6rem",
+                background: "rgba(255,255,255,0.10)",
+                backdropFilter: "blur(4px)",
+                border: "1px solid rgba(232,160,74,0.7)",
+                borderRadius: 12,
+                padding: isMobile ? "0.75rem 0.9rem" : "0.85rem 1.1rem",
                 textAlign: "left",
-                boxShadow: "0 6px 20px rgba(0,0,0,0.4)",
+                boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
               }}
             >
               <h3
@@ -425,9 +427,9 @@ export default function HeroIntro() {
                   margin: 0,
                   fontFamily: '"Roboto Slab", Georgia, serif',
                   fontWeight: 900,
-                  fontSize: isMobile ? "0.95rem" : "1.15rem",
-                  letterSpacing: "0.06em",
-                  color: "#e8a04a",
+                  fontSize: isMobile ? "0.8rem" : "0.95rem",
+                  letterSpacing: "0.08em",
+                  color: "#f5b860",
                   textTransform: "uppercase",
                 }}
               >
@@ -435,11 +437,11 @@ export default function HeroIntro() {
               </h3>
               <p
                 style={{
-                  margin: "0.4rem 0 0",
+                  margin: "0.25rem 0 0",
                   fontFamily: '"Work Sans", sans-serif',
                   fontWeight: 500,
-                  fontSize: isMobile ? "0.85rem" : "0.98rem",
-                  lineHeight: 1.35,
+                  fontSize: isMobile ? "0.8rem" : "0.9rem",
+                  lineHeight: 1.3,
                   color: "#ffffff",
                 }}
               >
