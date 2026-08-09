@@ -167,7 +167,7 @@ export default function HeroIntro() {
               alignItems: "center",
               gap: 10,
               textDecoration: "none",
-              color: "#ffffff",
+              color: "#0f1830",
               minWidth: 0,
               justifyContent: "center",
             }}
@@ -189,7 +189,7 @@ export default function HeroIntro() {
                 fontSize: isMobile ? 14 : 16,
                 fontWeight: 700,
                 letterSpacing: -0.2,
-                color: "#ffffff",
+                color: "#0f1830",
                 whiteSpace: "nowrap",
                 lineHeight: 1.2,
                 textAlign: isMobile ? "center" : "left",
@@ -309,10 +309,10 @@ export default function HeroIntro() {
               fontFamily: '"Work Sans", sans-serif',
               fontSize: isMobile ? "0.95rem" : "1.15rem",
               lineHeight: 1.35,
-              fontWeight: 500,
-              color: "#ffffff",
-              margin: 0,
-              maxWidth: 820,
+                fontWeight: 500,
+                color: "#0f1830",
+                margin: 0,
+                maxWidth: 820,
               marginInline: "auto",
               textShadow: "0 1px 2px rgba(255,255,255,0.6)",
             }}
@@ -362,7 +362,7 @@ export default function HeroIntro() {
                   fontWeight: 500,
                   fontSize: isMobile ? "0.8rem" : "0.9rem",
                   lineHeight: 1.3,
-                  color: "#ffffff",
+                  color: "#0f1830",
                 }}
               >
                 {COPY[lang].appBoxBody}
@@ -427,7 +427,7 @@ export default function HeroIntro() {
                   fontWeight: 500,
                   fontSize: isMobile ? "0.8rem" : "0.9rem",
                   lineHeight: 1.3,
-                  color: "#ffffff",
+                  color: "#0f1830",
                 }}
               >
                 {COPY[lang].homeBoxBody}
@@ -496,12 +496,12 @@ export default function HeroIntro() {
                 margin: "0.25rem 0 0",
                 fontFamily: '"Work Sans", sans-serif',
                 fontWeight: 500,
-                fontSize: isMobile ? "0.8rem" : "0.9rem",
-                lineHeight: 1.3,
-                color: "#ffffff",
-              }}
-            >
-              {COPY[lang].secBoxBody}
+                  fontSize: isMobile ? "0.8rem" : "0.9rem",
+                  lineHeight: 1.3,
+                  color: "#0f1830",
+                }}
+              >
+                {COPY[lang].secBoxBody}
             </p>
             <span
               style={{
@@ -540,7 +540,7 @@ export default function HeroIntro() {
               fontFamily: "Inter, system-ui, sans-serif",
               fontSize: "8pt",
               lineHeight: 1.4,
-              color: "#ffffff",
+              color: "#0f1830",
               margin: 0,
               maxWidth: 900,
               marginInline: "auto",
