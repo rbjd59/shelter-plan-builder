@@ -8,11 +8,10 @@ const COPY = {
     plan: "Plan de protección ante detención ICE ",
     price: "$199.",
     freeText: "Ahora gratis debido a la crisis comunitaria.",
-    ice: "ICE ARRESTÓ A 51,000 PERSONAS EN JULIO",
-    tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
-    secBoxHeading: "SEGURIDAD DE PRIMERA CLASE",
-    secBoxBody: "Esta app fue diseñada con la privacidad y la seguridad en su núcleo.",
-    appBoxHeading: "APP GRATUITA PARA EL TELÉFONO",
+    tagline: "Alerta de emergencia de un clic y plan de defensa legal revisado por un abogado",
+    secBoxHeading: "Seguridad de primera clase",
+    secBoxBody: "Diseñada con la privacidad y la seguridad en su núcleo.",
+    appBoxHeading: "App gratuita para el teléfono",
     appBoxBody: "Notifica al instante a tus contactos y abogado si enfrentas un arresto.",
     disclaimer:
       "DetencionDefensa.com proporciona software de admisión seguro, traducción y servicios automatizados de preparación de documentos. No somos una firma de abogados y no proporcionamos asesoramiento legal.",
@@ -21,12 +20,11 @@ const COPY = {
     plan: "ICE detention protection plan ",
     price: "$199.",
     freeText: "Now free due to community crisis.",
-    ice: "ICE arrests 51,000 people in July",
-    tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
-    secBoxHeading: "BEST IN CLASS SECURITY",
-    secBoxBody: "This app was designed with privacy and security at its very core.",
-    appBoxHeading: "FREE APP FOR PHONE",
-    appBoxBody: "Instantly notify contacts and attorney if you are faced with arrest.",
+    tagline: "One-click emergency alert and attorney-reviewed legal defense plan",
+    secBoxHeading: "Best in class security",
+    secBoxBody: "Designed with privacy and security at its very core.",
+    appBoxHeading: "Free app for phone",
+    appBoxBody: "Instantly notify contacts and attorney if faced with arrest.",
     disclaimer:
       "DetencionDefensa.com provides secure admission software, translation, and automated document preparation services. We are not a law firm and do not provide legal advice.",
   },
@@ -34,16 +32,18 @@ const COPY = {
     plan: "Plan pwoteksyon pou arestasyon ICE ",
     price: "$199.",
     freeText: "Kounye a gratis akòz kriz kominotè a.",
-    ice: "ICE arete 51,000 moun an jiyè",
-    tagline1: "The secure one-click emergency alert system and pro se attorney-reviewed legal defense plan",
-    secBoxHeading: "SEKIRITE PI BON KLAS",
-    secBoxBody: "Aplikasyon sa a fèt ak vi prive ak sekirite kòm nwayo li.",
-    appBoxHeading: "APP GRATIS POU TELEFÒN",
+    tagline: "Sijè a alèt dijans yon sèl kli epi plan defans legal revize pa yon avoka",
+    secBoxHeading: "Sekirite pi bon klas",
+    secBoxBody: "Fèt ak vi prive ak sekirite kòm nwayo li.",
+    appBoxHeading: "App gratis pou telefòn",
     appBoxBody: "Fè kontak ak avoka w konnen imedyatman si yo arete w.",
     disclaimer:
       "DetencionDefensa.com ofri lojisyèl admisyon ki an sekirite, tradiksyon, ak sèvis preparasyon dokiman otomatik. Nou pa yon kabinè avoka e nou pa bay konsèy legal.",
   },
-} satisfies Record<Lang, { plan: string; price: string; freeText: string; ice: string; tagline1: string; secBoxHeading: string; secBoxBody: string; appBoxHeading: string; appBoxBody: string; disclaimer: string }>;
+} satisfies Record<
+  Lang,
+  { plan: string; price: string; freeText: string; tagline: string; secBoxHeading: string; secBoxBody: string; appBoxHeading: string; appBoxBody: string; disclaimer: string }
+>;
 
 function PriceWithX({ prefix, price }: { prefix: string; price: string }) {
   return (
@@ -96,7 +96,7 @@ export default function HeroIntro() {
   return (
     <section
       style={{
-        backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url(${detentionNightAsset.url})`,
+        backgroundImage: `linear-gradient(155deg, rgba(8,22,45,0.82) 0%, rgba(8,22,45,0.55) 48%, rgba(8,22,45,0.85) 100%), url(${detentionNightAsset.url})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -273,41 +273,21 @@ export default function HeroIntro() {
             </p>
           </div>
 
-          <div>
-            <h1
-              style={{
-                fontFamily: '"Roboto Slab", Georgia, serif',
-                fontSize: isMobile ? (lang === "es" ? "1.3rem" : "1.1rem") : (lang === "es" ? "clamp(1.7rem, 3.4vw, 2.5rem)" : "clamp(1.25rem, 2.6vw, 1.9rem)"),
-                fontWeight: 700,
-                lineHeight: lang === "es" ? 1.05 : 1.1,
-                margin: 0,
-                letterSpacing: "-0.005em",
-                textAlign: "center",
-                color: "#e8a04a",
-                textShadow: "0 2px 8px rgba(0,0,0,0.6)",
-                textTransform: "uppercase",
-                maxWidth: 1000,
-                marginInline: "auto",
-              }}
-            >
-              {COPY[lang].ice}
-            </h1>
-
-            <p
-              style={{
-                fontFamily: '"Roboto Slab", Georgia, serif',
-                fontSize: isMobile ? "0.7rem" : "0.8rem",
-                lineHeight: 1.2,
-                fontWeight: 400,
-                color: "rgba(255,255,255,0.7)",
-                margin: "0.1rem auto 0",
-                textAlign: "center",
-                textShadow: "0 1px 6px rgba(0,0,0,0.6)",
-              }}
-            >
-              ABC News
-            </p>
-          </div>
+          <p
+            style={{
+              fontFamily: '"Work Sans", sans-serif',
+              fontSize: isMobile ? "0.95rem" : "1.15rem",
+              lineHeight: 1.35,
+              fontWeight: 500,
+              color: "rgba(255,255,255,0.94)",
+              margin: 0,
+              maxWidth: 820,
+              marginInline: "auto",
+              textShadow: "0 1px 6px rgba(0,0,0,0.6)",
+            }}
+          >
+            {COPY[lang].tagline}
+          </p>
 
           <div
             style={{
@@ -387,20 +367,21 @@ export default function HeroIntro() {
             style={{
               display: "grid",
               gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-              gap: isMobile ? "0.75rem" : "1.25rem",
-              maxWidth: 1100,
+              gap: isMobile ? "0.6rem" : "0.9rem",
+              maxWidth: 760,
               width: "100%",
               margin: "1rem auto 0",
             }}
           >
             <div
               style={{
-                background: "rgba(17,46,81,0.55)",
-                border: "2px solid #e8a04a",
-                borderRadius: 16,
-                padding: isMobile ? "1rem 1.1rem" : "1.35rem 1.6rem",
+                background: "rgba(255,255,255,0.10)",
+                backdropFilter: "blur(4px)",
+                border: "1px solid rgba(232,160,74,0.7)",
+                borderRadius: 12,
+                padding: isMobile ? "0.75rem 0.9rem" : "0.85rem 1.1rem",
                 textAlign: "left",
-                boxShadow: "0 6px 20px rgba(0,0,0,0.4)",
+                boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
               }}
             >
               <h3
@@ -408,9 +389,9 @@ export default function HeroIntro() {
                   margin: 0,
                   fontFamily: '"Roboto Slab", Georgia, serif',
                   fontWeight: 900,
-                  fontSize: isMobile ? "0.95rem" : "1.15rem",
-                  letterSpacing: "0.06em",
-                  color: "#e8a04a",
+                  fontSize: isMobile ? "0.8rem" : "0.95rem",
+                  letterSpacing: "0.08em",
+                  color: "#f5b860",
                   textTransform: "uppercase",
                 }}
               >
@@ -418,11 +399,11 @@ export default function HeroIntro() {
               </h3>
               <p
                 style={{
-                  margin: "0.4rem 0 0",
+                  margin: "0.25rem 0 0",
                   fontFamily: '"Work Sans", sans-serif',
                   fontWeight: 500,
-                  fontSize: isMobile ? "0.85rem" : "0.98rem",
-                  lineHeight: 1.35,
+                  fontSize: isMobile ? "0.8rem" : "0.9rem",
+                  lineHeight: 1.3,
                   color: "#ffffff",
                 }}
               >
@@ -432,12 +413,13 @@ export default function HeroIntro() {
 
             <div
               style={{
-                background: "rgba(17,46,81,0.55)",
-                border: "2px solid #e8a04a",
-                borderRadius: 16,
-                padding: isMobile ? "1rem 1.1rem" : "1.35rem 1.6rem",
+                background: "rgba(255,255,255,0.10)",
+                backdropFilter: "blur(4px)",
+                border: "1px solid rgba(232,160,74,0.7)",
+                borderRadius: 12,
+                padding: isMobile ? "0.75rem 0.9rem" : "0.85rem 1.1rem",
                 textAlign: "left",
-                boxShadow: "0 6px 20px rgba(0,0,0,0.4)",
+                boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
               }}
             >
               <h3
@@ -445,9 +427,9 @@ export default function HeroIntro() {
                   margin: 0,
                   fontFamily: '"Roboto Slab", Georgia, serif',
                   fontWeight: 900,
-                  fontSize: isMobile ? "0.95rem" : "1.15rem",
-                  letterSpacing: "0.06em",
-                  color: "#e8a04a",
+                  fontSize: isMobile ? "0.8rem" : "0.95rem",
+                  letterSpacing: "0.08em",
+                  color: "#f5b860",
                   textTransform: "uppercase",
                 }}
               >
@@ -455,11 +437,11 @@ export default function HeroIntro() {
               </h3>
               <p
                 style={{
-                  margin: "0.4rem 0 0",
+                  margin: "0.25rem 0 0",
                   fontFamily: '"Work Sans", sans-serif',
                   fontWeight: 500,
-                  fontSize: isMobile ? "0.85rem" : "0.98rem",
-                  lineHeight: 1.35,
+                  fontSize: isMobile ? "0.8rem" : "0.9rem",
+                  lineHeight: 1.3,
                   color: "#ffffff",
                 }}
               >
