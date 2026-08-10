@@ -31,13 +31,14 @@ const TriggerSchema = z.object({
   cancel_pin: z.string().regex(/^\d{4,8}$/).optional(),
   last_known_location: z
     .object({
-      lat: z.number().min(-90).max(90).optional(),
-      lng: z.number().min(-180).max(180).optional(),
+      lat: z.number().min(-90).max(90).nullable().optional(),
+      lng: z.number().min(-180).max(180).nullable().optional(),
     })
     .passthrough()
+    .nullable()
     .optional(),
-  arrest_location_hint: z.string().max(500).optional(),
-  battery_pct: z.number().int().min(0).max(100).optional(),
+  arrest_location_hint: z.string().max(500).nullable().optional(),
+  battery_pct: z.number().int().min(0).max(100).nullable().optional(),
 }).passthrough();
 
 export const Route = createFileRoute("/api/public/app-trigger")({
