@@ -67,8 +67,8 @@ function DashboardPage() {
           <div style={{ background: "#1a2436", padding: 24, borderRadius: 8 }}>
             <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>DefensaSiempre Emergency App</h2>
             <Row label="Status" value={prettyStatus(sub.status, sub.cancel_at_period_end)} />
-            <Row label="Next bill" value={sub.current_period_end ? `${new Date(sub.current_period_end).toLocaleDateString()} · $10.00` : "—"} />
-            <Row label="Plan" value="$10/month · documents included at no charge" />
+            <Row label="Next bill" value={sub.current_period_end ? `${new Date(sub.current_period_end).toLocaleDateString()} · $0.00 (waived)` : "—"} />
+            <Row label="Plan" value="No cost at this time · documents included at no charge" />
             <div style={{ marginTop: 24, fontSize: 13, color: "#cfc8b8", borderLeft: "3px solid #e8a04a", paddingLeft: 14 }}>
               To cancel, email <a href="mailto:intake@detenciondefensa.com" style={{ color: "#e8a04a" }}>intake@detenciondefensa.com</a>.
             </div>
@@ -77,7 +77,7 @@ function DashboardPage() {
           <div style={{ background: "#1a2436", padding: 24, borderRadius: 8 }}>
             <p style={{ marginBottom: 16 }}>You don't have a defense plan yet.</p>
             <Link to="/checkout" search={{ lang: "es" } as never} style={{ display: "inline-block", background: "#e8a04a", color: "#0b1220", padding: "10px 18px", borderRadius: 4, fontWeight: 700, textDecoration: "none" }}>
-              Subscribe — $10/month
+              Get started — no cost
             </Link>
           </div>
         )}

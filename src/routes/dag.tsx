@@ -5,7 +5,7 @@ export const Route = createFileRoute("/dag")({
   head: () => ({
     meta: [
       { title: "DAG — Sentinel Readiness · Protect Your Family & Your Assets" },
-      { name: "description", content: "Sentinel Readiness packet: 8 court-recognized documents translated side-by-side so your family is never unprepared. Included at no charge with the $10/month emergency app plan." },
+      { name: "description", content: "Sentinel Readiness packet: 8 court-recognized documents translated side-by-side so your family is never unprepared. Included at no charge with the emergency app plan." },
       { property: "og:title", content: "DAG — Sentinel Readiness" },
       { property: "og:description", content: "Protect your family and your assets — 8 court-recognized documents, prepared in your language." },
     ],
@@ -75,7 +75,7 @@ function DagPage() {
             marginBottom: "1.8rem",
           }}
         >
-          No charge · included with the $10/month app plan
+          No charge · included with the emergency app plan
         </div>
 
         <p style={{ fontSize: "1.05rem", lineHeight: 1.6, margin: "0 0 1.5rem" }}>

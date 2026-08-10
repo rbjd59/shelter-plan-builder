@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { detectBrowserLang } from "@/lib/site-lang";
 
 export type Lang = "es" | "en" | "ht";
 const LS_KEY = "dd_lang";
@@ -8,14 +9,21 @@ const Ctx = createContext<{ lang: Lang; setLang: (l: Lang) => void }>({
   setLang: () => {},
 });
 
+export { detectBrowserLang };
+
 function readInitial(): Lang {
   if (typeof window === "undefined") return "es";
   const url = new URLSearchParams(window.location.search).get("lang");
   if (url === "es" || url === "en" || url === "ht") return url;
-  const ls = window.localStorage.getItem(LS_KEY);
+  let ls: string | null = null;
+  try {
+    ls = window.localStorage.getItem(LS_KEY);
+  } catch { /* storage blocked */ }
   if (ls === "es" || ls === "en" || ls === "ht") return ls;
-  return "es";
+  return detectBrowserLang() ?? "es";
 }
+
+
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   // Always start with the SSR default ("es") so server + first client render match.

@@ -2,13 +2,32 @@
 // Used as a fallback when a route's `?lang=` is missing or invalid.
 export type SiteLang = "es" | "en" | "ht";
 
+// Detect a supported language from the visitor's browser/OS locale list.
+// Matches on the primary subtag so "es-MX", "es-419", "ht-HT" all resolve.
+export function detectBrowserLang(): SiteLang | null {
+  if (typeof navigator === "undefined") return null;
+  const tags = [
+    ...(Array.isArray(navigator.languages) ? navigator.languages : []),
+    navigator.language,
+  ].filter(Boolean) as string[];
+  for (const tag of tags) {
+    const primary = tag.toLowerCase().split("-")[0];
+    if (primary === "es") return "es";
+    if (primary === "ht") return "ht";
+    if (primary === "en") return "en";
+    // French speakers from Haiti are far closer to Kreyòl than to Spanish.
+    if (primary === "fr") return "ht";
+  }
+  return null;
+}
+
 export function readSiteLang(): SiteLang {
   if (typeof window === "undefined") return "es";
   try {
     const v = window.localStorage.getItem("dd_lang");
     if (v === "es" || v === "en" || v === "ht") return v;
   } catch { /* ignore */ }
-  return "es";
+  return detectBrowserLang() ?? "es";
 }
 
 // Returns the lang from the current URL if valid, else falls back to site lang.

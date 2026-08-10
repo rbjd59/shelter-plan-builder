@@ -118,7 +118,7 @@ function LoginPage() {
   return (
     <div style={{ minHeight: "100vh", background: "#0b1220", color: "#f6efe1", fontFamily: "Inter Tight, system-ui, sans-serif", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
       <div style={{ maxWidth: 460, width: "100%", background: "#1a2436", padding: 32, borderRadius: 8 }}>
-        <Link to="/" search={{ lang: "es" } as never} style={{ color: "#e8a04a", fontSize: 13, textDecoration: "none" }}>{t.home}</Link>
+        <Link to="/" search={{ lang } as never} style={{ color: "#e8a04a", fontSize: 13, textDecoration: "none" }}>{t.home}</Link>
         <h1 style={{ fontSize: 28, fontWeight: 700, marginTop: 16, marginBottom: 8, fontFamily: "Fraunces, serif" }}>
           {reason === "not-admin" ? t.adminTitle : t.signInTitle}
         </h1>
