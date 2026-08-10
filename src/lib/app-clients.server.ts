@@ -236,22 +236,8 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
   }
 
 
-  // Persist pet rescue row if the add-on was selected
-  if (hasPetRescue) {
-    await sb.from("client_pet_rescue").upsert(
-      {
-        client_id: clientId,
-        pet_name: typeof a.pet_name === "string" ? a.pet_name : null,
-        pet_type: typeof a.pet_type === "string" ? a.pet_type : null,
-        pet_location: typeof a.pet_location === "string" ? a.pet_location : null,
-        access_instructions: typeof a.pet_access === "string" ? a.pet_access : null,
-        who_to_notify: typeof a.pet_notify === "string" ? a.pet_notify : null,
-        no_kill_shelter_preferred: a.pet_no_kill_preferred !== false,
-        no_kill_shelter_address: typeof a.pet_no_kill_address === "string" ? a.pet_no_kill_address : null,
-      } as never,
-      { onConflict: "client_id" },
-    );
-  }
+  // Pet rescue removed from the product — nothing to persist.
+
 
   // Generate the actual PDFs before the bundle is exposed to the phone.
   // The phone expects raw base64 in `content`; placeholder prose causes its
