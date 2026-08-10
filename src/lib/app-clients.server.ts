@@ -167,6 +167,7 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
     email: unknown,
     relationship: string,
     priority: number,
+    role: "family" | "lawyer" | "company" = "family",
   ) => {
     if (typeof name === "string" && name.trim()) {
       contactsToInsert.push({
@@ -175,11 +176,13 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
         phone_e164: typeof phone === "string" ? phone : null,
         email: typeof email === "string" ? email : null,
         relationship,
+        role,
         priority,
         notify_on_sos: true,
       });
     }
   };
+
   addContact(a.emergency_contact_name, a.emergency_contact_phone, a.emergency_contact_email, "emergency", 1);
   addContact(
     a.emergency_contact_2_name,
