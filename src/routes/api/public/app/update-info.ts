@@ -77,6 +77,20 @@ export const Route = createFileRoute("/api/public/app/update-info")({
           return json({ ok: false, error: "invalid_case_id" }, { status: 404 });
         }
 
+        // The app may push an updated contact list on the same call.
+        let contactsSaved: unknown = null;
+        if (parsed.data.contacts && parsed.data.contacts.length > 0) {
+          const { data: syncData, error: syncError } = await supabaseAdmin.rpc(
+            "sync_client_contacts" as never,
+            { _token: caseId, _contacts: parsed.data.contacts } as never,
+          );
+          if (syncError) {
+            console.error("[app/update-info] contact sync failed", syncError);
+            return json({ ok: false, error: "sync_failed" }, { status: 500 });
+          }
+          contactsSaved = syncData ?? { ok: true };
+        }
+
         const { data: inserted, error: insertError } = await supabaseAdmin
           .from("client_update_requests")
           .insert({
@@ -84,6 +98,7 @@ export const Route = createFileRoute("/api/public/app/update-info")({
             source: "phone_app",
             request_payload: {
               case_id: caseId,
+              contacts_count: parsed.data.contacts?.length ?? 0,
               requested_at: parsed.data.requested_at ?? new Date().toISOString(),
               received_at: new Date().toISOString(),
             },
