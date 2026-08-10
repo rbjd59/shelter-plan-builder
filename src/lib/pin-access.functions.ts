@@ -31,7 +31,9 @@ export const pinListCompanyBoard = createServerFn({ method: "POST" })
         .limit(1000),
       supabaseAdmin
         .from("client_sos_alerts")
-        .select("id, client_id, triggered_at, cancelled_at")
+        .select(
+          "id, client_id, triggered_at, cancelled_at, lat, lng, battery_pct, app_reported_name, app_reported_a_number, app_reported_place_of_birth, app_reported_date_of_birth",
+        )
         .order("triggered_at", { ascending: false })
         .limit(500),
     ]);
@@ -42,12 +44,31 @@ export const pinListCompanyBoard = createServerFn({ method: "POST" })
       if (!latestAlertByClient.has(a.client_id)) latestAlertByClient.set(a.client_id, a);
     }
 
-    // MINIMUM VISIBILITY: activation code + dates only. No names, emails,
-    // phones, contacts, documents or GPS ever reach the company board, so a
-    // subpoena against the company yields nothing identifying about a client.
+    // Clients with a LIVE (uncancelled) trigger: the company now needs the
+    // locate packet. Everyone else stays code-only.
+    const liveIds = [...latestAlertByClient.entries()]
+      .filter(([, a]) => !a.cancelled_at)
+      .map(([cid]) => cid);
+
+    const liveInfo = new Map<string, any>();
+    if (liveIds.length > 0) {
+      const { data: liveClients } = await supabaseAdmin
+        .from("app_clients")
+        .select(
+          "id, full_name, phone_e164, a_number, date_of_birth, place_of_birth, country_of_origin, language",
+        )
+        .in("id", liveIds);
+      for (const c of (liveClients ?? []) as any[]) liveInfo.set(c.id, c);
+    }
+
+    // MINIMUM VISIBILITY until a trigger fires: activation code + dates only.
+    // Once a client triggers, the locate fields are released to the company so
+    // they can start finding the person; they disappear again on cancellation.
     const registered = (clientsRes.data ?? []).map((c) => {
       const row = c as any;
       const alert = latestAlertByClient.get(row.id) ?? null;
+      const isActive = !!alert && !alert.cancelled_at;
+      const info = isActive ? liveInfo.get(row.id) ?? null : null;
       return {
         activation_code: row.invite_token,
         registered_at: row.created_at,
@@ -59,11 +80,31 @@ export const pinListCompanyBoard = createServerFn({ method: "POST" })
               cancelled_at: alert.cancelled_at,
             }
           : null,
+        // Released only while an alert is live.
+        locate: isActive
+          ? {
+              full_name: alert.app_reported_name ?? info?.full_name ?? null,
+              a_number: alert.app_reported_a_number ?? info?.a_number ?? null,
+              date_of_birth: alert.app_reported_date_of_birth ?? info?.date_of_birth ?? null,
+              place_of_birth: alert.app_reported_place_of_birth ?? info?.place_of_birth ?? null,
+              country_of_origin: info?.country_of_origin ?? null,
+              language: info?.language ?? null,
+              phone: info?.phone_e164 ?? null,
+              lat: alert.lat ?? null,
+              lng: alert.lng ?? null,
+              battery_pct: alert.battery_pct ?? null,
+              maps_url:
+                alert.lat != null && alert.lng != null
+                  ? `https://maps.google.com/?q=${alert.lat},${alert.lng}`
+                  : null,
+            }
+          : null,
       };
     });
 
     return { registered, triggered: [] as Array<Record<string, never>> };
   });
+
 
 
 /**
