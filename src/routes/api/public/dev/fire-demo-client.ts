@@ -183,6 +183,8 @@ export const Route = createFileRoute("/api/public/dev/fire-demo-client")({
           sessionId,
           activationCode: provisioned.code ?? null,
           clientId: provisioned.clientId ?? null,
+          contactSyncError,
+
           provisionError: provisioned.error ?? null,
           notifyError,
         });
