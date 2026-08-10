@@ -115,6 +115,22 @@ export const Route = createFileRoute("/api/public/dev/fire-demo-client")({
           demo_label: label,
         };
 
+        const overrideContacts = parsed.data.contacts ?? [];
+        if (parsed.data.client_email) answers.client_email = parsed.data.client_email;
+        if (parsed.data.client_mobile) answers.client_mobile = parsed.data.client_mobile;
+        overrideContacts.slice(0, 3).forEach((c, i) => {
+          const suffix = i === 0 ? "" : `_${i + 1}`;
+          answers[`emergency_contact${suffix}_name`] = c.name;
+          answers[`emergency_contact${suffix}_phone`] = c.phone ?? "";
+          answers[`emergency_contact${suffix}_email`] = c.email ?? "";
+          answers[`emergency_contact${suffix}_relation`] = c.relationship ?? "familia";
+        });
+        if (overrideContacts[0]) {
+          answers.contact_name = overrideContacts[0].name;
+          answers.contact_phone = overrideContacts[0].phone ?? "";
+          answers.contact_email = overrideContacts[0].email ?? answers.client_email;
+        }
+
         const sessionId = `demo-${crypto.randomUUID()}`;
 
         const { error } = await supabaseAdmin.from("intake_submissions").insert({
@@ -131,6 +147,22 @@ export const Route = createFileRoute("/api/public/dev/fire-demo-client")({
           language,
           answers,
         });
+
+        let contactSyncError: string | null = null;
+        if (overrideContacts.length && provisioned.code) {
+          const { error: syncErr } = await supabaseAdmin.rpc("sync_client_contacts", {
+            _token: provisioned.code,
+            _contacts: overrideContacts.map((c) => ({
+              name: c.name,
+              phone_e164: c.phone ?? null,
+              email: c.email ?? null,
+              relationship: c.relationship ?? "familia",
+              role: c.role ?? "family",
+            })) as never,
+          } as never);
+          contactSyncError = syncErr?.message ?? null;
+        }
+
 
         let notifyError: string | null = null;
         try {
