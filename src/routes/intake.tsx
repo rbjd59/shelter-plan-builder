@@ -285,7 +285,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
   const [errMsg, setErrMsg] = useState("");
   const [pairCode, setPairCode] = useState<string | null>(null);
   const [inviteCode, setInviteCode] = useState<string | null>(null);
-  const [answers, setAnswers] = useState<Record<string, string | boolean>>({});
+  const [answers, setAnswers] = useState<Record<string, string | boolean>>({ addon_asset_protection: true });
   const [englishAnswers, setEnglishAnswers] = useState<Record<string, string>>({});
   const [approvals, setApprovals] = useState<Record<string, boolean>>({});
   const [smsConsent, setSmsConsent] = useState(false);
