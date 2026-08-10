@@ -21,7 +21,7 @@ const SIGNED_URL_TTL_SECONDS = 60 * 60 * 24 * 14;
 
 // Signup notifications go to info@ only. Nothing else is sent to this address —
 // SOS/trigger traffic goes to alerts@, legal packets go to legal@.
-const RECIPIENTS = ["info@detenciondefensa.com"];
+const RECIPIENTS = ["info@theconsumerdefender.com"];
 const FROM = "info@gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
 
