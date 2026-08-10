@@ -101,14 +101,14 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
   {
     id: "mailto",
     title: {
-      en: "5. Emergency Contact & Asset Protection Distribution (if purchased)",
-      es: "5. Contacto de Emergencia y Distribución de Protección de Bienes (si se compró)",
-      ht: "5. Kontak Ijans ak Distribisyon Pwoteksyon Byen (si w te achte)",
+      en: "5. Emergency Contact",
+      es: "5. Contacto de Emergencia",
+      ht: "5. Kontak Ijans",
     },
     intro: {
-      en: "This person is notified by SMS and email the moment you press NOTIFY FAMILY in the app. If you purchased the Asset Protection Package, this same person receives the distribution instructions.",
-      es: "Esta persona recibe SMS y correo cuando active AVISAR A FAMILIA en la app. Si compró el Paquete de Protección de Bienes, también recibe las instrucciones de distribución.",
-      ht: "Moun sa a resevwa SMS ak imèl lè ou peze AVIZE FANMI nan app la. Si w te achte Pakè Pwoteksyon Byen, li resevwa enstriksyon distribisyon yo tou.",
+      en: "This person is notified by SMS and email the moment you press NOTIFY FAMILY in the app. This same person receives your Family Docs package.",
+      es: "Esta persona recibe SMS y correo cuando active AVISAR A FAMILIA en la app. Esta misma persona recibe su paquete de Documentos Familiares.",
+      ht: "Moun sa a resevwa SMS ak imèl lè ou peze AVIZE FANMI nan app la. Menm moun sa a resevwa pakè Dokiman Fanmi ou a.",
     },
     fields: [
       { key: "emergency_contact_name", label: { en: "Emergency contact full name", es: "Nombre completo del contacto de emergencia", ht: "Non konplè kontak ijans" } },
@@ -124,10 +124,11 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       ht: "6. Ki kote fòm yo dwe ale si yo detni w?",
     },
     intro: {
-      en: "Asset Protection distribution — included at no charge. Tell us who receives the prepared forms when your case is activated.",
-      es: "Distribución de Protección de Bienes — incluida sin costo. Indíquenos quién recibirá los formularios preparados cuando se active su caso.",
-      ht: "Distribisyon Pwoteksyon Byen — enkli gratis. Di nou ki moun k ap resevwa fòm yo lè ka w aktive.",
+      en: "Family Docs distribution — included at no charge. Tell us who receives the prepared forms when your case is activated.",
+      es: "Distribución de Documentos Familiares — incluida sin costo. Indíquenos quién recibirá los formularios preparados cuando se active su caso.",
+      ht: "Distribisyon Dokiman Fanmi — enkli gratis. Di nou ki moun k ap resevwa fòm yo lè ka w aktive.",
     },
+
     fields: [
       { key: "contact_name", label: { en: "Contact name", es: "Nombre del contacto", ht: "Non kontak la" } },
       { key: "contact_email", label: { en: "Email address", es: "Correo electrónico", ht: "Imèl" } },
