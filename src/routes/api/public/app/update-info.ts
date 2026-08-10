@@ -111,7 +111,7 @@ export const Route = createFileRoute("/api/public/app/update-info")({
           return json({ ok: false, error: "request_insert_failed" }, { status: 500 });
         }
 
-        return json({ ok: true, event_id: (inserted as { id: string }).id });
+        return json({ ok: true, event_id: (inserted as { id: string }).id, contacts: contactsSaved });
       },
     },
   },
