@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
@@ -98,9 +99,8 @@ function CompanyBoard({ pin }: { pin: string }) {
                   const alert = r.latest_alert;
                   const isActive = !!alert && !alert.cancelled_at;
                   return (
-                    <>
+                    <Fragment key={r.activation_code}>
                     <tr
-                      key={r.activation_code}
                       className={isActive ? "bg-red-50 ring-2 ring-inset ring-red-400" : ""}
                     >
                       <td className="px-4 py-2 font-mono text-base font-bold text-slate-900">
@@ -138,7 +138,7 @@ function CompanyBoard({ pin }: { pin: string }) {
                       </td>
                     </tr>
                     {isActive && r.locate && (
-                      <tr key={`${r.activation_code}-locate`} className="bg-red-50">
+                      <tr className="bg-red-50">
                         <td colSpan={4} className="px-4 pb-4 pt-0">
                           <div className="rounded-md border border-red-300 bg-white p-3">
                             <p className="mb-2 text-xs font-bold uppercase tracking-wide text-red-700">
@@ -178,7 +178,7 @@ function CompanyBoard({ pin }: { pin: string }) {
                         </td>
                       </tr>
                     )}
-                    </>
+                    </Fragment>
                   );
                 })}
 
@@ -192,6 +192,15 @@ function CompanyBoard({ pin }: { pin: string }) {
           attorney board at /attorney-board.
         </p>
       </div>
+    </div>
+  );
+}
+
+function Field({ label, value }: { label: string; value: string | null }) {
+  return (
+    <div>
+      <dt className="text-slate-500">{label}</dt>
+      <dd className="font-medium text-slate-900">{value || "—"}</dd>
     </div>
   );
 }
