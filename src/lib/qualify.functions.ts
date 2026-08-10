@@ -143,7 +143,7 @@ Applicant data:
 Assign a tier:
 - "nocost" — income at or below 100% of FPL AND has US-citizen/resident children AND is primary earner. Sets qualifies=true, discount_pct=100.
 - "reduced" — income at or below 150% of FPL (or borderline cases where expenses eat income). Sets qualifies=true, discount_pct=10 (a 10% discount off the standard package).
-- "standard" — clearly above 150% of FPL. Sets qualifies=false, discount_pct=0. They will be offered the standard $199 package.
+- "standard" — clearly above 150% of FPL. Sets qualifies=false, discount_pct=0. They will be offered the standard package, which is currently free (pro bono).
 
 Write a warm 2-3 sentence reasoning addressed to the applicant ("you"), plain English, no legal jargon. If they don't qualify for no-cost, still be encouraging.`;
 

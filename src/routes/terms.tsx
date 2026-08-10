@@ -53,7 +53,7 @@ Ou ("Ou") se petisyonè a. Ou bay enfòmasyon yo. Ou siyen fòm nan. Ou depoze l
 
 Revizyon Avoka. Atravè yon akò separe ak yon avoka endepandan, bouyon fòm Pro Se ou kapab revize pou verifye li konplè ak ke siyati yo notarize epi fòm nan voye nan grefye tribinal la kòrèk. Avoka sa a pa dakò pou reprezante w nan tribinal.
 
-Pri. Tout frè yo anile kounye a akòz kriz kominotè a, kidonk app ijans la pa koute w anyen nan moman sa a. Pri estanda a se $10/mwa e li p ap rekòmanse san yo pa avèti w davans. Dokiman kreye ak revize pa avoka yo bay gratis. Ou ka anile abònman an nenpòt lè. Tèm ranbousman yo parèt lè ou peye.
+Pri. Sa a se yon sèvis gratis, pro bono. Pa gen frè enskripsyon, pa gen frè chak mwa, epi ou pa bezwen kat kredi. Avoka a dakò pou prepare epi revize dokiman ou yo pro bono pou yon peryòd limite, epi aplikasyon ijans lan bay san frè pandan kriz kominotè a. Angajman pro bono sa a ka fini nenpòt lè pa DetencionDefensa.com ak avoka a; si yo janm mete yon frè nan lavni, y ap avèti w davans e yo p ap chaje w anyen san konsantman eksprè ou. Ou ka sispann itilize sèvis la nenpòt lè.
 
 Done ou. Enfòmasyon ou itilize pou ranpli fòm ou yo. Nou pa vann enfòmasyon pèsonèl ou.
 

@@ -80,7 +80,7 @@ const COPY = {
   },
   ht: {
     title: "Pakè Sentinel Readiness",
-    price: "San frè — enkli ak plan app dijans $10/mwa a",
+    price: "San frè — pro bono pou yon tan limite",
     body: "Pa kite fanmi w san preparasyon. Nou rasanble chak dokiman tribinal yo rekonèt fanmi w ap bezwen, tradui yo an angle ak lang ou kòt-a-kòt, ou ranpli yo nan pwòp mo w, e nou tape repons egzak ou yo sou fòm ofisyèl yo. Ou enprime, siyen, e notaryze. Ou gen 100% kontwòl jiskaske w bezwen èd.",
     docsTitle: "Sa egzakteman ou jwenn, san frè",
     docs: [
