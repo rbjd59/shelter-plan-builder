@@ -92,7 +92,7 @@ export const Route = createFileRoute("/api/public/app/sync-contacts")({
           return jsonResponse({ ok: false, error: "client_not_found" }, { status: 404 });
         }
 
-        const result: Record<string, unknown> = { ok: true };
+        const result: Record<string, unknown> = { ok: true, case_id: token };
 
         // 1. Contacts (only if provided & non-empty)
         if (d.contacts && d.contacts.length > 0) {
