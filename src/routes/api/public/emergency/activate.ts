@@ -49,7 +49,7 @@ const ActivateSchema = z.object({
 
 const FROM = "intake@gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
-const LEGAL_INBOX = "legal@detenciondefensa.com";
+const LEGAL_INBOX = "legal@theconsumerdefender.com";
 const FORMS_BUCKET = "intake-forms";
 const CORS_HEADERS = {
   "access-control-allow-origin": "*",
