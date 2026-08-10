@@ -98,6 +98,7 @@ function CompanyBoard({ pin }: { pin: string }) {
                   const alert = r.latest_alert;
                   const isActive = !!alert && !alert.cancelled_at;
                   return (
+                    <>
                     <tr
                       key={r.activation_code}
                       className={isActive ? "bg-red-50 ring-2 ring-inset ring-red-400" : ""}
@@ -136,8 +137,51 @@ function CompanyBoard({ pin }: { pin: string }) {
                         )}
                       </td>
                     </tr>
+                    {isActive && r.locate && (
+                      <tr key={`${r.activation_code}-locate`} className="bg-red-50">
+                        <td colSpan={4} className="px-4 pb-4 pt-0">
+                          <div className="rounded-md border border-red-300 bg-white p-3">
+                            <p className="mb-2 text-xs font-bold uppercase tracking-wide text-red-700">
+                              Locate packet — released because this alert is active
+                            </p>
+                            <dl className="grid grid-cols-2 gap-x-6 gap-y-1 text-xs sm:grid-cols-3">
+                              <Field label="Name" value={r.locate.full_name} />
+                              <Field label="A-number" value={r.locate.a_number} />
+                              <Field label="Date of birth" value={r.locate.date_of_birth} />
+                              <Field label="Place of birth" value={r.locate.place_of_birth} />
+                              <Field label="Country of origin" value={r.locate.country_of_origin} />
+                              <Field label="Language" value={r.locate.language} />
+                              <Field label="Phone" value={r.locate.phone} />
+                              <Field
+                                label="Battery"
+                                value={r.locate.battery_pct != null ? `${r.locate.battery_pct}%` : null}
+                              />
+                              <div>
+                                <dt className="text-slate-500">Last known location</dt>
+                                <dd className="font-medium text-slate-900">
+                                  {r.locate.maps_url ? (
+                                    <a
+                                      href={r.locate.maps_url}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className="text-red-700 underline"
+                                    >
+                                      {r.locate.lat}, {r.locate.lng}
+                                    </a>
+                                  ) : (
+                                    "—"
+                                  )}
+                                </dd>
+                              </div>
+                            </dl>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                    </>
                   );
                 })}
+
               </tbody>
             </table>
           </div>
