@@ -11,11 +11,23 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 
+const Contact = z.object({
+  name: z.string().min(1).max(160),
+  phone: z.string().max(32).optional(),
+  email: z.string().max(200).optional(),
+  relationship: z.string().max(80).optional(),
+  role: z.enum(["family", "lawyer", "company"]).optional(),
+});
+
 const Body = z.object({
   label: z.string().min(1).max(60).optional(),
   language: z.enum(["es", "en", "ht"]).optional(),
   code: z.string().regex(/^[A-Z0-9]{8}$/).optional(),
+  client_email: z.string().max(200).optional(),
+  client_mobile: z.string().max(32).optional(),
+  contacts: z.array(Contact).max(10).optional(),
 });
+
 
 function json(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {
