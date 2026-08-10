@@ -64,7 +64,11 @@ export const Route = createFileRoute("/api/public/app/sync-contacts")({
 
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
         const d = parsed.data;
-        let token = normalizeActivationCode(d.activation_code) ?? normalizeActivationCode(d.token);
+        let token =
+          normalizeActivationCode(d.activation_code) ??
+          normalizeActivationCode(d.case_id) ??
+          normalizeActivationCode(d.token);
+
 
         if (!token && d.intake_session_id) {
           const raw = d.intake_session_id.trim().toUpperCase();
