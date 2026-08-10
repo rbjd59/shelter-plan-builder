@@ -46,8 +46,9 @@ function buildBody(
   const { first, middle, last } = splitName(fullName);
   const langCode = (input.language || "en").toLowerCase();
   const prefLang = LANG_LABEL[langCode] || langCode;
-  const hasAssetProtection = a.addon_asset_protection === true || a.addon_asset_protection === "yes";
-  const hasPetRescue = a.addon_pet_rescue === true || a.addon_pet_rescue === "yes";
+  const hasAssetProtection = true; // Family Docs are always included
+  const hasPetRescue = false; // pet rescue removed from the product
+
 
   return {
     event_id: input.intakeSessionId,
