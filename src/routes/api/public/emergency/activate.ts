@@ -41,6 +41,7 @@ const ActivateSchema = z.object({
   notes: z.string().max(1000).optional(),
   cancel_of: z.string().uuid().optional(),
   cancel_pin: z.string().regex(/^\d{4,8}$/).optional(),
+  action: z.enum(["trigger", "fire", "cancel"]).optional(),
 }).passthrough().refine((data) => data.intake_session_id || data.activation_code || data.token, {
   message: "intake_session_id_or_activation_code_required",
   path: ["intake_session_id"],
@@ -215,12 +216,24 @@ export const Route = createFileRoute("/api/public/emergency/activate")({
         const ua = request.headers.get("user-agent") || null;
 
         // Cancellation path — mark prior activation cancelled, send a follow-up email.
-        if (d.cancel_of) {
-          await supabaseAdmin
-            .from("emergency_activations" as never)
-            .update({ cancelled_at: new Date().toISOString() } as never)
-            .eq("id", d.cancel_of)
-            .eq("intake_session_id", caseRef);
+        // A cancel can arrive as an explicit cancel_of id, or (from the phone
+        // app) as action:"cancel" / a bare cancel PIN with no activation id.
+        const isCancel = Boolean(d.cancel_of) || d.action === "cancel" || Boolean(d.cancel_pin);
+        if (isCancel) {
+          if (d.cancel_of) {
+            await supabaseAdmin
+              .from("emergency_activations" as never)
+              .update({ cancelled_at: new Date().toISOString() } as never)
+              .eq("id", d.cancel_of)
+              .eq("intake_session_id", caseRef);
+          } else {
+            await supabaseAdmin
+              .from("emergency_activations" as never)
+              .update({ cancelled_at: new Date().toISOString() } as never)
+              .eq("intake_session_id", caseRef)
+              .is("cancelled_at", null);
+          }
+
 
           // Mirror cancellation into client_sos_alerts (the board schema).
           // Resolve the activation token from intake_session_id directly or by
@@ -252,7 +265,7 @@ export const Route = createFileRoute("/api/public/emergency/activate")({
                 token: cancelToken,
                 clientName: d.full_name ?? null,
                 kind: "cancel",
-                activationId: d.cancel_of,
+                activationId: d.cancel_of ?? null,
               });
               console.log("[activate] sms cancel fan-out", result);
             } catch (e) {
@@ -275,7 +288,7 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
             html,
             text,
             label: "emergency-cancel",
-            idempotencyKey: `cancel-${d.cancel_of}`,
+            idempotencyKey: `cancel-${d.cancel_of ?? caseRef}-${Date.now()}`,
           });
           if (d.alert_email && d.alert_email !== LEGAL_INBOX) {
             await enqueueAlertEmail({
@@ -284,10 +297,10 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
               html,
               text,
               label: "emergency-cancel",
-              idempotencyKey: `cancel-${d.cancel_of}-alt`,
+              idempotencyKey: `cancel-${d.cancel_of ?? caseRef}-${Date.now()}-alt`,
             });
           }
-          return jsonResponse({ ok: true, cancelled: d.cancel_of }, { status: 200 });
+          return jsonResponse({ ok: true, cancelled: d.cancel_of ?? caseRef }, { status: 200 });
         }
 
         // Fire path — insert row, compute act-after window, send alert.
