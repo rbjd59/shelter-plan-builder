@@ -144,7 +144,7 @@ export async function sendSosSmsToContacts(opts: {
   const body =
     opts.kind === "alert"
       ? `ALERT: ${clientName} has triggered their DetencionDefensa emergency app and may have been detained by ICE or police. Their attorney and family have been notified.${opts.mapsUrl ? ` Location: ${opts.mapsUrl}` : ""} — DetencionDefensa`
-      : `UPDATE: ${clientName} has cancelled the earlier DetencionDefensa emergency alert. This was a false alarm — no action needed. — DetencionDefensa`;
+      : `CANCELLED — FALSE ALARM: ${clientName} has CANCELLED the earlier DetencionDefensa emergency alert. ${clientName} is OK. No action is needed. — DetencionDefensa`;
 
   let sent = 0;
   let failed = 0;
