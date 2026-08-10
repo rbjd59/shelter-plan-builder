@@ -151,8 +151,6 @@ export const pinListAttorneyBoard = createServerFn({ method: "POST" })
           date_of_birth: row.date_of_birth,
           place_of_birth: row.place_of_birth,
           country_of_origin: row.country_of_origin,
-          has_asset_protection: row.has_asset_protection,
-          has_pet_rescue: row.has_pet_rescue,
           registered_at: row.created_at,
           activated_at: row.activated_at,
           draft_forms: docs.filter((d) => !d.from_app),
