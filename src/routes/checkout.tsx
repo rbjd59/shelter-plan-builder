@@ -34,9 +34,6 @@ const T = {
       "Attorney review of your federal forms before delivery",
       "Family readiness documents included",
     ],
-    price: "$10",
-    period: "/month",
-    plan: "$199",
     waived: "Pro bono — no fee",
     total: "Total",
     free: "FREE",
@@ -55,9 +52,6 @@ const T = {
       "Revisión de sus formularios federales antes de entregarlos",
       "Documentos de preparación familiar incluidos",
     ],
-    price: "$10",
-    period: "/mes",
-    plan: "$199",
     waived: "Pro bono — sin costo",
     total: "Total",
     free: "GRATIS",
@@ -76,9 +70,6 @@ const T = {
       "Revizyon fòm federal ou anvan livrezon",
       "Dokiman pou prepare fanmi enkli",
     ],
-    price: "$10",
-    period: "/mwa",
-    plan: "$199",
     waived: "Pro bono — pa gen frè",
     total: "Total",
     free: "GRATIS",
@@ -151,10 +142,7 @@ function CheckoutPage() {
                 <p style={{ fontSize: 13, color: "#cfc8b8", lineHeight: 1.5 }}>{t.baseSub}</p>
               </div>
               <div style={{ textAlign: "right" }}>
-                <div style={priceTag}>
-                  <span style={struck}>{t.plan}</span>
-                  <span style={{ ...struck, marginLeft: 8 }}>{t.price}<span style={{ fontSize: 14, fontWeight: 500 }}>{t.period}</span></span>
-                </div>
+                <div style={priceTag}>{t.free}</div>
                 <div style={waivedTag}>{t.waived}</div>
               </div>
             </div>
