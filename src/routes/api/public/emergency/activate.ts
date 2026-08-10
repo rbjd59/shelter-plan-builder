@@ -216,12 +216,24 @@ export const Route = createFileRoute("/api/public/emergency/activate")({
         const ua = request.headers.get("user-agent") || null;
 
         // Cancellation path — mark prior activation cancelled, send a follow-up email.
-        if (d.cancel_of) {
-          await supabaseAdmin
-            .from("emergency_activations" as never)
-            .update({ cancelled_at: new Date().toISOString() } as never)
-            .eq("id", d.cancel_of)
-            .eq("intake_session_id", caseRef);
+        // A cancel can arrive as an explicit cancel_of id, or (from the phone
+        // app) as action:"cancel" / a bare cancel PIN with no activation id.
+        const isCancel = Boolean(d.cancel_of) || d.action === "cancel" || Boolean(d.cancel_pin);
+        if (isCancel) {
+          if (d.cancel_of) {
+            await supabaseAdmin
+              .from("emergency_activations" as never)
+              .update({ cancelled_at: new Date().toISOString() } as never)
+              .eq("id", d.cancel_of)
+              .eq("intake_session_id", caseRef);
+          } else {
+            await supabaseAdmin
+              .from("emergency_activations" as never)
+              .update({ cancelled_at: new Date().toISOString() } as never)
+              .eq("intake_session_id", caseRef)
+              .is("cancelled_at", null);
+          }
+
 
           // Mirror cancellation into client_sos_alerts (the board schema).
           // Resolve the activation token from intake_session_id directly or by
