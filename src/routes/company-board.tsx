@@ -18,11 +18,26 @@ export const Route = createFileRoute("/company-board")({
   ),
 });
 
+interface Locate {
+  full_name: string | null;
+  a_number: string | null;
+  date_of_birth: string | null;
+  place_of_birth: string | null;
+  country_of_origin: string | null;
+  language: string | null;
+  phone: string | null;
+  lat: number | null;
+  lng: number | null;
+  battery_pct: number | null;
+  maps_url: string | null;
+}
+
 interface Row {
   activation_code: string;
   registered_at: string;
   activated_at: string | null;
   latest_alert: { id: string; triggered_at: string; cancelled_at: string | null } | null;
+  locate: Locate | null;
 }
 
 function CompanyBoard({ pin }: { pin: string }) {
