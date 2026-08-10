@@ -165,7 +165,7 @@ function AttorneyPage() {
               fontWeight: 600,
             }}
           >
-            Start my packet — $10/month
+            Start my packet — no cost
           </Link>
           <Link
             to="/retainer"
@@ -412,9 +412,12 @@ function AttorneyPage() {
             The firm provides legal services under a written limited-scope
             engagement letter (Florida Bar Rule 4-1.2(c)) at a flat attorney
             fee of <strong>{PRICE.firmUsd}</strong> per customer, paid by{" "}
-            {COMPANY.legalName} — not by the family. Customers pay only{" "}
-            <strong>$10/month</strong> for the emergency app, which covers
-            software, professional translation, typing, and secure storage;
+            {COMPANY.legalName} — not by the family. The emergency app
+            subscription that normally covers software, professional
+            translation, typing, and secure storage is{" "}
+            <strong>waived at this time</strong> because of the community
+            crisis, so customers currently pay nothing;
+
             those funds are not legal fees and are not paid to the firm.
           </p>
           <p style={{ fontSize: 15.5, lineHeight: 1.7, color: NAVY, margin: 0 }}>

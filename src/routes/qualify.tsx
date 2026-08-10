@@ -692,7 +692,8 @@ function QualifyPage() {
                 search={{ lang }}
                 className="inline-block bg-red-700 hover:bg-red-800 text-white font-bold px-6 py-3 rounded"
               >
-                Subscribe — $10/month →
+                {t.subscribeBtn}
+
               </Link>
             </div>
 

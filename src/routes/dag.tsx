@@ -75,7 +75,7 @@ function DagPage() {
             marginBottom: "1.8rem",
           }}
         >
-          No charge · included with the $10/month app plan
+          No charge · included with the emergency app plan
         </div>
 
         <p style={{ fontSize: "1.05rem", lineHeight: 1.6, margin: "0 0 1.5rem" }}>
