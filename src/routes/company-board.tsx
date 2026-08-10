@@ -60,9 +60,10 @@ function CompanyBoard({ pin }: { pin: string }) {
         <header>
           <h1 className="text-2xl font-bold text-slate-900">Company Board — Activations</h1>
           <p className="mt-1 text-xs text-slate-500">
-            Privacy by design: this board holds only the activation code and dates.
-            No names, contacts, locations or documents are ever stored or shown here —
-            those live only on the attorney board. Auto-refreshes every 15s.
+            Privacy by design: while a client is quiet, this board holds only the
+            activation code and dates. The moment a client triggers, their locate
+            details are released here so the team can start finding them; they are
+            withheld again once the alert is cancelled. Auto-refreshes every 15s.
           </p>
         </header>
 
