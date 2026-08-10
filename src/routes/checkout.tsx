@@ -104,12 +104,6 @@ function CheckoutPage() {
     fontSize: 22, fontWeight: 700, color: "#e8a04a", fontFamily: "Fraunces, serif",
     whiteSpace: "nowrap",
   };
-  const struck: React.CSSProperties = {
-    textDecoration: "line-through",
-    textDecorationColor: "#e02b2b",
-    textDecorationThickness: 3,
-    color: "#a8a59a",
-  };
   const waivedTag: React.CSSProperties = {
     display: "inline-block", marginTop: 6, fontSize: 11, fontWeight: 800,
     letterSpacing: 1, textTransform: "uppercase", padding: "3px 8px",
