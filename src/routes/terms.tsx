@@ -19,7 +19,7 @@ You ("You") are the petitioner. You give the facts. You sign the form. You file 
 
 Attorney Review. Through a separate, optional engagement with an independent attorney, the typed draft of your Pro Se form may be reviewed for completeness and to check that signatures are notarized and that the form is mailed to the correct clerk of court with a pre-addressed envelope. That attorney does not agree to represent you in court, to file any papers, or to review any papers other than the draft AO 242 covered by the retainer agreement that you read and accept separately. Their services are limited by that retainer agreement.
 
-Price. All fees are currently waived because of the community crisis, so the emergency app costs you nothing at this time. The standard price is $10/month and will not resume without advance notice to you. Attorney-created and reviewed documents are provided at no additional charge. The subscription may be canceled anytime. Refund terms are stated at checkout.
+Price. This is a free, pro bono engagement. There is no signup fee, no monthly fee, and no credit card is required. The attorney has agreed to prepare and review your documents pro bono for a limited period, and the emergency app is provided at no charge during the community crisis. This pro bono commitment may be ended at any time by DetencionDefensa.com and the attorney; if a fee is ever introduced in the future, you will be notified in advance and no charge will be made without your express consent. You may stop using the service at any time.
 
 Your Data. Your information is used to populate your forms and to deliver the services you request. Sensitive identifiers stay on your device whenever possible. We do not sell your personal information.
 
@@ -37,7 +37,7 @@ Usted ("Usted") es el peticionario. Usted aporta los hechos. Usted firma el form
 
 Revisión por abogado. A través de un acuerdo separado y opcional con un abogado independiente, el borrador mecanografiado de su formulario Pro Se podrá ser revisado para verificar que esté completo, que las firmas estén notarizadas y que el formulario se envíe al secretario del tribunal correcto con un sobre pre-direccionado. Ese abogado no acepta representarlo en el tribunal, ni presentar papeles, ni revisar otros papeles distintos del borrador AO 242 cubierto por el acuerdo de retención que Usted lea y acepte por separado.
 
-Precio. Todas las tarifas están exoneradas actualmente por la crisis comunitaria, así que la app de emergencia no le cuesta nada en este momento. El precio estándar es de $10/mes y no se reanudará sin avisarle con anticipación. Los documentos creados y revisados por un abogado se proporcionan sin costo adicional. La suscripción puede cancelarse en cualquier momento. Los términos de reembolso se indican al pagar.
+Precio. Este es un servicio gratuito, pro bono. No hay cuota de inscripción, no hay cuota mensual y no se requiere tarjeta de crédito. El abogado ha aceptado preparar y revisar sus documentos pro bono por un período limitado, y la app de emergencia se brinda sin cargo durante la crisis comunitaria. Este compromiso pro bono puede terminarse en cualquier momento por DetencionDefensa.com y el abogado; si en el futuro se introduce alguna tarifa, se le avisará con anticipación y no se le cobrará nada sin su consentimiento expreso. Puede dejar de usar el servicio en cualquier momento.
 
 Sus datos. Su información se usa para llenar sus formularios y prestar los servicios que solicita. No vendemos su información personal.
 
@@ -53,7 +53,7 @@ Ou ("Ou") se petisyonè a. Ou bay enfòmasyon yo. Ou siyen fòm nan. Ou depoze l
 
 Revizyon Avoka. Atravè yon akò separe ak yon avoka endepandan, bouyon fòm Pro Se ou kapab revize pou verifye li konplè ak ke siyati yo notarize epi fòm nan voye nan grefye tribinal la kòrèk. Avoka sa a pa dakò pou reprezante w nan tribinal.
 
-Pri. Tout frè yo anile kounye a akòz kriz kominotè a, kidonk app ijans la pa koute w anyen nan moman sa a. Pri estanda a se $10/mwa e li p ap rekòmanse san yo pa avèti w davans. Dokiman kreye ak revize pa avoka yo bay gratis. Ou ka anile abònman an nenpòt lè. Tèm ranbousman yo parèt lè ou peye.
+Pri. Sa a se yon sèvis gratis, pro bono. Pa gen frè enskripsyon, pa gen frè chak mwa, epi ou pa bezwen kat kredi. Avoka a dakò pou prepare epi revize dokiman ou yo pro bono pou yon peryòd limite, epi aplikasyon ijans lan bay san frè pandan kriz kominotè a. Angajman pro bono sa a ka fini nenpòt lè pa DetencionDefensa.com ak avoka a; si yo janm mete yon frè nan lavni, y ap avèti w davans e yo p ap chaje w anyen san konsantman eksprè ou. Ou ka sispann itilize sèvis la nenpòt lè.
 
 Done ou. Enfòmasyon ou itilize pou ranpli fòm ou yo. Nou pa vann enfòmasyon pèsonèl ou.
 

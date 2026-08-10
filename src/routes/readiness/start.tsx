@@ -52,7 +52,7 @@ const COPY = {
   },
   es: {
     title: "Paquete Sentinel Readiness",
-    price: "Sin cargo — incluido con el plan de app de emergencia de $10/mes",
+    price: "Sin cargo — pro bono por tiempo limitado",
     body: "No deje a su familia desprevenida. Reunimos cada documento reconocido por las cortes que su familia necesitará, los traducimos al inglés y a su idioma lado a lado, usted los llena en sus propias palabras, y nosotros escribimos sus respuestas exactas en los formularios oficiales. Usted imprime, firma y notariza. Usted mantiene el 100% del control hasta que necesite ayuda.",
     docsTitle: "Esto es exactamente lo que recibe, sin cargo",
     docs: [
@@ -80,7 +80,7 @@ const COPY = {
   },
   ht: {
     title: "Pakè Sentinel Readiness",
-    price: "San frè — enkli ak plan app dijans $10/mwa a",
+    price: "San frè — pro bono pou yon tan limite",
     body: "Pa kite fanmi w san preparasyon. Nou rasanble chak dokiman tribinal yo rekonèt fanmi w ap bezwen, tradui yo an angle ak lang ou kòt-a-kòt, ou ranpli yo nan pwòp mo w, e nou tape repons egzak ou yo sou fòm ofisyèl yo. Ou enprime, siyen, e notaryze. Ou gen 100% kontwòl jiskaske w bezwen èd.",
     docsTitle: "Sa egzakteman ou jwenn, san frè",
     docs: [

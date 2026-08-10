@@ -47,7 +47,7 @@ async function resolveOrCreateCustomer(
 /**
  * Create the Embedded Checkout session for the DefensaSiempre emergency app.
  *
- * The app is a $10/month subscription. Attorney-created and reviewed documents
+ * The program is free (pro bono). Attorney-created and reviewed documents
  * are provided at no additional charge.
  */
 export const createCheckoutSession = createServerFn({ method: "POST" })

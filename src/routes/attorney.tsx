@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { FIRM, COMPANY, PRICE } from "@/lib/firm-info";
+import { FIRM, COMPANY } from "@/lib/firm-info";
 import { LegalDisclaimerFooter } from "@/components/LegalDisclaimerFooter";
 
 export const Route = createFileRoute("/attorney")({
@@ -13,7 +13,7 @@ export const Route = createFileRoute("/attorney")({
       { property: "og:title", content: `Attorney-Reviewed by ${FIRM.attorney}` },
       {
         property: "og:description",
-        content: `Independent Florida attorney review on every packet. Limited-scope engagement, flat ${PRICE.firmUsd} attorney fee, AI-drafted and human-verified.`,
+        content: "Independent Florida attorney review on every packet. Limited-scope pro bono engagement at no cost to the family, AI-drafted and human-verified.",
       },
     ],
   }),
@@ -32,7 +32,7 @@ const stat = (label: string, value: string) => ({ label, value });
 const STATS = [
   stat("Licensed FL Bar", "1049132"),
   stat("Limited-scope engagement", "Rule 4-1.2(c)"),
-  stat("Attorney fee per case", PRICE.firmUsd),
+  stat("Attorney fee per case", "$0 — pro bono"),
   stat("Languages served", "EN · ES · IT"),
 ];
 
@@ -64,8 +64,8 @@ const PILLARS = [
     p: "AI drafts the narrative; a human attorney verifies every citation, signs the limited-scope retainer, and stands behind the work.",
   },
   {
-    h: "Flat fee, no surprises",
-    p: `The emergency app subscription is waived at this time because of the community crisis — attorney-reviewed documents are prepared at no charge to the customer. The ${PRICE.firmUsd} attorney fee is paid by the company, not the family. No hourly billing.`,
+    h: "No fee, no surprises",
+    p: "The attorney has agreed to take these limited-scope matters pro bono for a limited period, so there is no attorney fee at all — not to the family and not billed hourly. The emergency app, translation, and document preparation are also provided free during the community crisis. No credit card is required.",
   },
 ];
 
@@ -410,21 +410,20 @@ function AttorneyPage() {
           </h2>
           <p style={{ fontSize: 15.5, lineHeight: 1.7, color: NAVY }}>
             The firm provides legal services under a written limited-scope
-            engagement letter (Florida Bar Rule 4-1.2(c)) at a flat attorney
-            fee of <strong>{PRICE.firmUsd}</strong> per customer, paid by{" "}
-            {COMPANY.legalName} — not by the family. The emergency app
-            subscription that normally covers software, professional
-            translation, typing, and secure storage is{" "}
-            <strong>waived at this time</strong> because of the community
-            crisis, so customers currently pay nothing;
-
-            those funds are not legal fees and are not paid to the firm.
+            engagement letter (Florida Bar Rule 4-1.2(c)) on a{" "}
+            <strong>pro bono basis</strong> — there is no attorney fee, and
+            neither the family nor {COMPANY.legalName} pays the firm for this
+            work. The emergency app, professional translation, typing, and
+            secure storage are also provided at no charge during the community
+            crisis, so customers pay nothing and no card is required. This pro
+            bono commitment is for a limited period; if a fee is ever
+            introduced, customers will be notified in advance and nothing will
+            be charged without a new signed fee agreement.
           </p>
           <p style={{ fontSize: 15.5, lineHeight: 1.7, color: NAVY, margin: 0 }}>
-            The attorney fee is earned when the attorney completes review of
-            the draft documents. Locating the detained person and mailing the
-            completed packet by U.S. legal mail are included at no
-            additional charge.
+            Locating the detained person and mailing the completed packet by
+            U.S. legal mail are part of the same pro bono limited-scope
+            engagement, at no additional charge.
           </p>
         </div>
       </section>

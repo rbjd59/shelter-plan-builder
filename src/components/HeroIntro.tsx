@@ -7,8 +7,7 @@ import detentionNightAsset from "@/assets/hero-family.jpg.asset.json";
 const COPY = {
   es: {
     plan: "Plan de protección ante detención ICE ",
-    price: "$199.",
-    freeText: "Ahora gratis debido a la crisis comunitaria.",
+    freeText: "Gratis. Servicio pro bono por tiempo limitado.",
     tagline: "Alerta de emergencia de un clic y plan de defensa legal revisado por un abogado",
     btn1: "Cómo funciona el plan de protección",
     btn2: "Si eres propietario de una vivienda",
@@ -28,8 +27,7 @@ const COPY = {
   },
   en: {
     plan: "ICE detention protection plan ",
-    price: "$199.",
-    freeText: "Now free due to community crisis.",
+    freeText: "Free. Pro bono for a limited time.",
     tagline: "One-click emergency alert and attorney-reviewed legal defense plan",
     btn1: "How Protection Plan Works",
     btn2: "If You're a Homeowner",
@@ -49,8 +47,7 @@ const COPY = {
   },
   ht: {
     plan: "Plan pwoteksyon pou arestasyon ICE ",
-    price: "$199.",
-    freeText: "Kounye a gratis akòz kriz kominotè a.",
+    freeText: "Gratis. Sèvis pro bono pou yon tan limite.",
     tagline: "Sijè a alèt dijans yon sèl kli epi plan defans legal revize pa yon avoka",
     btn1: "Ki jan plan pwoteksyon an fonksyone",
     btn2: "Si w se yon pwopriyetè kay",
@@ -70,42 +67,8 @@ const COPY = {
   },
 } satisfies Record<
   Lang,
-  { plan: string; price: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; employerHeading: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; homeBox: string; homeBoxHeading: string; homeBoxBody: string; disclaimer: string }
+  { plan: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; employerHeading: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; homeBox: string; homeBoxHeading: string; homeBoxBody: string; disclaimer: string }
 >;
-
-function PriceWithX({ prefix, price }: { prefix: string; price: string }) {
-  return (
-    <>
-      {prefix}
-      <span
-        style={{
-          position: "relative",
-          display: "inline-block",
-          color: "inherit",
-        }}
-      >
-        {price}
-        <span
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            color: "#ef4444",
-            fontWeight: 900,
-            fontSize: "1.25em",
-            lineHeight: 1,
-            pointerEvents: "none",
-            textShadow: "0 1px 3px rgba(0,0,0,0.5)",
-          }}
-        >
-          ✕
-        </span>
-      </span>
-    </>
-  );
-}
 
 
 export default function HeroIntro() {
@@ -290,7 +253,7 @@ export default function HeroIntro() {
                 textTransform: "uppercase",
               }}
             >
-              <PriceWithX prefix={COPY[lang].plan} price={COPY[lang].price} />
+              {COPY[lang].plan}
             </p>
 
             <p

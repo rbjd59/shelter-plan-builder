@@ -24,20 +24,17 @@ type Lang = "en" | "es" | "ht";
 
 const T = {
   en: {
-    title: "Subscribe to the emergency app",
-    sub: "Due to the emergency crisis in our community, all fees are waived. The $199 plan fee and the $10/month app subscription cost you nothing at this time. No payment or card is required.",
+    title: "Get the emergency app — free",
+    sub: "This program is free. The attorney has agreed to prepare and review your documents pro bono for a limited time, and the emergency app is provided at no charge. There is no signup fee and no monthly fee. No payment or card is required.",
     baseTitle: "DefensaSiempre Emergency App",
-    baseSub: "Monthly subscription. One tap notifies your emergency contacts and the DetencionDefensa team if you are detained.",
+    baseSub: "Free, pro bono program. One tap notifies your emergency contacts and the DetencionDefensa team if you are detained.",
     baseBullets: [
       "One-tap SOS alert with SMS and email",
       "GPS location shared with your emergency contacts",
       "Attorney review of your federal forms before delivery",
-      "Family Readiness and Pet Rescue documents included",
+      "Family readiness documents included",
     ],
-    price: "$10",
-    period: "/month",
-    plan: "$199",
-    waived: "Fee waived",
+    waived: "Pro bono — no fee",
     total: "Total",
     free: "FREE",
     pay: "Continue — no payment required",
@@ -45,20 +42,17 @@ const T = {
     back: "← Back to home",
   },
   es: {
-    title: "Suscríbase a la app de emergencia",
-    sub: "Debido a la crisis de emergencia en nuestra comunidad, todas las tarifas están exoneradas. La tarifa del plan de $199 y la suscripción de $10/mes no tienen costo en este momento. No se requiere pago ni tarjeta.",
+    title: "Obtenga la app de emergencia — gratis",
+    sub: "Este programa es gratuito. El abogado ha aceptado preparar y revisar sus documentos pro bono por tiempo limitado, y la app de emergencia se brinda sin cargo. No hay cuota de inscripción ni cuota mensual. No se requiere pago ni tarjeta.",
     baseTitle: "App de Emergencia DefensaSiempre",
-    baseSub: "Suscripción mensual. Con un toque se notifica a sus contactos de emergencia y al equipo de DetencionDefensa si lo detienen.",
+    baseSub: "Programa gratuito, pro bono. Con un toque se notifica a sus contactos de emergencia y al equipo de DetencionDefensa si lo detienen.",
     baseBullets: [
       "Alerta SOS con un toque por SMS y correo",
       "Ubicación GPS compartida con sus contactos",
       "Revisión de sus formularios federales antes de entregarlos",
-      "Documentos de Preparación Familiar y Rescate de Mascotas incluidos",
+      "Documentos de preparación familiar incluidos",
     ],
-    price: "$10",
-    period: "/mes",
-    plan: "$199",
-    waived: "Tarifa exonerada",
+    waived: "Pro bono — sin costo",
     total: "Total",
     free: "GRATIS",
     pay: "Continuar — no se requiere pago",
@@ -66,20 +60,17 @@ const T = {
     back: "← Volver al inicio",
   },
   ht: {
-    title: "Abònman app ijans la",
-    sub: "Akòz kriz ijans nan kominote a, tout frè yo anile. Frè plan $199 la ak abònman $10/mwa a pa koute w anyen kounye a. Pa gen peman ni kat ki nesesè.",
+    title: "Jwenn app ijans lan — gratis",
+    sub: "Pwogram sa a gratis. Avoka a dakò pou prepare epi revize dokiman ou yo pro bono pou yon tan limite, epi aplikasyon ijans lan bay san frè. Pa gen frè enskripsyon ni frè chak mwa. Pa gen peman ni kat ki nesesè.",
     baseTitle: "App Ijans DefensaSiempre",
-    baseSub: "Abònman chak mwa. Yon sèl klik avèti kontak ijans ou ak ekip DetencionDefensa si yo detni w.",
+    baseSub: "Pwogram gratis, pro bono. Yon sèl klik avèti kontak ijans ou ak ekip DetencionDefensa si yo detni w.",
     baseBullets: [
       "Alèt SOS yon sèl klik pa SMS ak imèl",
       "Lokalizasyon GPS pataje ak kontak ijans ou",
       "Revizyon fòm federal ou anvan livrezon",
-      "Dokiman pou prepare fanmi ak sekou bèt kay enkli",
+      "Dokiman pou prepare fanmi enkli",
     ],
-    price: "$10",
-    period: "/mwa",
-    plan: "$199",
-    waived: "Frè anile",
+    waived: "Pro bono — pa gen frè",
     total: "Total",
     free: "GRATIS",
     pay: "Kontinye — pa gen peman",
@@ -113,12 +104,6 @@ function CheckoutPage() {
     fontSize: 22, fontWeight: 700, color: "#e8a04a", fontFamily: "Fraunces, serif",
     whiteSpace: "nowrap",
   };
-  const struck: React.CSSProperties = {
-    textDecoration: "line-through",
-    textDecorationColor: "#e02b2b",
-    textDecorationThickness: 3,
-    color: "#a8a59a",
-  };
   const waivedTag: React.CSSProperties = {
     display: "inline-block", marginTop: 6, fontSize: 11, fontWeight: 800,
     letterSpacing: 1, textTransform: "uppercase", padding: "3px 8px",
@@ -151,10 +136,7 @@ function CheckoutPage() {
                 <p style={{ fontSize: 13, color: "#cfc8b8", lineHeight: 1.5 }}>{t.baseSub}</p>
               </div>
               <div style={{ textAlign: "right" }}>
-                <div style={priceTag}>
-                  <span style={struck}>{t.plan}</span>
-                  <span style={{ ...struck, marginLeft: 8 }}>{t.price}<span style={{ fontSize: 14, fontWeight: 500 }}>{t.period}</span></span>
-                </div>
+                <div style={priceTag}>{t.free}</div>
                 <div style={waivedTag}>{t.waived}</div>
               </div>
             </div>
@@ -170,8 +152,6 @@ function CheckoutPage() {
             <div style={{ fontSize: 14, textTransform: "uppercase", letterSpacing: 1, color: "#a8a59a" }}>{t.total}</div>
             <div style={{ textAlign: "right" }}>
               <div style={{ fontSize: 18, fontWeight: 700, color: "#a8a59a", fontFamily: "Fraunces, serif" }}>
-                <span style={struck}>$199</span>
-                <span style={{ ...struck, marginLeft: 8 }}>$10{t.period}</span>
               </div>
               <div style={{ fontSize: 32, fontWeight: 700, color: "#7fd18a", fontFamily: "Fraunces, serif" }}>{t.free}</div>
               <div style={waivedTag}>{t.waived}</div>
