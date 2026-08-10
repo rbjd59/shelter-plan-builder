@@ -79,8 +79,9 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
     (typeof a.country_of_origin === "string" && a.country_of_origin) ||
     (typeof a.country_of_citizenship === "string" && a.country_of_citizenship) ||
     null;
-  const hasAssetProtection = !!a.addon_asset_protection;
-  const hasPetRescue = !!a.addon_pet_rescue;
+  const hasAssetProtection = true; // Family Docs are always included
+  const hasPetRescue = false; // pet rescue removed from the product
+
 
   // Generate token with retry on collision
   let code = generateToken();
@@ -167,6 +168,7 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
     email: unknown,
     relationship: string,
     priority: number,
+    role: "family" | "lawyer" | "company" = "family",
   ) => {
     if (typeof name === "string" && name.trim()) {
       contactsToInsert.push({
@@ -175,11 +177,13 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
         phone_e164: typeof phone === "string" ? phone : null,
         email: typeof email === "string" ? email : null,
         relationship,
+        role,
         priority,
         notify_on_sos: true,
       });
     }
   };
+
   addContact(a.emergency_contact_name, a.emergency_contact_phone, a.emergency_contact_email, "emergency", 1);
   addContact(
     a.emergency_contact_2_name,
@@ -233,22 +237,8 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
   }
 
 
-  // Persist pet rescue row if the add-on was selected
-  if (hasPetRescue) {
-    await sb.from("client_pet_rescue").upsert(
-      {
-        client_id: clientId,
-        pet_name: typeof a.pet_name === "string" ? a.pet_name : null,
-        pet_type: typeof a.pet_type === "string" ? a.pet_type : null,
-        pet_location: typeof a.pet_location === "string" ? a.pet_location : null,
-        access_instructions: typeof a.pet_access === "string" ? a.pet_access : null,
-        who_to_notify: typeof a.pet_notify === "string" ? a.pet_notify : null,
-        no_kill_shelter_preferred: a.pet_no_kill_preferred !== false,
-        no_kill_shelter_address: typeof a.pet_no_kill_address === "string" ? a.pet_no_kill_address : null,
-      } as never,
-      { onConflict: "client_id" },
-    );
-  }
+  // Pet rescue removed from the product — nothing to persist.
+
 
   // Generate the actual PDFs before the bundle is exposed to the phone.
   // The phone expects raw base64 in `content`; placeholder prose causes its

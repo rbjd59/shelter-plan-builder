@@ -301,6 +301,8 @@ export type Database = {
           phone_e164: string | null
           priority: number
           relationship: string | null
+          role: string
+          updated_at: string
         }
         Insert: {
           client_id: string
@@ -312,6 +314,8 @@ export type Database = {
           phone_e164?: string | null
           priority?: number
           relationship?: string | null
+          role?: string
+          updated_at?: string
         }
         Update: {
           client_id?: string
@@ -323,6 +327,8 @@ export type Database = {
           phone_e164?: string | null
           priority?: number
           relationship?: string | null
+          role?: string
+          updated_at?: string
         }
         Relationships: [
           {

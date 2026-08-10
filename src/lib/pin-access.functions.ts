@@ -84,7 +84,7 @@ export const pinListAttorneyBoard = createServerFn({ method: "POST" })
     const { data: clients } = await supabaseAdmin
       .from("app_clients")
       .select(
-        "id, invite_token, full_name, email, phone_e164, language, created_at, activated_at, a_number, date_of_birth, place_of_birth, country_of_origin, has_asset_protection, has_pet_rescue",
+        "id, invite_token, full_name, email, phone_e164, language, created_at, activated_at, a_number, date_of_birth, place_of_birth, country_of_origin",
       )
       .order("created_at", { ascending: false })
       .limit(1000);
@@ -136,8 +136,6 @@ export const pinListAttorneyBoard = createServerFn({ method: "POST" })
           date_of_birth: string | null;
           place_of_birth: string | null;
           country_of_origin: string | null;
-          has_asset_protection: boolean;
-          has_pet_rescue: boolean;
         };
         const docs = docsByClient.get(row.id) ?? [];
         return {
@@ -151,8 +149,6 @@ export const pinListAttorneyBoard = createServerFn({ method: "POST" })
           date_of_birth: row.date_of_birth,
           place_of_birth: row.place_of_birth,
           country_of_origin: row.country_of_origin,
-          has_asset_protection: row.has_asset_protection,
-          has_pet_rescue: row.has_pet_rescue,
           registered_at: row.created_at,
           activated_at: row.activated_at,
           draft_forms: docs.filter((d) => !d.from_app),
@@ -174,12 +170,11 @@ export const pinGetAttorneyClient = createServerFn({ method: "POST" })
       { data: documents },
       { data: alerts },
       { data: contacts },
-      { data: pet },
     ] = await Promise.all([
       supabaseAdmin
         .from("app_clients")
         .select(
-          "id, invite_token, full_name, email, phone_e164, language, created_at, activated_at, a_number, date_of_birth, place_of_birth, country_of_origin, has_asset_protection, has_pet_rescue",
+          "id, invite_token, full_name, email, phone_e164, language, created_at, activated_at, a_number, date_of_birth, place_of_birth, country_of_origin",
         )
         .eq("id", data.clientId)
         .maybeSingle(),
@@ -195,16 +190,9 @@ export const pinGetAttorneyClient = createServerFn({ method: "POST" })
         .order("triggered_at", { ascending: false }),
       supabaseAdmin
         .from("client_contacts")
-        .select("id, name, phone_e164, email, relationship, priority, notify_on_sos")
+        .select("id, name, phone_e164, email, relationship, role, priority, notify_on_sos, created_at, updated_at")
         .eq("client_id", data.clientId)
         .order("priority", { ascending: true }),
-      supabaseAdmin
-        .from("client_pet_rescue")
-        .select(
-          "pet_name, pet_type, pet_location, access_instructions, who_to_notify, no_kill_shelter_preferred, no_kill_shelter_address, notes",
-        )
-        .eq("client_id", data.clientId)
-        .maybeSingle(),
     ]);
     if (!client) throw new Error("Client not found");
     return {
@@ -213,9 +201,9 @@ export const pinGetAttorneyClient = createServerFn({ method: "POST" })
       app_uploads: (documents ?? []).filter((d) => (d as { from_app: boolean }).from_app),
       alerts: alerts ?? [],
       contacts: contacts ?? [],
-      pet_rescue: pet ?? null,
     };
   });
+
 
 /** Build the actual PDF for a draft form and return base64 + filename. */
 export const pinDownloadDocument = createServerFn({ method: "POST" })

@@ -101,14 +101,14 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
   {
     id: "mailto",
     title: {
-      en: "5. Emergency Contact & Asset Protection Distribution (if purchased)",
-      es: "5. Contacto de Emergencia y Distribución de Protección de Bienes (si se compró)",
-      ht: "5. Kontak Ijans ak Distribisyon Pwoteksyon Byen (si w te achte)",
+      en: "5. Emergency Contact",
+      es: "5. Contacto de Emergencia",
+      ht: "5. Kontak Ijans",
     },
     intro: {
-      en: "This person is notified by SMS and email the moment you press NOTIFY FAMILY in the app. If you purchased the Asset Protection Package, this same person receives the distribution instructions.",
-      es: "Esta persona recibe SMS y correo cuando active AVISAR A FAMILIA en la app. Si compró el Paquete de Protección de Bienes, también recibe las instrucciones de distribución.",
-      ht: "Moun sa a resevwa SMS ak imèl lè ou peze AVIZE FANMI nan app la. Si w te achte Pakè Pwoteksyon Byen, li resevwa enstriksyon distribisyon yo tou.",
+      en: "This person is notified by SMS and email the moment you press NOTIFY FAMILY in the app. This same person receives your Family Docs package.",
+      es: "Esta persona recibe SMS y correo cuando active AVISAR A FAMILIA en la app. Esta misma persona recibe su paquete de Documentos Familiares.",
+      ht: "Moun sa a resevwa SMS ak imèl lè ou peze AVIZE FANMI nan app la. Menm moun sa a resevwa pakè Dokiman Fanmi ou a.",
     },
     fields: [
       { key: "emergency_contact_name", label: { en: "Emergency contact full name", es: "Nombre completo del contacto de emergencia", ht: "Non konplè kontak ijans" } },
@@ -124,10 +124,11 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       ht: "6. Ki kote fòm yo dwe ale si yo detni w?",
     },
     intro: {
-      en: "Asset Protection distribution — included at no charge. Tell us who receives the prepared forms when your case is activated.",
-      es: "Distribución de Protección de Bienes — incluida sin costo. Indíquenos quién recibirá los formularios preparados cuando se active su caso.",
-      ht: "Distribisyon Pwoteksyon Byen — enkli gratis. Di nou ki moun k ap resevwa fòm yo lè ka w aktive.",
+      en: "Family Docs distribution — included at no charge. Tell us who receives the prepared forms when your case is activated.",
+      es: "Distribución de Documentos Familiares — incluida sin costo. Indíquenos quién recibirá los formularios preparados cuando se active su caso.",
+      ht: "Distribisyon Dokiman Fanmi — enkli gratis. Di nou ki moun k ap resevwa fòm yo lè ka w aktive.",
     },
+
     fields: [
       { key: "contact_name", label: { en: "Contact name", es: "Nombre del contacto", ht: "Non kontak la" } },
       { key: "contact_email", label: { en: "Email address", es: "Correo electrónico", ht: "Imèl" } },
@@ -284,7 +285,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
   const [errMsg, setErrMsg] = useState("");
   const [pairCode, setPairCode] = useState<string | null>(null);
   const [inviteCode, setInviteCode] = useState<string | null>(null);
-  const [answers, setAnswers] = useState<Record<string, string | boolean>>({});
+  const [answers, setAnswers] = useState<Record<string, string | boolean>>({ addon_asset_protection: true });
   const [englishAnswers, setEnglishAnswers] = useState<Record<string, string>>({});
   const [approvals, setApprovals] = useState<Record<string, boolean>>({});
   const [smsConsent, setSmsConsent] = useState(false);
@@ -750,83 +751,20 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
           })}
 
 
-          {/* Add-Ons (Asset Protection + Pet Rescue) */}
+          {/* Family Docs — always included */}
           <section style={{ marginBottom: 32, background: "#1a2436", padding: 24, borderRadius: 6, borderLeft: "4px solid #e8a04a" }}>
             <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 6 }}>
-              {L === "es" ? "Complementos opcionales" : L === "ht" ? "Opsyon adisyonèl" : "Optional Add-Ons"}
+              {L === "es" ? "Documentos Familiares — Incluidos" : L === "ht" ? "Dokiman Fanmi — Enkli" : "Family Docs — Included"}
             </h2>
-            <p style={{ fontSize: 13, color: "#a8a59a", marginBottom: 20, fontStyle: "italic" }}>
-              {L === "es" ? "Marque las casillas que desea agregar a su pedido." : L === "ht" ? "Tcheke sa ou vle ajoute nan kòmand ou a." : "Check any items you want added to your order."}
+            <p style={{ fontSize: 13, color: "#a8a59a", marginBottom: 0, lineHeight: 1.6 }}>
+              {L === "es"
+                ? "Su paquete de Documentos Familiares se prepara sin costo y se carga en la app: poder notarial, autorización escolar, autorización de vehículo, acceso a la vivienda y más. Se envían a su contacto principal cuando activa la alerta."
+                : L === "ht"
+                ? "Pakè Dokiman Fanmi ou a prepare gratis epi li chaje nan app la: manda, otorizasyon lekòl, otorizasyon machin, aksè lakay ou ak plis ankò. Yo voye bay kontak prensipal ou lè ou aktive alèt la."
+                : "Your Family Docs package is prepared at no charge and loaded into the app: power of attorney, school pickup authorization, vehicle release, home access and more. They go to your primary contact when you activate the alert."}
             </p>
-
-            {/* Asset Protection */}
-            <label style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 16, cursor: "pointer", padding: 12, background: "rgba(255,255,255,0.04)", borderRadius: 4 }}>
-              <input
-                type="checkbox"
-                checked={!!answers.addon_asset_protection}
-                onChange={(e) => setAnswers((a) => ({ ...a, addon_asset_protection: e.target.checked }))}
-                style={{ marginTop: 4, width: 18, height: 18, flexShrink: 0 }}
-              />
-              <span style={{ fontSize: 14, lineHeight: 1.5, color: "#fff5d6" }}>
-                <strong>{L === "es" ? "Paquete de Protección de Bienes — Sin costo" : L === "ht" ? "Pakè Pwoteksyon Byen — Gratis" : "Asset Protection Package — No charge"}</strong>
-                <br />
-                <span style={{ fontSize: 12, color: "#cfc8b8" }}>
-                  {L === "es" ? "Poder notarial y documentos para proteger su propiedad si es detenido." : L === "ht" ? "Manda ak dokiman pou pwoteje pwopriyete ou si yo detni w." : "Power of attorney and documents to protect your property if detained."}
-                </span>
-              </span>
-            </label>
-
-            {/* Pet Rescue */}
-            <label style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 12, cursor: "pointer", padding: 12, background: "rgba(255,255,255,0.04)", borderRadius: 4 }}>
-              <input
-                type="checkbox"
-                checked={!!answers.addon_pet_rescue}
-                onChange={(e) => setAnswers((a) => ({ ...a, addon_pet_rescue: e.target.checked }))}
-                style={{ marginTop: 4, width: 18, height: 18, flexShrink: 0 }}
-              />
-              <span style={{ fontSize: 14, lineHeight: 1.5, color: "#fff5d6" }}>
-                <strong>{L === "es" ? "Módulo de Rescate de Mascotas — Incluido" : L === "ht" ? "Modil Sove Bèt Kay — Enkli" : "Pet Rescue Module — Included"}</strong>
-                <br />
-                <span style={{ fontSize: 12, color: "#cfc8b8" }}>
-                  {L === "es" ? "Instrucciones para que un contacto recoja a su mascota si es detenido." : L === "ht" ? "Enstriksyon pou yon kontak chèche bèt kay ou a si yo detni w." : "Instructions for a contact to retrieve your pet if you're detained."}
-                </span>
-              </span>
-            </label>
-
-            {!!answers.addon_pet_rescue && (
-              <div style={{ marginTop: 12, padding: 16, background: "#0b1220", borderRadius: 6, border: "1px solid rgba(232,160,74,0.3)" }}>
-                <p style={{ fontSize: 13, color: "#e8a04a", marginBottom: 12, fontWeight: 600 }}>
-                  {L === "es" ? "Información de su mascota" : L === "ht" ? "Enfòmasyon sou bèt kay ou" : "Your pet's information"}
-                </p>
-                {[
-                  { k: "pet_name", en: "Pet's name", es: "Nombre de la mascota", ht: "Non bèt kay la" },
-                  { k: "pet_type", en: "Type of pet (dog, cat, bird, etc.)", es: "Tipo de mascota (perro, gato, ave, etc.)", ht: "Kalite bèt kay (chen, chat, zwazo, elt.)" },
-                  { k: "pet_location", en: "Where the pet is located (home address)", es: "Dónde está la mascota (dirección)", ht: "Kote bèt la ye (adrès)" },
-                  { k: "pet_access", en: "How to access (spare key, code, neighbor with key)", es: "Cómo acceder (llave de repuesto, código, vecino con llave)", ht: "Kijan pou antre (kle, kòd, vwazen ki gen kle)" },
-                  { k: "pet_notify", en: "Who to notify (name + phone)", es: "A quién avisar (nombre + teléfono)", ht: "Ki moun pou avize (non + telefòn)" },
-                ].map((f) => (
-                  <div key={f.k} style={{ marginBottom: 12 }}>
-                    <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 4, color: "#fff5d6" }}>{f[L]}</label>
-                    <input type="text" value={(answers[f.k] as string) || ""} onChange={(e) => setAnswers((a) => ({ ...a, [f.k]: e.target.value }))} style={inputStyle} />
-                  </div>
-                ))}
-                <label style={{ display: "flex", gap: 10, alignItems: "center", marginTop: 10, marginBottom: 12, color: "#fff5d6", fontSize: 13 }}>
-                  <input
-                    type="checkbox"
-                    checked={answers.pet_no_kill_preferred !== false}
-                    onChange={(e) => setAnswers((a) => ({ ...a, pet_no_kill_preferred: e.target.checked }))}
-                  />
-                  {L === "es" ? "Preferir refugio sin sacrificio (no-kill)" : L === "ht" ? "Pi pito yon abri san touye (no-kill)" : "Prefer a no-kill shelter"}
-                </label>
-                <div>
-                  <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 4, color: "#fff5d6" }}>
-                    {L === "es" ? "Dirección del refugio sin sacrificio (si conoce alguno)" : L === "ht" ? "Adrès abri no-kill (si ou konnen youn)" : "No-kill shelter address (if you know one)"}
-                  </label>
-                  <input type="text" value={(answers.pet_no_kill_address as string) || ""} onChange={(e) => setAnswers((a) => ({ ...a, pet_no_kill_address: e.target.value }))} style={inputStyle} />
-                </div>
-              </div>
-            )}
           </section>
+
 
 
           
