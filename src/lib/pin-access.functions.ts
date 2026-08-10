@@ -136,8 +136,6 @@ export const pinListAttorneyBoard = createServerFn({ method: "POST" })
           date_of_birth: string | null;
           place_of_birth: string | null;
           country_of_origin: string | null;
-          has_asset_protection: boolean;
-          has_pet_rescue: boolean;
         };
         const docs = docsByClient.get(row.id) ?? [];
         return {
