@@ -79,7 +79,7 @@ const COPY = {
   en: {
     companyHeading: "Technology & Service Provider",
     notALawFirm:
-      "DetencionDefensa.com is NOT a law firm and does not provide legal advice. It provides intake software, document translation, typing, and secure storage. on emergency app.",
+      "DetencionDefensa.com is NOT a law firm and does not provide legal advice. It provides intake software, document translation, typing, secure storage, and an emergency notification app.",
     firmHeading: "Independent Legal Services",
     legalServicesBy: "Legal services are provided by",
     aSeparateFlLawFirm: "a separate Florida law firm",

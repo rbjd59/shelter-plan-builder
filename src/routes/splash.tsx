@@ -11,7 +11,7 @@ export const Route = createFileRoute("/splash")({
       {
         name: "description",
         content:
-          "A pre-detention defense plan for immigrant working families. Emergency app $10/month; attorney-reviewed documents at no charge. NOT a law firm.",
+          "A pre-detention defense plan for immigrant working families. Emergency app and attorney-reviewed documents at no cost during the community crisis. NOT a law firm.",
       },
     ],
   }),

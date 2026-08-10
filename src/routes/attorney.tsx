@@ -65,7 +65,7 @@ const PILLARS = [
   },
   {
     h: "Flat fee, no surprises",
-    p: `$10/month for the emergency app — attorney-reviewed documents are prepared at no charge to the customer. The ${PRICE.firmUsd} attorney fee is paid by the company, not the family. No hourly billing.`,
+    p: `The emergency app subscription is waived at this time because of the community crisis — attorney-reviewed documents are prepared at no charge to the customer. The ${PRICE.firmUsd} attorney fee is paid by the company, not the family. No hourly billing.`,
   },
 ];
 

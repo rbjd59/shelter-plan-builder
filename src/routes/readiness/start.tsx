@@ -24,7 +24,7 @@ export const Route = createFileRoute("/readiness/start")({
 const COPY = {
   en: {
     title: "Sentinel Readiness Packet",
-    price: "No charge — included with the $10/month emergency app plan",
+    price: "No charge — included with the emergency app plan",
     body: "Do not leave your family unprepared. We gather every court-recognized document your family will need, translate them into English and your language side-by-side, you fill them out in your own words, and we type your exact answers onto the official forms. You print, sign, and notarize. You keep 100% control until you need help.",
     docsTitle: "Exactly what you get, at no charge",
     docs: [

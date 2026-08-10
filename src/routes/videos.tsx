@@ -11,20 +11,20 @@ export const Route = createFileRoute("/videos")({
       {
         name: "description",
         content:
-          "Watch how DetencionDefensa works: attorney-reviewed documents at no charge and a $10/month emergency app for immigrant working families.",
+          "Watch how DetencionDefensa works: attorney-reviewed documents and the emergency app at no cost for immigrant working families.",
       },
       { property: "og:title", content: "Videos — DetencionDefensa.com" },
       {
         property: "og:description",
         content:
-          "Watch how DetencionDefensa works: attorney-reviewed documents at no charge and a $10/month emergency app.",
+          "Watch how DetencionDefensa works: attorney-reviewed documents and the emergency app at no cost.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Videos — DetencionDefensa.com" },
       {
         name: "twitter:description",
-        content: "Watch how DetencionDefensa works — documents at no charge, app $10/month.",
+        content: "Watch how DetencionDefensa works — documents and the emergency app at no cost.",
       },
     ],
   }),

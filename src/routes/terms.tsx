@@ -19,7 +19,7 @@ You ("You") are the petitioner. You give the facts. You sign the form. You file 
 
 Attorney Review. Through a separate, optional engagement with an independent attorney, the typed draft of your Pro Se form may be reviewed for completeness and to check that signatures are notarized and that the form is mailed to the correct clerk of court with a pre-addressed envelope. That attorney does not agree to represent you in court, to file any papers, or to review any papers other than the draft AO 242 covered by the retainer agreement that you read and accept separately. Their services are limited by that retainer agreement.
 
-Price. The emergency app is $10/month. Attorney-created and reviewed documents are provided at no additional charge. The subscription may be canceled anytime. Refund terms are stated at checkout.
+Price. All fees are currently waived because of the community crisis, so the emergency app costs you nothing at this time. The standard price is $10/month and will not resume without advance notice to you. Attorney-created and reviewed documents are provided at no additional charge. The subscription may be canceled anytime. Refund terms are stated at checkout.
 
 Your Data. Your information is used to populate your forms and to deliver the services you request. Sensitive identifiers stay on your device whenever possible. We do not sell your personal information.
 
@@ -37,7 +37,7 @@ Usted ("Usted") es el peticionario. Usted aporta los hechos. Usted firma el form
 
 Revisión por abogado. A través de un acuerdo separado y opcional con un abogado independiente, el borrador mecanografiado de su formulario Pro Se podrá ser revisado para verificar que esté completo, que las firmas estén notarizadas y que el formulario se envíe al secretario del tribunal correcto con un sobre pre-direccionado. Ese abogado no acepta representarlo en el tribunal, ni presentar papeles, ni revisar otros papeles distintos del borrador AO 242 cubierto por el acuerdo de retención que Usted lea y acepte por separado.
 
-Precio. La app de emergencia cuesta $10/mes. Los documentos creados y revisados por un abogado se proporcionan sin costo adicional. La suscripción puede cancelarse en cualquier momento. Los términos de reembolso se indican al pagar.
+Precio. Todas las tarifas están exoneradas actualmente por la crisis comunitaria, así que la app de emergencia no le cuesta nada en este momento. El precio estándar es de $10/mes y no se reanudará sin avisarle con anticipación. Los documentos creados y revisados por un abogado se proporcionan sin costo adicional. La suscripción puede cancelarse en cualquier momento. Los términos de reembolso se indican al pagar.
 
 Sus datos. Su información se usa para llenar sus formularios y prestar los servicios que solicita. No vendemos su información personal.
 
@@ -53,7 +53,7 @@ Ou ("Ou") se petisyonè a. Ou bay enfòmasyon yo. Ou siyen fòm nan. Ou depoze l
 
 Revizyon Avoka. Atravè yon akò separe ak yon avoka endepandan, bouyon fòm Pro Se ou kapab revize pou verifye li konplè ak ke siyati yo notarize epi fòm nan voye nan grefye tribinal la kòrèk. Avoka sa a pa dakò pou reprezante w nan tribinal.
 
-Pri. App ijans la se $10/mwa. Dokiman kreye ak revize pa avoka yo bay gratis. Ou ka anile abònman an nenpòt lè. Tèm ranbousman yo parèt lè ou peye.
+Pri. Tout frè yo anile kounye a akòz kriz kominotè a, kidonk app ijans la pa koute w anyen nan moman sa a. Pri estanda a se $10/mwa e li p ap rekòmanse san yo pa avèti w davans. Dokiman kreye ak revize pa avoka yo bay gratis. Ou ka anile abònman an nenpòt lè. Tèm ranbousman yo parèt lè ou peye.
 
 Done ou. Enfòmasyon ou itilize pou ranpli fòm ou yo. Nou pa vann enfòmasyon pèsonèl ou.
 
