@@ -84,7 +84,7 @@ export const pinListAttorneyBoard = createServerFn({ method: "POST" })
     const { data: clients } = await supabaseAdmin
       .from("app_clients")
       .select(
-        "id, invite_token, full_name, email, phone_e164, language, created_at, activated_at, a_number, date_of_birth, place_of_birth, country_of_origin, has_asset_protection, has_pet_rescue",
+        "id, invite_token, full_name, email, phone_e164, language, created_at, activated_at, a_number, date_of_birth, place_of_birth, country_of_origin",
       )
       .order("created_at", { ascending: false })
       .limit(1000);
