@@ -54,8 +54,8 @@ const buildEn = (): RetainerCopy => ({
     "Provide immigration advice, removal-defense strategy, or representation before the immigration court or DHS.",
     "Conduct any other legal work not expressly listed in Section 1.",
   ],
-  feeHeading: `3. Attorney Fee — Flat ${PRICE.firmUsd}`,
-  fee: `The Firm's flat fee for the limited services in Section 1 is ${PRICE.firmUsd} (US dollars). The fee is EARNED IN FULL when the Firm completes its review of your draft documents (Section 1, first bullet). The location step and the completion-and-mailing step are included in the flat fee at no additional charge. The separate ${PRICE.companyUsd} you pay to DetencionDefensa.com, Inc. is for software, translation, typing, and storage — it is NOT a legal fee and is not paid to the Firm.`,
+  feeHeading: `3. Attorney Fee — None (Pro Bono)`,
+  fee: `The Firm is providing the limited services described in Section 1 PRO BONO — free of charge. You pay the Firm nothing. There is no flat fee, no hourly billing, no retainer, and no cost of any kind for the Firm's review, location, or completion-and-mailing services. You also pay DetencionDefensa.com, Inc. nothing: the software, translation, typing, and storage services are provided free during the community crisis, and no credit card is required. This pro bono commitment is for a limited period and may be ended by the Firm and DetencionDefensa.com, Inc. at any time. If a fee is ever introduced in the future, you will be given advance written notice and you will not be charged anything without first signing a new written fee agreement.`,
   terminationHeading: "4. Termination",
   termination:
     "Either party may terminate this Agreement at any time by written notice. If you terminate before the Firm completes its review, the Firm will refund any portion of the flat fee not yet earned. The Firm may withdraw if continued representation would violate the Florida Rules of Professional Conduct.",
@@ -88,8 +88,8 @@ const buildEs = (): RetainerCopy => ({
     "Brindar asesoría migratoria, estrategia de defensa contra deportación, ni representación ante la corte de inmigración o DHS.",
     "Realizar cualquier otro trabajo legal no enumerado expresamente en la Sección 1.",
   ],
-  feeHeading: `3. Honorarios del Abogado — Tarifa Plana de ${PRICE.firmUsd}`,
-  fee: `La tarifa plana de la Firma por los servicios limitados de la Sección 1 es de ${PRICE.firmUsd} (dólares estadounidenses). La tarifa se DEVENGA POR COMPLETO cuando la Firma termina su revisión de sus borradores (Sección 1, primer punto). Los pasos de localización y de completar-y-enviar están incluidos en la tarifa plana sin cargo adicional. Los ${PRICE.companyUsd} separados que paga a DetencionDefensa.com, Inc. son por software, traducción, mecanografía y almacenamiento — NO son honorarios legales y no se pagan a la Firma.`,
+  feeHeading: `3. Honorarios del Abogado — Ninguno (Pro Bono)`,
+  fee: `La Firma brinda los servicios limitados descritos en la Sección 1 PRO BONO — sin cargo alguno. Usted no le paga nada a la Firma. No hay tarifa plana, ni facturación por hora, ni anticipo, ni costo de ningún tipo por la revisión, la localización o el servicio de completar-y-enviar. Tampoco le paga nada a DetencionDefensa.com, Inc.: los servicios de software, traducción, mecanografía y almacenamiento se brindan gratis durante la crisis comunitaria y no se requiere tarjeta de crédito. Este compromiso pro bono es por un período limitado y puede terminarse por la Firma y DetencionDefensa.com, Inc. en cualquier momento. Si en el futuro se introduce alguna tarifa, se le dará aviso previo por escrito y no se le cobrará nada sin que usted firme primero un nuevo acuerdo de honorarios por escrito.`,
   terminationHeading: "4. Terminación",
   termination:
     "Cualquiera de las partes puede terminar este Acuerdo en cualquier momento mediante notificación escrita. Si usted termina antes de que la Firma complete su revisión, la Firma reembolsará cualquier parte de la tarifa plana aún no devengada.",
