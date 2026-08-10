@@ -39,11 +39,12 @@ export const COMPANY = {
   domain: "detenciondefensa.com",
 } as const;
 
+/** Pro bono program: no client-facing fee. Kept at zero so nothing can render a price. */
 export const PRICE = {
-  totalCents: 19900,
-  companyCents: 16400,
-  firmCents: 3500,
-  totalUsd: "$199",
-  companyUsd: "$164",
-  firmUsd: "$35",
+  totalCents: 0,
+  companyCents: 0,
+  firmCents: 0,
+  totalUsd: "$0",
+  companyUsd: "$0",
+  firmUsd: "$0 (pro bono)",
 } as const;
