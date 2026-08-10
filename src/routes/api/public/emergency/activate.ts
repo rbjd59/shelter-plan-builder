@@ -265,7 +265,7 @@ export const Route = createFileRoute("/api/public/emergency/activate")({
                 token: cancelToken,
                 clientName: d.full_name ?? null,
                 kind: "cancel",
-                activationId: d.cancel_of,
+                activationId: d.cancel_of ?? null,
               });
               console.log("[activate] sms cancel fan-out", result);
             } catch (e) {
@@ -288,7 +288,7 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
             html,
             text,
             label: "emergency-cancel",
-            idempotencyKey: `cancel-${d.cancel_of}`,
+            idempotencyKey: `cancel-${d.cancel_of ?? caseRef}-${Date.now()}`,
           });
           if (d.alert_email && d.alert_email !== LEGAL_INBOX) {
             await enqueueAlertEmail({
@@ -297,10 +297,10 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
               html,
               text,
               label: "emergency-cancel",
-              idempotencyKey: `cancel-${d.cancel_of}-alt`,
+              idempotencyKey: `cancel-${d.cancel_of ?? caseRef}-${Date.now()}-alt`,
             });
           }
-          return jsonResponse({ ok: true, cancelled: d.cancel_of }, { status: 200 });
+          return jsonResponse({ ok: true, cancelled: d.cancel_of ?? caseRef }, { status: 200 });
         }
 
         // Fire path — insert row, compute act-after window, send alert.
