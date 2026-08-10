@@ -1558,7 +1558,7 @@ export type Database = {
         Returns: number
       }
       get_alert_viewer_bundle: { Args: { _token: string }; Returns: Json }
-      get_client_bundle: { Args: { _token: string }; Returns: Json }
+      get_client_bundle: { Args: { p_token: string }; Returns: Json }
       has_active_subscription: {
         Args: { check_env?: string; user_uuid: string }
         Returns: boolean
