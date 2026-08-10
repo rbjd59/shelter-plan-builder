@@ -347,7 +347,7 @@ export const sendReminderEmail = createServerFn({ method: "POST" })
     </body></html>`;
     const payload = {
       to: data.email,
-      from: "legal@detenciondefensa.com",
+      from: "legal@theconsumerdefender.com",
       sender_domain: "notify.gohomesooner.com",
       subject: "Recordatorio: descarga tu app de defensa",
       html,
