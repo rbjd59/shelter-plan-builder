@@ -52,7 +52,7 @@ const COPY = {
   },
   es: {
     title: "Paquete Sentinel Readiness",
-    price: "Sin cargo — incluido con el plan de app de emergencia de $10/mes",
+    price: "Sin cargo — pro bono por tiempo limitado",
     body: "No deje a su familia desprevenida. Reunimos cada documento reconocido por las cortes que su familia necesitará, los traducimos al inglés y a su idioma lado a lado, usted los llena en sus propias palabras, y nosotros escribimos sus respuestas exactas en los formularios oficiales. Usted imprime, firma y notariza. Usted mantiene el 100% del control hasta que necesite ayuda.",
     docsTitle: "Esto es exactamente lo que recibe, sin cargo",
     docs: [

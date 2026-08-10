@@ -209,7 +209,7 @@ export const PARTNERS: Record<Lang, Section> = {
     cost: {
       title: "Asequibilidad y acceso",
       rows: [
-        { label: "Plan pre-detención DetencionDefensa", value: "$10/mes — documentos sin cargo", note: "Costo típico" },
+        { label: "Plan pre-detención DetencionDefensa", value: "Gratis — pro bono por tiempo limitado", note: "Costo típico" },
         { label: "Abogado federal de habeas corpus", value: "$8,500 – $15,000", note: "Costo legal comparable" },
         { label: "Créditos de becas (por cada 20 inscripciones)", value: "Financia a 10 familias", note: "Sin costo para los beneficiarios" },
       ],
