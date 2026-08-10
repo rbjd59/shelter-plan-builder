@@ -7,20 +7,23 @@ const ContactSchema = z.object({
   phone: z.string().max(32).optional().nullable(),
   phone_e164: z.string().max(32).optional().nullable(),
   relationship: z.string().max(80).optional().nullable(),
+  role: z.enum(["family", "lawyer", "company"]).optional().nullable(),
 }).passthrough();
 
 const SyncSchema = z.object({
   activation_code: z.string().regex(/^[A-Za-z0-9]{8}$/).optional(),
+  case_id: z.string().regex(/^[A-Za-z0-9]{8}$/).optional(),
   token: z.string().regex(/^[A-Za-z0-9]{8}$/).optional(),
   intake_session_id: z.string().min(1).max(128).optional(),
   contacts: z.array(ContactSchema).max(20).optional(),
   cancel_pin: z.string().regex(/^[0-9]{4,8}$/).optional(),
   dead_man_switch_hours: z.union([z.literal(24), z.literal(36), z.literal(72), z.null()]).optional(),
   last_checkin: z.string().datetime().optional(),
-}).refine((data) => data.activation_code || data.token || data.intake_session_id, {
+}).refine((data) => data.activation_code || data.case_id || data.token || data.intake_session_id, {
   message: "activation_code_or_intake_session_id_required",
   path: ["activation_code"],
 });
+
 
 const CORS_HEADERS = {
   "access-control-allow-origin": "*",
@@ -61,7 +64,11 @@ export const Route = createFileRoute("/api/public/app/sync-contacts")({
 
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
         const d = parsed.data;
-        let token = normalizeActivationCode(d.activation_code) ?? normalizeActivationCode(d.token);
+        let token =
+          normalizeActivationCode(d.activation_code) ??
+          normalizeActivationCode(d.case_id) ??
+          normalizeActivationCode(d.token);
+
 
         if (!token && d.intake_session_id) {
           const raw = d.intake_session_id.trim().toUpperCase();
@@ -85,7 +92,7 @@ export const Route = createFileRoute("/api/public/app/sync-contacts")({
           return jsonResponse({ ok: false, error: "client_not_found" }, { status: 404 });
         }
 
-        const result: Record<string, unknown> = { ok: true };
+        const result: Record<string, unknown> = { ok: true, case_id: token };
 
         // 1. Contacts (only if provided & non-empty)
         if (d.contacts && d.contacts.length > 0) {
