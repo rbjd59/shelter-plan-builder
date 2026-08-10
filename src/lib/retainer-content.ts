@@ -10,7 +10,7 @@
  * the exact body shown at signing time.
  */
 
-import { FIRM, PRICE } from "./firm-info";
+import { FIRM } from "./firm-info";
 
 export const RETAINER_VERSION = "2026-06-04.v1-draft";
 
