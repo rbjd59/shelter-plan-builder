@@ -1,10 +1,8 @@
 import { useState } from "react";
 
 const PIN = "5688";
-const STORAGE_KEYS = {
-  company: "pin:company-board",
-  attorney: "pin:attorney-board",
-} as const;
+// Must match SHARED_KEY in PinAccessGate so the boards don't ask again.
+const SHARED_KEY = "dd_pin_ok";
 
 /**
  * Renders a single tile-styled button that opens a modal containing the
@@ -55,7 +53,7 @@ function PinModal({ onClose }: { onClose: () => void }) {
       return;
     }
     try {
-      sessionStorage.setItem(STORAGE_KEYS[role], PIN);
+      sessionStorage.setItem(SHARED_KEY, PIN);
     } catch {
       /* ignore */
     }
