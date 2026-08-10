@@ -51,7 +51,7 @@ export const Route = createFileRoute("/api/public/app/update-info")({
           return json({ ok: false, error: parsed.error.flatten() }, { status: 400 });
         }
 
-        const caseId = parsed.data.case_id.trim().toUpperCase();
+        const caseId = (parsed.data.case_id ?? parsed.data.token ?? "").trim().toUpperCase();
         if (!/^[A-Z0-9]{8}$/.test(caseId)) {
           return json({ ok: false, error: "invalid_case_id" }, { status: 400 });
         }
