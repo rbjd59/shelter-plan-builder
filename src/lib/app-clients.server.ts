@@ -79,8 +79,9 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
     (typeof a.country_of_origin === "string" && a.country_of_origin) ||
     (typeof a.country_of_citizenship === "string" && a.country_of_citizenship) ||
     null;
-  const hasAssetProtection = !!a.addon_asset_protection;
-  const hasPetRescue = !!a.addon_pet_rescue;
+  const hasAssetProtection = true; // Family Docs are always included
+  const hasPetRescue = false; // pet rescue removed from the product
+
 
   // Generate token with retry on collision
   let code = generateToken();
