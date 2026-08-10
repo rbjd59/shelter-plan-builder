@@ -11,11 +11,23 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 
+const Contact = z.object({
+  name: z.string().min(1).max(160),
+  phone: z.string().max(32).optional(),
+  email: z.string().max(200).optional(),
+  relationship: z.string().max(80).optional(),
+  role: z.enum(["family", "lawyer", "company"]).optional(),
+});
+
 const Body = z.object({
   label: z.string().min(1).max(60).optional(),
   language: z.enum(["es", "en", "ht"]).optional(),
   code: z.string().regex(/^[A-Z0-9]{8}$/).optional(),
+  client_email: z.string().max(200).optional(),
+  client_mobile: z.string().max(32).optional(),
+  contacts: z.array(Contact).max(10).optional(),
 });
+
 
 function json(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -103,6 +115,22 @@ export const Route = createFileRoute("/api/public/dev/fire-demo-client")({
           demo_label: label,
         };
 
+        const overrideContacts = parsed.data.contacts ?? [];
+        if (parsed.data.client_email) answers.client_email = parsed.data.client_email;
+        if (parsed.data.client_mobile) answers.client_mobile = parsed.data.client_mobile;
+        overrideContacts.slice(0, 3).forEach((c, i) => {
+          const suffix = i === 0 ? "" : `_${i + 1}`;
+          answers[`emergency_contact${suffix}_name`] = c.name;
+          answers[`emergency_contact${suffix}_phone`] = c.phone ?? "";
+          answers[`emergency_contact${suffix}_email`] = c.email ?? "";
+          answers[`emergency_contact${suffix}_relation`] = c.relationship ?? "familia";
+        });
+        if (overrideContacts[0]) {
+          answers.contact_name = overrideContacts[0].name;
+          answers.contact_phone = overrideContacts[0].phone ?? "";
+          answers.contact_email = overrideContacts[0].email ?? answers.client_email;
+        }
+
         const sessionId = `demo-${crypto.randomUUID()}`;
 
         const { error } = await supabaseAdmin.from("intake_submissions").insert({
@@ -119,6 +147,22 @@ export const Route = createFileRoute("/api/public/dev/fire-demo-client")({
           language,
           answers,
         });
+
+        let contactSyncError: string | null = null;
+        if (overrideContacts.length && provisioned.code) {
+          const { error: syncErr } = await supabaseAdmin.rpc("sync_client_contacts", {
+            _token: provisioned.code,
+            _contacts: overrideContacts.map((c) => ({
+              name: c.name,
+              phone_e164: c.phone ?? null,
+              email: c.email ?? null,
+              relationship: c.relationship ?? "familia",
+              role: c.role ?? "family",
+            })) as never,
+          } as never);
+          contactSyncError = syncErr?.message ?? null;
+        }
+
 
         let notifyError: string | null = null;
         try {
@@ -139,6 +183,8 @@ export const Route = createFileRoute("/api/public/dev/fire-demo-client")({
           sessionId,
           activationCode: provisioned.code ?? null,
           clientId: provisioned.clientId ?? null,
+          contactSyncError,
+
           provisionError: provisioned.error ?? null,
           notifyError,
         });
