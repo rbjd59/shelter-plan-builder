@@ -29,6 +29,12 @@ const TriggerSchema = z.object({
   action: z.enum(["trigger", "cancel"]).optional(),
   triggered_at: z.string().max(64).optional(),
   cancel_pin: z.string().regex(/^\d{4,8}$/).optional(),
+  // GPS may arrive nested (documented shape) or flat (what the phone app
+  // actually sends). Accept both so coordinates never get silently dropped.
+  lat: z.number().min(-90).max(90).nullable().optional(),
+  lng: z.number().min(-180).max(180).nullable().optional(),
+  longitude: z.number().min(-180).max(180).nullable().optional(),
+  latitude: z.number().min(-90).max(90).nullable().optional(),
   last_known_location: z
     .object({
       lat: z.number().min(-90).max(90).nullable().optional(),
@@ -40,6 +46,7 @@ const TriggerSchema = z.object({
   arrest_location_hint: z.string().max(500).nullable().optional(),
   battery_pct: z.number().int().min(0).max(100).nullable().optional(),
 }).passthrough();
+
 
 export const Route = createFileRoute("/api/public/app-trigger")({
   server: {
@@ -159,8 +166,13 @@ export const Route = createFileRoute("/api/public/app-trigger")({
         }
 
         const loc = parsed.data.last_known_location;
-        const lat = typeof loc?.lat === "number" ? loc.lat : null;
-        const lng = typeof loc?.lng === "number" ? loc.lng : null;
+        const firstNumber = (...vals: unknown[]) => {
+          for (const v of vals) if (typeof v === "number" && Number.isFinite(v)) return v;
+          return null;
+        };
+        const lat = firstNumber(loc?.lat, parsed.data.lat, parsed.data.latitude);
+        const lng = firstNumber(loc?.lng, parsed.data.lng, parsed.data.longitude);
+
         const { data: alertId, error: alertError } = await supabaseAdmin.rpc(
           "record_sos_alert" as never,
           {

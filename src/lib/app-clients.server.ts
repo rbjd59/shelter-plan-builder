@@ -102,6 +102,11 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
         country_of_origin: countryOfOrigin,
         has_asset_protection: hasAssetProtection,
         has_pet_rescue: hasPetRescue,
+        // Per-client signing key for POST /api/public/app-trigger. Without it
+        // verify_app_trigger_signature() returns invalid_token and every SOS
+        // fire/cancel from the phone is rejected with 401.
+        hmac_secret: generateHex(32),
+
       } as never)
       .select("id")
       .single();
