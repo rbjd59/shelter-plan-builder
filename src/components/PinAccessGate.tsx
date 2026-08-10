@@ -1,14 +1,16 @@
 import { useEffect, useState, type ReactNode } from "react";
 
 const PIN = "5688";
+// Single shared unlock key: one PIN entry unlocks both staff boards for the session.
+const SHARED_KEY = "dd_pin_ok";
 
 export default function PinAccessGate({
-  storageKey,
+  storageKey: _storageKey,
   title,
   children,
   onPin,
 }: {
-  storageKey: string;
+  storageKey?: string;
   title: string;
   children: (pin: string) => ReactNode;
   onPin?: (pin: string) => void;
@@ -19,20 +21,20 @@ export default function PinAccessGate({
 
   useEffect(() => {
     try {
-      const saved = sessionStorage.getItem(storageKey);
+      const saved = sessionStorage.getItem(SHARED_KEY);
       if (saved === PIN) {
         setPin(saved);
         onPin?.(saved);
       }
     } catch { /* ignore */ }
-  }, [storageKey, onPin]);
+  }, [onPin]);
 
   if (pin) return <>{children(pin)}</>;
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     if (value.trim() === PIN) {
-      try { sessionStorage.setItem(storageKey, PIN); } catch { /* ignore */ }
+      try { sessionStorage.setItem(SHARED_KEY, PIN); } catch { /* ignore */ }
       setPin(PIN);
       onPin?.(PIN);
     } else {
