@@ -13,7 +13,9 @@ const ContactSchema = z.object({
 const SyncSchema = z.object({
   activation_code: z.string().regex(/^[A-Za-z0-9]{8}$/).optional(),
   case_id: z.string().regex(/^[A-Za-z0-9]{8}$/).optional(),
-  token: z.string().regex(/^[A-Za-z0-9]{8}$/).optional(),
+  // The app sends an opaque USER_TOKEN here; only used as a case code if it
+  // happens to be an 8-char activation code.
+  token: z.string().min(1).max(512).optional(),
   intake_session_id: z.string().min(1).max(128).optional(),
   contacts: z.array(ContactSchema).max(20).optional(),
   cancel_pin: z.string().regex(/^[0-9]{4,8}$/).optional(),
@@ -105,9 +107,24 @@ export const Route = createFileRoute("/api/public/app/sync-contacts")({
             return jsonResponse({ ok: false, error: "sync_failed" }, { status: 500 });
           }
           result.contacts = data ?? { ok: true };
+
+          // Log the change so the attorney board shows the updated contacts.
+          const clientId = (data as { client_id?: string } | null)?.client_id ?? null;
+          if (clientId) {
+            const { error: logErr } = await supabaseAdmin
+              .from("client_update_requests" as never)
+              .insert({
+                client_id: clientId,
+                source: "app",
+                status: "applied",
+                notes: `Family contacts updated from app for case ${token}`,
+                request_payload: { case_id: token, contacts: d.contacts },
+              } as never);
+            if (logErr) console.warn("[sync-contacts] audit log failed", logErr.message);
+          }
         }
 
-        // 2. Dead Man's Switch + last check-in + cancel PIN — direct column updates on app_clients
+
         const patch: Record<string, unknown> = {};
         if (d.dead_man_switch_hours !== undefined) patch.dead_man_switch_hours = d.dead_man_switch_hours;
         if (d.last_checkin) patch.last_checkin_at = d.last_checkin;
