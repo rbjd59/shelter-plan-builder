@@ -107,9 +107,24 @@ export const Route = createFileRoute("/api/public/app/sync-contacts")({
             return jsonResponse({ ok: false, error: "sync_failed" }, { status: 500 });
           }
           result.contacts = data ?? { ok: true };
+
+          // Log the change so the attorney board shows the updated contacts.
+          const clientId = (data as { client_id?: string } | null)?.client_id ?? null;
+          if (clientId) {
+            const { error: logErr } = await supabaseAdmin
+              .from("client_update_requests" as never)
+              .insert({
+                client_id: clientId,
+                source: "app",
+                status: "applied",
+                notes: `Family contacts updated from app for case ${token}`,
+                request_payload: { case_id: token, contacts: d.contacts },
+              } as never);
+            if (logErr) console.warn("[sync-contacts] audit log failed", logErr.message);
+          }
         }
 
-        // 2. Dead Man's Switch + last check-in + cancel PIN — direct column updates on app_clients
+
         const patch: Record<string, unknown> = {};
         if (d.dead_man_switch_hours !== undefined) patch.dead_man_switch_hours = d.dead_man_switch_hours;
         if (d.last_checkin) patch.last_checkin_at = d.last_checkin;
