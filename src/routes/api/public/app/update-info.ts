@@ -14,8 +14,18 @@ function json(body: unknown, init?: ResponseInit) {
   return new Response(JSON.stringify(body), { ...init, headers });
 }
 
+const ContactSchema = z.object({
+  name: z.string().max(160).optional().nullable(),
+  email: z.string().max(200).optional().nullable(),
+  phone: z.string().max(32).optional().nullable(),
+  phone_e164: z.string().max(32).optional().nullable(),
+  relationship: z.string().max(80).optional().nullable(),
+}).passthrough();
+
 const UpdateInfoSchema = z.object({
-  case_id: z.string().min(1).max(64),
+  case_id: z.string().min(1).max(64).optional(),
+  token: z.string().min(1).max(64).optional(),
+  contacts: z.array(ContactSchema).max(20).optional(),
   requested_at: z.string().optional(),
 }).passthrough();
 
@@ -25,7 +35,10 @@ export const Route = createFileRoute("/api/public/app/update-info")({
       OPTIONS: async () => new Response(null, { status: 204, headers: CORS }),
       POST: async ({ request }) => {
         const rawBody = await request.text();
-        const signature = request.headers.get("x-app-signature") ?? "";
+        // Accept both "sha256=<hex>" (Primo/Premio format) and a bare hex digest.
+        const signature = (request.headers.get("x-app-signature") ?? "")
+          .trim()
+          .replace(/^sha256=/i, "");
         let parsedBody: unknown;
         try {
           parsedBody = JSON.parse(rawBody);
