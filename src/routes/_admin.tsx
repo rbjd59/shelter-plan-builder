@@ -34,6 +34,8 @@ function AdminShell() {
               <Link to="/admin/webhooks" activeProps={{ className: "text-amber-600 font-semibold" }} className="text-slate-700 hover:text-slate-900">Webhooks</Link>
 
               <Link to="/admin/invite-codes" activeProps={{ className: "text-amber-600 font-semibold" }} className="text-slate-700 hover:text-slate-900">Invite codes</Link>
+              <Link to="/admin/app-store" activeProps={{ className: "text-amber-600 font-semibold" }} className="text-slate-700 hover:text-slate-900">App Store</Link>
+              <Link to="/admin/app-release" activeProps={{ className: "text-amber-600 font-semibold" }} className="text-slate-700 hover:text-slate-900">Delivery links</Link>
             </nav>
           </div>
           <button
