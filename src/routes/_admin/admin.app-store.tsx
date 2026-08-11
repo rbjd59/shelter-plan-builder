@@ -195,7 +195,7 @@ function AppStorePage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {buildsQ.data.map((b) => {
+                {buildsQ.data?.map((b) => {
                   const st = statusInfo(b.processingState);
                   return (
                     <tr key={b.id}>
@@ -230,7 +230,7 @@ function AppStorePage() {
                     </tr>
                   );
                 })}
-                {buildsQ.data.length === 0 && (
+                {(buildsQ.data?.length ?? 0) === 0 && (
                   <tr>
                     <td colSpan={6} className="px-3 py-6 text-center text-slate-500">
                       No builds found for this app.

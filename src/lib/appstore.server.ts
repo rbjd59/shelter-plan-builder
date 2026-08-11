@@ -71,13 +71,13 @@ async function createJwt(): Promise<string> {
   const headerB64 = b64urlEncode(new TextEncoder().encode(JSON.stringify(header)));
   const payloadB64 = b64urlEncode(new TextEncoder().encode(JSON.stringify(payload)));
   const signingInput = `${headerB64}.${payloadB64}`;
-  const key = await crypto.subtle.importKey(
-    "pkcs8",
-    pemToBytes(privateKey),
-    { name: "ECDSA", namedCurve: "P-256" },
-    false,
-    ["sign"],
-  );
+  const keyBytes = pemToBytes(privateKey);
+  // Copy into a fresh ArrayBuffer so the type is ArrayBuffer (not ArrayBufferLike).
+  const keyBuf = keyBytes.buffer.slice(
+    keyBytes.byteOffset,
+    keyBytes.byteOffset + keyBytes.byteLength,
+  ) as ArrayBuffer;
+  const key = await crypto.subtle.importKey("pkcs8", keyBuf, { name: "ECDSA", namedCurve: "P-256" }, false, ["sign"]);
   const sig = new Uint8Array(
     await crypto.subtle.sign({ name: "ECDSA", hash: "SHA-256" }, key, new TextEncoder().encode(signingInput)),
   );
