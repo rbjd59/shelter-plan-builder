@@ -1,0 +1,1 @@
+INSERT INTO app_releases (platform, version, testflight_url, is_current, created_by, notes) VALUES ('ios', '0.4.0', 'https://testflight.apple.com/join/eq3PhRha', true, null, 'iOS build 0.4.0 (783255623) external public beta');
