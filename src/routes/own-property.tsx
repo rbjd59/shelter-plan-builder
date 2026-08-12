@@ -208,7 +208,7 @@ function OwnPropertyPage() {
             {t.visit}
           </p>
           <a
-            href="https://www.defendermicasa.com"
+            href={`https://www.defendermicasa.com/?lang=${lang}`}
             target="_blank"
             rel="noopener noreferrer"
             style={{

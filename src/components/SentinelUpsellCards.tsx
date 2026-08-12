@@ -249,7 +249,7 @@ export function SentinelUpsellCards({ intakeSessionId, lang, customerEmail }: {
             {c.trustBlurb}
           </p>
           <a
-            href="https://www.defendermicasa.com"
+            href={`https://www.defendermicasa.com/?lang=${lang}`}
             target="_blank"
             rel="noopener noreferrer"
             style={{
