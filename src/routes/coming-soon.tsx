@@ -1,8 +1,13 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { getDefenderHtml } from "@/lib/defendermicasa-html";
+import { getDefenderHtml, type DefenderLang } from "@/lib/defendermicasa-html";
+import { readSiteLang } from "@/lib/site-lang";
 
 export const Route = createFileRoute("/coming-soon")({
+  validateSearch: (search: Record<string, unknown>): { lang?: DefenderLang } => {
+    const l = search.lang;
+    return l === "es" || l === "en" || l === "ht" ? { lang: l } : {};
+  },
   component: ComingSoonPage,
   head: () => ({
     meta: [
@@ -42,7 +47,20 @@ export const Route = createFileRoute("/coming-soon")({
 
 function ComingSoonPage() {
   const ref = useRef<HTMLDivElement>(null);
-  const html = getDefenderHtml("en");
+  const { lang: urlLang } = Route.useSearch();
+  const [lang, setLang] = useState<DefenderLang>(urlLang ?? "en");
+  const html = getDefenderHtml(lang);
+
+  // Carry the visitor's language across from detenciondefensa.com (?lang=)
+  // or fall back to the site-wide preference stored in the browser.
+  useEffect(() => {
+    const next: DefenderLang = urlLang ?? (readSiteLang() as DefenderLang);
+    setLang(next);
+    document.documentElement.setAttribute("lang", next);
+    try {
+      window.localStorage.setItem("dd_lang", next);
+    } catch { /* storage blocked */ }
+  }, [urlLang]);
 
   useEffect(() => {
     if (!ref.current) return;
