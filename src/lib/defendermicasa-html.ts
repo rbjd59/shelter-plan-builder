@@ -425,7 +425,7 @@ const STYLE = `
 </style>
 `;
 
-const BODY = `
+const BODY_EN = `
 <nav class="nav">
   <div class="logo">
     <span class="logo-mark"></span>
