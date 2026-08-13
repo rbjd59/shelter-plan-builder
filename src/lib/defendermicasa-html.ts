@@ -425,7 +425,7 @@ const STYLE = `
 </style>
 `;
 
-const BODY = `
+const BODY_EN = `
 <nav class="nav">
   <div class="logo">
     <span class="logo-mark"></span>
@@ -551,8 +551,266 @@ const BODY = `
 </footer>
 `;
 
-export function getDefenderHtml(_lang: DefenderLang = "en"): string {
-  return STYLE + BODY;
+const BODY_ES = `
+<nav class="nav">
+  <div class="logo">
+    <span class="logo-mark"></span>
+    <span>Sentinel Trust</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#problem">El problema</a></li>
+    <li><a href="#solution">Nuestro método</a></li>
+    <li><a href="#process">Proceso</a></li>
+    <li><a href="#app">La app</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Consulta →</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-text reveal in">
+    <div class="hero-eyebrow">Próximamente 2027</div>
+    <h1>Cuando usted no pueda estar para <em>proteger lo que construyó</em>, la ley sí puede.</h1>
+    <p class="lede">Para familias que enfrentan detención o deportación, Sentinel Trust establece un vehículo legal que toma custodia de su casa, su vehículo y sus bienes — administrándolos, rentándolos o vendiéndolos según sus instrucciones, esté donde esté en el mundo.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Agendar una consulta <span>→</span></a>
+      <a href="#solution" class="btn-ghost">Cómo funciona</a>
+    </div>
+  </div>
+  <div class="hero-visual reveal in">
+    <div class="doc doc-1">
+      <div class="doc-header">Artículo I — Declaración de fideicomiso</div>
+      <div class="doc-title">Fideicomiso revocable en vida</div>
+      <div class="doc-line"></div><div class="doc-line med"></div><div class="doc-line"></div><div class="doc-line short"></div>
+      <div class="doc-seal">S</div>
+    </div>
+    <div class="doc doc-2">
+      <div class="doc-header">Anexo A — Bienes inmuebles</div>
+      <div class="doc-title">Transferencia de título y escritura</div>
+      <div class="doc-line med"></div><div class="doc-line"></div><div class="doc-line short"></div><div class="doc-line med"></div>
+    </div>
+    <div class="doc doc-3">
+      <div class="doc-header">Anexo C — Protocolo de activación</div>
+      <div class="doc-title">Autorización del fiduciario sucesor</div>
+      <div class="doc-line"></div><div class="doc-line short"></div><div class="doc-line med"></div>
+      <div class="doc-seal">✓</div>
+    </div>
+  </div>
+</section>
+
+<section class="statbar">
+  <div class="stat reveal"><div class="stat-num">5M+</div><div class="stat-label">No ciudadanos que podrían enfrentar deportación en los próximos años</div></div>
+  <div class="stat reveal"><div class="stat-num">∞</div><div class="stat-label">Vehículos abandonados en la carretera cada día durante detenciones</div></div>
+  <div class="stat reveal"><div class="stat-num">3</div><div class="stat-label">Días promedio antes de que una casa sin cuidado corra riesgo real</div></div>
+  <div class="stat reveal"><div class="stat-num">0</div><div class="stat-label">Tolerancia a perder lo que costó décadas construir</div></div>
+</section>
+
+<section class="section" id="problem">
+  <div class="section-header reveal">
+    <div class="section-tag">— 01 / El problema</div>
+    <h2 class="section-title">Un acuerdo de palabra con el vecino <em>no</em> es un plan legal.</h2>
+  </div>
+  <div class="problem-grid">
+    <div class="problem reveal"><div class="problem-num">i.</div><h3>Los poderes notariales suelen fallar</h3><p>Bancos, compañías de títulos y registros del condado con frecuencia se niegan a honrar poderes informales — sobre todo entre estados o después de largas demoras. El documento que parecía protección se vuelve solo papel.</p></div>
+    <div class="problem reveal"><div class="problem-num">ii.</div><h3>La propiedad se apaga rápido</h3><p>La hipoteca cae en mora. El seguro vence. Llegan invasores. Se acumulan gravámenes fiscales. En semanas, décadas de patrimonio pueden evaporarse de una casa que nadie puede administrar legalmente.</p></div>
+    <div class="problem reveal"><div class="problem-num">iii.</div><h3>Los vehículos desaparecen en la grúa</h3><p>Un carro dejado donde ICE hizo la parada se convierte en tarifas de depósito, luego en subasta, luego en el título de un extraño — casi siempre en 30 días. El dueño está en otro país y no tiene forma legal de recuperarlo.</p></div>
+  </div>
+</section>
+
+<section class="section solution" id="solution">
+  <div class="section-header reveal">
+    <div class="section-tag">— 02 / Nuestro método</div>
+    <h2 class="section-title">Una estructura de fideicomiso creada para el momento en que <em>usted no puede actuar.</em></h2>
+  </div>
+  <div class="pillars">
+    <div class="pillar reveal"><div class="pillar-icon">I</div><h3>El fideicomiso revocable en vida</h3><p>Usted mantiene control total mientras esté en el país — comprar, vender, refinanciar, lo que sea. La propiedad se titula al fideicomiso. Un fiduciario sucesor, verificado y afianzado, tiene autoridad en espera que se activa solo con un evento verificado.</p><ul class="pillar-list"><li>Transferencia de bienes inmuebles</li><li>Fiduciario sucesor en espera</li><li>Instrucciones escritas: conservar, rentar o vender</li><li>Envío internacional de fondos</li></ul></div>
+    <div class="pillar reveal"><div class="pillar-icon">II</div><h3>Protocolo de recuperación de vehículos</h3><p>Un poder limitado dedicado, notariado por adelantado, junto con un agente designado y relaciones previas con las redes de depósitos. Su agente recupera el vehículo dentro de los 30 días antes de la subasta.</p><ul class="pillar-list"><li>Autorización vehicular notariada</li><li>Título con transferencia al fallecer, donde exista</li><li>Coordinación con la red de depósitos</li><li>Traspaso de título o venta según su instrucción</li></ul></div>
+    <div class="pillar reveal"><div class="pillar-icon">III</div><h3>Protocolo de activación verificada</h3><p>La autoridad no se transfiere apretando un botón. Se transfiere con verificación certificada — confirmación en el localizador de detenidos de ICE, un período definido sin contacto, declaración familiar y firma del abogado. Las compañías de títulos y los tribunales aceptan la cadena porque la construimos para resistir escrutinio.</p><ul class="pillar-list"><li>Verificación de múltiples fuentes</li><li>Autorización certificada por abogado</li><li>Documentación lista para auditoría</li><li>Reversible si usted regresa</li></ul></div>
+    <div class="pillar reveal"><div class="pillar-icon">IV</div><h3>Distribución transfronteriza</h3><p>Una cuenta fiduciaria administrada por abogados retiene los fondos. El cumplimiento KYC y OFAC está incluido. El dinero le llega en su país de destino por canales autorizados — no por el Venmo de un amigo.</p><ul class="pillar-list"><li>Cuenta fiduciaria tipo IOLTA</li><li>Cumplimiento AML / OFAC</li><li>Transferencia internacional autorizada</li><li>Designación documentada de beneficiarios</li></ul></div>
+  </div>
+</section>
+
+<section class="section" id="process">
+  <div class="section-header reveal">
+    <div class="section-tag">— 03 / Proceso</div>
+    <h2 class="section-title">Cuatro pasos. <em>Una sola vez.</em> Después queda listo por si algún día lo necesita.</h2>
+  </div>
+  <div class="process-steps">
+    <div class="step reveal"><div class="step-num">1</div><h4>Consulta confidencial</h4><p>Una entrevista dirigida por un abogado, en su idioma. Mapeamos sus bienes — casa, vehículos, cuentas — y sus deseos. Sin costo y totalmente privilegiada.</p></div>
+    <div class="step reveal"><div class="step-num">2</div><h4>Preparación de documentos</h4><p>Fideicomiso redactado, escritura preparada, autorizaciones vehiculares notariadas. Beneficiario elegido. Fiduciario sucesor designado. Instrucciones registradas.</p></div>
+    <div class="step reveal"><div class="step-num">3</div><h4>Fondeo y registro</h4><p>Título transferido. Documentos registrados en el condado. App vinculada. Usted recibe una carpeta, una bóveda digital de respaldo y una tarjeta con la línea 24/7.</p></div>
+    <div class="step reveal"><div class="step-num">4</div><h4>En espera. Para siempre, si hace falta.</h4><p>Nada cambia en su día a día. Usted vive su vida. La estructura espera. Si llega el momento, se activa en horas — no en semanas.</p></div>
+  </div>
+</section>
+
+<section class="section trigger" id="app">
+  <div class="trigger-text reveal">
+    <span class="section-tag">— 04 / La app complementaria</span>
+    <h2>Un toque. La cadena <em>comienza.</em></h2>
+    <p>Nuestra app de emergencia ya avisa a su familia si teme una detención. Sentinel Trust extiende esa alerta a la acción legal: notifica al abogado designado, abre la ventana de verificación y arranca el reloj para proteger su propiedad — automáticamente, mientras su familia todavía está llamando a todo el mundo.</p>
+    <p>La app no reemplaza el criterio humano. Activa un protocolo documentado que ejecutan abogados. Por eso resiste en los tribunales.</p>
+    <a href="#contact" class="btn-primary" style="background:var(--accent);">Conecte su app <span>→</span></a>
+  </div>
+  <div class="reveal">
+    <div class="phone-mockup"><div class="phone-screen">
+      <div class="phone-time">9:41</div>
+      <div class="phone-status">● Activo · Protegido</div>
+      <div class="phone-title">Mantenga presionado<br>para alertar</div>
+      <div class="panic-btn">MANTENER<br>PRESIONADO</div>
+      <div class="phone-footer">SENTINEL TRUST · v3</div>
+    </div></div>
+  </div>
+</section>
+
+<section class="cta" id="contact">
+  <div class="cta-eyebrow">— Comenzar</div>
+  <h2>Usted construyó una vida aquí. <em>No la deje al azar.</em></h2>
+  <p>Agende una consulta confidencial con un miembro de nuestro equipo legal. Disponible en inglés, español, criollo haitiano, mandarín y árabe. Sin costo la primera conversación.</p>
+  <a href="mailto:hello@defendermicasa.com" class="cta-btn">Reservar consulta <span>→</span></a>
+</section>
+
+<footer>
+  <div>
+    <div style="margin-bottom:0.6rem;">© 2026 Sentinel Trust · Sitio conceptual para profesionales legales</div>
+    <div style="font-size:0.75rem; opacity:0.6;">Publicidad de abogados. Resultados anteriores no garantizan resultados similares.</div>
+  </div>
+  <div class="languages">EN · ES · HT · ZH · AR</div>
+</footer>
+`;
+
+const BODY_HT = `
+<nav class="nav">
+  <div class="logo">
+    <span class="logo-mark"></span>
+    <span>Sentinel Trust</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#problem">Pwoblèm nan</a></li>
+    <li><a href="#solution">Metòd nou</a></li>
+    <li><a href="#process">Pwosesis</a></li>
+    <li><a href="#app">Aplikasyon an</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Konsiltasyon →</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-text reveal in">
+    <div class="hero-eyebrow">K ap vini 2027</div>
+    <h1>Lè ou pa ka la pou <em>pwoteje sa ou bati</em>, lalwa ka fè l pou ou.</h1>
+    <p class="lede">Pou fanmi k ap fè fas ak detansyon oswa depòtasyon, Sentinel Trust kreye yon zouti legal ki pran gad kay ou, machin ou, ak byen ou yo — jere yo, lwe yo, oswa vann yo dapre enstriksyon ou, kèlkeswa kote ou ye nan mond lan.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Pran yon konsiltasyon <span>→</span></a>
+      <a href="#solution" class="btn-ghost">Kijan li mache</a>
+    </div>
+  </div>
+  <div class="hero-visual reveal in">
+    <div class="doc doc-1">
+      <div class="doc-header">Atik I — Deklarasyon trast</div>
+      <div class="doc-title">Trast revokab pandan lavi</div>
+      <div class="doc-line"></div><div class="doc-line med"></div><div class="doc-line"></div><div class="doc-line short"></div>
+      <div class="doc-seal">S</div>
+    </div>
+    <div class="doc doc-2">
+      <div class="doc-header">Anèks A — Pwopriyete imobilye</div>
+      <div class="doc-title">Transfè tit ak ak vant</div>
+      <div class="doc-line med"></div><div class="doc-line"></div><div class="doc-line short"></div><div class="doc-line med"></div>
+    </div>
+    <div class="doc doc-3">
+      <div class="doc-header">Anèks C — Pwotokòl deklanchman</div>
+      <div class="doc-title">Otorizasyon trustee sikseseur</div>
+      <div class="doc-line"></div><div class="doc-line short"></div><div class="doc-line med"></div>
+      <div class="doc-seal">✓</div>
+    </div>
+  </div>
+</section>
+
+<section class="statbar">
+  <div class="stat reveal"><div class="stat-num">5M+</div><div class="stat-label">Non-sitwayen ki ka fè fas ak depòtasyon nan ane k ap vini yo</div></div>
+  <div class="stat reveal"><div class="stat-num">∞</div><div class="stat-label">Machin abandone bò wout chak jou pandan operasyon detansyon</div></div>
+  <div class="stat reveal"><div class="stat-num">3</div><div class="stat-label">Jou an mwayèn anvan yon kay san moun tonbe nan gwo risk</div></div>
+  <div class="stat reveal"><div class="stat-num">0</div><div class="stat-label">Okenn tolerans pou pèdi sa ou pase dizèn ane ap bati</div></div>
+</section>
+
+<section class="section" id="problem">
+  <div class="section-header reveal">
+    <div class="section-tag">— 01 / Pwoblèm nan</div>
+    <h2 class="section-title">Yon antant bouch ak yon vwazen <em>pa</em> yon plan legal.</h2>
+  </div>
+  <div class="problem-grid">
+    <div class="problem reveal"><div class="problem-num">i.</div><h3>Pwokirasyon souvan echwe</h3><p>Bank, konpayi tit, ak biwo rejis konte souvan refize aksepte pwokirasyon enfòmèl — sitou ant eta oswa apre gwo reta. Dokiman ki te sanble pwoteksyon an tounen senp papye.</p></div>
+    <div class="problem reveal"><div class="problem-num">ii.</div><h3>Pwopriyete a tonbe vit</h3><p>Prè kay la tonbe an reta. Asirans lan ekspire. Skwatè rive. Dèt taks anpile. Nan kèk semèn, dizèn ane ekite ka disparèt nan yon kay pèsonn pa ka jere legalman.</p></div>
+    <div class="problem reveal"><div class="problem-num">iii.</div><h3>Machin yo disparèt nan fouyè</h3><p>Yon machin ou kite kote ICE te rete w vin tounen frè fouyè, apre sa ansiyè, apre sa tit yon etranje — anjeneral nan 30 jou. Mèt la nan yon lòt peyi e li pa gen mwayen legal pou reprann li.</p></div>
+  </div>
+</section>
+
+<section class="section solution" id="solution">
+  <div class="section-header reveal">
+    <div class="section-tag">— 02 / Metòd nou</div>
+    <h2 class="section-title">Yon estrikti trast bati pou moman <em>ou pa ka aji.</em></h2>
+  </div>
+  <div class="pillars">
+    <div class="pillar reveal"><div class="pillar-icon">I</div><h3>Trast revokab pandan lavi</h3><p>Ou kenbe kontwòl total pandan ou nan peyi a — achte, vann, refinanse, tout bagay. Pwopriyete a mete nan non trast la. Yon trustee sikseseur, verifye e garanti, gen otorite an atant ki aktive sèlman lè gen yon evènman verifye.</p><ul class="pillar-list"><li>Transfè pwopriyete imobilye</li><li>Trustee sikseseur an atant</li><li>Enstriksyon ekri: kenbe, lwe, oswa vann</li><li>Voye lajan entènasyonal</li></ul></div>
+    <div class="pillar reveal"><div class="pillar-icon">II</div><h3>Pwotokòl rekiperasyon machin</h3><p>Yon pwokirasyon limite, notarye davans, ansanm ak yon ajan deziyen ak relasyon deja etabli ak rezo fouyè yo. Ajan ou an reprann machin nan anvan 30 jou ansiyè a rive.</p><ul class="pillar-list"><li>Otorizasyon machin notarye</li><li>Tit ak transfè apre lanmò kote sa disponib</li><li>Kowòdinasyon ak rezo fouyè</li><li>Transfè tit oswa vant dapre enstriksyon ou</li></ul></div>
+    <div class="pillar reveal"><div class="pillar-icon">III</div><h3>Pwotokòl deklanchman verifye</h3><p>Otorite pa transfere paske ou peze yon bouton. Li transfere ak verifikasyon sètifye — konfimasyon nan lokalizatè detni ICE, yon peryòd defini san kontak, temwayaj fanmi, siyati avoka. Konpayi tit ak tribinal aksepte chèn nan paske nou bati l pou l kanpe devan egzamen.</p><ul class="pillar-list"><li>Verifikasyon plizyè sous</li><li>Otorizasyon sètifye pa avoka</li><li>Dokimantasyon pare pou odit</li><li>Revèsib si ou retounen</li></ul></div>
+    <div class="pillar reveal"><div class="pillar-icon">IV</div><h3>Distribisyon atravè fwontyè</h3><p>Yon kont trast kliyan avoka jere kenbe lajan an. Konfòmite KYC ak OFAC enkli. Lajan an rive jwenn ou nan peyi destinasyon w atravè kanal otorize — pa sou Venmo yon zanmi.</p><ul class="pillar-list"><li>Kont trast kliyan tip IOLTA</li><li>Konfòmite AML / OFAC</li><li>Transfè entènasyonal otorize</li><li>Deziyasyon benefisyè dokimante</li></ul></div>
+  </div>
+</section>
+
+<section class="section" id="process">
+  <div class="section-header reveal">
+    <div class="section-tag">— 03 / Pwosesis</div>
+    <h2 class="section-title">Kat etap. <em>Yon sèl fwa.</em> Apre sa li la si w ta janm bezwen l.</h2>
+  </div>
+  <div class="process-steps">
+    <div class="step reveal"><div class="step-num">1</div><h4>Konsiltasyon konfidansyèl</h4><p>Yon antrevi avoka dirije, nan lang ou. Nou make byen ou yo — kay, machin, kont — ak volonte w. Gratis e konplètman privilejye.</p></div>
+    <div class="step reveal"><div class="step-num">2</div><h4>Preparasyon dokiman</h4><p>Trast redije, ak vant prepare, otorizasyon machin notarye. Benefisyè chwazi. Trustee sikseseur deziyen. Enstriksyon anrejistre.</p></div>
+    <div class="step reveal"><div class="step-num">3</div><h4>Finansman ak depo</h4><p>Tit transfere. Dokiman depoze nan konte a. Aplikasyon konekte. Ou resevwa yon klasè, yon kòf dijital sekou, ak yon kat ak liy 24/7 la.</p></div>
+    <div class="step reveal"><div class="step-num">4</div><h4>An atant. Pou tout tan si nesesè.</h4><p>Anyen pa chanje nan lavi chak jou. Ou viv lavi w. Estrikti a ap tann. Si moman an rive, li aktive nan kèk èdtan — pa nan semèn.</p></div>
+  </div>
+</section>
+
+<section class="section trigger" id="app">
+  <div class="trigger-text reveal">
+    <span class="section-tag">— 04 / Aplikasyon konpayon an</span>
+    <h2>Yon sèl peze. Chèn nan <em>kòmanse.</em></h2>
+    <p>Aplikasyon dijans nou an deja avèti fanmi w si w pè yon detansyon. Sentinel Trust pouse alèt sa a nan aksyon legal: li avèti avoka deziyen an, louvri fenèt verifikasyon an, e kòmanse revèy la pou pwoteje pwopriyete w — otomatikman, pandan fanmi w toujou ap rele tout moun.</p>
+    <p>Aplikasyon an pa ranplase jijman moun. Li deklanche yon pwotokòl dokimante avoka egzekite. Se sa ki fè li kanpe nan tribinal.</p>
+    <a href="#contact" class="btn-primary" style="background:var(--accent);">Konekte aplikasyon w <span>→</span></a>
+  </div>
+  <div class="reveal">
+    <div class="phone-mockup"><div class="phone-screen">
+      <div class="phone-time">9:41</div>
+      <div class="phone-status">● Aktif · Pwoteje</div>
+      <div class="phone-title">Kenbe peze pou<br>avèti sentinel ou</div>
+      <div class="panic-btn">PEZE<br>&amp; KENBE</div>
+      <div class="phone-footer">SENTINEL TRUST · v3</div>
+    </div></div>
+  </div>
+</section>
+
+<section class="cta" id="contact">
+  <div class="cta-eyebrow">— Kòmanse</div>
+  <h2>Ou bati yon lavi isit la. <em>Pa kite l nan chans.</em></h2>
+  <p>Pran yon konsiltasyon konfidansyèl ak yon manm ekip legal nou an. Disponib an Anglè, Panyòl, Kreyòl Ayisyen, Mandaren, ak Arab. Premye konvèsasyon an gratis.</p>
+  <a href="mailto:hello@defendermicasa.com" class="cta-btn">Rezève yon konsiltasyon <span>→</span></a>
+</section>
+
+<footer>
+  <div>
+    <div style="margin-bottom:0.6rem;">© 2026 Sentinel Trust · Sit konsèp pou pwofesyonèl legal</div>
+    <div style="font-size:0.75rem; opacity:0.6;">Piblisite avoka. Rezilta pase pa garanti menm rezilta.</div>
+  </div>
+  <div class="languages">EN · ES · HT · ZH · AR</div>
+</footer>
+`;
+
+const BODIES: Record<DefenderLang, string> = {
+  en: BODY_EN,
+  es: BODY_ES,
+  ht: BODY_HT,
+};
+
+export function getDefenderHtml(lang: DefenderLang = "en"): string {
+  return STYLE + (BODIES[lang] ?? BODY_EN);
 }
 
 export const DEFENDER_HTML = getDefenderHtml("en");
