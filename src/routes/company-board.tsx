@@ -27,10 +27,6 @@ interface Locate {
   country_of_origin: string | null;
   language: string | null;
   phone: string | null;
-  lat: number | null;
-  lng: number | null;
-  battery_pct: number | null;
-  maps_url: string | null;
 }
 
 interface Row {
@@ -152,28 +148,10 @@ function CompanyBoard({ pin }: { pin: string }) {
                               <Field label="Country of origin" value={r.locate.country_of_origin} />
                               <Field label="Language" value={r.locate.language} />
                               <Field label="Phone" value={r.locate.phone} />
-                              <Field
-                                label="Battery"
-                                value={r.locate.battery_pct != null ? `${r.locate.battery_pct}%` : null}
-                              />
-                              <div>
-                                <dt className="text-slate-500">Last known location</dt>
-                                <dd className="font-medium text-slate-900">
-                                  {r.locate.maps_url ? (
-                                    <a
-                                      href={r.locate.maps_url}
-                                      target="_blank"
-                                      rel="noreferrer"
-                                      className="text-red-700 underline"
-                                    >
-                                      {r.locate.lat}, {r.locate.lng}
-                                    </a>
-                                  ) : (
-                                    "—"
-                                  )}
-                                </dd>
-                              </div>
                             </dl>
+                            <p className="mt-2 text-[11px] text-slate-500">
+                              No location data is collected. The app does not track where anyone is.
+                            </p>
                           </div>
                         </td>
                       </tr>

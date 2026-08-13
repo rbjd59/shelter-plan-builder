@@ -165,22 +165,26 @@ export const Route = createFileRoute("/api/public/app-trigger")({
           return json({ ok: true, cancelled: true });
         }
 
-        const loc = parsed.data.last_known_location;
-        const firstNumber = (...vals: unknown[]) => {
-          for (const v of vals) if (typeof v === "number" && Number.isFinite(v)) return v;
-          return null;
-        };
-        const lat = firstNumber(loc?.lat, parsed.data.lat, parsed.data.latitude);
-        const lng = firstNumber(loc?.lng, parsed.data.lng, parsed.data.longitude);
+        // ZERO-TRACKING: any location fields the app may still send are discarded
+        // here and never persisted, logged, or forwarded.
+        const {
+          lat: _lat,
+          lng: _lng,
+          latitude: _latitude,
+          longitude: _longitude,
+          last_known_location: _loc,
+          battery_pct: _battery,
+          ...safePayload
+        } = parsed.data as Record<string, unknown>;
 
         const { data: alertId, error: alertError } = await supabaseAdmin.rpc(
           "record_sos_alert" as never,
           {
             _token: caseId,
-            _lat: lat,
-            _lng: lng,
-            _battery_pct: parsed.data.battery_pct ?? null,
-            _payload: { ...parsed.data, case_id: caseId, source: "primo_app_trigger" },
+            _lat: null,
+            _lng: null,
+            _battery_pct: null,
+            _payload: { ...safePayload, case_id: caseId, source: "primo_app_trigger" },
           } as never,
         );
 
@@ -193,21 +197,16 @@ export const Route = createFileRoute("/api/public/app-trigger")({
           alert_id: alertId,
           case_id: caseId,
           triggered_at: parsed.data.triggered_at ?? null,
-          has_location: !!parsed.data.last_known_location,
+          location_collected: false,
         });
 
         // SMS fan-out to all client_contacts (mirrors the intake fire path).
         try {
           const { sendSosSmsToContacts } = await import("@/lib/twilio-sms.server");
-          const mapsUrl =
-            lat != null && lng != null
-              ? `https://maps.google.com/?q=${lat},${lng}`
-              : null;
           const smsResult = await sendSosSmsToContacts({
             token: caseId,
             clientName,
             kind: "alert",
-            mapsUrl,
             activationId: alertId as string | null,
           });
           console.log("[app-trigger] alert sms fan-out", smsResult);
@@ -226,11 +225,7 @@ export const Route = createFileRoute("/api/public/app-trigger")({
           full_name: clientName,
           contact_email: clientRow?.email ?? null,
           contact_phone: clientRow?.phone_e164 ?? null,
-          gps_lat: lat,
-          gps_lng: lng,
-          gps_raw: loc ?? null,
-          arrest_location_hint: parsed.data.arrest_location_hint ?? null,
-          battery_pct: parsed.data.battery_pct ?? null,
+          location_collected: false,
           triggered_at: parsed.data.triggered_at ?? new Date().toISOString(),
           fired_at: new Date().toISOString(),
         });
