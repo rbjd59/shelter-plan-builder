@@ -32,7 +32,7 @@ export const pinListCompanyBoard = createServerFn({ method: "POST" })
       supabaseAdmin
         .from("client_sos_alerts")
         .select(
-          "id, client_id, triggered_at, cancelled_at, lat, lng, battery_pct, app_reported_name, app_reported_a_number, app_reported_place_of_birth, app_reported_date_of_birth",
+          "id, client_id, triggered_at, cancelled_at, app_reported_name, app_reported_a_number, app_reported_place_of_birth, app_reported_date_of_birth",
         )
         .order("triggered_at", { ascending: false })
         .limit(500),
@@ -90,13 +90,6 @@ export const pinListCompanyBoard = createServerFn({ method: "POST" })
               country_of_origin: info?.country_of_origin ?? null,
               language: info?.language ?? null,
               phone: info?.phone_e164 ?? null,
-              lat: alert.lat ?? null,
-              lng: alert.lng ?? null,
-              battery_pct: alert.battery_pct ?? null,
-              maps_url:
-                alert.lat != null && alert.lng != null
-                  ? `https://maps.google.com/?q=${alert.lat},${alert.lng}`
-                  : null,
             }
           : null,
       };

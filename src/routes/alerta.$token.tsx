@@ -15,7 +15,7 @@ export const Route = createFileRoute("/alerta/$token")({
 type Bundle = {
   client_name: string | null;
   language: string;
-  latest_alert: { id: string; triggered_at: string; cancelled_at: string | null; lat: number | null; lng: number | null } | null;
+  latest_alert: { id: string; triggered_at: string; cancelled_at: string | null } | null;
   documents: { id: string; title: string; content: string; document_type: string }[];
 };
 
@@ -58,14 +58,9 @@ function AlertViewer() {
             {alert.cancelled_at && (
               <p style={{ margin: "4px 0", color: "#059669" }}><strong>Cancelada:</strong> {new Date(alert.cancelled_at).toLocaleString()}</p>
             )}
-            {alert.lat && alert.lng && (
-              <p style={{ margin: "4px 0" }}>
-                <strong>Ubicación:</strong>{" "}
-                <a href={`https://maps.google.com/?q=${alert.lat},${alert.lng}`} target="_blank" rel="noreferrer" style={{ color: "#b91c1c" }}>
-                  {alert.lat.toFixed(5)}, {alert.lng.toFixed(5)} — abrir en Maps
-                </a>
-              </p>
-            )}
+            <p style={{ margin: "4px 0", color: "#666", fontSize: 13 }}>
+              Esta aplicación no rastrea su ubicación. No se registra ni se comparte ningún dato de GPS.
+            </p>
           </div>
         )}
 
