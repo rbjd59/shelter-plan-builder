@@ -1,138 +1,95 @@
-# Launch Readiness Plan — DetencionDefensa + Primo App
+# Splitting the Firm backend off DetencionDefensa ("ICE-proof" architecture)
 
-Everything remaining to (1) finish the product, (2) get the phone app into the App Store and Play Store, and (3) be safe to point a radio ad at the phone number / URL.
+## Short answers first
 
----
+**Do you need a separate domain for Sorrentino?**
+Yes — a real one, owned and paid for by the firm. Not a subdomain of detenciondefensa.com. A subdomain implies shared control and undercuts the "separate custodian" story. Recommended: `sorrentinolawpllc.com` (or `sorrentinolaw.app`), with the client-facing endpoint at `app.sorrentinolawpllc.com`.
 
-## 1. Product completion (web + backend)
+**Where does it get parked?**
+A second, standalone Lovable project ("Firm Vault") with its own Cloud database, its own service-role key, its own admin login list, and the firm's domain attached. DetencionDefensa never receives credentials to it. Registrar + billing in the firm's name.
 
-### 1a. Qualify → Intake → Pay
-- [ ] Walk qualify wizard EN / ES / HT with 3 test households (qualifies, reduced-cost 10% off, does-not-qualify). Confirm the 10% discount actually applies at Stripe checkout.
-- [ ] Step 2 ID verification: run one full Stripe Identity session end-to-end (phone SMS link, license front/back, selfie, webhook flips `status` to `verified`).
-- [ ] Step 2 document uploads: upload one church letter + one income doc for each of the three doc types (pay stub, tax return, benefits letter). Confirm they land in the `qualify-docs` private bucket and are visible in the admin console.
-- [ ] Intake draft autosave: leave mid-form on each step, come back, resume.
-- [ ] A-number / phone / email validation errors read correctly in all three languages.
+**Who owns what after the split**
 
-### 1b. Payment + activation
-- [ ] Switch Stripe from sandbox to live keys, run one $1 live test on a real card, refund it.
-- [ ] Confirm webhook `/api/public/payments/webhook` in **live mode** creates the activation code and `app_clients` row.
-- [ ] Welcome email fires in the client's chosen language only; no attorney / company / emergency-contact emails on activation (those are SOS-only).
-- [ ] Client SMS confirmation fires with correct 8-char invite code.
+| | DetencionDefensa (Company) | Sorrentino Law Firm (Firm Vault) |
+|---|---|---|
+| Intake form UI | yes (transient) | no |
+| Client PII at rest | **none** | yes — system of record |
+| Generated legal documents | none after handoff | yes |
+| Emergency contacts | none | yes |
+| Activation code | yes (bare code + timestamps) | yes |
+| SOS trigger receipt | relay only | yes |
+| Locate packet during a live trigger | pulled on demand, not stored | yes |
+| Play/App Store developer account | no | yes — publish under the firm |
 
-### 1c. `/configurar` setup hub (5 steps)
-- [ ] Magic-link email → OTP → `/configurar/dashboard` works on iPhone Safari and Android Chrome.
-- [ ] Profile / Contacts (up to 8) / Documents / Pets / PIN — every field saves on blur, progress checkmarks correct.
-- [ ] After setup, entering the activation code in the native app pulls everything down via `get_client_bundle` with no re-entry.
+## How it works end to end
 
-### 1d. SOS end-to-end
-- [ ] Trigger from phone → `emergency_activations` row → email + SMS fan-out to all contacts + attorney.
-- [ ] Correct PIN cancels; wrong PIN does not.
-- [ ] Emergency emails include Habeas + POA + Pet Plan PDFs as attachments (not inline `<pre>`).
-- [ ] `/alerta/$token` renders in recipient's language.
+```text
+1. Client fills intake on detenciondefensa.com
+   -> written to a STAGING table with a hard TTL (minutes)
+2. Company generates the document set from staging
+3. Company POSTs {profile, contacts, documents} to the Firm Vault
+   over HTTPS with an HMAC-signed body; Vault returns activation_code
+4. Company HARD PURGES staging row + documents.
+   Retains only: activation_code, created_at, plan flags.
+5. Firm Vault emails the client: activation code + app download link
+   (link lives on the firm's domain)
+6. Phone triggers SOS -> phone posts DIRECTLY to Firm Vault
+   (Company is not in the path and cannot log it)
+7. Firm Vault notifies legal@ + family contacts
+8. Company board polls Vault: "is code X live?"
+   - not live -> code + timestamps only
+   - live    -> Vault returns an ephemeral locate packet (name, A-number,
+     DOB, POB, phone) held in memory for the board render, never written
+```
 
-### 1e. Role isolation & security
-- [ ] Log in as attorney role, company role, admin role — confirm each sees only their scope.
-- [ ] Run `security--run_security_scan`, resolve any critical findings.
-- [ ] Confirm every `public.*` table has `GRANT`s matching its RLS policies.
+GPS is removed everywhere — app, payloads, emails, boards, and copy.
 
----
+## Build steps
 
-## 2. App Store (iOS) submission
+**Phase 1 — Firm Vault project (new Lovable project)**
+1. Create the project under the firm's account; attach the firm domain.
+2. Schema: `clients`, `client_contacts`, `client_documents`, `sos_alerts`, `intake_receipts`, `audit_log`. RLS on all; firm-role only.
+3. Inbound endpoints (all HMAC-verified, under `/api/public/`):
+   - `POST /api/public/vault/ingest` — accepts the full case bundle from DD, mints/accepts the activation code.
+   - `POST /api/public/vault/trigger` — SOS fire/cancel straight from the phone.
+   - `POST /api/public/vault/sync-contacts` — contact edits from the phone.
+   - `POST /api/public/vault/status` — DD board asks about one activation code; returns code-only unless a trigger is live.
+4. Firm board UI: queue, case folder, document preview/download, alert log.
+5. Notification fan-out (email + SMS) moves here.
 
-The phone app is a Capacitor build wrapping the same activation-code + SOS flow. To get it into TestFlight → App Store:
+**Phase 2 — DetencionDefensa changes**
+6. Convert intake writes to a `intake_staging` table with a purge job.
+7. New handoff server function: build docs -> POST to Vault -> verify 200 -> delete staging + documents in the same transaction.
+8. Strip PII columns from `app_clients`; keep `invite_token`, timestamps, status.
+9. Attorney board on DD becomes a thin proxy to the Vault (or is removed entirely — recommended: removed, the firm uses its own board).
+10. Company board reads from `/vault/status` instead of the local DB.
+11. Remove GPS capture, storage, display, and email lines.
+12. Delete residual PII: purge existing rows from `app_clients`, `client_contacts`, `client_documents`, `client_sos_alerts`, and the storage buckets holding intake artifacts.
 
-- [ ] Apple Developer Program enrollment ($99/yr) — confirm active, D-U-N-S if org account.
-- [ ] Bundle ID registered (`com.detenciondefensa.primo` or similar), App ID + push cert configured.
-- [ ] App Store Connect record created: name, subtitle, category (Utilities or Medical), age rating, primary language = Spanish.
-- [ ] Screenshots at required sizes (6.7", 6.5", 5.5" iPhone), EN + ES + HT.
-- [ ] App icon 1024×1024, no alpha.
-- [ ] Privacy nutrition labels — declare: location (SOS), contacts (emergency contacts), user content (docs), identifiers (device ID for push).
-- [ ] Privacy policy URL (already at `/privacy`) + support URL (`/support`) + marketing URL.
-- [ ] Data-safety declaration for background location + SMS-adjacent behavior.
-- [ ] Sign-in with Apple — required if any social login is offered; add it or remove Google-only.
-- [ ] Export compliance answer (uses HTTPS only → standard exemption).
-- [ ] TestFlight internal build → external build with 5+ real testers running through: install → enter code → configure → fire SOS → cancel with PIN.
-- [ ] App Review notes: include a demo activation code + demo PIN + explanation of the emergency use case (reviewers reject unexplained SOS/location apps).
-- [ ] Submit to review. Budget 3–7 days, plan for one rejection round.
+**Phase 3 — Distribution moves to the firm**
+13. Apple Developer + Google Play accounts under Sorrentino Law Firm PLLC; Premio rebuilds with the firm's signing identity and bundle ID.
+14. Android APK download link served from the firm's domain.
+15. TestFlight link re-issued under the firm account.
 
----
+**Phase 4 — Copy and legal**
+16. Rewrite privacy/security/FAQ pages with the zero-retention, privilege, and no-tracking claims (drafted below), in EN/ES/HT.
+17. Engagement letter adds the company as the firm's disclosed agent for intake, so privilege attaches to the intake channel.
 
-## 3. Play Store (Android) submission
+## Copy to add (defensible wording)
 
-Right now Android is a signed APK direct-download at `/api/public/app/latest.apk`. To be radio-safe we need Play Store listing (users will search, not type URLs).
+- **Zero-retention:** "DetencionDefensa does not keep your file. Your information is transmitted to Sorrentino Law Firm PLLC and deleted from our systems. All we retain is your activation code."
+- **Privilege:** "Your intake is collected for Sorrentino Law Firm PLLC as its agent, and is held by the firm as attorney-client privileged material."
+- **No tracking:** "The app does not track your location. It does not report where you are, ever. It only sends the alert you choose to send."
 
-- [ ] Google Play Console account ($25 one-time), D-U-N-S if org.
-- [ ] Convert APK build to AAB (Android App Bundle) — Play requires AAB.
-- [ ] Package name locked (`com.detenciondefensa.primo`).
-- [ ] Play Console listing: title, short + long description EN/ES/HT, feature graphic 1024×500, phone screenshots, category = Communication or Medical.
-- [ ] Data safety form: location, contacts, personal info, financial info (if income docs).
-- [ ] Sensitive permissions declarations:
-  - Foreground service (SOS) — justify use case
-  - SMS permission (if used) — high-scrutiny, may need to remove or use RCS/notifications instead
-  - Background location — justify with screen recording
-- [ ] Target SDK current (34+ as of 2026).
-- [ ] Internal testing track → closed testing (20 testers, 14 days) → production. Google now requires the 20-tester / 14-day closed test before first production release.
-- [ ] Keep the direct-APK download live at `/get-app` for users on non-Play devices (Huawei, sideload).
+Avoid absolutes like "guaranteed" and "ICE cannot access" — say what the system does, not what a court will do.
 
----
+## Technical notes
 
-## 4. Radio-ad readiness
+- Shared secret `VAULT_HMAC_SECRET` on both sides; body-signed SHA-256, replay window on `timestamp`.
+- The Vault's service-role key never leaves the Vault project.
+- `/vault/status` responses for non-live codes must be byte-identical in shape to live ones minus the packet, so response size doesn't leak state.
+- Purge on the DD side runs inside the same server function as the successful handoff, plus a nightly sweeper for orphans.
 
-A radio spot drives spikes of low-context, Spanish-first, phone-in-hand traffic. Every failure mode gets amplified.
+## First decision needed
 
-### 4a. Capacity & reliability
-- [ ] Load-test `/qualify`, `/intake`, `/checkout`, `/get-app`, `/api/public/payments/webhook` at 50 req/s for 5 min. Watch Cloud instance size — upgrade if we see timeouts.
-- [ ] Confirm Cloudflare Worker cold-start is acceptable on the SOS trigger path.
-- [ ] Twilio A2P 10DLC campaign approved for the expected daily SMS volume; request higher throughput if radio market > 100k listeners.
-- [ ] Resend/email domain warmed; SPF/DKIM/DMARC all green; monitor bounce rate < 2%.
-- [ ] Stripe live-mode rate limits and radar rules tuned (expect fraud attempts on a phone-in payment page).
-
-### 4b. Attribution & analytics
-- [ ] Vanity URL per market (e.g. `detenciondefensa.com/radio` or `/miami`, `/orlando`) 302 → `/qualify?utm_source=radio&utm_campaign=<market>`.
-- [ ] Server-side event logging on qualify start, qualify complete, checkout start, checkout success, activation, install.
-- [ ] Daily funnel dashboard (admin console) so we see drop-off within 24h of a spot airing.
-
-### 4c. Phone number
-- [ ] Decide: do we advertise a phone number or a URL? If phone, provision a tracked Twilio number per market that forwards to the intake team, records call, transcribes.
-- [ ] Voicemail greeting in Spanish first, English second, Creole third, with the website URL spoken clearly.
-- [ ] After-hours: SMS auto-reply with the qualify link.
-
-### 4d. Content & compliance
-- [ ] Radio script legal review (no unauthorized practice of law claims, FL Bar 4-7 advertising rules if Sorrentino firm branding is on air).
-- [ ] Spanish + Haitian Creole voiceovers cut, 30s and 60s versions.
-- [ ] Required disclaimers recorded (attorney advertising, results not guaranteed, fee separation).
-- [ ] File the radio copy with FL Bar advertising review if firm is named.
-
-### 4e. Support surge plan
-- [ ] Staff schedule for the 2h after each ad airs — someone watching admin console, Resend, Twilio for failures.
-- [ ] Prewritten SMS templates for the top 5 confused-user cases ("I paid but no app," "code doesn't work," "phone won't install").
-- [ ] Escalation path to attorney on-call for real SOS events during the campaign.
-
----
-
-## 5. Legal & business gates
-
-- [ ] SEC scope-of-work document delivered (already generated at `/mnt/documents/detenciondefensa-scope-inventory.md`) — send to independent contractor for bid.
-- [ ] Fee-separation ledger (client-facing charges vs firm-facing charges) reviewed by outside counsel for FL Bar 4-5.4 compliance.
-- [ ] Terms of Service, Privacy Policy, SMS Terms — final legal sign-off, dated, versioned.
-- [ ] Insurance: E&O / cyber liability policy in force before radio launch.
-- [ ] Data retention + deletion policy documented (GDPR-style even though FL — good hygiene).
-
----
-
-## 6. Suggested sequence (fastest path)
-
-1. **Week 1**: Finish product completion (Section 1). Freeze feature scope.
-2. **Week 2**: Submit iOS to TestFlight external (Section 2), start Play Store closed testing (Section 3). These run in parallel and both have mandatory waiting periods.
-3. **Week 3**: Live Stripe test, load test, analytics wiring, support playbook (Section 4a–4b, 4e).
-4. **Week 4**: Record radio spots, legal review, phone tree (Section 4c–4d, Section 5).
-5. **Week 5**: iOS approved + Play Store production live → begin radio in one small market first, watch dashboards for 72h, then scale.
-
----
-
-## What I need from you to start
-
-1. Which store first — iOS, Android, or both parallel?
-2. Which market(s) will the radio ads run in? (drives Twilio numbers and vanity URLs)
-3. Is Sorrentino the named firm on the ad, or is it company-branded only? (drives FL Bar review path)
-4. Approve this plan and I'll start on Section 1 in the next turn.
+Confirm the firm domain name to register, and whether the DD attorney board should be removed outright or kept as a read-only proxy. I'll start Phase 1 as soon as the Vault project exists.
