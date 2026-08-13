@@ -197,21 +197,16 @@ export const Route = createFileRoute("/api/public/app-trigger")({
           alert_id: alertId,
           case_id: caseId,
           triggered_at: parsed.data.triggered_at ?? null,
-          has_location: !!parsed.data.last_known_location,
+          location_collected: false,
         });
 
         // SMS fan-out to all client_contacts (mirrors the intake fire path).
         try {
           const { sendSosSmsToContacts } = await import("@/lib/twilio-sms.server");
-          const mapsUrl =
-            lat != null && lng != null
-              ? `https://maps.google.com/?q=${lat},${lng}`
-              : null;
           const smsResult = await sendSosSmsToContacts({
             token: caseId,
             clientName,
             kind: "alert",
-            mapsUrl,
             activationId: alertId as string | null,
           });
           console.log("[app-trigger] alert sms fan-out", smsResult);
