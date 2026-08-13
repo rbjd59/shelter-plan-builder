@@ -114,6 +114,7 @@ export async function sendSosSmsToContacts(opts: {
   token: string;         // 8-char invite_token
   clientName: string | null;
   kind: "alert" | "cancel";
+  /** @deprecated location is no longer collected; accepted and ignored. */
   mapsUrl?: string | null;
   activationId?: string | null;
 }): Promise<{ sent: number; failed: number; skipped: number }> {
@@ -143,7 +144,7 @@ export async function sendSosSmsToContacts(opts: {
   const clientName = opts.clientName ?? c.full_name ?? "Your contact";
   const body =
     opts.kind === "alert"
-      ? `ALERT: ${clientName} has triggered their DetencionDefensa emergency app and may have been detained by ICE or police. Their attorney and family have been notified.${opts.mapsUrl ? ` Location: ${opts.mapsUrl}` : ""} — DetencionDefensa`
+      ? `ALERT: ${clientName} has triggered their DetencionDefensa emergency app and may have been detained by ICE or police. Their attorney and family have been notified. — DetencionDefensa`
       : `CANCELLED — FALSE ALARM: ${clientName} has CANCELLED the earlier DetencionDefensa emergency alert. ${clientName} is OK. No action is needed. — DetencionDefensa`;
 
   let sent = 0;
