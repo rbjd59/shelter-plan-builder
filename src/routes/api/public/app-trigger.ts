@@ -225,11 +225,7 @@ export const Route = createFileRoute("/api/public/app-trigger")({
           full_name: clientName,
           contact_email: clientRow?.email ?? null,
           contact_phone: clientRow?.phone_e164 ?? null,
-          gps_lat: lat,
-          gps_lng: lng,
-          gps_raw: loc ?? null,
-          arrest_location_hint: parsed.data.arrest_location_hint ?? null,
-          battery_pct: parsed.data.battery_pct ?? null,
+          location_collected: false,
           triggered_at: parsed.data.triggered_at ?? new Date().toISOString(),
           fired_at: new Date().toISOString(),
         });
