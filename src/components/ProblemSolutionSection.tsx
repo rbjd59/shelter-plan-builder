@@ -3,7 +3,7 @@ import { useLang, type Lang } from "@/context/LanguageContext";
 
 const withLang = (url: string, lang: Lang) => {
   const sep = url.includes("?") ? "&" : "?";
-  return `${url}${sep}lang=${lang}`;
+  return `${url}${sep}lang=${lang}&hl=${lang}#lang=${lang}`;
 };
 
 const pillStyle: React.CSSProperties = {
@@ -21,7 +21,7 @@ const pillStyle: React.CSSProperties = {
 
 function SaveMyHomeButton({ tld = "com", lang }: { tld?: "com" | "io"; lang: Lang }) {
   return (
-    <a href={withLang(`https://savemyhometrust.${tld}`, lang)} target="_blank" rel="noopener noreferrer" style={pillStyle}>
+    <a href={withLang(`https://savemyhometrust.${tld}/trust`, lang)} target="_blank" rel="noopener noreferrer" style={pillStyle}>
       SaveMyHomeTrust.{tld} →
     </a>
   );

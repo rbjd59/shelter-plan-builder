@@ -157,7 +157,7 @@ export default function AdVideoSection() {
           }}
         >
           <a
-            href={`https://savemyhometrust.com/?lang=${lang}`}
+            href={`https://savemyhometrust.com/trust?lang=${lang}&hl=${lang}#lang=${lang}`}
             target="_blank"
             rel="noopener noreferrer"
             style={{
