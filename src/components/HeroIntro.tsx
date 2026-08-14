@@ -66,7 +66,7 @@ const COPY = {
     homeBoxHeading: "Pwoteje kay ou",
     homeBoxBody: "Pwoteksyon fidisyè ki ba pri ki fèt pa yon avoka pou pwoteje kay ou.",
     disclaimer:
-      "DetencionDefensa.com ofri lojisyèl admisyon ki an sekirite, tradiksyon, ak sèvis preparasyon dokiman otomatik. Nou pa yon kabinè avoka e nou pa bay konsèy legal.",
+      "Se Sorrentino Law Firm PLLC k ap opere sit sa a anba yon lisans DetencionDefensa.com, Inc. bay. DetencionDefensa.com, Inc. se sèlman devlopè teknoloji a ak operatè sit la; Kabinè a gen kontwòl total sou tout sèvis legal, konsèy legal, ak kontni legal.",
   },
 } satisfies Record<
   Lang,
