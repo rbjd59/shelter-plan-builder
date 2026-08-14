@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { FIRM, COMPANY } from "@/lib/firm-info";
 import { useLang } from "@/context/LanguageContext";
+import { PRIVILEGE_NOTICE, type DiscLang } from "@/lib/operating-disclosure";
 import StaffAccessTile from "@/components/StaffAccessPinBox";
 
 /**
@@ -51,6 +52,10 @@ export function LegalDisclaimerFooter() {
         </div>
 
         <p style={{ margin: 0, color: "#d4d4d8" }}>{t.licenseNotice}</p>
+
+        <p style={{ margin: 0, color: "#d4d4d8", borderLeft: `3px solid ${FIRM.accentColor}`, paddingLeft: 12 }}>
+          {PRIVILEGE_NOTICE[(lang as DiscLang)] ?? PRIVILEGE_NOTICE.en}
+        </p>
 
         <p style={{ margin: 0, color: "#a1a1aa", fontSize: 11 }}>{t.adNotice}</p>
 

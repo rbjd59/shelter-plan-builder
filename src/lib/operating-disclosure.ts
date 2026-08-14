@@ -42,3 +42,17 @@ export const ROLE_NOTICE: Record<DiscLang, string> = {
   es: "DetencionDefensa.com, Inc. provee el software de admisión, la traducción, la mecanografía, el armado de documentos, la entrega segura y la aplicación de emergencia. No es una firma de abogados y no brinda asesoramiento legal. Cada documento es revisado por Sorrentino Law Firm PLLC, que opera este sitio bajo licencia y es la única responsable del trabajo legal.",
   ht: "DetencionDefensa.com, Inc. bay lojisyèl admisyon an, tradiksyon, daktilografi, asanblaj dokiman, livrezon an sekirite, ak aplikasyon dijans lan. Li pa yon kabinè avoka epi li pa bay konsèy legal. Sorrentino Law Firm PLLC revize chak dokiman; se li k ap opere sit sa a anba lisans epi se li sèl ki responsab travay legal la.",
 };
+
+/** Short heading for the privilege panel. */
+export const PRIVILEGE_HEADING: Record<DiscLang, string> = {
+  en: "Attorney-Client Privilege Protected",
+  es: "Protegido por el privilegio abogado-cliente",
+  ht: "Pwoteje pa privilèj avoka-kliyan",
+};
+
+/** Accurate scope limit so the privilege claim is never overstated. */
+export const PRIVILEGE_SCOPE: Record<DiscLang, string> = {
+  en: "This protection covers the confidential case information you send through intake, the emergency app, and messages about your matter. It does not cover public browsing of marketing pages, and privilege can be lost if you share the same information with someone outside the Firm's team.",
+  es: "Esta protección cubre la información confidencial de su caso que envía por el formulario de admisión, la aplicación de emergencia y los mensajes sobre su asunto. No cubre la navegación pública de las páginas informativas, y el privilegio puede perderse si comparte la misma información con alguien fuera del equipo de la Firma.",
+  ht: "Pwoteksyon sa a kouvri enfòmasyon konfidansyèl dosye w voye nan fòm admisyon an, aplikasyon dijans lan, ak mesaj sou dosye w. Li pa kouvri navigasyon piblik sou paj piblisite yo, epi privilèj la ka pèdi si w pataje menm enfòmasyon an ak yon moun deyò ekip Kabinè a.",
+};

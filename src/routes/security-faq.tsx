@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useLang, type Lang } from "@/context/LanguageContext";
 import logoAsset from "@/assets/dd-logo.png.asset.json";
+import { PrivilegeNotice } from "@/components/PrivilegeNotice";
 
 type Copy = {
   heading: string;
@@ -305,6 +306,8 @@ function SecurityFaqPage() {
         >
           {t.intro}
         </p>
+
+        <PrivilegeNotice />
 
         <h2
           style={{

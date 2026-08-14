@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { PrivilegeNotice } from "@/components/PrivilegeNotice";
 import { useEffect, useState, useMemo, useRef } from "react";
 import { z } from "zod";
 import { useServerFn } from "@tanstack/react-start";
@@ -652,6 +653,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
         <div style={{ background: "#3a2a00", border: "1px solid #e8a04a", padding: 14, borderRadius: 4, marginBottom: 16, fontSize: 14, lineHeight: 1.5, color: "#fff5d6" }}>
           <strong>⚠ {ui.upl}</strong>
         </div>
+        <PrivilegeNotice lang={L as "en" | "es" | "ht"} />
         <AuthSaveBar lang={L} user={user} onAuthChange={setUser} />
         <form onSubmit={handleSubmit}>
           {sections.map((s) => {

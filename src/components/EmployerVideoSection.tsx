@@ -31,9 +31,9 @@ const CTA: Record<string, string> = {
 };
 
 const DISCLAIMER: Record<string, string> = {
-  en: "This video is an advertisement. Every case can be handled independently, and the outcome is not guaranteed.",
-  es: "Este video es un anuncio publicitario. Cada caso se maneja de manera independiente y el resultado no está garantizado.",
-  ht: "Videyo sa a se yon piblisite. Chak ka jere endepandamman, e rezilta a pa garanti.",
+  en: "This video is a paid advertisement. Every case can be handled independently, and the outcome is not guaranteed.",
+  es: "Este video es un anuncio pagado. Cada caso se maneja de manera independiente y el resultado no está garantizado.",
+  ht: "Videyo sa a se yon piblisite peye. Chak ka jere endepandamman, e rezilta a pa garanti.",
 };
 
 export default function EmployerVideoSection() {
