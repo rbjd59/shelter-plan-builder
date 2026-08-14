@@ -350,7 +350,7 @@ function AppStorePage() {
                             onClick={() =>
                               setConfirmVersion({
                                 buildId: b.id,
-                                buildVersion: b.buildVersion,
+                                buildNumber: b.buildNumber,
                                 versionString: b.version,
                               })
                             }
