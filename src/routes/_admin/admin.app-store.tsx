@@ -10,6 +10,11 @@ import {
   appStoreAddBuildToGroup,
   appStoreSubmitForReview,
   appStoreCredStatus,
+  appStoreExpireBuild,
+  appStoreSetWhatToTest,
+  appStoreListTesters,
+  appStoreInviteTesters,
+  appStoreRemoveTester,
 } from "@/lib/appstore.functions";
 
 export const Route = createFileRoute("/_admin/admin/app-store")({
@@ -48,6 +53,11 @@ function AppStorePage() {
   const addToGroup = useServerFn(appStoreAddBuildToGroup);
   const submitForReviewFn = useServerFn(appStoreSubmitForReview);
   const credStatusFn = useServerFn(appStoreCredStatus);
+  const expireBuildFn = useServerFn(appStoreExpireBuild);
+  const setNotesFn = useServerFn(appStoreSetWhatToTest);
+  const listTestersFn = useServerFn(appStoreListTesters);
+  const inviteTestersFn = useServerFn(appStoreInviteTesters);
+  const removeTesterFn = useServerFn(appStoreRemoveTester);
 
   const [appId, setAppId] = useState<string | null>(null);
   const [groupId, setGroupId] = useState<string>("");
@@ -62,6 +72,12 @@ function AppStorePage() {
   const [replaceExisting, setReplaceExisting] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
+  const [expiring, setExpiring] = useState<string | null>(null);
+  const [notesBuild, setNotesBuild] = useState<string>("");
+  const [notes, setNotes] = useState<string>("");
+  const [savingNotes, setSavingNotes] = useState(false);
+  const [testerText, setTesterText] = useState("");
+  const [inviting, setInviting] = useState(false);
 
   const appsQ = useQuery({ queryKey: ["asc-apps"], queryFn: () => listAppsFn() });
   const credQ = useQuery({ queryKey: ["asc-creds"], queryFn: () => credStatusFn() });
@@ -111,6 +127,104 @@ function AppStorePage() {
 
   const selectedAppInfo = appsQ.data?.find((a) => a.id === selectedApp);
 
+  const testersQ = useQuery({
+    queryKey: ["asc-testers", targetGroup],
+    queryFn: () =>
+      targetGroup ? listTestersFn({ data: { groupId: targetGroup } }) : Promise.resolve([]),
+    enabled: !!targetGroup,
+  });
+
+  const expire = async (buildId: string) => {
+    if (!confirm("Expire this build? Testers will no longer be able to install it.")) return;
+    setExpiring(buildId);
+    setErr(null);
+    setMsg(null);
+    try {
+      await expireBuildFn({ data: { buildId } });
+      setMsg("Build expired.");
+      buildsQ.refetch();
+    } catch (e) {
+      setErr((e as Error).message);
+    } finally {
+      setExpiring(null);
+    }
+  };
+
+  const saveNotes = async () => {
+    const buildId = notesBuild || buildsQ.data?.[0]?.id || "";
+    if (!buildId || !notes.trim()) {
+      setErr("Pick a build and write release notes first.");
+      return;
+    }
+    setSavingNotes(true);
+    setErr(null);
+    setMsg(null);
+    try {
+      await setNotesFn({ data: { buildId, whatsNew: notes.trim() } });
+      setMsg("Release notes saved to TestFlight (\u201cWhat to Test\u201d).");
+    } catch (e) {
+      setErr((e as Error).message);
+    } finally {
+      setSavingNotes(false);
+    }
+  };
+
+  const parseTesters = (text: string) =>
+    text
+      .split(/[\n,;]+/)
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .map((line) => {
+        const parts = line.split(/\s+/);
+        const email = parts.find((p) => p.includes("@")) ?? "";
+        const names = parts.filter((p) => !p.includes("@"));
+        return { email, firstName: names[0], lastName: names.slice(1).join(" ") || undefined };
+      })
+      .filter((t) => t.email.includes("@"));
+
+  const inviteTesters = async () => {
+    if (!targetGroup) {
+      setErr("No external TestFlight group selected.");
+      return;
+    }
+    const testers = parseTesters(testerText);
+    if (testers.length === 0) {
+      setErr("Enter at least one valid email address.");
+      return;
+    }
+    setInviting(true);
+    setErr(null);
+    setMsg(null);
+    try {
+      const results = await inviteTestersFn({ data: { groupId: targetGroup, testers } });
+      const ok = results.filter((r) => r.ok).length;
+      const failed = results.filter((r) => !r.ok);
+      setMsg(
+        `Invited ${ok} of ${results.length} testers.` +
+          (failed.length
+            ? ` Failed: ${failed.map((f) => `${f.email} (${f.error})`).join("; ")}`
+            : ""),
+      );
+      if (failed.length === 0) setTesterText("");
+      testersQ.refetch();
+    } catch (e) {
+      setErr((e as Error).message);
+    } finally {
+      setInviting(false);
+    }
+  };
+
+  const dropTester = async (testerId: string, email: string) => {
+    if (!targetGroup) return;
+    if (!confirm(`Remove ${email} from this TestFlight group?`)) return;
+    try {
+      await removeTesterFn({ data: { groupId: targetGroup, testerId } });
+      testersQ.refetch();
+    } catch (e) {
+      setErr((e as Error).message);
+    }
+  };
+
   const submitForReview = async (buildId: string, versionString: string) => {
     if (!selectedApp) return;
     setSubmitting(buildId);
@@ -123,6 +237,7 @@ function AppStorePage() {
           buildId,
           versionString,
           replaceExisting,
+          whatsNew: notes.trim() || undefined,
         },
       });
       if (result.submitted) {
@@ -380,6 +495,13 @@ function AppStorePage() {
                             {submitting === b.id ? "Submitting…" : "Submit for Review"}
                           </button>
                         )}
+                        <button
+                          className="ml-2 rounded border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+                          disabled={expiring !== null}
+                          onClick={() => expire(b.id)}
+                        >
+                          {expiring === b.id ? "Expiring…" : "Expire"}
+                        </button>
                       </td>
                     </tr>
                   );
@@ -437,6 +559,125 @@ function AppStorePage() {
                   <tr>
                     <td colSpan={4} className="px-3 py-6 text-center text-slate-500">
                       No App Store versions found yet.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          )}
+        </section>
+      )}
+
+      {selectedApp && (
+        <section className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+          <h2 className="mb-3 text-sm font-bold uppercase tracking-wide text-slate-700">
+            Release notes
+          </h2>
+          <p className="mb-3 text-xs text-slate-600">
+            Saved to TestFlight as “What to Test” for the chosen build, and reused as the
+            App Store “What’s New” text when you submit for review.
+          </p>
+          <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Build
+          </label>
+          <select
+            className="mt-1 mb-3 block w-72 rounded border border-slate-300 px-3 py-2 text-sm"
+            value={notesBuild || buildsQ.data?.[0]?.id || ""}
+            onChange={(e) => setNotesBuild(e.target.value)}
+          >
+            {(buildsQ.data ?? []).map((b) => (
+              <option key={b.id} value={b.id}>
+                {b.version} ({b.buildNumber})
+              </option>
+            ))}
+          </select>
+          <textarea
+            className="block w-full rounded border border-slate-300 px-3 py-2 text-sm"
+            rows={5}
+            maxLength={4000}
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            placeholder={"What changed in this build and what testers should try."}
+          />
+          <button
+            className="mt-3 rounded bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-50"
+            disabled={savingNotes}
+            onClick={saveNotes}
+          >
+            {savingNotes ? "Saving…" : "Save release notes"}
+          </button>
+        </section>
+      )}
+
+      {selectedApp && (
+        <section className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+          <h2 className="mb-3 text-sm font-bold uppercase tracking-wide text-slate-700">
+            TestFlight testers
+          </h2>
+          <p className="mb-3 text-xs text-slate-600">
+            Paste one tester per line as <span className="font-mono">email First Last</span> (name
+            optional). Apple emails each of them a TestFlight invite for the selected external
+            group. External groups hold up to 10,000 testers.
+          </p>
+          <textarea
+            className="block w-full rounded border border-slate-300 px-3 py-2 font-mono text-sm"
+            rows={7}
+            value={testerText}
+            onChange={(e) => setTesterText(e.target.value)}
+            placeholder={"maria@example.com Maria Lopez\njean@example.com Jean Baptiste"}
+          />
+          <div className="mt-3 flex items-center gap-3">
+            <button
+              className="rounded bg-amber-600 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-700 disabled:opacity-50"
+              disabled={inviting || !targetGroup}
+              onClick={inviteTesters}
+            >
+              {inviting ? "Inviting…" : "Invite testers"}
+            </button>
+            <span className="text-xs text-slate-500">
+              {parseTesters(testerText).length} valid email(s) detected
+            </span>
+          </div>
+
+          <h3 className="mt-6 mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">
+            Current testers ({testersQ.data?.length ?? 0})
+          </h3>
+          {testersQ.isLoading ? (
+            <p className="text-sm text-slate-500">Loading testers…</p>
+          ) : testersQ.isError ? (
+            <p className="text-sm text-red-600">{(testersQ.error as Error).message}</p>
+          ) : (
+            <table className="w-full text-sm">
+              <thead className="bg-slate-50 text-left text-xs uppercase text-slate-500">
+                <tr>
+                  <th className="px-3 py-2">Email</th>
+                  <th className="px-3 py-2">Name</th>
+                  <th className="px-3 py-2">Status</th>
+                  <th className="px-3 py-2"></th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {(testersQ.data ?? []).map((t) => (
+                  <tr key={t.id}>
+                    <td className="px-3 py-2 font-mono text-xs">{t.email}</td>
+                    <td className="px-3 py-2 text-xs">
+                      {[t.firstName, t.lastName].filter(Boolean).join(" ") || "—"}
+                    </td>
+                    <td className="px-3 py-2 text-xs text-slate-600">{t.state || "—"}</td>
+                    <td className="px-3 py-2 text-right">
+                      <button
+                        className="rounded border border-slate-300 bg-white px-2 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                        onClick={() => dropTester(t.id, t.email)}
+                      >
+                        Remove
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+                {(testersQ.data?.length ?? 0) === 0 && (
+                  <tr>
+                    <td colSpan={4} className="px-3 py-6 text-center text-slate-500">
+                      No testers in this group yet.
                     </td>
                   </tr>
                 )}
