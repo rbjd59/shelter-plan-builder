@@ -55,7 +55,7 @@ function AppStorePage() {
   const [submitting, setSubmitting] = useState<string | null>(null);
   const [confirmVersion, setConfirmVersion] = useState<{
     buildId: string;
-    buildVersion: string;
+    buildNumber: string;
     versionString: string;
   } | null>(null);
   const [msg, setMsg] = useState<string | null>(null);
