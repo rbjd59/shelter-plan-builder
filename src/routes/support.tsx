@@ -40,7 +40,7 @@ const COPY = {
     a5: "Yes. All fees are waived right now because of the community crisis, so it costs you nothing. If that ever changes, we will tell you first and you will never be charged without your consent.",
     q6: "Will the government see my information?",
     a6: "No. We do not share your information with any government agency unless we are forced to by a court order. See our Privacy Policy for full details.",
-    footer: "DetencionDefensa is a for profit-typing and translation tool with emergency delivery system. Not a law firm. Not legal advice. For urgent legal help, contact your an attorney in your area.",
+    footer: "Sorrentino Law Firm PLLC operates this site under license from DetencionDefensa.com, Inc. and provides all legal services. DetencionDefensa.com, Inc. is strictly the technology developer and operator of the typing, translation, and emergency delivery system; it is not a law firm and gives no legal advice.",
     copyright: "© 2026 DetencionDefensa",
   },
   es: {
@@ -64,7 +64,7 @@ const COPY = {
     a5: "Sí. Todas las tarifas están exoneradas ahora por la crisis comunitaria, así que no le cuesta nada. Si eso cambia alguna vez, se lo avisaremos primero y nunca se le cobrará sin su consentimiento.",
     q6: "¿Verá el gobierno mi información?",
     a6: "No. No compartimos su información con ninguna agencia del gobierno a menos que nos obliguen por orden judicial. Vea nuestra Política de Privacidad para más detalles.",
-    footer: "DetencionDefensa es una herramienta de mecanografía y traducción con fines de lucro con sistema de entrega de emergencia. No es un bufete de abogados. No es asesoría legal. Para ayuda legal urgente, comuníquese con un abogado en su área.",
+    footer: "Sorrentino Law Firm PLLC opera este sitio bajo licencia de DetencionDefensa.com, Inc. y presta todos los servicios legales. DetencionDefensa.com, Inc. es estrictamente el desarrollador tecnológico y operador del sistema de mecanografía, traducción y entrega de emergencia; no es una firma de abogados y no brinda asesoría legal.",
     copyright: "© 2026 DetencionDefensa",
   },
   ht: {
@@ -88,7 +88,7 @@ const COPY = {
     a5: "Wi. Tout frè yo anile kounye a akòz kriz kominotè a, kidonk li pa koute w anyen. Si sa janm chanje, n ap di w anvan e yo p ap janm chaje w san konsantman w.",
     q6: "Èske gouvènman an ap wè enfòmasyon m?",
     a6: "Non. Nou pa pataje enfòmasyon w ak okenn ajans gouvènman sof si tribunal fòse nou. Gade Politik Konfidansyalite nou an pou plis detay.",
-    footer: "DetencionDefensa se yon zouti tapaj ak tradiksyon pou pwofi ak sistèm livrezon ijans. Se pa yon biwo avoka. Se pa konsèy legal. Pou èd legal ijan, kontakte yon avoka nan zòn ou.",
+    footer: "Se Sorrentino Law Firm PLLC k ap opere sit sa a anba yon lisans DetencionDefensa.com, Inc. bay, epi se li ki bay tout sèvis legal. DetencionDefensa.com, Inc. se sèlman devlopè teknoloji a ak operatè sistèm daktilografi, tradiksyon, ak livrezon dijans lan; li pa yon kabinè avoka epi li pa bay konsèy legal.",
     copyright: "© 2026 DetencionDefensa",
   },
 } as const;

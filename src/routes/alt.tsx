@@ -8,7 +8,7 @@ export const Route = createFileRoute("/alt")({
       {
         name: "description",
         content:
-          "Alternate variant of the DetencionDefensa.com landing page. NOT a law firm.",
+          "Alternate variant of the DetencionDefensa.com landing page. Operated by Sorrentino Law Firm PLLC under license; DetencionDefensa.com, Inc. is the technology operator only.",
       },
     ],
   }),
