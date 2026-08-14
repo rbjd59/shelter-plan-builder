@@ -263,6 +263,13 @@ export const Route = createFileRoute("/api/public/emergency/activate")({
         if (!caseRef) {
           return jsonResponse({ ok: false, error: "missing_activation_code" }, { status: 400 });
         }
+        // The Flutter app sends lat/lng (and name inside payload); older
+        // callers send gps_lat/gps_lng/full_name. Normalize both shapes.
+        const latVal = d.gps_lat ?? d.lat ?? d.payload?.lat ?? null;
+        const lngVal = d.gps_lng ?? d.lng ?? d.payload?.lng ?? null;
+        const fullName = d.full_name ?? d.name ?? d.payload?.name ?? null;
+        const inlineContacts = d.contacts ?? d.payload?.contacts ?? [];
+        const inlineEmails = contactEmails(inlineContacts);
         const ip =
           request.headers.get("cf-connecting-ip") ||
           request.headers.get("x-forwarded-for") ||
@@ -370,8 +377,8 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
             role: d.role,
             fired_at: firedAt.toISOString(),
             act_after: actAfter.toISOString(),
-            gps_lat: d.gps_lat ?? null,
-            gps_lng: d.gps_lng ?? null,
+            gps_lat: latVal,
+            gps_lng: lngVal,
             gps_raw: d.gps_raw ?? null,
             user_agent: ua,
             ip,
@@ -395,7 +402,7 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
         // (when it is already an 8-char code) or by looking up the client row.
         const mirrorToken = await resolveMirrorToken(caseRef, explicitCode);
         let contactSyncResult: { contacts_saved: number; error?: string } = { contacts_saved: 0 };
-        const incomingContacts = d.contacts ?? d.payload?.contacts ?? [];
+        const incomingContacts = inlineContacts;
         console.log("[activate] contacts received", {
           token: mirrorToken,
           top_level_count: d.contacts?.length ?? 0,
@@ -407,8 +414,8 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
           try {
             await supabaseAdmin.rpc("record_sos_alert" as never, {
               _token: mirrorToken,
-              _lat: d.gps_lat ?? null,
-              _lng: d.gps_lng ?? null,
+              _lat: latVal,
+              _lng: lngVal,
               _battery_pct: d.battery_pct ?? null,
               _payload: {
                 name: d.full_name ?? null,
@@ -428,12 +435,12 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
           // Twilio SMS fan-out — alert
           try {
             const mapsUrlForSms =
-              d.gps_lat != null && d.gps_lng != null
-                ? `https://maps.google.com/?q=${d.gps_lat},${d.gps_lng}`
+              latVal != null && lngVal != null
+                ? `https://maps.google.com/?q=${latVal},${lngVal}`
                 : null;
             const result = await sendSosSmsToContacts({
               token: mirrorToken,
-              clientName: d.full_name ?? null,
+              clientName: fullName,
               kind: "alert",
               mapsUrl: mapsUrlForSms,
               activationId,
@@ -448,19 +455,19 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
 
 
         const gps =
-          d.gps_lat != null && d.gps_lng != null
-            ? `${d.gps_lat.toFixed(6)}, ${d.gps_lng.toFixed(6)}`
+          latVal != null && lngVal != null
+            ? `${latVal.toFixed(6)}, ${lngVal.toFixed(6)}`
             : d.gps_raw ?? "(not captured)";
         const mapsUrl =
-          d.gps_lat != null && d.gps_lng != null
-            ? `https://maps.google.com/?q=${d.gps_lat},${d.gps_lng}`
+          latVal != null && lngVal != null
+            ? `https://maps.google.com/?q=${latVal},${lngVal}`
             : null;
 
         const roleTag = isFamily ? "FAMILY" : "CLIENT";
         const windowLabel = isFamily
           ? "12-HOUR confirmation window (family-triggered — wait before locating)"
           : "2-HOUR window (client-triggered — at-scene alert)";
-        const subject = `EMERGENCY [${roleTag}] — ${d.full_name ?? "case"} — ${caseRef.slice(0, 12)}`;
+        const subject = `EMERGENCY [${roleTag}] — ${fullName ?? "case"} — ${caseRef.slice(0, 12)}`;
         const packet = await signedPacketLinks(caseRef);
         const packetText = packet.length
           ? "\n\nCOURT PACKET (download links — valid 14 days):\n" +
@@ -480,7 +487,7 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
 Response window: ${windowLabel}.
 Begin response at (UTC): ${actAfter.toISOString()}
 
-Detainee/Client: ${d.full_name ?? "(unknown)"}
+Detainee/Client: ${fullName ?? "(unknown)"}
 Case ID: ${caseRef}
 Activation ID: ${activationId}
 Time (UTC): ${firedAt.toISOString()}
@@ -499,7 +506,7 @@ ACTION: If not cancelled by ${actAfter.toISOString()}, begin locating, notify co
           <p style="margin:0 0 12px"><strong>${esc(windowLabel)}</strong></p>
           <p style="margin:0 0 4px"><strong>Begin response at (UTC):</strong> ${esc(actAfter.toISOString())}</p>
           <hr style="border:none;border-top:1px solid #ddd;margin:14px 0">
-          <p style="margin:0 0 4px"><strong>Detainee/Client:</strong> ${esc(d.full_name ?? "(unknown)")}</p>
+          <p style="margin:0 0 4px"><strong>Detainee/Client:</strong> ${esc(fullName ?? "(unknown)")}</p>
           <p style="margin:0 0 4px"><strong>Case ID:</strong> ${esc(caseRef)}</p>
           <p style="margin:0 0 4px"><strong>Activation ID:</strong> ${esc(activationId)}</p>
           <p style="margin:0 0 4px"><strong>Fired at (UTC):</strong> ${esc(firedAt.toISOString())}</p>
@@ -564,11 +571,11 @@ ACTION: If not cancelled by ${actAfter.toISOString()}, begin locating, notify co
                 activation_id: activationId,
                 intake_session_id: caseRef,
                 role: d.role,
-                full_name: d.full_name ?? null,
+                full_name: fullName,
                 contact_email: d.contact_email ?? null,
                 alert_email: d.alert_email ?? null,
-                gps_lat: d.gps_lat ?? null,
-                gps_lng: d.gps_lng ?? null,
+                gps_lat: latVal,
+                gps_lng: lngVal,
                 gps_raw: d.gps_raw ?? null,
                 fired_at: firedAt.toISOString(),
                 act_after: actAfter.toISOString(),
