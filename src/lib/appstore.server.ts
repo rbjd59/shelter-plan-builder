@@ -293,9 +293,13 @@ export async function upsertLocalization(versionId: string, input: LocalizationI
   };
 
   if (existing) {
+    // PATCH requests must include the entity id matching the URL.
     await ascFetch(`/appStoreVersionLocalizations/${encodeURIComponent(existing.id)}`, {
       method: "PATCH",
-      body: JSON.stringify(body),
+      body: JSON.stringify({
+        ...body,
+        data: { ...body.data, id: existing.id },
+      }),
     });
   } else {
     await ascFetch("/appStoreVersionLocalizations", {
