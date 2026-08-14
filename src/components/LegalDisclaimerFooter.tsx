@@ -91,6 +91,10 @@ const COPY = {
     learnMoreAttorney: "Learn more about the attorney →",
     advertisingNotice:
       "The hiring of a lawyer is an important decision that should not be based solely upon advertisements. Before you decide, ask the lawyer to send you free written information about their qualifications and experience.",
+    licenseNotice:
+      "This website and the DetencionDefensa emergency app are owned by DetencionDefensa.com, Inc. and are operated by Sorrentino Law Firm PLLC under a license agreement. The Firm is solely responsible for all legal services, legal advice, and attorney-client relationships offered through this site. DetencionDefensa.com, Inc. receives a fixed license fee and does not share in any legal fee.",
+    adNotice:
+      "Advertisements on this site for Save My Home Trust and related products are paid or bartered advertising for a separate, non-legal service. They are not a legal recommendation, and you are never required to use any advertised service or any particular attorney.",
     allRightsReserved: "All rights reserved",
     privacy: "Privacy",
   },
@@ -105,6 +109,10 @@ const COPY = {
     learnMoreAttorney: "Más información sobre el abogado →",
     advertisingNotice:
       "La contratación de un abogado es una decisión importante que no debe basarse únicamente en anuncios. Antes de decidir, pídale al abogado información escrita gratuita sobre sus calificaciones y experiencia.",
+    licenseNotice:
+      "Este sitio web y la aplicación de emergencia DetencionDefensa son propiedad de DetencionDefensa.com, Inc. y son operados por Sorrentino Law Firm PLLC bajo un acuerdo de licencia. La Firma es la única responsable de todos los servicios legales, asesoramiento legal y relaciones abogado-cliente ofrecidos a través de este sitio. DetencionDefensa.com, Inc. recibe una tarifa de licencia fija y no participa en ningún honorario legal.",
+    adNotice:
+      "Los anuncios en este sitio sobre Save My Home Trust y productos relacionados son publicidad pagada o intercambiada de un servicio separado que no es legal. No son una recomendación legal, y usted nunca está obligado a usar ningún servicio anunciado ni ningún abogado en particular.",
     allRightsReserved: "Todos los derechos reservados",
     privacy: "Privacidad",
   },
@@ -119,6 +127,10 @@ const COPY = {
     learnMoreAttorney: "Aprann plis sou avoka a →",
     advertisingNotice:
       "Anboche yon avoka se yon desizyon enpòtan ki pa dwe baze sèlman sou piblisite. Anvan ou deside, mande avoka a voye yo enfòmasyon ekri gratis sou kalifikasyon ak eksperyans li.",
+    licenseNotice:
+      "Sit entènèt sa a ak aplikasyon dijans DetencionDefensa se pwopriyete DetencionDefensa.com, Inc. epi se Sorrentino Law Firm PLLC k ap opere yo anba yon akò lisans. Kabinè a sèl responsab pou tout sèvis legal, konsèy legal, ak relasyon avoka-kliyan yo ofri atravè sit sa a. DetencionDefensa.com, Inc. resevwa yon frè lisans fiks epi li pa patisipe nan okenn frè legal.",
+    adNotice:
+      "Piblisite sou sit sa a pou Save My Home Trust ak pwodwi ki gen rapò se piblisite peye oswa echanje pou yon sèvis separe ki pa legal. Se pa yon rekòmandasyon legal, epi ou pa janm oblije itilize okenn sèvis ki anonse ni okenn avoka an patikilye.",
     allRightsReserved: "Tout dwa rezève",
     privacy: "Konfidansyalite",
   },
