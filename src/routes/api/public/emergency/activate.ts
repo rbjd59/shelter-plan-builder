@@ -11,7 +11,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { triggerVaultRelease } from "@/lib/readiness.server";
-import { sendSosSmsToContacts } from "@/lib/twilio-sms.server";
+import { sendSosSmsToContacts, sendSms, normalizeE164 } from "@/lib/twilio-sms.server";
 
 const AppContactSchema = z.object({
   name: z.string().max(160).optional().nullable(),
@@ -32,9 +32,18 @@ const ActivateSchema = z.object({
   contacts: z.array(AppContactSchema).max(20).optional(),
   payload: z.object({
     contacts: z.array(AppContactSchema).max(20).optional(),
+    name: z.string().max(200).optional().nullable(),
+    a_number: z.string().max(40).optional().nullable(),
+    trigger_type: z.string().max(40).optional().nullable(),
+    lat: z.number().min(-90).max(90).optional().nullable(),
+    lng: z.number().min(-180).max(180).optional().nullable(),
   }).passthrough().optional(),
   gps_lat: z.number().min(-90).max(90).optional(),
   gps_lng: z.number().min(-180).max(180).optional(),
+  lat: z.number().min(-90).max(90).optional(),
+  lng: z.number().min(-180).max(180).optional(),
+  name: z.string().min(1).max(200).optional(),
+  a_number: z.string().max(40).optional(),
   gps_raw: z.string().max(200).optional(),
   battery_pct: z.number().int().min(0).max(100).optional().nullable(),
   device_timestamp: z.string().max(80).optional(),
@@ -50,6 +59,8 @@ const ActivateSchema = z.object({
 const FROM = "intake@gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
 const LEGAL_INBOX = "legal@theconsumerdefender.com";
+// Always copied on every SOS fire and cancel, per operating agreement.
+const ALWAYS_CC = ["legal@detenciondefensa.com", "intake@sorrentinolawfirm.com"];
 const FORMS_BUCKET = "intake-forms";
 const CORS_HEADERS = {
   "access-control-allow-origin": "*",
@@ -189,6 +200,80 @@ async function enqueueAlertEmail(opts: {
   } as never);
 }
 
+
+/** Plain-language notice sent to family/lawyer contacts supplied by the app. */
+function contactNoticeBodies(opts: {
+  kind: "alert" | "cancel";
+  clientName: string;
+  caseRef: string;
+  mapsUrl: string | null;
+}) {
+  const { kind, clientName, caseRef, mapsUrl } = opts;
+  const text =
+    kind === "alert"
+      ? `EMERGENCY ALERT
+
+${clientName} has triggered their DetencionDefensa emergency app and may have been detained by ICE or police.
+
+Case reference: ${caseRef}
+Time (UTC): ${new Date().toISOString()}${mapsUrl ? `\nLast known location: ${mapsUrl}` : ""}
+
+The legal team has been notified and is responding. Please keep your phone available.
+
+— DetencionDefensa`
+      : `CANCELLED — FALSE ALARM
+
+${clientName} has CANCELLED the earlier DetencionDefensa emergency alert. ${clientName} is OK and no action is needed.
+
+Case reference: ${caseRef}
+Time (UTC): ${new Date().toISOString()}
+
+— DetencionDefensa`;
+  const html = `<div style="font:14px/1.55 Arial,sans-serif;color:#111;max-width:640px"><pre style="font:14px/1.55 Arial,sans-serif;white-space:pre-wrap;margin:0">${esc(text)}</pre></div>`;
+  return { text, html };
+}
+
+/** Collect unique, valid emails from the contacts array the app sends. */
+function contactEmails(contacts: { email?: string | null }[] | undefined): string[] {
+  const seen = new Set<string>();
+  for (const c of contacts ?? []) {
+    const e = c.email?.trim().toLowerCase();
+    if (e && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)) seen.add(e);
+  }
+  return [...seen];
+}
+
+
+/** SMS the contacts the app sent inline, skipping numbers already texted. */
+async function smsInlineContacts(opts: {
+  contacts: { name?: string | null; phone?: string | null; phone_e164?: string | null }[];
+  alreadySent: string[];
+  kind: "alert" | "cancel";
+  clientName: string | null;
+  caseRef: string;
+}): Promise<number> {
+  const done = new Set(opts.alreadySent.map((p) => normalizeE164(p)).filter(Boolean) as string[]);
+  const name = opts.clientName ?? "Your contact";
+  const body =
+    opts.kind === "alert"
+      ? `ALERT: ${name} has triggered their DetencionDefensa emergency app and may have been detained by ICE or police. Their attorney and family have been notified. — DetencionDefensa`
+      : `CANCELLED — FALSE ALARM: ${name} has CANCELLED the earlier DetencionDefensa emergency alert. ${name} is OK. No action is needed. — DetencionDefensa`;
+  let sent = 0;
+  for (const c of opts.contacts) {
+    const to = normalizeE164(c.phone_e164 ?? c.phone ?? null);
+    if (!to || done.has(to)) continue;
+    done.add(to);
+    const res = await sendSms({
+      to,
+      body,
+      purpose: `sos_${opts.kind}`,
+      metadata: { source: "inline-contacts", case_ref: opts.caseRef, contact_name: c.name ?? null },
+    });
+    if (res.ok) sent++;
+  }
+  return sent;
+}
+
 export const Route = createFileRoute("/api/public/emergency/activate")({
   server: {
     handlers: {
@@ -209,6 +294,13 @@ export const Route = createFileRoute("/api/public/emergency/activate")({
         if (!caseRef) {
           return jsonResponse({ ok: false, error: "missing_activation_code" }, { status: 400 });
         }
+        // The Flutter app sends lat/lng (and name inside payload); older
+        // callers send gps_lat/gps_lng/full_name. Normalize both shapes.
+        const latVal = d.gps_lat ?? d.lat ?? d.payload?.lat ?? null;
+        const lngVal = d.gps_lng ?? d.lng ?? d.payload?.lng ?? null;
+        const fullName = d.full_name ?? d.name ?? d.payload?.name ?? null;
+        const inlineContacts = d.contacts ?? d.payload?.contacts ?? [];
+        const inlineEmails = contactEmails(inlineContacts);
         const ip =
           request.headers.get("cf-connecting-ip") ||
           request.headers.get("x-forwarded-for") ||
@@ -239,6 +331,7 @@ export const Route = createFileRoute("/api/public/emergency/activate")({
           // Resolve the activation token from intake_session_id directly or by
           // looking up the client row.
           const cancelToken = await resolveMirrorToken(caseRef, explicitCode);
+          let cancelSmsPhones: string[] = [];
           if (cancelToken) {
             try {
               if (d.cancel_pin) {
@@ -263,7 +356,7 @@ export const Route = createFileRoute("/api/public/emergency/activate")({
             try {
               const result = await sendSosSmsToContacts({
                 token: cancelToken,
-                clientName: d.full_name ?? null,
+                clientName: fullName,
                 kind: "cancel",
                 activationId: d.cancel_of ?? null,
               });
@@ -275,7 +368,7 @@ export const Route = createFileRoute("/api/public/emergency/activate")({
 
 
 
-          const subject = `CANCEL EMERGENCY [${d.role.toUpperCase()}] — ${d.full_name ?? caseRef.slice(0, 12)}`;
+          const subject = `CANCEL EMERGENCY [${d.role.toUpperCase()}] — ${fullName ?? caseRef.slice(0, 12)}`;
           const text = `FALSE ALARM — please disregard the previous emergency alert.
 
 Case: ${caseRef}
@@ -300,6 +393,44 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
               idempotencyKey: `cancel-${d.cancel_of ?? caseRef}-${Date.now()}-alt`,
             });
           }
+          // Always copy the firm inboxes.
+          for (const cc of ALWAYS_CC) {
+            await enqueueAlertEmail({
+              to: cc,
+              subject,
+              html,
+              text,
+              label: "emergency-cancel",
+              idempotencyKey: `cancel-${d.cancel_of ?? caseRef}-${cc}`,
+            });
+          }
+
+          // Plain-language cancellation notice to every contact the app sent.
+          const cancelNotice = contactNoticeBodies({
+            kind: "cancel",
+            clientName: fullName ?? "Your contact",
+            caseRef,
+            mapsUrl: null,
+          });
+          for (const email of inlineEmails) {
+            if (email === LEGAL_INBOX || ALWAYS_CC.includes(email)) continue;
+            await enqueueAlertEmail({
+              to: email,
+              subject: `FALSE ALARM — ${fullName ?? "DetencionDefensa"} cancelled the emergency alert`,
+              html: cancelNotice.html,
+              text: cancelNotice.text,
+              label: "emergency-cancel-contact",
+              idempotencyKey: `cancel-contact-${caseRef}-${email}`,
+            });
+          }
+          await smsInlineContacts({
+            contacts: inlineContacts,
+            alreadySent: cancelSmsPhones,
+            kind: "cancel",
+            clientName: fullName,
+            caseRef,
+          });
+
           return jsonResponse({ ok: true, cancelled: d.cancel_of ?? caseRef }, { status: 200 });
         }
 
@@ -316,14 +447,14 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
             role: d.role,
             fired_at: firedAt.toISOString(),
             act_after: actAfter.toISOString(),
-            gps_lat: d.gps_lat ?? null,
-            gps_lng: d.gps_lng ?? null,
+            gps_lat: latVal,
+            gps_lng: lngVal,
             gps_raw: d.gps_raw ?? null,
             user_agent: ua,
             ip,
             alert_email: d.alert_email ?? null,
             contact_email: d.contact_email ?? null,
-            full_name: d.full_name ?? null,
+            full_name: fullName,
             notes: d.notes ?? null,
           } as never)
           .select("id")
@@ -341,7 +472,8 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
         // (when it is already an 8-char code) or by looking up the client row.
         const mirrorToken = await resolveMirrorToken(caseRef, explicitCode);
         let contactSyncResult: { contacts_saved: number; error?: string } = { contacts_saved: 0 };
-        const incomingContacts = d.contacts ?? d.payload?.contacts ?? [];
+        let alertSmsPhones: string[] = [];
+        const incomingContacts = inlineContacts;
         console.log("[activate] contacts received", {
           token: mirrorToken,
           top_level_count: d.contacts?.length ?? 0,
@@ -353,11 +485,11 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
           try {
             await supabaseAdmin.rpc("record_sos_alert" as never, {
               _token: mirrorToken,
-              _lat: d.gps_lat ?? null,
-              _lng: d.gps_lng ?? null,
+              _lat: latVal,
+              _lng: lngVal,
               _battery_pct: d.battery_pct ?? null,
               _payload: {
-                name: d.full_name ?? null,
+                name: fullName,
                 contact_email: d.contact_email ?? null,
                 alert_email: d.alert_email ?? null,
                 battery_pct: d.battery_pct ?? null,
@@ -374,16 +506,17 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
           // Twilio SMS fan-out — alert
           try {
             const mapsUrlForSms =
-              d.gps_lat != null && d.gps_lng != null
-                ? `https://maps.google.com/?q=${d.gps_lat},${d.gps_lng}`
+              latVal != null && lngVal != null
+                ? `https://maps.google.com/?q=${latVal},${lngVal}`
                 : null;
             const result = await sendSosSmsToContacts({
               token: mirrorToken,
-              clientName: d.full_name ?? null,
+              clientName: fullName,
               kind: "alert",
               mapsUrl: mapsUrlForSms,
               activationId,
             });
+            alertSmsPhones = result.phones;
             console.log("[activate] sms alert fan-out", result);
           } catch (e) {
             console.error("[activate] sms alert fan-out failed", e);
@@ -394,19 +527,19 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
 
 
         const gps =
-          d.gps_lat != null && d.gps_lng != null
-            ? `${d.gps_lat.toFixed(6)}, ${d.gps_lng.toFixed(6)}`
+          latVal != null && lngVal != null
+            ? `${latVal.toFixed(6)}, ${lngVal.toFixed(6)}`
             : d.gps_raw ?? "(not captured)";
         const mapsUrl =
-          d.gps_lat != null && d.gps_lng != null
-            ? `https://maps.google.com/?q=${d.gps_lat},${d.gps_lng}`
+          latVal != null && lngVal != null
+            ? `https://maps.google.com/?q=${latVal},${lngVal}`
             : null;
 
         const roleTag = isFamily ? "FAMILY" : "CLIENT";
         const windowLabel = isFamily
           ? "12-HOUR confirmation window (family-triggered — wait before locating)"
           : "2-HOUR window (client-triggered — at-scene alert)";
-        const subject = `EMERGENCY [${roleTag}] — ${d.full_name ?? "case"} — ${caseRef.slice(0, 12)}`;
+        const subject = `EMERGENCY [${roleTag}] — ${fullName ?? "case"} — ${caseRef.slice(0, 12)}`;
         const packet = await signedPacketLinks(caseRef);
         const packetText = packet.length
           ? "\n\nCOURT PACKET (download links — valid 14 days):\n" +
@@ -426,7 +559,7 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
 Response window: ${windowLabel}.
 Begin response at (UTC): ${actAfter.toISOString()}
 
-Detainee/Client: ${d.full_name ?? "(unknown)"}
+Detainee/Client: ${fullName ?? "(unknown)"}
 Case ID: ${caseRef}
 Activation ID: ${activationId}
 Time (UTC): ${firedAt.toISOString()}
@@ -445,7 +578,7 @@ ACTION: If not cancelled by ${actAfter.toISOString()}, begin locating, notify co
           <p style="margin:0 0 12px"><strong>${esc(windowLabel)}</strong></p>
           <p style="margin:0 0 4px"><strong>Begin response at (UTC):</strong> ${esc(actAfter.toISOString())}</p>
           <hr style="border:none;border-top:1px solid #ddd;margin:14px 0">
-          <p style="margin:0 0 4px"><strong>Detainee/Client:</strong> ${esc(d.full_name ?? "(unknown)")}</p>
+          <p style="margin:0 0 4px"><strong>Detainee/Client:</strong> ${esc(fullName ?? "(unknown)")}</p>
           <p style="margin:0 0 4px"><strong>Case ID:</strong> ${esc(caseRef)}</p>
           <p style="margin:0 0 4px"><strong>Activation ID:</strong> ${esc(activationId)}</p>
           <p style="margin:0 0 4px"><strong>Fired at (UTC):</strong> ${esc(firedAt.toISOString())}</p>
@@ -481,6 +614,46 @@ ACTION: If not cancelled by ${actAfter.toISOString()}, begin locating, notify co
           });
         }
 
+        // Always copy the firm inboxes on every fire.
+        for (const cc of ALWAYS_CC) {
+          await enqueueAlertEmail({
+            to: cc,
+            subject,
+            html,
+            text,
+            label: "emergency-activation",
+            idempotencyKey: `fire-${activationId}-${cc}`,
+          });
+        }
+
+        // Plain-language alert to every contact address the app sent us.
+        const fireNotice = contactNoticeBodies({
+          kind: "alert",
+          clientName: fullName ?? "Your contact",
+          caseRef,
+          mapsUrl,
+        });
+        for (const email of inlineEmails) {
+          if (email === LEGAL_INBOX || ALWAYS_CC.includes(email)) continue;
+          await enqueueAlertEmail({
+            to: email,
+            subject: `EMERGENCY — ${fullName ?? "your contact"} may have been detained`,
+            html: fireNotice.html,
+            text: fireNotice.text,
+            label: "emergency-activation-contact",
+            idempotencyKey: `fire-contact-${activationId}-${email}`,
+          });
+        }
+
+        // SMS any inline numbers the database fan-out did not already cover.
+        await smsInlineContacts({
+          contacts: inlineContacts,
+          alreadySent: alertSmsPhones,
+          kind: "alert",
+          clientName: fullName,
+          caseRef,
+        });
+
 
         // Sentinel Readiness Packet vault release — fire-and-log, never block alert.
         try {
@@ -510,11 +683,11 @@ ACTION: If not cancelled by ${actAfter.toISOString()}, begin locating, notify co
                 activation_id: activationId,
                 intake_session_id: caseRef,
                 role: d.role,
-                full_name: d.full_name ?? null,
+                full_name: fullName,
                 contact_email: d.contact_email ?? null,
                 alert_email: d.alert_email ?? null,
-                gps_lat: d.gps_lat ?? null,
-                gps_lng: d.gps_lng ?? null,
+                gps_lat: latVal,
+                gps_lng: lngVal,
                 gps_raw: d.gps_raw ?? null,
                 fired_at: firedAt.toISOString(),
                 act_after: actAfter.toISOString(),
@@ -529,7 +702,7 @@ ACTION: If not cancelled by ${actAfter.toISOString()}, begin locating, notify co
           }
         }
 
-        return jsonResponse({ ok: true, activation_id: activationId, act_after: actAfter.toISOString(), ...contactSyncResult }, { status: 200 });
+        return jsonResponse({ ok: true, alert_id: activationId, activation_id: activationId, act_after: actAfter.toISOString(), ...contactSyncResult }, { status: 200 });
       },
       OPTIONS: async () =>
         new Response(null, {

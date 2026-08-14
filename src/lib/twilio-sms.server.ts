@@ -18,7 +18,7 @@ export interface SendSmsResult {
   error?: string;
 }
 
-function normalizeE164(raw: string | null | undefined): string | null {
+export function normalizeE164(raw: string | null | undefined): string | null {
   if (!raw) return null;
   const trimmed = raw.trim();
   if (!trimmed) return null;
@@ -117,9 +117,9 @@ export async function sendSosSmsToContacts(opts: {
   /** @deprecated location is no longer collected; accepted and ignored. */
   mapsUrl?: string | null;
   activationId?: string | null;
-}): Promise<{ sent: number; failed: number; skipped: number }> {
+}): Promise<{ sent: number; failed: number; skipped: number; phones: string[] }> {
   const norm = opts.token.trim().toUpperCase();
-  if (!/^[A-Z0-9]{8}$/.test(norm)) return { sent: 0, failed: 0, skipped: 0 };
+  if (!/^[A-Z0-9]{8}$/.test(norm)) return { sent: 0, failed: 0, skipped: 0, phones: [] };
 
   // Resolve client
   const { data: client } = await supabaseAdmin
@@ -127,7 +127,7 @@ export async function sendSosSmsToContacts(opts: {
     .select("id, full_name, phone_e164")
     .eq("invite_token", norm)
     .maybeSingle();
-  if (!client) return { sent: 0, failed: 0, skipped: 0 };
+  if (!client) return { sent: 0, failed: 0, skipped: 0, phones: [] };
   const c = client as { id: string; full_name: string | null; phone_e164: string | null };
 
   const { data: contacts } = await supabaseAdmin
@@ -150,6 +150,7 @@ export async function sendSosSmsToContacts(opts: {
   let sent = 0;
   let failed = 0;
   let skipped = 0;
+  const phones: string[] = [];
 
   for (const contact of list) {
     if (!contact.notify_on_sos) { skipped++; continue; }
@@ -166,7 +167,8 @@ export async function sendSosSmsToContacts(opts: {
       },
     });
     if (result.ok) sent++; else failed++;
+    phones.push(contact.phone_e164);
   }
 
-  return { sent, failed, skipped };
+  return { sent, failed, skipped, phones };
 }
