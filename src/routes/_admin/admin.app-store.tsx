@@ -7,6 +7,7 @@ import {
   appStoreListBuilds,
   appStoreListBetaGroups,
   appStoreAddBuildToGroup,
+  appStoreCredStatus,
 } from "@/lib/appstore.functions";
 
 export const Route = createFileRoute("/_admin/admin/app-store")({
@@ -42,6 +43,7 @@ function AppStorePage() {
   const listBuildsFn = useServerFn(appStoreListBuilds);
   const listGroupsFn = useServerFn(appStoreListBetaGroups);
   const addToGroup = useServerFn(appStoreAddBuildToGroup);
+  const credStatusFn = useServerFn(appStoreCredStatus);
 
   const [appId, setAppId] = useState<string | null>(null);
   const [groupId, setGroupId] = useState<string>("");
@@ -50,6 +52,7 @@ function AppStorePage() {
   const [err, setErr] = useState<string | null>(null);
 
   const appsQ = useQuery({ queryKey: ["asc-apps"], queryFn: () => listAppsFn() });
+  const credQ = useQuery({ queryKey: ["asc-creds"], queryFn: () => credStatusFn() });
 
   const selectedApp = appId ?? appsQ.data?.[0]?.id ?? null;
 
@@ -103,6 +106,80 @@ function AppStorePage() {
           ). Powered by your stored App Store Connect API credentials.
         </p>
       </header>
+
+
+      <section className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+        <h2 className="mb-3 text-sm font-bold uppercase tracking-wide text-slate-700">
+          Apple API credentials
+        </h2>
+        {credQ.isLoading ? (
+          <p className="text-sm text-slate-500">Checking…</p>
+        ) : credQ.data ? (
+          <div className="space-y-2 text-sm">
+            <CredRow
+              label="Issuer ID"
+              ok={credQ.data.hasIssuer}
+              value={credQ.data.issuerId}
+            />
+            <CredRow label="Key ID" ok={credQ.data.hasKeyId} value={credQ.data.keyId} />
+            <CredRow
+              label="Private key (.p8)"
+              ok={credQ.data.hasP8 && credQ.data.p8LooksValid}
+              value={
+                credQ.data.hasP8
+                  ? credQ.data.p8LooksValid
+                    ? "Stored (valid PKCS#8 format)"
+                    : "Stored, but does not look like a .p8 private key"
+                  : null
+              }
+            />
+            <p className="pt-2 text-xs text-slate-500">
+              All three values must come from the <strong>same key row</strong> in App Store
+              Connect. Copy the Issuer ID and Key ID above into Primio exactly as shown, and
+              upload the matching <code>.p8</code> file.
+            </p>
+          </div>
+        ) : (
+          <p className="text-sm text-red-600">Could not read credential status.</p>
+        )}
+      </section>
+
+      <section className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+        <h2 className="mb-3 text-sm font-bold uppercase tracking-wide text-slate-700">
+          Where to find the Apple API key (for Primio)
+        </h2>
+        <ol className="list-decimal space-y-2 pl-5 text-sm text-slate-700">
+          <li>
+            Sign in at <span className="font-mono">appstoreconnect.apple.com</span> with the
+            Account Holder or Admin account.
+          </li>
+          <li>
+            Top nav: <strong>Users and Access</strong> → tab <strong>Integrations</strong> →
+            left sidebar <strong>App Store Connect API</strong> → sub-tab{" "}
+            <strong>Team Keys</strong>.
+          </li>
+          <li>
+            The <strong>Issuer ID</strong> is the long UUID printed at the top of that page
+            (one per team). Click <em>Copy</em>.
+          </li>
+          <li>
+            In the key table, your key row shows <strong>Name</strong>,{" "}
+            <strong>Key ID</strong> (10 characters), <strong>Access</strong> and{" "}
+            <strong>Status</strong>. Status must say <strong>Active</strong>.
+          </li>
+          <li>
+            If you no longer have the <code>.p8</code> file, Apple will not let you download it
+            again — click <strong>+</strong>, name it, set Access ={" "}
+            <strong>App Manager</strong>, generate, and download the new{" "}
+            <code>AuthKey_XXXXXXXXXX.p8</code> once.
+          </li>
+          <li>
+            In Primio: <strong>Publish → iOS</strong> → paste the Issuer ID, type the Key ID,
+            upload the <code>.p8</code>, then <strong>Build IPA</strong>. Primio does not store
+            the <code>.p8</code> — re-upload it each session.
+          </li>
+        </ol>
+      </section>
 
       {appsQ.isLoading && <p className="text-sm text-slate-500">Connecting to App Store Connect…</p>}
       {appsQ.isError && (
@@ -242,6 +319,22 @@ function AppStorePage() {
           )}
         </section>
       )}
+    </div>
+  );
+}
+
+function CredRow({ label, ok, value }: { label: string; ok: boolean; value: string | null }) {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <span
+        className={`inline-block rounded px-2 py-0.5 text-xs font-semibold ${ok ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
+      >
+        {ok ? "OK" : "Missing"}
+      </span>
+      <span className="w-40 text-xs font-semibold uppercase tracking-wide text-slate-500">
+        {label}
+      </span>
+      <span className="font-mono text-xs text-slate-800">{value ?? "not set"}</span>
     </div>
   );
 }
