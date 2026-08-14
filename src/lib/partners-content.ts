@@ -28,7 +28,7 @@ type Section = {
   };
   cost: {
     title: string;
-    rows: { label: string; value: string; note: string }[];
+    rows: { label: string; value: string; note: string; was?: string }[];
   };
   giveBack: {
     title: string;
@@ -110,7 +110,7 @@ export const PARTNERS: Record<Lang, Section> = {
     cost: {
       title: "Affordability & accessibility",
       rows: [
-        { label: "DetencionDefensa pre-detention plan", value: "Free — pro bono for a limited time", note: "Typical cost" },
+        { label: "DetencionDefensa pre-detention plan", value: "Free — pro bono due to the community crisis", note: "Typical cost", was: "$199" },
         { label: "Federal habeas corpus attorney", value: "$8,500 – $15,000", note: "Comparable legal cost" },
         { label: "Scholarship credits (per 20 sign-ups)", value: "Funds 10 families", note: "At no cost to recipients" },
       ],
@@ -209,7 +209,7 @@ export const PARTNERS: Record<Lang, Section> = {
     cost: {
       title: "Asequibilidad y acceso",
       rows: [
-        { label: "Plan pre-detención DetencionDefensa", value: "Gratis — pro bono por tiempo limitado", note: "Costo típico" },
+        { label: "Plan pre-detención DetencionDefensa", value: "Gratis — pro bono por la crisis comunitaria", note: "Costo típico", was: "$199" },
         { label: "Abogado federal de habeas corpus", value: "$8,500 – $15,000", note: "Costo legal comparable" },
         { label: "Créditos de becas (por cada 20 inscripciones)", value: "Financia a 10 familias", note: "Sin costo para los beneficiarios" },
       ],
@@ -308,7 +308,7 @@ export const PARTNERS: Record<Lang, Section> = {
     cost: {
       title: "Pri ak aksè",
       rows: [
-        { label: "Plan pre-detansyon DetencionDefensa", value: "Gratis — pro bono pou yon tan limite", note: "Pri tipik" },
+        { label: "Plan pre-detansyon DetencionDefensa", value: "Gratis — pro bono akòz kriz kominotè a", note: "Pri tipik", was: "$199" },
         { label: "Avoka federal habeas corpus", value: "$8,500 – $15,000", note: "Konparezon pri legal" },
         { label: "Kredi bous (chak 20 enskripsyon)", value: "Finanse 10 fanmi", note: "San pri pou benefisyè yo" },
       ],

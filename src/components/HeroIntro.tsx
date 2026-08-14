@@ -7,7 +7,8 @@ import detentionNightAsset from "@/assets/hero-family.jpg.asset.json";
 const COPY = {
   es: {
     plan: "Plan de protección ante detención ICE ",
-    freeText: "Gratis. Servicio pro bono por tiempo limitado.",
+    wasPrice: "$199",
+    freeText: "Gratis — pro bono por la crisis comunitaria.",
     tagline: "Alerta de emergencia de un clic y plan de defensa legal revisado por un abogado",
     btn1: "Cómo funciona el plan de protección",
     btn2: "Si eres propietario de una vivienda",
@@ -27,7 +28,8 @@ const COPY = {
   },
   en: {
     plan: "ICE detention protection plan ",
-    freeText: "Free. Pro bono for a limited time.",
+    wasPrice: "$199",
+    freeText: "Free — pro bono due to the community crisis.",
     tagline: "One-click emergency alert and attorney-reviewed legal defense plan",
     btn1: "How Protection Plan Works",
     btn2: "If You're a Homeowner",
@@ -47,7 +49,8 @@ const COPY = {
   },
   ht: {
     plan: "Plan pwoteksyon pou arestasyon ICE ",
-    freeText: "Gratis. Sèvis pro bono pou yon tan limite.",
+    wasPrice: "$199",
+    freeText: "Gratis — pro bono akòz kriz kominotè a.",
     tagline: "Sijè a alèt dijans yon sèl kli epi plan defans legal revize pa yon avoka",
     btn1: "Ki jan plan pwoteksyon an fonksyone",
     btn2: "Si w se yon pwopriyetè kay",
@@ -67,7 +70,7 @@ const COPY = {
   },
 } satisfies Record<
   Lang,
-  { plan: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; employerHeading: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; homeBox: string; homeBoxHeading: string; homeBoxBody: string; disclaimer: string }
+  { plan: string; wasPrice: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; employerHeading: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; homeBox: string; homeBoxHeading: string; homeBoxBody: string; disclaimer: string }
 >;
 
 
@@ -267,6 +270,17 @@ export default function HeroIntro() {
                 textShadow: "0 2px 10px rgba(0,0,0,0.6)",
               }}
             >
+              <span
+                style={{
+                  color: "#ff4d4d",
+                  textDecoration: "line-through",
+                  textDecorationColor: "#ff4d4d",
+                  textDecorationThickness: "3px",
+                  marginRight: "0.5rem",
+                }}
+              >
+                {COPY[lang].wasPrice}
+              </span>
               {COPY[lang].freeText}
             </p>
           </div>

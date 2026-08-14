@@ -133,7 +133,12 @@ function PartnersPage() {
               <div className="text-xs uppercase tracking-wider text-white/50 mb-3">
                 {r.note}
               </div>
-              <div className="font-serif text-3xl lg:text-4xl mb-3">{r.value}</div>
+              <div className="font-serif text-3xl lg:text-4xl mb-3">
+                {r.was && (
+                  <span className="text-[#ff4d4d] line-through decoration-2 mr-2">{r.was}</span>
+                )}
+                {r.value}
+              </div>
               <div className="text-sm text-white/70">{r.label}</div>
             </div>
           ))}

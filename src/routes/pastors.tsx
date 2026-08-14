@@ -158,6 +158,9 @@ function PastorsPage() {
             <div key={row.label} className="flex items-baseline justify-between py-5 gap-6">
               <span className="text-white/80">{row.label}</span>
               <span className="font-mono text-[#e8a04a] text-right whitespace-nowrap">
+                {row.was && (
+                  <span className="text-[#ff4d4d] line-through decoration-2 mr-2">{row.was}</span>
+                )}
                 {row.value}
               </span>
             </div>

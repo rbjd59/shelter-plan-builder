@@ -26,7 +26,7 @@ type Copy = {
   howTitle: string;
   how: { h: string; p: string }[];
   costTitle: string;
-  cost: { label: string; value: string }[];
+  cost: { label: string; value: string; was?: string }[];
   closingTitle: string;
   closingBody: string;
   footer: string;
@@ -61,7 +61,7 @@ export const PASTORS: Record<Lang, Copy> = {
     ],
     costTitle: "Comparación de costos",
     cost: [
-      { label: "DetencionDefensa (app de emergencia)", value: "Sin costo ahora — documentos sin cargo" },
+      { label: "DetencionDefensa (app de emergencia)", value: "Gratis — pro bono por la crisis comunitaria", was: "$199" },
       { label: "Beca patrocinada (primer año)", value: "$3/mes" },
       { label: "Abogado federal de habeas corpus", value: "$8,500 – $15,000" },
     ],
@@ -100,7 +100,7 @@ export const PASTORS: Record<Lang, Copy> = {
     ],
     costTitle: "Cost comparison",
     cost: [
-      { label: "DetencionDefensa (emergency app)", value: "No cost right now — documents at no charge" },
+      { label: "DetencionDefensa (emergency app)", value: "Free — pro bono due to the community crisis", was: "$199" },
       { label: "Sponsored scholarship (year one)", value: "$3/mo" },
       { label: "Federal habeas corpus attorney", value: "$8,500 – $15,000" },
     ],
@@ -139,7 +139,7 @@ export const PASTORS: Record<Lang, Copy> = {
     ],
     costTitle: "Konparezon pri",
     cost: [
-      { label: "DetencionDefensa (app dijans)", value: "San frè kounye a — dokiman san frè" },
+      { label: "DetencionDefensa (app dijans)", value: "Gratis — pro bono akòz kriz kominotè a", was: "$199" },
       { label: "Bous patwone (premye ane)", value: "$3/mwa" },
       { label: "Avoka federal habeas corpus", value: "$8,500 – $15,000" },
     ],
