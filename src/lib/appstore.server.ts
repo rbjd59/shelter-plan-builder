@@ -278,17 +278,15 @@ export async function upsertLocalization(versionId: string, input: LocalizationI
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const existing = (list?.data ?? []).find((l: any) => l.attributes?.locale === input.locale);
 
-  const body: Record<string, unknown> = {
-    data: {
-      type: "appStoreVersionLocalizations",
-      attributes: {
-        locale: input.locale,
-        description: input.description,
-        keywords: input.keywords,
-        ...(input.marketingUrl ? { marketingUrl: input.marketingUrl } : {}),
-        ...(input.supportUrl ? { supportUrl: input.supportUrl } : {}),
-        ...(input.whatsNew ? { whatsNew: input.whatsNew } : {}),
-      },
+  const bodyData: Record<string, unknown> = {
+    type: "appStoreVersionLocalizations",
+    attributes: {
+      locale: input.locale,
+      description: input.description,
+      keywords: input.keywords,
+      ...(input.marketingUrl ? { marketingUrl: input.marketingUrl } : {}),
+      ...(input.supportUrl ? { supportUrl: input.supportUrl } : {}),
+      ...(input.whatsNew ? { whatsNew: input.whatsNew } : {}),
     },
   };
 
@@ -296,18 +294,17 @@ export async function upsertLocalization(versionId: string, input: LocalizationI
     // PATCH requests must include the entity id matching the URL.
     await ascFetch(`/appStoreVersionLocalizations/${encodeURIComponent(existing.id)}`, {
       method: "PATCH",
-      body: JSON.stringify({
-        ...body,
-        data: { ...body.data, id: existing.id },
-      }),
+      body: JSON.stringify({ data: { ...bodyData, id: existing.id } }),
     });
   } else {
     await ascFetch("/appStoreVersionLocalizations", {
       method: "POST",
       body: JSON.stringify({
-        ...body,
-        relationships: {
-          appStoreVersion: { data: { type: "appStoreVersions", id: versionId } },
+        data: {
+          ...bodyData,
+          relationships: {
+            appStoreVersion: { data: { type: "appStoreVersions", id: versionId } },
+          },
         },
       }),
     });
