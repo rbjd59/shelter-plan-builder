@@ -89,10 +89,10 @@ export function LegalDisclaimerFooter() {
 
 const COPY = {
   en: {
-    companyHeading: "Technology & Service Provider",
+    companyHeading: "Site Owner & Technology Provider",
     notALawFirm:
-      "DetencionDefensa.com is NOT a law firm and does not provide legal advice. It provides intake software, document translation, typing, secure storage, and an emergency notification app.",
-    firmHeading: "Independent Legal Services",
+      "Sorrentino Law Firm PLLC operates this site under license from DetencionDefensa.com, Inc. DetencionDefensa.com, Inc. is strictly the technology developer and website/app operator — it is not a law firm, gives no legal advice, and does not direct or control any legal service. The Firm has sole control of, and sole responsibility for, all legal services, legal advice, legal content, and attorney-client relationships.",
+    firmHeading: "Operator & Provider of All Legal Services",
     legalServicesBy: "Legal services are provided by",
     aSeparateFlLawFirm: "a separate Florida law firm",
     attorneyResponsible: "Attorney responsible for content",
