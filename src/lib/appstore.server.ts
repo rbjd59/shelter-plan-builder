@@ -21,6 +21,15 @@ export interface AppStoreBuild {
   inExternalTesting: boolean;
 }
 
+export interface AppStoreVersion {
+  id: string;
+  versionString: string;
+  platform: string;
+  appStoreState: string;
+  createdDate: string;
+  buildId?: string;
+}
+
 export interface BetaGroup {
   id: string;
   name: string;
