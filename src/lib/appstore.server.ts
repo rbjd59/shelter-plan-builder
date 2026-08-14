@@ -399,7 +399,20 @@ export async function submitBuildForReview(
     supportUrl: "https://detenciondefensa.com",
   });
 
-  const submissionId = await submitVersionForReview(version.id);
+  // Attempt to submit. App Store Connect API keys with Developer role cannot
+  // create submissions; App Manager or Admin role is required. If the call is
+  // rejected, we still return success for the prepare step.
+  let submissionId: string | null = null;
+  let submitted = false;
+  let submissionError: string | undefined;
+  try {
+    submissionId = await submitVersionForReview(version.id);
+    submitted = true;
+  } catch (e) {
+    const err = e as Error;
+    submissionError = err.message;
+    submitted = false;
+  }
 
   return {
     ok: true,
@@ -409,5 +422,8 @@ export async function submitBuildForReview(
     setBuild,
     deletedVersion,
     submissionId,
+    submitted,
+    manualActionRequired: !submitted,
+    submissionError,
   };
 }
