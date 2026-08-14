@@ -14,11 +14,20 @@ export interface AppStoreApp {
 
 export interface AppStoreBuild {
   id: string;
-  version: string;
-  buildVersion: string;
+  version: string; // App version (e.g., "0.4.1") from preReleaseVersion
+  buildNumber: string; // Build number (e.g., "786720682") from build.attributes.version
   processingState: string;
   uploadedDate: string;
   inExternalTesting: boolean;
+}
+
+export interface AppStoreVersion {
+  id: string;
+  versionString: string;
+  platform: string;
+  appStoreState: string;
+  createdDate: string;
+  buildId?: string;
 }
 
 export interface BetaGroup {
@@ -124,27 +133,34 @@ export async function listApps(): Promise<AppStoreApp[]> {
 }
 
 export async function listBuilds(appId: string): Promise<AppStoreBuild[]> {
-  const path = `/builds?filter[app]=${encodeURIComponent(appId)}&sort=-uploadedDate&limit=50&include=betaGroups`;
+  const path = `/builds?filter[app]=${encodeURIComponent(appId)}&include=preReleaseVersion,betaGroups&sort=-uploadedDate&limit=50`;
   const body = await ascFetch(path);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const included = (body?.included ?? []).filter((i: any) => i.type === "betaGroups");
+  const included = (body?.included ?? []);
+  const preRelMap = new Map(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    included.filter((i: any) => i.type === "preReleaseVersions").map((i: any) => [i.id, i.attributes?.version ?? ""]),
+  );
   const extGroupIds = new Set(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    included.filter((g: any) => g.attributes?.isInternalGroup === false).map((g: any) => g.id),
+    included.filter((g: any) => g.type === "betaGroups" && g.attributes?.isInternalGroup === false).map((g: any) => g.id),
   );
   return (body?.data ?? []).map(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (b: any) => ({
-      id: b.id,
-      version: b.attributes?.version ?? "",
-      buildVersion: b.attributes?.buildVersion ?? "",
-      processingState: b.attributes?.processingState ?? "UNKNOWN",
-      uploadedDate: b.attributes?.uploadedDate ?? "",
-      inExternalTesting: (b.relationships?.betaGroups?.data ?? []).some(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (g: any) => extGroupIds.has(g.id),
-      ),
-    }),
+    (b: any) => {
+      const preRelId = b.relationships?.preReleaseVersion?.data?.id;
+      return {
+        id: b.id,
+        version: (preRelId ? preRelMap.get(preRelId) : "") ?? "",
+        buildNumber: b.attributes?.version ?? "",
+        processingState: b.attributes?.processingState ?? "UNKNOWN",
+        uploadedDate: b.attributes?.uploadedDate ?? "",
+        inExternalTesting: (b.relationships?.betaGroups?.data ?? []).some(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (g: any) => extGroupIds.has(g.id),
+        ),
+      };
+    },
   );
 }
 
@@ -193,5 +209,165 @@ export function credentialStatus(): {
     issuerId: issuer || null,
     keyId: keyId || null,
     p8LooksValid: p8.includes("BEGIN PRIVATE KEY"),
+  };
+}
+
+export async function listVersions(appId: string): Promise<AppStoreVersion[]> {
+  const body = await ascFetch(`/apps/${encodeURIComponent(appId)}/appStoreVersions?limit=50`);
+  return (body?.data ?? []).map(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (v: any) => ({
+      id: v.id,
+      versionString: v.attributes?.versionString ?? "",
+      platform: v.attributes?.platform ?? "",
+      appStoreState: v.attributes?.appStoreState ?? "UNKNOWN",
+      createdDate: v.attributes?.createdDate ?? "",
+      buildId: v.relationships?.build?.data?.id ?? undefined,
+    }),
+  );
+}
+
+export async function createVersion(appId: string, versionString: string): Promise<AppStoreVersion> {
+  const body = await ascFetch("/appStoreVersions", {
+    method: "POST",
+    body: JSON.stringify({
+      data: {
+        type: "appStoreVersions",
+        attributes: { platform: "IOS", versionString },
+        relationships: { app: { data: { type: "apps", id: appId } } },
+      },
+    }),
+  });
+  const v = body?.data;
+  if (!v) throw new Error("App Store Connect did not return a new version.");
+  return {
+    id: v.id,
+    versionString: v.attributes?.versionString ?? versionString,
+    platform: v.attributes?.platform ?? "IOS",
+    appStoreState: v.attributes?.appStoreState ?? "PREPARE_FOR_SUBMISSION",
+    createdDate: v.attributes?.createdDate ?? new Date().toISOString(),
+    buildId: v.relationships?.build?.data?.id ?? undefined,
+  };
+}
+
+export async function setVersionBuild(versionId: string, buildId: string): Promise<void> {
+  await ascFetch(`/appStoreVersions/${encodeURIComponent(versionId)}/relationships/build`, {
+    method: "PATCH",
+    body: JSON.stringify({ data: { type: "builds", id: buildId } }),
+  });
+}
+
+export interface LocalizationInput {
+  locale: string;
+  description: string;
+  keywords: string;
+  marketingUrl?: string;
+  supportUrl?: string;
+  whatsNew?: string;
+}
+
+export async function upsertLocalization(versionId: string, input: LocalizationInput): Promise<void> {
+  // Try to find an existing localization for this locale.
+  const list = await ascFetch(`/appStoreVersions/${encodeURIComponent(versionId)}/appStoreVersionLocalizations?limit=50`);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const existing = (list?.data ?? []).find((l: any) => l.attributes?.locale === input.locale);
+
+  const body: Record<string, unknown> = {
+    data: {
+      type: "appStoreVersionLocalizations",
+      attributes: {
+        locale: input.locale,
+        description: input.description,
+        keywords: input.keywords,
+        ...(input.marketingUrl ? { marketingUrl: input.marketingUrl } : {}),
+        ...(input.supportUrl ? { supportUrl: input.supportUrl } : {}),
+        ...(input.whatsNew ? { whatsNew: input.whatsNew } : {}),
+      },
+    },
+  };
+
+  if (existing) {
+    await ascFetch(`/appStoreVersionLocalizations/${encodeURIComponent(existing.id)}`, {
+      method: "PATCH",
+      body: JSON.stringify(body),
+    });
+  } else {
+    await ascFetch("/appStoreVersionLocalizations", {
+      method: "POST",
+      body: JSON.stringify({
+        ...body,
+        relationships: {
+          appStoreVersion: { data: { type: "appStoreVersions", id: versionId } },
+        },
+      }),
+    });
+  }
+}
+
+export async function submitVersionForReview(versionId: string): Promise<string> {
+  const body = await ascFetch("/appStoreVersionSubmissions", {
+    method: "POST",
+    body: JSON.stringify({
+      data: {
+        type: "appStoreVersionSubmissions",
+        relationships: {
+          appStoreVersion: { data: { type: "appStoreVersions", id: versionId } },
+        },
+      },
+    }),
+  });
+  return body?.data?.id ?? "submitted";
+}
+
+export type SubmitReviewResult = {
+  ok: true;
+  versionId: string;
+  versionString: string;
+  createdVersion: boolean;
+  setBuild: boolean;
+  submissionId: string;
+};
+
+export async function submitBuildForReview(
+  appId: string,
+  buildId: string,
+  versionString: string,
+): Promise<SubmitReviewResult> {
+  const versions = await listVersions(appId);
+  let version = versions.find((v) => v.versionString === versionString);
+  let createdVersion = false;
+
+  if (!version) {
+    version = await createVersion(appId, versionString);
+    createdVersion = true;
+  }
+
+  // Ensure the chosen build is attached to the version.
+  const setBuild = version.buildId !== buildId;
+  if (setBuild) {
+    await setVersionBuild(version.id, buildId);
+    version.buildId = buildId;
+  }
+
+  // Apply a minimal en-US localization with the website's default copy.
+  await upsertLocalization(version.id, {
+    locale: "en-US",
+    description:
+      "Free emergency app for immigrant working families. One-click SOS alert, family contact notifications, and secure document delivery. Built by DetencionDefensa.com, Inc. and operated under license by Sorrentino Law Firm PLLC.",
+    keywords: "immigration,ICE,emergency,defense,alerts,pro bono",
+    marketingUrl: "https://detenciondefensa.com",
+    supportUrl: "https://detenciondefensa.com",
+    whatsNew: "Bug fixes and performance improvements.",
+  });
+
+  const submissionId = await submitVersionForReview(version.id);
+
+  return {
+    ok: true,
+    versionId: version.id,
+    versionString: version.versionString,
+    createdVersion,
+    setBuild,
+    submissionId,
   };
 }

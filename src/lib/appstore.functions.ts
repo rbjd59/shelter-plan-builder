@@ -10,6 +10,8 @@ import {
   listBetaGroups,
   addBuildToBetaGroup,
   credentialStatus,
+  listVersions,
+  submitBuildForReview,
 } from "./appstore.server";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -60,6 +62,32 @@ export const appStoreAddBuildToGroup = createServerFn({ method: "POST" })
     await assertAdmin(context);
     await addBuildToBetaGroup(data.buildId, data.groupId);
     return { ok: true };
+  });
+
+export const appStoreListVersions = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) =>
+    z.object({ appId: z.string().min(1).max(40) }).parse(input),
+  )
+  .handler(async ({ context, data }) => {
+    await assertAdmin(context);
+    return await listVersions(data.appId);
+  });
+
+export const appStoreSubmitForReview = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) =>
+    z
+      .object({
+        appId: z.string().min(1).max(40),
+        buildId: z.string().min(1).max(40),
+        versionString: z.string().min(1).max(40),
+      })
+      .parse(input),
+  )
+  .handler(async ({ context, data }) => {
+    await assertAdmin(context);
+    return await submitBuildForReview(data.appId, data.buildId, data.versionString);
   });
 
 export const appStoreCredStatus = createServerFn({ method: "GET" })

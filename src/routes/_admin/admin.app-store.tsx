@@ -6,7 +6,9 @@ import {
   appStoreListApps,
   appStoreListBuilds,
   appStoreListBetaGroups,
+  appStoreListVersions,
   appStoreAddBuildToGroup,
+  appStoreSubmitForReview,
   appStoreCredStatus,
 } from "@/lib/appstore.functions";
 
@@ -42,12 +44,20 @@ function AppStorePage() {
   const listAppsFn = useServerFn(appStoreListApps);
   const listBuildsFn = useServerFn(appStoreListBuilds);
   const listGroupsFn = useServerFn(appStoreListBetaGroups);
+  const listVersionsFn = useServerFn(appStoreListVersions);
   const addToGroup = useServerFn(appStoreAddBuildToGroup);
+  const submitForReviewFn = useServerFn(appStoreSubmitForReview);
   const credStatusFn = useServerFn(appStoreCredStatus);
 
   const [appId, setAppId] = useState<string | null>(null);
   const [groupId, setGroupId] = useState<string>("");
   const [promoting, setPromoting] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState<string | null>(null);
+  const [confirmVersion, setConfirmVersion] = useState<{
+    buildId: string;
+    buildNumber: string;
+    versionString: string;
+  } | null>(null);
   const [msg, setMsg] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
@@ -66,6 +76,12 @@ function AppStorePage() {
     queryKey: ["asc-groups", selectedApp],
     queryFn: () =>
       selectedApp ? listGroupsFn({ data: { appId: selectedApp } }) : Promise.resolve([]),
+    enabled: !!selectedApp,
+  });
+  const versionsQ = useQuery({
+    queryKey: ["asc-versions", selectedApp],
+    queryFn: () =>
+      selectedApp ? listVersionsFn({ data: { appId: selectedApp } }) : Promise.resolve([]),
     enabled: !!selectedApp,
   });
 
@@ -92,6 +108,28 @@ function AppStorePage() {
   };
 
   const selectedAppInfo = appsQ.data?.find((a) => a.id === selectedApp);
+
+  const submitForReview = async (buildId: string, versionString: string) => {
+    if (!selectedApp) return;
+    setSubmitting(buildId);
+    setErr(null);
+    setMsg(null);
+    try {
+      const result = await submitForReviewFn({
+        data: { appId: selectedApp, buildId, versionString },
+      });
+      setMsg(
+        `Version ${result.versionString} submitted for App Store review (submission ${result.submissionId}).`,
+      );
+      versionsQ.refetch();
+      buildsQ.refetch();
+    } catch (e) {
+      setErr((e as Error).message);
+    } finally {
+      setSubmitting(null);
+      setConfirmVersion(null);
+    }
+  };
 
   return (
     <div className="space-y-6 p-6">
@@ -277,7 +315,7 @@ function AppStorePage() {
                   return (
                     <tr key={b.id}>
                       <td className="px-3 py-2 font-mono">{b.version}</td>
-                      <td className="px-3 py-2 font-mono">{b.buildVersion}</td>
+                      <td className="px-3 py-2 font-mono">{b.buildNumber}</td>
                       <td className="px-3 py-2 text-xs text-slate-600">
                         {fmtDate(b.uploadedDate)}
                       </td>
@@ -303,6 +341,23 @@ function AppStorePage() {
                             {promoting === b.id ? "Sending…" : "Send to TestFlight"}
                           </button>
                         )}
+                        {["VALID", "VALID_BUT_NOT_SUBMITTED", "READY_TO_TEST", "IN_TESTING"].includes(
+                          b.processingState,
+                        ) && (
+                          <button
+                            className="ml-2 rounded bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
+                            disabled={submitting !== null}
+                            onClick={() =>
+                              setConfirmVersion({
+                                buildId: b.id,
+                                buildNumber: b.buildNumber,
+                                versionString: b.version,
+                              })
+                            }
+                          >
+                            {submitting === b.id ? "Submitting…" : "Submit for Review"}
+                          </button>
+                        )}
                       </td>
                     </tr>
                   );
@@ -318,6 +373,90 @@ function AppStorePage() {
             </table>
           )}
         </section>
+      )}
+
+      {selectedApp && (
+        <section className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+          <h2 className="mb-3 text-sm font-bold uppercase tracking-wide text-slate-700">
+            App Store versions
+          </h2>
+          {versionsQ.isLoading ? (
+            <p className="text-sm text-slate-500">Loading versions…</p>
+          ) : versionsQ.isError ? (
+            <p className="text-sm text-red-600">{(versionsQ.error as Error).message}</p>
+          ) : (
+            <table className="w-full text-sm">
+              <thead className="bg-slate-50 text-left text-xs uppercase text-slate-500">
+                <tr>
+                  <th className="px-3 py-2">Version</th>
+                  <th className="px-3 py-2">State</th>
+                  <th className="px-3 py-2">Build</th>
+                  <th className="px-3 py-2">Created</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {(versionsQ.data ?? []).map((v) => (
+                  <tr key={v.id}>
+                    <td className="px-3 py-2 font-mono">{v.versionString}</td>
+                    <td className="px-3 py-2">
+                      <span className="inline-block rounded bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-700">
+                        {v.appStoreState}
+                      </span>
+                    </td>
+                    <td className="px-3 py-2 font-mono text-xs text-slate-600">
+                      {v.buildId ? "attached" : "—"}
+                    </td>
+                    <td className="px-3 py-2 text-xs text-slate-600">
+                      {fmtDate(v.createdDate)}
+                    </td>
+                  </tr>
+                ))}
+                {(versionsQ.data?.length ?? 0) === 0 && (
+                  <tr>
+                    <td colSpan={4} className="px-3 py-6 text-center text-slate-500">
+                      No App Store versions found yet.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          )}
+        </section>
+      )}
+
+      {confirmVersion && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="max-w-md rounded-lg bg-white p-6 shadow-lg">
+            <h3 className="text-lg font-bold text-slate-900">Submit for App Store Review?</h3>
+            <p className="mt-2 text-sm text-slate-700">
+              This will create an App Store version for{" "}
+              <strong className="font-mono">{confirmVersion.versionString}</strong> if needed,
+              attach build <strong className="font-mono">{confirmVersion.buildNumber}</strong>, apply
+              a default en-US localization, and submit it to Apple for review.
+            </p>
+            <p className="mt-2 text-xs text-amber-700">
+              Make sure screenshots, app review information, and pricing are already set in App Store
+              Connect, or Apple will reject the submission.
+            </p>
+            <div className="mt-4 flex justify-end gap-2">
+              <button
+                className="rounded border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                onClick={() => setConfirmVersion(null)}
+              >
+                Cancel
+              </button>
+              <button
+                className="rounded bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
+                disabled={submitting !== null}
+                onClick={() =>
+                  submitForReview(confirmVersion.buildId, confirmVersion.versionString)
+                }
+              >
+                {submitting ? "Submitting…" : "Submit for Review"}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
