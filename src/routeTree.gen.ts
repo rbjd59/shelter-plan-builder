@@ -63,6 +63,7 @@ import { Route as ApiPublicMailFromCheckRouteImport } from './routes/api/public/
 import { Route as ApiPublicAppUpdateRequestRouteImport } from './routes/api/public/app-update-request'
 import { Route as ApiPublicAppTriggerRouteImport } from './routes/api/public/app-trigger'
 import { Route as FirmFirmQueueRouteImport } from './routes/_firm/firm.queue'
+import { Route as FirmFirmLeadsRouteImport } from './routes/_firm/firm.leads'
 import { Route as FirmFirmDetainedRouteImport } from './routes/_firm/firm.detained'
 import { Route as AuthenticatedCaseIdRouteImport } from './routes/_authenticated/case.$id'
 import { Route as AuthenticatedAdminAppBuildsRouteImport } from './routes/_authenticated/admin.app-builds'
@@ -367,6 +368,11 @@ const FirmFirmQueueRoute = FirmFirmQueueRouteImport.update({
   path: '/firm/queue',
   getParentRoute: () => FirmRoute,
 } as any)
+const FirmFirmLeadsRoute = FirmFirmLeadsRouteImport.update({
+  id: '/firm/leads',
+  path: '/firm/leads',
+  getParentRoute: () => FirmRoute,
+} as any)
 const FirmFirmDetainedRoute = FirmFirmDetainedRouteImport.update({
   id: '/firm/detained',
   path: '/firm/detained',
@@ -612,6 +618,7 @@ export interface FileRoutesByFullPath {
   '/admin/app-builds': typeof AuthenticatedAdminAppBuildsRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
   '/firm/detained': typeof FirmFirmDetainedRouteWithChildren
+  '/firm/leads': typeof FirmFirmLeadsRoute
   '/firm/queue': typeof FirmFirmQueueRoute
   '/api/public/app-trigger': typeof ApiPublicAppTriggerRoute
   '/api/public/app-update-request': typeof ApiPublicAppUpdateRequestRoute
@@ -699,6 +706,7 @@ export interface FileRoutesByTo {
   '/admin/app-builds': typeof AuthenticatedAdminAppBuildsRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
   '/firm/detained': typeof FirmFirmDetainedRouteWithChildren
+  '/firm/leads': typeof FirmFirmLeadsRoute
   '/firm/queue': typeof FirmFirmQueueRoute
   '/api/public/app-trigger': typeof ApiPublicAppTriggerRoute
   '/api/public/app-update-request': typeof ApiPublicAppUpdateRequestRoute
@@ -790,6 +798,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/app-builds': typeof AuthenticatedAdminAppBuildsRoute
   '/_authenticated/case/$id': typeof AuthenticatedCaseIdRoute
   '/_firm/firm/detained': typeof FirmFirmDetainedRouteWithChildren
+  '/_firm/firm/leads': typeof FirmFirmLeadsRoute
   '/_firm/firm/queue': typeof FirmFirmQueueRoute
   '/api/public/app-trigger': typeof ApiPublicAppTriggerRoute
   '/api/public/app-update-request': typeof ApiPublicAppUpdateRequestRoute
@@ -879,6 +888,7 @@ export interface FileRouteTypes {
     | '/admin/app-builds'
     | '/case/$id'
     | '/firm/detained'
+    | '/firm/leads'
     | '/firm/queue'
     | '/api/public/app-trigger'
     | '/api/public/app-update-request'
@@ -966,6 +976,7 @@ export interface FileRouteTypes {
     | '/admin/app-builds'
     | '/case/$id'
     | '/firm/detained'
+    | '/firm/leads'
     | '/firm/queue'
     | '/api/public/app-trigger'
     | '/api/public/app-update-request'
@@ -1056,6 +1067,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/app-builds'
     | '/_authenticated/case/$id'
     | '/_firm/firm/detained'
+    | '/_firm/firm/leads'
     | '/_firm/firm/queue'
     | '/api/public/app-trigger'
     | '/api/public/app-update-request'
@@ -1528,6 +1540,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FirmFirmQueueRouteImport
       parentRoute: typeof FirmRoute
     }
+    '/_firm/firm/leads': {
+      id: '/_firm/firm/leads'
+      path: '/firm/leads'
+      fullPath: '/firm/leads'
+      preLoaderRoute: typeof FirmFirmLeadsRouteImport
+      parentRoute: typeof FirmRoute
+    }
     '/_firm/firm/detained': {
       id: '/_firm/firm/detained'
       path: '/firm/detained'
@@ -1859,6 +1878,7 @@ const FirmFirmDetainedRouteWithChildren =
 
 interface FirmRouteChildren {
   FirmFirmDetainedRoute: typeof FirmFirmDetainedRouteWithChildren
+  FirmFirmLeadsRoute: typeof FirmFirmLeadsRoute
   FirmFirmQueueRoute: typeof FirmFirmQueueRoute
   FirmFirmPacketIdRoute: typeof FirmFirmPacketIdRoute
   FirmFirmReviewIdRoute: typeof FirmFirmReviewIdRoute
@@ -1866,6 +1886,7 @@ interface FirmRouteChildren {
 
 const FirmRouteChildren: FirmRouteChildren = {
   FirmFirmDetainedRoute: FirmFirmDetainedRouteWithChildren,
+  FirmFirmLeadsRoute: FirmFirmLeadsRoute,
   FirmFirmQueueRoute: FirmFirmQueueRoute,
   FirmFirmPacketIdRoute: FirmFirmPacketIdRoute,
   FirmFirmReviewIdRoute: FirmFirmReviewIdRoute,
