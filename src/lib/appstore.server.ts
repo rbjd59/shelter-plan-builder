@@ -257,6 +257,12 @@ export async function setVersionBuild(versionId: string, buildId: string): Promi
   });
 }
 
+export async function deleteVersion(versionId: string): Promise<void> {
+  await ascFetch(`/appStoreVersions/${encodeURIComponent(versionId)}`, {
+    method: "DELETE",
+  });
+}
+
 export interface LocalizationInput {
   locale: string;
   description: string;
