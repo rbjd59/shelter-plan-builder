@@ -32,6 +32,7 @@ import { Route as GetAppRouteImport } from './routes/get-app'
 import { Route as FirmarRouteImport } from './routes/firmar'
 import { Route as DownloadRouteImport } from './routes/download'
 import { Route as DagRouteImport } from './routes/dag'
+import { Route as ContactoRouteImport } from './routes/contacto'
 import { Route as ConfigurarRouteImport } from './routes/configurar'
 import { Route as CompanyBoardRouteImport } from './routes/company-board'
 import { Route as ComingSoonRouteImport } from './routes/coming-soon'
@@ -212,6 +213,11 @@ const DownloadRoute = DownloadRouteImport.update({
 const DagRoute = DagRouteImport.update({
   id: '/dag',
   path: '/dag',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactoRoute = ContactoRouteImport.update({
+  id: '/contacto',
+  path: '/contacto',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConfigurarRoute = ConfigurarRouteImport.update({
@@ -567,6 +573,7 @@ export interface FileRoutesByFullPath {
   '/coming-soon': typeof ComingSoonRoute
   '/company-board': typeof CompanyBoardRoute
   '/configurar': typeof ConfigurarRoute
+  '/contacto': typeof ContactoRoute
   '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
   '/firmar': typeof FirmarRoute
@@ -655,6 +662,7 @@ export interface FileRoutesByTo {
   '/coming-soon': typeof ComingSoonRoute
   '/company-board': typeof CompanyBoardRoute
   '/configurar': typeof ConfigurarRoute
+  '/contacto': typeof ContactoRoute
   '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
   '/firmar': typeof FirmarRoute
@@ -747,6 +755,7 @@ export interface FileRoutesById {
   '/coming-soon': typeof ComingSoonRoute
   '/company-board': typeof CompanyBoardRoute
   '/configurar': typeof ConfigurarRoute
+  '/contacto': typeof ContactoRoute
   '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
   '/firmar': typeof FirmarRoute
@@ -837,6 +846,7 @@ export interface FileRouteTypes {
     | '/coming-soon'
     | '/company-board'
     | '/configurar'
+    | '/contacto'
     | '/dag'
     | '/download'
     | '/firmar'
@@ -925,6 +935,7 @@ export interface FileRouteTypes {
     | '/coming-soon'
     | '/company-board'
     | '/configurar'
+    | '/contacto'
     | '/dag'
     | '/download'
     | '/firmar'
@@ -1016,6 +1027,7 @@ export interface FileRouteTypes {
     | '/coming-soon'
     | '/company-board'
     | '/configurar'
+    | '/contacto'
     | '/dag'
     | '/download'
     | '/firmar'
@@ -1108,6 +1120,7 @@ export interface RootRouteChildren {
   ComingSoonRoute: typeof ComingSoonRoute
   CompanyBoardRoute: typeof CompanyBoardRoute
   ConfigurarRoute: typeof ConfigurarRoute
+  ContactoRoute: typeof ContactoRoute
   DagRoute: typeof DagRoute
   DownloadRoute: typeof DownloadRoute
   FirmarRoute: typeof FirmarRoute
@@ -1321,6 +1334,13 @@ declare module '@tanstack/react-router' {
       path: '/dag'
       fullPath: '/dag'
       preLoaderRoute: typeof DagRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contacto': {
+      id: '/contacto'
+      path: '/contacto'
+      fullPath: '/contacto'
+      preLoaderRoute: typeof ContactoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/configurar': {
@@ -1908,6 +1928,7 @@ const rootRouteChildren: RootRouteChildren = {
   ComingSoonRoute: ComingSoonRoute,
   CompanyBoardRoute: CompanyBoardRoute,
   ConfigurarRoute: ConfigurarRoute,
+  ContactoRoute: ContactoRoute,
   DagRoute: DagRoute,
   DownloadRoute: DownloadRoute,
   FirmarRoute: FirmarRoute,
