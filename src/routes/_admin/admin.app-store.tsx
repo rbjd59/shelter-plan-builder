@@ -462,7 +462,7 @@ function AppStorePage() {
                 <label className="mt-2 flex items-center gap-2">
                   <input
                     type="checkbox"
-                    checked={replaceExisting}
+                    checked={!!replaceExisting}
                     onChange={(e) => setReplaceExisting(e.target.checked)}
                     className="h-4 w-4 rounded border-amber-300 text-amber-600"
                   />
