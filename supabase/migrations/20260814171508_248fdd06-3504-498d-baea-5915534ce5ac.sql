@@ -1,0 +1,1 @@
+UPDATE public.app_releases SET version = '0.4.1', notes = 'Build 786720682', updated_at = now() WHERE id = 'aaf51f32-e50b-4fe9-97dc-79ccfbaa592b';
