@@ -15,9 +15,9 @@ const HEADING: Record<string, string> = {
 };
 
 const DISCLAIMER: Record<string, string> = {
-  es: "Este video es un anuncio publicitario. No garantiza resultados. Cada caso se maneja de manera diferente.",
-  ht: "Videyo sa a se yon piblisite. Li pa garanti rezilta. Chak ka jere yon fason diferan.",
-  en: "This video is an advertisement. It does not guarantee outcomes. Each case is handled differently.",
+  es: "Este video es un anuncio pagado. No garantiza resultados. Cada caso se maneja de manera diferente.",
+  ht: "Videyo sa a se yon piblisite peye. Li pa garanti rezilta. Chak ka jere yon fason diferan.",
+  en: "This video is a paid advertisement. It does not guarantee outcomes. Each case is handled differently.",
 };
 
 export default function NarrativeVideoSection() {
