@@ -334,7 +334,10 @@ export type SubmitReviewResult = {
   createdVersion: boolean;
   setBuild: boolean;
   deletedVersion?: string;
-  submissionId: string;
+  submissionId: string | null;
+  submitted: boolean;
+  manualActionRequired?: boolean;
+  submissionError?: string;
 };
 
 export async function submitBuildForReview(
