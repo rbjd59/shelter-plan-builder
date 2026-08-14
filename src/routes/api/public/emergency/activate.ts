@@ -11,7 +11,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { triggerVaultRelease } from "@/lib/readiness.server";
-import { sendSosSmsToContacts } from "@/lib/twilio-sms.server";
+import { sendSosSmsToContacts, sendSms, normalizeE164 } from "@/lib/twilio-sms.server";
 
 const AppContactSchema = z.object({
   name: z.string().max(160).optional().nullable(),
@@ -243,6 +243,37 @@ function contactEmails(contacts: { email?: string | null }[] | undefined): strin
   return [...seen];
 }
 
+
+/** SMS the contacts the app sent inline, skipping numbers already texted. */
+async function smsInlineContacts(opts: {
+  contacts: { name?: string | null; phone?: string | null; phone_e164?: string | null }[];
+  alreadySent: string[];
+  kind: "alert" | "cancel";
+  clientName: string | null;
+  caseRef: string;
+}): Promise<number> {
+  const done = new Set(opts.alreadySent.map((p) => normalizeE164(p)).filter(Boolean) as string[]);
+  const name = opts.clientName ?? "Your contact";
+  const body =
+    opts.kind === "alert"
+      ? `ALERT: ${name} has triggered their DetencionDefensa emergency app and may have been detained by ICE or police. Their attorney and family have been notified. — DetencionDefensa`
+      : `CANCELLED — FALSE ALARM: ${name} has CANCELLED the earlier DetencionDefensa emergency alert. ${name} is OK. No action is needed. — DetencionDefensa`;
+  let sent = 0;
+  for (const c of opts.contacts) {
+    const to = normalizeE164(c.phone_e164 ?? c.phone ?? null);
+    if (!to || done.has(to)) continue;
+    done.add(to);
+    const res = await sendSms({
+      to,
+      body,
+      purpose: `sos_${opts.kind}`,
+      metadata: { source: "inline-contacts", case_ref: opts.caseRef, contact_name: c.name ?? null },
+    });
+    if (res.ok) sent++;
+  }
+  return sent;
+}
+
 export const Route = createFileRoute("/api/public/emergency/activate")({
   server: {
     handlers: {
@@ -300,6 +331,7 @@ export const Route = createFileRoute("/api/public/emergency/activate")({
           // Resolve the activation token from intake_session_id directly or by
           // looking up the client row.
           const cancelToken = await resolveMirrorToken(caseRef, explicitCode);
+          let cancelSmsPhones: string[] = [];
           if (cancelToken) {
             try {
               if (d.cancel_pin) {
@@ -361,6 +393,44 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
               idempotencyKey: `cancel-${d.cancel_of ?? caseRef}-${Date.now()}-alt`,
             });
           }
+          // Always copy the firm inboxes.
+          for (const cc of ALWAYS_CC) {
+            await enqueueAlertEmail({
+              to: cc,
+              subject,
+              html,
+              text,
+              label: "emergency-cancel",
+              idempotencyKey: `cancel-${d.cancel_of ?? caseRef}-${cc}`,
+            });
+          }
+
+          // Plain-language cancellation notice to every contact the app sent.
+          const cancelNotice = contactNoticeBodies({
+            kind: "cancel",
+            clientName: fullName ?? "Your contact",
+            caseRef,
+            mapsUrl: null,
+          });
+          for (const email of inlineEmails) {
+            if (email === LEGAL_INBOX || ALWAYS_CC.includes(email)) continue;
+            await enqueueAlertEmail({
+              to: email,
+              subject: `FALSE ALARM — ${fullName ?? "DetencionDefensa"} cancelled the emergency alert`,
+              html: cancelNotice.html,
+              text: cancelNotice.text,
+              label: "emergency-cancel-contact",
+              idempotencyKey: `cancel-contact-${caseRef}-${email}`,
+            });
+          }
+          await smsInlineContacts({
+            contacts: inlineContacts,
+            alreadySent: cancelSmsPhones,
+            kind: "cancel",
+            clientName: fullName,
+            caseRef,
+          });
+
           return jsonResponse({ ok: true, cancelled: d.cancel_of ?? caseRef }, { status: 200 });
         }
 
@@ -402,6 +472,7 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
         // (when it is already an 8-char code) or by looking up the client row.
         const mirrorToken = await resolveMirrorToken(caseRef, explicitCode);
         let contactSyncResult: { contacts_saved: number; error?: string } = { contacts_saved: 0 };
+        let alertSmsPhones: string[] = [];
         const incomingContacts = inlineContacts;
         console.log("[activate] contacts received", {
           token: mirrorToken,
@@ -445,6 +516,7 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
               mapsUrl: mapsUrlForSms,
               activationId,
             });
+            alertSmsPhones = result.phones;
             console.log("[activate] sms alert fan-out", result);
           } catch (e) {
             console.error("[activate] sms alert fan-out failed", e);
@@ -542,6 +614,46 @@ ACTION: If not cancelled by ${actAfter.toISOString()}, begin locating, notify co
           });
         }
 
+        // Always copy the firm inboxes on every fire.
+        for (const cc of ALWAYS_CC) {
+          await enqueueAlertEmail({
+            to: cc,
+            subject,
+            html,
+            text,
+            label: "emergency-activation",
+            idempotencyKey: `fire-${activationId}-${cc}`,
+          });
+        }
+
+        // Plain-language alert to every contact address the app sent us.
+        const fireNotice = contactNoticeBodies({
+          kind: "alert",
+          clientName: fullName ?? "Your contact",
+          caseRef,
+          mapsUrl,
+        });
+        for (const email of inlineEmails) {
+          if (email === LEGAL_INBOX || ALWAYS_CC.includes(email)) continue;
+          await enqueueAlertEmail({
+            to: email,
+            subject: `EMERGENCY — ${fullName ?? "your contact"} may have been detained`,
+            html: fireNotice.html,
+            text: fireNotice.text,
+            label: "emergency-activation-contact",
+            idempotencyKey: `fire-contact-${activationId}-${email}`,
+          });
+        }
+
+        // SMS any inline numbers the database fan-out did not already cover.
+        await smsInlineContacts({
+          contacts: inlineContacts,
+          alreadySent: alertSmsPhones,
+          kind: "alert",
+          clientName: fullName,
+          caseRef,
+        });
+
 
         // Sentinel Readiness Packet vault release — fire-and-log, never block alert.
         try {
@@ -590,7 +702,7 @@ ACTION: If not cancelled by ${actAfter.toISOString()}, begin locating, notify co
           }
         }
 
-        return jsonResponse({ ok: true, activation_id: activationId, act_after: actAfter.toISOString(), ...contactSyncResult }, { status: 200 });
+        return jsonResponse({ ok: true, alert_id: activationId, activation_id: activationId, act_after: actAfter.toISOString(), ...contactSyncResult }, { status: 200 });
       },
       OPTIONS: async () =>
         new Response(null, {
