@@ -57,7 +57,9 @@ function AppStorePage() {
     buildId: string;
     buildNumber: string;
     versionString: string;
+    conflict?: { versionString: string; appStoreState: string } | null;
   } | null>(null);
+  const [replaceExisting, setReplaceExisting] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
