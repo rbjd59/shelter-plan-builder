@@ -171,3 +171,27 @@ export async function addBuildToBetaGroup(buildId: string, groupId: string): Pro
     body: JSON.stringify({ data: [{ type: "betaGroups", id: groupId }] }),
   });
 }
+
+// Non-secret status of the stored Apple credentials. Never returns key material —
+// only whether each value is present, plus the Key ID / Issuer ID so an admin can
+// confirm they match the key row shown in App Store Connect.
+export function credentialStatus(): {
+  hasIssuer: boolean;
+  hasKeyId: boolean;
+  hasP8: boolean;
+  issuerId: string | null;
+  keyId: string | null;
+  p8LooksValid: boolean;
+} {
+  const issuer = process.env["APPLE_STORE_CONNECT_ISSUER_ID"] ?? "";
+  const keyId = process.env["APPLE_STORE_CONNECT_KEY_ID"] ?? "";
+  const p8 = process.env["APPLE_STORE_CONNECT_P8_KEY"] ?? "";
+  return {
+    hasIssuer: !!issuer,
+    hasKeyId: !!keyId,
+    hasP8: !!p8,
+    issuerId: issuer || null,
+    keyId: keyId || null,
+    p8LooksValid: p8.includes("BEGIN PRIVATE KEY"),
+  };
+}
