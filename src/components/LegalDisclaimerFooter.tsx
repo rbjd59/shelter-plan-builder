@@ -109,10 +109,10 @@ const COPY = {
     contact: "Contact",
   },
   es: {
-    companyHeading: "Proveedor de Tecnología y Servicios",
+    companyHeading: "Propietario del Sitio y Proveedor de Tecnología",
     notALawFirm:
-      "DetencionDefensa.com NO es una firma de abogados y no brinda asesoramiento legal. Ofrece software de admisión, traducción de documentos, mecanografía y almacenamiento seguro.",
-    firmHeading: "Servicios Legales Independientes",
+      "Sorrentino Law Firm PLLC opera este sitio bajo licencia de DetencionDefensa.com, Inc. DetencionDefensa.com, Inc. es estrictamente el desarrollador tecnológico y operador del sitio y de la aplicación — no es una firma de abogados, no brinda asesoramiento legal y no dirige ni controla ningún servicio legal. La Firma tiene el control exclusivo y la responsabilidad exclusiva de todos los servicios legales, el asesoramiento legal, el contenido legal y las relaciones abogado-cliente.",
+    firmHeading: "Operador y Proveedor de Todos los Servicios Legales",
     legalServicesBy: "Los servicios legales son prestados por",
     aSeparateFlLawFirm: "una firma de abogados de Florida independiente",
     attorneyResponsible: "Abogado responsable del contenido",
