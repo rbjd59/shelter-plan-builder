@@ -213,7 +213,7 @@ export function credentialStatus(): {
 }
 
 export async function listVersions(appId: string): Promise<AppStoreVersion[]> {
-  const body = await ascFetch(`/apps/${encodeURIComponent(appId)}/appStoreVersions?limit=50`);
+  const body = await ascFetch(`/apps/${encodeURIComponent(appId)}/appStoreVersions?limit=50&include=build`);
   return (body?.data ?? []).map(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (v: any) => ({
