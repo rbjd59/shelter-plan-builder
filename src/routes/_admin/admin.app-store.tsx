@@ -125,9 +125,15 @@ function AppStorePage() {
           replaceExisting,
         },
       });
-      setMsg(
-        `Version ${result.versionString} submitted for App Store review (submission ${result.submissionId}).${result.deletedVersion ? ` Existing version ${result.deletedVersion} was removed.` : ""}`,
-      );
+      if (result.submitted) {
+        setMsg(
+          `Version ${result.versionString} submitted for App Store review (submission ${result.submissionId}).${result.deletedVersion ? ` Existing version ${result.deletedVersion} was removed.` : ""}`,
+        );
+      } else {
+        setMsg(
+          `Version ${result.versionString} is prepared for review (build attached and localization updated), but App Store Connect refused the automatic submission. Reason: ${result.submissionError ?? "unknown"}. You will need to click “Submit for Review” manually in App Store Connect.`,
+        );
+      }
       versionsQ.refetch();
       buildsQ.refetch();
     } catch (e) {
