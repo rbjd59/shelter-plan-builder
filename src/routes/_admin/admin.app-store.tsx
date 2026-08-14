@@ -44,12 +44,20 @@ function AppStorePage() {
   const listAppsFn = useServerFn(appStoreListApps);
   const listBuildsFn = useServerFn(appStoreListBuilds);
   const listGroupsFn = useServerFn(appStoreListBetaGroups);
+  const listVersionsFn = useServerFn(appStoreListVersions);
   const addToGroup = useServerFn(appStoreAddBuildToGroup);
+  const submitForReviewFn = useServerFn(appStoreSubmitForReview);
   const credStatusFn = useServerFn(appStoreCredStatus);
 
   const [appId, setAppId] = useState<string | null>(null);
   const [groupId, setGroupId] = useState<string>("");
   const [promoting, setPromoting] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState<string | null>(null);
+  const [confirmVersion, setConfirmVersion] = useState<{
+    buildId: string;
+    buildVersion: string;
+    versionString: string;
+  } | null>(null);
   const [msg, setMsg] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
