@@ -331,6 +331,7 @@ export type SubmitReviewResult = {
   versionString: string;
   createdVersion: boolean;
   setBuild: boolean;
+  deletedVersion?: string;
   submissionId: string;
 };
 
@@ -338,12 +339,25 @@ export async function submitBuildForReview(
   appId: string,
   buildId: string,
   versionString: string,
+  opts: { replaceExisting?: boolean } = {},
 ): Promise<SubmitReviewResult> {
   const versions = await listVersions(appId);
   let version = versions.find((v) => v.versionString === versionString);
   let createdVersion = false;
+  let deletedVersion: string | undefined;
 
   if (!version) {
+    // If an editable version already exists and the caller wants to replace it,
+    // delete it so we can create the requested version.
+    const editable = versions.find((v) => v.appStoreState === "PREPARE_FOR_SUBMISSION");
+    if (editable && opts.replaceExisting) {
+      await deleteVersion(editable.id);
+      deletedVersion = editable.versionString;
+    } else if (editable) {
+      throw new Error(
+        `App Store version "${editable.versionString}" is already editable. Delete it in App Store Connect, or choose "Replace existing version" to remove it and create "${versionString}".`,
+      );
+    }
     version = await createVersion(appId, versionString);
     createdVersion = true;
   }
@@ -374,6 +388,7 @@ export async function submitBuildForReview(
     versionString: version.versionString,
     createdVersion,
     setBuild,
+    deletedVersion,
     submissionId,
   };
 }
