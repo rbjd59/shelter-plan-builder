@@ -349,13 +349,22 @@ function AppStorePage() {
                           <button
                             className="ml-2 rounded bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
                             disabled={submitting !== null}
-                            onClick={() =>
+                            onClick={() => {
+                              const conflict = (versionsQ.data ?? []).find(
+                                (v) =>
+                                  v.versionString !== b.version &&
+                                  v.appStoreState === "PREPARE_FOR_SUBMISSION",
+                              );
+                              setReplaceExisting(false);
                               setConfirmVersion({
                                 buildId: b.id,
                                 buildNumber: b.buildNumber,
                                 versionString: b.version,
-                              })
-                            }
+                                conflict: conflict
+                                  ? { versionString: conflict.versionString, appStoreState: conflict.appStoreState }
+                                  : null,
+                              });
+                            }}
                           >
                             {submitting === b.id ? "Submitting…" : "Submit for Review"}
                           </button>
