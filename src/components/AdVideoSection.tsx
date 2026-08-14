@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useLang } from "@/context/LanguageContext";
 import { useAutoplayOnHash } from "@/hooks/useAutoplayOnHash";
+import { withLang } from "@/lib/outbound-lang";
 import enAd from "@/assets/videos/protect-what-you-built-en.mp4.asset.json";
 import esAd from "@/assets/videos/protect-what-you-built-es.mp4.asset.json";
 import htAd from "@/assets/videos/protect-what-you-built-ht.mp4.asset.json";
