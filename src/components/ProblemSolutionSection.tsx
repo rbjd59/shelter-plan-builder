@@ -1,10 +1,6 @@
 import type { ReactNode } from "react";
 import { useLang, type Lang } from "@/context/LanguageContext";
-
-const withLang = (url: string, lang: Lang) => {
-  const sep = url.includes("?") ? "&" : "?";
-  return `${url}${sep}lang=${lang}&hl=${lang}#lang=${lang}`;
-};
+import { withLang } from "@/lib/outbound-lang";
 
 const pillStyle: React.CSSProperties = {
   display: "inline-block",
