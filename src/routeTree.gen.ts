@@ -70,6 +70,7 @@ import { Route as AdminAdminWebhooksRouteImport } from './routes/_admin/admin.we
 import { Route as AdminAdminTriggersRouteImport } from './routes/_admin/admin.triggers'
 import { Route as AdminAdminRolesRouteImport } from './routes/_admin/admin.roles'
 import { Route as AdminAdminRemindersRouteImport } from './routes/_admin/admin.reminders'
+import { Route as AdminAdminLeadsRouteImport } from './routes/_admin/admin.leads'
 import { Route as AdminAdminInviteCodesRouteImport } from './routes/_admin/admin.invite-codes'
 import { Route as AdminAdminEmailsRouteImport } from './routes/_admin/admin.emails'
 import { Route as AdminAdminDeliveriesRouteImport } from './routes/_admin/admin.deliveries'
@@ -402,6 +403,11 @@ const AdminAdminRemindersRoute = AdminAdminRemindersRouteImport.update({
   path: '/reminders',
   getParentRoute: () => AdminAdminRoute,
 } as any)
+const AdminAdminLeadsRoute = AdminAdminLeadsRouteImport.update({
+  id: '/leads',
+  path: '/leads',
+  getParentRoute: () => AdminAdminRoute,
+} as any)
 const AdminAdminInviteCodesRoute = AdminAdminInviteCodesRouteImport.update({
   id: '/invite-codes',
   path: '/invite-codes',
@@ -598,6 +604,7 @@ export interface FileRoutesByFullPath {
   '/admin/deliveries': typeof AdminAdminDeliveriesRoute
   '/admin/emails': typeof AdminAdminEmailsRoute
   '/admin/invite-codes': typeof AdminAdminInviteCodesRoute
+  '/admin/leads': typeof AdminAdminLeadsRoute
   '/admin/reminders': typeof AdminAdminRemindersRoute
   '/admin/roles': typeof AdminAdminRolesRoute
   '/admin/triggers': typeof AdminAdminTriggersRoute
@@ -684,6 +691,7 @@ export interface FileRoutesByTo {
   '/admin/deliveries': typeof AdminAdminDeliveriesRoute
   '/admin/emails': typeof AdminAdminEmailsRoute
   '/admin/invite-codes': typeof AdminAdminInviteCodesRoute
+  '/admin/leads': typeof AdminAdminLeadsRoute
   '/admin/reminders': typeof AdminAdminRemindersRoute
   '/admin/roles': typeof AdminAdminRolesRoute
   '/admin/triggers': typeof AdminAdminTriggersRoute
@@ -774,6 +782,7 @@ export interface FileRoutesById {
   '/_admin/admin/deliveries': typeof AdminAdminDeliveriesRoute
   '/_admin/admin/emails': typeof AdminAdminEmailsRoute
   '/_admin/admin/invite-codes': typeof AdminAdminInviteCodesRoute
+  '/_admin/admin/leads': typeof AdminAdminLeadsRoute
   '/_admin/admin/reminders': typeof AdminAdminRemindersRoute
   '/_admin/admin/roles': typeof AdminAdminRolesRoute
   '/_admin/admin/triggers': typeof AdminAdminTriggersRoute
@@ -862,6 +871,7 @@ export interface FileRouteTypes {
     | '/admin/deliveries'
     | '/admin/emails'
     | '/admin/invite-codes'
+    | '/admin/leads'
     | '/admin/reminders'
     | '/admin/roles'
     | '/admin/triggers'
@@ -948,6 +958,7 @@ export interface FileRouteTypes {
     | '/admin/deliveries'
     | '/admin/emails'
     | '/admin/invite-codes'
+    | '/admin/leads'
     | '/admin/reminders'
     | '/admin/roles'
     | '/admin/triggers'
@@ -1037,6 +1048,7 @@ export interface FileRouteTypes {
     | '/_admin/admin/deliveries'
     | '/_admin/admin/emails'
     | '/_admin/admin/invite-codes'
+    | '/_admin/admin/leads'
     | '/_admin/admin/reminders'
     | '/_admin/admin/roles'
     | '/_admin/admin/triggers'
@@ -1565,6 +1577,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminRemindersRouteImport
       parentRoute: typeof AdminAdminRoute
     }
+    '/_admin/admin/leads': {
+      id: '/_admin/admin/leads'
+      path: '/leads'
+      fullPath: '/admin/leads'
+      preLoaderRoute: typeof AdminAdminLeadsRouteImport
+      parentRoute: typeof AdminAdminRoute
+    }
     '/_admin/admin/invite-codes': {
       id: '/_admin/admin/invite-codes'
       path: '/invite-codes'
@@ -1770,6 +1789,7 @@ interface AdminAdminRouteChildren {
   AdminAdminDeliveriesRoute: typeof AdminAdminDeliveriesRoute
   AdminAdminEmailsRoute: typeof AdminAdminEmailsRoute
   AdminAdminInviteCodesRoute: typeof AdminAdminInviteCodesRoute
+  AdminAdminLeadsRoute: typeof AdminAdminLeadsRoute
   AdminAdminRemindersRoute: typeof AdminAdminRemindersRoute
   AdminAdminRolesRoute: typeof AdminAdminRolesRoute
   AdminAdminTriggersRoute: typeof AdminAdminTriggersRoute
@@ -1785,6 +1805,7 @@ const AdminAdminRouteChildren: AdminAdminRouteChildren = {
   AdminAdminDeliveriesRoute: AdminAdminDeliveriesRoute,
   AdminAdminEmailsRoute: AdminAdminEmailsRoute,
   AdminAdminInviteCodesRoute: AdminAdminInviteCodesRoute,
+  AdminAdminLeadsRoute: AdminAdminLeadsRoute,
   AdminAdminRemindersRoute: AdminAdminRemindersRoute,
   AdminAdminRolesRoute: AdminAdminRolesRoute,
   AdminAdminTriggersRoute: AdminAdminTriggersRoute,
