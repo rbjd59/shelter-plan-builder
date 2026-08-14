@@ -21,7 +21,7 @@ const pillStyle: React.CSSProperties = {
 
 function SaveMyHomeButton({ tld = "com", lang }: { tld?: "com" | "io"; lang: Lang }) {
   return (
-    <a href={withLang(`https://savemyhometrust.${tld}`, lang)} target="_blank" rel="noopener noreferrer" style={pillStyle}>
+    <a href={withLang(`https://savemyhometrust.${tld}/trust`, lang)} target="_blank" rel="noopener noreferrer" style={pillStyle}>
       SaveMyHomeTrust.{tld} →
     </a>
   );
