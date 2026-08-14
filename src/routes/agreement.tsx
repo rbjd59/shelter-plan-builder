@@ -92,7 +92,7 @@ const T = {
       "Se Sorrentino Law Firm PLLC k ap opere sit sa a anba yon lisans DetencionDefensa.com, Inc. bay, epi se li ki bay tout sèvis legal. DetencionDefensa.com, Inc. se sèlman devlopè teknoloji a ak operatè sit la ak aplikasyon an: li pa yon kabinè avoka, li pa bay konsèy legal, epi li pa dirije ni kontwole okenn sèvis legal.",
       "Nou prepare fòm federal estanda (AO 242 Petisyon Habeas Corpus dapre 28 U.S.C. § 2241 ak AO 240 In Forma Pauperis) ak enfòmasyon OU bay.",
       "Ou responsab pou revize chak fòm, chwazi rezon legal pa w, siyen, epi depoze l nan Tribinal Distri Etazini ki apwopriye a. Nou pa depoze pou ou.",
-      "DetencionDefensa.com se pa avoka w. Kominikasyon ant ou ak anplwaye DetencionDefensa.com PA pwoteje pa privilèj avoka-kliyan. Yon relasyon avoka-kliyan separe e limite ak Rosario Sorrentino, Esq. dekri nan Akò Retansyon Limite anba a; se sèlman kominikasyon ou ak Avoka a ki gen privilèj.",
+      "DetencionDefensa.com, Inc. se pa avoka w. Anplwaye li yo kolekte, tradui epi ekri enfòmasyon w sèlman kòm ajan deklare Sorrentino Law Firm PLLC epi anba sipèvizyon ak obligasyon konfidansyalite Kabinè a, konsa admisyon w se enfòmasyon kliyan Kabinè a epi privilèj avoka-kliyan aplike atravè Kabinè a. Relasyon avoka-kliyan limite ou a se ak Kabinè a, jan Akò Retansyon Limite anba a dekri l.",
       "Tout frè ou peye DetencionDefensa.com se pou sèvis tradiksyon, tap, ak preparasyon dokiman epi pa ranbousab yon fwa fòm yo prepare.",
       "Si w bezwen konsèy legal, konsilte yon avoka ki gen lisans.",
       "Lè w kontinye, ou dakò ke Tèm Sèvis sa yo gouvène itilizasyon ou nan DetencionDefensa.com.",
