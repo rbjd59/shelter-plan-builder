@@ -315,7 +315,7 @@ function AppStorePage() {
                   return (
                     <tr key={b.id}>
                       <td className="px-3 py-2 font-mono">{b.version}</td>
-                      <td className="px-3 py-2 font-mono">{b.buildVersion}</td>
+                      <td className="px-3 py-2 font-mono">{b.buildNumber}</td>
                       <td className="px-3 py-2 text-xs text-slate-600">
                         {fmtDate(b.uploadedDate)}
                       </td>
