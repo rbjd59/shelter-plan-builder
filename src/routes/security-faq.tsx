@@ -122,7 +122,6 @@ const COPY = {
       {
         q: "What if the user isn't able to press the button?",
         a: [
-          "Your data is protected by the phone's lock screen. We recommend a numeric or pattern passcode — not biometric passkeys such as fingerprint or face unlock.",
           "You can also share a copy of your emergency plan with key contacts in advance, in case you can't press the button at the time of arrest.",
         ],
       },
