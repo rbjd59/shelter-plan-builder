@@ -283,7 +283,8 @@ export async function upsertLocalization(versionId: string, input: LocalizationI
     keywords: input.keywords,
     ...(input.marketingUrl ? { marketingUrl: input.marketingUrl } : {}),
     ...(input.supportUrl ? { supportUrl: input.supportUrl } : {}),
-    ...(input.whatsNew ? { whatsNew: input.whatsNew } : {}),
+    // whatsNew is only editable after the app has been released at least once.
+    ...(input.whatsNew && input.whatsNew.trim() ? { whatsNew: input.whatsNew } : {}),
   };
 
   if (existing) {
