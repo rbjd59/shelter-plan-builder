@@ -14,8 +14,8 @@ export interface AppStoreApp {
 
 export interface AppStoreBuild {
   id: string;
-  version: string;
-  buildVersion: string;
+  version: string; // App version (e.g., "0.4.1") from preReleaseVersion
+  buildNumber: string; // Build number (e.g., "786720682") from build.attributes.version
   processingState: string;
   uploadedDate: string;
   inExternalTesting: boolean;
