@@ -336,11 +336,11 @@ export async function submitBuildForReview(
   }
 
   // Ensure the chosen build is attached to the version.
-  if (version.buildId !== buildId) {
+  const setBuild = version.buildId !== buildId;
+  if (setBuild) {
     await setVersionBuild(version.id, buildId);
     version.buildId = buildId;
   }
-  const setBuild = version.buildId !== buildId || !createdVersion;
 
   // Apply a minimal en-US localization with the website's default copy.
   await upsertLocalization(version.id, {
