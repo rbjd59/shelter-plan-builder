@@ -118,10 +118,15 @@ function AppStorePage() {
     setMsg(null);
     try {
       const result = await submitForReviewFn({
-        data: { appId: selectedApp, buildId, versionString },
+        data: {
+          appId: selectedApp,
+          buildId,
+          versionString,
+          replaceExisting,
+        },
       });
       setMsg(
-        `Version ${result.versionString} submitted for App Store review (submission ${result.submissionId}).`,
+        `Version ${result.versionString} submitted for App Store review (submission ${result.submissionId}).${result.deletedVersion ? ` Existing version ${result.deletedVersion} was removed.` : ""}`,
       );
       versionsQ.refetch();
       buildsQ.refetch();
