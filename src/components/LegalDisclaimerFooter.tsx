@@ -105,6 +105,8 @@ const COPY = {
       "Advertisements on this site for Save My Home Trust and related products are paid or bartered advertising for a separate, non-legal service. They are not a legal recommendation, and you are never required to use any advertised service or any particular attorney.",
     allRightsReserved: "All rights reserved",
     privacy: "Privacy",
+    legalNotices: "Legal notices & disclosures",
+    contact: "Contact",
   },
   es: {
     companyHeading: "Proveedor de Tecnología y Servicios",
@@ -123,6 +125,8 @@ const COPY = {
       "Los anuncios en este sitio sobre Save My Home Trust y productos relacionados son publicidad pagada o intercambiada de un servicio separado que no es legal. No son una recomendación legal, y usted nunca está obligado a usar ningún servicio anunciado ni ningún abogado en particular.",
     allRightsReserved: "Todos los derechos reservados",
     privacy: "Privacidad",
+    legalNotices: "Avisos legales y divulgaciones",
+    contact: "Contacto",
   },
   ht: {
     companyHeading: "Founisè Teknoloji ak Sèvis",
@@ -141,5 +145,7 @@ const COPY = {
       "Piblisite sou sit sa a pou Save My Home Trust ak pwodwi ki gen rapò se piblisite peye oswa echanje pou yon sèvis separe ki pa legal. Se pa yon rekòmandasyon legal, epi ou pa janm oblije itilize okenn sèvis ki anonse ni okenn avoka an patikilye.",
     allRightsReserved: "Tout dwa rezève",
     privacy: "Konfidansyalite",
+    legalNotices: "Avi legal ak divilgasyon",
+    contact: "Kontak",
   },
 } as const;
