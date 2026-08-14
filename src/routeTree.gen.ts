@@ -27,6 +27,7 @@ import { Route as PastorsRouteImport } from './routes/pastors'
 import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as OwnPropertyRouteImport } from './routes/own-property'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as LegalNoticesRouteImport } from './routes/legal-notices'
 import { Route as IntakeRouteImport } from './routes/intake'
 import { Route as GetAppRouteImport } from './routes/get-app'
 import { Route as FirmarRouteImport } from './routes/firmar'
@@ -188,6 +189,11 @@ const OwnPropertyRoute = OwnPropertyRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalNoticesRoute = LegalNoticesRouteImport.update({
+  id: '/legal-notices',
+  path: '/legal-notices',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IntakeRoute = IntakeRouteImport.update({
@@ -579,6 +585,7 @@ export interface FileRoutesByFullPath {
   '/firmar': typeof FirmarRoute
   '/get-app': typeof GetAppRoute
   '/intake': typeof IntakeRoute
+  '/legal-notices': typeof LegalNoticesRoute
   '/login': typeof LoginRoute
   '/own-property': typeof OwnPropertyRoute
   '/partners': typeof PartnersRoute
@@ -668,6 +675,7 @@ export interface FileRoutesByTo {
   '/firmar': typeof FirmarRoute
   '/get-app': typeof GetAppRoute
   '/intake': typeof IntakeRoute
+  '/legal-notices': typeof LegalNoticesRoute
   '/login': typeof LoginRoute
   '/own-property': typeof OwnPropertyRoute
   '/partners': typeof PartnersRoute
@@ -761,6 +769,7 @@ export interface FileRoutesById {
   '/firmar': typeof FirmarRoute
   '/get-app': typeof GetAppRoute
   '/intake': typeof IntakeRoute
+  '/legal-notices': typeof LegalNoticesRoute
   '/login': typeof LoginRoute
   '/own-property': typeof OwnPropertyRoute
   '/partners': typeof PartnersRoute
@@ -852,6 +861,7 @@ export interface FileRouteTypes {
     | '/firmar'
     | '/get-app'
     | '/intake'
+    | '/legal-notices'
     | '/login'
     | '/own-property'
     | '/partners'
@@ -941,6 +951,7 @@ export interface FileRouteTypes {
     | '/firmar'
     | '/get-app'
     | '/intake'
+    | '/legal-notices'
     | '/login'
     | '/own-property'
     | '/partners'
@@ -1033,6 +1044,7 @@ export interface FileRouteTypes {
     | '/firmar'
     | '/get-app'
     | '/intake'
+    | '/legal-notices'
     | '/login'
     | '/own-property'
     | '/partners'
@@ -1126,6 +1138,7 @@ export interface RootRouteChildren {
   FirmarRoute: typeof FirmarRoute
   GetAppRoute: typeof GetAppRoute
   IntakeRoute: typeof IntakeRoute
+  LegalNoticesRoute: typeof LegalNoticesRoute
   LoginRoute: typeof LoginRoute
   OwnPropertyRoute: typeof OwnPropertyRoute
   PartnersRoute: typeof PartnersRoute
@@ -1299,6 +1312,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal-notices': {
+      id: '/legal-notices'
+      path: '/legal-notices'
+      fullPath: '/legal-notices'
+      preLoaderRoute: typeof LegalNoticesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/intake': {
@@ -1934,6 +1954,7 @@ const rootRouteChildren: RootRouteChildren = {
   FirmarRoute: FirmarRoute,
   GetAppRoute: GetAppRoute,
   IntakeRoute: IntakeRoute,
+  LegalNoticesRoute: LegalNoticesRoute,
   LoginRoute: LoginRoute,
   OwnPropertyRoute: OwnPropertyRoute,
   PartnersRoute: PartnersRoute,

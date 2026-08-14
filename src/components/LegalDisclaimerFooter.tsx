@@ -63,6 +63,14 @@ export function LegalDisclaimerFooter() {
           <Link to="/privacy" style={{ color: "#a1a1aa", textDecoration: "underline" }}>
             {t.privacy}
           </Link>
+          {" · "}
+          <Link to="/legal-notices" style={{ color: "#a1a1aa", textDecoration: "underline" }}>
+            {t.legalNotices}
+          </Link>
+          {" · "}
+          <Link to="/contacto" style={{ color: "#a1a1aa", textDecoration: "underline" }}>
+            {t.contact}
+          </Link>
         </p>
 
         <div
