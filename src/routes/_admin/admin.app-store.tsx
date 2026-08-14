@@ -431,7 +431,7 @@ function AppStorePage() {
             <p className="mt-2 text-sm text-slate-700">
               This will create an App Store version for{" "}
               <strong className="font-mono">{confirmVersion.versionString}</strong> if needed,
-              attach build <strong className="font-mono">{confirmVersion.buildVersion}</strong>, apply
+              attach build <strong className="font-mono">{confirmVersion.buildNumber}</strong>, apply
               a default en-US localization, and submit it to Apple for review.
             </p>
             <p className="mt-2 text-xs text-amber-700">
