@@ -213,7 +213,7 @@ export function credentialStatus(): {
 }
 
 export async function listVersions(appId: string): Promise<AppStoreVersion[]> {
-  const body = await ascFetch(`/apps/${encodeURIComponent(appId)}/appStoreVersions?limit=50`);
+  const body = await ascFetch(`/apps/${encodeURIComponent(appId)}/appStoreVersions?limit=50&include=build`);
   return (body?.data ?? []).map(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (v: any) => ({
@@ -257,6 +257,12 @@ export async function setVersionBuild(versionId: string, buildId: string): Promi
   });
 }
 
+export async function deleteVersion(versionId: string): Promise<void> {
+  await ascFetch(`/appStoreVersions/${encodeURIComponent(versionId)}`, {
+    method: "DELETE",
+  });
+}
+
 export interface LocalizationInput {
   locale: string;
   description: string;
@@ -272,32 +278,34 @@ export async function upsertLocalization(versionId: string, input: LocalizationI
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const existing = (list?.data ?? []).find((l: any) => l.attributes?.locale === input.locale);
 
-  const body: Record<string, unknown> = {
-    data: {
-      type: "appStoreVersionLocalizations",
-      attributes: {
-        locale: input.locale,
-        description: input.description,
-        keywords: input.keywords,
-        ...(input.marketingUrl ? { marketingUrl: input.marketingUrl } : {}),
-        ...(input.supportUrl ? { supportUrl: input.supportUrl } : {}),
-        ...(input.whatsNew ? { whatsNew: input.whatsNew } : {}),
-      },
-    },
+  const baseAttrs: Record<string, unknown> = {
+    description: input.description,
+    keywords: input.keywords,
+    ...(input.marketingUrl ? { marketingUrl: input.marketingUrl } : {}),
+    ...(input.supportUrl ? { supportUrl: input.supportUrl } : {}),
+    // whatsNew is only editable after the app has been released at least once.
+    ...(input.whatsNew && input.whatsNew.trim() ? { whatsNew: input.whatsNew } : {}),
   };
 
   if (existing) {
+    // PATCH requests must include the entity id matching the URL and must not
+    // include the locale attribute on update.
     await ascFetch(`/appStoreVersionLocalizations/${encodeURIComponent(existing.id)}`, {
       method: "PATCH",
-      body: JSON.stringify(body),
+      body: JSON.stringify({
+        data: { type: "appStoreVersionLocalizations", id: existing.id, attributes: baseAttrs },
+      }),
     });
   } else {
     await ascFetch("/appStoreVersionLocalizations", {
       method: "POST",
       body: JSON.stringify({
-        ...body,
-        relationships: {
-          appStoreVersion: { data: { type: "appStoreVersions", id: versionId } },
+        data: {
+          type: "appStoreVersionLocalizations",
+          attributes: { locale: input.locale, ...baseAttrs },
+          relationships: {
+            appStoreVersion: { data: { type: "appStoreVersions", id: versionId } },
+          },
         },
       }),
     });
@@ -325,21 +333,51 @@ export type SubmitReviewResult = {
   versionString: string;
   createdVersion: boolean;
   setBuild: boolean;
-  submissionId: string;
+  deletedVersion?: string;
+  submissionId: string | null;
+  submitted: boolean;
+  manualActionRequired?: boolean;
+  submissionError?: string;
 };
 
 export async function submitBuildForReview(
   appId: string,
   buildId: string,
   versionString: string,
+  opts: { replaceExisting?: boolean } = {},
 ): Promise<SubmitReviewResult> {
   const versions = await listVersions(appId);
   let version = versions.find((v) => v.versionString === versionString);
   let createdVersion = false;
+  let deletedVersion: string | undefined;
 
   if (!version) {
-    version = await createVersion(appId, versionString);
-    createdVersion = true;
+    // If an editable version already exists, we can attach the build to it
+    // rather than forcing a new version (Apple only allows one editable version).
+    const editable = versions.find((v) => v.appStoreState === "PREPARE_FOR_SUBMISSION");
+    if (editable) {
+      if (opts.replaceExisting) {
+        // Apple may reject deleting the last version; if it fails, fall back to using it.
+        try {
+          await deleteVersion(editable.id);
+          deletedVersion = editable.versionString;
+        } catch (e) {
+          const err = e as Error;
+          if (err.message.includes("last version") || err.message.includes("cannot be deleted")) {
+            version = editable;
+          } else {
+            throw err;
+          }
+        }
+      } else {
+        version = editable;
+      }
+    }
+
+    if (!version) {
+      version = await createVersion(appId, versionString);
+      createdVersion = true;
+    }
   }
 
   // Ensure the chosen build is attached to the version.
@@ -350,6 +388,8 @@ export async function submitBuildForReview(
   }
 
   // Apply a minimal en-US localization with the website's default copy.
+  // Note: whatsNew is only editable for updates after the app has been
+  // released at least once; omit it for the initial release.
   await upsertLocalization(version.id, {
     locale: "en-US",
     description:
@@ -357,10 +397,22 @@ export async function submitBuildForReview(
     keywords: "immigration,ICE,emergency,defense,alerts,pro bono",
     marketingUrl: "https://detenciondefensa.com",
     supportUrl: "https://detenciondefensa.com",
-    whatsNew: "Bug fixes and performance improvements.",
   });
 
-  const submissionId = await submitVersionForReview(version.id);
+  // Attempt to submit. App Store Connect API keys with Developer role cannot
+  // create submissions; App Manager or Admin role is required. If the call is
+  // rejected, we still return success for the prepare step.
+  let submissionId: string | null = null;
+  let submitted = false;
+  let submissionError: string | undefined;
+  try {
+    submissionId = await submitVersionForReview(version.id);
+    submitted = true;
+  } catch (e) {
+    const err = e as Error;
+    submissionError = err.message;
+    submitted = false;
+  }
 
   return {
     ok: true,
@@ -368,6 +420,10 @@ export async function submitBuildForReview(
     versionString: version.versionString,
     createdVersion,
     setBuild,
+    deletedVersion,
     submissionId,
+    submitted,
+    manualActionRequired: !submitted,
+    submissionError,
   };
 }

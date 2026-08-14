@@ -82,12 +82,15 @@ export const appStoreSubmitForReview = createServerFn({ method: "POST" })
         appId: z.string().min(1).max(40),
         buildId: z.string().min(1).max(40),
         versionString: z.string().min(1).max(40),
+        replaceExisting: z.boolean().optional(),
       })
       .parse(input),
   )
   .handler(async ({ context, data }) => {
     await assertAdmin(context);
-    return await submitBuildForReview(data.appId, data.buildId, data.versionString);
+    return await submitBuildForReview(data.appId, data.buildId, data.versionString, {
+      replaceExisting: data.replaceExisting,
+    });
   });
 
 export const appStoreCredStatus = createServerFn({ method: "GET" })
