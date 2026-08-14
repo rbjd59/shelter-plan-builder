@@ -9,6 +9,7 @@ import {
   listBuilds,
   listBetaGroups,
   addBuildToBetaGroup,
+  credentialStatus,
 } from "./appstore.server";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -59,4 +60,11 @@ export const appStoreAddBuildToGroup = createServerFn({ method: "POST" })
     await assertAdmin(context);
     await addBuildToBetaGroup(data.buildId, data.groupId);
     return { ok: true };
+  });
+
+export const appStoreCredStatus = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertAdmin(context);
+    return credentialStatus();
   });
