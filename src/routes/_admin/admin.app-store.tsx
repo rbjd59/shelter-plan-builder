@@ -449,12 +449,13 @@ function AppStorePage() {
       {confirmVersion && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="max-w-md rounded-lg bg-white p-6 shadow-lg">
-            <h3 className="text-lg font-bold text-slate-900">Submit for App Store Review?</h3>
+            <h3 className="text-lg font-bold text-slate-900">Prepare for App Store Review?</h3>
             <p className="mt-2 text-sm text-slate-700">
-              This will create an App Store version for{" "}
-              <strong className="font-mono">{confirmVersion.versionString}</strong> if needed,
-              attach build <strong className="font-mono">{confirmVersion.buildNumber}</strong>, apply
-              a default en-US localization, and submit it to Apple for review.
+              This will attach build <strong className="font-mono">{confirmVersion.buildNumber}</strong> to
+              the App Store version{" "}
+              <strong className="font-mono">{confirmVersion.versionString}</strong> (or the existing
+              editable version if Apple requires it), apply a default en-US localization, and then attempt
+              to submit it to Apple automatically.
             </p>
             {confirmVersion.conflict && (
               <div className="mt-3 rounded border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
@@ -462,8 +463,8 @@ function AppStorePage() {
                 <p>
                   App Store version{" "}
                   <strong className="font-mono">{confirmVersion.conflict.versionString}</strong> is
-                  already in "{confirmVersion.conflict.appStoreState}". To submit version{" "}
-                  {confirmVersion.versionString}, the existing version must be deleted.
+                  already in "{confirmVersion.conflict.appStoreState}". If Apple allows it, this will
+                  replace it; otherwise the existing version will be used.
                 </p>
                 <label className="mt-2 flex items-center gap-2">
                   <input
@@ -472,13 +473,14 @@ function AppStorePage() {
                     onChange={(e) => setReplaceExisting(e.target.checked)}
                     className="h-4 w-4 rounded border-amber-300 text-amber-600"
                   />
-                  <span>Delete existing version and replace it</span>
+                  <span>Delete existing version and replace it if possible</span>
                 </label>
               </div>
             )}
             <p className="mt-2 text-xs text-amber-700">
               Make sure screenshots, app review information, and pricing are already set in App Store
-              Connect, or Apple will reject the submission.
+              Connect. If the Apple API key has only Developer role, the final “Submit for Review” click
+              must still be done manually in App Store Connect by an App Manager or Admin.
             </p>
             <div className="mt-4 flex justify-end gap-2">
               <button
