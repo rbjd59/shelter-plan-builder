@@ -78,6 +78,12 @@ function AppStorePage() {
       selectedApp ? listGroupsFn({ data: { appId: selectedApp } }) : Promise.resolve([]),
     enabled: !!selectedApp,
   });
+  const versionsQ = useQuery({
+    queryKey: ["asc-versions", selectedApp],
+    queryFn: () =>
+      selectedApp ? listVersionsFn({ data: { appId: selectedApp } }) : Promise.resolve([]),
+    enabled: !!selectedApp,
+  });
 
   const externalGroups = (groupsQ.data ?? []).filter((g) => !g.isInternalGroup);
   const targetGroup = groupId || externalGroups[0]?.id || "";
