@@ -32,9 +32,18 @@ const ActivateSchema = z.object({
   contacts: z.array(AppContactSchema).max(20).optional(),
   payload: z.object({
     contacts: z.array(AppContactSchema).max(20).optional(),
+    name: z.string().max(200).optional().nullable(),
+    a_number: z.string().max(40).optional().nullable(),
+    trigger_type: z.string().max(40).optional().nullable(),
+    lat: z.number().min(-90).max(90).optional().nullable(),
+    lng: z.number().min(-180).max(180).optional().nullable(),
   }).passthrough().optional(),
   gps_lat: z.number().min(-90).max(90).optional(),
   gps_lng: z.number().min(-180).max(180).optional(),
+  lat: z.number().min(-90).max(90).optional(),
+  lng: z.number().min(-180).max(180).optional(),
+  name: z.string().min(1).max(200).optional(),
+  a_number: z.string().max(40).optional(),
   gps_raw: z.string().max(200).optional(),
   battery_pct: z.number().int().min(0).max(100).optional().nullable(),
   device_timestamp: z.string().max(80).optional(),
@@ -50,6 +59,8 @@ const ActivateSchema = z.object({
 const FROM = "intake@gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
 const LEGAL_INBOX = "legal@theconsumerdefender.com";
+// Always copied on every SOS fire and cancel, per operating agreement.
+const ALWAYS_CC = ["legal@detenciondefensa.com", "intake@sorrentinolawfirm.com"];
 const FORMS_BUCKET = "intake-forms";
 const CORS_HEADERS = {
   "access-control-allow-origin": "*",
@@ -187,6 +198,49 @@ async function enqueueAlertEmail(opts: {
       queued_at: new Date().toISOString(),
     } as never,
   } as never);
+}
+
+
+/** Plain-language notice sent to family/lawyer contacts supplied by the app. */
+function contactNoticeBodies(opts: {
+  kind: "alert" | "cancel";
+  clientName: string;
+  caseRef: string;
+  mapsUrl: string | null;
+}) {
+  const { kind, clientName, caseRef, mapsUrl } = opts;
+  const text =
+    kind === "alert"
+      ? `EMERGENCY ALERT
+
+${clientName} has triggered their DetencionDefensa emergency app and may have been detained by ICE or police.
+
+Case reference: ${caseRef}
+Time (UTC): ${new Date().toISOString()}${mapsUrl ? `\nLast known location: ${mapsUrl}` : ""}
+
+The legal team has been notified and is responding. Please keep your phone available.
+
+— DetencionDefensa`
+      : `CANCELLED — FALSE ALARM
+
+${clientName} has CANCELLED the earlier DetencionDefensa emergency alert. ${clientName} is OK and no action is needed.
+
+Case reference: ${caseRef}
+Time (UTC): ${new Date().toISOString()}
+
+— DetencionDefensa`;
+  const html = `<div style="font:14px/1.55 Arial,sans-serif;color:#111;max-width:640px"><pre style="font:14px/1.55 Arial,sans-serif;white-space:pre-wrap;margin:0">${esc(text)}</pre></div>`;
+  return { text, html };
+}
+
+/** Collect unique, valid emails from the contacts array the app sends. */
+function contactEmails(contacts: { email?: string | null }[] | undefined): string[] {
+  const seen = new Set<string>();
+  for (const c of contacts ?? []) {
+    const e = c.email?.trim().toLowerCase();
+    if (e && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)) seen.add(e);
+  }
+  return [...seen];
 }
 
 export const Route = createFileRoute("/api/public/emergency/activate")({
