@@ -50,6 +50,10 @@ export function LegalDisclaimerFooter() {
           </span>
         </div>
 
+        <p style={{ margin: 0, color: "#d4d4d8" }}>{t.licenseNotice}</p>
+
+        <p style={{ margin: 0, color: "#a1a1aa", fontSize: 11 }}>{t.adNotice}</p>
+
         <p style={{ margin: 0, fontStyle: "italic", color: "#a1a1aa" }}>
           {t.advertisingNotice}
         </p>
