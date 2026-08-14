@@ -427,3 +427,147 @@ export async function submitBuildForReview(
     submissionError,
   };
 }
+
+// ---------------------------------------------------------------------------
+// TestFlight build maintenance: expire builds, set "What to Test" notes, and
+// manage external testers.
+// ---------------------------------------------------------------------------
+
+export async function expireBuild(buildId: string): Promise<void> {
+  await ascFetch(`/builds/${encodeURIComponent(buildId)}`, {
+    method: "PATCH",
+    body: JSON.stringify({
+      data: { type: "builds", id: buildId, attributes: { expired: true } },
+    }),
+  });
+}
+
+export async function removeBuildFromBetaGroup(buildId: string, groupId: string): Promise<void> {
+  await ascFetch(`/builds/${encodeURIComponent(buildId)}/relationships/betaGroups`, {
+    method: "DELETE",
+    body: JSON.stringify({ data: [{ type: "betaGroups", id: groupId }] }),
+  });
+}
+
+// Sets the "What to Test" notes shown to TestFlight testers for a build.
+export async function setWhatToTest(
+  buildId: string,
+  whatsNew: string,
+  locale = "en-US",
+): Promise<void> {
+  const list = await ascFetch(
+    `/builds/${encodeURIComponent(buildId)}/betaBuildLocalizations?limit=50`,
+  );
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const existing = (list?.data ?? []).find((l: any) => l.attributes?.locale === locale);
+  if (existing) {
+    await ascFetch(`/betaBuildLocalizations/${encodeURIComponent(existing.id)}`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        data: { type: "betaBuildLocalizations", id: existing.id, attributes: { whatsNew } },
+      }),
+    });
+  } else {
+    await ascFetch("/betaBuildLocalizations", {
+      method: "POST",
+      body: JSON.stringify({
+        data: {
+          type: "betaBuildLocalizations",
+          attributes: { locale, whatsNew },
+          relationships: { build: { data: { type: "builds", id: buildId } } },
+        },
+      }),
+    });
+  }
+}
+
+export interface BetaTester {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  state: string;
+}
+
+export async function listBetaTesters(groupId: string): Promise<BetaTester[]> {
+  const body = await ascFetch(`/betaGroups/${encodeURIComponent(groupId)}/betaTesters?limit=200`);
+  return (body?.data ?? []).map(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (t: any) => ({
+      id: t.id,
+      email: t.attributes?.email ?? "",
+      firstName: t.attributes?.firstName ?? "",
+      lastName: t.attributes?.lastName ?? "",
+      state: t.attributes?.state ?? "",
+    }),
+  );
+}
+
+export interface TesterInput {
+  email: string;
+  firstName?: string;
+  lastName?: string;
+}
+
+export interface InviteResult {
+  email: string;
+  ok: boolean;
+  error?: string;
+}
+
+// Invites testers to an external TestFlight group. Existing testers are added
+// to the group instead of failing the whole batch.
+export async function inviteBetaTesters(
+  groupId: string,
+  testers: TesterInput[],
+): Promise<InviteResult[]> {
+  const results: InviteResult[] = [];
+  for (const t of testers) {
+    try {
+      await ascFetch("/betaTesters", {
+        method: "POST",
+        body: JSON.stringify({
+          data: {
+            type: "betaTesters",
+            attributes: {
+              email: t.email,
+              ...(t.firstName ? { firstName: t.firstName } : {}),
+              ...(t.lastName ? { lastName: t.lastName } : {}),
+            },
+            relationships: { betaGroups: { data: [{ type: "betaGroups", id: groupId }] } },
+          },
+        }),
+      });
+      results.push({ email: t.email, ok: true });
+    } catch (e) {
+      const msg = (e as Error).message;
+      // Tester already exists in the account: attach them to this group.
+      if (/already exists|duplicate/i.test(msg)) {
+        try {
+          const all = await ascFetch(
+            `/betaTesters?filter[email]=${encodeURIComponent(t.email)}&limit=1`,
+          );
+          const id = all?.data?.[0]?.id;
+          if (!id) throw new Error(msg);
+          await ascFetch(`/betaGroups/${encodeURIComponent(groupId)}/relationships/betaTesters`, {
+            method: "POST",
+            body: JSON.stringify({ data: [{ type: "betaTesters", id }] }),
+          });
+          results.push({ email: t.email, ok: true });
+        } catch (e2) {
+          results.push({ email: t.email, ok: false, error: (e2 as Error).message });
+        }
+      } else {
+        results.push({ email: t.email, ok: false, error: msg });
+      }
+    }
+  }
+  return results;
+}
+
+export async function removeBetaTester(groupId: string, testerId: string): Promise<void> {
+  await ascFetch(`/betaGroups/${encodeURIComponent(groupId)}/relationships/betaTesters`, {
+    method: "DELETE",
+    body: JSON.stringify({ data: [{ type: "betaTesters", id: testerId }] }),
+  });
+}
