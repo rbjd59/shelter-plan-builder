@@ -204,3 +204,163 @@ export function credentialStatus(): {
     p8LooksValid: p8.includes("BEGIN PRIVATE KEY"),
   };
 }
+
+export async function listVersions(appId: string): Promise<AppStoreVersion[]> {
+  const body = await ascFetch(`/apps/${encodeURIComponent(appId)}/appStoreVersions?limit=50&sort=-createdDate`);
+  return (body?.data ?? []).map(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (v: any) => ({
+      id: v.id,
+      versionString: v.attributes?.versionString ?? "",
+      platform: v.attributes?.platform ?? "",
+      appStoreState: v.attributes?.appStoreState ?? "UNKNOWN",
+      createdDate: v.attributes?.createdDate ?? "",
+      buildId: v.relationships?.build?.data?.id ?? undefined,
+    }),
+  );
+}
+
+export async function createVersion(appId: string, versionString: string): Promise<AppStoreVersion> {
+  const body = await ascFetch("/appStoreVersions", {
+    method: "POST",
+    body: JSON.stringify({
+      data: {
+        type: "appStoreVersions",
+        attributes: { platform: "IOS", versionString },
+        relationships: { app: { data: { type: "apps", id: appId } } },
+      },
+    }),
+  });
+  const v = body?.data;
+  if (!v) throw new Error("App Store Connect did not return a new version.");
+  return {
+    id: v.id,
+    versionString: v.attributes?.versionString ?? versionString,
+    platform: v.attributes?.platform ?? "IOS",
+    appStoreState: v.attributes?.appStoreState ?? "PREPARE_FOR_SUBMISSION",
+    createdDate: v.attributes?.createdDate ?? new Date().toISOString(),
+    buildId: v.relationships?.build?.data?.id ?? undefined,
+  };
+}
+
+export async function setVersionBuild(versionId: string, buildId: string): Promise<void> {
+  await ascFetch(`/appStoreVersions/${encodeURIComponent(versionId)}/relationships/build`, {
+    method: "PATCH",
+    body: JSON.stringify({ data: { type: "builds", id: buildId } }),
+  });
+}
+
+export interface LocalizationInput {
+  locale: string;
+  description: string;
+  keywords: string;
+  marketingUrl?: string;
+  supportUrl?: string;
+  whatsNew?: string;
+}
+
+export async function upsertLocalization(versionId: string, input: LocalizationInput): Promise<void> {
+  // Try to find an existing localization for this locale.
+  const list = await ascFetch(`/appStoreVersions/${encodeURIComponent(versionId)}/appStoreVersionLocalizations?limit=50`);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const existing = (list?.data ?? []).find((l: any) => l.attributes?.locale === input.locale);
+
+  const body: Record<string, unknown> = {
+    data: {
+      type: "appStoreVersionLocalizations",
+      attributes: {
+        locale: input.locale,
+        description: input.description,
+        keywords: input.keywords,
+        ...(input.marketingUrl ? { marketingUrl: input.marketingUrl } : {}),
+        ...(input.supportUrl ? { supportUrl: input.supportUrl } : {}),
+        ...(input.whatsNew ? { whatsNew: input.whatsNew } : {}),
+      },
+    },
+  };
+
+  if (existing) {
+    await ascFetch(`/appStoreVersionLocalizations/${encodeURIComponent(existing.id)}`, {
+      method: "PATCH",
+      body: JSON.stringify(body),
+    });
+  } else {
+    await ascFetch("/appStoreVersionLocalizations", {
+      method: "POST",
+      body: JSON.stringify({
+        ...body,
+        relationships: {
+          appStoreVersion: { data: { type: "appStoreVersions", id: versionId } },
+        },
+      }),
+    });
+  }
+}
+
+export async function submitVersionForReview(versionId: string): Promise<string> {
+  const body = await ascFetch("/appStoreVersionSubmissions", {
+    method: "POST",
+    body: JSON.stringify({
+      data: {
+        type: "appStoreVersionSubmissions",
+        relationships: {
+          appStoreVersion: { data: { type: "appStoreVersions", id: versionId } },
+        },
+      },
+    }),
+  });
+  return body?.data?.id ?? "submitted";
+}
+
+export type SubmitReviewResult = {
+  ok: true;
+  versionId: string;
+  versionString: string;
+  createdVersion: boolean;
+  setBuild: boolean;
+  submissionId: string;
+};
+
+export async function submitBuildForReview(
+  appId: string,
+  buildId: string,
+  versionString: string,
+): Promise<SubmitReviewResult> {
+  const versions = await listVersions(appId);
+  let version = versions.find((v) => v.versionString === versionString);
+  let createdVersion = false;
+
+  if (!version) {
+    version = await createVersion(appId, versionString);
+    createdVersion = true;
+  }
+
+  // Ensure the chosen build is attached to the version.
+  if (version.buildId !== buildId) {
+    await setVersionBuild(version.id, buildId);
+    version.buildId = buildId;
+  }
+  const setBuild = version.buildId !== buildId || !createdVersion;
+
+  // Apply a minimal en-US localization with the website's default copy.
+  await upsertLocalization(version.id, {
+    locale: "en-US",
+    description:
+      "Free emergency app for immigrant working families. One-click SOS alert, family contact notifications, and secure document delivery. Built by DetencionDefensa.com, Inc. and operated under license by Sorrentino Law Firm PLLC.",
+    keywords: "immigration,ICE,emergency,defense,alerts,pro bono",
+    marketingUrl: "https://detenciondefensa.com",
+    supportUrl: "https://detenciondefensa.com",
+    whatsNew: "Bug fixes and performance improvements.",
+  });
+
+  const submissionId = await submitVersionForReview(version.id);
+
+  return {
+    ok: true,
+    versionId: version.id,
+    versionString: version.versionString,
+    createdVersion,
+    setBuild,
+    submissionId,
+  };
+}
