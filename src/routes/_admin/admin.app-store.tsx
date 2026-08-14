@@ -483,7 +483,7 @@ function AppStorePage() {
               </button>
               <button
                 className="rounded bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
-                disabled={submitting !== null || (confirmVersion.conflict && !replaceExisting)}
+                disabled={submitting !== null || (!!confirmVersion.conflict && !replaceExisting)}
                 onClick={() =>
                   submitForReview(confirmVersion.buildId, confirmVersion.versionString)
                 }
