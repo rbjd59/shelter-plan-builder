@@ -109,6 +109,28 @@ function AppStorePage() {
 
   const selectedAppInfo = appsQ.data?.find((a) => a.id === selectedApp);
 
+  const submitForReview = async (buildId: string, versionString: string) => {
+    if (!selectedApp) return;
+    setSubmitting(buildId);
+    setErr(null);
+    setMsg(null);
+    try {
+      const result = await submitForReviewFn({
+        data: { appId: selectedApp, buildId, versionString },
+      });
+      setMsg(
+        `Version ${result.versionString} submitted for App Store review (submission ${result.submissionId}).`,
+      );
+      versionsQ.refetch();
+      buildsQ.refetch();
+    } catch (e) {
+      setErr((e as Error).message);
+    } finally {
+      setSubmitting(null);
+      setConfirmVersion(null);
+    }
+  };
+
   return (
     <div className="space-y-6 p-6">
       <header>
