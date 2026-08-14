@@ -129,10 +129,10 @@ const COPY = {
     contact: "Contacto",
   },
   ht: {
-    companyHeading: "Founisè Teknoloji ak Sèvis",
+    companyHeading: "Pwopriyetè Sit la ak Founisè Teknoloji",
     notALawFirm:
-      "DetencionDefensa.com SE PA yon kabinè avoka epi li pa bay konsèy legal. Li bay lojisyèl admisyon, tradiksyon dokiman, daktilografi, ak depo an sekirite.",
-    firmHeading: "Sèvis Legal Endepandan",
+      "Se Sorrentino Law Firm PLLC k ap opere sit sa a anba yon lisans DetencionDefensa.com, Inc. bay. DetencionDefensa.com, Inc. se sèlman devlopè teknoloji a ak operatè sit la ak aplikasyon an — li pa yon kabinè avoka, li pa bay konsèy legal, epi li pa dirije ni kontwole okenn sèvis legal. Kabinè a gen kontwòl total ak responsablite total pou tout sèvis legal, konsèy legal, kontni legal, ak relasyon avoka-kliyan.",
+    firmHeading: "Operatè ak Founisè Tout Sèvis Legal",
     legalServicesBy: "Sèvis legal yo bay pa",
     aSeparateFlLawFirm: "yon kabinè avoka Florid separe",
     attorneyResponsible: "Avoka responsab pou kontni",
