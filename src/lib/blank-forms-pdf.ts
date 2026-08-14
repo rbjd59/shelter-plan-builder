@@ -309,189 +309,161 @@ async function floridaPOA(lang: Lang) {
   return { bytes: await ctx.doc.save(), anchor };
 }
 
-async function schoolPickup(lang: Lang) {
-  const c = CHROME[lang];
-  const ctx = await newDoc("School Pickup Authorization (blank)");
-  title(
-    ctx,
-    pick({ en: "SCHOOL PICKUP & EDUCATIONAL AUTHORIZATION", es: "AUTORIZACIÓN ESCOLAR Y DE RECOGIDA", ht: "OTORIZASYON POU CHACHE TIMOUN LEKÒL" }, lang),
-    pick({ en: "To be presented to the school, daycare, or after-school program", es: "Para presentar a la escuela, guardería o programa extraescolar", ht: "Pou prezante bay lekòl, gadri, oswa pwogram apre lekòl" }, lang),
-    BANNER[lang],
-  );
-  field(ctx, pick({ en: "Parent / legal guardian (full name):", es: "Padre/madre o tutor legal (nombre completo):", ht: "Paran / gadyen legal (non konplè):" }, lang), 0.95);
-  field(ctx, pick({ en: "Phone / email:", es: "Teléfono / correo:", ht: "Telefòn / imèl:" }, lang), 0.9);
-  field(ctx, pick({ en: "School / daycare name:", es: "Nombre de la escuela / guardería:", ht: "Non lekòl / gadri:" }, lang), 0.9);
-  para(ctx, pick({ en: "CHILDREN COVERED", es: "NIÑOS INCLUIDOS", ht: "TIMOUN KI KONSÈNE" }, lang), { bold: true });
-  for (let i = 1; i <= 4; i++) {
-    field(ctx, `${i}. ${pick({ en: "Child name / date of birth / grade:", es: "Nombre del niño / fecha de nacimiento / grado:", ht: "Non timoun / dat nesans / klas:" }, lang)}`, 0.98);
-  }
-  para(ctx, pick({ en: "AUTHORIZED ADULTS", es: "ADULTOS AUTORIZADOS", ht: "ADILT OTORIZE" }, lang), { bold: true });
-  for (let i = 1; i <= 3; i++) {
-    field(ctx, `${i}. ${pick({ en: "Name / relationship / phone / ID number:", es: "Nombre / parentesco / teléfono / número de identificación:", ht: "Non / relasyon / telefòn / nimewo ID:" }, lang)}`, 0.98);
-  }
-  para(
-    ctx,
-    pick(
-      {
-        en: "I authorize the adults named above to pick up my children from school or childcare, to be contacted in an emergency, to receive and discuss school records and health information, to consent to emergency medical treatment if I cannot be reached, and to speak with teachers and administrators on my behalf. This authorization stays in effect until I revoke it in writing.",
-        es: "Autorizo a los adultos nombrados arriba a recoger a mis hijos de la escuela o guardería, a ser contactados en caso de emergencia, a recibir y discutir expedientes escolares e información de salud, a consentir tratamiento médico de emergencia si no se me puede localizar, y a hablar con maestros y administradores en mi nombre. Esta autorización sigue vigente hasta que la revoque por escrito.",
-        ht: "Mwen otorize adilt ki nonmen anwo yo pou chache timoun mwen yo nan lekòl oswa gadri, pou yo kontakte yo nan yon ijans, pou resevwa ak diskite dosye lekòl ak enfòmasyon sante, pou bay konsantman pou tretman medikal ijans si yo pa ka jwenn mwen, epi pou pale ak pwofesè ak administratè pou mwen. Otorizasyon sa a rete an vigè jiskaske mwen revoke l alekri.",
-      },
-      lang,
-    ),
-    { size: 9.5 },
-  );
-  const anchor = signatureBlock(ctx, c);
-  return { bytes: await ctx.doc.save(), anchor };
+// ==================== OFFICIAL GOVERNMENT FORMS ====================
+// These are the real, unmodified PDFs published by the State of Florida.
+// We do NOT redraw them. We embed the official file verbatim and append a
+// single signature/notary page at the end so the e-sign flow has an anchor
+// without writing on the official pages.
+
+import hsmv82053B64 from "@/assets/forms/FL-HSMV-82053-power-of-attorney.pdf.b64";
+import form970cB64 from "@/assets/forms/FL-12.970c-consent-temporary-custody.pdf.b64";
+import form970dB64 from "@/assets/forms/FL-12.970d-consent-concurrent-custody.pdf.b64";
+
+function b64ToBytes(b64: string): Uint8Array {
+  if (typeof Buffer !== "undefined") return new Uint8Array(Buffer.from(b64, "base64"));
+  const bin = atob(b64);
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
 }
 
-async function vehicleImpound(lang: Lang) {
+const OFFICIAL_NOTE: Record<Lang, string> = {
+  en: "The pages before this one are the official form as published by the State of Florida, reproduced without alteration. Complete the official pages; use the block below only if a witness or notary signature is requested.",
+  es: "Las páginas anteriores son el formulario oficial publicado por el Estado de Florida, reproducido sin alteraciones. Complete las páginas oficiales; use el bloque siguiente solo si se requiere firma de testigo o notario.",
+  ht: "Paj anvan yo se fòm ofisyèl Eta Florid la pibliye, san okenn chanjman. Ranpli paj ofisyèl yo; sèvi ak blòk anba a sèlman si yo mande yon siyati temwen oswa notè.",
+};
+
+/** Embed an official PDF verbatim and append a signature page. */
+async function officialForm(b64: string, lang: Lang, docTitle: string) {
   const c = CHROME[lang];
-  const ctx = await newDoc("Vehicle Impound Release Authorization (blank)");
-  title(
-    ctx,
-    pick({ en: "VEHICLE IMPOUND RELEASE AUTHORIZATION", es: "AUTORIZACIÓN PARA LIBERAR VEHÍCULO DEL DEPÓSITO", ht: "OTORIZASYON POU LIBERE MACHIN NAN DEPO" }, lang),
-    pick({ en: "To be presented to a police, municipal, or private tow / impound lot", es: "Para presentar a un depósito policial, municipal o privado de grúas", ht: "Pou prezante bay yon depo lapolis, minisipal, oswa prive" }, lang),
-    BANNER[lang],
-  );
-  field(ctx, pick({ en: "Registered owner (full name):", es: "Propietario registrado (nombre completo):", ht: "Pwopriyetè anrejistre (non konplè):" }, lang), 0.95);
-  field(ctx, pick({ en: "Driver license / ID number:", es: "Licencia / número de identificación:", ht: "Lisans / nimewo ID:" }, lang), 0.9);
-  field(ctx, pick({ en: "Authorized person (full name):", es: "Persona autorizada (nombre completo):", ht: "Moun otorize (non konplè):" }, lang), 0.95);
-  field(ctx, pick({ en: "Authorized person ID / phone:", es: "Identificación / teléfono de la persona autorizada:", ht: "ID / telefòn moun otorize a:" }, lang), 0.9);
-  field(ctx, pick({ en: "Vehicle year / make / model / color:", es: "Año / marca / modelo / color del vehículo:", ht: "Ane / mak / modèl / koulè machin nan:" }, lang), 0.95);
-  field(ctx, pick({ en: "VIN:", es: "VIN:", ht: "VIN:" }, lang), 0.75);
-  field(ctx, pick({ en: "License plate / state:", es: "Placa / estado:", ht: "Plak / eta:" }, lang), 0.75);
-  field(ctx, pick({ en: "Impound lot / agency (if known):", es: "Depósito / agencia (si se conoce):", ht: "Depo / ajans (si w konnen):" }, lang), 0.95);
-  para(
-    ctx,
-    pick(
-      {
-        en: "I am the registered owner or lawful possessor of the vehicle described above. I authorize the person named above to request and take release of the vehicle from any tow, storage, or impound facility, to pay towing and storage charges on my behalf, to sign release and receipt documents, to remove all personal property from the vehicle, and to arrange transport or storage of the vehicle. A copy of this authorization has the same effect as the original.",
-        es: "Soy el propietario registrado o poseedor legal del vehículo descrito arriba. Autorizo a la persona nombrada arriba a solicitar y retirar el vehículo de cualquier grúa, almacén o depósito, a pagar los cargos de remolque y almacenamiento en mi nombre, a firmar documentos de entrega y recibo, a retirar todos los bienes personales del vehículo y a organizar el transporte o almacenamiento del vehículo. Una copia de esta autorización tiene el mismo efecto que el original.",
-        ht: "Mwen se pwopriyetè anrejistre oswa moun ki gen machin nan legalman. Mwen otorize moun ki nonmen anwo a pou mande epi retire machin nan nan nenpòt sèvis remoke, depo, oswa enpoundman, pou peye frè remoke ak depo pou mwen, pou siyen dokiman liberasyon ak resi, pou retire tout byen pèsonèl nan machin nan, epi pou òganize transpò oswa depo machin nan. Yon kopi otorizasyon sa a gen menm efè ak orijinal la.",
-      },
-      lang,
-    ),
-    { size: 9.5 },
-  );
+  const doc = await PDFDocument.load(b64ToBytes(b64));
+  doc.setTitle(docTitle);
+  const font = await doc.embedFont(StandardFonts.TimesRoman);
+  const bold = await doc.embedFont(StandardFonts.TimesRomanBold);
+  const italic = await doc.embedFont(StandardFonts.TimesRomanItalic);
+  const page = doc.addPage([PAGE_W, PAGE_H]);
+  const ctx: Ctx = {
+    doc,
+    page,
+    font,
+    bold,
+    italic,
+    y: PAGE_H - MARGIN,
+    pageIndex: doc.getPageCount() - 1,
+  };
+  para(ctx, docTitle, { bold: true, size: 12 });
+  para(ctx, OFFICIAL_NOTE[lang], { italic: true, size: 9 });
   const anchor = signatureBlock(ctx, c);
-  return { bytes: await ctx.doc.save(), anchor };
+  return { bytes: await doc.save(), anchor };
 }
 
-async function bankAccess(lang: Lang) {
+/**
+ * Fla. Stat. 709.2119(2) — the statutory affidavit a bank or lender may
+ * require from an agent acting under a power of attorney. Reproduced from the
+ * statutory text (Florida publishes no fillable PDF of it).
+ */
+async function poaAffidavit(lang: Lang) {
   const c = CHROME[lang];
-  const ctx = await newDoc("Bank Account Access Authorization (blank)");
+  const ctx = await newDoc("Affidavit under Fla. Stat. 709.2119(2)");
   title(
     ctx,
-    pick({ en: "BANK ACCOUNT ACCESS AUTHORIZATION", es: "AUTORIZACIÓN DE ACCESO A CUENTA BANCARIA", ht: "OTORIZASYON POU AKSÈ KONT LABANK" }, lang),
-    pick({ en: "To be presented to the financial institution", es: "Para presentar a la institución financiera", ht: "Pou prezante bay enstitisyon finansye a" }, lang),
+    "AFFIDAVIT UNDER SECTION 709.2119(2), FLORIDA STATUTES",
+    pick(
+      {
+        en: "Statutory affidavit of an agent acting under a power of attorney — the form a bank or lender may require",
+        es: "Declaración jurada estatutaria del apoderado bajo un poder notarial — el formulario que un banco o prestamista puede exigir",
+        ht: "Deklarasyon sou sèman legal reprezantan an anba yon pouvwa avoka — fòm yon bank oswa prete kapab mande",
+      },
+      lang,
+    ),
     BANNER[lang],
   );
-  field(ctx, pick({ en: "Account holder (full name):", es: "Titular de la cuenta (nombre completo):", ht: "Moun ki gen kont lan (non konplè):" }, lang), 0.95);
-  field(ctx, pick({ en: "Address / phone:", es: "Dirección / teléfono:", ht: "Adrès / telefòn:" }, lang), 0.95);
-  field(ctx, pick({ en: "Financial institution:", es: "Institución financiera:", ht: "Enstitisyon finansye:" }, lang), 0.9);
-  field(ctx, pick({ en: "Account type / last 4 digits:", es: "Tipo de cuenta / últimos 4 dígitos:", ht: "Kalite kont / 4 dènye chif:" }, lang), 0.9);
-  field(ctx, pick({ en: "Second account (optional):", es: "Segunda cuenta (opcional):", ht: "Dezyèm kont (opsyonèl):" }, lang), 0.9);
-  field(ctx, pick({ en: "Authorized person (full name / relationship):", es: "Persona autorizada (nombre / parentesco):", ht: "Moun otorize (non / relasyon):" }, lang), 0.95);
-  field(ctx, pick({ en: "Authorized person ID / phone:", es: "Identificación / teléfono de la persona autorizada:", ht: "ID / telefòn moun otorize a:" }, lang), 0.9);
+  para(
+    ctx,
+    "State of ______________   County of ______________",
+    { size: 10.5 },
+  );
+  para(
+    ctx,
+    "Before me, the undersigned authority, personally appeared ____________________ (\u201cAffiant\u201d) by the means specified herein, who swore or affirmed that:",
+    { size: 10 },
+  );
+  const items = [
+    "1. Affiant is the agent named in the Power of Attorney executed by ____________________ (\u201cPrincipal\u201d) on ______________.",
+    "2. This Power of Attorney is currently exercisable by Affiant. The principal is domiciled in ____________________ (insert name of state, territory, or foreign country).",
+    "3. To the best of Affiant\u2019s knowledge after diligent search and inquiry:",
+    "     a. The Principal is not deceased;",
+    "     b. Affiant\u2019s authority has not been suspended by initiation of proceedings to determine incapacity or to appoint a guardian or a guardian advocate;",
+    "     c. Affiant\u2019s authority has not been terminated by the filing of an action for dissolution or annulment of Affiant\u2019s marriage to the principal, or their legal separation; and",
+    "     d. There has been no revocation, or partial or complete termination, of the power of attorney or of Affiant\u2019s authority.",
+    "4. Affiant is acting within the scope of authority granted in the power of attorney.",
+    "5. Affiant is the successor to ____________________ (insert name of predecessor agent), who has resigned, died, become incapacitated, is no longer qualified to serve, has declined to serve as agent, or is otherwise unable to act, if applicable.",
+    "6. Affiant agrees not to exercise any powers granted by the Power of Attorney if Affiant attains knowledge that the power of attorney has been revoked, has been partially or completely terminated or suspended, or is no longer valid because of the death or adjudication of incapacity of the Principal.",
+  ];
+  for (const it of items) para(ctx, it, { size: 10, gap: 4 });
   para(
     ctx,
     pick(
       {
-        en: "I authorize the institution named above to allow the authorized person to: obtain balance and transaction information, receive statements, deposit funds, withdraw funds and pay my recurring household bills, and discuss the account with bank staff. Limits I set (dollar amount, purpose, or expiration):",
-        es: "Autorizo a la institución nombrada arriba a permitir que la persona autorizada: obtenga información de saldos y transacciones, reciba estados de cuenta, deposite fondos, retire fondos y pague mis facturas recurrentes del hogar, y hable con el personal del banco sobre la cuenta. Límites que establezco (monto, propósito o vencimiento):",
-        ht: "Mwen otorize enstitisyon ki nonmen anwo a pou pèmèt moun otorize a: jwenn enfòmasyon sou balans ak tranzaksyon, resevwa relve, depoze lajan, retire lajan epi peye fakti kay mwen regilye yo, epi pale ak anplwaye bank lan sou kont lan. Limit mwen mete (montan, rezon, oswa dat ekspirasyon):",
+        en: "Attach a copy of the signed and notarized Power of Attorney when presenting this affidavit to a bank, credit union, or lender.",
+        es: "Adjunte una copia del poder notarial firmado y notarizado al presentar esta declaración a un banco, cooperativa de crédito o prestamista.",
+        ht: "Tache yon kopi pouvwa avoka a ki siyen epi notarye lè w prezante deklarasyon sa a bay yon bank oswa prete.",
       },
       lang,
     ),
-    { size: 9.5 },
+    { italic: true, size: 9 },
   );
-  field(ctx, "", 1);
-  field(ctx, "", 1);
-  para(
-    ctx,
-    pick(
-      {
-        en: "This authorization does NOT transfer ownership of the account and does not make the authorized person a joint owner or beneficiary. It remains in effect until revoked by me in writing or until the expiration date above. NEVER write account passwords or PINs on this form.",
-        es: "Esta autorización NO transfiere la propiedad de la cuenta ni convierte a la persona autorizada en cotitular o beneficiaria. Permanece vigente hasta que yo la revoque por escrito o hasta la fecha de vencimiento indicada. NUNCA escriba contraseñas ni PIN en este formulario.",
-        ht: "Otorizasyon sa a PA transfere pwopriyete kont lan e li pa fè moun otorize a vin ko-pwopriyetè oswa benefisyè. Li rete an vigè jiskaske mwen revoke l alekri oswa jiska dat ekspirasyon an. PA JANM ekri modpas oswa PIN sou fòm sa a.",
-      },
-      lang,
-    ),
-    { size: 9 },
-  );
-  const anchor = signatureBlock(ctx, c);
-  return { bytes: await ctx.doc.save(), anchor };
-}
-
-async function propertyAccess(lang: Lang) {
-  const c = CHROME[lang];
-  const ctx = await newDoc("Property Access Permission (blank)");
-  title(
-    ctx,
-    pick({ en: "PROPERTY ACCESS PERMISSION", es: "PERMISO DE ACCESO A LA PROPIEDAD", ht: "PÈMISYON POU AKSÈ NAN PWOPRIYETE" }, lang),
-    pick({ en: "To be presented to a landlord, property manager, storage facility, or law enforcement", es: "Para presentar al arrendador, administrador, bodega o autoridades", ht: "Pou prezante bay pwopriyetè, jesyonè, depo, oswa lapolis" }, lang),
-    BANNER[lang],
-  );
-  field(ctx, pick({ en: "Resident / owner (full name):", es: "Residente / propietario (nombre completo):", ht: "Rezidan / pwopriyetè (non konplè):" }, lang), 0.95);
-  field(ctx, pick({ en: "Property address / unit:", es: "Dirección de la propiedad / unidad:", ht: "Adrès pwopriyete / inite:" }, lang), 0.95);
-  field(ctx, pick({ en: "Landlord / property manager / storage facility:", es: "Arrendador / administrador / bodega:", ht: "Pwopriyetè / jesyonè / depo:" }, lang), 0.95);
-  field(ctx, pick({ en: "Authorized person (full name / relationship):", es: "Persona autorizada (nombre / parentesco):", ht: "Moun otorize (non / relasyon):" }, lang), 0.95);
-  field(ctx, pick({ en: "Authorized person ID / phone:", es: "Identificación / teléfono:", ht: "ID / telefòn:" }, lang), 0.9);
-  para(
-    ctx,
-    pick(
-      {
-        en: "I give the person named above permission to enter the property described above, to receive keys and access codes, to collect mail and notices, to remove and store my personal belongings, to pay rent and utilities from funds I make available, to communicate with the landlord or property manager about my lease and account, and to arrange lawful termination or continuation of the lease. Special instructions:",
-        es: "Doy permiso a la persona nombrada arriba para entrar a la propiedad descrita, recibir llaves y códigos de acceso, recoger correo y avisos, retirar y guardar mis pertenencias, pagar renta y servicios con fondos que yo proporcione, comunicarse con el arrendador o administrador sobre mi contrato y cuenta, y gestionar legalmente la terminación o continuación del contrato. Instrucciones especiales:",
-        ht: "Mwen bay moun ki nonmen anwo a pèmisyon pou antre nan pwopriyete a, resevwa kle ak kòd aksè, ranmase lapòs ak avi, retire epi estoke byen pèsonèl mwen, peye lwaye ak sèvis ak lajan mwen bay, kominike ak pwopriyetè oswa jesyonè a sou kontra ak kont mwen, epi regle legalman fen oswa kontinyasyon kontra a. Enstriksyon espesyal:",
-      },
-      lang,
-    ),
-    { size: 9.5 },
-  );
-  field(ctx, "", 1);
-  field(ctx, "", 1);
-  field(ctx, pick({ en: "This permission expires on:", es: "Este permiso vence el:", ht: "Pèmisyon sa a ekspire nan dat:" }, lang), 0.6);
   const anchor = signatureBlock(ctx, c);
   return { bytes: await ctx.doc.save(), anchor };
 }
 
 export const BLANK_FORM_TITLES: Record<string, Record<Lang, string>> = {
   blank_power_of_attorney: {
-    en: "BLANK — Florida Durable Power of Attorney",
-    es: "EN BLANCO — Poder Notarial Duradero de Florida",
-    ht: "VID — Pouvwa Avoka Dirab Florid",
+    en: "BLANK — Florida Durable Power of Attorney (Fla. Stat. ch. 709)",
+    es: "EN BLANCO — Poder Notarial Duradero de Florida (Fla. Stat. cap. 709)",
+    ht: "VID — Pouvwa Avoka Dirab Florid (Fla. Stat. ch. 709)",
   },
   blank_school_pickup: {
-    en: "BLANK — School Pickup Authorization",
-    es: "EN BLANCO — Autorización de Recogida Escolar",
-    ht: "VID — Otorizasyon pou Chache Timoun Lekòl",
+    en: "OFFICIAL — Consent for Concurrent Custody by Extended Family (Fla. Sup. Ct. Form 12.970(d))",
+    es: "OFICIAL — Consentimiento para Custodia Concurrente por Familia Extendida (Formulario 12.970(d) de la Corte Suprema de Florida)",
+    ht: "OFISYÈL — Konsantman pou Gad Konkiran pa Fanmi Elaji (Fòm 12.970(d) Tribinal Siprèm Florid)",
   },
   blank_vehicle_impound_release: {
-    en: "BLANK — Vehicle Impound Release Authorization",
-    es: "EN BLANCO — Autorización para Liberar Vehículo del Depósito",
-    ht: "VID — Otorizasyon pou Libere Machin nan Depo",
+    en: "OFFICIAL — Power of Attorney for a Motor Vehicle, Mobile Home or Vessel (FLHSMV Form 82053)",
+    es: "OFICIAL — Poder para Vehículo, Casa Móvil o Embarcación (Formulario FLHSMV 82053)",
+    ht: "OFISYÈL — Pouvwa Avoka pou Machin, Kay Mobil oswa Batiman (Fòm FLHSMV 82053)",
   },
   blank_bank_account_access: {
-    en: "BLANK — Bank Account Access Authorization",
-    es: "EN BLANCO — Autorización de Acceso a Cuenta Bancaria",
-    ht: "VID — Otorizasyon pou Aksè Kont Labank",
+    en: "OFFICIAL — Affidavit under Fla. Stat. 709.2119(2) (statutory bank/lender affidavit)",
+    es: "OFICIAL — Declaración Jurada bajo Fla. Stat. 709.2119(2) (declaración estatutaria para bancos/prestamistas)",
+    ht: "OFISYÈL — Deklarasyon anba Fla. Stat. 709.2119(2) (deklarasyon legal pou bank/prete)",
   },
   blank_property_access: {
-    en: "BLANK — Property Access Permission",
-    es: "EN BLANCO — Permiso de Acceso a la Propiedad",
-    ht: "VID — Pèmisyon pou Aksè nan Pwopriyete",
+    en: "OFFICIAL — Consent for Temporary Custody by Extended Family (Fla. Sup. Ct. Form 12.970(c))",
+    es: "OFICIAL — Consentimiento para Custodia Temporal por Familia Extendida (Formulario 12.970(c) de la Corte Suprema de Florida)",
+    ht: "OFISYÈL — Konsantman pou Gad Tanporè pa Fanmi Elaji (Fòm 12.970(c) Tribinal Siprèm Florid)",
   },
 };
 
 export async function generateBlankForms(lang: Lang): Promise<BlankForm[]> {
   const specs: Array<[string, string, () => Promise<{ bytes: Uint8Array; anchor: BlankForm["anchor"] }>]> = [
     ["blank_power_of_attorney", "blank-1-florida-power-of-attorney.pdf", () => floridaPOA(lang)],
-    ["blank_school_pickup", "blank-2-school-pickup-authorization.pdf", () => schoolPickup(lang)],
-    ["blank_vehicle_impound_release", "blank-3-vehicle-impound-release.pdf", () => vehicleImpound(lang)],
-    ["blank_bank_account_access", "blank-4-bank-account-access.pdf", () => bankAccess(lang)],
-    ["blank_property_access", "blank-5-property-access-permission.pdf", () => propertyAccess(lang)],
+    [
+      "blank_school_pickup",
+      "official-2-FL-12.970d-consent-concurrent-custody.pdf",
+      () => officialForm(form970dB64, lang, "Florida Supreme Court Approved Family Law Form 12.970(d)"),
+    ],
+    [
+      "blank_vehicle_impound_release",
+      "official-3-FLHSMV-82053-power-of-attorney-vehicle.pdf",
+      () => officialForm(hsmv82053B64, lang, "FLHSMV Form 82053 — Power of Attorney for a Motor Vehicle, Mobile Home, Vessel"),
+    ],
+    ["blank_bank_account_access", "official-4-affidavit-709.2119.pdf", () => poaAffidavit(lang)],
+    [
+      "blank_property_access",
+      "official-5-FL-12.970c-consent-temporary-custody.pdf",
+      () => officialForm(form970cB64, lang, "Florida Supreme Court Approved Family Law Form 12.970(c)"),
+    ],
   ];
   const out: BlankForm[] = [];
   for (const [type, filename, build] of specs) {
