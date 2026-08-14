@@ -82,7 +82,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "google-site-verification", content: "apAyMowSM-4tPIwLyaBKur_HpJcCAUUSMqOmP1cQmQc" },
       { title: "DetencionDefensa.com — Pre-Detention Defense Plan" },
-      { name: "description", content: "DetencionDefensa.com, Inc. — a pre-detention defense plan for immigrant working families. Emergency app and attorney-reviewed documents at no cost during the community crisis. Not a law firm." },
+      { name: "description", content: "A pre-detention defense plan for immigrant working families. Emergency app and attorney-reviewed documents at no cost during the community crisis. Operated by Sorrentino Law Firm PLLC under license from DetencionDefensa.com, Inc., the technology operator." },
       { name: "author", content: "DetencionDefensa.com, Inc." },
       { property: "og:title", content: "DetencionDefensa.com — Pre-Detention Defense Plan" },
       { property: "og:description", content: "Pre-detention defense plan for immigrant working families. Emergency app and attorney-reviewed documents at no cost during the community crisis." },

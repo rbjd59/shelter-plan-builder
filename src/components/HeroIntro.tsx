@@ -24,7 +24,7 @@ const COPY = {
     homeBoxHeading: "Proteja su casa",
     homeBoxBody: "Protección de fideicomiso de bajo costo diseñada por un abogado para proteger su casa.",
     disclaimer:
-      "DetencionDefensa.com proporciona software de admisión seguro, traducción y servicios automatizados de preparación de documentos. No somos una firma de abogados y no proporcionamos asesoramiento legal.",
+      "Sorrentino Law Firm PLLC opera este sitio bajo licencia de DetencionDefensa.com, Inc. DetencionDefensa.com, Inc. es estrictamente el desarrollador tecnológico y operador del sitio web; la Firma tiene el control exclusivo de todos los servicios legales, el asesoramiento legal y el contenido legal.",
   },
   en: {
     plan: "ICE detention protection plan ",
@@ -45,7 +45,7 @@ const COPY = {
     homeBoxHeading: "Protect your home",
     homeBoxBody: "Low-cost trust protection designed by an attorney to protect your home.",
     disclaimer:
-      "DetencionDefensa.com provides secure admission software, translation, and automated document preparation services. We are not a law firm and do not provide legal advice.",
+      "Sorrentino Law Firm PLLC operates this site under license from DetencionDefensa.com, Inc. DetencionDefensa.com, Inc. is strictly the technology developer and website operator; the Firm has sole control of all legal services, legal advice, and legal content.",
   },
   ht: {
     plan: "Plan pwoteksyon pou arestasyon ICE ",
@@ -66,7 +66,7 @@ const COPY = {
     homeBoxHeading: "Pwoteje kay ou",
     homeBoxBody: "Pwoteksyon fidisyè ki ba pri ki fèt pa yon avoka pou pwoteje kay ou.",
     disclaimer:
-      "DetencionDefensa.com ofri lojisyèl admisyon ki an sekirite, tradiksyon, ak sèvis preparasyon dokiman otomatik. Nou pa yon kabinè avoka e nou pa bay konsèy legal.",
+      "Se Sorrentino Law Firm PLLC k ap opere sit sa a anba yon lisans DetencionDefensa.com, Inc. bay. DetencionDefensa.com, Inc. se sèlman devlopè teknoloji a ak operatè sit la; Kabinè a gen kontwòl total sou tout sèvis legal, konsèy legal, ak kontni legal.",
   },
 } satisfies Record<
   Lang,

@@ -39,13 +39,13 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Free pre-detention defense plan for immigrant working families. No fee and no monthly charge: the emergency app is free and a Florida attorney reviews your documents pro bono. We are not a law firm.",
+          "Free pre-detention defense plan for immigrant working families. No fee and no monthly charge: the emergency app is free and a Florida attorney reviews your documents pro bono. DetencionDefensa.com, Inc. is the technology operator only; Sorrentino Law Firm PLLC operates the site under license and provides all legal services.",
       },
       { property: "og:title", content: "DetencionDefensa.com — Plan de Defensa Pre-Detención · Gratis" },
       {
         property: "og:description",
         content:
-          "No fee, no monthly charge. Free emergency app plus pro bono attorney-reviewed federal documents. We are not a law firm.",
+          "No fee, no monthly charge. Free emergency app plus pro bono attorney-reviewed federal documents. DetencionDefensa.com, Inc. is the technology operator only; Sorrentino Law Firm PLLC operates the site under license and provides all legal services.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://detenciondefensa.com/" },

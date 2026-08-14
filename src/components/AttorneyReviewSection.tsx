@@ -148,60 +148,62 @@ export function AttorneyReviewSection() {
 
 const COPY = {
   en: {
-    tag: "Two Jobs · Two Fees · One Packet",
-    heading: "We type your forms. A lawyer checks them. Two jobs, two fees, sent to you together.",
-    sub: "DetencionDefensa and the lawyer do two different jobs. Each one has its own fee. You pay both, but they come together as one packet. Each job is its own contract.",
+    tag: "Two Roles · One Packet · No Fee",
+    heading: "The Company types your forms. The Firm controls the legal work. One packet, no charge.",
+    sub: "Sorrentino Law Firm PLLC operates this site under license from DetencionDefensa.com, Inc. The Company is the technology operator only. The Firm has sole control of all legal services, and the service is free during the community crisis.",
     checkpoints: [
       {
-        stage: "Job 1 · DetencionDefensa",
+        stage: "Role 1 · DetencionDefensa.com, Inc.",
         title: "We translate and type your answers",
-        body: "You answer simple questions. We translate them into English and type them onto your habeas corpus form. We charge one fee for this work. That is all we do. We are not your lawyer.",
+        body: "You answer simple questions. As the Firm's disclosed agent, we translate them into English and type them onto your habeas corpus form, then deliver them securely. That is all we do. We are not a law firm, we give no legal advice, and we are not your lawyer.",
       },
       {
-        stage: "Job 2 · The lawyer",
-        title: "A lawyer checks your forms — twice",
-        body: "A Florida lawyer reads every page before it is saved on your phone. If you are picked up later, the lawyer reads it again, signs it, and mails it to the court. The lawyer charges a second fee for this work.",
+        stage: "Role 2 · Sorrentino Law Firm PLLC",
+        title: "The Firm reviews your forms — twice",
+        body: "A Florida lawyer reads every page before it is saved on your phone. If you are picked up later, the lawyer reads it again, signs it, and mails it to the court. The Firm is solely responsible for this legal work and provides it pro bono during the crisis.",
       },
     ],
     attorneyLine: "Forms are read and signed by",
     cta: "Meet the lawyer",
   },
   es: {
-    tag: "Dos Trabajos · Dos Pagos · Un Paquete",
-    heading: "Nosotros escribimos sus formas. Un abogado las revisa. Dos trabajos, dos pagos, juntos.",
-    sub: "DetencionDefensa y el abogado hacen dos trabajos diferentes. Cada uno cobra su propio pago. Usted paga los dos, pero le llegan juntos en un solo paquete. Cada trabajo es su propio contrato.",
+    tag: "Dos Funciones · Un Paquete · Sin Costo",
+    heading:
+      "La empresa escribe sus formas. La Firma controla el trabajo legal. Un paquete, sin cargo.",
+    sub: "Sorrentino Law Firm PLLC opera este sitio bajo licencia de DetencionDefensa.com, Inc. La empresa es únicamente el operador tecnológico. La Firma tiene el control exclusivo de todos los servicios legales, y el servicio es gratuito durante la crisis comunitaria.",
     checkpoints: [
       {
-        stage: "Trabajo 1 · DetencionDefensa",
+        stage: "Función 1 · DetencionDefensa.com, Inc.",
         title: "Traducimos y escribimos sus respuestas",
-        body: "Usted contesta preguntas fáciles. Nosotros las traducimos al inglés y las escribimos en su forma de habeas corpus. Cobramos un pago por este trabajo. Eso es todo lo que hacemos. No somos su abogado.",
+        body: "Usted contesta preguntas fáciles. Como agente divulgado de la Firma, las traducimos al inglés y las escribimos en su forma de habeas corpus, y luego las entregamos de forma segura. Eso es todo lo que hacemos. No somos una firma de abogados, no damos asesoría legal y no somos su abogado.",
       },
       {
-        stage: "Trabajo 2 · El abogado",
-        title: "Un abogado revisa sus formas — dos veces",
-        body: "Un abogado de Florida lee cada página antes de guardarla en su teléfono. Si lo detienen, el abogado la lee otra vez, la firma y la manda a la corte. El abogado cobra un segundo pago por este trabajo.",
+        stage: "Función 2 · Sorrentino Law Firm PLLC",
+        title: "La Firma revisa sus formas — dos veces",
+        body: "Un abogado de Florida lee cada página antes de guardarla en su teléfono. Si lo detienen, el abogado la lee otra vez, la firma y la manda a la corte. La Firma es la única responsable de este trabajo legal y lo brinda pro bono durante la crisis.",
       },
     ],
     attorneyLine: "Las formas las lee y firma",
     cta: "Conozca al abogado",
   },
   ht: {
-    tag: "De Travay · De Peman · Yon Pake",
-    heading: "Nou ekri fòm yo. Yon avoka tcheke yo. De travay, de peman, ansanm.",
-    sub: "DetencionDefensa ak avoka a fè de travay diferan. Chak gen pwòp peman pa l. Ou peye toulède, men yo vin ansanm nan yon sèl pake. Chak travay se pwòp kontra pa l.",
+    tag: "De Wòl · Yon Pake · San Frè",
+    heading: "Konpayi an ekri fòm yo. Kabinè a kontwole travay legal la. Yon pake, san frè.",
+    sub: "Se Sorrentino Law Firm PLLC k ap opere sit sa a anba yon lisans DetencionDefensa.com, Inc. bay. Konpayi an se sèlman operatè teknoloji a. Kabinè a gen kontwòl total sou tout sèvis legal, epi sèvis la gratis pandan kriz kominotè a.",
     checkpoints: [
       {
-        stage: "Travay 1 · DetencionDefensa",
+        stage: "Wòl 1 · DetencionDefensa.com, Inc.",
         title: "Nou tradui epi ekri repons ou yo",
-        body: "Ou reponn kèk kesyon fasil. Nou tradui yo an Angle epi ekri yo sou fòm habeas corpus ou. Nou pran yon peman pou travay sa a. Se sa sèlman nou fè. Nou pa avoka w.",
+        body: "Ou reponn kèk kesyon fasil. Kòm ajan deklare Kabinè a, nou tradui yo an Angle epi ekri yo sou fòm habeas corpus ou, epi nou livre yo an sekirite. Se sa sèlman nou fè. Nou pa yon kabinè avoka, nou pa bay konsèy legal, epi nou pa avoka w.",
       },
       {
-        stage: "Travay 2 · Avoka a",
-        title: "Yon avoka tcheke fòm ou yo — de fwa",
-        body: "Yon avoka Florida li chak paj anvan li sere sou telefòn ou. Si yo pran w, avoka a li l ankò, siyen l, epi voye l bay tribinal la. Avoka a pran yon dezyèm peman pou travay sa a.",
+        stage: "Wòl 2 · Sorrentino Law Firm PLLC",
+        title: "Kabinè a tcheke fòm ou yo — de fwa",
+        body: "Yon avoka Florida li chak paj anvan li sere sou telefòn ou. Si yo pran w, avoka a li l ankò, siyen l, epi voye l bay tribinal la. Kabinè a sèl responsab pou travay legal sa a epi li bay li pro bono pandan kriz la.",
       },
     ],
     attorneyLine: "Fòm yo li epi siyen pa",
     cta: "Konnen avoka a",
   },
 } as const;
+

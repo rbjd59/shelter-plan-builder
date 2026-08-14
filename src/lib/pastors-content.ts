@@ -69,7 +69,7 @@ export const PASTORS: Record<Lang, Copy> = {
     closingBody:
       "Nuestro equipo le envía hoy mismo el paquete pastoral: muestras de los formularios, los volantes en tres idiomas, el acuerdo de referencia, y los pasos del lanzamiento suave. Sin compromiso.",
     footer:
-      "DetencionDefensa es una herramienta de preparación, no representación legal. No somos abogados y no damos consejo legal.",
+      "DetencionDefensa.com, Inc. es solo el operador tecnológico y no es una firma de abogados. Sorrentino Law Firm PLLC opera este sitio bajo licencia y presta todos los servicios legales.",
   },
 
   en: {
@@ -108,7 +108,7 @@ export const PASTORS: Record<Lang, Copy> = {
     closingBody:
       "Our team will send you the pastor packet today: sample forms, three-language flyers, the referral agreement, and the soft-launch playbook. No obligation.",
     footer:
-      "DetencionDefensa is a preparation tool, not legal representation. We are not attorneys and do not provide legal advice.",
+      "DetencionDefensa.com, Inc. is the technology operator only and is not a law firm. Sorrentino Law Firm PLLC operates this site under license and provides all legal services.",
   },
 
   ht: {
@@ -147,6 +147,6 @@ export const PASTORS: Record<Lang, Copy> = {
     closingBody:
       "Ekip nou an ap voye pakèt pastè a jodi a: echantiyon fòm yo, afich nan twa lang, akò referans la, ak gid lansman dousman an. San okenn angajman.",
     footer:
-      "DetencionDefensa se yon zouti preparasyon, se pa reprezantasyon legal. Nou pa avoka epi nou pa bay konsèy legal.",
+      "DetencionDefensa.com, Inc. se sèlman operatè teknoloji a epi li pa yon kabinè avoka. Sorrentino Law Firm PLLC ap opere sit sa a anba lisans epi se li ki bay tout sèvis legal.",
   },
 };

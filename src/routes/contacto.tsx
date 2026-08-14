@@ -11,7 +11,7 @@ export const Route = createFileRoute("/contacto")({
       {
         name: "description",
         content:
-          "Send your information and Sorrentino Law Firm PLLC will review your request. Free during the community crisis. DetencionDefensa.com, Inc. is not a law firm.",
+          "Send your information and Sorrentino Law Firm PLLC, which operates this site under license, will review your request. Free during the community crisis. DetencionDefensa.com, Inc. is the technology operator only and is not a law firm.",
       },
       { property: "og:title", content: "Contact / Contacto — DetencionDefensa.com" },
       {

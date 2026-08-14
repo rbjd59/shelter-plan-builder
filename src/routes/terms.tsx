@@ -13,7 +13,7 @@ export const Route = createFileRoute("/terms")({
   component: TermsPage,
 });
 
-const TERMS_EN = `DetencionDefensa.com is NOT a law firm and does not provide legal advice. We provide self-help services: translation and typing of basic, non-legal information onto government-published forms (Federal Form AO 242, Petition for Writ of Habeas Corpus, and the IFP fee-waiver request).
+const TERMS_EN = `Sorrentino Law Firm PLLC, a Florida law firm, operates this site under license from DetencionDefensa.com, Inc. and provides all legal services on it. DetencionDefensa.com, Inc. is strictly the technology developer and website/app operator: it builds and maintains the platform, translates and types your information onto government-published forms (Federal Form AO 242, Petition for Writ of Habeas Corpus, and the IFP fee-waiver request), and delivers them securely. It is not a law firm, it gives no legal advice, and it does not direct or control any legal service. The Firm has sole control of, and sole responsibility for, all legal work.
 
 You ("You") are the petitioner. You give the facts. You sign the form. You file it with the court. You comply with all court rules and any post-filing requirements. We do not represent you. We do not appear in court for you. We do not select your forms, give legal advice, predict outcomes, or guarantee any result.
 
@@ -23,7 +23,7 @@ Price. This is a free, pro bono engagement. There is no signup fee, no monthly f
 
 Your Data. Your information is used to populate your forms and to deliver the services you request. Sensitive identifiers stay on your device whenever possible. We do not sell your personal information.
 
-No Attorney–Client Relationship. Using this site, paying for the Plan, completing the questions, or downloading any document does NOT create an attorney–client relationship between You and DetencionDefensa.com. An attorney–client relationship with the independent reviewing attorney exists only under the separate written retainer that You sign with them.
+Attorney–Client Relationship and Privilege. No attorney–client relationship is ever created with DetencionDefensa.com, Inc.; it is not a law firm. Your intake is collected by the Company only as the disclosed agent of Sorrentino Law Firm PLLC, under the Firm's supervision and confidentiality obligations, so your information is the Firm's client information and attorney–client privilege attaches through the Firm. An attorney–client relationship with the Firm begins only when the Firm accepts your matter and You sign its limited-scope engagement letter.
 
 Eligibility & Accuracy. You represent that the information you provide is true to the best of your knowledge. False statements on a federal habeas petition may have serious legal consequences, including dismissal of your petition.
 
@@ -31,7 +31,7 @@ Acceptance. By checking the box below and clicking Continue, You confirm that Yo
 
 This summary is provided in plain language for your convenience. The full, binding terms are available on request and at the time of checkout.`;
 
-const TERMS_ES = `DetencionDefensa.com NO es un bufete de abogados y no brinda asesoría legal. Ofrecemos servicios de autoayuda: traducción y mecanografía de información básica, no legal, en formularios publicados por el gobierno (Formulario federal AO 242, Petición de Habeas Corpus y solicitud de exención de cuotas IFP).
+const TERMS_ES = `Sorrentino Law Firm PLLC, una firma de abogados de Florida, opera este sitio bajo licencia de DetencionDefensa.com, Inc. y presta todos los servicios legales. DetencionDefensa.com, Inc. es estrictamente el desarrollador tecnológico y operador del sitio y de la aplicación: construye y mantiene la plataforma, traduce y mecanografía su información en formularios publicados por el gobierno (Formulario federal AO 242, Petición de Habeas Corpus y solicitud de exención de cuotas IFP) y los entrega de forma segura. No es una firma de abogados, no brinda asesoría legal y no dirige ni controla ningún servicio legal. La Firma tiene el control exclusivo y la responsabilidad exclusiva de todo el trabajo legal.
 
 Usted ("Usted") es el peticionario. Usted aporta los hechos. Usted firma el formulario. Usted lo presenta ante el tribunal. Usted cumple con todas las reglas del tribunal y con cualquier requisito posterior a la presentación. Nosotros no lo representamos. No comparecemos ante el tribunal por Usted. No seleccionamos sus formularios, no damos asesoría legal, no predecimos resultados ni garantizamos ningún resultado.
 
@@ -41,13 +41,13 @@ Precio. Este es un servicio gratuito, pro bono. No hay cuota de inscripción, no
 
 Sus datos. Su información se usa para llenar sus formularios y prestar los servicios que solicita. No vendemos su información personal.
 
-Sin relación abogado–cliente. El uso de este sitio, el pago del Plan, completar las preguntas o descargar cualquier documento NO crea una relación abogado–cliente entre Usted y DetencionDefensa.com.
+Relación abogado–cliente y privilegio. Nunca se crea una relación abogado–cliente con DetencionDefensa.com, Inc.; no es una firma de abogados. Su información de admisión es recopilada por la empresa únicamente como agente divulgado de Sorrentino Law Firm PLLC, bajo la supervisión y las obligaciones de confidencialidad de la Firma, por lo que su información es información de cliente de la Firma y el privilegio abogado–cliente se aplica a través de la Firma. La relación abogado–cliente con la Firma comienza únicamente cuando la Firma acepta su asunto y Usted firma su carta de contratación de alcance limitado.
 
 Veracidad. Usted declara que la información que proporciona es verdadera a su leal saber y entender. Las declaraciones falsas en una petición federal de habeas pueden tener consecuencias legales graves.
 
 Aceptación. Al marcar la casilla a continuación y hacer clic en Continuar, Usted confirma que ha leído estos Términos y Condiciones en su totalidad y que los acepta.`;
 
-const TERMS_HT = `DetencionDefensa.com SE PA yon kabinè avoka epi li pa bay konsèy legal. Nou bay sèvis pwòp tèt-ou: tradiksyon ak ekri enfòmasyon debaz, ki pa legal, sou fòm gouvènman an pibliye (Fòm federal AO 242, Petisyon Habeas Corpus, ak demann IFP).
+const TERMS_HT = `Sorrentino Law Firm PLLC, yon kabinè avoka Florid, ap opere sit sa a anba yon lisans DetencionDefensa.com, Inc. bay, epi se li ki bay tout sèvis legal yo. DetencionDefensa.com, Inc. se sèlman devlopè teknoloji a ak operatè sit la ak aplikasyon an: li konstwi epi kenbe platfòm nan, li tradui epi ekri enfòmasyon w sou fòm gouvènman an pibliye (Fòm federal AO 242, Petisyon Habeas Corpus, ak demann IFP), epi li livre yo an sekirite. Li pa yon kabinè avoka, li pa bay konsèy legal, epi li pa dirije ni kontwole okenn sèvis legal. Kabinè a gen kontwòl total ak responsablite total pou tout travay legal.
 
 Ou ("Ou") se petisyonè a. Ou bay enfòmasyon yo. Ou siyen fòm nan. Ou depoze li nan tribinal la. Ou respekte tout règ tribinal la. Nou pa reprezante w. Nou pa parèt nan tribinal pou ou. Nou pa chwazi fòm ou, nou pa bay konsèy legal, nou pa pwomèt okenn rezilta.
 
@@ -57,7 +57,7 @@ Pri. Sa a se yon sèvis gratis, pro bono. Pa gen frè enskripsyon, pa gen frè c
 
 Done ou. Enfòmasyon ou itilize pou ranpli fòm ou yo. Nou pa vann enfòmasyon pèsonèl ou.
 
-Pa gen relasyon avoka-kliyan. Sèvi ak sit sa a oswa peye Plan an PA kreye yon relasyon avoka-kliyan.
+Relasyon avoka-kliyan ak privilèj. Pa gen okenn relasyon avoka-kliyan ki kreye ak DetencionDefensa.com, Inc.; li pa yon kabinè avoka. Se konpayi an ki kolekte admisyon w, men sèlman kòm ajan deklare Sorrentino Law Firm PLLC, anba sipèvizyon ak obligasyon konfidansyalite Kabinè a, konsa enfòmasyon w se enfòmasyon kliyan Kabinè a epi privilèj avoka-kliyan aplike atravè Kabinè a. Relasyon avoka-kliyan ak Kabinè a kòmanse sèlman lè Kabinè a aksepte dosye w epi Ou siyen lèt angajman limite li a.
 
 Aksepte. Lè ou tcheke bwat la epi ou klike Kontinye, ou konfime ou li tout Tèm ak Kondisyon yo epi ou aksepte yo.`;
 

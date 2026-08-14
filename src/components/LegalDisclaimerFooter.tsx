@@ -89,10 +89,10 @@ export function LegalDisclaimerFooter() {
 
 const COPY = {
   en: {
-    companyHeading: "Technology & Service Provider",
+    companyHeading: "Site Owner & Technology Provider",
     notALawFirm:
-      "DetencionDefensa.com is NOT a law firm and does not provide legal advice. It provides intake software, document translation, typing, secure storage, and an emergency notification app.",
-    firmHeading: "Independent Legal Services",
+      "Sorrentino Law Firm PLLC operates this site under license from DetencionDefensa.com, Inc. DetencionDefensa.com, Inc. is strictly the technology developer and website/app operator — it is not a law firm, gives no legal advice, and does not direct or control any legal service. The Firm has sole control of, and sole responsibility for, all legal services, legal advice, legal content, and attorney-client relationships.",
+    firmHeading: "Operator & Provider of All Legal Services",
     legalServicesBy: "Legal services are provided by",
     aSeparateFlLawFirm: "a separate Florida law firm",
     attorneyResponsible: "Attorney responsible for content",
@@ -109,10 +109,10 @@ const COPY = {
     contact: "Contact",
   },
   es: {
-    companyHeading: "Proveedor de Tecnología y Servicios",
+    companyHeading: "Propietario del Sitio y Proveedor de Tecnología",
     notALawFirm:
-      "DetencionDefensa.com NO es una firma de abogados y no brinda asesoramiento legal. Ofrece software de admisión, traducción de documentos, mecanografía y almacenamiento seguro.",
-    firmHeading: "Servicios Legales Independientes",
+      "Sorrentino Law Firm PLLC opera este sitio bajo licencia de DetencionDefensa.com, Inc. DetencionDefensa.com, Inc. es estrictamente el desarrollador tecnológico y operador del sitio y de la aplicación — no es una firma de abogados, no brinda asesoramiento legal y no dirige ni controla ningún servicio legal. La Firma tiene el control exclusivo y la responsabilidad exclusiva de todos los servicios legales, el asesoramiento legal, el contenido legal y las relaciones abogado-cliente.",
+    firmHeading: "Operador y Proveedor de Todos los Servicios Legales",
     legalServicesBy: "Los servicios legales son prestados por",
     aSeparateFlLawFirm: "una firma de abogados de Florida independiente",
     attorneyResponsible: "Abogado responsable del contenido",
@@ -129,10 +129,10 @@ const COPY = {
     contact: "Contacto",
   },
   ht: {
-    companyHeading: "Founisè Teknoloji ak Sèvis",
+    companyHeading: "Pwopriyetè Sit la ak Founisè Teknoloji",
     notALawFirm:
-      "DetencionDefensa.com SE PA yon kabinè avoka epi li pa bay konsèy legal. Li bay lojisyèl admisyon, tradiksyon dokiman, daktilografi, ak depo an sekirite.",
-    firmHeading: "Sèvis Legal Endepandan",
+      "Se Sorrentino Law Firm PLLC k ap opere sit sa a anba yon lisans DetencionDefensa.com, Inc. bay. DetencionDefensa.com, Inc. se sèlman devlopè teknoloji a ak operatè sit la ak aplikasyon an — li pa yon kabinè avoka, li pa bay konsèy legal, epi li pa dirije ni kontwole okenn sèvis legal. Kabinè a gen kontwòl total ak responsablite total pou tout sèvis legal, konsèy legal, kontni legal, ak relasyon avoka-kliyan.",
+    firmHeading: "Operatè ak Founisè Tout Sèvis Legal",
     legalServicesBy: "Sèvis legal yo bay pa",
     aSeparateFlLawFirm: "yon kabinè avoka Florid separe",
     attorneyResponsible: "Avoka responsab pou kontni",

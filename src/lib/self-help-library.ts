@@ -251,9 +251,9 @@ const PRO_BONO_HEADING: Record<Lang, string> = {
 };
 
 const PRO_BONO_NOTE: Record<Lang, string> = {
-  en: "The Company is NOT a law firm and authored NONE of these directories. Always try to retain a licensed attorney before filing pro se. National listings + Florida-specific (SDFL is the default venue) are below.",
-  es: "La Compañía NO es un bufete de abogados y NO redactó ninguno de estos directorios. Siempre intente contratar un abogado licenciado antes de presentar pro se. A continuación se incluyen listados nacionales + específicos de Florida (SDFL es la sede por defecto).",
-  ht: "Konpayi an pa yon kabinè avoka epi li pa t ekri OKENN nan anyè sa yo. Toujou eseye anboche yon avoka ki gen lisans anvan ou depoze pro se. Anba a gen lis nasyonal + espesifik Florida (SDFL se sit pa defo a).",
+  en: "DetencionDefensa.com, Inc. is the technology operator only, is not a law firm, and authored NONE of these directories. Always try to retain a licensed attorney before filing pro se. National listings + Florida-specific (SDFL is the default venue) are below.",
+  es: "DetencionDefensa.com, Inc. es solo el operador tecnológico, no es una firma de abogados y NO redactó ninguno de estos directorios. Siempre intente contratar un abogado licenciado antes de presentar pro se. A continuación se incluyen listados nacionales + específicos de Florida (SDFL es la sede por defecto).",
+  ht: "DetencionDefensa.com, Inc. se sèlman operatè teknoloji a, li pa yon kabinè avoka, epi li pa t ekri OKENN nan anyè sa yo. Toujou eseye anboche yon avoka ki gen lisans anvan ou depoze pro se. Anba a gen lis nasyonal + espesifik Florida (SDFL se sit pa defo a).",
 };
 
 const NATIONAL_LABEL: Record<Lang, string> = {

@@ -184,7 +184,7 @@ const UI = {
   en: {
     title: "Intake — DetencionDefensa.com",
     sub: "Answer every question you can. If you do not know an answer, leave it blank — the attorney will fill it in.",
-    upl: "The information below is translated and typed onto the Pro Se Federal Habeas Corpus Form AO 242.",
+    upl: "The information below is translated and typed onto the Pro Se Federal Habeas Corpus Form AO 242. Sorrentino Law Firm PLLC reviews every document; the petitioner signs and files.",
     submit: "Submit answers",
     submitting: "Submitting…",
     done: "Check your email. We just sent you a link to download the emergency app. When you receive it, follow the instructions after you enter in the activation code above. We have transferred the draft documents to your phone and scrubbed our servers of your information for your safety.",
@@ -200,7 +200,7 @@ const UI = {
   es: {
     title: "Intake — DetencionDefensa.com",
     sub: "Responda cada pregunta que pueda. Si no sabe una respuesta, déjela en blanco — el abogado la completará.",
-    upl: "NO somos un bufete de abogados. No damos consejos legales. El peticionario firma y presenta.",
+    upl: "La información a continuación se traduce y se mecanografía en el Formulario Federal Pro Se de Habeas Corpus AO 242. Sorrentino Law Firm PLLC revisa cada documento; el peticionario firma y presenta.",
     submit: "Enviar respuestas",
     submitting: "Enviando…",
     done: "Revise su correo electrónico. Acabamos de enviarle un enlace para descargar la app de emergencia. Cuando lo reciba, siga las instrucciones después de ingresar el código de activación de arriba. Hemos transferido los documentos borrador a su teléfono y borrado su información de nuestros servidores para su seguridad.",
@@ -216,7 +216,7 @@ const UI = {
   ht: {
     title: "Intake — DetencionDefensa.com",
     sub: "Reponn chak kesyon ou kapab. Si ou pa konnen yon repons, kite l vid — avoka a ap ranpli l.",
-    upl: "Nou PA yon kabinè avoka. Nou pa bay konsèy legal. Petisyonè a siyen e depoze.",
+    upl: "Enfòmasyon anba a tradui epi ekri sou Fòm Federal Pro Se Habeas Corpus AO 242. Sorrentino Law Firm PLLC revize chak dokiman; petisyonè a siyen epi depoze.",
     submit: "Voye repons",
     submitting: "K ap voye…",
     done: "Tcheke imèl ou. Nou fenk voye yon lyen pou telechaje app ijans la. Lè ou resevwa l, swiv enstriksyon yo apre ou antre kòd aktivasyon anwo a. Nou transfere dokiman bouyon yo nan telefòn ou e efase enfòmasyon ou yo nan sèvè nou pou sekirite w.",
