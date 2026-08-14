@@ -385,6 +385,8 @@ export async function submitBuildForReview(
   }
 
   // Apply a minimal en-US localization with the website's default copy.
+  // Note: whatsNew is only editable for updates after the app has been
+  // released at least once; omit it for the initial release.
   await upsertLocalization(version.id, {
     locale: "en-US",
     description:
@@ -392,7 +394,6 @@ export async function submitBuildForReview(
     keywords: "immigration,ICE,emergency,defense,alerts,pro bono",
     marketingUrl: "https://detenciondefensa.com",
     supportUrl: "https://detenciondefensa.com",
-    whatsNew: "Bug fixes and performance improvements.",
   });
 
   const submissionId = await submitVersionForReview(version.id);
