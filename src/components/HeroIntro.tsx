@@ -24,7 +24,7 @@ const COPY = {
     homeBoxHeading: "Proteja su casa",
     homeBoxBody: "Protección de fideicomiso de bajo costo diseñada por un abogado para proteger su casa.",
     disclaimer:
-      "DetencionDefensa.com proporciona software de admisión seguro, traducción y servicios automatizados de preparación de documentos. No somos una firma de abogados y no proporcionamos asesoramiento legal.",
+      "Sorrentino Law Firm PLLC opera este sitio bajo licencia de DetencionDefensa.com, Inc. DetencionDefensa.com, Inc. es estrictamente el desarrollador tecnológico y operador del sitio web; la Firma tiene el control exclusivo de todos los servicios legales, el asesoramiento legal y el contenido legal.",
   },
   en: {
     plan: "ICE detention protection plan ",
