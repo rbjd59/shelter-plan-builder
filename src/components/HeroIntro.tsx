@@ -45,7 +45,7 @@ const COPY = {
     homeBoxHeading: "Protect your home",
     homeBoxBody: "Low-cost trust protection designed by an attorney to protect your home.",
     disclaimer:
-      "DetencionDefensa.com provides secure admission software, translation, and automated document preparation services. We are not a law firm and do not provide legal advice.",
+      "Sorrentino Law Firm PLLC operates this site under license from DetencionDefensa.com, Inc. DetencionDefensa.com, Inc. is strictly the technology developer and website operator; the Firm has sole control of all legal services, legal advice, and legal content.",
   },
   ht: {
     plan: "Plan pwoteksyon pou arestasyon ICE ",
