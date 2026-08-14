@@ -270,6 +270,17 @@ export default function HeroIntro() {
                 textShadow: "0 2px 10px rgba(0,0,0,0.6)",
               }}
             >
+              <span
+                style={{
+                  color: "#ff4d4d",
+                  textDecoration: "line-through",
+                  textDecorationColor: "#ff4d4d",
+                  textDecorationThickness: "3px",
+                  marginRight: "0.5rem",
+                }}
+              >
+                {COPY[lang].wasPrice}
+              </span>
               {COPY[lang].freeText}
             </p>
           </div>
