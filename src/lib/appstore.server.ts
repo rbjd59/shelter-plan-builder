@@ -278,30 +278,30 @@ export async function upsertLocalization(versionId: string, input: LocalizationI
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const existing = (list?.data ?? []).find((l: any) => l.attributes?.locale === input.locale);
 
-  const bodyData: Record<string, unknown> = {
-    type: "appStoreVersionLocalizations",
-    attributes: {
-      locale: input.locale,
-      description: input.description,
-      keywords: input.keywords,
-      ...(input.marketingUrl ? { marketingUrl: input.marketingUrl } : {}),
-      ...(input.supportUrl ? { supportUrl: input.supportUrl } : {}),
-      ...(input.whatsNew ? { whatsNew: input.whatsNew } : {}),
-    },
+  const baseAttrs: Record<string, unknown> = {
+    description: input.description,
+    keywords: input.keywords,
+    ...(input.marketingUrl ? { marketingUrl: input.marketingUrl } : {}),
+    ...(input.supportUrl ? { supportUrl: input.supportUrl } : {}),
+    ...(input.whatsNew ? { whatsNew: input.whatsNew } : {}),
   };
 
   if (existing) {
-    // PATCH requests must include the entity id matching the URL.
+    // PATCH requests must include the entity id matching the URL and must not
+    // include the locale attribute on update.
     await ascFetch(`/appStoreVersionLocalizations/${encodeURIComponent(existing.id)}`, {
       method: "PATCH",
-      body: JSON.stringify({ data: { ...bodyData, id: existing.id } }),
+      body: JSON.stringify({
+        data: { type: "appStoreVersionLocalizations", id: existing.id, attributes: baseAttrs },
+      }),
     });
   } else {
     await ascFetch("/appStoreVersionLocalizations", {
       method: "POST",
       body: JSON.stringify({
         data: {
-          ...bodyData,
+          type: "appStoreVersionLocalizations",
+          attributes: { locale: input.locale, ...baseAttrs },
           relationships: {
             appStoreVersion: { data: { type: "appStoreVersions", id: versionId } },
           },
