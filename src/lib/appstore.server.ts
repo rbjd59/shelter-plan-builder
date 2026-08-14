@@ -133,27 +133,34 @@ export async function listApps(): Promise<AppStoreApp[]> {
 }
 
 export async function listBuilds(appId: string): Promise<AppStoreBuild[]> {
-  const path = `/builds?filter[app]=${encodeURIComponent(appId)}&sort=-uploadedDate&limit=50&include=betaGroups`;
+  const path = `/builds?filter[app]=${encodeURIComponent(appId)}&include=preReleaseVersion,betaGroups&sort=-uploadedDate&limit=50`;
   const body = await ascFetch(path);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const included = (body?.included ?? []).filter((i: any) => i.type === "betaGroups");
+  const included = (body?.included ?? []);
+  const preRelMap = new Map(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    included.filter((i: any) => i.type === "preReleaseVersions").map((i: any) => [i.id, i.attributes?.version ?? ""]),
+  );
   const extGroupIds = new Set(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    included.filter((g: any) => g.attributes?.isInternalGroup === false).map((g: any) => g.id),
+    included.filter((g: any) => g.type === "betaGroups" && g.attributes?.isInternalGroup === false).map((g: any) => g.id),
   );
   return (body?.data ?? []).map(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (b: any) => ({
-      id: b.id,
-      version: b.attributes?.version ?? "",
-      buildVersion: b.attributes?.buildVersion ?? "",
-      processingState: b.attributes?.processingState ?? "UNKNOWN",
-      uploadedDate: b.attributes?.uploadedDate ?? "",
-      inExternalTesting: (b.relationships?.betaGroups?.data ?? []).some(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (g: any) => extGroupIds.has(g.id),
-      ),
-    }),
+    (b: any) => {
+      const preRelId = b.relationships?.preReleaseVersion?.data?.id;
+      return {
+        id: b.id,
+        version: (preRelId ? preRelMap.get(preRelId) : "") ?? "",
+        buildNumber: b.attributes?.version ?? "",
+        processingState: b.attributes?.processingState ?? "UNKNOWN",
+        uploadedDate: b.attributes?.uploadedDate ?? "",
+        inExternalTesting: (b.relationships?.betaGroups?.data ?? []).some(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (g: any) => extGroupIds.has(g.id),
+        ),
+      };
+    },
   );
 }
 
