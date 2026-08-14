@@ -3,7 +3,7 @@ import { useLang, type Lang } from "@/context/LanguageContext";
 
 const withLang = (url: string, lang: Lang) => {
   const sep = url.includes("?") ? "&" : "?";
-  return `${url}${sep}lang=${lang}`;
+  return `${url}${sep}lang=${lang}&hl=${lang}#lang=${lang}`;
 };
 
 const pillStyle: React.CSSProperties = {
