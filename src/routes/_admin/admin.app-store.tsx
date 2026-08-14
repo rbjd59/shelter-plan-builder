@@ -450,6 +450,26 @@ function AppStorePage() {
               attach build <strong className="font-mono">{confirmVersion.buildNumber}</strong>, apply
               a default en-US localization, and submit it to Apple for review.
             </p>
+            {confirmVersion.conflict && (
+              <div className="mt-3 rounded border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+                <p className="font-semibold">Existing editable version found</p>
+                <p>
+                  App Store version{" "}
+                  <strong className="font-mono">{confirmVersion.conflict.versionString}</strong> is
+                  already in "{confirmVersion.conflict.appStoreState}". To submit version{" "}
+                  {confirmVersion.versionString}, the existing version must be deleted.
+                </p>
+                <label className="mt-2 flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={replaceExisting}
+                    onChange={(e) => setReplaceExisting(e.target.checked)}
+                    className="h-4 w-4 rounded border-amber-300 text-amber-600"
+                  />
+                  <span>Delete existing version and replace it</span>
+                </label>
+              </div>
+            )}
             <p className="mt-2 text-xs text-amber-700">
               Make sure screenshots, app review information, and pricing are already set in App Store
               Connect, or Apple will reject the submission.
@@ -463,7 +483,7 @@ function AppStorePage() {
               </button>
               <button
                 className="rounded bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
-                disabled={submitting !== null}
+                disabled={submitting !== null || (confirmVersion.conflict && !replaceExisting)}
                 onClick={() =>
                   submitForReview(confirmVersion.buildId, confirmVersion.versionString)
                 }
