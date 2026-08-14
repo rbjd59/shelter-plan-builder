@@ -24,6 +24,8 @@ function AdminShell() {
             <h1 className="text-base font-bold text-slate-900">Mission Control</h1>
             <nav className="flex gap-4 text-sm">
               <Link to="/admin" activeProps={{ className: "text-amber-600 font-semibold" }} className="text-slate-700 hover:text-slate-900">Dashboard</Link>
+              <Link to="/admin/leads" activeProps={{ className: "text-amber-600 font-semibold" }} className="text-slate-700 hover:text-slate-900">Leads</Link>
+              <Link to="/admin/roles" activeProps={{ className: "text-amber-600 font-semibold" }} className="text-slate-700 hover:text-slate-900">Access</Link>
               <Link to="/admin/clients" activeProps={{ className: "text-amber-600 font-semibold" }} className="text-slate-700 hover:text-slate-900">Clients</Link>
               <Link to="/admin/activations" activeProps={{ className: "text-amber-600 font-semibold" }} className="text-slate-700 hover:text-slate-900">Activations</Link>
               <Link to="/admin/alerts" activeProps={{ className: "text-amber-600 font-semibold" }} className="text-slate-700 hover:text-slate-900">Alert Board</Link>

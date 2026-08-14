@@ -27,11 +27,13 @@ import { Route as PastorsRouteImport } from './routes/pastors'
 import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as OwnPropertyRouteImport } from './routes/own-property'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as LegalNoticesRouteImport } from './routes/legal-notices'
 import { Route as IntakeRouteImport } from './routes/intake'
 import { Route as GetAppRouteImport } from './routes/get-app'
 import { Route as FirmarRouteImport } from './routes/firmar'
 import { Route as DownloadRouteImport } from './routes/download'
 import { Route as DagRouteImport } from './routes/dag'
+import { Route as ContactoRouteImport } from './routes/contacto'
 import { Route as ConfigurarRouteImport } from './routes/configurar'
 import { Route as CompanyBoardRouteImport } from './routes/company-board'
 import { Route as ComingSoonRouteImport } from './routes/coming-soon'
@@ -63,12 +65,15 @@ import { Route as ApiPublicMailFromCheckRouteImport } from './routes/api/public/
 import { Route as ApiPublicAppUpdateRequestRouteImport } from './routes/api/public/app-update-request'
 import { Route as ApiPublicAppTriggerRouteImport } from './routes/api/public/app-trigger'
 import { Route as FirmFirmQueueRouteImport } from './routes/_firm/firm.queue'
+import { Route as FirmFirmLeadsRouteImport } from './routes/_firm/firm.leads'
 import { Route as FirmFirmDetainedRouteImport } from './routes/_firm/firm.detained'
 import { Route as AuthenticatedCaseIdRouteImport } from './routes/_authenticated/case.$id'
 import { Route as AuthenticatedAdminAppBuildsRouteImport } from './routes/_authenticated/admin.app-builds'
 import { Route as AdminAdminWebhooksRouteImport } from './routes/_admin/admin.webhooks'
 import { Route as AdminAdminTriggersRouteImport } from './routes/_admin/admin.triggers'
+import { Route as AdminAdminRolesRouteImport } from './routes/_admin/admin.roles'
 import { Route as AdminAdminRemindersRouteImport } from './routes/_admin/admin.reminders'
+import { Route as AdminAdminLeadsRouteImport } from './routes/_admin/admin.leads'
 import { Route as AdminAdminInviteCodesRouteImport } from './routes/_admin/admin.invite-codes'
 import { Route as AdminAdminEmailsRouteImport } from './routes/_admin/admin.emails'
 import { Route as AdminAdminDeliveriesRouteImport } from './routes/_admin/admin.deliveries'
@@ -186,6 +191,11 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LegalNoticesRoute = LegalNoticesRouteImport.update({
+  id: '/legal-notices',
+  path: '/legal-notices',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IntakeRoute = IntakeRouteImport.update({
   id: '/intake',
   path: '/intake',
@@ -209,6 +219,11 @@ const DownloadRoute = DownloadRouteImport.update({
 const DagRoute = DagRouteImport.update({
   id: '/dag',
   path: '/dag',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactoRoute = ContactoRouteImport.update({
+  id: '/contacto',
+  path: '/contacto',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConfigurarRoute = ConfigurarRouteImport.update({
@@ -365,6 +380,11 @@ const FirmFirmQueueRoute = FirmFirmQueueRouteImport.update({
   path: '/firm/queue',
   getParentRoute: () => FirmRoute,
 } as any)
+const FirmFirmLeadsRoute = FirmFirmLeadsRouteImport.update({
+  id: '/firm/leads',
+  path: '/firm/leads',
+  getParentRoute: () => FirmRoute,
+} as any)
 const FirmFirmDetainedRoute = FirmFirmDetainedRouteImport.update({
   id: '/firm/detained',
   path: '/firm/detained',
@@ -391,9 +411,19 @@ const AdminAdminTriggersRoute = AdminAdminTriggersRouteImport.update({
   path: '/triggers',
   getParentRoute: () => AdminAdminRoute,
 } as any)
+const AdminAdminRolesRoute = AdminAdminRolesRouteImport.update({
+  id: '/roles',
+  path: '/roles',
+  getParentRoute: () => AdminAdminRoute,
+} as any)
 const AdminAdminRemindersRoute = AdminAdminRemindersRouteImport.update({
   id: '/reminders',
   path: '/reminders',
+  getParentRoute: () => AdminAdminRoute,
+} as any)
+const AdminAdminLeadsRoute = AdminAdminLeadsRouteImport.update({
+  id: '/leads',
+  path: '/leads',
   getParentRoute: () => AdminAdminRoute,
 } as any)
 const AdminAdminInviteCodesRoute = AdminAdminInviteCodesRouteImport.update({
@@ -549,11 +579,13 @@ export interface FileRoutesByFullPath {
   '/coming-soon': typeof ComingSoonRoute
   '/company-board': typeof CompanyBoardRoute
   '/configurar': typeof ConfigurarRoute
+  '/contacto': typeof ContactoRoute
   '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
   '/firmar': typeof FirmarRoute
   '/get-app': typeof GetAppRoute
   '/intake': typeof IntakeRoute
+  '/legal-notices': typeof LegalNoticesRoute
   '/login': typeof LoginRoute
   '/own-property': typeof OwnPropertyRoute
   '/partners': typeof PartnersRoute
@@ -592,12 +624,15 @@ export interface FileRoutesByFullPath {
   '/admin/deliveries': typeof AdminAdminDeliveriesRoute
   '/admin/emails': typeof AdminAdminEmailsRoute
   '/admin/invite-codes': typeof AdminAdminInviteCodesRoute
+  '/admin/leads': typeof AdminAdminLeadsRoute
   '/admin/reminders': typeof AdminAdminRemindersRoute
+  '/admin/roles': typeof AdminAdminRolesRoute
   '/admin/triggers': typeof AdminAdminTriggersRoute
   '/admin/webhooks': typeof AdminAdminWebhooksRoute
   '/admin/app-builds': typeof AuthenticatedAdminAppBuildsRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
   '/firm/detained': typeof FirmFirmDetainedRouteWithChildren
+  '/firm/leads': typeof FirmFirmLeadsRoute
   '/firm/queue': typeof FirmFirmQueueRoute
   '/api/public/app-trigger': typeof ApiPublicAppTriggerRoute
   '/api/public/app-update-request': typeof ApiPublicAppUpdateRequestRoute
@@ -634,11 +669,13 @@ export interface FileRoutesByTo {
   '/coming-soon': typeof ComingSoonRoute
   '/company-board': typeof CompanyBoardRoute
   '/configurar': typeof ConfigurarRoute
+  '/contacto': typeof ContactoRoute
   '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
   '/firmar': typeof FirmarRoute
   '/get-app': typeof GetAppRoute
   '/intake': typeof IntakeRoute
+  '/legal-notices': typeof LegalNoticesRoute
   '/login': typeof LoginRoute
   '/own-property': typeof OwnPropertyRoute
   '/partners': typeof PartnersRoute
@@ -677,12 +714,15 @@ export interface FileRoutesByTo {
   '/admin/deliveries': typeof AdminAdminDeliveriesRoute
   '/admin/emails': typeof AdminAdminEmailsRoute
   '/admin/invite-codes': typeof AdminAdminInviteCodesRoute
+  '/admin/leads': typeof AdminAdminLeadsRoute
   '/admin/reminders': typeof AdminAdminRemindersRoute
+  '/admin/roles': typeof AdminAdminRolesRoute
   '/admin/triggers': typeof AdminAdminTriggersRoute
   '/admin/webhooks': typeof AdminAdminWebhooksRoute
   '/admin/app-builds': typeof AuthenticatedAdminAppBuildsRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
   '/firm/detained': typeof FirmFirmDetainedRouteWithChildren
+  '/firm/leads': typeof FirmFirmLeadsRoute
   '/firm/queue': typeof FirmFirmQueueRoute
   '/api/public/app-trigger': typeof ApiPublicAppTriggerRoute
   '/api/public/app-update-request': typeof ApiPublicAppUpdateRequestRoute
@@ -723,11 +763,13 @@ export interface FileRoutesById {
   '/coming-soon': typeof ComingSoonRoute
   '/company-board': typeof CompanyBoardRoute
   '/configurar': typeof ConfigurarRoute
+  '/contacto': typeof ContactoRoute
   '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
   '/firmar': typeof FirmarRoute
   '/get-app': typeof GetAppRoute
   '/intake': typeof IntakeRoute
+  '/legal-notices': typeof LegalNoticesRoute
   '/login': typeof LoginRoute
   '/own-property': typeof OwnPropertyRoute
   '/partners': typeof PartnersRoute
@@ -766,12 +808,15 @@ export interface FileRoutesById {
   '/_admin/admin/deliveries': typeof AdminAdminDeliveriesRoute
   '/_admin/admin/emails': typeof AdminAdminEmailsRoute
   '/_admin/admin/invite-codes': typeof AdminAdminInviteCodesRoute
+  '/_admin/admin/leads': typeof AdminAdminLeadsRoute
   '/_admin/admin/reminders': typeof AdminAdminRemindersRoute
+  '/_admin/admin/roles': typeof AdminAdminRolesRoute
   '/_admin/admin/triggers': typeof AdminAdminTriggersRoute
   '/_admin/admin/webhooks': typeof AdminAdminWebhooksRoute
   '/_authenticated/admin/app-builds': typeof AuthenticatedAdminAppBuildsRoute
   '/_authenticated/case/$id': typeof AuthenticatedCaseIdRoute
   '/_firm/firm/detained': typeof FirmFirmDetainedRouteWithChildren
+  '/_firm/firm/leads': typeof FirmFirmLeadsRoute
   '/_firm/firm/queue': typeof FirmFirmQueueRoute
   '/api/public/app-trigger': typeof ApiPublicAppTriggerRoute
   '/api/public/app-update-request': typeof ApiPublicAppUpdateRequestRoute
@@ -810,11 +855,13 @@ export interface FileRouteTypes {
     | '/coming-soon'
     | '/company-board'
     | '/configurar'
+    | '/contacto'
     | '/dag'
     | '/download'
     | '/firmar'
     | '/get-app'
     | '/intake'
+    | '/legal-notices'
     | '/login'
     | '/own-property'
     | '/partners'
@@ -853,12 +900,15 @@ export interface FileRouteTypes {
     | '/admin/deliveries'
     | '/admin/emails'
     | '/admin/invite-codes'
+    | '/admin/leads'
     | '/admin/reminders'
+    | '/admin/roles'
     | '/admin/triggers'
     | '/admin/webhooks'
     | '/admin/app-builds'
     | '/case/$id'
     | '/firm/detained'
+    | '/firm/leads'
     | '/firm/queue'
     | '/api/public/app-trigger'
     | '/api/public/app-update-request'
@@ -895,11 +945,13 @@ export interface FileRouteTypes {
     | '/coming-soon'
     | '/company-board'
     | '/configurar'
+    | '/contacto'
     | '/dag'
     | '/download'
     | '/firmar'
     | '/get-app'
     | '/intake'
+    | '/legal-notices'
     | '/login'
     | '/own-property'
     | '/partners'
@@ -938,12 +990,15 @@ export interface FileRouteTypes {
     | '/admin/deliveries'
     | '/admin/emails'
     | '/admin/invite-codes'
+    | '/admin/leads'
     | '/admin/reminders'
+    | '/admin/roles'
     | '/admin/triggers'
     | '/admin/webhooks'
     | '/admin/app-builds'
     | '/case/$id'
     | '/firm/detained'
+    | '/firm/leads'
     | '/firm/queue'
     | '/api/public/app-trigger'
     | '/api/public/app-update-request'
@@ -983,11 +1038,13 @@ export interface FileRouteTypes {
     | '/coming-soon'
     | '/company-board'
     | '/configurar'
+    | '/contacto'
     | '/dag'
     | '/download'
     | '/firmar'
     | '/get-app'
     | '/intake'
+    | '/legal-notices'
     | '/login'
     | '/own-property'
     | '/partners'
@@ -1026,12 +1083,15 @@ export interface FileRouteTypes {
     | '/_admin/admin/deliveries'
     | '/_admin/admin/emails'
     | '/_admin/admin/invite-codes'
+    | '/_admin/admin/leads'
     | '/_admin/admin/reminders'
+    | '/_admin/admin/roles'
     | '/_admin/admin/triggers'
     | '/_admin/admin/webhooks'
     | '/_authenticated/admin/app-builds'
     | '/_authenticated/case/$id'
     | '/_firm/firm/detained'
+    | '/_firm/firm/leads'
     | '/_firm/firm/queue'
     | '/api/public/app-trigger'
     | '/api/public/app-update-request'
@@ -1072,11 +1132,13 @@ export interface RootRouteChildren {
   ComingSoonRoute: typeof ComingSoonRoute
   CompanyBoardRoute: typeof CompanyBoardRoute
   ConfigurarRoute: typeof ConfigurarRoute
+  ContactoRoute: typeof ContactoRoute
   DagRoute: typeof DagRoute
   DownloadRoute: typeof DownloadRoute
   FirmarRoute: typeof FirmarRoute
   GetAppRoute: typeof GetAppRoute
   IntakeRoute: typeof IntakeRoute
+  LegalNoticesRoute: typeof LegalNoticesRoute
   LoginRoute: typeof LoginRoute
   OwnPropertyRoute: typeof OwnPropertyRoute
   PartnersRoute: typeof PartnersRoute
@@ -1252,6 +1314,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/legal-notices': {
+      id: '/legal-notices'
+      path: '/legal-notices'
+      fullPath: '/legal-notices'
+      preLoaderRoute: typeof LegalNoticesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/intake': {
       id: '/intake'
       path: '/intake'
@@ -1285,6 +1354,13 @@ declare module '@tanstack/react-router' {
       path: '/dag'
       fullPath: '/dag'
       preLoaderRoute: typeof DagRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contacto': {
+      id: '/contacto'
+      path: '/contacto'
+      fullPath: '/contacto'
+      preLoaderRoute: typeof ContactoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/configurar': {
@@ -1504,6 +1580,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FirmFirmQueueRouteImport
       parentRoute: typeof FirmRoute
     }
+    '/_firm/firm/leads': {
+      id: '/_firm/firm/leads'
+      path: '/firm/leads'
+      fullPath: '/firm/leads'
+      preLoaderRoute: typeof FirmFirmLeadsRouteImport
+      parentRoute: typeof FirmRoute
+    }
     '/_firm/firm/detained': {
       id: '/_firm/firm/detained'
       path: '/firm/detained'
@@ -1539,11 +1622,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminTriggersRouteImport
       parentRoute: typeof AdminAdminRoute
     }
+    '/_admin/admin/roles': {
+      id: '/_admin/admin/roles'
+      path: '/roles'
+      fullPath: '/admin/roles'
+      preLoaderRoute: typeof AdminAdminRolesRouteImport
+      parentRoute: typeof AdminAdminRoute
+    }
     '/_admin/admin/reminders': {
       id: '/_admin/admin/reminders'
       path: '/reminders'
       fullPath: '/admin/reminders'
       preLoaderRoute: typeof AdminAdminRemindersRouteImport
+      parentRoute: typeof AdminAdminRoute
+    }
+    '/_admin/admin/leads': {
+      id: '/_admin/admin/leads'
+      path: '/leads'
+      fullPath: '/admin/leads'
+      preLoaderRoute: typeof AdminAdminLeadsRouteImport
       parentRoute: typeof AdminAdminRoute
     }
     '/_admin/admin/invite-codes': {
@@ -1751,7 +1848,9 @@ interface AdminAdminRouteChildren {
   AdminAdminDeliveriesRoute: typeof AdminAdminDeliveriesRoute
   AdminAdminEmailsRoute: typeof AdminAdminEmailsRoute
   AdminAdminInviteCodesRoute: typeof AdminAdminInviteCodesRoute
+  AdminAdminLeadsRoute: typeof AdminAdminLeadsRoute
   AdminAdminRemindersRoute: typeof AdminAdminRemindersRoute
+  AdminAdminRolesRoute: typeof AdminAdminRolesRoute
   AdminAdminTriggersRoute: typeof AdminAdminTriggersRoute
   AdminAdminWebhooksRoute: typeof AdminAdminWebhooksRoute
 }
@@ -1765,7 +1864,9 @@ const AdminAdminRouteChildren: AdminAdminRouteChildren = {
   AdminAdminDeliveriesRoute: AdminAdminDeliveriesRoute,
   AdminAdminEmailsRoute: AdminAdminEmailsRoute,
   AdminAdminInviteCodesRoute: AdminAdminInviteCodesRoute,
+  AdminAdminLeadsRoute: AdminAdminLeadsRoute,
   AdminAdminRemindersRoute: AdminAdminRemindersRoute,
+  AdminAdminRolesRoute: AdminAdminRolesRoute,
   AdminAdminTriggersRoute: AdminAdminTriggersRoute,
   AdminAdminWebhooksRoute: AdminAdminWebhooksRoute,
 }
@@ -1817,6 +1918,7 @@ const FirmFirmDetainedRouteWithChildren =
 
 interface FirmRouteChildren {
   FirmFirmDetainedRoute: typeof FirmFirmDetainedRouteWithChildren
+  FirmFirmLeadsRoute: typeof FirmFirmLeadsRoute
   FirmFirmQueueRoute: typeof FirmFirmQueueRoute
   FirmFirmPacketIdRoute: typeof FirmFirmPacketIdRoute
   FirmFirmReviewIdRoute: typeof FirmFirmReviewIdRoute
@@ -1824,6 +1926,7 @@ interface FirmRouteChildren {
 
 const FirmRouteChildren: FirmRouteChildren = {
   FirmFirmDetainedRoute: FirmFirmDetainedRouteWithChildren,
+  FirmFirmLeadsRoute: FirmFirmLeadsRoute,
   FirmFirmQueueRoute: FirmFirmQueueRoute,
   FirmFirmPacketIdRoute: FirmFirmPacketIdRoute,
   FirmFirmReviewIdRoute: FirmFirmReviewIdRoute,
@@ -1845,11 +1948,13 @@ const rootRouteChildren: RootRouteChildren = {
   ComingSoonRoute: ComingSoonRoute,
   CompanyBoardRoute: CompanyBoardRoute,
   ConfigurarRoute: ConfigurarRoute,
+  ContactoRoute: ContactoRoute,
   DagRoute: DagRoute,
   DownloadRoute: DownloadRoute,
   FirmarRoute: FirmarRoute,
   GetAppRoute: GetAppRoute,
   IntakeRoute: IntakeRoute,
+  LegalNoticesRoute: LegalNoticesRoute,
   LoginRoute: LoginRoute,
   OwnPropertyRoute: OwnPropertyRoute,
   PartnersRoute: PartnersRoute,

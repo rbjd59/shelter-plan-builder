@@ -1022,6 +1022,60 @@ export type Database = {
         }
         Relationships: []
       }
+      leads: {
+        Row: {
+          assigned_note: string | null
+          city: string | null
+          created_at: string
+          email: string | null
+          full_name: string
+          id: string
+          language: string
+          message: string | null
+          need: string | null
+          phone: string | null
+          routed_at: string | null
+          routed_to: string | null
+          source: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          assigned_note?: string | null
+          city?: string | null
+          created_at?: string
+          email?: string | null
+          full_name: string
+          id?: string
+          language?: string
+          message?: string | null
+          need?: string | null
+          phone?: string | null
+          routed_at?: string | null
+          routed_to?: string | null
+          source?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          assigned_note?: string | null
+          city?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id?: string
+          language?: string
+          message?: string | null
+          need?: string | null
+          phone?: string | null
+          routed_at?: string | null
+          routed_to?: string | null
+          source?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       legal_retainers: {
         Row: {
           body_snapshot: string
