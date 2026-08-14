@@ -324,7 +324,7 @@ export const Route = createFileRoute("/api/public/emergency/activate")({
             try {
               const result = await sendSosSmsToContacts({
                 token: cancelToken,
-                clientName: d.full_name ?? null,
+                clientName: fullName,
                 kind: "cancel",
                 activationId: d.cancel_of ?? null,
               });
@@ -336,7 +336,7 @@ export const Route = createFileRoute("/api/public/emergency/activate")({
 
 
 
-          const subject = `CANCEL EMERGENCY [${d.role.toUpperCase()}] — ${d.full_name ?? caseRef.slice(0, 12)}`;
+          const subject = `CANCEL EMERGENCY [${d.role.toUpperCase()}] — ${fullName ?? caseRef.slice(0, 12)}`;
           const text = `FALSE ALARM — please disregard the previous emergency alert.
 
 Case: ${caseRef}
@@ -384,7 +384,7 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
             ip,
             alert_email: d.alert_email ?? null,
             contact_email: d.contact_email ?? null,
-            full_name: d.full_name ?? null,
+            full_name: fullName,
             notes: d.notes ?? null,
           } as never)
           .select("id")
@@ -418,7 +418,7 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
               _lng: lngVal,
               _battery_pct: d.battery_pct ?? null,
               _payload: {
-                name: d.full_name ?? null,
+                name: fullName,
                 contact_email: d.contact_email ?? null,
                 alert_email: d.alert_email ?? null,
                 battery_pct: d.battery_pct ?? null,
