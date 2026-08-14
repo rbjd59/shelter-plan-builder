@@ -347,19 +347,32 @@ export async function submitBuildForReview(
   let deletedVersion: string | undefined;
 
   if (!version) {
-    // If an editable version already exists and the caller wants to replace it,
-    // delete it so we can create the requested version.
+    // If an editable version already exists, we can attach the build to it
+    // rather than forcing a new version (Apple only allows one editable version).
     const editable = versions.find((v) => v.appStoreState === "PREPARE_FOR_SUBMISSION");
-    if (editable && opts.replaceExisting) {
-      await deleteVersion(editable.id);
-      deletedVersion = editable.versionString;
-    } else if (editable) {
-      throw new Error(
-        `App Store version "${editable.versionString}" is already editable. Delete it in App Store Connect, or choose "Replace existing version" to remove it and create "${versionString}".`,
-      );
+    if (editable) {
+      if (opts.replaceExisting) {
+        // Apple may reject deleting the last version; if it fails, fall back to using it.
+        try {
+          await deleteVersion(editable.id);
+          deletedVersion = editable.versionString;
+        } catch (e) {
+          const err = e as Error;
+          if (err.message.includes("last version") || err.message.includes("cannot be deleted")) {
+            version = editable;
+          } else {
+            throw err;
+          }
+        }
+      } else {
+        version = editable;
+      }
     }
-    version = await createVersion(appId, versionString);
-    createdVersion = true;
+
+    if (!version) {
+      version = await createVersion(appId, versionString);
+      createdVersion = true;
+    }
   }
 
   // Ensure the chosen build is attached to the version.
