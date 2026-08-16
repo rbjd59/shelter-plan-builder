@@ -58,9 +58,9 @@ const ActivateSchema = z.object({
 
 const FROM = "intake@gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
-const LEGAL_INBOX = "legal@theconsumerdefender.com";
+const LEGAL_INBOX = "legal@detenciondefensa.com";
 // Always copied on every SOS fire and cancel, per operating agreement.
-const ALWAYS_CC = ["legal@detenciondefensa.com", "intake@sorrentinolawfirm.com"];
+const ALWAYS_CC = ["legal@theconsumerdefender.com", "intake@sorrentinolawfirm.com"];
 const FORMS_BUCKET = "intake-forms";
 const CORS_HEADERS = {
   "access-control-allow-origin": "*",
@@ -383,16 +383,6 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
             label: "emergency-cancel",
             idempotencyKey: `cancel-${d.cancel_of ?? caseRef}-${Date.now()}`,
           });
-          if (d.alert_email && d.alert_email !== LEGAL_INBOX) {
-            await enqueueAlertEmail({
-              to: d.alert_email,
-              subject,
-              html,
-              text,
-              label: "emergency-cancel",
-              idempotencyKey: `cancel-${d.cancel_of ?? caseRef}-${Date.now()}-alt`,
-            });
-          }
           // Always copy the firm inboxes.
           for (const cc of ALWAYS_CC) {
             await enqueueAlertEmail({
@@ -603,16 +593,6 @@ ACTION: If not cancelled by ${actAfter.toISOString()}, begin locating, notify co
           label: "emergency-activation",
           idempotencyKey: `fire-${activationId}`,
         });
-        if (d.alert_email && d.alert_email !== LEGAL_INBOX) {
-          await enqueueAlertEmail({
-            to: d.alert_email,
-            subject,
-            html,
-            text,
-            label: "emergency-activation",
-            idempotencyKey: `fire-${activationId}-alt`,
-          });
-        }
 
         // Always copy the firm inboxes on every fire.
         for (const cc of ALWAYS_CC) {
