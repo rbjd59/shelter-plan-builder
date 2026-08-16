@@ -397,7 +397,10 @@ function EmergencyApp() {
     const fix = await getCoords();
     const ts = new Date().toISOString();
     const isFamily = rec.role === "family";
-    const recipient = rec.alertEmail || LEGAL_EMAIL;
+    // The alert always addresses the legal inbox directly. The user's own
+    // alert email (if set) is only CC'd — never the primary recipient, so
+    // nobody has to manually forward an emergency.
+    const recipient = LEGAL_EMAIL;
 
     // 1) Server-side fail-safe.
     const serverRes = await postEmergency({
