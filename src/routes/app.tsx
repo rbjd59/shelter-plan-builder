@@ -397,7 +397,10 @@ function EmergencyApp() {
     const fix = await getCoords();
     const ts = new Date().toISOString();
     const isFamily = rec.role === "family";
-    const recipient = rec.alertEmail || LEGAL_EMAIL;
+    // The alert always addresses the legal inbox directly. The user's own
+    // alert email (if set) is only CC'd — never the primary recipient, so
+    // nobody has to manually forward an emergency.
+    const recipient = LEGAL_EMAIL;
 
     // 1) Server-side fail-safe.
     const serverRes = await postEmergency({
@@ -441,7 +444,10 @@ function EmergencyApp() {
         ? "ACTION: Wait the 12-hour cancel window. If not cancelled, begin locating, notify contacts, prepare packet."
         : "ACTION: Wait the 2-hour cancel window. If not cancelled, begin locating, notify contacts, prepare packet.",
     ].join("\n");
-    const cc = rec.contactEmail ? `&cc=${encodeURIComponent(rec.contactEmail)}` : "";
+    const ccList = [rec.contactEmail, rec.alertEmail]
+      .map((e) => e?.trim())
+      .filter((e): e is string => !!e && e.toLowerCase() !== LEGAL_EMAIL);
+    const cc = ccList.length ? `&cc=${encodeURIComponent([...new Set(ccList)].join(","))}` : "";
     const mailto = `mailto:${recipient}?subject=${encodeURIComponent(subject)}${cc}&body=${encodeURIComponent(body)}`;
     window.location.href = mailto;
   }, []);
