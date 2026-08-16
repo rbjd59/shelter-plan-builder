@@ -444,7 +444,10 @@ function EmergencyApp() {
         ? "ACTION: Wait the 12-hour cancel window. If not cancelled, begin locating, notify contacts, prepare packet."
         : "ACTION: Wait the 2-hour cancel window. If not cancelled, begin locating, notify contacts, prepare packet.",
     ].join("\n");
-    const cc = rec.contactEmail ? `&cc=${encodeURIComponent(rec.contactEmail)}` : "";
+    const ccList = [rec.contactEmail, rec.alertEmail]
+      .map((e) => e?.trim())
+      .filter((e): e is string => !!e && e.toLowerCase() !== LEGAL_EMAIL);
+    const cc = ccList.length ? `&cc=${encodeURIComponent([...new Set(ccList)].join(","))}` : "";
     const mailto = `mailto:${recipient}?subject=${encodeURIComponent(subject)}${cc}&body=${encodeURIComponent(body)}`;
     window.location.href = mailto;
   }, []);
