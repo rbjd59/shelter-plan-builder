@@ -107,7 +107,7 @@ function AlertsBoardPage() {
       <div className="rounded-lg border border-slate-200 bg-white p-4">
         <p className="text-xs text-slate-500">
           A copy of every SOS alert is also emailed to{" "}
-          <span className="font-mono text-slate-700">alerts@detenciondefensa.com</span>. Board auto-refreshes every 15s.
+          <span className="font-mono text-slate-700">legal@detenciondefensa.com</span>. Board auto-refreshes every 15s.
         </p>
       </div>
 
