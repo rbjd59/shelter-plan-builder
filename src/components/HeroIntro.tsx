@@ -23,6 +23,8 @@ const COPY = {
     homeBox: "Video de Protección para Propietarios",
     homeBoxHeading: "Proteja su casa",
     homeBoxBody: "Protección de fideicomiso de bajo costo diseñada por un abogado para proteger su casa.",
+    privilegeNotice:
+      "Toda la información ingresada aquí está protegida por el privilegio abogado-cliente, exactamente como si hubiera contratado a un abogado de inmigración. Como este servicio es gratuito, usted sigue recibiendo la misma protección segura y confidencial de privacidad bajo la ley entre usted y su abogado.",
     disclaimer:
       "Sorrentino Law Firm PLLC opera este sitio bajo licencia de DetencionDefensa.com, Inc. DetencionDefensa.com, Inc. es estrictamente el desarrollador tecnológico y operador del sitio web; la Firma tiene el control exclusivo de todos los servicios legales, el asesoramiento legal y el contenido legal.",
   },
@@ -44,6 +46,8 @@ const COPY = {
     homeBox: "Homeowner Protection Video",
     homeBoxHeading: "Protect your home",
     homeBoxBody: "Low-cost trust protection designed by an attorney to protect your home.",
+    privilegeNotice:
+      "All information entered here is protected under attorney-client privilege, exactly as if you had hired an immigration attorney. Because this service is free, you still receive the same secure and confidential privacy protection under the law between you and your attorney.",
     disclaimer:
       "Sorrentino Law Firm PLLC operates this site under license from DetencionDefensa.com, Inc. DetencionDefensa.com, Inc. is strictly the technology developer and website operator; the Firm has sole control of all legal services, legal advice, and legal content.",
   },
@@ -65,12 +69,14 @@ const COPY = {
     homeBox: "Videyo Pwoteksyon Pwopriyetè Kay",
     homeBoxHeading: "Pwoteje kay ou",
     homeBoxBody: "Pwoteksyon fidisyè ki ba pri ki fèt pa yon avoka pou pwoteje kay ou.",
+    privilegeNotice:
+      "Tout enfòmasyon ou antre isit la pwoteje pa privilèj avoka-kliyan, menm jan si ou te anboche yon avoka imigrasyon. Paske sèvis sa a gratis, ou toujou resevwa menm pwoteksyon sekirite ak konfidansyalite anba lwa a ant ou menm ak avoka w.",
     disclaimer:
       "Se Sorrentino Law Firm PLLC k ap opere sit sa a anba yon lisans DetencionDefensa.com, Inc. bay. DetencionDefensa.com, Inc. se sèlman devlopè teknoloji a ak operatè sit la; Kabinè a gen kontwòl total sou tout sèvis legal, konsèy legal, ak kontni legal.",
   },
 } satisfies Record<
   Lang,
-  { plan: string; wasPrice: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; employerHeading: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; homeBox: string; homeBoxHeading: string; homeBoxBody: string; disclaimer: string }
+  { plan: string; wasPrice: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; employerHeading: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; homeBox: string; homeBoxHeading: string; homeBoxBody: string; privilegeNotice: string; disclaimer: string }
 >;
 
 
