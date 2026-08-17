@@ -503,16 +503,15 @@ export default function HeroIntro() {
 
           {/* Privilege notice below the four boxes */}
           <p
+            className="notice-stop-sign"
             style={{
               fontFamily: '"Roboto Slab", Georgia, serif',
               fontSize: isMobile ? "0.85rem" : "1rem",
               lineHeight: 1.5,
               fontWeight: 700,
-              color: "#ff4d4d",
               textAlign: "center",
               maxWidth: 720,
               margin: "1.25rem auto 0",
-              textShadow: "0 1px 2px rgba(0,0,0,0.4)",
             }}
           >
             {COPY[lang].privilegeNotice}
