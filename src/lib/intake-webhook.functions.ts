@@ -141,6 +141,10 @@ async function logAttempt(row: LogRow) {
 export const notifyIntakeWebhook = createServerFn({ method: "POST" })
   .inputValidator((input) => InputSchema.parse(input))
   .handler(async ({ data }) => {
+    if (!WEBHOOK_URL) {
+      // No partner backend configured — intake stays entirely in this project.
+      return { ok: false, clientId: null, inviteCode: null, fallback: true, error: "webhook_disabled" } as const;
+    }
     const secret = process.env.INTAKE_WEBHOOK_SECRET;
     if (!secret) throw new Error("INTAKE_WEBHOOK_SECRET is not configured");
 
