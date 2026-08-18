@@ -21,7 +21,7 @@ const SIGNED_URL_TTL_SECONDS = 60 * 60 * 24 * 14;
 
 // Signup notifications go to info@ (intake desk) and a copy to legal@ (attorney
 // review of the new client's information). SOS/trigger traffic goes to alerts@.
-const RECIPIENTS = ["info@theconsumerdefender.com", "legal@theconsumerdefender.com"];
+const RECIPIENTS = ["info@detenciondefensa.com", "legal@detenciondefensa.com"];
 const FROM = "info@gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
 
