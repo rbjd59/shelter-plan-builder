@@ -10,8 +10,8 @@ const FROM = "info@gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
 
 // Sign-ups / inquiries go to info@. Legal review traffic goes to legal@.
-const COMPANY_INBOX = "info@theconsumerdefender.com";
-const FIRM_INBOX = "legal@theconsumerdefender.com";
+const COMPANY_INBOX = "info@detenciondefensa.com";
+const FIRM_INBOX = "legal@detenciondefensa.com";
 
 export type LeadInput = {
   fullName: string;
