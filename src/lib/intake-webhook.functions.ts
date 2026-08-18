@@ -2,9 +2,10 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { createHmac } from "crypto";
 
-const WEBHOOK_URL =
-  process.env.INTAKE_WEBHOOK_URL ||
-  "https://bynibqfcjsmugcjaaaho.supabase.co/functions/v1/intake-webhook";
+// Legacy DefensaSiempre partner backend is no longer the default target. The
+// mirror only fires when INTAKE_WEBHOOK_URL is explicitly configured; otherwise
+// this backend alone handles the intake, codes, email and SMS.
+const WEBHOOK_URL = process.env.INTAKE_WEBHOOK_URL?.trim() || "";
 
 const AnswersSchema = z.record(z.string(), z.union([z.string(), z.boolean()]));
 
