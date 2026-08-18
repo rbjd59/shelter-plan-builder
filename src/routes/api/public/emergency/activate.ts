@@ -645,42 +645,10 @@ ACTION: If not cancelled by ${actAfter.toISOString()}, begin locating, notify co
           console.error("[activate] vault release failed", e);
         }
 
-        // Replit backend mirror — redundant alert path. Fire-and-forget; failures
-        // here must NEVER block the primary Resend send above.
-        const replitUrl = process.env.REPLIT_TRIGGER_URL?.trim();
-        const replitSecret = process.env.REPLIT_TRIGGER_SECRET?.trim();
-        if (replitUrl && replitSecret) {
-          try {
-            const resp = await fetch(replitUrl, {
-              method: "POST",
-              headers: {
-                "content-type": "application/json",
-                "x-trigger-secret": replitSecret,
-              },
-              body: JSON.stringify({
-                source: "detenciondefensa-site",
-                event: "fire",
-                activation_id: activationId,
-                intake_session_id: caseRef,
-                role: d.role,
-                full_name: fullName,
-                contact_email: d.contact_email ?? null,
-                alert_email: d.alert_email ?? null,
-                gps_lat: latVal,
-                gps_lng: lngVal,
-                gps_raw: d.gps_raw ?? null,
-                fired_at: firedAt.toISOString(),
-                act_after: actAfter.toISOString(),
-                notes: d.notes ?? null,
-              }),
-            });
-            if (!resp.ok) {
-              console.error("[activate] replit mirror non-ok", resp.status);
-            }
-          } catch (e) {
-            console.error("[activate] replit mirror failed", e);
-          }
-        }
+        // NOTE: the legacy DefensaSiempre/Replit mirror was removed. All alert
+        // email + SMS now originate from this backend only, so nothing goes out
+        // under the old project's branding or sender domain.
+
 
         return jsonResponse({ ok: true, alert_id: activationId, activation_id: activationId, act_after: actAfter.toISOString(), ...contactSyncResult }, { status: 200 });
       },
