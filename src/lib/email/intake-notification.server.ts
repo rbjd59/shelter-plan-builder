@@ -19,9 +19,9 @@ import { buildSelfHelpLibraryHtml, buildSelfHelpLibraryText } from "@/lib/self-h
 const FORMS_BUCKET = "intake-forms";
 const SIGNED_URL_TTL_SECONDS = 60 * 60 * 24 * 14;
 
-// Signup notifications go to info@ only. Nothing else is sent to this address —
-// SOS/trigger traffic goes to alerts@, legal packets go to legal@.
-const RECIPIENTS = ["info@theconsumerdefender.com"];
+// Signup notifications go to info@ (intake desk) and a copy to legal@ (attorney
+// review of the new client's information). SOS/trigger traffic goes to alerts@.
+const RECIPIENTS = ["info@theconsumerdefender.com", "legal@theconsumerdefender.com"];
 const FROM = "info@gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
 
