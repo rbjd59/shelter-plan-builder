@@ -174,9 +174,7 @@ export const notifyIntakeWebhook = createServerFn({ method: "POST" })
     const startedAt = Date.now();
     let res: Response;
     try {
-      const anonKey =
-        process.env.INTAKE_WEBHOOK_ANON_KEY ||
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5bmlicWZjanNtdWdjamFhYWhvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3NjY3MjMsImV4cCI6MjA5NjM0MjcyM30.O8XwzYSib-yE8QYJduQ8fQqyUCO6pecW0o7LJzAhrcw";
+      const anonKey = process.env.INTAKE_WEBHOOK_ANON_KEY?.trim() || "";
       res = await fetch(WEBHOOK_URL, {
         method: "POST",
         headers: {
