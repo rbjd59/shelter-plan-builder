@@ -2,9 +2,10 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { createHmac } from "crypto";
 
-const WEBHOOK_URL =
-  process.env.INTAKE_WEBHOOK_URL ||
-  "https://bynibqfcjsmugcjaaaho.supabase.co/functions/v1/intake-webhook";
+// Legacy DefensaSiempre partner backend is no longer the default target. The
+// mirror only fires when INTAKE_WEBHOOK_URL is explicitly configured; otherwise
+// this backend alone handles the intake, codes, email and SMS.
+const WEBHOOK_URL = process.env.INTAKE_WEBHOOK_URL?.trim() || "";
 
 const AnswersSchema = z.record(z.string(), z.union([z.string(), z.boolean()]));
 
@@ -140,6 +141,10 @@ async function logAttempt(row: LogRow) {
 export const notifyIntakeWebhook = createServerFn({ method: "POST" })
   .inputValidator((input) => InputSchema.parse(input))
   .handler(async ({ data }) => {
+    if (!WEBHOOK_URL) {
+      // No partner backend configured — intake stays entirely in this project.
+      return { ok: false, clientId: null, inviteCode: null, fallback: true, error: "webhook_disabled" } as const;
+    }
     const secret = process.env.INTAKE_WEBHOOK_SECRET;
     if (!secret) throw new Error("INTAKE_WEBHOOK_SECRET is not configured");
 
@@ -169,9 +174,7 @@ export const notifyIntakeWebhook = createServerFn({ method: "POST" })
     const startedAt = Date.now();
     let res: Response;
     try {
-      const anonKey =
-        process.env.INTAKE_WEBHOOK_ANON_KEY ||
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5bmlicWZjanNtdWdjamFhYWhvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3NjY3MjMsImV4cCI6MjA5NjM0MjcyM30.O8XwzYSib-yE8QYJduQ8fQqyUCO6pecW0o7LJzAhrcw";
+      const anonKey = process.env.INTAKE_WEBHOOK_ANON_KEY?.trim() || "";
       res = await fetch(WEBHOOK_URL, {
         method: "POST",
         headers: {

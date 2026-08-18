@@ -97,26 +97,12 @@ export const Route = createFileRoute("/api/public/app-trigger")({
           .maybeSingle();
         const clientName = clientRow?.full_name ?? null;
 
-        async function mirrorToReplit(payload: Record<string, unknown>) {
-          const replitUrl = process.env.REPLIT_TRIGGER_URL?.trim();
-          const replitSecret = process.env.REPLIT_TRIGGER_SECRET?.trim();
-          if (!replitUrl || !replitSecret) return;
-          try {
-            const resp = await fetch(replitUrl, {
-              method: "POST",
-              headers: {
-                "content-type": "application/json",
-                "x-trigger-secret": replitSecret,
-              },
-              body: JSON.stringify(payload),
-            });
-            if (!resp.ok) {
-              console.error("[app-trigger] replit mirror non-ok", resp.status);
-            }
-          } catch (e) {
-            console.error("[app-trigger] replit mirror failed", e);
-          }
+        // Legacy DefensaSiempre/Replit mirror removed — this backend is the sole
+        // sender of alert email + SMS. Kept as a no-op so call sites stay simple.
+        async function mirrorToReplit(_payload: Record<string, unknown>) {
+          return;
         }
+
 
         // Cancellation path — the phone's "enter cancel PIN" flow hits us here.
         if (parsed.data.action === "cancel") {
