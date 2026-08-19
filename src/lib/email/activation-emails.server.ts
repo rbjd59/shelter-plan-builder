@@ -407,6 +407,42 @@ ${w.footer}`;
       label: "activation-client-welcome",
       idempotencyKey: `activation-client-welcome-${p.sessionId}-v2`,
     });
+
+    // 5) Separate family-forms email — print, sign, notarize, seal with family.
+    const ff = familyFormsContent(lang, clientName);
+    const ffHtml = wrap(`
+      <h1 style="font-size:22px;margin:0 0 14px;color:#0f172a;">${esc(ff.heading)}</h1>
+      <p style="margin:0 0 14px;">${esc(ff.body[0])}</p>
+      <p style="margin:0 0 20px;">${esc(ff.body[1])}</p>
+      <div style="border:1px solid #cbd5e1;background:#f8fafc;border-radius:8px;padding:16px;margin:0 0 22px;">
+        ${ff.steps.map((s, i) => `<p style="margin:0 0 8px;font-size:13px;color:#1f2937;"><strong>${i + 1}.</strong> ${esc(s)}</p>`).join("")}
+      </div>
+      <p style="margin:0 0 22px;text-align:center;">
+        <a href="${ff.url}" style="display:inline-block;background:#b8551f;color:#ffffff;text-decoration:none;padding:14px 26px;border-radius:8px;font-weight:600;font-size:16px;">${esc(ff.button)}</a>
+      </p>
+      <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;"/>
+      <p style="margin:0;color:#666;font-size:12px;">${esc(ff.footer)}</p>
+    `);
+    const ffText = `${ff.heading}
+
+${ff.body[0]}
+
+${ff.body[1]}
+
+${ff.steps.map((s, i) => `${i + 1}. ${s}`).join("\n")}
+
+${ff.button}: ${ff.url}
+
+${ff.footer}`;
+    await enqueueOne({
+      to: clientEmail,
+      subject: ff.subject,
+      html: ffHtml,
+      text: ffText,
+      label: "activation-family-forms",
+      idempotencyKey: `activation-family-forms-${p.sessionId}-v1`,
+    });
   }
 }
+
 
