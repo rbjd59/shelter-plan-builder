@@ -1,9 +1,13 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import PinAccessGate from "@/components/PinAccessGate";
-import { pinListCompanyBoard } from "@/lib/pin-access.functions";
+import {
+  pinListCompanyBoard,
+  pinCompanyLocateFile,
+  pinSaveLocateInfo,
+} from "@/lib/pin-access.functions";
 
 export const Route = createFileRoute("/company-board")({
   head: () => ({
