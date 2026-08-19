@@ -100,8 +100,9 @@ export default function HowItWorksVideoSection() {
           />
           {!started && <PlayOverlay onClick={handlePlay} />}
         </div>
-        <a
-          href="/intake"
+        <Link
+          to="/intake"
+          search={{ lang }}
           style={{
             display: "inline-block",
             marginTop: "1.75rem",
