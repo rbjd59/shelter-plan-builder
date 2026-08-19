@@ -26,9 +26,16 @@ export const Route = createFileRoute("/api/public/app/latest.apk")({
           );
         }
 
+        // `download` forces Content-Disposition: attachment with a real .apk
+        // filename so Android's download manager marks the file complete and
+        // offers "Open" to run the installer.
+        const fileName = `detenciondefensa-${release.version ?? "latest"}.apk`.replace(
+          /[^a-zA-Z0-9._-]/g,
+          "-",
+        );
         const { data: signed, error: signErr } = await supabaseAdmin.storage
           .from("app-builds")
-          .createSignedUrl(release.apk_path, 60 * 10); // 10 minutes
+          .createSignedUrl(release.apk_path, 60 * 10, { download: fileName }); // 10 minutes
 
         if (signErr || !signed?.signedUrl) {
           return new Response(
