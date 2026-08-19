@@ -125,11 +125,10 @@ export const Route = createFileRoute("/api/public/dev/fire-demo-client")({
           answers[`emergency_contact${suffix}_email`] = c.email ?? "";
           answers[`emergency_contact${suffix}_relation`] = c.relationship ?? "familia";
         });
-        if (overrideContacts[0]) {
-          answers.contact_name = overrideContacts[0].name;
-          answers.contact_phone = overrideContacts[0].phone ?? "";
-          answers.contact_email = overrideContacts[0].email ?? answers.client_email;
-        }
+        // NOTE: contact_name / contact_email / contact_phone are the CLIENT's
+        // own fields elsewhere in the pipeline — never overwrite them with the
+        // first family contact, or emails address the contact as the client.
+
 
         const sessionId = `demo-${crypto.randomUUID()}`;
 

@@ -133,19 +133,22 @@ export async function createOrUpdateCaseTracking(params: {
   contactEmailFromStripe?: string | null;
 }): Promise<{ token: string; contactEmail: string | null } | null> {
   const a = params.answers;
+  // Client-owned contact details only — never an emergency/family contact.
   const contactEmail =
     (typeof a.client_email === "string" && a.client_email) ||
-    (typeof a.contact_email === "string" && a.contact_email) ||
     params.contactEmailFromStripe ||
     null;
   const contactPhone =
-    (typeof a.client_mobile === "string" && a.client_mobile) ||
-    (typeof a.contact_phone === "string" && a.contact_phone) || null;
-  const contactName = (typeof a.contact_name === "string" && a.contact_name) || null;
+    (typeof a.client_mobile === "string" && a.client_mobile) || null;
+  const contactName =
+    (typeof a.client_full_name === "string" && a.client_full_name) ||
+    (typeof a.full_name === "string" && a.full_name) ||
+    null;
   const inmateName =
     (typeof a.mail_inmate_name === "string" && a.mail_inmate_name) ||
     (typeof a.full_name === "string" && a.full_name) ||
     null;
+
 
   const { data: existing } = await supabaseAdmin
     .from("case_tracking")

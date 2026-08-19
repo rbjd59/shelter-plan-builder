@@ -301,13 +301,15 @@ export async function enqueueActivationEmails(p: ActivationEmailParams): Promise
   const a = p.answers;
   const code = (p.activationCode ?? "").trim() || "(pending)";
   const activatedAt = (p.activatedAt ?? new Date()).toISOString();
+  // Client identity only — never an emergency/family contact.
   const clientName = String(
-    a.full_name || a.mail_inmate_name || a.contact_name || "Client",
+    a.client_full_name || a.full_name || a.mail_inmate_name || "Client",
   );
   const clientEmailRaw =
     typeof a.client_email === "string" ? a.client_email.trim().toLowerCase() :
-    typeof a.contact_email === "string" ? a.contact_email.trim().toLowerCase() : "";
+    typeof a.email === "string" ? a.email.trim().toLowerCase() : "";
   const clientEmail = clientEmailRaw && clientEmailRaw.includes("@") ? clientEmailRaw : null;
+
   const lang = (p.language || (typeof a.language === "string" ? a.language : "en") || "en").toLowerCase();
 
 
@@ -333,7 +335,10 @@ export async function enqueueActivationEmails(p: ActivationEmailParams): Promise
     if (d.referralUrl) docRows.push({ label: "SDFL Motion for Referral to Volunteer Attorney.pdf", url: d.referralUrl });
     if (d.js44Url) docRows.push({ label: "JS-44 — Civil Cover Sheet.pdf", url: d.js44Url });
     if (d.brochureUrl) docRows.push({ label: "Habeas Explainer (NIP guide).pdf", url: d.brochureUrl });
-    for (const item of d.assetProtectionUrls ?? []) docRows.push(item);
+    // Family Docs are NOT listed here — they go out in the separate
+    // family-forms email below (print → sign → notarize).
+    const familyDocRows = d.assetProtectionUrls ?? [];
+
 
     const docsHtml = docRows.length
       ? `<div style="border:1px solid #d0d7de;border-radius:8px;padding:16px;background:#f6f8fa;margin:0 0 22px;">
@@ -420,6 +425,12 @@ ${w.footer}`;
       <p style="margin:0 0 22px;text-align:center;">
         <a href="${ff.url}" style="display:inline-block;background:#b8551f;color:#ffffff;text-decoration:none;padding:14px 26px;border-radius:8px;font-weight:600;font-size:16px;">${esc(ff.button)}</a>
       </p>
+      ${familyDocRows.length ? `<div style="border:1px solid #d0d7de;border-radius:8px;padding:16px;background:#f6f8fa;margin:0 0 22px;">
+        <p style="margin:0 0 10px;font-size:14px;color:#0f172a;"><strong>${lang === "es" ? "Sus formularios familiares (para imprimir y notarizar)" : lang === "ht" ? "Fòm fanmi ou yo (pou enprime epi notarye)" : "Your family documents (print and notarize)"}</strong></p>
+        ${familyDocRows.map((r) => `<p style="margin:0 0 6px;"><a href="${r.url}" style="color:#0a58ca;text-decoration:underline;font-size:14px;">${esc(r.label)}</a></p>`).join("")}
+        <p style="margin:10px 0 0;font-size:11px;color:#666;">Secure download links expire in 14 days.</p>
+      </div>` : ""}
+
       <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;"/>
       <p style="margin:0;color:#666;font-size:12px;">${esc(ff.footer)}</p>
     `);
@@ -432,8 +443,10 @@ ${ff.body[1]}
 ${ff.steps.map((s, i) => `${i + 1}. ${s}`).join("\n")}
 
 ${ff.button}: ${ff.url}
+${familyDocRows.map((r) => `- ${r.label}: ${r.url}`).join("\n")}
 
 ${ff.footer}`;
+
     await enqueueOne({
       to: clientEmail,
       subject: ff.subject,
