@@ -716,9 +716,6 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
                   </div>
                 );
               })}
-              {false && (
-                <div />
-              )}
 
             </section>
             );
