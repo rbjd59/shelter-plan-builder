@@ -237,6 +237,12 @@ function IntakePage() {
   const navigate = useNavigate();
   const [resolvedLang, setResolvedLang] = useState<Lang | null>(null);
 
+  // Jump to the top as soon as the route mounts, so arriving from a CTA
+  // half-way down the home page never leaves the user staring at the footer.
+  useEffect(() => {
+    if (typeof window !== "undefined") window.scrollTo(0, 0);
+  }, []);
+
   useEffect(() => {
     if (typeof window === "undefined") return;
     const rawLang = new URLSearchParams(window.location.search).get("lang");
