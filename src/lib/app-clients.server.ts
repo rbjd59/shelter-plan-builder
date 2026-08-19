@@ -404,7 +404,10 @@ async function sendActivationEmail(params: {
       : template.subject;
 
   const messageId = crypto.randomUUID();
-  const idempotencyKey = `app-activation-${params.code}`;
+  // A manual resend must be a new provider request. Reusing only the activation
+  // code caused later attempts to be accepted by our queue but deduplicated by
+  // the email provider, so the log could say "sent" without a new inbox copy.
+  const idempotencyKey = `app-activation-${params.code}-${messageId}`;
   const normalizedEmail = params.to.toLowerCase();
 
   // Unsubscribe token
