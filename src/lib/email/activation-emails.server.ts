@@ -301,13 +301,15 @@ export async function enqueueActivationEmails(p: ActivationEmailParams): Promise
   const a = p.answers;
   const code = (p.activationCode ?? "").trim() || "(pending)";
   const activatedAt = (p.activatedAt ?? new Date()).toISOString();
+  // Client identity only — never an emergency/family contact.
   const clientName = String(
-    a.full_name || a.mail_inmate_name || a.contact_name || "Client",
+    a.client_full_name || a.full_name || a.mail_inmate_name || "Client",
   );
   const clientEmailRaw =
     typeof a.client_email === "string" ? a.client_email.trim().toLowerCase() :
-    typeof a.contact_email === "string" ? a.contact_email.trim().toLowerCase() : "";
+    typeof a.email === "string" ? a.email.trim().toLowerCase() : "";
   const clientEmail = clientEmailRaw && clientEmailRaw.includes("@") ? clientEmailRaw : null;
+
   const lang = (p.language || (typeof a.language === "string" ? a.language : "en") || "en").toLowerCase();
 
 
