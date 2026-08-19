@@ -135,7 +135,7 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
   },
   {
     id: "attorney_file",
-    title: { en: "8. For Your Attorney", es: "8. Para Su Abogado", ht: "8. Pou Avoka Ou" },
+    title: { en: "7. For Your Attorney", es: "7. Para Su Abogado", ht: "7. Pou Avoka Ou" },
     intro: {
       en: "These answers go only to your attorney to help build the strongest argument. If you do not know or do not remember, leave it blank.",
       es: "Estas respuestas son solo para su abogado, para construir el mejor argumento. Si no sabe o no recuerda, deje en blanco.",
