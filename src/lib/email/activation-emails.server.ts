@@ -425,6 +425,12 @@ ${w.footer}`;
       <p style="margin:0 0 22px;text-align:center;">
         <a href="${ff.url}" style="display:inline-block;background:#b8551f;color:#ffffff;text-decoration:none;padding:14px 26px;border-radius:8px;font-weight:600;font-size:16px;">${esc(ff.button)}</a>
       </p>
+      ${familyDocRows.length ? `<div style="border:1px solid #d0d7de;border-radius:8px;padding:16px;background:#f6f8fa;margin:0 0 22px;">
+        <p style="margin:0 0 10px;font-size:14px;color:#0f172a;"><strong>${lang === "es" ? "Sus formularios familiares (para imprimir y notarizar)" : lang === "ht" ? "Fòm fanmi ou yo (pou enprime epi notarye)" : "Your family documents (print and notarize)"}</strong></p>
+        ${familyDocRows.map((r) => `<p style="margin:0 0 6px;"><a href="${r.url}" style="color:#0a58ca;text-decoration:underline;font-size:14px;">${esc(r.label)}</a></p>`).join("")}
+        <p style="margin:10px 0 0;font-size:11px;color:#666;">Secure download links expire in 14 days.</p>
+      </div>` : ""}
+
       <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;"/>
       <p style="margin:0;color:#666;font-size:12px;">${esc(ff.footer)}</p>
     `);
