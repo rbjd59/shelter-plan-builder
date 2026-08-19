@@ -70,6 +70,9 @@ export const pinListCompanyBoard = createServerFn({ method: "POST" })
       const isActive = !!alert && !alert.cancelled_at;
       const info = isActive ? liveInfo.get(row.id) ?? null : null;
       return {
+        // Only exposed while an alert is live — the locate desk needs a handle
+        // to open the file and record the facility.
+        client_id: isActive ? row.id : null,
         activation_code: row.invite_token,
         registered_at: row.created_at,
         activated_at: row.activated_at,
@@ -355,4 +358,93 @@ export const pinUpsertDetention = createServerFn({ method: "POST" })
       );
     if (error) throw new Error(error.message);
     return { ok: true };
+  });
+
+// ---------------------------------------------------------------------------
+// LOCATE DESK (company board) — released only while an alert is live.
+// ---------------------------------------------------------------------------
+
+/**
+ * Full case file for a client with a LIVE alert, mirroring what the attorney
+ * board shows, plus whatever location info the desk has already recorded.
+ */
+export const pinCompanyLocateFile = createServerFn({ method: "POST" })
+  .inputValidator((d: { pin: string; clientId: string }) => d)
+  .handler(async ({ data }) => {
+    check(data.pin);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    const { data: alert } = await supabaseAdmin
+      .from("client_sos_alerts")
+      .select("id, triggered_at, cancelled_at")
+      .eq("client_id", data.clientId)
+      .order("triggered_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (!alert || (alert as { cancelled_at: string | null }).cancelled_at) {
+      throw new Error("No active trigger for this client — file stays sealed.");
+    }
+
+    const [{ data: client }, { data: contacts }, { data: documents }, { data: detention }] =
+      await Promise.all([
+        supabaseAdmin
+          .from("app_clients")
+          .select(
+            "id, invite_token, full_name, email, phone_e164, language, a_number, date_of_birth, place_of_birth, country_of_origin, created_at, activated_at",
+          )
+          .eq("id", data.clientId)
+          .maybeSingle(),
+        supabaseAdmin
+          .from("client_contacts")
+          .select("id, name, phone_e164, email, relationship, role, priority")
+          .eq("client_id", data.clientId)
+          .order("priority", { ascending: true }),
+        supabaseAdmin
+          .from("client_documents")
+          .select("id, title, document_type, from_app, loaded_at")
+          .eq("client_id", data.clientId)
+          .order("loaded_at", { ascending: true }),
+        supabaseAdmin
+          .from("client_detention_info")
+          .select(
+            "id, facility_name, facility_address, warden_name, arrest_date, a_number, federal_id, notes, located_at, located_by",
+          )
+          .eq("client_id", data.clientId)
+          .maybeSingle(),
+      ]);
+    if (!client) throw new Error("Client not found");
+
+    return {
+      client,
+      alert,
+      contacts: contacts ?? [],
+      documents: documents ?? [],
+      detention: detention ?? null,
+    };
+  });
+
+/**
+ * Records the person's present location and emails the full packet to the
+ * attorney board so the filings can be mailed to them as a pro se litigant.
+ */
+export const pinSaveLocateInfo = createServerFn({ method: "POST" })
+  .inputValidator(
+    (d: {
+      pin: string;
+      clientId: string;
+      facility_name?: string;
+      facility_address?: string;
+      warden_name?: string;
+      arrest_date?: string;
+      a_number?: string;
+      federal_id?: string;
+      notes?: string;
+      located_by?: string;
+    }) => d,
+  )
+  .handler(async ({ data }) => {
+    check(data.pin);
+    const { saveDetentionInfoAndNotifyAttorney } = await import("@/lib/detention-locate.server");
+    const { pin: _pin, ...rest } = data;
+    return saveDetentionInfoAndNotifyAttorney(rest);
   });

@@ -58,9 +58,10 @@ const ActivateSchema = z.object({
 
 const FROM = "intake@gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
-const LEGAL_INBOX = "legal@detenciondefensa.com";
+// Trigger + cancellation notices go to the alerts desk, which runs the locate.
+const LEGAL_INBOX = "alerts@detenciondefensa.com";
 // Always copied on every SOS fire and cancel, per operating agreement.
-const ALWAYS_CC = ["legal@detenciondefensa.com", "intake@sorrentinolawfirm.com"];
+const ALWAYS_CC = ["alerts@detenciondefensa.com", "intake@sorrentinolawfirm.com"];
 const FORMS_BUCKET = "intake-forms";
 const CORS_HEADERS = {
   "access-control-allow-origin": "*",

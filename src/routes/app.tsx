@@ -133,7 +133,7 @@ const CLIENT_CANCEL_WINDOW_MS = 2 * 60 * 60 * 1000; // 2 hours — client phone 
 const FAMILY_CANCEL_WINDOW_MS = 12 * 60 * 60 * 1000; // 12 hours — family confirms detention
 const FIRE_HOLD_MS = 4000; // 4 seconds to fire the alert
 
-const LEGAL_EMAIL = "legal@detenciondefensa.com";
+const LEGAL_EMAIL = "alerts@detenciondefensa.com";
 
 function isStandalone(): boolean {
   if (typeof window === "undefined") return false;
@@ -439,7 +439,7 @@ function EmergencyApp() {
       "",
       `Family contact on file: ${rec.contactName} <${rec.contactEmail}>`,
       "",
-      "Court packet (AO 242 Habeas, AO 240 IFP, JS-44 Civil Cover Sheet, Motion for Volunteer Attorney) is on file — secure download links were emailed separately to legal@detenciondefensa.com.",
+      "Court packet (AO 242 Habeas, AO 240 IFP, JS-44 Civil Cover Sheet, Motion for Volunteer Attorney) is on file — secure download links were emailed separately to alerts@detenciondefensa.com.",
       isFamily
         ? "ACTION: Wait the 12-hour cancel window. If not cancelled, begin locating, notify contacts, prepare packet."
         : "ACTION: Wait the 2-hour cancel window. If not cancelled, begin locating, notify contacts, prepare packet.",
@@ -632,7 +632,7 @@ function EmergencyApp() {
           <div className="mt-6 rounded-2xl border border-white/15 bg-white/5 p-5">
             <p className="text-base font-bold text-white">1. Where should the alert go?</p>
             <p className="mt-1 text-xs text-white/60">
-              Your lawyer or family contact. We'll auto-send to legal@detenciondefensa.com too.
+              Your lawyer or family contact. We'll auto-send to alerts@detenciondefensa.com too.
             </p>
             <input
               type="email"
@@ -873,7 +873,7 @@ function EmergencyApp() {
           </button>
           <p className="mt-6 max-w-xs text-center text-xs text-white/60">
             Hold for 4 seconds to send name, GPS, case ID and the full court packet to
-            {" "}<strong>legal@detenciondefensa.com</strong> and your emergency contact. You'll
+            {" "}<strong>alerts@detenciondefensa.com</strong> and your emergency contact. You'll
             then need your 4-digit PIN to cancel within {record.role === "family" ? "12" : "2"} hours.
           </p>
         </div>
