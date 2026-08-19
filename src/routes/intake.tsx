@@ -644,22 +644,8 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
         <AuthSaveBar lang={L} user={user} onAuthChange={setUser} />
         <form onSubmit={handleSubmit}>
           {sections.map((s) => {
-            const assetProtectionUnlocked = true;
-            if (s.id === "contact" && !assetProtectionUnlocked) {
-              return (
-                <section key={s.id} style={{ marginBottom: 32, background: "#1a2436", padding: 24, borderRadius: 6, opacity: 0.6 }}>
-                  <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 6 }}>{s.title[L]}</h2>
-                  <p style={{ fontSize: 13, color: "#e8a04a", marginBottom: 8, fontStyle: "italic" }}>
-                    {L === "es"
-                      ? "🔒 Marque el Paquete de Protección de Bienes (sin cargo) en Complementos opcionales abajo para desbloquear esta sección."
-                      : L === "ht"
-                      ? "🔒 Tcheke Pakè Pwoteksyon Byen (san frè) nan Opsyon adisyonèl anba a pou debloke seksyon sa a."
-                      : "🔒 Check the Asset Protection Package (no charge) in Optional Add-Ons below to unlock this section."}
-                  </p>
-                </section>
-              );
-            }
             return (
+
             <section key={s.id} style={{ marginBottom: 32, background: "#1a2436", padding: 24, borderRadius: 6 }}>
               <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 6 }}>{s.title[L]}</h2>
               <p style={{ fontSize: 13, color: "#a8a59a", marginBottom: 20, fontStyle: "italic" }}>{s.intro[L]}</p>
