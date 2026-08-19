@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from "react";
+import { Link } from "@tanstack/react-router";
 import { useLang } from "@/context/LanguageContext";
 import { useAutoplayOnHash } from "@/hooks/useAutoplayOnHash";
 import enAsset from "@/assets/videos/how-it-works-en-v3.mp4.asset.json";
@@ -100,8 +101,9 @@ export default function HowItWorksVideoSection() {
           />
           {!started && <PlayOverlay onClick={handlePlay} />}
         </div>
-        <a
-          href="/intake"
+        <Link
+          to="/intake"
+          search={{ lang }}
           style={{
             display: "inline-block",
             marginTop: "1.75rem",
@@ -116,7 +118,7 @@ export default function HowItWorksVideoSection() {
           }}
         >
           {CTA[lang] ?? CTA.en}
-        </a>
+        </Link>
       </div>
     </section>
   );
