@@ -57,21 +57,21 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
   const a = params.answers;
 
   // Pull contact info from intake answers (best-effort)
+  // Client identity ONLY — never fall back to an emergency/family contact,
+  // that is how a contact's name/email ended up addressed as the client.
   const fullName =
     (typeof a.client_full_name === "string" && a.client_full_name) ||
     (typeof a.full_name === "string" && a.full_name) ||
-    (typeof a.contact_name === "string" && a.contact_name) ||
     null;
   const email =
     (typeof a.client_email === "string" && a.client_email) ||
-    (typeof a.contact_email === "string" && a.contact_email) ||
     (typeof a.email === "string" && a.email) ||
     null;
   const phone =
     (typeof a.client_mobile === "string" && a.client_mobile) ||
-    (typeof a.contact_phone === "string" && a.contact_phone) ||
     (typeof a.phone === "string" && a.phone) ||
     null;
+
 
   // New fields from Premio intake spec
   const placeOfBirth = typeof a.place_of_birth === "string" ? a.place_of_birth : null;
