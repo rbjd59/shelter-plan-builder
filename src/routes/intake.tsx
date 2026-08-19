@@ -52,9 +52,10 @@ type FieldDef = {
   key: string;
   label: Record<Lang, string>;
   hint?: Record<Lang, string>;
-  type?: "text" | "textarea" | "date" | "checkbox" | "number" | "email" | "tel";
+  type?: "text" | "textarea" | "date" | "checkbox" | "yes_no" | "number" | "email" | "tel";
   disabled?: boolean;
 };
+
 
 const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, string>; fields: FieldDef[] }[] = [
   {
