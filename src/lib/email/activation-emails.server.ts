@@ -4,6 +4,7 @@
 // no Sentinel upsell, no spam-warning content.
 
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { normalizeEmailLanguage } from "@/lib/email-language";
 
 const FROM = "info@gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
@@ -310,7 +311,7 @@ export async function enqueueActivationEmails(p: ActivationEmailParams): Promise
     typeof a.email === "string" ? a.email.trim().toLowerCase() : "";
   const clientEmail = clientEmailRaw && clientEmailRaw.includes("@") ? clientEmailRaw : null;
 
-  const lang = (p.language || (typeof a.language === "string" ? a.language : "en") || "en").toLowerCase();
+  const lang = normalizeEmailLanguage(p.language || a.language);
 
 
   // Company, attorney, and emergency contacts are recorded on the back end

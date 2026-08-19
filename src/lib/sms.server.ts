@@ -5,6 +5,7 @@
  * Logs every send to `sms_send_log` for the admin dashboard.
  */
 import { createClient } from "@supabase/supabase-js";
+import { normalizeEmailLanguage } from "@/lib/email-language";
 
 const GATEWAY_URL = "https://connector-gateway.lovable.dev/twilio";
 
@@ -108,6 +109,6 @@ const ACTIVATION_BODY: Record<string, (code: string) => string> = {
 };
 
 export function activationSmsBody(code: string, language: string): string {
-  const fn = ACTIVATION_BODY[language] ?? ACTIVATION_BODY.en;
+  const fn = ACTIVATION_BODY[normalizeEmailLanguage(language)];
   return fn(code);
 }

@@ -15,8 +15,8 @@ export const fireTestDemoClient = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator(
     (data: { label?: string; language?: "es" | "en" | "ht" }) => ({
-      label: data.label ?? "Test 02 ES",
-      language: data.language ?? "es",
+      label: data.label ?? "Test 06 HT",
+      language: data.language ?? "ht",
     }),
   )
   .handler(async ({ data, context }) => {
@@ -44,9 +44,10 @@ export const fireTestDemoClient = createServerFn({ method: "POST" })
 
     // Preset answers. Fake but complete enough to render every form.
     const answers: Record<string, unknown> = {
-      full_name: `Cliente ${label}`,
-      client_email: "intake@detenciondefensa.com",
-      client_mobile: "+13055551234",
+      full_name: `Client ${label}`,
+      client_email: "rbjd@dr.com",
+      client_mobile: "+13053377713",
+      language,
       a_number: "A123456789",
       dob: "1985-04-12",
       place_of_birth: "San Salvador, El Salvador",
@@ -67,15 +68,17 @@ export const fireTestDemoClient = createServerFn({ method: "POST" })
       mail_to_city: "Miami",
       mail_to_state: "FL",
       mail_to_zip: "33130",
-      emergency_contact_name: `Contacto ${label}`,
-      emergency_contact_email: "intake@detenciondefensa.com",
-      emergency_contact_phone: "+13055551234",
-      contact_name: `Familia ${label}`,
-      contact_email: "intake@detenciondefensa.com",
-      contact_phone: "+13055555678",
-      emergency_contact_2_name: `Segundo Contacto ${label}`,
-      emergency_contact_2_email: "intake@detenciondefensa.com",
-      emergency_contact_2_phone: "+13055559012",
+      emergency_contact_name: "Bernie Vasquez",
+      emergency_contact_email: "bernievazquez@gmail.com",
+      emergency_contact_phone: "+13054011048",
+      emergency_contact_relation: "Family contact",
+      contact_name: "Bernie Vasquez",
+      contact_email: "bernievazquez@gmail.com",
+      contact_phone: "+13054011048",
+      emergency_contact_2_name: "Rick Behar",
+      emergency_contact_2_email: "rbjd@dr.com",
+      emergency_contact_2_phone: "+16452355445",
+      emergency_contact_2_relation: "Family contact",
       addon_asset_protection: true,
       atty_immigration_history:
         "Entró a EE.UU. en 2015. Solicitó asilo en 2016. Caso pendiente en Corte de Inmigración de Miami.",
@@ -91,7 +94,7 @@ export const fireTestDemoClient = createServerFn({ method: "POST" })
     const { error } = await supabaseAdmin.from("intake_submissions").insert({
       stripe_session_id: sessionId,
       language,
-      email: answers.contact_email as string,
+      email: answers.client_email as string,
       paid: true,
       answers: answers as never,
     } as never);
@@ -103,7 +106,7 @@ export const fireTestDemoClient = createServerFn({ method: "POST" })
         sessionId,
         answers,
         language,
-        contactEmail: answers.contact_email as string,
+        contactEmail: answers.client_email as string,
         demoMode: true,
         inviteCode: null,
       });

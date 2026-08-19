@@ -12,6 +12,7 @@ import {
   Hr,
 } from "@react-email/components";
 import type { TemplateEntry } from "./registry";
+import { normalizeEmailLanguage } from "@/lib/email-language";
 
 interface Props {
   code?: string;
@@ -118,9 +119,10 @@ const Email = ({
   testflightUrl,
   fullName = "",
 }: Props) => {
-  const t = COPY[language] ?? COPY.en;
+  const normalizedLanguage = normalizeEmailLanguage(language);
+  const t = COPY[normalizedLanguage];
   return (
-    <Html lang={language} dir="ltr">
+    <Html lang={normalizedLanguage} dir="ltr">
       <Head />
       <Preview>{t.preview}</Preview>
       <Body style={main}>
@@ -172,7 +174,7 @@ const Email = ({
 export const template = {
   component: Email,
   subject: (data: Record<string, any>) => {
-    const lang = data?.language ?? "en";
+    const lang = normalizeEmailLanguage(data?.language);
     if (lang === "es") return "Su codigo de activacion de la app DetencionDefensa";
     if (lang === "ht") return "Kod aktivasyon aplikasyon DetencionDefensa ou";
     return "Your DetencionDefensa app activation code";
