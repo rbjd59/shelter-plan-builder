@@ -443,8 +443,10 @@ ${ff.body[1]}
 ${ff.steps.map((s, i) => `${i + 1}. ${s}`).join("\n")}
 
 ${ff.button}: ${ff.url}
+${familyDocRows.map((r) => `- ${r.label}: ${r.url}`).join("\n")}
 
 ${ff.footer}`;
+
     await enqueueOne({
       to: clientEmail,
       subject: ff.subject,
