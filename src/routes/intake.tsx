@@ -708,19 +708,20 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
           })}
 
 
-          {/* Family Docs — always included */}
+          {/* Family preparedness forms — sent by separate email, not in the app */}
           <section style={{ marginBottom: 32, background: "#1a2436", padding: 24, borderRadius: 6, borderLeft: "4px solid #e8a04a" }}>
             <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 6 }}>
-              {L === "es" ? "Documentos Familiares — Incluidos" : L === "ht" ? "Dokiman Fanmi — Enkli" : "Family Docs — Included"}
+              {L === "es" ? "Formularios Familiares — Enviados por Correo" : L === "ht" ? "Fòm Fanmi — Voye pa Imèl" : "Family Forms — Sent by Email"}
             </h2>
             <p style={{ fontSize: 13, color: "#a8a59a", marginBottom: 0, lineHeight: 1.6 }}>
               {L === "es"
-                ? "Su paquete de Documentos Familiares se prepara sin costo y se carga en la app: poder notarial, autorización escolar, autorización de vehículo, acceso a la vivienda y más. Se envían a su contacto principal cuando activa la alerta."
+                ? "Le enviaremos un correo aparte, en su idioma, con un enlace para descargar los formularios en blanco: poder notarial, autorización escolar, autorización de vehículo, acceso bancario y custodia temporal. Debe imprimirlos, firmarlos ante un notario y dejarlos en un sobre sellado con un familiar de confianza, para abrir solo si es detenido. Estos formularios no se guardan en la app."
                 : L === "ht"
-                ? "Pakè Dokiman Fanmi ou a prepare gratis epi li chaje nan app la: manda, otorizasyon lekòl, otorizasyon machin, aksè lakay ou ak plis ankò. Yo voye bay kontak prensipal ou lè ou aktive alèt la."
-                : "Your Family Docs package is prepared at no charge and loaded into the app: power of attorney, school pickup authorization, vehicle release, home access and more. They go to your primary contact when you activate the alert."}
+                ? "N ap voye yon imèl separe, nan lang ou, ak yon lyen pou telechaje fòm vid yo: pouvwa avoka, otorizasyon lekòl, otorizasyon machin, aksè bank, ak gad tanporè. Ou dwe enprime yo, siyen yo devan yon notè, epi kite yo nan yon anvlòp sele ak yon fanmi ou fè konfyans, pou louvri sèlman si yo detni w. Fòm sa yo pa estoke nan app la."
+                : "We will send you a separate email, in your language, with a link to download the blank forms: power of attorney, school pickup, vehicle release, bank access, and temporary custody. You print them, sign them in front of a notary, and leave them in a sealed envelope with a family member you trust — to be opened only if you are detained. These forms are not stored in the app."}
             </p>
           </section>
+
 
 
 
