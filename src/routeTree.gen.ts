@@ -31,6 +31,7 @@ import { Route as LegalNoticesRouteImport } from './routes/legal-notices'
 import { Route as IntakeRouteImport } from './routes/intake'
 import { Route as GetAppRouteImport } from './routes/get-app'
 import { Route as FirmarRouteImport } from './routes/firmar'
+import { Route as FamilyFormsRouteImport } from './routes/family-forms'
 import { Route as DownloadRouteImport } from './routes/download'
 import { Route as DagRouteImport } from './routes/dag'
 import { Route as ContactoRouteImport } from './routes/contacto'
@@ -210,6 +211,11 @@ const GetAppRoute = GetAppRouteImport.update({
 const FirmarRoute = FirmarRouteImport.update({
   id: '/firmar',
   path: '/firmar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FamilyFormsRoute = FamilyFormsRouteImport.update({
+  id: '/family-forms',
+  path: '/family-forms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DownloadRoute = DownloadRouteImport.update({
@@ -588,6 +594,7 @@ export interface FileRoutesByFullPath {
   '/contacto': typeof ContactoRoute
   '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
+  '/family-forms': typeof FamilyFormsRoute
   '/firmar': typeof FirmarRoute
   '/get-app': typeof GetAppRoute
   '/intake': typeof IntakeRoute
@@ -679,6 +686,7 @@ export interface FileRoutesByTo {
   '/contacto': typeof ContactoRoute
   '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
+  '/family-forms': typeof FamilyFormsRoute
   '/firmar': typeof FirmarRoute
   '/get-app': typeof GetAppRoute
   '/intake': typeof IntakeRoute
@@ -774,6 +782,7 @@ export interface FileRoutesById {
   '/contacto': typeof ContactoRoute
   '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
+  '/family-forms': typeof FamilyFormsRoute
   '/firmar': typeof FirmarRoute
   '/get-app': typeof GetAppRoute
   '/intake': typeof IntakeRoute
@@ -867,6 +876,7 @@ export interface FileRouteTypes {
     | '/contacto'
     | '/dag'
     | '/download'
+    | '/family-forms'
     | '/firmar'
     | '/get-app'
     | '/intake'
@@ -958,6 +968,7 @@ export interface FileRouteTypes {
     | '/contacto'
     | '/dag'
     | '/download'
+    | '/family-forms'
     | '/firmar'
     | '/get-app'
     | '/intake'
@@ -1052,6 +1063,7 @@ export interface FileRouteTypes {
     | '/contacto'
     | '/dag'
     | '/download'
+    | '/family-forms'
     | '/firmar'
     | '/get-app'
     | '/intake'
@@ -1147,6 +1159,7 @@ export interface RootRouteChildren {
   ContactoRoute: typeof ContactoRoute
   DagRoute: typeof DagRoute
   DownloadRoute: typeof DownloadRoute
+  FamilyFormsRoute: typeof FamilyFormsRoute
   FirmarRoute: typeof FirmarRoute
   GetAppRoute: typeof GetAppRoute
   IntakeRoute: typeof IntakeRoute
@@ -1353,6 +1366,13 @@ declare module '@tanstack/react-router' {
       path: '/firmar'
       fullPath: '/firmar'
       preLoaderRoute: typeof FirmarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/family-forms': {
+      id: '/family-forms'
+      path: '/family-forms'
+      fullPath: '/family-forms'
+      preLoaderRoute: typeof FamilyFormsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/download': {
@@ -1971,6 +1991,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactoRoute: ContactoRoute,
   DagRoute: DagRoute,
   DownloadRoute: DownloadRoute,
+  FamilyFormsRoute: FamilyFormsRoute,
   FirmarRoute: FirmarRoute,
   GetAppRoute: GetAppRoute,
   IntakeRoute: IntakeRoute,
