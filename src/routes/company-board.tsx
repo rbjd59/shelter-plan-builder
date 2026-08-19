@@ -207,10 +207,10 @@ function LocateFile({ pin, clientId }: { pin: string; clientId: string }) {
 
   if (!data) return <p className="text-xs text-slate-500">Loading case file…</p>;
 
-  const client = data.client as Record<string, string | null>;
-  const det = (data.detention ?? {}) as Record<string, string | null>;
-  const contacts = data.contacts as Array<Record<string, string | null>>;
-  const documents = data.documents as Array<Record<string, string | null | boolean>>;
+  const client = data.client as unknown as Record<string, string | null>;
+  const det = (data.detention ?? {}) as unknown as Record<string, string | null>;
+  const contacts = data.contacts as unknown as Array<Record<string, string | null>>;
+  const documents = data.documents as unknown as Array<Record<string, string | null | boolean>>;
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
