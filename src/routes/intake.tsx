@@ -716,25 +716,10 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
                   </div>
                 );
               })}
-              {s.id === "contact" && assetProtectionUnlocked && (
-                <div style={{ marginTop: 12, padding: 14, background: "#0f1a2b", border: "1px solid #3a4458", borderRadius: 4 }}>
-                  <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 8, lineHeight: 1.5 }}>
-                    {L === "es"
-                      ? "Por la presente acepto que, al activarse, estos formularios pueden ser enviados a la persona indicada arriba."
-                      : L === "ht"
-                      ? "Mwen dakò ke, lè yo aktive, fòm sa yo ka voye bay moun ki endike anwo a."
-                      : "I hereby agree that upon activation, these forms can be sent to the above individual."}
-                  </label>
-                  <input
-                    type="text"
-                    maxLength={6}
-                    placeholder={L === "es" ? "Sus iniciales" : L === "ht" ? "Inisyal ou" : "Your initials"}
-                    value={(answers["contact_release_initials"] as string) || ""}
-                    onChange={(e) => setAnswers((a) => ({ ...a, contact_release_initials: e.target.value.toUpperCase() }))}
-                    style={{ ...inputStyle, maxWidth: 160, textTransform: "uppercase", letterSpacing: 2, fontWeight: 700 }}
-                  />
-                </div>
+              {false && (
+                <div />
               )}
+
             </section>
             );
           })}
