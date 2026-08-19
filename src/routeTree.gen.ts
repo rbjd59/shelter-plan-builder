@@ -31,6 +31,7 @@ import { Route as LegalNoticesRouteImport } from './routes/legal-notices'
 import { Route as IntakeRouteImport } from './routes/intake'
 import { Route as GetAppRouteImport } from './routes/get-app'
 import { Route as FirmarRouteImport } from './routes/firmar'
+import { Route as FamilyFormsRouteImport } from './routes/family-forms'
 import { Route as DownloadRouteImport } from './routes/download'
 import { Route as DagRouteImport } from './routes/dag'
 import { Route as ContactoRouteImport } from './routes/contacto'
@@ -86,6 +87,7 @@ import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lova
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
+import { Route as ApiPublicFormsBlankRouteImport } from './routes/api/public/forms/blank'
 import { Route as ApiPublicEmergencyTestMirrorRouteImport } from './routes/api/public/emergency/test-mirror'
 import { Route as ApiPublicEmergencyActivateRouteImport } from './routes/api/public/emergency/activate'
 import { Route as ApiPublicDevSendInstallRouteImport } from './routes/api/public/dev/send-install'
@@ -209,6 +211,11 @@ const GetAppRoute = GetAppRouteImport.update({
 const FirmarRoute = FirmarRouteImport.update({
   id: '/firmar',
   path: '/firmar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FamilyFormsRoute = FamilyFormsRouteImport.update({
+  id: '/family-forms',
+  path: '/family-forms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DownloadRoute = DownloadRouteImport.update({
@@ -490,6 +497,11 @@ const ApiPublicPaymentsWebhookRoute =
     path: '/api/public/payments/webhook',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicFormsBlankRoute = ApiPublicFormsBlankRouteImport.update({
+  id: '/api/public/forms/blank',
+  path: '/api/public/forms/blank',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicEmergencyTestMirrorRoute =
   ApiPublicEmergencyTestMirrorRouteImport.update({
     id: '/api/public/emergency/test-mirror',
@@ -582,6 +594,7 @@ export interface FileRoutesByFullPath {
   '/contacto': typeof ContactoRoute
   '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
+  '/family-forms': typeof FamilyFormsRoute
   '/firmar': typeof FirmarRoute
   '/get-app': typeof GetAppRoute
   '/intake': typeof IntakeRoute
@@ -653,6 +666,7 @@ export interface FileRoutesByFullPath {
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
   '/api/public/emergency/test-mirror': typeof ApiPublicEmergencyTestMirrorRoute
+  '/api/public/forms/blank': typeof ApiPublicFormsBlankRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -672,6 +686,7 @@ export interface FileRoutesByTo {
   '/contacto': typeof ContactoRoute
   '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
+  '/family-forms': typeof FamilyFormsRoute
   '/firmar': typeof FirmarRoute
   '/get-app': typeof GetAppRoute
   '/intake': typeof IntakeRoute
@@ -743,6 +758,7 @@ export interface FileRoutesByTo {
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
   '/api/public/emergency/test-mirror': typeof ApiPublicEmergencyTestMirrorRoute
+  '/api/public/forms/blank': typeof ApiPublicFormsBlankRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -766,6 +782,7 @@ export interface FileRoutesById {
   '/contacto': typeof ContactoRoute
   '/dag': typeof DagRoute
   '/download': typeof DownloadRoute
+  '/family-forms': typeof FamilyFormsRoute
   '/firmar': typeof FirmarRoute
   '/get-app': typeof GetAppRoute
   '/intake': typeof IntakeRoute
@@ -837,6 +854,7 @@ export interface FileRoutesById {
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
   '/api/public/emergency/test-mirror': typeof ApiPublicEmergencyTestMirrorRoute
+  '/api/public/forms/blank': typeof ApiPublicFormsBlankRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -858,6 +876,7 @@ export interface FileRouteTypes {
     | '/contacto'
     | '/dag'
     | '/download'
+    | '/family-forms'
     | '/firmar'
     | '/get-app'
     | '/intake'
@@ -929,6 +948,7 @@ export interface FileRouteTypes {
     | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
     | '/api/public/emergency/test-mirror'
+    | '/api/public/forms/blank'
     | '/api/public/payments/webhook'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
@@ -948,6 +968,7 @@ export interface FileRouteTypes {
     | '/contacto'
     | '/dag'
     | '/download'
+    | '/family-forms'
     | '/firmar'
     | '/get-app'
     | '/intake'
@@ -1019,6 +1040,7 @@ export interface FileRouteTypes {
     | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
     | '/api/public/emergency/test-mirror'
+    | '/api/public/forms/blank'
     | '/api/public/payments/webhook'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
@@ -1041,6 +1063,7 @@ export interface FileRouteTypes {
     | '/contacto'
     | '/dag'
     | '/download'
+    | '/family-forms'
     | '/firmar'
     | '/get-app'
     | '/intake'
@@ -1112,6 +1135,7 @@ export interface FileRouteTypes {
     | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
     | '/api/public/emergency/test-mirror'
+    | '/api/public/forms/blank'
     | '/api/public/payments/webhook'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
@@ -1135,6 +1159,7 @@ export interface RootRouteChildren {
   ContactoRoute: typeof ContactoRoute
   DagRoute: typeof DagRoute
   DownloadRoute: typeof DownloadRoute
+  FamilyFormsRoute: typeof FamilyFormsRoute
   FirmarRoute: typeof FirmarRoute
   GetAppRoute: typeof GetAppRoute
   IntakeRoute: typeof IntakeRoute
@@ -1180,6 +1205,7 @@ export interface RootRouteChildren {
   ApiPublicDevSendInstallRoute: typeof ApiPublicDevSendInstallRoute
   ApiPublicEmergencyActivateRoute: typeof ApiPublicEmergencyActivateRoute
   ApiPublicEmergencyTestMirrorRoute: typeof ApiPublicEmergencyTestMirrorRoute
+  ApiPublicFormsBlankRoute: typeof ApiPublicFormsBlankRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
@@ -1340,6 +1366,13 @@ declare module '@tanstack/react-router' {
       path: '/firmar'
       fullPath: '/firmar'
       preLoaderRoute: typeof FirmarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/family-forms': {
+      id: '/family-forms'
+      path: '/family-forms'
+      fullPath: '/family-forms'
+      preLoaderRoute: typeof FamilyFormsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/download': {
@@ -1727,6 +1760,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicPaymentsWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/forms/blank': {
+      id: '/api/public/forms/blank'
+      path: '/api/public/forms/blank'
+      fullPath: '/api/public/forms/blank'
+      preLoaderRoute: typeof ApiPublicFormsBlankRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/emergency/test-mirror': {
       id: '/api/public/emergency/test-mirror'
       path: '/api/public/emergency/test-mirror'
@@ -1951,6 +1991,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactoRoute: ContactoRoute,
   DagRoute: DagRoute,
   DownloadRoute: DownloadRoute,
+  FamilyFormsRoute: FamilyFormsRoute,
   FirmarRoute: FirmarRoute,
   GetAppRoute: GetAppRoute,
   IntakeRoute: IntakeRoute,
@@ -1997,6 +2038,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicDevSendInstallRoute: ApiPublicDevSendInstallRoute,
   ApiPublicEmergencyActivateRoute: ApiPublicEmergencyActivateRoute,
   ApiPublicEmergencyTestMirrorRoute: ApiPublicEmergencyTestMirrorRoute,
+  ApiPublicFormsBlankRoute: ApiPublicFormsBlankRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,

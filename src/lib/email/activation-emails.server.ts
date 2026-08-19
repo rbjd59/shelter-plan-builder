@@ -120,6 +120,79 @@ export interface ActivationEmailParams {
 // iOS→TestFlight, everything else→/download instructions.
 const DOWNLOAD_URL = "https://detenciondefensa.com/get-app";
 const CONFIGURE_URL = "https://detenciondefensa.com/configurar";
+const FAMILY_FORMS_URL = "https://detenciondefensa.com/family-forms";
+
+// Separate email: the blank authorization forms are NOT in the app. They must
+// be printed, signed in front of a notary, and left sealed with family.
+function familyFormsContent(lang: string, name: string) {
+  const url = (l: string) => `${FAMILY_FORMS_URL}?lang=${l}`;
+  if (lang === "es") {
+    return {
+      subject: "Importante: sus formularios familiares — imprimir, firmar y notarizar",
+      heading: `${name}, prepare sus formularios familiares ahora`,
+      body: [
+        "Estos formularios NO están dentro de la aplicación y nunca se firman por adelantado. La mayoría deben firmarse ante un notario para ser válidos.",
+        "Descárguelos, complételos, notarícelos y déjelos en un sobre sellado con un familiar de confianza — para abrir solo si usted es detenido.",
+      ],
+      steps: [
+        "Abra el enlace y descargue cada formulario en su idioma.",
+        "Imprímalos. Todavía no los firme.",
+        "Complete nombres, direcciones y datos con sus propias palabras.",
+        "Fírmelos ante un notario (UPS Store, banco o notario público — $5 a $15 cada uno).",
+        "Póngalos en un sobre y escriba: ABRIR SOLO SI ME DETIENEN.",
+        "Entregue el sobre a la persona de mayor confianza y dígale dónde está.",
+      ],
+      button: "Ver y descargar los formularios",
+      url: url("es"),
+      footer:
+        "Solo preparación y traducción de documentos. Esto NO es asesoría legal. Pida a un abogado con licencia en su estado que revise el poder notarial y los formularios de tutela antes de firmarlos.",
+    };
+  }
+  if (lang === "ht") {
+    return {
+      subject: "Enpòtan: fòm fanmi ou yo — enprime, siyen ak notarye",
+      heading: `${name}, prepare fòm fanmi ou yo kounye a`,
+      body: [
+        "Fòm sa yo PA nan app la e yo pa janm pre-siyen. Pifò ladan yo dwe siyen devan yon notè pou yo valab.",
+        "Telechaje yo, ranpli yo, fè yo notarye, epi kite yo nan yon anvlòp sele ak yon fanmi ou fè konfyans — pou louvri sèlman si yo detni w.",
+      ],
+      steps: [
+        "Louvri lyen an epi telechaje chak fòm nan lang ou.",
+        "Enprime yo. Pa siyen ankò.",
+        "Ranpli non, adrès, ak detay nan pwòp mo pa w.",
+        "Siyen yo devan yon notè (UPS Store, bank, oswa notè piblik — $5 a $15 chak).",
+        "Mete yo nan yon anvlòp epi ekri: LOUVRI SÈLMAN SI YO DETNI M.",
+        "Bay anvlòp la moun ou fè plis konfyans epi di l kote li ye.",
+      ],
+      button: "Gade epi telechaje fòm yo",
+      url: url("ht"),
+      footer:
+        "Sèlman preparasyon ak tradiksyon dokiman. Sa a PA konsèy legal. Fè yon avoka ki gen lisans nan eta w revize pouvwa avoka a ak fòm gad yo anvan ou siyen.",
+    };
+  }
+  return {
+    subject: "Important: your family forms — print, sign, notarize",
+    heading: `${name}, prepare your family forms now`,
+    body: [
+      "These forms are NOT inside the app and are never pre-signed. Most of them must be signed in front of a notary to be valid.",
+      "Download them, fill them out, have them notarized, and leave them in a sealed envelope with a family member you trust — to be opened only if you are detained.",
+    ],
+    steps: [
+      "Open the link and download each form in your language.",
+      "Print them. Do not sign yet.",
+      "Fill in names, addresses, and details in your own words.",
+      "Sign them in front of a notary (UPS Store, bank, or notary public — $5 to $15 each).",
+      "Put them in an envelope and write: OPEN ONLY IF I AM DETAINED.",
+      "Give the envelope to the person you trust most and tell them where it is.",
+    ],
+    button: "View and download the forms",
+    url: url("en"),
+    footer:
+      "Document preparation and translation only. This is NOT legal advice. Have an attorney licensed in your state review the power of attorney and guardianship forms before signing.",
+  };
+}
+
+
 
 function clientWelcomeContent(lang: string, name: string, code: string) {
   if (lang === "es") {
@@ -334,6 +407,42 @@ ${w.footer}`;
       label: "activation-client-welcome",
       idempotencyKey: `activation-client-welcome-${p.sessionId}-v2`,
     });
+
+    // 5) Separate family-forms email — print, sign, notarize, seal with family.
+    const ff = familyFormsContent(lang, clientName);
+    const ffHtml = wrap(`
+      <h1 style="font-size:22px;margin:0 0 14px;color:#0f172a;">${esc(ff.heading)}</h1>
+      <p style="margin:0 0 14px;">${esc(ff.body[0])}</p>
+      <p style="margin:0 0 20px;">${esc(ff.body[1])}</p>
+      <div style="border:1px solid #cbd5e1;background:#f8fafc;border-radius:8px;padding:16px;margin:0 0 22px;">
+        ${ff.steps.map((s, i) => `<p style="margin:0 0 8px;font-size:13px;color:#1f2937;"><strong>${i + 1}.</strong> ${esc(s)}</p>`).join("")}
+      </div>
+      <p style="margin:0 0 22px;text-align:center;">
+        <a href="${ff.url}" style="display:inline-block;background:#b8551f;color:#ffffff;text-decoration:none;padding:14px 26px;border-radius:8px;font-weight:600;font-size:16px;">${esc(ff.button)}</a>
+      </p>
+      <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;"/>
+      <p style="margin:0;color:#666;font-size:12px;">${esc(ff.footer)}</p>
+    `);
+    const ffText = `${ff.heading}
+
+${ff.body[0]}
+
+${ff.body[1]}
+
+${ff.steps.map((s, i) => `${i + 1}. ${s}`).join("\n")}
+
+${ff.button}: ${ff.url}
+
+${ff.footer}`;
+    await enqueueOne({
+      to: clientEmail,
+      subject: ff.subject,
+      html: ffHtml,
+      text: ffText,
+      label: "activation-family-forms",
+      idempotencyKey: `activation-family-forms-${p.sessionId}-v1`,
+    });
   }
 }
+
 

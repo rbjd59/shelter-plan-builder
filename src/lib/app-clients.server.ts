@@ -309,26 +309,15 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
     { type: "property_access_permission", title: "Property Access Permission" },
   ];
 
-  // Blank (unfilled) authorizations the client signs in advance. These are
-  // released to the PRIMARY CONTACT when the app fires — never to the company
-  // or the firm.
-  const blankDocs: Array<{ type: string; title: string }> = [];
-  try {
-    const { generateBlankForms } = await import("@/lib/blank-forms-pdf");
-    const blankLang = params.language === "en" || params.language === "ht" ? params.language : "es";
-    for (const f of await generateBlankForms(blankLang)) {
-      generated.set(f.type, toB64(f.bytes));
-      blankDocs.push({ type: f.type, title: f.title });
-    }
-  } catch (e) {
-    console.error("blank authorization form generation failed", e);
-  }
+  // Blank (unfilled) authorization forms are intentionally NOT bundled into
+  // the app: they must be printed, signed, and notarized in person. The client
+  // receives them by email with instructions (see family-forms email).
 
   const docSet = [
     ...coreLegalDocs,
     ...(hasAssetProtection ? assetProtectionDocs : []),
-    ...blankDocs,
   ];
+
 
 
   const seedDocs = docSet.map((d) => ({
