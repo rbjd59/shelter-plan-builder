@@ -68,14 +68,26 @@ function AlertViewer() {
         {data.documents.length === 0 && (
           <p style={{ color: "#666" }}>No hay documentos marcados para compartir.</p>
         )}
-        {data.documents.map((doc, i) => (
-          <div key={doc.id} style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: 8, padding: 20, marginBottom: 16 }}>
-            <h3 style={{ marginTop: 0 }}>{i + 1}. {doc.title}</h3>
-            <pre style={{ whiteSpace: "pre-wrap", fontFamily: "Georgia, serif", fontSize: 14, lineHeight: 1.6, margin: 0 }}>
-              {doc.content}
-            </pre>
+        {data.documents.length > 0 && (
+          <div style={{ background: "white", border: "1px solid #e5e7eb", borderRadius: 8, padding: 20, marginBottom: 16 }}>
+            <ol style={{ margin: 0, paddingLeft: 20, lineHeight: 1.8 }}>
+              {data.documents.map((doc) => (
+                <li key={doc.id}>{doc.title}</li>
+              ))}
+            </ol>
+            <p style={{ color: "#666", fontSize: 13, marginBottom: 0, marginTop: 12 }}>
+              El equipo legal abre estos documentos desde el panel del abogado o de la compañía.
+            </p>
           </div>
-        ))}
+        )}
+        <p style={{ marginTop: 24 }}>
+          <a href={`/attorney-board?code=${token}`} style={{ display: "inline-block", background: "#b91c1c", color: "#fff", padding: "10px 20px", borderRadius: 6, textDecoration: "none", fontWeight: 700, marginRight: 8 }}>
+            Panel del abogado
+          </a>
+          <a href={`/company-board?code=${token}`} style={{ display: "inline-block", background: "#0f172a", color: "#fff", padding: "10px 20px", borderRadius: 6, textDecoration: "none", fontWeight: 700 }}>
+            Panel de la compañía
+          </a>
+        </p>
 
         <p style={{ color: "#666", fontSize: 12, marginTop: 32, textAlign: "center" }}>
           DetencionDefensa.com — protección legal para familias inmigrantes
