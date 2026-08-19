@@ -52,9 +52,10 @@ type FieldDef = {
   key: string;
   label: Record<Lang, string>;
   hint?: Record<Lang, string>;
-  type?: "text" | "textarea" | "date" | "checkbox" | "number" | "email" | "tel";
+  type?: "text" | "textarea" | "date" | "checkbox" | "yes_no" | "number" | "email" | "tel";
   disabled?: boolean;
 };
+
 
 const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, string>; fields: FieldDef[] }[] = [
   {
@@ -84,7 +85,7 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       ht: "Enfòmasyon sou kenbe imigrasyon an.",
     },
     fields: [
-      { key: "serious_felony", type: "checkbox", label: { en: "Have you ever been convicted of a serious felony anywhere?", es: "¿Alguna vez ha sido condenado por un delito grave en cualquier lugar?", ht: "Èske ou janm te kondane pou yon krim grav nenpòt kote?" } },
+      { key: "serious_felony", type: "yes_no", label: { en: "Have you ever been convicted of a serious felony anywhere?", es: "¿Alguna vez ha sido condenado por un delito grave en cualquier lugar?", ht: "Èske ou janm te kondane pou yon krim grav nenpòt kote?" } },
       { key: "prior_immigration_proceedings", type: "textarea", label: { en: "Describe prior Immigration Status", es: "Describa procedimientos migratorios anteriores", ht: "Dekri pwosedi imigrasyon anvan" } },
     ],
   },
@@ -683,10 +684,19 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
                     {f.hint && <div style={{ fontSize: 12, color: "#888", marginBottom: 4 }}>{f.hint[L]}</div>}
                     {f.type === "textarea" ? (
                       <textarea value={(answers[f.key] as string) || ""} onChange={(e) => setAnswers((a) => ({ ...a, [f.key]: e.target.value }))} rows={3} disabled={f.disabled} style={{ ...inputStyle, ...(f.disabled ? disabledStyle : null) }} />
-                    ) : f.type === "checkbox" ? (
+                    ) : f.type === "yes_no" ? (
                       <>
-                        <input type="checkbox" checked={!!answers[f.key]} onChange={(e) => setAnswers((a) => ({ ...a, [f.key]: e.target.checked }))} disabled={f.disabled} />
-                        {f.key === "serious_felony" && !!answers[f.key] && (
+                        <div style={{ display: "flex", gap: 18, marginTop: 6 }}>
+                          <label style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 14, cursor: f.disabled ? "default" : "pointer" }}>
+                            <input type="radio" name={f.key} value="yes" checked={answers[f.key] === "yes"} onChange={(e) => { if (e.target.checked) setAnswers((a) => ({ ...a, [f.key]: "yes" })); }} disabled={f.disabled} style={{ accentColor: "#e8a04a" }} />
+                            {L === "es" ? "Sí" : L === "ht" ? "Wi" : "Yes"}
+                          </label>
+                          <label style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 14, cursor: f.disabled ? "default" : "pointer" }}>
+                            <input type="radio" name={f.key} value="no" checked={answers[f.key] === "no"} onChange={(e) => { if (e.target.checked) setAnswers((a) => ({ ...a, [f.key]: "no" })); }} disabled={f.disabled} style={{ accentColor: "#e8a04a" }} />
+                            {L === "es" ? "No" : L === "ht" ? "Non" : "No"}
+                          </label>
+                        </div>
+                        {f.key === "serious_felony" && answers[f.key] === "yes" && (
                           <div style={{ marginTop: 10, padding: 12, background: "#3a1f1f", border: "1px solid #ff8080", borderRadius: 4, color: "#ffd6d6", fontSize: 13, lineHeight: 1.5 }}>
                             {L === "es"
                               ? "Advertencia: Las personas condenadas por delitos graves deben considerar contactar a un abogado independiente o contratar a un abogado especializado en defensa de detención compleja. Este paquete no está destinado a personas con condenas por delitos graves."
@@ -696,7 +706,10 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
                           </div>
                         )}
                       </>
+                    ) : f.type === "checkbox" ? (
+                      <input type="checkbox" checked={!!answers[f.key]} onChange={(e) => setAnswers((a) => ({ ...a, [f.key]: e.target.checked }))} disabled={f.disabled} />
                     ) : (
+
                       <input type={f.type || "text"} required={f.key === "client_email" || f.key === "client_mobile"} value={(answers[f.key] as string) || ""} onChange={(e) => setAnswers((a) => ({ ...a, [f.key]: e.target.value }))} disabled={f.disabled} style={{ ...inputStyle, ...(f.disabled ? disabledStyle : null) }} />
                     )}
                   </div>
