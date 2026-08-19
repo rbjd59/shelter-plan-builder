@@ -34,6 +34,7 @@ interface Locate {
 }
 
 interface Row {
+  client_id: string | null;
   activation_code: string;
   registered_at: string;
   activated_at: string | null;
