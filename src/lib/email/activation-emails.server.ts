@@ -335,7 +335,10 @@ export async function enqueueActivationEmails(p: ActivationEmailParams): Promise
     if (d.referralUrl) docRows.push({ label: "SDFL Motion for Referral to Volunteer Attorney.pdf", url: d.referralUrl });
     if (d.js44Url) docRows.push({ label: "JS-44 — Civil Cover Sheet.pdf", url: d.js44Url });
     if (d.brochureUrl) docRows.push({ label: "Habeas Explainer (NIP guide).pdf", url: d.brochureUrl });
-    for (const item of d.assetProtectionUrls ?? []) docRows.push(item);
+    // Family Docs are NOT listed here — they go out in the separate
+    // family-forms email below (print → sign → notarize).
+    const familyDocRows = d.assetProtectionUrls ?? [];
+
 
     const docsHtml = docRows.length
       ? `<div style="border:1px solid #d0d7de;border-radius:8px;padding:16px;background:#f6f8fa;margin:0 0 22px;">
