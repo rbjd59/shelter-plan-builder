@@ -62,7 +62,9 @@ export const Route = createFileRoute("/api/public/app/latest.apk")({
         const headers = new Headers();
         headers.set("Content-Type", "application/vnd.android.package-archive");
         headers.set("Content-Disposition", `attachment; filename="${fileName}"`);
-        headers.set("Cache-Control", "private, no-store");
+        // Some Android download managers refuse to hand a `no-store` response
+        // to the package installer; a short private max-age is safe here.
+        headers.set("Cache-Control", "private, max-age=0, must-revalidate");
         headers.set("Accept-Ranges", "bytes");
         for (const name of ["content-length", "content-range", "etag", "last-modified"]) {
           const value = upstream.headers.get(name);

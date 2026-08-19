@@ -16,7 +16,11 @@ export const Route = createFileRoute("/get-app")({
         const isIOS = /iphone|ipad|ipod/.test(ua) || (ua.includes("mac") && ua.includes("mobile"));
 
         if (isAndroid) {
-          return Response.redirect("https://detenciondefensa.com/api/public/app/latest.apk", 302);
+          // Send Android users to the guided 2-step page instead of straight at
+          // the binary. Chrome shows a scary "this file may be harmful" prompt
+          // for a bare .apk navigation and gives no hint about opening the file
+          // afterwards, which is why installs appeared to "do nothing".
+          return Response.redirect("https://detenciondefensa.com/download?platform=android", 302);
         }
 
         if (isIOS) {
