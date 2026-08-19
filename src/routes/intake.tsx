@@ -107,9 +107,9 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       ht: "5. Kontak Ijans",
     },
     intro: {
-      en: "This person is notified by SMS and email the moment you press NOTIFY FAMILY in the app. This same person receives your Family Docs package.",
-      es: "Esta persona recibe SMS y correo cuando active AVISAR A FAMILIA en la app. Esta misma persona recibe su paquete de Documentos Familiares.",
-      ht: "Moun sa a resevwa SMS ak imèl lè ou peze AVIZE FANMI nan app la. Menm moun sa a resevwa pakè Dokiman Fanmi ou a.",
+      en: "This person is notified by SMS and email the moment you press NOTIFY FAMILY in the app.",
+      es: "Esta persona recibe SMS y correo cuando active AVISAR A FAMILIA en la app.",
+      ht: "Moun sa a resevwa SMS ak imèl lè ou peze AVIZE FANMI nan app la.",
     },
     fields: [
       { key: "emergency_contact_name", label: { en: "Emergency contact full name", es: "Nombre completo del contacto de emergencia", ht: "Non konplè kontak ijans" } },
@@ -117,32 +117,13 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       { key: "emergency_contact_phone", label: { en: "Emergency contact phone (for SMS)", es: "Teléfono del contacto de emergencia (para SMS)", ht: "Telefòn kontak ijans (pou SMS)" } },
     ],
   },
-  {
-    id: "contact",
-    title: {
-      en: "6. Where should your forms go if you are detained?",
-      es: "6. ¿A dónde deben enviarse sus formularios si es detenido?",
-      ht: "6. Ki kote fòm yo dwe ale si yo detni w?",
-    },
-    intro: {
-      en: "Family Docs distribution — included at no charge. Tell us who receives the prepared forms when your case is activated.",
-      es: "Distribución de Documentos Familiares — incluida sin costo. Indíquenos quién recibirá los formularios preparados cuando se active su caso.",
-      ht: "Distribisyon Dokiman Fanmi — enkli gratis. Di nou ki moun k ap resevwa fòm yo lè ka w aktive.",
-    },
-
-    fields: [
-      { key: "contact_name", label: { en: "Contact name", es: "Nombre del contacto", ht: "Non kontak la" } },
-      { key: "contact_email", label: { en: "Email address", es: "Correo electrónico", ht: "Imèl" } },
-      { key: "contact_phone", label: { en: "Phone number (with WhatsApp if applicable)", es: "Teléfono (WhatsApp)", ht: "Telefòn (WhatsApp)" } },
-      { key: "contact_address", type: "textarea", label: { en: "Mailing address", es: "Dirección postal", ht: "Adrès postal" } },
-    ],
-  },
 
   {
     id: "second_emergency",
-    title: { en: "7. Second Emergency Contact", es: "7. Segundo Contacto de Emergencia", ht: "7. Dezyèm Kontak Ijans" },
+    title: { en: "6. Second Emergency Contact", es: "6. Segundo Contacto de Emergencia", ht: "6. Dezyèm Kontak Ijans" },
     intro: {
       en: "A backup contact notified by the app if we cannot reach the first emergency contact.",
+
       es: "Un contacto de respaldo notificado por la app si no podemos contactar al primero.",
       ht: "Yon kontak rezèv app la notifye si nou pa ka jwenn premye kontak la.",
     },
