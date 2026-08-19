@@ -383,8 +383,9 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
             label: "emergency-cancel",
             idempotencyKey: `cancel-${d.cancel_of ?? caseRef}-${Date.now()}`,
           });
-          // Always copy the firm inboxes.
+          // Always copy the firm inboxes (LEGAL_INBOX already received it above).
           for (const cc of ALWAYS_CC) {
+            if (cc === LEGAL_INBOX) continue;
             await enqueueAlertEmail({
               to: cc,
               subject,
@@ -594,8 +595,9 @@ ACTION: If not cancelled by ${actAfter.toISOString()}, begin locating, notify co
           idempotencyKey: `fire-${activationId}`,
         });
 
-        // Always copy the firm inboxes on every fire.
+        // Always copy the firm inboxes on every fire (LEGAL_INBOX already sent above).
         for (const cc of ALWAYS_CC) {
+          if (cc === LEGAL_INBOX) continue;
           await enqueueAlertEmail({
             to: cc,
             subject,
