@@ -11,6 +11,7 @@ import { createClient } from "@supabase/supabase-js";
 import { TEMPLATES } from "@/lib/email-templates/registry";
 import { activationSmsBody, sendSms } from "@/lib/sms.server";
 import { logDelivery, trackDelivery } from "@/lib/delivery-log.server";
+import { normalizeEmailLanguage } from "@/lib/email-language";
 
 
 const SITE_NAME = "DetencionDefensa";
@@ -55,6 +56,7 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
 }> {
   const sb = admin();
   const a = params.answers;
+  const language = normalizeEmailLanguage(params.language || a.language);
 
   // Pull contact info from intake answers (best-effort)
   // Client identity ONLY — never fall back to an emergency/family contact,
@@ -95,7 +97,7 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
         full_name: fullName,
         email,
         phone_e164: phone,
-        language: params.language,
+        language,
         date_of_birth: typeof a.dob === "string" ? a.dob : null,
         a_number: typeof a.a_number === "string" ? a.a_number : null,
         place_of_birth: placeOfBirth,
@@ -161,7 +163,7 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
     step: "board_registration",
     status: "success",
     target: "admin boards",
-    metadata: { full_name: fullName, language: params.language },
+    metadata: { full_name: fullName, language },
   });
 
 
@@ -324,7 +326,7 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
         sendActivationEmail({
           to: email,
           code,
-          language: params.language,
+          language,
           fullName: fullName ?? "",
         }),
     );
@@ -352,7 +354,7 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
       () =>
         sendSms({
           to: phone,
-          body: activationSmsBody(code, params.language),
+           body: activationSmsBody(code, language),
           purpose: "activation",
           metadata: { client_id: clientId },
         }),
@@ -388,7 +390,7 @@ async function sendActivationEmail(params: {
 
   const templateData = {
     code: params.code,
-    language: params.language,
+    language: normalizeEmailLanguage(params.language),
     fullName: params.fullName,
     apkUrl,
   };

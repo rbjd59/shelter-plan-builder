@@ -114,8 +114,8 @@ function Dashboard() {
 
 function FireTestClientCard() {
   const fire = useServerFn(fireTestDemoClient);
-  const [label, setLabel] = useState("Test 02 ES");
-  const [language, setLanguage] = useState<"es" | "en" | "ht">("es");
+  const [label, setLabel] = useState("Test 06 HT");
+  const [language, setLanguage] = useState<"es" | "en" | "ht">("ht");
   const [status, setStatus] = useState<"idle" | "working" | "done" | "error">("idle");
   const [result, setResult] = useState<
     { sessionId: string; activationCode: string | null; label: string } | null
@@ -155,7 +155,7 @@ function FireTestClientCard() {
             className="rounded border border-amber-300 bg-white px-2 py-1 text-sm"
             value={label}
             onChange={(e) => setLabel(e.target.value)}
-            placeholder="Test 02 ES"
+            placeholder="Test 06 HT"
           />
           <select
             className="rounded border border-amber-300 bg-white px-2 py-1 text-sm"
