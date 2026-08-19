@@ -85,7 +85,7 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       ht: "Enfòmasyon sou kenbe imigrasyon an.",
     },
     fields: [
-      { key: "serious_felony", type: "checkbox", label: { en: "Have you ever been convicted of a serious felony anywhere?", es: "¿Alguna vez ha sido condenado por un delito grave en cualquier lugar?", ht: "Èske ou janm te kondane pou yon krim grav nenpòt kote?" } },
+      { key: "serious_felony", type: "yes_no", label: { en: "Have you ever been convicted of a serious felony anywhere?", es: "¿Alguna vez ha sido condenado por un delito grave en cualquier lugar?", ht: "Èske ou janm te kondane pou yon krim grav nenpòt kote?" } },
       { key: "prior_immigration_proceedings", type: "textarea", label: { en: "Describe prior Immigration Status", es: "Describa procedimientos migratorios anteriores", ht: "Dekri pwosedi imigrasyon anvan" } },
     ],
   },
