@@ -144,8 +144,8 @@ function CompanyBoard({ pin }: { pin: string }) {
                     {isActive && r.locate && (
                       <tr className="bg-red-50">
                         <td colSpan={4} className="px-4 pb-4 pt-0">
-                          <div className="rounded-md border border-red-300 bg-white p-3">
-                            <p className="mb-2 text-xs font-bold uppercase tracking-wide text-red-700">
+                          <div className="space-y-3 rounded-md border border-red-300 bg-white p-3">
+                            <p className="text-xs font-bold uppercase tracking-wide text-red-700">
                               Locate packet — released because this alert is active
                             </p>
                             <dl className="grid grid-cols-2 gap-x-6 gap-y-1 text-xs sm:grid-cols-3">
@@ -157,8 +157,10 @@ function CompanyBoard({ pin }: { pin: string }) {
                               <Field label="Language" value={r.locate.language} />
                               <Field label="Phone" value={r.locate.phone} />
                             </dl>
-                            <p className="mt-2 text-[11px] text-slate-500">
-                              No location data is collected. The app does not track where anyone is.
+                            {r.client_id && <LocateFile pin={pin} clientId={r.client_id} />}
+                            <p className="text-[11px] text-slate-500">
+                              No location data is collected by the app. Location below is
+                              entered by the locate desk after they find the person.
                             </p>
                           </div>
                         </td>
@@ -174,8 +176,8 @@ function CompanyBoard({ pin }: { pin: string }) {
         )}
 
         <p className="text-xs text-slate-400">
-          Client identity, emergency contacts and legal forms are visible only on the
-          attorney board at /attorney-board.
+          Client identity, emergency contacts and legal forms are released here only
+          while an alert is live. The full permanent file lives on /attorney-board.
         </p>
       </div>
     </div>
@@ -188,5 +190,157 @@ function Field({ label, value }: { label: string; value: string | null }) {
       <dt className="text-slate-500">{label}</dt>
       <dd className="font-medium text-slate-900">{value || "—"}</dd>
     </div>
+  );
+}
+
+/** Full attorney-equivalent file + the location entry form for the locate desk. */
+function LocateFile({ pin, clientId }: { pin: string; clientId: string }) {
+  const fileFn = useServerFn(pinCompanyLocateFile);
+  const saveFn = useServerFn(pinSaveLocateInfo);
+  const { data, refetch } = useQuery({
+    queryKey: ["company-locate-file", clientId],
+    queryFn: () => fileFn({ data: { pin, clientId } }),
+    retry: 2,
+  });
+  const [saving, setSaving] = useState(false);
+  const [status, setStatus] = useState<string | null>(null);
+
+  if (!data) return <p className="text-xs text-slate-500">Loading case file…</p>;
+
+  const client = data.client as Record<string, string | null>;
+  const det = (data.detention ?? {}) as Record<string, string | null>;
+  const contacts = data.contacts as Array<Record<string, string | null>>;
+  const documents = data.documents as Array<Record<string, string | null | boolean>>;
+
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    setSaving(true);
+    setStatus(null);
+    try {
+      const res = await saveFn({
+        data: {
+          pin,
+          clientId,
+          facility_name: String(fd.get("facility_name") ?? ""),
+          facility_address: String(fd.get("facility_address") ?? ""),
+          warden_name: String(fd.get("warden_name") ?? ""),
+          arrest_date: String(fd.get("arrest_date") ?? ""),
+          a_number: String(fd.get("a_number") ?? ""),
+          federal_id: String(fd.get("federal_id") ?? ""),
+          notes: String(fd.get("notes") ?? ""),
+          located_by: String(fd.get("located_by") ?? ""),
+        },
+      });
+      setStatus(`Saved and sent to ${res.sent_to}`);
+      void refetch();
+    } catch (err) {
+      setStatus((err as Error).message);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <div className="space-y-3 border-t border-slate-200 pt-3">
+      <div>
+        <p className="mb-1 text-xs font-bold uppercase tracking-wide text-slate-600">
+          Emergency contacts
+        </p>
+        {contacts.length === 0 ? (
+          <p className="text-xs text-slate-500">None on file.</p>
+        ) : (
+          <ul className="text-xs text-slate-800">
+            {contacts.map((c) => (
+              <li key={String(c["id"])}>
+                <strong>{c["name"]}</strong>
+                {c["relationship"] ? ` (${c["relationship"]})` : ""} — {c["phone_e164"] || "no phone"} ·{" "}
+                {c["email"] || "no email"}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      <div>
+        <p className="mb-1 text-xs font-bold uppercase tracking-wide text-slate-600">
+          Forms on file ({documents.length})
+        </p>
+        <ul className="text-xs text-slate-700">
+          {documents.map((d) => (
+            <li key={String(d["id"])}>
+              {String(d["title"])}
+              {d["from_app"] ? " — from app" : ""}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <form onSubmit={onSubmit} className="space-y-2">
+        <p className="text-xs font-bold uppercase tracking-wide text-slate-600">
+          Present location — fill in once found, then send to the attorney
+        </p>
+        <div className="grid gap-2 sm:grid-cols-2">
+          <Input name="facility_name" label="Facility name" defaultValue={det["facility_name"]} />
+          <Input name="warden_name" label="Warden / officer in charge" defaultValue={det["warden_name"]} />
+          <Input
+            name="facility_address"
+            label="Facility mailing address"
+            defaultValue={det["facility_address"]}
+            className="sm:col-span-2"
+          />
+          <Input name="arrest_date" label="Date of arrest" type="date" defaultValue={det["arrest_date"]} />
+          <Input
+            name="a_number"
+            label="A-number"
+            defaultValue={det["a_number"] ?? client["a_number"]}
+          />
+          <Input name="federal_id" label="Federal / booking ID" defaultValue={det["federal_id"]} />
+          <Input name="located_by" label="Located by" defaultValue={det["located_by"]} />
+          <Input name="notes" label="Notes" defaultValue={det["notes"]} className="sm:col-span-2" />
+        </div>
+        <div className="flex items-center gap-3">
+          <button
+            type="submit"
+            disabled={saving}
+            className="rounded bg-red-700 px-3 py-1.5 text-xs font-bold text-white disabled:opacity-60"
+          >
+            {saving ? "Sending…" : "Save & send to attorney"}
+          </button>
+          {det["located_at"] && (
+            <span className="text-[11px] text-slate-500">
+              Last updated {new Date(String(det["located_at"])).toLocaleString()}
+            </span>
+          )}
+          {status && <span className="text-[11px] font-medium text-emerald-700">{status}</span>}
+        </div>
+      </form>
+    </div>
+  );
+}
+
+function Input({
+  name,
+  label,
+  defaultValue,
+  type = "text",
+  className = "",
+}: {
+  name: string;
+  label: string;
+  defaultValue?: string | null;
+  type?: string;
+  className?: string;
+}) {
+  return (
+    <label className={`block text-xs ${className}`}>
+      <span className="text-slate-500">{label}</span>
+      <input
+        name={name}
+        type={type}
+        defaultValue={defaultValue ?? ""}
+        className="mt-0.5 w-full rounded border border-slate-300 px-2 py-1 text-sm"
+      />
+    </label>
   );
 }
