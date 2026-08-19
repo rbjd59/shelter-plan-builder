@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { useLang } from "@/context/LanguageContext";
 import { useAutoplayOnHash } from "@/hooks/useAutoplayOnHash";
 import { PlayOverlay } from "@/components/AdVideoSection";
@@ -139,8 +140,9 @@ export default function EmployerVideoSection() {
             margin: "1.5rem auto 0",
           }}
         >
-          <a
-            href="/intake"
+          <Link
+            to="/intake"
+            search={{ lang }}
             style={{
               display: "inline-block",
               background: "#e8a04a",
@@ -154,7 +156,7 @@ export default function EmployerVideoSection() {
             }}
           >
             {CTA[lang] ?? CTA.en}
-          </a>
+          </Link>
         </div>
         <p
           style={{
