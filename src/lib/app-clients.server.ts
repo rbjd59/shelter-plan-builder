@@ -490,3 +490,32 @@ export async function resendActivation(clientId: string): Promise<{
   }
   return { ok: true };
 }
+
+export async function resendActivationEmailOnly(clientId: string): Promise<{
+  ok: boolean;
+  error?: string;
+}> {
+  const sb = admin();
+  const { data, error } = await sb
+    .from("app_clients")
+    .select("invite_token, email, language, full_name")
+    .eq("id", clientId)
+    .maybeSingle();
+
+  if (error || !data) return { ok: false, error: error?.message ?? "not found" };
+  const client = data as {
+    invite_token: string;
+    email: string | null;
+    language: string;
+    full_name: string | null;
+  };
+  if (!client.email) return { ok: false, error: "client has no email" };
+
+  await sendActivationEmail({
+    to: client.email,
+    code: client.invite_token,
+    language: client.language,
+    fullName: client.full_name ?? "",
+  });
+  return { ok: true };
+}
