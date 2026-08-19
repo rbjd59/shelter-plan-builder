@@ -267,31 +267,10 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
     console.error("core app PDF generation failed", e);
   }
 
-  if (hasAssetProtection) {
-    try {
-      const { generateAllDocs } = await import("@/lib/readiness-pdf");
-      const recipient = {
-        name: typeof a.contact_name === "string" ? a.contact_name : undefined,
-        phone: typeof a.contact_phone === "string" ? a.contact_phone : undefined,
-        email: typeof a.contact_email === "string" ? a.contact_email : undefined,
-        relationship: typeof a.contact_relation === "string" ? a.contact_relation : undefined,
-      };
-      const docs = await generateAllDocs(a, params.language === "es" || params.language === "ht" ? params.language : "en", recipient);
-      const byFile: Record<string, string> = {
-        "1-power-of-attorney.pdf": "power_of_attorney",
-        "3-school-pickup.pdf": "school_authorization",
-        "9-landlord-authorization.pdf": "property_access_permission",
-        "10-vehicle-retrieval.pdf": "vehicle_impound_auth",
-        "5-financial-inventory.pdf": "bank_account_access",
-      };
-      for (const doc of docs) {
-        const type = byFile[doc.filename];
-        if (type) generated.set(type, toB64(doc.bytes));
-      }
-    } catch (e) {
-      console.error("asset-protection PDF generation failed", e);
-    }
-  }
+  // Family Docs (power of attorney, school pickup, vehicle impound, bank
+  // access, property access) are NOT generated into or bundled with the app.
+  // They must be printed, signed and notarized, so they are emailed to the
+  // client separately (see the family-forms email in activation-emails.server).
 
   // document_type strings MUST match Premio's router.
   const coreLegalDocs: Array<{ type: string; title: string }> = [
@@ -301,22 +280,9 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
     { type: "motion_for_counsel", title: "SDFL Motion for Referral to Volunteer Attorney" },
     { type: "memorandum_of_law", title: "Memorandum of Law" },
   ];
-  const assetProtectionDocs: Array<{ type: string; title: string }> = [
-    { type: "power_of_attorney", title: "Power of Attorney" },
-    { type: "school_authorization", title: "School Pickup Authorization" },
-    { type: "vehicle_impound_auth", title: "Vehicle Impound Release Authorization" },
-    { type: "bank_account_access", title: "Bank Account Access Authorization" },
-    { type: "property_access_permission", title: "Property Access Permission" },
-  ];
 
-  // Blank (unfilled) authorization forms are intentionally NOT bundled into
-  // the app: they must be printed, signed, and notarized in person. The client
-  // receives them by email with instructions (see family-forms email).
+  const docSet = [...coreLegalDocs];
 
-  const docSet = [
-    ...coreLegalDocs,
-    ...(hasAssetProtection ? assetProtectionDocs : []),
-  ];
 
 
 
