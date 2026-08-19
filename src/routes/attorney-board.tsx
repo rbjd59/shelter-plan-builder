@@ -66,14 +66,32 @@ function previewPdfFromBase64(b64: string) {
 function AttorneyBoard({ pin }: { pin: string }) {
   const [openId, setOpenId] = useState<string | null>(null);
   const listFn = useServerFn(pinListAttorneyBoard);
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch, isFetching } = useQuery({
     queryKey: ["attorney-board"],
     queryFn: () => listFn({ data: { pin } }),
     refetchInterval: 30000,
+    retry: 3,
+    retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 8000),
+    placeholderData: (prev) => prev,
   });
 
   if (isLoading) return <div className="p-8 text-slate-500">Loading…</div>;
-  if (error) return <div className="p-8 text-red-600">{(error as Error).message}</div>;
+  if (error && !data)
+    return (
+      <div className="p-8 space-y-3">
+        <div className="text-red-600">
+          Could not load the board: {(error as Error).message}
+        </div>
+        <button
+          type="button"
+          onClick={() => void refetch()}
+          disabled={isFetching}
+          className="rounded border border-slate-300 px-3 py-1.5 text-sm"
+        >
+          {isFetching ? "Retrying…" : "Retry"}
+        </button>
+      </div>
+    );
 
   const rows = data?.clients ?? [];
 

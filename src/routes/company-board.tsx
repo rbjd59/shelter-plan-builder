@@ -43,6 +43,9 @@ function CompanyBoard({ pin }: { pin: string }) {
     queryKey: ["company-board"],
     queryFn: () => fn({ data: { pin } }),
     refetchInterval: 15000,
+    retry: 3,
+    retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 8000),
+    placeholderData: (prev) => prev,
   });
 
   if (isLoading) return <div className="p-8 text-slate-500">Loading…</div>;
