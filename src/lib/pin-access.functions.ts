@@ -70,6 +70,9 @@ export const pinListCompanyBoard = createServerFn({ method: "POST" })
       const isActive = !!alert && !alert.cancelled_at;
       const info = isActive ? liveInfo.get(row.id) ?? null : null;
       return {
+        // Only exposed while an alert is live — the locate desk needs a handle
+        // to open the file and record the facility.
+        client_id: isActive ? row.id : null,
         activation_code: row.invite_token,
         registered_at: row.created_at,
         activated_at: row.activated_at,
