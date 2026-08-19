@@ -86,6 +86,7 @@ import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lova
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
+import { Route as ApiPublicFormsBlankRouteImport } from './routes/api/public/forms/blank'
 import { Route as ApiPublicEmergencyTestMirrorRouteImport } from './routes/api/public/emergency/test-mirror'
 import { Route as ApiPublicEmergencyActivateRouteImport } from './routes/api/public/emergency/activate'
 import { Route as ApiPublicDevSendInstallRouteImport } from './routes/api/public/dev/send-install'
@@ -490,6 +491,11 @@ const ApiPublicPaymentsWebhookRoute =
     path: '/api/public/payments/webhook',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicFormsBlankRoute = ApiPublicFormsBlankRouteImport.update({
+  id: '/api/public/forms/blank',
+  path: '/api/public/forms/blank',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicEmergencyTestMirrorRoute =
   ApiPublicEmergencyTestMirrorRouteImport.update({
     id: '/api/public/emergency/test-mirror',
@@ -653,6 +659,7 @@ export interface FileRoutesByFullPath {
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
   '/api/public/emergency/test-mirror': typeof ApiPublicEmergencyTestMirrorRoute
+  '/api/public/forms/blank': typeof ApiPublicFormsBlankRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -743,6 +750,7 @@ export interface FileRoutesByTo {
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
   '/api/public/emergency/test-mirror': typeof ApiPublicEmergencyTestMirrorRoute
+  '/api/public/forms/blank': typeof ApiPublicFormsBlankRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -837,6 +845,7 @@ export interface FileRoutesById {
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
   '/api/public/emergency/test-mirror': typeof ApiPublicEmergencyTestMirrorRoute
+  '/api/public/forms/blank': typeof ApiPublicFormsBlankRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -929,6 +938,7 @@ export interface FileRouteTypes {
     | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
     | '/api/public/emergency/test-mirror'
+    | '/api/public/forms/blank'
     | '/api/public/payments/webhook'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
@@ -1019,6 +1029,7 @@ export interface FileRouteTypes {
     | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
     | '/api/public/emergency/test-mirror'
+    | '/api/public/forms/blank'
     | '/api/public/payments/webhook'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
@@ -1112,6 +1123,7 @@ export interface FileRouteTypes {
     | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
     | '/api/public/emergency/test-mirror'
+    | '/api/public/forms/blank'
     | '/api/public/payments/webhook'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
@@ -1180,6 +1192,7 @@ export interface RootRouteChildren {
   ApiPublicDevSendInstallRoute: typeof ApiPublicDevSendInstallRoute
   ApiPublicEmergencyActivateRoute: typeof ApiPublicEmergencyActivateRoute
   ApiPublicEmergencyTestMirrorRoute: typeof ApiPublicEmergencyTestMirrorRoute
+  ApiPublicFormsBlankRoute: typeof ApiPublicFormsBlankRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
@@ -1727,6 +1740,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicPaymentsWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/forms/blank': {
+      id: '/api/public/forms/blank'
+      path: '/api/public/forms/blank'
+      fullPath: '/api/public/forms/blank'
+      preLoaderRoute: typeof ApiPublicFormsBlankRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/emergency/test-mirror': {
       id: '/api/public/emergency/test-mirror'
       path: '/api/public/emergency/test-mirror'
@@ -1997,6 +2017,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicDevSendInstallRoute: ApiPublicDevSendInstallRoute,
   ApiPublicEmergencyActivateRoute: ApiPublicEmergencyActivateRoute,
   ApiPublicEmergencyTestMirrorRoute: ApiPublicEmergencyTestMirrorRoute,
+  ApiPublicFormsBlankRoute: ApiPublicFormsBlankRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
