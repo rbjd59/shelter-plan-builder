@@ -9,7 +9,7 @@ import { createFileRoute } from "@tanstack/react-router";
 export const Route = createFileRoute("/api/public/app/latest.apk")({
   server: {
     handlers: {
-      GET: async () => {
+      GET: async ({ request }) => {
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
         const { data: release, error } = await supabaseAdmin
@@ -44,12 +44,33 @@ export const Route = createFileRoute("/api/public/app/latest.apk")({
           );
         }
 
-        return new Response(null, {
-          status: 302,
-          headers: {
-            Location: signed.signedUrl,
-            "Cache-Control": "no-store",
-          },
+        // Stream the file through our own URL with Android's APK MIME type.
+        // A redirect to object storage returns application/octet-stream; some
+        // Android download managers finish the bytes but do not offer Install.
+        const range = request.headers.get("range");
+        const upstream = await fetch(signed.signedUrl, {
+          headers: range ? { Range: range } : undefined,
+        });
+        if (!upstream.ok && upstream.status !== 206) {
+          return new Response("Unable to download the installer right now.", {
+            status: 503,
+            headers: { "Content-Type": "text/plain; charset=utf-8" },
+          });
+        }
+
+        const headers = new Headers();
+        headers.set("Content-Type", "application/vnd.android.package-archive");
+        headers.set("Content-Disposition", `attachment; filename="${fileName}"`);
+        headers.set("Cache-Control", "private, no-store");
+        headers.set("Accept-Ranges", "bytes");
+        for (const name of ["content-length", "content-range", "etag", "last-modified"]) {
+          const value = upstream.headers.get(name);
+          if (value) headers.set(name, value);
+        }
+
+        return new Response(upstream.body, {
+          status: upstream.status,
+          headers,
         });
       },
     },

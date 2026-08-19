@@ -130,11 +130,27 @@ function clientWelcomeContent(lang: string, name: string, code: string) {
         "Su intake está completo y su cuenta está activa.",
         "Su código de activación es:",
         "Su abogado ya tiene copias de sus documentos preparados (abajo).",
-        "Toque el botón para descargar la aplicación en su teléfono. Si está en un iPhone, lo llevará directo a TestFlight. Si está en Android, descargará la APK.",
+        "Android está disponible ahora. Apple/iPhone estará disponible próximamente.",
       ],
-      button: "Descargar la aplicación",
-      configureHeading: "Configure su aplicación desde el sitio web",
-      configureBody: "Puede ingresar sus contactos de emergencia, mascotas, documentos y PIN de cancelación desde la web — no es necesario hacerlo en el teléfono. Todo se sincroniza automáticamente con la app.",
+      button: "Descargar app para Android",
+      manualHeading: "Manual de inicio rápido",
+      installSteps: [
+        "Toque Descargar app para Android y espere hasta que termine toda la descarga.",
+        "Toque la descarga. Si no abre, abra Archivos o Mis archivos → Descargas y toque el archivo detenciondefensa que termina en .apk.",
+        "Si Android lo bloquea, toque Configuración, permita instalar desde esta fuente para Chrome, regrese y toque Instalar.",
+        "Abra DetencionDefensa e ingrese el código de activación de arriba.",
+      ],
+      useSteps: [
+        "Contactos: agregue y guarde hasta tres familiares de confianza. Los contactos del equipo legal están bloqueados.",
+        "Documentos familiares: confirme que aparecen sus documentos y toque uno para verlo.",
+        "Botones inferiores: úselos para ir a Inicio, Contactos, Documentos familiares y Perfil/Configuración.",
+        "Activar: use el control rojo de emergencia/SOS solamente cuando necesite ayuda y confirme en pantalla.",
+        "Desactivar/cancelar: use el control de cancelar y siga las instrucciones de mantener presionado o ingresar su PIN. Confirme que la app diga que la alerta fue cancelada.",
+        "No envíe una alerta real solamente para practicar.",
+      ],
+      apple: "Apple/iPhone — Próximamente. Le enviaremos un nuevo mensaje cuando la versión de Apple esté lista.",
+      configureHeading: "Configure sus datos desde el sitio web",
+      configureBody: "También puede ingresar sus tres contactos familiares, revisar documentos y configurar su PIN de cancelación desde la web. Todo se sincroniza con la app.",
       configureButton: "Configurar desde la web",
       docsHeading: "Documentos preparados para su abogado",
       footer: "Si tiene problemas, responda a este correo.",
@@ -148,11 +164,27 @@ function clientWelcomeContent(lang: string, name: string, code: string) {
         "Enskripsyon ou fini epi kont ou aktive.",
         "Kòd aktivasyon ou se:",
         "Avoka ou gen tan resevwa kopi dokiman ou yo (anba a).",
-        "Peze bouton an pou telechaje aplikasyon an sou telefòn ou. Sou iPhone, l ap mennen ou dirèkteman nan TestFlight. Sou Android, l ap telechaje APK la.",
+        "Android disponib kounye a. Apple/iPhone ap vini byento.",
       ],
-      button: "Telechaje aplikasyon an",
-      configureHeading: "Konfigire aplikasyon ou sou sit entènèt la",
-      configureBody: "Ou ka antre kontak ijans, bèt kay, dokiman ak PIN anilasyon w sou entènèt — ou pa bezwen fè sa sou telefòn lan. Tout bagay sinkronize otomatikman ak aplikasyon an.",
+      button: "Telechaje app Android la",
+      manualHeading: "Manyèl demaraj rapid",
+      installSteps: [
+        "Peze Telechaje app Android la epi tann tout telechajman an fini.",
+        "Peze telechajman an. Si li pa ouvri, ouvri Files oswa My Files → Downloads epi peze fichye detenciondefensa ki fini ak .apk.",
+        "Si Android bloke li, peze Settings, pèmèt enstalasyon soti nan sous sa pou Chrome, retounen epi peze Install.",
+        "Ouvri DetencionDefensa epi antre kòd aktivasyon ki anwo a.",
+      ],
+      useSteps: [
+        "Kontak: ajoute epi sove jiska twa moun fanmi ou fè konfyans. Kontak ekip legal la bloke.",
+        "Family Docs: verifye dokiman ou yo parèt epi peze youn pou wè li.",
+        "Bouton anba yo: sèvi avèk yo pou ale nan Home, Contacts, Family Docs, ak Profile/Settings.",
+        "Aktive: sèvi ak kontwòl ijans/SOS wouj la sèlman lè ou bezwen èd epi konfime sou ekran an.",
+        "Dezaktive/anile: sèvi ak kontwòl anile a epi swiv enstriksyon pou kenbe bouton an oswa antre PIN ou. Verifye app la di alèt la anile.",
+        "Pa voye yon vrè alèt sèlman pou pratike.",
+      ],
+      apple: "Apple/iPhone — Ap vini byento. N ap voye yon nouvo mesaj lè vèsyon Apple la pare.",
+      configureHeading: "Konfigire enfòmasyon ou sou sit entènèt la",
+      configureBody: "Ou ka antre twa kontak fanmi ou, verifye dokiman yo, epi konfigire PIN anilasyon ou sou entènèt la tou. Tout bagay sinkronize ak app la.",
       configureButton: "Konfigire sou entènèt la",
       docsHeading: "Dokiman pare pou avoka w",
       footer: "Si ou gen pwoblèm, reponn imèl sa a.",
@@ -165,11 +197,27 @@ function clientWelcomeContent(lang: string, name: string, code: string) {
       "Your intake is complete and your account is active.",
       "Your activation code is:",
       "Your attorney already has copies of your prepared documents (below).",
-      "Tap the button to download the app on your phone. On iPhone it takes you straight to TestFlight. On Android it downloads the APK.",
+      "Android is available now. Apple/iPhone is coming soon.",
     ],
-    button: "Download the app",
-    configureHeading: "Set up your app from the website",
-    configureBody: "You can enter your emergency contacts, pets, documents, and cancel PIN from the web — you don't have to do it on the phone. Everything syncs automatically with the app.",
+    button: "Download Android app",
+    manualHeading: "Quick-start manual",
+    installSteps: [
+      "Tap Download Android app and wait until the entire download finishes.",
+      "Tap the completed download. If it does not open, open Files or My Files → Downloads and tap the detenciondefensa file ending in .apk.",
+      "If Android blocks it, tap Settings, allow installation from this source for Chrome, return, and tap Install.",
+      "Open DetencionDefensa and enter the activation code shown above.",
+    ],
+    useSteps: [
+      "Contacts: add and save up to three trusted family contacts. The legal team contacts are locked.",
+      "Family Docs: confirm your documents appear and tap one to view it.",
+      "Bottom buttons: use them to move between Home, Contacts, Family Docs, and Profile/Settings.",
+      "Activate: use the red emergency/SOS control only when help is needed and confirm on screen.",
+      "Deactivate/cancel: use the cancel control and follow the hold or PIN instructions. Confirm the app says the alert was canceled.",
+      "Do not send a real alert only to practice.",
+    ],
+    apple: "Apple/iPhone — Coming soon. We will send you a new message when the Apple version is ready.",
+    configureHeading: "Set up your information from the website",
+    configureBody: "You can also enter your three family contacts, review documents, and set your cancellation PIN on the website. Everything syncs with the app.",
     configureButton: "Set up from the web",
     docsHeading: "Documents prepared for your attorney",
     footer: "If you have any trouble, just reply to this email.",
@@ -232,6 +280,14 @@ export async function enqueueActivationEmails(p: ActivationEmailParams): Promise
       <p style="margin:0 0 22px;text-align:center;">
         <a href="${DOWNLOAD_URL}" style="display:inline-block;background:#0f172a;color:#ffffff;text-decoration:none;padding:14px 26px;border-radius:8px;font-weight:600;font-size:16px;">${esc(w.button)}</a>
       </p>
+      <div style="border:1px solid #cbd5e1;background:#f8fafc;border-radius:8px;padding:16px;margin:0 0 22px;">
+        <p style="margin:0 0 10px;font-size:16px;color:#0f172a;"><strong>${esc(w.manualHeading)}</strong></p>
+        <p style="margin:0 0 8px;font-size:14px;color:#0f172a;"><strong>Android</strong></p>
+        ${w.installSteps.map((step, index) => `<p style="margin:0 0 8px;font-size:13px;color:#1f2937;"><strong>${index + 1}.</strong> ${esc(step)}</p>`).join("")}
+        <p style="margin:16px 0 8px;font-size:14px;color:#0f172a;"><strong>${lang === "es" ? "Configurar y utilizar la app" : lang === "ht" ? "Konfigire epi sèvi ak app la" : "Set up and use the app"}</strong></p>
+        ${w.useSteps.map((step, index) => `<p style="margin:0 0 8px;font-size:13px;color:#1f2937;"><strong>${index + 1}.</strong> ${esc(step)}</p>`).join("")}
+        <p style="margin:16px 0 0;padding-top:12px;border-top:1px solid #cbd5e1;font-size:13px;font-weight:700;color:#92400e;">${esc(w.apple)}</p>
+      </div>
       ${docsHtml}
       <div style="border:1px solid #bfdbfe;background:#eff6ff;border-radius:8px;padding:16px;margin:0 0 22px;">
         <p style="margin:0 0 8px;font-size:14px;color:#0f172a;"><strong>${esc(w.configureHeading)}</strong></p>
@@ -256,6 +312,14 @@ ${docRows.map((r) => `- ${r.label}: ${r.url}`).join("\n")}
 ${w.body[3]}
 
 ${w.button}: ${DOWNLOAD_URL}
+
+${w.manualHeading}
+Android:
+${w.installSteps.map((step, index) => `${index + 1}. ${step}`).join("\n")}
+
+${w.useSteps.map((step, index) => `${index + 1}. ${step}`).join("\n")}
+
+${w.apple}
 
 ${w.configureHeading}
 ${w.configureBody}
