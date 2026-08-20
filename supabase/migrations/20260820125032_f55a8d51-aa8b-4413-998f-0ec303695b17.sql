@@ -1,0 +1,1 @@
+REVOKE ALL ON FUNCTION public.prevent_qualify_self_decision() FROM PUBLIC, anon, authenticated;
