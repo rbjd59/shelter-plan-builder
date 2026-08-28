@@ -2,6 +2,27 @@
 // Used as a fallback when a route's `?lang=` is missing or invalid.
 export type SiteLang = "es" | "en" | "ht";
 
+// Marketing alias domains lock the site to their language.
+// listoahora.org = Spanish brand, parekounya.org = Haitian Creole brand.
+const HOST_LANG: Record<string, SiteLang> = {
+  "listoahora.org": "es",
+  "www.listoahora.org": "es",
+  "listoahora.app": "es",
+  "www.listoahora.app": "es",
+  "parekounya.org": "ht",
+  "www.parekounya.org": "ht",
+  "parekounya.app": "ht",
+  "www.parekounya.app": "ht",
+  "parekounya.com": "ht",
+  "www.parekounya.com": "ht",
+};
+
+export function detectHostLang(): SiteLang | null {
+  if (typeof window === "undefined") return null;
+  return HOST_LANG[window.location.hostname.toLowerCase()] ?? null;
+}
+
+
 // Detect a supported language from the visitor's browser/OS locale list.
 // Matches on the primary subtag so "es-MX", "es-419", "ht-HT" all resolve.
 export function detectBrowserLang(): SiteLang | null {
