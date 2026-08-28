@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { detectBrowserLang } from "@/lib/site-lang";
+import { detectBrowserLang, detectHostLang } from "@/lib/site-lang";
 
 export type Lang = "es" | "en" | "ht";
 const LS_KEY = "dd_lang";
@@ -15,6 +15,9 @@ function readInitial(): Lang {
   if (typeof window === "undefined") return "es";
   const url = new URLSearchParams(window.location.search).get("lang");
   if (url === "es" || url === "en" || url === "ht") return url;
+  // Alias domains (ListoAhora = es, PareKounya = ht) force their language.
+  const host = detectHostLang();
+  if (host) return host;
   let ls: string | null = null;
   try {
     ls = window.localStorage.getItem(LS_KEY);
