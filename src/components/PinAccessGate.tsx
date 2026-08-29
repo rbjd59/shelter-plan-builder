@@ -23,7 +23,8 @@ export default function PinAccessGate({
     try {
       // 1) PIN passed in the URL (?pin=5688) — survives cross-domain hops.
       const fromUrl = new URL(window.location.href).searchParams.get("pin");
-      if (fromUrl && fromUrl.trim() === PIN) {
+      const normalizedUrlPin = fromUrl?.trim().replace(/^"|"$/g, "");
+      if (normalizedUrlPin === PIN) {
         try {
           sessionStorage.setItem(SHARED_KEY, PIN);
           localStorage.setItem(SHARED_KEY, PIN);
