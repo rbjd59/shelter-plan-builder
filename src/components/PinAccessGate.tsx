@@ -23,13 +23,19 @@ export default function PinAccessGate({
     try {
       // 1) PIN passed in the URL (?pin=5688) — survives cross-domain hops.
       const fromUrl = new URL(window.location.href).searchParams.get("pin");
-      if (fromUrl && fromUrl.trim() === PIN) {
+      const normalizedUrlPin = fromUrl?.trim().replace(/^"|"$/g, "");
+      if (normalizedUrlPin === PIN) {
         try {
           sessionStorage.setItem(SHARED_KEY, PIN);
           localStorage.setItem(SHARED_KEY, PIN);
         } catch { /* ignore */ }
         setPin(PIN);
         onPin?.(PIN);
+        // Do not leave the staff PIN visible in the address bar/history after
+        // it has been safely persisted on the destination domain.
+        const cleanUrl = new URL(window.location.href);
+        cleanUrl.searchParams.delete("pin");
+        window.history.replaceState(window.history.state, "", `${cleanUrl.pathname}${cleanUrl.search}${cleanUrl.hash}`);
         return;
       }
       // 2) Previously unlocked in this session / on this device.
