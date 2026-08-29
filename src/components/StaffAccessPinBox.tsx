@@ -60,10 +60,13 @@ function PinModal({ onClose }: { onClose: () => void }) {
     } catch {
       /* ignore */
     }
-    // Client-side navigation keeps us on the current origin. A full page load
-    // can be bounced by the domain redirect to another host, where the
-    // session unlock would be lost and the board would ask again.
-    navigate({ to: role === "company" ? "/company-board" : "/attorney-board" });
+    // Carry the PIN through the navigation as well as saving it locally. This
+    // keeps board access intact even when the hosting layer changes domains
+    // during navigation (browser storage is scoped to the old domain).
+    navigate({
+      to: role === "company" ? "/company-board" : "/attorney-board",
+      search: { pin: PIN } as never,
+    });
     onClose();
   };
 

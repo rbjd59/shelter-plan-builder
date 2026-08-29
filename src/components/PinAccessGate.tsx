@@ -30,6 +30,11 @@ export default function PinAccessGate({
         } catch { /* ignore */ }
         setPin(PIN);
         onPin?.(PIN);
+        // Do not leave the staff PIN visible in the address bar/history after
+        // it has been safely persisted on the destination domain.
+        const cleanUrl = new URL(window.location.href);
+        cleanUrl.searchParams.delete("pin");
+        window.history.replaceState(window.history.state, "", `${cleanUrl.pathname}${cleanUrl.search}${cleanUrl.hash}`);
         return;
       }
       // 2) Previously unlocked in this session / on this device.
