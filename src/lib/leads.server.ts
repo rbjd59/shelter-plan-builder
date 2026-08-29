@@ -32,6 +32,21 @@ function esc(s: unknown): string {
     .replace(/"/g, "&quot;");
 }
 
+async function unsubscribeTokenFor(email: string): Promise<string> {
+  const { data: existing } = await supabaseAdmin
+    .from("email_unsubscribe_tokens" as never)
+    .select("token")
+    .eq("email", email)
+    .maybeSingle();
+  const token = (existing as { token?: string } | null)?.token ?? crypto.randomUUID();
+  if (!(existing as { token?: string } | null)?.token) {
+    await supabaseAdmin
+      .from("email_unsubscribe_tokens" as never)
+      .insert({ email, token } as never);
+  }
+  return token;
+}
+
 async function enqueue(to: string, subject: string, html: string, text: string, label: string) {
   const messageId = crypto.randomUUID();
   const payload = {
@@ -44,6 +59,7 @@ async function enqueue(to: string, subject: string, html: string, text: string, 
     purpose: "transactional",
     label,
     idempotency_key: `${label}-${messageId}`,
+    unsubscribe_token: await unsubscribeTokenFor(to),
     message_id: messageId,
     queued_at: new Date().toISOString(),
   };
@@ -53,6 +69,7 @@ async function enqueue(to: string, subject: string, html: string, text: string, 
   } as never);
   if (error) console.error("lead email enqueue failed", { label, error });
 }
+
 
 /** Inserts the lead, then notifies the Company inbox and the Firm inbox. */
 export async function createLead(input: LeadInput): Promise<{ id: string }> {
