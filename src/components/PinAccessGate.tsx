@@ -21,7 +21,19 @@ export default function PinAccessGate({
 
   useEffect(() => {
     try {
-      const saved = sessionStorage.getItem(SHARED_KEY);
+      // 1) PIN passed in the URL (?pin=5688) — survives cross-domain hops.
+      const fromUrl = new URL(window.location.href).searchParams.get("pin");
+      if (fromUrl && fromUrl.trim() === PIN) {
+        try {
+          sessionStorage.setItem(SHARED_KEY, PIN);
+          localStorage.setItem(SHARED_KEY, PIN);
+        } catch { /* ignore */ }
+        setPin(PIN);
+        onPin?.(PIN);
+        return;
+      }
+      // 2) Previously unlocked in this session / on this device.
+      const saved = sessionStorage.getItem(SHARED_KEY) ?? localStorage.getItem(SHARED_KEY);
       if (saved === PIN) {
         setPin(saved);
         onPin?.(saved);
@@ -34,7 +46,10 @@ export default function PinAccessGate({
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     if (value.trim() === PIN) {
-      try { sessionStorage.setItem(SHARED_KEY, PIN); } catch { /* ignore */ }
+      try {
+        sessionStorage.setItem(SHARED_KEY, PIN);
+        localStorage.setItem(SHARED_KEY, PIN);
+      } catch { /* ignore */ }
       setPin(PIN);
       onPin?.(PIN);
     } else {
