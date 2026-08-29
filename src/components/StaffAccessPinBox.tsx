@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 
 const PIN = "5688";
 // Must match SHARED_KEY in PinAccessGate so the boards don't ask again.
@@ -44,6 +45,7 @@ function PinModal({ onClose }: { onClose: () => void }) {
   const [pin, setPin] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [showHelp, setShowHelp] = useState(false);
+  const navigate = useNavigate();
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
