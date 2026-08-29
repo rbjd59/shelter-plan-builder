@@ -65,7 +65,7 @@ function PinModal({ onClose }: { onClose: () => void }) {
     // during navigation (browser storage is scoped to the old domain).
     navigate({
       to: role === "company" ? "/company-board" : "/attorney-board",
-      search: { pin: PIN } as never,
+      search: { pin: PIN },
     });
     onClose();
   };
