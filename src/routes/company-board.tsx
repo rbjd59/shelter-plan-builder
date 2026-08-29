@@ -10,9 +10,6 @@ import {
 } from "@/lib/pin-access.functions";
 
 export const Route = createFileRoute("/company-board")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    pin: typeof search.pin === "string" ? search.pin : undefined,
-  }),
   head: () => ({
     meta: [
       { title: "Company Board — DetencionDefensa" },

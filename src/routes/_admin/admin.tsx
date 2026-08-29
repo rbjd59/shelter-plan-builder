@@ -187,10 +187,10 @@ function FireTestClientCard() {
             </p>
           )}
           <div className="mt-2 flex gap-3 text-xs">
-            <Link to="/company-board" search={{ pin: undefined }} className="text-amber-700 underline">
+            <Link to="/company-board" className="text-amber-700 underline">
               Company board →
             </Link>
-            <Link to="/attorney-board" search={{ pin: undefined }} className="text-amber-700 underline">
+            <Link to="/attorney-board" className="text-amber-700 underline">
               Attorney board →
             </Link>
           </div>
