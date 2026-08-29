@@ -174,30 +174,62 @@ function getCoords(timeoutMs = 5000): Promise<GpsFix> {
   });
 }
 
-async function postEmergency(
+// The site is served from several domains (detenciondefensa.com, listoahora.org,
+// parekounya.org). Whichever one is not the primary answers a cross-domain 307,
+// and native/webview clients do not re-POST across a redirect — the alert would
+// silently die. So we try the current origin first, then every known host, and
+// only give up (queue offline) when all of them fail.
+const ALERT_PATH = "/api/public/emergency/activate";
+const ALERT_HOSTS = [
+  "https://parekounya.org",
+  "https://detenciondefensa.com",
+  "https://listoahora.org",
+];
+
+function alertEndpoints(): string[] {
+  const list: string[] = [ALERT_PATH];
+  for (const host of ALERT_HOSTS) {
+    if (typeof window !== "undefined" && window.location.origin === host) continue;
+    list.push(host + ALERT_PATH);
+  }
+  return list;
+}
+
+async function postAlertOnce(
+  url: string,
   body: Record<string, unknown>,
-): Promise<{ activation_id?: string; queued?: boolean }> {
+): Promise<{ ok: boolean; retryable: boolean; data?: { activation_id?: string } }> {
   try {
-    const res = await fetch("/api/public/emergency/activate", {
+    const res = await fetch(url, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(body),
+      redirect: "follow",
       keepalive: true,
     });
-    if (!res.ok) {
-      // 5xx — server reachable but failing. Queue for retry.
-      if (res.status >= 500) {
-        await outboxAdd(body).catch(() => undefined);
-        return { queued: true };
-      }
-      return {};
+    if (res.ok) {
+      const data = (await res.json().catch(() => ({}))) as { activation_id?: string };
+      return { ok: true, retryable: false, data };
     }
-    return (await res.json()) as { activation_id?: string };
+    // 4xx = the request itself is bad; retrying another host will not help.
+    return { ok: false, retryable: res.status >= 500 };
   } catch {
-    // Network failure (offline, DNS, TLS). Queue for retry.
-    await outboxAdd(body).catch(() => undefined);
-    return { queued: true };
+    return { ok: false, retryable: true };
   }
+}
+
+async function postEmergency(
+  body: Record<string, unknown>,
+): Promise<{ activation_id?: string; queued?: boolean; delivered?: boolean }> {
+  let sawPermanentFailure = false;
+  for (const url of alertEndpoints()) {
+    const attempt = await postAlertOnce(url, body);
+    if (attempt.ok) return { ...attempt.data, delivered: true };
+    if (!attempt.retryable) sawPermanentFailure = true;
+  }
+  if (sawPermanentFailure) return { delivered: false };
+  await outboxAdd(body).catch(() => undefined);
+  return { queued: true, delivered: false };
 }
 
 async function flushOutbox(): Promise<number> {
@@ -205,26 +237,30 @@ async function flushOutbox(): Promise<number> {
   const items = await outboxAll().catch(() => [] as OutboxItem[]);
   let sent = 0;
   for (const item of items) {
-    try {
-      const res = await fetch("/api/public/emergency/activate", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(item.body),
-      });
-      if (res.ok && item.id != null) {
-        await outboxDelete(item.id);
-        sent++;
-      } else if (!res.ok && res.status < 500 && item.id != null) {
-        // Permanent client error — drop so it doesn't retry forever.
-        await outboxDelete(item.id);
+    let delivered = false;
+    let permanent = false;
+    for (const url of alertEndpoints()) {
+      const attempt = await postAlertOnce(url, item.body);
+      if (attempt.ok) {
+        delivered = true;
+        break;
       }
-    } catch {
-      // Still offline — stop and try again later.
+      if (!attempt.retryable) permanent = true;
+    }
+    if (delivered && item.id != null) {
+      await outboxDelete(item.id);
+      sent++;
+    } else if (permanent && item.id != null) {
+      // Permanent client error — drop so it doesn't retry forever.
+      await outboxDelete(item.id);
+    } else if (!delivered) {
+      // Still unreachable — stop and try again later.
       break;
     }
   }
   return sent;
 }
+
 
 function EmergencyApp() {
   const navigate = useNavigate();
