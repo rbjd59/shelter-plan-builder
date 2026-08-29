@@ -208,6 +208,16 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
   );
   addContact(a.contact_name, a.contact_phone, a.contact_email, "family", 4);
 
+  // Locked legal-team contact so the alert inbox is visible inside the app.
+  addContact(
+    "DetencionDefensa Legal Alerts",
+    null,
+    "alerts@detenciondefensa.com",
+    "legal-team",
+    5,
+    "company",
+  );
+
   // De-duplicate: the family contact is often the same person as emergency #1.
   {
     const seen = new Set<string>();
