@@ -421,8 +421,11 @@ function EmergencyApp() {
   }, [record, emailInput, pinInput, pinConfirm]);
 
   // Fire the alert. Triggered after a 4-second hold on NOTIFY FAMILY.
-  // Step 1: server POST (fail-safe — sent through our verified domain).
-  // Step 2: open mailto from the user's phone (redundant — also reaches us).
+  // Step 1: server POST — this is what actually emails/SMSes the legal inbox,
+  //         the attorney and the family contacts.
+  // Step 2: ONLY if step 1 could not be delivered, we open a prefilled mail
+  //         draft as a last-resort manual channel. When the server accepted
+  //         the alert, no draft opens — everything is already sent.
   const fireAlert = useCallback(async (rec: CaseRecord) => {
     if (navigator.vibrate) navigator.vibrate([300, 100, 300, 100, 600]);
     setFiredAt(Date.now());
@@ -455,8 +458,13 @@ function EmergencyApp() {
       setPendingCount(await outboxCount().catch(() => 0));
     }
 
-    // 2) Mailto from user's phone — second channel.
+    // Server accepted the alert — all notifications already went out. Do not
+    // open a mail draft; it only confuses the user into thinking nothing sent.
+    if (serverRes.delivered) return;
+
+    // 2) Mailto from user's phone — last-resort manual channel.
     const roleTag = isFamily ? "FAMILY" : "CLIENT";
+
     const windowLabel = isFamily
       ? "12-HOUR confirmation window (family-triggered — wait before locating)"
       : "2-HOUR window (client-triggered — at-scene alert)";
