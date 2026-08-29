@@ -36,6 +36,20 @@ function Dashboard() {
     <div className="space-y-6">
       <FireTestClientCard />
 
+      <div className="flex items-center justify-between rounded-lg border border-slate-200 bg-white p-4">
+        <div>
+          <h2 className="text-sm font-semibold text-slate-900">System Walkthrough (editable DOCX + matching PDF)</h2>
+          <p className="text-xs text-slate-500">Includes the one-page preflight checklist — download and print everything in one shot.</p>
+        </div>
+        <a
+          href="/DetencionDefensa-System-Walkthrough.zip"
+          download="DetencionDefensa-System-Walkthrough.zip"
+          className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
+        >
+          Download &amp; Print ZIP
+        </a>
+      </div>
+
       <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
         <Stat label="Views (30d)" value={data.totals.viewsLast30} />
         <Stat label="Signups today" value={data.totals.signupsToday} />
