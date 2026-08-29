@@ -54,10 +54,15 @@ function PinModal({ onClose }: { onClose: () => void }) {
     }
     try {
       sessionStorage.setItem(SHARED_KEY, PIN);
+      localStorage.setItem(SHARED_KEY, PIN);
     } catch {
       /* ignore */
     }
-    window.location.href = role === "company" ? "/company-board" : "/attorney-board";
+    // Client-side navigation keeps us on the current origin. A full page load
+    // can be bounced by the domain redirect to another host, where the
+    // session unlock would be lost and the board would ask again.
+    navigate({ to: role === "company" ? "/company-board" : "/attorney-board" });
+    onClose();
   };
 
   const tabBtn = (active: boolean): React.CSSProperties => ({
