@@ -181,8 +181,9 @@ function getCoords(timeoutMs = 5000): Promise<GpsFix> {
 // only give up (queue offline) when all of them fail.
 const ALERT_PATH = "/api/public/emergency/activate";
 const ALERT_HOSTS = [
-  "https://parekounya.org",
+  // Primary first — the others 307 here, and native clients don't re-POST.
   "https://detenciondefensa.com",
+  "https://parekounya.org",
   "https://listoahora.org",
 ];
 
