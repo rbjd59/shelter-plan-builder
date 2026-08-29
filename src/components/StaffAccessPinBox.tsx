@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
 
 const PIN = "5688";
 // Must match SHARED_KEY in PinAccessGate so the boards don't ask again.
@@ -45,7 +44,6 @@ function PinModal({ onClose }: { onClose: () => void }) {
   const [pin, setPin] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [showHelp, setShowHelp] = useState(false);
-  const navigate = useNavigate();
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,10 +61,8 @@ function PinModal({ onClose }: { onClose: () => void }) {
     // Carry the PIN through the navigation as well as saving it locally. This
     // keeps board access intact even when the hosting layer changes domains
     // during navigation (browser storage is scoped to the old domain).
-    navigate({
-      to: role === "company" ? "/company-board" : "/attorney-board",
-      search: { pin: PIN },
-    });
+    const boardPath = role === "company" ? "/company-board" : "/attorney-board";
+    window.location.assign(`${boardPath}?pin=${encodeURIComponent(PIN)}`);
     onClose();
   };
 
