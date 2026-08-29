@@ -46,7 +46,10 @@ export default function PinAccessGate({
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     if (value.trim() === PIN) {
-      try { sessionStorage.setItem(SHARED_KEY, PIN); } catch { /* ignore */ }
+      try {
+        sessionStorage.setItem(SHARED_KEY, PIN);
+        localStorage.setItem(SHARED_KEY, PIN);
+      } catch { /* ignore */ }
       setPin(PIN);
       onPin?.(PIN);
     } else {
