@@ -68,7 +68,11 @@ export const Route = createFileRoute("/api/public/app/activate")({
           return json({ ok: false, error: "invalid_activation_code" }, { status: 404 });
         }
 
-        return json({ ok: true, ...(data as Record<string, unknown>) });
+        const bundle = data as Record<string, unknown>;
+        const lang = String(bundle.language ?? "en").toLowerCase();
+        const legalNotice = LEGAL_NOTICE[lang as keyof typeof LEGAL_NOTICE] ?? LEGAL_NOTICE.en;
+
+        return json({ ok: true, ...bundle, legal_notice: legalNotice });
       },
     },
   },
