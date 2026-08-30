@@ -29,6 +29,13 @@ function json(body: unknown, init?: ResponseInit) {
   return new Response(JSON.stringify(body), { ...init, headers });
 }
 
+/** Shown on the activation screen, below the code field, before activating. */
+const LEGAL_NOTICE = {
+  en: "DetencionDefensa is not a law firm and does not provide legal advice. This app notifies your emergency contacts and our team if you are detained. Nothing here creates an attorney-client relationship. Any legal representation is a separate agreement with an independent licensed attorney. Location data is collected only when you press SOS and is used solely to help locate you.",
+  es: "DetencionDefensa no es un bufete de abogados y no brinda asesoramiento legal. Esta aplicacion notifica a sus contactos de emergencia y a nuestro equipo si usted es detenido. Nada aqui crea una relacion abogado-cliente. Cualquier representacion legal es un acuerdo separado con un abogado independiente con licencia. Los datos de ubicacion se recopilan unicamente cuando presiona SOS y se usan solo para ayudar a localizarlo.",
+  ht: "DetencionDefensa se pa yon kabinè avoka epi li pa bay konsèy legal. Aplikasyon sa a avèti kontak ijans ou yo ak ekip nou an si yo detni ou. Anyen isit la pa kreye yon relasyon avoka-kliyan. Nenpòt reprezantasyon legal se yon akò separe ak yon avoka endepandan ki gen lisans. Done kote yo kolekte sèlman lè ou peze SOS epi yo sèvi sèlman pou ede jwenn ou.",
+} as const;
+
 const Schema = z
   .object({
     activation_code: z.string().min(4).max(16).optional(),
