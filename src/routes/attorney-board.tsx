@@ -271,7 +271,7 @@ function ClientDetail({ pin, clientId }: { pin: string; clientId: string }) {
   if (error) return <div className="text-sm text-red-600">{(error as Error).message}</div>;
   if (!data) return null;
 
-  const { client, draft_forms, app_uploads, alerts, contacts } = data as any;
+  const { client, draft_forms, app_uploads, alerts, contacts, detention, forms_ready } = data as any;
   const contactsUpdatedAt = contacts.reduce((max: string | null, c: any) => {
     const t = c.updated_at ?? c.created_at ?? null;
     return t && (!max || t > max) ? t : max;
