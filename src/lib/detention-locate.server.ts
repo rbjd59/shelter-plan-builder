@@ -75,6 +75,20 @@ export async function saveDetentionInfoAndNotifyAttorney(input: DetentionInput) 
     recordId = (inserted as { id: string }).id;
   }
 
+  // Rebuild every legal form with the real facility/warden/address data so no
+  // placeholders survive. The attorney board reads review_status from here.
+  let formsResult: { regenerated: string[]; failed: string[]; ready: boolean } = {
+    regenerated: [],
+    failed: [],
+    ready: false,
+  };
+  try {
+    const { regenerateClientForms } = await import("@/lib/forms-regenerate.server");
+    formsResult = await regenerateClientForms(input.clientId);
+  } catch (e) {
+    console.error("form regeneration after locate failed", e);
+  }
+
   const { data: client } = await supabaseAdmin
     .from("app_clients")
     .select(
@@ -85,7 +99,10 @@ export async function saveDetentionInfoAndNotifyAttorney(input: DetentionInput) 
 
   const c = (client ?? {}) as Record<string, string | null>;
   const code = c["invite_token"] ?? "—";
-  const subject = `LOCATED: ${code} — ${c["full_name"] ?? "client"} found at ${row.facility_name ?? "facility TBD"}`;
+  const subject = formsResult.ready
+    ? `LOCATED — forms completed and ready for review: ${code} — ${c["full_name"] ?? "client"}`
+    : `LOCATED: ${code} — ${c["full_name"] ?? "client"} found at ${row.facility_name ?? "facility TBD"}`;
+
 
   const line = (label: string, value: string | null) =>
     `<p style="margin:4px 0;"><strong>${label}:</strong> ${esc(value)}</p>`;
