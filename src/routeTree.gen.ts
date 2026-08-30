@@ -98,6 +98,8 @@ import { Route as ApiPublicAppUpdateInfoRouteImport } from './routes/api/public/
 import { Route as ApiPublicAppSyncContactsRouteImport } from './routes/api/public/app/sync-contacts'
 import { Route as ApiPublicAppLatestDotapkRouteImport } from './routes/api/public/app/latest[.]apk'
 import { Route as ApiPublicAppInfoRouteImport } from './routes/api/public/app/info'
+import { Route as ApiPublicAppActivatedRouteImport } from './routes/api/public/app/activated'
+import { Route as ApiPublicAppActivateRouteImport } from './routes/api/public/app/activate'
 import { Route as FirmFirmReviewIdRouteImport } from './routes/_firm/firm.review.$id'
 import { Route as FirmFirmPacketIdRouteImport } from './routes/_firm/firm.packet.$id'
 import { Route as FirmFirmDetainedIdRouteImport } from './routes/_firm/firm.detained.$id'
@@ -559,6 +561,16 @@ const ApiPublicAppInfoRoute = ApiPublicAppInfoRouteImport.update({
   path: '/api/public/app/info',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicAppActivatedRoute = ApiPublicAppActivatedRouteImport.update({
+  id: '/api/public/app/activated',
+  path: '/api/public/app/activated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicAppActivateRoute = ApiPublicAppActivateRouteImport.update({
+  id: '/api/public/app/activate',
+  path: '/api/public/app/activate',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FirmFirmReviewIdRoute = FirmFirmReviewIdRouteImport.update({
   id: '/firm/review/$id',
   path: '/firm/review/$id',
@@ -656,6 +668,8 @@ export interface FileRoutesByFullPath {
   '/firm/detained/$id': typeof FirmFirmDetainedIdRoute
   '/firm/packet/$id': typeof FirmFirmPacketIdRoute
   '/firm/review/$id': typeof FirmFirmReviewIdRoute
+  '/api/public/app/activate': typeof ApiPublicAppActivateRoute
+  '/api/public/app/activated': typeof ApiPublicAppActivatedRoute
   '/api/public/app/info': typeof ApiPublicAppInfoRoute
   '/api/public/app/latest.apk': typeof ApiPublicAppLatestDotapkRoute
   '/api/public/app/sync-contacts': typeof ApiPublicAppSyncContactsRoute
@@ -748,6 +762,8 @@ export interface FileRoutesByTo {
   '/firm/detained/$id': typeof FirmFirmDetainedIdRoute
   '/firm/packet/$id': typeof FirmFirmPacketIdRoute
   '/firm/review/$id': typeof FirmFirmReviewIdRoute
+  '/api/public/app/activate': typeof ApiPublicAppActivateRoute
+  '/api/public/app/activated': typeof ApiPublicAppActivatedRoute
   '/api/public/app/info': typeof ApiPublicAppInfoRoute
   '/api/public/app/latest.apk': typeof ApiPublicAppLatestDotapkRoute
   '/api/public/app/sync-contacts': typeof ApiPublicAppSyncContactsRoute
@@ -844,6 +860,8 @@ export interface FileRoutesById {
   '/_firm/firm/detained/$id': typeof FirmFirmDetainedIdRoute
   '/_firm/firm/packet/$id': typeof FirmFirmPacketIdRoute
   '/_firm/firm/review/$id': typeof FirmFirmReviewIdRoute
+  '/api/public/app/activate': typeof ApiPublicAppActivateRoute
+  '/api/public/app/activated': typeof ApiPublicAppActivatedRoute
   '/api/public/app/info': typeof ApiPublicAppInfoRoute
   '/api/public/app/latest.apk': typeof ApiPublicAppLatestDotapkRoute
   '/api/public/app/sync-contacts': typeof ApiPublicAppSyncContactsRoute
@@ -938,6 +956,8 @@ export interface FileRouteTypes {
     | '/firm/detained/$id'
     | '/firm/packet/$id'
     | '/firm/review/$id'
+    | '/api/public/app/activate'
+    | '/api/public/app/activated'
     | '/api/public/app/info'
     | '/api/public/app/latest.apk'
     | '/api/public/app/sync-contacts'
@@ -1030,6 +1050,8 @@ export interface FileRouteTypes {
     | '/firm/detained/$id'
     | '/firm/packet/$id'
     | '/firm/review/$id'
+    | '/api/public/app/activate'
+    | '/api/public/app/activated'
     | '/api/public/app/info'
     | '/api/public/app/latest.apk'
     | '/api/public/app/sync-contacts'
@@ -1125,6 +1147,8 @@ export interface FileRouteTypes {
     | '/_firm/firm/detained/$id'
     | '/_firm/firm/packet/$id'
     | '/_firm/firm/review/$id'
+    | '/api/public/app/activate'
+    | '/api/public/app/activated'
     | '/api/public/app/info'
     | '/api/public/app/latest.apk'
     | '/api/public/app/sync-contacts'
@@ -1195,6 +1219,8 @@ export interface RootRouteChildren {
   ApiPublicMailFromCheckRoute: typeof ApiPublicMailFromCheckRoute
   ApiPublicSendAdminInviteRoute: typeof ApiPublicSendAdminInviteRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
+  ApiPublicAppActivateRoute: typeof ApiPublicAppActivateRoute
+  ApiPublicAppActivatedRoute: typeof ApiPublicAppActivatedRoute
   ApiPublicAppInfoRoute: typeof ApiPublicAppInfoRoute
   ApiPublicAppLatestDotapkRoute: typeof ApiPublicAppLatestDotapkRoute
   ApiPublicAppSyncContactsRoute: typeof ApiPublicAppSyncContactsRoute
@@ -1837,6 +1863,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicAppInfoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/app/activated': {
+      id: '/api/public/app/activated'
+      path: '/api/public/app/activated'
+      fullPath: '/api/public/app/activated'
+      preLoaderRoute: typeof ApiPublicAppActivatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/app/activate': {
+      id: '/api/public/app/activate'
+      path: '/api/public/app/activate'
+      fullPath: '/api/public/app/activate'
+      preLoaderRoute: typeof ApiPublicAppActivateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_firm/firm/review/$id': {
       id: '/_firm/firm/review/$id'
       path: '/firm/review/$id'
@@ -2027,6 +2067,8 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicMailFromCheckRoute: ApiPublicMailFromCheckRoute,
   ApiPublicSendAdminInviteRoute: ApiPublicSendAdminInviteRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
+  ApiPublicAppActivateRoute: ApiPublicAppActivateRoute,
+  ApiPublicAppActivatedRoute: ApiPublicAppActivatedRoute,
   ApiPublicAppInfoRoute: ApiPublicAppInfoRoute,
   ApiPublicAppLatestDotapkRoute: ApiPublicAppLatestDotapkRoute,
   ApiPublicAppSyncContactsRoute: ApiPublicAppSyncContactsRoute,
