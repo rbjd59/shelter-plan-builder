@@ -267,7 +267,7 @@ export const pinDownloadDocument = createServerFn({ method: "POST" })
 export const appUploadFormCopy = createServerFn({ method: "POST" })
   .inputValidator((d: { token: string; documentType: string; content: string; title?: string }) => {
     const norm = (d.token || "").toUpperCase().trim();
-    if (!/^[A-Z0-9]{8}$/.test(norm)) throw new Error("invalid_token_format");
+    if (!/^[A-Z0-9]{5,8}$/.test(norm)) throw new Error("invalid_token_format");
     if (!d.documentType || typeof d.documentType !== "string") throw new Error("documentType required");
     if (typeof d.content !== "string") throw new Error("content required");
     return { ...d, token: norm };

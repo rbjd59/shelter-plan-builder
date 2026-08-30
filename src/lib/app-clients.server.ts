@@ -18,16 +18,21 @@ const SITE_NAME = "DetencionDefensa";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
 const FROM_DOMAIN = "notify.gohomesooner.com";
 
-// Avoid 0/O/1/I to prevent transcription errors
-const TOKEN_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+// Short, memorable activation codes: one letter + four digits (e.g. K4827).
+// Letters avoid I/O and digits avoid 0/1 to prevent transcription errors.
+const TOKEN_LETTERS = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+const TOKEN_DIGITS = "23456789";
 
 function generateToken(): string {
-  const bytes = new Uint8Array(8);
+  const bytes = new Uint8Array(5);
   crypto.getRandomValues(bytes);
-  return Array.from(bytes)
-    .map((b) => TOKEN_ALPHABET[b % TOKEN_ALPHABET.length])
+  const letter = TOKEN_LETTERS[bytes[0] % TOKEN_LETTERS.length];
+  const digits = Array.from(bytes.slice(1))
+    .map((b) => TOKEN_DIGITS[b % TOKEN_DIGITS.length])
     .join("");
+  return `${letter}${digits}`;
 }
+
 
 function generateHex(len = 32): string {
   const bytes = new Uint8Array(len);

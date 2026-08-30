@@ -45,7 +45,7 @@ function jsonResponse(body: unknown, init?: ResponseInit) {
 
 function normalizeActivationCode(value: string | undefined): string | null {
   const normalized = value?.trim().toUpperCase() ?? "";
-  return /^[A-Z0-9]{8}$/.test(normalized) ? normalized : null;
+  return /^[A-Z0-9]{5,8}$/.test(normalized) ? normalized : null;
 }
 
 export const Route = createFileRoute("/api/public/app/sync-contacts")({
@@ -74,7 +74,7 @@ export const Route = createFileRoute("/api/public/app/sync-contacts")({
 
         if (!token && d.intake_session_id) {
           const raw = d.intake_session_id.trim().toUpperCase();
-          if (/^[A-Z0-9]{8}$/.test(raw)) {
+          if (/^[A-Z0-9]{5,8}$/.test(raw)) {
             token = raw;
           } else {
             const { data: client, error } = await supabaseAdmin

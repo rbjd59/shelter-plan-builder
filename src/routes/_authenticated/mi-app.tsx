@@ -121,7 +121,7 @@ function MiAppPage() {
   const claimByCode = async () => {
     setCodeErr("");
     const norm = codeInput.trim().toUpperCase();
-    if (!/^[A-Z0-9]{8}$/.test(norm)) {
+    if (!/^[A-Z0-9]{5,8}$/.test(norm)) {
       setCodeErr("El código debe ser 8 letras/números.");
       return;
     }

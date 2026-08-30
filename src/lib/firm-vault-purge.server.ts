@@ -21,7 +21,7 @@ export type PurgeResult = {
  */
 export async function purgeCompanyCopy(activationCode: string): Promise<PurgeResult> {
   const code = activationCode.trim().toUpperCase();
-  if (!/^[A-Z0-9]{8}$/.test(code)) throw new Error("invalid_activation_code");
+  if (!/^[A-Z0-9]{5,8}$/.test(code)) throw new Error("invalid_activation_code");
 
   const { data: client } = await supabaseAdmin
     .from("app_clients")

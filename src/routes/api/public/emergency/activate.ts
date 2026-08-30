@@ -109,13 +109,13 @@ function esc(s: unknown): string {
 
 function normalizeActivationCode(value: string | undefined): string | null {
   const normalized = value?.trim().toUpperCase() ?? "";
-  return /^[A-Z0-9]{8}$/.test(normalized) ? normalized : null;
+  return /^[A-Z0-9]{5,8}$/.test(normalized) ? normalized : null;
 }
 
 async function resolveMirrorToken(caseRef: string, explicitCode?: string | null): Promise<string | null> {
   if (explicitCode) return explicitCode;
   const rawToken = caseRef.toUpperCase();
-  if (/^[A-Z0-9]{8}$/.test(rawToken)) return rawToken;
+  if (/^[A-Z0-9]{5,8}$/.test(rawToken)) return rawToken;
   try {
     const { data: clientRow } = await supabaseAdmin
       .from("app_clients" as never)

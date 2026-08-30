@@ -52,7 +52,7 @@ export const Route = createFileRoute("/api/public/app/update-info")({
         }
 
         const caseId = (parsed.data.case_id ?? parsed.data.token ?? "").trim().toUpperCase();
-        if (!/^[A-Z0-9]{8}$/.test(caseId)) {
+        if (!/^[A-Z0-9]{5,8}$/.test(caseId)) {
           return json({ ok: false, error: "invalid_case_id" }, { status: 400 });
         }
         if (!signature) {
