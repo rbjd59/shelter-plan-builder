@@ -129,6 +129,15 @@ export async function saveDetentionInfoAndNotifyAttorney(input: DetentionInput) 
     line("Federal / booking ID", row.federal_id) +
     line("Notes", row.notes) +
     `</div>` +
+    (formsResult.ready
+      ? `<div style="background:#ecfdf5;border-left:4px solid #047857;padding:12px;margin:12px 0;">` +
+        `<p style="margin:0;font-weight:bold;color:#065f46;">Forms completed — ready for review and mailing</p>` +
+        `<p style="margin:6px 0 0;font-size:13px;">${formsResult.regenerated.length} form(s) rebuilt with the facility, address, warden and A-number above. No placeholders remain.</p>` +
+        `</div>`
+      : `<div style="background:#fffbeb;border-left:4px solid #b45309;padding:12px;margin:12px 0;">` +
+        `<p style="margin:0;font-weight:bold;color:#92400e;">Forms updated — still incomplete</p>` +
+        `<p style="margin:6px 0 0;font-size:13px;">Facility name, mailing address and warden are all required before the packet is mailable.</p>` +
+        `</div>`) +
     `<p style="font-size:13px;">Open the client file: ` +
     `<a href="https://detenciondefensa.com/attorney-board">attorney board</a>. ` +
     `Mail the completed packet to the person at the facility address above as a pro se litigant.</p>` +
@@ -143,7 +152,11 @@ export async function saveDetentionInfoAndNotifyAttorney(input: DetentionInput) 
     `Address: ${row.facility_address ?? "—"}\n` +
     `Warden: ${row.warden_name ?? "—"}\n` +
     `Arrest date: ${row.arrest_date ?? "—"}\n` +
-    `Notes: ${row.notes ?? "—"}\n`;
+    `Notes: ${row.notes ?? "—"}\n` +
+    (formsResult.ready
+      ? `\nForms completed — ready for review and mailing (${formsResult.regenerated.join(", ")}).\n`
+      : `\nForms updated but incomplete — facility, address and warden are all required.\n`);
+
 
   const messageId = `locate_${recordId}_${Date.now()}`;
   const { error: mailErr } = await supabaseAdmin.rpc("enqueue_email" as never, {
