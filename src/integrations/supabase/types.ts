@@ -1585,6 +1585,16 @@ export type Database = {
         }
         Returns: undefined
       }
+      _enqueue_sos_emails_impl: {
+        Args: {
+          _alert_id: string
+          _client_id: string
+          _kind: string
+          _lat: number
+          _lng: number
+        }
+        Returns: undefined
+      }
       attach_alert_document: {
         Args: {
           _content: string
