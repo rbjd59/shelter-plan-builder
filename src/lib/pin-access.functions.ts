@@ -129,10 +129,10 @@ export const pinListAttorneyBoard = createServerFn({ method: "POST" })
     const ids = (clients ?? []).map((c) => (c as { id: string }).id);
     if (ids.length === 0) return { clients: [] };
 
-    const [docsRes, alertsRes] = await Promise.all([
+    const [docsRes, alertsRes, detRes] = await Promise.all([
       supabaseAdmin
         .from("client_documents")
-        .select("id, client_id, title, document_type, send_on_alert, from_app, loaded_at")
+        .select("id, client_id, title, document_type, send_on_alert, from_app, loaded_at, review_status")
         .in("client_id", ids)
         .order("loaded_at", { ascending: true }),
       supabaseAdmin
@@ -140,6 +140,10 @@ export const pinListAttorneyBoard = createServerFn({ method: "POST" })
         .select("client_id, triggered_at, cancelled_at")
         .in("client_id", ids)
         .order("triggered_at", { ascending: false }),
+      supabaseAdmin
+        .from("client_detention_info")
+        .select("client_id, facility_name, facility_address, warden_name, arrest_date, a_number, federal_id, notes, located_at, located_by")
+        .in("client_id", ids),
     ]);
 
     const docsByClient = new Map<string, any[]>();
@@ -148,6 +152,8 @@ export const pinListAttorneyBoard = createServerFn({ method: "POST" })
       if (!docsByClient.has(cid)) docsByClient.set(cid, []);
       docsByClient.get(cid)!.push(d);
     }
+    const detByClient = new Map<string, any>();
+    for (const d of detRes.data ?? []) detByClient.set((d as { client_id: string }).client_id, d);
     const latestAlert = new Map<string, { triggered_at: string; cancelled_at: string | null }>();
     for (const a of alertsRes.data ?? []) {
       const cid = (a as { client_id: string }).client_id;
@@ -157,6 +163,7 @@ export const pinListAttorneyBoard = createServerFn({ method: "POST" })
           cancelled_at: (a as { cancelled_at: string | null }).cancelled_at,
         });
     }
+
 
     return {
       clients: (clients ?? []).map((c) => {
@@ -175,6 +182,10 @@ export const pinListAttorneyBoard = createServerFn({ method: "POST" })
           country_of_origin: string | null;
         };
         const docs = docsByClient.get(row.id) ?? [];
+        const det = detByClient.get(row.id) ?? null;
+        const formsReady =
+          Boolean(det?.facility_name && det?.facility_address && det?.warden_name) &&
+          docs.some((d) => !d.from_app && d.review_status === "ready_for_review");
         return {
           id: row.id,
           activation_code: row.invite_token,
@@ -191,6 +202,8 @@ export const pinListAttorneyBoard = createServerFn({ method: "POST" })
           draft_forms: docs.filter((d) => !d.from_app),
           app_uploads: docs.filter((d) => d.from_app),
           latest_alert: latestAlert.get(row.id) ?? null,
+          detention: det,
+          forms_ready: formsReady,
         };
       }),
     };
@@ -207,6 +220,7 @@ export const pinGetAttorneyClient = createServerFn({ method: "POST" })
       { data: documents },
       { data: alerts },
       { data: contacts },
+      { data: detention },
     ] = await Promise.all([
       supabaseAdmin
         .from("app_clients")
@@ -217,7 +231,7 @@ export const pinGetAttorneyClient = createServerFn({ method: "POST" })
         .maybeSingle(),
       supabaseAdmin
         .from("client_documents")
-        .select("id, title, content, document_type, send_on_alert, from_app, loaded_at")
+        .select("id, title, content, document_type, send_on_alert, from_app, loaded_at, review_status")
         .eq("client_id", data.clientId)
         .order("loaded_at", { ascending: true }),
       supabaseAdmin
@@ -230,14 +244,26 @@ export const pinGetAttorneyClient = createServerFn({ method: "POST" })
         .select("id, name, phone_e164, email, relationship, role, priority, notify_on_sos, created_at, updated_at")
         .eq("client_id", data.clientId)
         .order("priority", { ascending: true }),
+      supabaseAdmin
+        .from("client_detention_info")
+        .select("facility_name, facility_address, warden_name, arrest_date, a_number, federal_id, notes, located_at, located_by")
+        .eq("client_id", data.clientId)
+        .maybeSingle(),
     ]);
     if (!client) throw new Error("Client not found");
+    const det = (detention ?? null) as Record<string, string | null> | null;
+    const draftForms = (documents ?? []).filter((d) => !(d as { from_app: boolean }).from_app);
+    const formsReady =
+      Boolean(det?.["facility_name"] && det?.["facility_address"] && det?.["warden_name"]) &&
+      draftForms.some((d) => (d as { review_status?: string }).review_status === "ready_for_review");
     return {
       client,
-      draft_forms: (documents ?? []).filter((d) => !(d as { from_app: boolean }).from_app),
+      draft_forms: draftForms,
       app_uploads: (documents ?? []).filter((d) => (d as { from_app: boolean }).from_app),
       alerts: alerts ?? [],
       contacts: contacts ?? [],
+      detention: det,
+      forms_ready: formsReady,
     };
   });
 
