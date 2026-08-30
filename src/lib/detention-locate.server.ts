@@ -177,5 +177,5 @@ export async function saveDetentionInfoAndNotifyAttorney(input: DetentionInput) 
   } as never);
   if (mailErr) console.error("locate handoff enqueue failed", mailErr);
 
-  return { ok: true, id: recordId, sent_to: ATTORNEY_INBOX };
+  return { ok: true, id: recordId, sent_to: ATTORNEY_INBOX, forms: formsResult };
 }
