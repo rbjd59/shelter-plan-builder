@@ -97,6 +97,35 @@ export const Route = createFileRoute("/api/public/app-trigger")({
         // All notification fan-out (contacts, company, Sorrentino) happens in
         // alert-fanout.server.ts. This route only records the event.
 
+        // ACTIVATION — the phone confirms the code was entered. This is NOT an
+        // emergency: no SOS row is written and no alert is raised.
+        const action = parsed.data.action ?? "trigger";
+        if (action === "activated" || action === "activate" || action === "activation") {
+          if (parsed.data.phone_model || parsed.data.os_version) {
+            await supabaseAdmin
+              .from("app_clients")
+              .update({
+                device_info: {
+                  phone_model: parsed.data.phone_model ?? null,
+                  os_version: parsed.data.os_version ?? null,
+                  activated_at: parsed.data.activated_at ?? new Date().toISOString(),
+                },
+              } as never)
+              .eq("invite_token", caseId);
+          }
+          try {
+            const { notifyAppActivation } = await import("@/lib/alert-fanout.server");
+            const fan = await notifyAppActivation(caseId);
+            console.log("[app-trigger] activation fan-out", fan);
+            return json({ ok: true, activated: true, ...fan });
+          } catch (e) {
+            console.error("[app-trigger] activation fan-out failed", e);
+            return json({ ok: false, error: "activation_fanout_failed" }, { status: 500 });
+          }
+        }
+
+
+
 
 
         // Cancellation path — the phone's "enter cancel PIN" flow hits us here.
