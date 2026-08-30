@@ -221,6 +221,7 @@ export const pinGetAttorneyClient = createServerFn({ method: "POST" })
       { data: alerts },
       { data: contacts },
       { data: detention },
+      { data: updateRequests },
     ] = await Promise.all([
       supabaseAdmin
         .from("app_clients")
@@ -249,7 +250,14 @@ export const pinGetAttorneyClient = createServerFn({ method: "POST" })
         .select("facility_name, facility_address, warden_name, arrest_date, a_number, federal_id, notes, located_at, located_by")
         .eq("client_id", data.clientId)
         .maybeSingle(),
+      supabaseAdmin
+        .from("client_update_requests")
+        .select("id, source, status, notes, request_payload, created_at")
+        .eq("client_id", data.clientId)
+        .order("created_at", { ascending: false })
+        .limit(20),
     ]);
+
     if (!client) throw new Error("Client not found");
     const det = (detention ?? null) as Record<string, string | null> | null;
     const draftForms = (documents ?? []).filter((d) => !(d as { from_app: boolean }).from_app);
