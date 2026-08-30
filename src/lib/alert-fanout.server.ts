@@ -199,9 +199,9 @@ export async function notifyAppActivation(
 
   // --- Contacts: they were listed on the website; tell them what that means.
   const contactText =
-    `You have been listed as an emergency contact for ${name}.\n\n` +
-    `If you receive an alert notice from us, the person who registered you may have been detained. ` +
-    `If they do not cancel the alert within 2 hours, contact detenciondefensa.com.\n\n` +
+    `${name} has activated an emergency protection app on his phone.\n\n` +
+    `In the event he is detained, you will be notified by SMS and email. ` +
+    `If he does not cancel within two hours, contact DetencionDefensa at ${CALLBACK_NUMBER}.\n\n` +
     `Nothing is required from you now. Keep this email.\n\n— DetencionDefensa`;
   const contactHtml = wrap(
     "You are an emergency contact",
@@ -210,8 +210,9 @@ export async function notifyAppActivation(
   let contactsNotified = 0;
   const smsSent = new Set<string>();
   const contactSms =
-    `DetencionDefensa: You are listed as an emergency contact for ${name}. ` +
-    `If you get an alert from us, they may have been detained. If it is not cancelled in 2 hours, go to detenciondefensa.com.`;
+    `DetencionDefensa: ${name} has activated an emergency protection app. If he is detained you will be notified by SMS and email. ` +
+    `If he does not cancel within two hours, contact DetencionDefensa at ${CALLBACK_NUMBER}.`;
+
   for (const c of contacts) {
     if (c.email) {
       await enqueueEmail({
