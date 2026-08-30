@@ -129,10 +129,10 @@ export const pinListAttorneyBoard = createServerFn({ method: "POST" })
     const ids = (clients ?? []).map((c) => (c as { id: string }).id);
     if (ids.length === 0) return { clients: [] };
 
-    const [docsRes, alertsRes] = await Promise.all([
+    const [docsRes, alertsRes, detRes] = await Promise.all([
       supabaseAdmin
         .from("client_documents")
-        .select("id, client_id, title, document_type, send_on_alert, from_app, loaded_at")
+        .select("id, client_id, title, document_type, send_on_alert, from_app, loaded_at, review_status")
         .in("client_id", ids)
         .order("loaded_at", { ascending: true }),
       supabaseAdmin
@@ -140,6 +140,10 @@ export const pinListAttorneyBoard = createServerFn({ method: "POST" })
         .select("client_id, triggered_at, cancelled_at")
         .in("client_id", ids)
         .order("triggered_at", { ascending: false }),
+      supabaseAdmin
+        .from("client_detention_info")
+        .select("client_id, facility_name, facility_address, warden_name, arrest_date, a_number, federal_id, notes, located_at, located_by")
+        .in("client_id", ids),
     ]);
 
     const docsByClient = new Map<string, any[]>();
@@ -148,6 +152,8 @@ export const pinListAttorneyBoard = createServerFn({ method: "POST" })
       if (!docsByClient.has(cid)) docsByClient.set(cid, []);
       docsByClient.get(cid)!.push(d);
     }
+    const detByClient = new Map<string, any>();
+    for (const d of detRes.data ?? []) detByClient.set((d as { client_id: string }).client_id, d);
     const latestAlert = new Map<string, { triggered_at: string; cancelled_at: string | null }>();
     for (const a of alertsRes.data ?? []) {
       const cid = (a as { client_id: string }).client_id;
@@ -157,6 +163,7 @@ export const pinListAttorneyBoard = createServerFn({ method: "POST" })
           cancelled_at: (a as { cancelled_at: string | null }).cancelled_at,
         });
     }
+
 
     return {
       clients: (clients ?? []).map((c) => {
