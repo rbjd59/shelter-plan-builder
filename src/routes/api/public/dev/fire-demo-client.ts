@@ -22,7 +22,7 @@ const Contact = z.object({
 const Body = z.object({
   label: z.string().min(1).max(60).optional(),
   language: z.enum(["es", "en", "ht"]).optional(),
-  code: z.string().regex(/^[A-Z0-9]{8}$/).optional(),
+  code: z.string().regex(/^[A-Z0-9]{5,8}$/).optional(),
   client_email: z.string().max(200).optional(),
   client_mobile: z.string().max(32).optional(),
   contacts: z.array(Contact).max(10).optional(),

@@ -119,7 +119,7 @@ export async function sendSosSmsToContacts(opts: {
   activationId?: string | null;
 }): Promise<{ sent: number; failed: number; skipped: number; phones: string[] }> {
   const norm = opts.token.trim().toUpperCase();
-  if (!/^[A-Z0-9]{8}$/.test(norm)) return { sent: 0, failed: 0, skipped: 0, phones: [] };
+  if (!/^[A-Z0-9]{5,8}$/.test(norm)) return { sent: 0, failed: 0, skipped: 0, phones: [] };
 
   // Resolve client
   const { data: client } = await supabaseAdmin
