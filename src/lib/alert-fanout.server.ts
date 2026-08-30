@@ -24,6 +24,10 @@ export const ATTORNEY_EMAIL = "intake@sorrentinolawfirm.com";
 export const ATTORNEY_BOARD_EMAIL = "legal@detenciondefensa.com";
 
 const COMPANY_PHONE = process.env.ADMIN_ALERT_PHONE || "+13053377713";
+// Callback number printed in every contact message. NOTE: 534-202-6852 has no
+// valid US area code — override with CONTACT_CALLBACK_NUMBER once confirmed.
+const CALLBACK_NUMBER = process.env.CONTACT_CALLBACK_NUMBER || "305-337-7713";
+
 const ATTORNEY_PHONE = process.env.ATTORNEY_ALERT_PHONE || null;
 
 const ATTORNEY_BOARD_URL = "https://detenciondefensa.com/attorney-board";
