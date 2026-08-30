@@ -93,7 +93,20 @@ function AttorneyBoard({ pin }: { pin: string }) {
       </div>
     );
 
-  const rows = data?.clients ?? [];
+  const all = data?.clients ?? [];
+  const statusOf = (r: any) => {
+    const active = !!r.latest_alert && !r.latest_alert.cancelled_at;
+    if (active) return "active";
+    if (r.forms_ready) return "ready";
+    if (r.latest_alert?.cancelled_at) return "cancelled";
+    return "quiet";
+  };
+  const order = { active: 0, ready: 1, cancelled: 2, quiet: 3 } as Record<string, number>;
+  const rows = [...all].sort((a, b) => order[statusOf(a)]! - order[statusOf(b)]!);
+  const counts = {
+    active: all.filter((r: any) => statusOf(r) === "active").length,
+    ready: all.filter((r: any) => statusOf(r) === "ready").length,
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 p-6">
@@ -103,10 +116,18 @@ function AttorneyBoard({ pin }: { pin: string }) {
             Attorney Board — Client Files
           </h1>
           <p className="mt-1 text-sm text-slate-600">
-            {rows.length} client file{rows.length === 1 ? "" : "s"} on record. Each
-            row is keyed by the activation code. Trigger column shows when (and if)
-            the client activated the SOS.
+            {rows.length} client file{rows.length === 1 ? "" : "s"}. Sorted so live
+            detentions come first, then files whose forms are complete and waiting
+            on your review.
           </p>
+          <div className="mt-2 flex flex-wrap gap-2 text-xs font-semibold">
+            <span className="rounded-full bg-red-600 px-2.5 py-1 text-white">
+              {counts.active} live detention{counts.active === 1 ? "" : "s"}
+            </span>
+            <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-emerald-800">
+              {counts.ready} ready for review
+            </span>
+          </div>
         </header>
 
         <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
@@ -115,46 +136,70 @@ function AttorneyBoard({ pin }: { pin: string }) {
               <tr>
                 <th className="px-4 py-2.5">Activation #</th>
                 <th className="px-4 py-2.5">Name</th>
-                <th className="px-4 py-2.5">Contact</th>
+                <th className="px-4 py-2.5">Status</th>
+                <th className="px-4 py-2.5">Located at</th>
                 <th className="px-4 py-2.5">Forms</th>
-                <th className="px-4 py-2.5">Trigger</th>
                 <th className="px-4 py-2.5"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {rows.map((r) => {
                 const isOpen = openId === r.id;
-                const triggered = !!r.latest_alert && !r.latest_alert.cancelled_at;
+                const status = statusOf(r);
+                const triggered = status === "active";
+                const det = (r as any).detention;
                 return (
                   <React.Fragment key={r.id}>
                     <tr className={triggered ? "animate-pulse bg-red-50/80 ring-2 ring-inset ring-red-500" : ""}>
                       <td className="px-4 py-2 font-mono font-bold">{r.activation_code}</td>
-                      <td className="px-4 py-2">{r.full_name ?? <span className="text-slate-400">—</span>}</td>
-                      <td className="px-4 py-2 text-xs text-slate-600">
-                        {r.email ?? "—"}
-                        {r.phone ? ` · ${r.phone}` : ""}
+                      <td className="px-4 py-2">
+                        {r.full_name ?? <span className="text-slate-400">—</span>}
+                        <div className="text-[11px] text-slate-500">
+                          {r.email ?? "no email"}
+                          {r.phone ? ` · ${r.phone}` : ""}
+                        </div>
                       </td>
                       <td className="px-4 py-2 text-xs">
-                        <span className="text-slate-700">{r.draft_forms.length} draft</span>
+                        {status === "active" && (
+                          <span className="rounded bg-red-600 px-2 py-1 font-bold text-white">
+                            🔴 DETAINED — {new Date(r.latest_alert!.triggered_at).toLocaleString()}
+                          </span>
+                        )}
+                        {status === "ready" && (
+                          <span className="rounded bg-emerald-100 px-2 py-1 font-semibold text-emerald-800">
+                            Forms completed — ready for review
+                          </span>
+                        )}
+                        {status === "cancelled" && (
+                          <span className="rounded bg-slate-100 px-2 py-1 font-semibold text-slate-600">
+                            Cancelled — all clear
+                          </span>
+                        )}
+                        {status === "quiet" && (
+                          <span className="rounded bg-slate-100 px-2 py-1 font-semibold text-slate-600">
+                            Registered — no trigger
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-2 text-xs text-slate-700">
+                        {det?.facility_name ? (
+                          <>
+                            <div className="font-semibold">{det.facility_name}</div>
+                            <div className="text-slate-500">{det.facility_address ?? "address pending"}</div>
+                          </>
+                        ) : (
+                          <span className="text-slate-400">Not located yet</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-2 text-xs">
+                        <span className="text-slate-700">{r.draft_forms.length} legal form{r.draft_forms.length === 1 ? "" : "s"}</span>
                         {r.app_uploads.length > 0 && (
                           <span className="ml-2 rounded bg-emerald-100 px-1.5 py-0.5 font-semibold text-emerald-800">
                             + {r.app_uploads.length} from app
                           </span>
                         )}
                       </td>
-                      <td className="px-4 py-2 text-xs">
-                        {r.latest_alert ? (
-                          <span className={triggered ? "rounded bg-red-600 px-2 py-1 font-bold text-white" : "text-red-700"}>
-                            {triggered ? "🔴 ACTIVE — " : ""}
-                            {new Date(r.latest_alert.triggered_at).toLocaleString()}
-                            {r.latest_alert.cancelled_at ? " (cancelled)" : ""}
-                          </span>
-                        ) : (
-                          <span className="rounded bg-slate-100 px-2 py-1 font-semibold text-slate-600">
-                            New signup — no trigger
-                          </span>
-                        )}
-                      </td>
+
                       <td className="px-4 py-2 text-right">
                         <button
                           className="text-xs font-semibold underline"
