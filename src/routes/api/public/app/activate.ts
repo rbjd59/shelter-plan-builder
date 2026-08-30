@@ -79,7 +79,15 @@ export const Route = createFileRoute("/api/public/app/activate")({
         const lang = String(bundle.language ?? "en").toLowerCase();
         const legalNotice = LEGAL_NOTICE[lang as keyof typeof LEGAL_NOTICE] ?? LEGAL_NOTICE.en;
 
-        return json({ ok: true, ...bundle, legal_notice: legalNotice });
+        return json({
+          ok: true,
+          ...bundle,
+          legal_notice: legalNotice,
+          // v4.3: emergency contacts are the one section the client may edit
+          // in the app; edits are pushed back via /api/public/app/sync-contacts.
+          contacts_editable_in_app: true,
+          contacts_sync_endpoint: "https://detenciondefensa.com/api/public/app/sync-contacts",
+        });
       },
     },
   },
