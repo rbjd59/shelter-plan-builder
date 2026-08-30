@@ -310,6 +310,40 @@ function ClientDetail({ pin, clientId }: { pin: string; clientId: string }) {
         </div>
       </div>
 
+      {(update_requests ?? []).length > 0 && (
+        <div className="rounded border border-sky-300 bg-sky-50 p-3 text-xs text-sky-900">
+          <div className="font-bold text-sm">Client updates sent from the phone app</div>
+          <ul className="mt-2 space-y-2">
+            {(update_requests ?? []).map((u: any) => {
+              const changes = (u.request_payload?.changes ?? {}) as Record<string, string>;
+              return (
+                <li key={u.id} className="rounded border border-sky-200 bg-white p-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-semibold">
+                      {new Date(u.request_payload?.requested_at ?? u.created_at).toLocaleString()}
+                    </span>
+                    <span className="rounded bg-sky-100 px-1.5 py-0.5 uppercase">{u.status}</span>
+                  </div>
+                  {Object.keys(changes).length > 0 ? (
+                    <div className="mt-1 grid gap-x-4 gap-y-0.5 sm:grid-cols-2">
+                      {Object.entries(changes).map(([k, v]) => (
+                        <div key={k}>
+                          <span className="font-semibold">{k.replace(/_/g, " ")}:</span>{" "}
+                          {k === "cancellation_pin" ? "updated" : String(v)}
+                        </div>
+                      ))}
+                    </div>
+                  ) : null}
+                  {u.notes && <div className="mt-1 italic">“{u.notes}”</div>}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+
+
+
       <div className="grid gap-4 sm:grid-cols-2 text-xs">
 
         <div className="rounded border border-slate-200 bg-white p-3">
