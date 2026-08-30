@@ -279,7 +279,39 @@ function ClientDetail({ pin, clientId }: { pin: string; clientId: string }) {
 
   return (
     <div className="space-y-5">
+      <div
+        className={`rounded border p-3 text-sm ${
+          forms_ready
+            ? "border-emerald-300 bg-emerald-50 text-emerald-900"
+            : "border-amber-300 bg-amber-50 text-amber-900"
+        }`}
+      >
+        <div className="font-bold">
+          {forms_ready
+            ? "Forms completed — ready for review and mailing"
+            : "Forms incomplete — waiting on the locate desk"}
+        </div>
+        <div className="mt-2 grid gap-x-6 gap-y-1 text-xs sm:grid-cols-2">
+          <div><span className="font-semibold">Facility:</span> {detention?.facility_name ?? "—"}</div>
+          <div><span className="font-semibold">Mailing address:</span> {detention?.facility_address ?? "—"}</div>
+          <div><span className="font-semibold">Warden / officer in charge:</span> {detention?.warden_name ?? "—"}</div>
+          <div><span className="font-semibold">Date of arrest:</span> {detention?.arrest_date ?? "—"}</div>
+          <div><span className="font-semibold">A-number:</span> {detention?.a_number ?? client.a_number ?? "—"}</div>
+          <div><span className="font-semibold">Booking / federal ID:</span> {detention?.federal_id ?? "—"}</div>
+          {detention?.notes && (
+            <div className="sm:col-span-2"><span className="font-semibold">Notes:</span> {detention.notes}</div>
+          )}
+          {detention?.located_at && (
+            <div className="sm:col-span-2 text-[11px] opacity-80">
+              Located {new Date(detention.located_at).toLocaleString()}
+              {detention.located_by ? ` by ${detention.located_by}` : ""} — every form below was rebuilt with these values.
+            </div>
+          )}
+        </div>
+      </div>
+
       <div className="grid gap-4 sm:grid-cols-2 text-xs">
+
         <div className="rounded border border-slate-200 bg-white p-3">
           <div className="font-bold uppercase tracking-wide text-slate-500 mb-1">Client</div>
           <div>{client.full_name ?? "—"}</div>
