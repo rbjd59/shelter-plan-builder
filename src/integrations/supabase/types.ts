@@ -52,6 +52,7 @@ export type Database = {
           id: string
           intake_session_id: string | null
           invite_token: string
+          is_reviewer: boolean
           language: string
           last_checkin_at: string | null
           phone_e164: string | null
@@ -82,6 +83,7 @@ export type Database = {
           id?: string
           intake_session_id?: string | null
           invite_token: string
+          is_reviewer?: boolean
           language?: string
           last_checkin_at?: string | null
           phone_e164?: string | null
@@ -112,6 +114,7 @@ export type Database = {
           id?: string
           intake_session_id?: string | null
           invite_token?: string
+          is_reviewer?: boolean
           language?: string
           last_checkin_at?: string | null
           phone_e164?: string | null
@@ -1573,6 +1576,16 @@ export type Database = {
     }
     Functions: {
       _enqueue_sos_emails: {
+        Args: {
+          _alert_id: string
+          _client_id: string
+          _kind: string
+          _lat: number
+          _lng: number
+        }
+        Returns: undefined
+      }
+      _enqueue_sos_emails_impl: {
         Args: {
           _alert_id: string
           _client_id: string

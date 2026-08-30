@@ -112,6 +112,9 @@ interface ClientRow {
   language: string | null;
   a_number: string | null;
   activated_at: string | null;
+  /** Store-reviewer account: webhooks are accepted and recorded, but no
+   *  email/SMS is ever fanned out — reviewers press SOS for real. */
+  is_reviewer?: boolean | null;
 }
 
 interface ContactRow {
@@ -126,7 +129,7 @@ async function loadCase(token: string): Promise<{ client: ClientRow; contacts: C
   const code = token.trim().toUpperCase();
   const { data } = await supabaseAdmin
     .from("app_clients")
-    .select("id, invite_token, full_name, email, phone_e164, language, a_number, activated_at")
+    .select("id, invite_token, full_name, email, phone_e164, language, a_number, activated_at, is_reviewer")
     .eq("invite_token", code)
     .maybeSingle();
   if (!data) return null;
@@ -194,6 +197,11 @@ export async function notifyAppActivation(
     .from("app_clients")
     .update({ activated_at: new Date().toISOString() } as never)
     .eq("id", client.id);
+
+  // Reviewer accounts never fan out — activation is recorded only.
+  if (client.is_reviewer) {
+    return { ok: true, skipped: "reviewer_no_fanout", contacts_notified: 0 };
+  }
 
   const name = client.full_name || "the client";
   const code = client.invite_token;
@@ -301,6 +309,12 @@ export async function notifySosEvent(opts: {
   const loaded = await loadCase(opts.token);
   if (!loaded) return { ok: false, skipped: "client_not_found" };
   const { client, contacts } = loaded;
+
+  // Reviewer accounts never page real people — the alert row is still
+  // recorded by the caller so the boards show the test event.
+  if (client.is_reviewer) {
+    return { ok: true, skipped: "reviewer_no_fanout", contacts_notified: 0 };
+  }
 
   const name = client.full_name || "your contact";
   const code = client.invite_token;
