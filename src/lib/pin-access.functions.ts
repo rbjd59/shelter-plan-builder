@@ -220,6 +220,7 @@ export const pinGetAttorneyClient = createServerFn({ method: "POST" })
       { data: documents },
       { data: alerts },
       { data: contacts },
+      { data: detention },
     ] = await Promise.all([
       supabaseAdmin
         .from("app_clients")
@@ -230,7 +231,7 @@ export const pinGetAttorneyClient = createServerFn({ method: "POST" })
         .maybeSingle(),
       supabaseAdmin
         .from("client_documents")
-        .select("id, title, content, document_type, send_on_alert, from_app, loaded_at")
+        .select("id, title, content, document_type, send_on_alert, from_app, loaded_at, review_status")
         .eq("client_id", data.clientId)
         .order("loaded_at", { ascending: true }),
       supabaseAdmin
@@ -243,14 +244,26 @@ export const pinGetAttorneyClient = createServerFn({ method: "POST" })
         .select("id, name, phone_e164, email, relationship, role, priority, notify_on_sos, created_at, updated_at")
         .eq("client_id", data.clientId)
         .order("priority", { ascending: true }),
+      supabaseAdmin
+        .from("client_detention_info")
+        .select("facility_name, facility_address, warden_name, arrest_date, a_number, federal_id, notes, located_at, located_by")
+        .eq("client_id", data.clientId)
+        .maybeSingle(),
     ]);
     if (!client) throw new Error("Client not found");
+    const det = (detention ?? null) as Record<string, string | null> | null;
+    const draftForms = (documents ?? []).filter((d) => !(d as { from_app: boolean }).from_app);
+    const formsReady =
+      Boolean(det?.["facility_name"] && det?.["facility_address"] && det?.["warden_name"]) &&
+      draftForms.some((d) => (d as { review_status?: string }).review_status === "ready_for_review");
     return {
       client,
-      draft_forms: (documents ?? []).filter((d) => !(d as { from_app: boolean }).from_app),
+      draft_forms: draftForms,
       app_uploads: (documents ?? []).filter((d) => (d as { from_app: boolean }).from_app),
       alerts: alerts ?? [],
       contacts: contacts ?? [],
+      detention: det,
+      forms_ready: formsReady,
     };
   });
 
