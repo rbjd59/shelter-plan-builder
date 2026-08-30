@@ -182,6 +182,10 @@ export const pinListAttorneyBoard = createServerFn({ method: "POST" })
           country_of_origin: string | null;
         };
         const docs = docsByClient.get(row.id) ?? [];
+        const det = detByClient.get(row.id) ?? null;
+        const formsReady =
+          Boolean(det?.facility_name && det?.facility_address && det?.warden_name) &&
+          docs.some((d) => !d.from_app && d.review_status === "ready_for_review");
         return {
           id: row.id,
           activation_code: row.invite_token,
@@ -198,6 +202,8 @@ export const pinListAttorneyBoard = createServerFn({ method: "POST" })
           draft_forms: docs.filter((d) => !d.from_app),
           app_uploads: docs.filter((d) => d.from_app),
           latest_alert: latestAlert.get(row.id) ?? null,
+          detention: det,
+          forms_ready: formsReady,
         };
       }),
     };
