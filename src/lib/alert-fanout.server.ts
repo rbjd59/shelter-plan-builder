@@ -383,7 +383,7 @@ export async function notifySosEvent(opts: {
   await smsOnce(
     COMPANY_PHONE,
     opts.kind === "alert"
-      ? `[DD] SOS TRIGGERED: ${name} (${code}).${mapsUrl ? ` GPS: ${mapsUrl}` : ""} Open the company board.`
+      ? `Trigger received: ${name} (${code}).${mapsUrl ? ` GPS: ${mapsUrl}` : ""} Open the company board.`
       : `[DD] SOS CANCELLED: ${name} (${code}). False alarm.`,
     `sos_${opts.kind}_company`,
     smsSent,
