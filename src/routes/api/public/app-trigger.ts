@@ -117,7 +117,7 @@ export const Route = createFileRoute("/api/public/app-trigger")({
             const { notifyAppActivation } = await import("@/lib/alert-fanout.server");
             const fan = await notifyAppActivation(caseId);
             console.log("[app-trigger] activation fan-out", fan);
-            return json({ ok: true, activated: true, ...fan });
+            return json({ ...fan, ok: true, activated: true });
           } catch (e) {
             console.error("[app-trigger] activation fan-out failed", e);
             return json({ ok: false, error: "activation_fanout_failed" }, { status: 500 });
