@@ -271,7 +271,9 @@ export const pinGetAttorneyClient = createServerFn({ method: "POST" })
       alerts: alerts ?? [],
       contacts: contacts ?? [],
       detention: det,
+      update_requests: updateRequests ?? [],
       forms_ready: formsReady,
+
     };
   });
 
