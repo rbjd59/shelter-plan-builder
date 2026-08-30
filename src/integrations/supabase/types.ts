@@ -52,6 +52,7 @@ export type Database = {
           id: string
           intake_session_id: string | null
           invite_token: string
+          is_reviewer: boolean
           language: string
           last_checkin_at: string | null
           phone_e164: string | null
@@ -82,6 +83,7 @@ export type Database = {
           id?: string
           intake_session_id?: string | null
           invite_token: string
+          is_reviewer?: boolean
           language?: string
           last_checkin_at?: string | null
           phone_e164?: string | null
@@ -112,6 +114,7 @@ export type Database = {
           id?: string
           intake_session_id?: string | null
           invite_token?: string
+          is_reviewer?: boolean
           language?: string
           last_checkin_at?: string | null
           phone_e164?: string | null
