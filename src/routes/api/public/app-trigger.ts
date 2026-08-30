@@ -26,7 +26,12 @@ function json(body: unknown, init?: ResponseInit) {
 
 const TriggerSchema = z.object({
   case_id: z.string().min(1).max(64),
-  action: z.enum(["trigger", "cancel"]).optional(),
+  action: z.enum(["trigger", "cancel", "activated", "activate", "activation"]).optional(),
+  activated_at: z.string().max(64).optional(),
+  cancelled_at: z.string().max(64).optional(),
+  phone_model: z.string().max(120).nullable().optional(),
+  os_version: z.string().max(120).nullable().optional(),
+
   triggered_at: z.string().max(64).optional(),
   cancel_pin: z.string().regex(/^\d{4,8}$/).optional(),
   // GPS may arrive nested (documented shape) or flat (what the phone app
