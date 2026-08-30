@@ -89,24 +89,13 @@ export const Route = createFileRoute("/api/public/app-trigger")({
           return json({ ok: false, error: "bad_signature" }, { status: 401 });
         }
 
-        // Look up the client so the Replit mirror + SMS fan-out have a name.
-        const { data: clientRow } = await supabaseAdmin
-          .from("app_clients")
-          .select("id, full_name, phone_e164, email")
-          .eq("invite_token", caseId)
-          .maybeSingle();
-        const clientName = clientRow?.full_name ?? null;
+        // All notification fan-out (contacts, company, Sorrentino) happens in
+        // alert-fanout.server.ts. This route only records the event.
 
-        // Legacy DefensaSiempre/Replit mirror removed — this backend is the sole
-        // sender of alert email + SMS. Kept as a no-op so call sites stay simple.
-        async function mirrorToReplit(_payload: Record<string, unknown>) {
-          return;
-        }
 
 
         // Cancellation path — the phone's "enter cancel PIN" flow hits us here.
         if (parsed.data.action === "cancel") {
-          const { sendSosSmsToContacts } = await import("@/lib/twilio-sms.server");
           try {
             if (parsed.data.cancel_pin) {
               const { data: pinRes, error: pinErr } = await supabaseAdmin.rpc(
@@ -128,49 +117,35 @@ export const Route = createFileRoute("/api/public/app-trigger")({
             return json({ ok: false, error: "cancel_failed" }, { status: 500 });
           }
           try {
-            const result = await sendSosSmsToContacts({
-              token: caseId,
-              clientName,
-              kind: "cancel",
-            });
-            console.log("[app-trigger] cancel sms fan-out", result);
+            const { notifySosEvent } = await import("@/lib/alert-fanout.server");
+            const fan = await notifySosEvent({ token: caseId, kind: "cancel" });
+            console.log("[app-trigger] cancel fan-out", fan);
           } catch (e) {
-            console.error("[app-trigger] cancel sms failed", e);
+            console.error("[app-trigger] cancel fan-out failed", e);
           }
-          await mirrorToReplit({
-            source: "detenciondefensa-app",
-            event: "cancel",
-            case_id: caseId,
-            activation_code: caseId,
-            intake_session_id: caseId,
-            full_name: clientName,
-            contact_email: clientRow?.email ?? null,
-            contact_phone: clientRow?.phone_e164 ?? null,
-            cancelled_at: new Date().toISOString(),
-          });
           return json({ ok: true, cancelled: true });
         }
 
-        // ZERO-TRACKING: any location fields the app may still send are discarded
-        // here and never persisted, logged, or forwarded.
-        const {
-          lat: _lat,
-          lng: _lng,
-          latitude: _latitude,
-          longitude: _longitude,
-          last_known_location: _loc,
-          battery_pct: _battery,
-          ...safePayload
-        } = parsed.data as Record<string, unknown>;
+        // GPS: the app reports coordinates with the trigger so the locate desk
+        // has a starting point. Accept both the nested and flat shapes.
+        const lat =
+          parsed.data.lat ?? parsed.data.latitude ?? parsed.data.last_known_location?.lat ?? null;
+        const lng =
+          parsed.data.lng ?? parsed.data.longitude ?? parsed.data.last_known_location?.lng ?? null;
 
         const { data: alertId, error: alertError } = await supabaseAdmin.rpc(
           "record_sos_alert" as never,
           {
             _token: caseId,
-            _lat: null,
-            _lng: null,
-            _battery_pct: null,
-            _payload: { ...safePayload, case_id: caseId, source: "primo_app_trigger" },
+            _lat: lat,
+            _lng: lng,
+            _battery_pct: parsed.data.battery_pct ?? null,
+            _payload: {
+              case_id: caseId,
+              source: "primo_app_trigger",
+              triggered_at: parsed.data.triggered_at ?? null,
+              arrest_location_hint: parsed.data.arrest_location_hint ?? null,
+            },
           } as never,
         );
 
@@ -183,41 +158,27 @@ export const Route = createFileRoute("/api/public/app-trigger")({
           alert_id: alertId,
           case_id: caseId,
           triggered_at: parsed.data.triggered_at ?? null,
-          location_collected: false,
+          has_location: lat !== null && lng !== null,
         });
 
-        // SMS fan-out to all client_contacts (mirrors the intake fire path).
+        // Single fan-out: contacts, company (email + SMS + board), Sorrentino.
         try {
-          const { sendSosSmsToContacts } = await import("@/lib/twilio-sms.server");
-          const smsResult = await sendSosSmsToContacts({
+          const { notifySosEvent } = await import("@/lib/alert-fanout.server");
+          const fan = await notifySosEvent({
             token: caseId,
-            clientName,
             kind: "alert",
-            activationId: alertId as string | null,
+            lat,
+            lng,
+            alertId: (alertId as string | null) ?? null,
+            triggeredAt: parsed.data.triggered_at ?? null,
           });
-          console.log("[app-trigger] alert sms fan-out", smsResult);
+          console.log("[app-trigger] alert fan-out", fan);
         } catch (e) {
-          console.error("[app-trigger] alert sms failed", e);
+          console.error("[app-trigger] alert fan-out failed", e);
         }
 
-        await mirrorToReplit({
-          source: "detenciondefensa-app",
-          event: "fire",
-          case_id: caseId,
-          activation_code: caseId,
-          intake_session_id: caseId,
-          activation_id: alertId,
-          alert_id: alertId,
-          full_name: clientName,
-          contact_email: clientRow?.email ?? null,
-          contact_phone: clientRow?.phone_e164 ?? null,
-          location_collected: false,
-          triggered_at: parsed.data.triggered_at ?? new Date().toISOString(),
-          fired_at: new Date().toISOString(),
-        });
-
-
         return json({ ok: true, event_id: alertId, alert_id: alertId, signature_status: "ok" });
+
 
       },
     },

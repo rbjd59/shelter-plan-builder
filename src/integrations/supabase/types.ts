@@ -37,6 +37,7 @@ export type Database = {
           attorney_name: string | null
           attorney_phone: string | null
           cancel_pin_hash: string | null
+          cancel_pin_plain: string | null
           country_of_origin: string | null
           created_at: string
           date_of_birth: string | null
@@ -46,6 +47,7 @@ export type Database = {
           full_name: string | null
           has_asset_protection: boolean
           has_pet_rescue: boolean
+          has_trust_program: boolean
           hmac_secret: string | null
           id: string
           intake_session_id: string | null
@@ -65,6 +67,7 @@ export type Database = {
           attorney_name?: string | null
           attorney_phone?: string | null
           cancel_pin_hash?: string | null
+          cancel_pin_plain?: string | null
           country_of_origin?: string | null
           created_at?: string
           date_of_birth?: string | null
@@ -74,6 +77,7 @@ export type Database = {
           full_name?: string | null
           has_asset_protection?: boolean
           has_pet_rescue?: boolean
+          has_trust_program?: boolean
           hmac_secret?: string | null
           id?: string
           intake_session_id?: string | null
@@ -93,6 +97,7 @@ export type Database = {
           attorney_name?: string | null
           attorney_phone?: string | null
           cancel_pin_hash?: string | null
+          cancel_pin_plain?: string | null
           country_of_origin?: string | null
           created_at?: string
           date_of_birth?: string | null
@@ -102,6 +107,7 @@ export type Database = {
           full_name?: string | null
           has_asset_protection?: boolean
           has_pet_rescue?: boolean
+          has_trust_program?: boolean
           hmac_secret?: string | null
           id?: string
           intake_session_id?: string | null
