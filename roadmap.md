@@ -1,12 +1,25 @@
-# Roadmap — notify-only app / Lovable owns all sending
+# Roadmap — app is notify-only, Lovable owns all sending
 
-- [x] Central fan-out module (`src/lib/alert-fanout.server.ts`): activation, trigger, cancel — one send per recipient, deduped.
-- [x] `/api/public/app-trigger` handles `action: activated | trigger | cancel`, GPS restored on trigger.
-- [x] `get_client_bundle` returns `cancellation_pin`, `hmac_secret`, contacts, name, language; accepts 5–8 char codes.
-- [x] Remove duplicate activation email from `redeem_invite_token`.
-- [ ] Signup: capture client-chosen 4-digit PIN on the website intake form.
-- [ ] Client-only signup email/SMS: code + PIN + Android install + "unverified app" bypass steps.
-- [ ] Client-only forms email: self-help info, nonprofit contacts, 6 authorization forms.
-- [ ] Locate → auto-fill all forms incl. Memorandum of Law, push to attorney board as
-      "Forms completed — ready for review and mailing".
-- [ ] Confirm callback number (534-202-6852 is not a valid US area code) before it ships in contact messages.
+## Done
+- [x] Central fan-out (`src/lib/alert-fanout.server.ts`): activation, trigger, cancel.
+      One send per recipient (15-min idempotency bucket + SMS log guard) — no duplicates.
+- [x] `POST /api/public/app/activate` — code → client bundle (client_id, name, language,
+      cancellation_pin, hmac_secret, emergency_contacts, add-on flags).
+- [x] `POST /api/public/app-trigger` — signed `activated` | `trigger` (with GPS) | `cancel`.
+- [x] DB: `cancel_pin_plain` + `has_trust_program`; bundle accepts 5–8 char codes and returns
+      the PIN; bundle RPC locked to service_role; duplicate activation email removed from
+      `redeem_invite_token`.
+- [x] Contact wording per brief (activation + trigger + all-clear), callback number centralized.
+
+## Open
+- [ ] Signup form: capture the client-chosen 4-digit cancellation PIN (`src/routes/intake.tsx`).
+- [ ] Client-only signup email + SMS: activation code, their PIN, Android link + Play Protect
+      bypass steps, "Apple coming soon".
+- [ ] Client-only forms email: 6 authorization forms + self-help sheets + nonprofit contacts,
+      with the sealed-envelope instruction.
+- [ ] Sorrentino-only legal template email at activation ("New client activated: [Name] —
+      awaiting location data").
+- [ ] Locate fill-in → auto-populate all forms incl. Memorandum of Law → attorney board shows
+      "Forms completed — ready for review and mailing" → approve → mailing packet PDF.
+- [ ] Confirm callback number: 534-202-6852 is not a valid US number (no 534 area code).
+      Currently sending 305-337-7713; override with `CONTACT_CALLBACK_NUMBER`.
