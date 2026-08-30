@@ -11,8 +11,8 @@ const ContactSchema = z.object({
 }).passthrough();
 
 const SyncSchema = z.object({
-  activation_code: z.string().regex(/^[A-Za-z0-9]{8}$/).optional(),
-  case_id: z.string().regex(/^[A-Za-z0-9]{8}$/).optional(),
+  activation_code: z.string().regex(/^[A-Za-z0-9]{5,8}$/).optional(),
+  case_id: z.string().regex(/^[A-Za-z0-9]{5,8}$/).optional(),
   // The app sends an opaque USER_TOKEN here; only used as a case code if it
   // happens to be an 8-char activation code.
   token: z.string().min(1).max(512).optional(),
