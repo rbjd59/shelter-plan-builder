@@ -317,19 +317,22 @@ export async function notifySosEvent(opts: {
   // --- Contacts
   const contactText =
     opts.kind === "alert"
-      ? `EMERGENCY ALERT\n\n${name} has triggered their DetencionDefensa emergency app and may have been detained.\n\n` +
-        `Case reference: ${code}\nTime (UTC): ${when}\n\n` +
-        `If ${name} does not cancel within 2 hours, contact detenciondefensa.com. The legal team has already been notified.\n\n— DetencionDefensa`
-      : `CANCELLED — FALSE ALARM\n\n${name} has cancelled the earlier DetencionDefensa emergency alert. ${name} is OK and no action is needed.\n\n` +
+      ? `EMERGENCY ALERT\n\n${name} has triggered his emergency app.\n\n` +
+        `If he does not cancel it, contact DetencionDefensa at ${CALLBACK_NUMBER}. ` +
+        `If you are holding a sealed package of information from him, open it after two hours and begin searching for him and his vehicle. ` +
+        `Contact DetencionDefensa.\n\n` +
+        `Case reference: ${code}\nTime (UTC): ${when}\n\n— DetencionDefensa`
+      : `CANCELLED — ALL CLEAR\n\n${name} has cancelled the emergency alert. He is OK and no action is needed.\n\n` +
         `Case reference: ${code}\nTime (UTC): ${when}\n\n— DetencionDefensa`;
   const contactHtml = wrap(
-    opts.kind === "alert" ? "Emergency alert" : "Cancelled — false alarm",
+    opts.kind === "alert" ? "Emergency alert" : "Cancelled — all clear",
     `<pre style="font:14px/1.55 Arial,sans-serif;white-space:pre-wrap;margin:0">${esc(contactText)}</pre>`,
   );
   const contactSms =
     opts.kind === "alert"
-      ? `ALERT: ${name} triggered their DetencionDefensa emergency app and may have been detained. The legal team is responding. If not cancelled in 2 hours, go to detenciondefensa.com.`
-      : `CANCELLED — FALSE ALARM: ${name} cancelled the DetencionDefensa alert. ${name} is OK. No action needed.`;
+      ? `${name} has triggered his emergency app. If he does not cancel it, contact DetencionDefensa at ${CALLBACK_NUMBER}. If you hold his sealed package, open it after two hours and begin searching for him and his vehicle.`
+      : `ALL CLEAR: ${name} cancelled the DetencionDefensa alert. He is OK. No action needed.`;
+
 
   let contactsNotified = 0;
   for (const c of contacts) {
