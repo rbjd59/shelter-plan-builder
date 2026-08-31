@@ -33,6 +33,7 @@ import { Route as GetAppRouteImport } from './routes/get-app'
 import { Route as FirmarRouteImport } from './routes/firmar'
 import { Route as FamilyFormsRouteImport } from './routes/family-forms'
 import { Route as DownloadRouteImport } from './routes/download'
+import { Route as DeleteMyDataRouteImport } from './routes/delete-my-data'
 import { Route as DagRouteImport } from './routes/dag'
 import { Route as ContactoRouteImport } from './routes/contacto'
 import { Route as ConfigurarRouteImport } from './routes/configurar'
@@ -223,6 +224,11 @@ const FamilyFormsRoute = FamilyFormsRouteImport.update({
 const DownloadRoute = DownloadRouteImport.update({
   id: '/download',
   path: '/download',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DeleteMyDataRoute = DeleteMyDataRouteImport.update({
+  id: '/delete-my-data',
+  path: '/delete-my-data',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DagRoute = DagRouteImport.update({
@@ -605,6 +611,7 @@ export interface FileRoutesByFullPath {
   '/configurar': typeof ConfigurarRoute
   '/contacto': typeof ContactoRoute
   '/dag': typeof DagRoute
+  '/delete-my-data': typeof DeleteMyDataRoute
   '/download': typeof DownloadRoute
   '/family-forms': typeof FamilyFormsRoute
   '/firmar': typeof FirmarRoute
@@ -699,6 +706,7 @@ export interface FileRoutesByTo {
   '/configurar': typeof ConfigurarRoute
   '/contacto': typeof ContactoRoute
   '/dag': typeof DagRoute
+  '/delete-my-data': typeof DeleteMyDataRoute
   '/download': typeof DownloadRoute
   '/family-forms': typeof FamilyFormsRoute
   '/firmar': typeof FirmarRoute
@@ -797,6 +805,7 @@ export interface FileRoutesById {
   '/configurar': typeof ConfigurarRoute
   '/contacto': typeof ContactoRoute
   '/dag': typeof DagRoute
+  '/delete-my-data': typeof DeleteMyDataRoute
   '/download': typeof DownloadRoute
   '/family-forms': typeof FamilyFormsRoute
   '/firmar': typeof FirmarRoute
@@ -893,6 +902,7 @@ export interface FileRouteTypes {
     | '/configurar'
     | '/contacto'
     | '/dag'
+    | '/delete-my-data'
     | '/download'
     | '/family-forms'
     | '/firmar'
@@ -987,6 +997,7 @@ export interface FileRouteTypes {
     | '/configurar'
     | '/contacto'
     | '/dag'
+    | '/delete-my-data'
     | '/download'
     | '/family-forms'
     | '/firmar'
@@ -1084,6 +1095,7 @@ export interface FileRouteTypes {
     | '/configurar'
     | '/contacto'
     | '/dag'
+    | '/delete-my-data'
     | '/download'
     | '/family-forms'
     | '/firmar'
@@ -1182,6 +1194,7 @@ export interface RootRouteChildren {
   ConfigurarRoute: typeof ConfigurarRoute
   ContactoRoute: typeof ContactoRoute
   DagRoute: typeof DagRoute
+  DeleteMyDataRoute: typeof DeleteMyDataRoute
   DownloadRoute: typeof DownloadRoute
   FamilyFormsRoute: typeof FamilyFormsRoute
   FirmarRoute: typeof FirmarRoute
@@ -1406,6 +1419,13 @@ declare module '@tanstack/react-router' {
       path: '/download'
       fullPath: '/download'
       preLoaderRoute: typeof DownloadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/delete-my-data': {
+      id: '/delete-my-data'
+      path: '/delete-my-data'
+      fullPath: '/delete-my-data'
+      preLoaderRoute: typeof DeleteMyDataRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dag': {
@@ -2030,6 +2050,7 @@ const rootRouteChildren: RootRouteChildren = {
   ConfigurarRoute: ConfigurarRoute,
   ContactoRoute: ContactoRoute,
   DagRoute: DagRoute,
+  DeleteMyDataRoute: DeleteMyDataRoute,
   DownloadRoute: DownloadRoute,
   FamilyFormsRoute: FamilyFormsRoute,
   FirmarRoute: FirmarRoute,
