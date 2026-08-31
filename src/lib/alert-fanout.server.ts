@@ -152,29 +152,38 @@ function uniqueEmails(list: (string | null | undefined)[]): string[] {
   return [...out];
 }
 
-async function smsOnce(to: string | null | undefined, body: string, purpose: string, sent: Set<string>) {
+async function smsOnce(
+  to: string | null | undefined,
+  body: string,
+  purpose: string,
+  sent: Set<string>,
+  caseCode?: string | null,
+) {
   const num = normalizeE164(to ?? null);
   if (!num || sent.has(num)) return;
   sent.add(num);
-  // Cross-request guard: if the same number already got this exact purpose in
-  // the last 15 minutes, the event was already fanned out (the app can post
-  // the same event to more than one endpoint). Never text twice.
+  // Cross-request guard: if the same number already got this exact purpose FOR
+  // THIS CASE in the last 15 minutes, the event was already fanned out (the app
+  // can post the same event to more than one endpoint). Scoped per case so a
+  // second client's SOS is never suppressed by the first one.
   try {
     const since = new Date(Date.now() - 15 * 60_000).toISOString();
-    const { data: recent } = await supabaseAdmin
+    let q = supabaseAdmin
       .from("sms_send_log" as never)
       .select("id")
       .eq("recipient_phone", num)
       .eq("purpose", purpose)
       .eq("status", "sent")
-      .gte("created_at", since)
-      .limit(1);
+      .gte("created_at", since);
+    if (caseCode) q = q.contains("metadata", { case_id: caseCode } as never);
+    const { data: recent } = await q.limit(1);
     if ((recent ?? []).length > 0) return;
   } catch {
     /* log table unavailable — fall through and send */
   }
-  await sendSms({ to: num, body, purpose });
+  await sendSms({ to: num, body, purpose, metadata: caseCode ? { case_id: caseCode } : {} });
 }
+
 
 
 // ---------------------------------------------------------------------------
@@ -235,7 +244,7 @@ export async function notifyAppActivation(
       });
       contactsNotified++;
     }
-    await smsOnce(c.phone_e164, contactSms, "activation_contact", smsSent);
+    await smsOnce(c.phone_e164, contactSms, "activation_contact", smsSent, code);
   }
 
   // --- Company: board + email + phone.
@@ -258,7 +267,7 @@ export async function notifyAppActivation(
       idempotencyKey: `${key}-internal-${to}`,
     });
   }
-  await smsOnce(COMPANY_PHONE, `[DD] New activation: ${name}, code ${code}.`, "activation_company", smsSent);
+  await smsOnce(COMPANY_PHONE, `[DD] New activation: ${name}, code ${code}.`, "activation_company", smsSent, code);
 
   // --- Sorrentino: activation notice PLUS the forms. Nobody else gets forms.
   const { data: docs } = await supabaseAdmin
@@ -289,7 +298,7 @@ export async function notifyAppActivation(
       idempotencyKey: `${key}-attorney-${to}`,
     });
   }
-  await smsOnce(ATTORNEY_PHONE, `[DD] New activation: ${name}, code ${code}. Forms ready on the attorney board.`, "activation_attorney", smsSent);
+  await smsOnce(ATTORNEY_PHONE, `[DD] New activation: ${name}, code ${code}. Forms ready on the attorney board.`, "activation_attorney", smsSent, code);
 
   return { ok: true, contacts_notified: contactsNotified };
 }
@@ -367,7 +376,7 @@ export async function notifySosEvent(opts: {
       });
       contactsNotified++;
     }
-    await smsOnce(c.phone_e164, contactSms, `sos_${opts.kind}`, smsSent);
+    await smsOnce(c.phone_e164, contactSms, `sos_${opts.kind}`, smsSent, code);
   }
 
   // --- Company (locate desk) — gets GPS so it can start finding the person.
@@ -403,6 +412,7 @@ export async function notifySosEvent(opts: {
       : `[DD] SOS CANCELLED: ${name} (${code}). False alarm.`,
     `sos_${opts.kind}_company`,
     smsSent,
+    code,
   );
 
   // --- Sorrentino: board + email + SMS.
@@ -439,6 +449,7 @@ export async function notifySosEvent(opts: {
       : `[DD] SOS CANCELLED: ${name} (${code}). False alarm.`,
     `sos_${opts.kind}_attorney`,
     smsSent,
+    code,
   );
 
   return { ok: true, contacts_notified: contactsNotified };
