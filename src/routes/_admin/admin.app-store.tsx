@@ -285,7 +285,23 @@ function AppStorePage() {
     }
   };
 
+  if (forbidden) {
+    return (
+      <div className="mx-auto max-w-xl p-8 text-center">
+        <h1 className="text-xl font-semibold">Admin access required</h1>
+        <p className="mt-2 text-sm text-slate-600">
+          Your signed-in account does not have the admin role, so App Store Connect data
+          can't be loaded. Sign in with an admin account and reload.
+        </p>
+        <Link to="/" className="mt-4 inline-block text-sm underline">
+          Back to home
+        </Link>
+      </div>
+    );
+  }
+
   return (
+
     <div className="space-y-6 p-6">
       <header>
         <h1 className="text-xl font-bold text-slate-900">App Store Connect</h1>
