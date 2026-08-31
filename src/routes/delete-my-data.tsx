@@ -134,9 +134,12 @@ function DeleteMyDataPage() {
       </header>
 
       <main className="mx-auto max-w-3xl px-4 py-10">
-        <h1 className="mb-6 text-center text-3xl font-bold text-foreground">
+        <h1 className="mb-2 text-center text-3xl font-bold text-foreground">
           {t.pageTitle}
         </h1>
+        <p className="mb-6 text-center text-sm font-medium text-foreground">
+          {t.appAndDeveloper}
+        </p>
 
         <section className="mb-8 rounded-xl border bg-card p-6 shadow-sm">
           <p className="mb-6 text-muted-foreground leading-relaxed">{t.intro}</p>
