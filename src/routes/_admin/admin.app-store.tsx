@@ -19,7 +19,21 @@ import {
 
 export const Route = createFileRoute("/_admin/admin/app-store")({
   component: AppStorePage,
+  errorComponent: ({ error }) => (
+    <div className="mx-auto max-w-xl p-8 text-center">
+      <h1 className="text-xl font-semibold">App Store console unavailable</h1>
+      <p className="mt-2 text-sm text-muted-foreground">
+        {String((error as Error)?.message || "").includes("Forbidden")
+          ? "This page requires an admin account. Sign in with an admin user."
+          : "Something went wrong loading App Store Connect data."}
+      </p>
+      <Link to="/" className="mt-4 inline-block text-sm underline">
+        Back to home
+      </Link>
+    </div>
+  ),
 });
+
 
 function statusInfo(state: string): { label: string; color: string } {
   switch (state) {
