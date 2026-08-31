@@ -93,8 +93,20 @@ function AppStorePage() {
   const [testerText, setTesterText] = useState("");
   const [inviting, setInviting] = useState(false);
 
-  const appsQ = useQuery({ queryKey: ["asc-apps"], queryFn: () => listAppsFn() });
-  const credQ = useQuery({ queryKey: ["asc-creds"], queryFn: () => credStatusFn() });
+  const appsQ = useQuery({
+    queryKey: ["asc-apps"],
+    queryFn: () => listAppsFn(),
+    retry: false,
+  });
+  const credQ = useQuery({
+    queryKey: ["asc-creds"],
+    queryFn: () => credStatusFn(),
+    retry: false,
+  });
+  const forbidden = [appsQ.error, credQ.error].some((e) =>
+    String((e as Error | null)?.message || "").includes("Forbidden"),
+  );
+
 
   const selectedApp = appId ?? appsQ.data?.[0]?.id ?? null;
 
