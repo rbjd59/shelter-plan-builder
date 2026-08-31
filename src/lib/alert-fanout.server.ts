@@ -244,7 +244,7 @@ export async function notifyAppActivation(
       });
       contactsNotified++;
     }
-    await smsOnce(c.phone_e164, contactSms, "activation_contact", smsSent);
+    await smsOnce(c.phone_e164, contactSms, "activation_contact", smsSent, code);
   }
 
   // --- Company: board + email + phone.
@@ -267,7 +267,7 @@ export async function notifyAppActivation(
       idempotencyKey: `${key}-internal-${to}`,
     });
   }
-  await smsOnce(COMPANY_PHONE, `[DD] New activation: ${name}, code ${code}.`, "activation_company", smsSent);
+  await smsOnce(COMPANY_PHONE, `[DD] New activation: ${name}, code ${code}.`, "activation_company", smsSent, code);
 
   // --- Sorrentino: activation notice PLUS the forms. Nobody else gets forms.
   const { data: docs } = await supabaseAdmin
@@ -298,7 +298,7 @@ export async function notifyAppActivation(
       idempotencyKey: `${key}-attorney-${to}`,
     });
   }
-  await smsOnce(ATTORNEY_PHONE, `[DD] New activation: ${name}, code ${code}. Forms ready on the attorney board.`, "activation_attorney", smsSent);
+  await smsOnce(ATTORNEY_PHONE, `[DD] New activation: ${name}, code ${code}. Forms ready on the attorney board.`, "activation_attorney", smsSent, code);
 
   return { ok: true, contacts_notified: contactsNotified };
 }
@@ -376,7 +376,7 @@ export async function notifySosEvent(opts: {
       });
       contactsNotified++;
     }
-    await smsOnce(c.phone_e164, contactSms, `sos_${opts.kind}`, smsSent);
+    await smsOnce(c.phone_e164, contactSms, `sos_${opts.kind}`, smsSent, code);
   }
 
   // --- Company (locate desk) — gets GPS so it can start finding the person.
@@ -412,6 +412,7 @@ export async function notifySosEvent(opts: {
       : `[DD] SOS CANCELLED: ${name} (${code}). False alarm.`,
     `sos_${opts.kind}_company`,
     smsSent,
+    code,
   );
 
   // --- Sorrentino: board + email + SMS.
@@ -448,6 +449,7 @@ export async function notifySosEvent(opts: {
       : `[DD] SOS CANCELLED: ${name} (${code}). False alarm.`,
     `sos_${opts.kind}_attorney`,
     smsSent,
+    code,
   );
 
   return { ok: true, contacts_notified: contactsNotified };
