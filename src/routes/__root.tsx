@@ -101,7 +101,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       // (TestFlight on iOS, APK on Android). A web manifest with display:standalone
       // caused iPhone Safari to install a fullscreen PWA instead of the Flutter app.
 
-      { rel: "apple-touch-icon", href: "/help-icon-512.png" },
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
     ],
   }),
   shellComponent: RootShell,
