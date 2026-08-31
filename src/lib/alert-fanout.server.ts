@@ -152,29 +152,38 @@ function uniqueEmails(list: (string | null | undefined)[]): string[] {
   return [...out];
 }
 
-async function smsOnce(to: string | null | undefined, body: string, purpose: string, sent: Set<string>) {
+async function smsOnce(
+  to: string | null | undefined,
+  body: string,
+  purpose: string,
+  sent: Set<string>,
+  caseCode?: string | null,
+) {
   const num = normalizeE164(to ?? null);
   if (!num || sent.has(num)) return;
   sent.add(num);
-  // Cross-request guard: if the same number already got this exact purpose in
-  // the last 15 minutes, the event was already fanned out (the app can post
-  // the same event to more than one endpoint). Never text twice.
+  // Cross-request guard: if the same number already got this exact purpose FOR
+  // THIS CASE in the last 15 minutes, the event was already fanned out (the app
+  // can post the same event to more than one endpoint). Scoped per case so a
+  // second client's SOS is never suppressed by the first one.
   try {
     const since = new Date(Date.now() - 15 * 60_000).toISOString();
-    const { data: recent } = await supabaseAdmin
+    let q = supabaseAdmin
       .from("sms_send_log" as never)
       .select("id")
       .eq("recipient_phone", num)
       .eq("purpose", purpose)
       .eq("status", "sent")
-      .gte("created_at", since)
-      .limit(1);
+      .gte("created_at", since);
+    if (caseCode) q = q.contains("metadata", { case_id: caseCode } as never);
+    const { data: recent } = await q.limit(1);
     if ((recent ?? []).length > 0) return;
   } catch {
     /* log table unavailable — fall through and send */
   }
-  await sendSms({ to: num, body, purpose });
+  await sendSms({ to: num, body, purpose, metadata: caseCode ? { case_id: caseCode } : {} });
 }
+
 
 
 // ---------------------------------------------------------------------------
