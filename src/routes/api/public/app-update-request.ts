@@ -123,12 +123,14 @@ export const Route = createFileRoute("/api/public/app-update-request")({
           applied.push(...Object.keys(changes).filter((k) => k === "client_phone" || k === "a_number"));
         }
 
-        // 2. Family contact (upsert the app-editable family contact)
+        // 2. Family contact (only ever the app-editable family contact —
+        //    never the intake emergency contact, whose real number must survive)
         if (changes["contact_name"] || changes["contact_phone"]) {
           const { data: existing } = await supabaseAdmin
             .from("client_contacts")
             .select("id")
             .eq("client_id", clientId)
+            .eq("role", "family")
             .order("priority", { ascending: true })
             .limit(1);
           const row = (existing ?? [])[0] as { id: string } | undefined;
@@ -145,13 +147,15 @@ export const Route = createFileRoute("/api/public/app-update-request")({
               client_id: clientId,
               name: changes["contact_name"] ?? "Family contact",
               phone_e164: changes["contact_phone"] ?? null,
-              priority: 1,
+              relationship: "family",
+              priority: 90,
               notify_on_sos: true,
               role: "family",
             } as never);
           }
           applied.push("family_contact");
         }
+
 
         // 3. Cancellation PIN
         if (changes["cancellation_pin"]) {
