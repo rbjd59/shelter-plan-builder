@@ -1,7 +1,16 @@
 import { createStart, createMiddleware } from "@tanstack/react-start";
 
 import { attachSupabaseAuth } from "@/integrations/supabase/auth-attacher";
+import { canonicalAliasUrl } from "@/lib/canonical-domain";
 import { renderErrorPage } from "./lib/error-page";
+
+const canonicalDomainMiddleware = createMiddleware().server(async ({ request, next }) => {
+  const destination = canonicalAliasUrl(request.url);
+  if (destination) {
+    return Response.redirect(destination.toString(), 308);
+  }
+  return next();
+});
 
 const errorMiddleware = createMiddleware().server(async ({ request, next }) => {
   const url = new URL(request.url);
@@ -23,6 +32,6 @@ const errorMiddleware = createMiddleware().server(async ({ request, next }) => {
 });
 
 export const startInstance = createStart(() => ({
-  requestMiddleware: [errorMiddleware],
+  requestMiddleware: [canonicalDomainMiddleware, errorMiddleware],
   functionMiddleware: [attachSupabaseAuth],
 }));
