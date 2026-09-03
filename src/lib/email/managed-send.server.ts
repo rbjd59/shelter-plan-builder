@@ -38,6 +38,7 @@ async function logSend(row: {
   recipient_email: string;
   status: "sent" | "suppressed" | "failed";
   error_message?: string | null;
+  metadata?: Record<string, unknown> | null;
 }): Promise<void> {
   const { error } = await supabaseAdmin.from("email_send_log" as never).insert(row as never);
   if (error) {
@@ -48,6 +49,15 @@ async function logSend(row: {
       status: row.status,
     });
   }
+}
+
+/**
+ * Failed sends keep their full payload on the log row so the admin
+ * "Retry failed emails" action can re-send them later without the original
+ * caller having to re-render anything.
+ */
+function retryMetadata(payload: ManagedEmailPayload, messageId: string): Record<string, unknown> {
+  return { retry_payload: { ...payload, message_id: messageId } };
 }
 
 /**
@@ -70,6 +80,7 @@ export async function sendManagedEmail(payload: ManagedEmailPayload): Promise<Ma
       recipient_email: payload.to,
       status: "failed",
       error_message: msg,
+      metadata: retryMetadata(payload, messageId),
     });
     return { sent: false, reason: "failed", error: msg };
   }
@@ -113,6 +124,7 @@ export async function sendManagedEmail(payload: ManagedEmailPayload): Promise<Ma
       recipient_email: payload.to,
       status: "failed",
       error_message: errorMsg.slice(0, 1000),
+      metadata: retryMetadata(payload, messageId),
     });
     return { sent: false, reason: "failed", error: errorMsg };
   }

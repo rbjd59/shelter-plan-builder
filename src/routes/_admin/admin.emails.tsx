@@ -26,7 +26,7 @@ function EmailsPage() {
   const retryDlq = useMutation({
     mutationFn: () => retryDlqFn(),
     onSuccess: (s) => {
-      setMsg(`Re-queued ${s.requeued} · Dropped ${s.dropped} · ${s.errors.length} errors`);
+      setMsg(`Re-sent ${s.requeued} · Gave up on ${s.dropped} · ${s.errors.length} still failing`);
       qc.invalidateQueries({ queryKey: ["admin-failed-emails"] });
     },
     onError: (e) => setMsg(`Retry failed: ${(e as Error).message}`),
@@ -53,7 +53,7 @@ function EmailsPage() {
             disabled={retryDlq.isPending}
             className="rounded bg-amber-500 px-3 py-1.5 text-xs font-semibold text-white hover:bg-amber-600 disabled:opacity-50"
           >
-            {retryDlq.isPending ? "Retrying…" : "Retry all DLQ now"}
+            {retryDlq.isPending ? "Retrying…" : "Retry all failed now"}
           </button>
         </div>
         {msg && <p className="mt-2 text-xs text-slate-600">{msg}</p>}
