@@ -12,7 +12,7 @@
 - [x] Contact wording per brief (activation + trigger + all-clear), callback number centralized.
 
 ## Open
-- [ ] Signup form: capture the client-chosen 4-digit cancellation PIN (`src/routes/intake.tsx`).
+- [x] Signup form: capture the client-chosen 4-digit cancellation PIN (`src/routes/intake.tsx`); blank → 0000. Activate endpoint also backfills 0000 for legacy clients.
 - [ ] Client-only signup email + SMS: activation code, their PIN, Android link + Play Protect
       bypass steps, "Apple coming soon".
 - [ ] Client-only forms email: 6 authorization forms + self-help sheets + nonprofit contacts,
@@ -34,5 +34,12 @@
 - [x] Root cause: app_clients invite_token_format required 8 chars; generator makes 5 → every new client failed board registration. Constraint relaxed to 5–8 (matches app). NEEDS PUBLISH.
 - [x] Removed dead Replit pairing call from intake (was throwing 404).
 - [x] Re-provisioned 15:52 test submission (X5956), activation email re-sent.
-- [ ] Contact phones stored unnormalized (e.g. "305-401-1048") — normalize to E.164 at provision time so SOS SMS reaches contacts.
+- [x] Contact phones stored unnormalized (e.g. "305-401-1048") — normalize to E.164 at provision time so SOS SMS reaches contacts.
 - [ ] Decide whether staff boards should show PIN set/not-set status (PIN itself stays client-only in Mi App).
+
+## 2026-09-03 second test (contact rbjd@dr.com)
+- [x] Root cause: contact "loved one activated" notices only fired on a second signed `activated` webhook the app never sent; the app also typed X5966 (real code X5956) → 404, and its follow-up app-trigger got 400. Now `/api/public/app/activate` itself fans out (idempotent) and codes with a `-EN` suffix are accepted.
+- [x] Cancel with PIN failed because no PIN existed (no_pin_set) → alert stayed "active". Default PIN 0000 set at intake, on activate, and backfilled for X5956/K8935.
+- [x] app-trigger now logs the reason for every 400 (schema issues / body keys).
+- [ ] Client activation email: logs show `sent` to proseforms@atomicmail.io and njbittelman@gmail.com — check spam/atomicmail delivery; sender domain still notify.gohomesooner.com.
+- [ ] NEEDS PUBLISH for all of the above.
