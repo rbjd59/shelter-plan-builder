@@ -80,6 +80,7 @@ export async function sendManagedEmail(payload: ManagedEmailPayload): Promise<Ma
       recipient_email: payload.to,
       status: "failed",
       error_message: msg,
+      metadata: retryMetadata(payload, messageId),
     });
     return { sent: false, reason: "failed", error: msg };
   }
@@ -123,6 +124,7 @@ export async function sendManagedEmail(payload: ManagedEmailPayload): Promise<Ma
       recipient_email: payload.to,
       status: "failed",
       error_message: errorMsg.slice(0, 1000),
+      metadata: retryMetadata(payload, messageId),
     });
     return { sent: false, reason: "failed", error: errorMsg };
   }
