@@ -13,6 +13,7 @@
  *   cancel     → same list, "false alarm" wording.
  */
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { sendManagedEmail } from "@/lib/email/managed-send.server";
 import { sendSms, normalizeE164 } from "@/lib/twilio-sms.server";
 
 const FROM = "DetencionDefensa <alerts@notify.gohomesooner.com>";
