@@ -10,6 +10,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { sendManagedEmail } from "@/lib/email/managed-send.server";
 import { triggerVaultRelease } from "@/lib/readiness.server";
 import { sendSosSmsToContacts, sendSms, normalizeE164 } from "@/lib/twilio-sms.server";
 
