@@ -5,6 +5,7 @@
 // Firm's disclosed intake agent and routes it to the Firm for review.
 
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { sendManagedEmail } from "@/lib/email/managed-send.server";
 
 const FROM = "info@gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
