@@ -11,6 +11,7 @@ import { createClient } from "@supabase/supabase-js";
 
 export type DeliveryStep =
   | "board_registration"
+  | "cancel_pin_set"
   | "contacts_synced"
   | "documents_generated"
   | "staff_notification_email"

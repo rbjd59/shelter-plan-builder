@@ -69,6 +69,12 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       { key: "full_name", label: { en: "Name on U.S. Documents / Immigration Forms", es: "Nombre legal completo", ht: "Non legal konplè" } },
       { key: "client_email", type: "email", label: { en: "Your email (app link and case notices)", es: "Su correo electrónico (enlace de la app y avisos del caso)", ht: "Imèl ou (lyen app la ak avi sou dosye a)" } },
       { key: "client_mobile", type: "tel", label: { en: "Your mobile phone (app link by SMS)", es: "Su teléfono celular (enlace de la app por SMS)", ht: "Telefòn mobil ou (lyen app la pa SMS)" } },
+      {
+        key: "cancel_pin",
+        type: "tel",
+        label: { en: "Your 4-digit cancellation PIN (to cancel a false alarm in the app)", es: "Su PIN de cancelación de 4 dígitos (para cancelar una falsa alarma en la app)", ht: "PIN anilasyon 4 chif ou (pou anile yon fo alam nan app la)" },
+        hint: { en: "Leave blank to use 0000. You can change it later in Mi App.", es: "Déjelo en blanco para usar 0000. Puede cambiarlo después en Mi App.", ht: "Kite l vid pou itilize 0000. Ou ka chanje l pita nan Mi App." },
+      },
       { key: "other_names_used", label: { en: "Other names used", es: "Otros nombres usados", ht: "Lòt non yo te itilize" } },
       { key: "a_number", label: { en: "Alien Registration Number (A#)", es: "Número de Registro de Extranjero (A#)", ht: "Nimewo Anrejistreman Etranje (A#)" } },
       { key: "dob", label: { en: "Date of birth", es: "Fecha de nacimiento", ht: "Dat nesans" }, type: "date" },
@@ -696,8 +702,18 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
                       </>
                     ) : f.type === "checkbox" ? (
                       <input type="checkbox" checked={!!answers[f.key]} onChange={(e) => setAnswers((a) => ({ ...a, [f.key]: e.target.checked }))} disabled={f.disabled} />
+                    ) : f.key === "cancel_pin" ? (
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]{4}"
+                        maxLength={4}
+                        placeholder="0000"
+                        value={(answers[f.key] as string) || ""}
+                        onChange={(e) => setAnswers((a) => ({ ...a, [f.key]: e.target.value.replace(/\D/g, "").slice(0, 4) }))}
+                        style={{ ...inputStyle, letterSpacing: 6, maxWidth: 160 }}
+                      />
                     ) : (
-
                       <input type={f.type || "text"} required={f.key === "client_email" || f.key === "client_mobile"} value={(answers[f.key] as string) || ""} onChange={(e) => setAnswers((a) => ({ ...a, [f.key]: e.target.value }))} disabled={f.disabled} style={{ ...inputStyle, ...(f.disabled ? disabledStyle : null) }} />
                     )}
                   </div>
