@@ -29,3 +29,10 @@
 - [ ] Customers not receiving app-download/activation-code emails
 - [ ] (Premio app) missing cancel-PIN field on SOS screen — report to app dev
 - [x] Email-sending version update — rewrite done, awaiting user review + publish
+
+## 2026-09-03 intake audit
+- [x] Root cause: app_clients invite_token_format required 8 chars; generator makes 5 → every new client failed board registration. Constraint relaxed to 5–8 (matches app). NEEDS PUBLISH.
+- [x] Removed dead Replit pairing call from intake (was throwing 404).
+- [x] Re-provisioned 15:52 test submission (X5956), activation email re-sent.
+- [ ] Contact phones stored unnormalized (e.g. "305-401-1048") — normalize to E.164 at provision time so SOS SMS reaches contacts.
+- [ ] Decide whether staff boards should show PIN set/not-set status (PIN itself stays client-only in Mi App).
