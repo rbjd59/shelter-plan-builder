@@ -50,21 +50,6 @@ function wrap(title: string, bodyHtml: string): string {
   );
 }
 
-async function unsubscribeToken(email: string): Promise<string> {
-  const { data } = await supabaseAdmin
-    .from("email_unsubscribe_tokens" as never)
-    .select("token")
-    .eq("email", email)
-    .maybeSingle();
-  const existing = (data as { token?: string } | null)?.token;
-  if (existing) return existing;
-  const token = crypto.randomUUID();
-  await supabaseAdmin
-    .from("email_unsubscribe_tokens" as never)
-    .insert({ email, token } as never);
-  return token;
-}
-
 export async function enqueueEmail(opts: {
   to: string;
   subject: string;
@@ -75,32 +60,19 @@ export async function enqueueEmail(opts: {
 }): Promise<void> {
   const to = opts.to.trim().toLowerCase();
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(to)) return;
-  const messageId = crypto.randomUUID();
-  const unsub = await unsubscribeToken(to);
-  await supabaseAdmin.from("email_send_log" as never).insert({
-    message_id: messageId,
-    template_name: opts.label,
-    recipient_email: to,
-    status: "pending",
-  } as never);
-  const { error } = await supabaseAdmin.rpc("enqueue_email" as never, {
-    queue_name: "transactional_emails",
-    payload: {
-      to,
-      from: FROM,
-      sender_domain: SENDER_DOMAIN,
-      subject: opts.subject,
-      html: opts.html,
-      text: opts.text,
-      purpose: "transactional",
-      label: opts.label,
-      idempotency_key: opts.idempotencyKey,
-      message_id: messageId,
-      unsubscribe_token: unsub,
-      queued_at: new Date().toISOString(),
-    } as never,
-  } as never);
-  if (error) console.error("[fanout] enqueue failed", opts.label, error.message);
+  const result = await sendManagedEmail({
+    to,
+    from: FROM,
+    sender_domain: SENDER_DOMAIN,
+    subject: opts.subject,
+    html: opts.html,
+    text: opts.text,
+    label: opts.label,
+    idempotency_key: opts.idempotencyKey,
+  });
+  if (!result.sent && result.reason === "failed") {
+    console.error("[fanout] send failed", opts.label, result.error);
+  }
 }
 
 interface ClientRow {
