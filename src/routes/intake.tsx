@@ -702,8 +702,18 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
                       </>
                     ) : f.type === "checkbox" ? (
                       <input type="checkbox" checked={!!answers[f.key]} onChange={(e) => setAnswers((a) => ({ ...a, [f.key]: e.target.checked }))} disabled={f.disabled} />
+                    ) : f.key === "cancel_pin" ? (
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]{4}"
+                        maxLength={4}
+                        placeholder="0000"
+                        value={(answers[f.key] as string) || ""}
+                        onChange={(e) => setAnswers((a) => ({ ...a, [f.key]: e.target.value.replace(/\D/g, "").slice(0, 4) }))}
+                        style={{ ...inputStyle, letterSpacing: 6, maxWidth: 160 }}
+                      />
                     ) : (
-
                       <input type={f.type || "text"} required={f.key === "client_email" || f.key === "client_mobile"} value={(answers[f.key] as string) || ""} onChange={(e) => setAnswers((a) => ({ ...a, [f.key]: e.target.value }))} disabled={f.disabled} style={{ ...inputStyle, ...(f.disabled ? disabledStyle : null) }} />
                     )}
                   </div>
