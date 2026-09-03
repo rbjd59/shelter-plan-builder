@@ -8,6 +8,7 @@
  * at that facility.
  */
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { sendManagedEmail } from "@/lib/email/managed-send.server";
 
 const FROM = "alerts@notify.gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
