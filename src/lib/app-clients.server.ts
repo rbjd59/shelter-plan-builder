@@ -12,6 +12,7 @@ import { TEMPLATES } from "@/lib/email-templates/registry";
 import { activationSmsBody, sendSms } from "@/lib/sms.server";
 import { logDelivery, trackDelivery } from "@/lib/delivery-log.server";
 import { normalizeEmailLanguage } from "@/lib/email-language";
+import { sendManagedEmail } from "@/lib/email/managed-send.server";
 
 
 const SITE_NAME = "DetencionDefensa";
