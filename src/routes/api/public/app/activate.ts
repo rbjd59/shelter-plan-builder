@@ -61,7 +61,8 @@ export const Route = createFileRoute("/api/public/app/activate")({
         }
         const code = (parsed.data.activation_code ?? parsed.data.case_id ?? parsed.data.token ?? "")
           .trim()
-          .toUpperCase();
+          .toUpperCase()
+          .split("-")[0]!; // tolerate "X5956-EN" (code + language suffix)
         if (!/^[A-Z0-9]{5,8}$/.test(code)) {
           return json({ ok: false, error: "invalid_activation_code" }, { status: 400 });
         }

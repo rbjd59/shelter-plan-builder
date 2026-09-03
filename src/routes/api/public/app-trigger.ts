@@ -142,8 +142,9 @@ export const Route = createFileRoute("/api/public/app-trigger")({
                 { _token: caseId, _pin: parsed.data.cancel_pin } as never,
               );
               if (pinErr) {
-                console.warn("[app-trigger] cancel PIN rejected", pinErr);
-                return json({ ok: false, error: "invalid_pin" }, { status: 403 });
+                console.warn("[app-trigger] cancel PIN rejected", caseId, pinErr.message);
+                const reason = /no_pin_set/.test(pinErr.message) ? "no_pin_set" : "invalid_pin";
+                return json({ ok: false, error: reason }, { status: 403 });
               }
               console.log("[app-trigger] cancel via PIN ok", pinRes);
             } else {
