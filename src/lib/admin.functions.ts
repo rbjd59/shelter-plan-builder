@@ -345,30 +345,25 @@ export const sendReminderEmail = createServerFn({ method: "POST" })
         <p style="font-size:12px;color:#666;">— Equipo Legal de DetencionDefensa.com</p>
       </div>
     </body></html>`;
-    const payload = {
+    const { sendManagedEmail } = await import("@/lib/email/managed-send.server");
+    const result = await sendManagedEmail({
       to: data.email,
       from: "legal@detenciondefensa.com",
       sender_domain: "notify.gohomesooner.com",
       subject: "Recordatorio: descarga tu app de defensa",
       html,
       text: `Hola ${data.name}, recuerda descargar la app de DetencionDefensa.com: https://detenciondefensa.com/app`,
-      purpose: "transactional",
       label: "signup-reminder",
       idempotency_key: `reminder-${data.intake_session_id}-${Date.now()}`,
       message_id: messageId,
-      queued_at: new Date().toISOString(),
-    };
-    await supabaseAdmin.from("email_send_log").insert({
-      message_id: messageId,
-      template_name: "signup-reminder",
-      recipient_email: data.email,
-      status: "pending",
     });
-    const { error } = await supabaseAdmin.rpc("enqueue_email", {
-      queue_name: "transactional_emails",
-      payload: payload as never,
-    });
-    if (error) throw new Error(error.message);
+    if (!result.sent) {
+      throw new Error(
+        result.reason === "recipient_suppressed"
+          ? "Recipient is unsubscribed or previously bounced"
+          : result.error,
+      );
+    }
     await supabaseAdmin.from("case_action_log").insert({
       intake_session_id: data.intake_session_id,
       step: "reminder_sent",
