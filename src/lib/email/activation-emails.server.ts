@@ -3,7 +3,7 @@
 // contact listed in the intake answers. Intentionally minimal: no PDFs,
 // no Sentinel upsell, no spam-warning content.
 
-import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { sendManagedEmail } from "@/lib/email/managed-send.server";
 import { normalizeEmailLanguage } from "@/lib/email-language";
 
 const FROM = "info@gohomesooner.com";
