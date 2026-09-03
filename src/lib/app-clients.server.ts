@@ -172,6 +172,24 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
     metadata: { full_name: fullName, language },
   });
 
+  // Cancellation PIN: the client picks one on the intake form; if left blank
+  // we set 0000 so the phone's cancel screen always works. Without a PIN the
+  // cancel webhook fails with no_pin_set and the alert stays active.
+  const rawPin = typeof a.cancel_pin === "string" ? a.cancel_pin.replace(/\D/g, "") : "";
+  const cancelPin = /^[0-9]{4,8}$/.test(rawPin) ? rawPin : DEFAULT_CANCEL_PIN;
+  const pinRes = await sb.rpc("set_sos_cancel_pin_admin" as never, {
+    _client_id: clientId,
+    _pin: cancelPin,
+  } as never);
+  await logDelivery({
+    intakeSessionId: params.intakeSessionId,
+    clientId,
+    activationCode: code,
+    step: "cancel_pin_set",
+    status: pinRes.error ? "failed" : "success",
+    errorMessage: pinRes.error?.message ?? null,
+    metadata: { source: cancelPin === rawPin ? "intake" : "default" },
+  });
 
   // Mirror emergency contacts from intake answers (sections 6 + 7 + 8)
   const contactsToInsert: Array<Record<string, any>> = [];
@@ -187,8 +205,8 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
       contactsToInsert.push({
         client_id: clientId,
         name: name.trim(),
-        phone_e164: typeof phone === "string" ? phone : null,
-        email: typeof email === "string" ? email : null,
+        phone_e164: typeof phone === "string" ? (normalizeE164(phone) ?? phone) : null,
+        email: typeof email === "string" ? email.trim().toLowerCase() || null : null,
         relationship,
         role,
         priority,
