@@ -217,28 +217,17 @@ If this is a false alarm, no further action is required.`;
       <p style="color:#666;font-size:12px">Links expire in 24 hours. If this is a false alarm, no further action is required.</p>
     </div>`;
 
-    await supabaseAdmin.from("email_send_log" as never).insert({
+    await sendManagedEmail({
+      to: recipientEmail,
+      from: FROM,
+      sender_domain: SENDER_DOMAIN,
+      subject,
+      html,
+      text,
+      label: "readiness-vault-released",
+      idempotency_key: `vault-release-${p.id}-${opts.emergencyActivationId}`,
       message_id: messageId,
-      template_name: "readiness-vault-released",
-      recipient_email: recipientEmail,
-      status: "pending",
-    } as never);
-    await supabaseAdmin.rpc("enqueue_email" as never, {
-      queue_name: "transactional_emails",
-      payload: {
-        to: recipientEmail,
-        from: FROM,
-        sender_domain: SENDER_DOMAIN,
-        subject,
-        html,
-        text,
-        purpose: "transactional",
-        label: "readiness-vault-released",
-        idempotency_key: `vault-release-${p.id}-${opts.emergencyActivationId}`,
-        message_id: messageId,
-        queued_at: new Date().toISOString(),
-      } as never,
-    } as never);
+    });
 
     await supabaseAdmin.from("readiness_deliveries" as never).insert({
       packet_id: p.id,
