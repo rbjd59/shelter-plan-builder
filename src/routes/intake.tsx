@@ -412,24 +412,15 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
           intakeSessionId,
         },
       });
-      const [pairResult, webhookResult] = await Promise.all([
-        hasPairableData
-          ? pairFn({ data: { answers: merged, intakeSessionId } }).catch((err) => {
-              console.error("Pairing failed:", err);
-              return null;
-            })
-          : Promise.resolve(null),
-        hasPairableData
-          ? webhookFn({
-              data: { answers: merged, intakeSessionId, language: L },
-            }).catch((err) => {
-              console.error("Intake webhook failed:", err);
-              return null;
-            })
-          : Promise.resolve(null),
-      ]);
-      const canonicalCode = submission.activationCode ?? webhookResult?.inviteCode ?? pairResult?.code ?? null;
-      if (pairResult?.code) setPairCode(pairResult.code);
+      const webhookResult = hasPairableData
+        ? await webhookFn({
+            data: { answers: merged, intakeSessionId, language: L },
+          }).catch((err) => {
+            console.error("Intake webhook failed:", err);
+            return null;
+          })
+        : null;
+      const canonicalCode = submission.activationCode ?? webhookResult?.inviteCode ?? null;
       if (canonicalCode) setInviteCode(canonicalCode);
       // Fire-and-forget SMS notifications (client confirmation + staff alert).
        const contactPhoneRaw = typeof merged.client_mobile === "string" ? merged.client_mobile : null;
