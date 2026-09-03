@@ -304,28 +304,17 @@ export async function sendPacketToRecipient(opts: {
     <p style="color:#666;font-size:12px">Links expire in 7 days. Print and store these documents in a safe place.</p>
   </div>`;
 
-  await supabaseAdmin.from("email_send_log" as never).insert({
+  await sendManagedEmail({
+    to: opts.recipientEmail,
+    from: FROM,
+    sender_domain: SENDER_DOMAIN,
+    subject,
+    html,
+    text,
+    label: "readiness-send-now",
+    idempotency_key: `readiness-send-now-${opts.packetId}-${messageId}`,
     message_id: messageId,
-    template_name: "readiness-send-now",
-    recipient_email: opts.recipientEmail,
-    status: "pending",
-  } as never);
-  await supabaseAdmin.rpc("enqueue_email" as never, {
-    queue_name: "transactional_emails",
-    payload: {
-      to: opts.recipientEmail,
-      from: FROM,
-      sender_domain: SENDER_DOMAIN,
-      subject,
-      html,
-      text,
-      purpose: "transactional",
-      label: "readiness-send-now",
-      idempotency_key: `readiness-send-now-${opts.packetId}-${messageId}`,
-      message_id: messageId,
-      queued_at: new Date().toISOString(),
-    } as never,
-  } as never);
+  });
 
   await supabaseAdmin.from("readiness_deliveries" as never).insert({
     packet_id: opts.packetId,
