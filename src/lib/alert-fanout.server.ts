@@ -96,6 +96,7 @@ interface ContactRow {
   phone_e164: string | null;
   relationship: string | null;
   notify_on_sos: boolean | null;
+  role?: string | null;
 }
 
 async function loadCase(token: string): Promise<{ client: ClientRow; contacts: ContactRow[] } | null> {
@@ -109,10 +110,16 @@ async function loadCase(token: string): Promise<{ client: ClientRow; contacts: C
   const client = data as unknown as ClientRow;
   const { data: contacts } = await supabaseAdmin
     .from("client_contacts")
-    .select("name, email, phone_e164, relationship, notify_on_sos")
+    .select("name, email, phone_e164, relationship, notify_on_sos, role")
     .eq("client_id", client.id)
     .order("priority", { ascending: true });
-  return { client, contacts: (contacts ?? []) as unknown as ContactRow[] };
+  // Only the people the client listed on the form are "emergency contacts".
+  // The locked company/attorney rows (alerts@detenciondefensa.com etc.) are
+  // notified through their own internal emails, never as family contacts.
+  const family = ((contacts ?? []) as unknown as ContactRow[]).filter(
+    (c) => (c.role ?? "family") === "family" && c.notify_on_sos !== false,
+  );
+  return { client, contacts: family };
 }
 
 /** Internal recipients get one copy each; duplicates are collapsed. */
