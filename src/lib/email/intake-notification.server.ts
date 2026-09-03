@@ -4,6 +4,7 @@
 // (for the user's records, NOT for filing).
 
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { sendManagedEmail } from "@/lib/email/managed-send.server";
 import { buildIntakePdfs } from "./intake-pdfs.server";
 import { buildMotionReferralPdf } from "./motion-referral.server";
 import { buildJs44Pdf } from "./js44.server";
