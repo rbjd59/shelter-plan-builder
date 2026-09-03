@@ -14,7 +14,12 @@ function json(body: unknown, init?: ResponseInit) {
   return new Response(JSON.stringify(body), { ...init, headers });
 }
 
-const optText = (max: number) => z.string().trim().min(1).max(max).optional();
+// Empty strings / null from unfilled form fields are treated as "not provided"
+// instead of failing validation with a 400.
+const blankToUndef = (v: unknown) =>
+  v === null || (typeof v === "string" && v.trim() === "") ? undefined : v;
+const optText = (max: number) =>
+  z.preprocess(blankToUndef, z.string().trim().min(1).max(max).optional());
 
 const UpdateRequestSchema = z
   .object({
@@ -27,8 +32,8 @@ const UpdateRequestSchema = z
     immigration_status: optText(120),
     contact_name: optText(120),
     contact_phone: optText(40),
-    cancellation_pin: z.string().regex(/^\d{4}$/).optional(),
-    notes: z.string().trim().max(2000).optional(),
+    cancellation_pin: z.preprocess(blankToUndef, z.string().regex(/^\d{4}$/).optional()),
+    notes: z.preprocess(blankToUndef, z.string().trim().max(2000).optional()),
     // legacy shape
     changes: z.record(z.string(), z.unknown()).optional(),
     note: z.string().max(2000).optional(),
@@ -51,12 +56,14 @@ export const Route = createFileRoute("/api/public/app-update-request")({
 
         const parsed = UpdateRequestSchema.safeParse(parsedBody);
         if (!parsed.success) {
-          return json({ ok: false, error: parsed.error.flatten() }, { status: 400 });
+          console.warn("[app-update-request] validation failed", JSON.stringify(parsed.error.flatten()));
+          return json({ ok: false, error: "invalid_request", details: parsed.error.flatten() }, { status: 400 });
         }
         const d = parsed.data;
 
         const caseId = (d.case_id ?? d.token ?? "").trim().toUpperCase();
         if (!/^[A-Z0-9]{5,8}$/.test(caseId)) {
+          console.warn("[app-update-request] invalid case id", JSON.stringify(caseId));
           return json({ ok: false, error: "invalid_case_id" }, { status: 400 });
         }
         if (!signature) {
