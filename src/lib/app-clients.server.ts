@@ -10,6 +10,7 @@ import * as React from "react";
 import { createClient } from "@supabase/supabase-js";
 import { TEMPLATES } from "@/lib/email-templates/registry";
 import { activationSmsBody, sendSms } from "@/lib/sms.server";
+import { normalizeE164 } from "@/lib/twilio-sms.server";
 import { logDelivery, trackDelivery } from "@/lib/delivery-log.server";
 import { normalizeEmailLanguage } from "@/lib/email-language";
 import { sendManagedEmail } from "@/lib/email/managed-send.server";
@@ -18,6 +19,8 @@ import { sendManagedEmail } from "@/lib/email/managed-send.server";
 const SITE_NAME = "DetencionDefensa";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
 const FROM_DOMAIN = "notify.gohomesooner.com";
+/** Used when the intake form leaves the cancellation PIN blank. */
+export const DEFAULT_CANCEL_PIN = "0000";
 
 // Short, memorable activation codes: one letter + four digits (e.g. K4827).
 // Letters avoid I/O and digits avoid 0/1 to prevent transcription errors.
