@@ -4,7 +4,6 @@ import { useEffect, useState, useMemo, useRef } from "react";
 import { z } from "zod";
 import { useServerFn } from "@tanstack/react-start";
 import { submitDemoIntake } from "@/utils/payments.functions";
-import { pairIntakeWithApp } from "@/lib/intake-pair.functions";
 import { notifyIntakeWebhook } from "@/lib/intake-webhook.functions";
 import { sendIntakeNotifications } from "@/lib/sms-notifications.functions";
 import { loadIntakeDraft, saveIntakeDraft, clearIntakeDraft } from "@/lib/intake-drafts.functions";
@@ -263,7 +262,6 @@ function IntakePage() {
 function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | undefined; L: Lang; ui: typeof UI[Lang] }) {
 
   const submitFn = useServerFn(submitDemoIntake);
-  const pairFn = useServerFn(pairIntakeWithApp);
   const webhookFn = useServerFn(notifyIntakeWebhook);
   const smsNotifyFn = useServerFn(sendIntakeNotifications);
   const loadDraftFn = useServerFn(loadIntakeDraft);
@@ -272,7 +270,6 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
 
   const [status, setStatus] = useState<"ready" | "submitting" | "done" | "error">("ready");
   const [errMsg, setErrMsg] = useState("");
-  const [pairCode, setPairCode] = useState<string | null>(null);
   const [inviteCode, setInviteCode] = useState<string | null>(null);
   const [answers, setAnswers] = useState<Record<string, string | boolean>>({ addon_asset_protection: true });
   const [englishAnswers, setEnglishAnswers] = useState<Record<string, string>>({});
@@ -453,7 +450,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
   const container: React.CSSProperties = { maxWidth: isBilingual ? 1100 : 760, margin: "0 auto", padding: "32px 24px 96px" };
 
   if (status === "done") {
-    const rawCode = inviteCode || pairCode || "PENDING";
+    const rawCode = inviteCode || "PENDING";
     // Language-tagged activation code: phone app reads the suffix to open in
     // the client's language automatically.
     const code = rawCode === "PENDING" ? rawCode : `${rawCode}-${L.toUpperCase()}`;
