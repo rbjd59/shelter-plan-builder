@@ -8,6 +8,7 @@
  * at that facility.
  */
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { sendManagedEmail } from "@/lib/email/managed-send.server";
 
 const FROM = "alerts@notify.gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
@@ -159,23 +160,20 @@ export async function saveDetentionInfoAndNotifyAttorney(input: DetentionInput) 
 
 
   const messageId = `locate_${recordId}_${Date.now()}`;
-  const { error: mailErr } = await supabaseAdmin.rpc("enqueue_email" as never, {
-    queue_name: "transactional_emails",
-    payload: {
-      to: ATTORNEY_INBOX,
-      from: FROM,
-      sender_domain: SENDER_DOMAIN,
-      subject,
-      html,
-      text,
-      purpose: "transactional",
-      label: "locate_handoff",
-      idempotency_key: messageId,
-      message_id: messageId,
-      queued_at: new Date().toISOString(),
-    } as never,
-  } as never);
-  if (mailErr) console.error("locate handoff enqueue failed", mailErr);
+  const mailResult = await sendManagedEmail({
+    to: ATTORNEY_INBOX,
+    from: FROM,
+    sender_domain: SENDER_DOMAIN,
+    subject,
+    html,
+    text,
+    label: "locate_handoff",
+    idempotency_key: messageId,
+    message_id: messageId,
+  });
+  if (!mailResult.sent && mailResult.reason === "failed") {
+    console.error("locate handoff send failed", mailResult.error);
+  }
 
   return { ok: true, id: recordId, sent_to: ATTORNEY_INBOX, forms: formsResult };
 }

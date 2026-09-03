@@ -2,6 +2,7 @@
 // AES-GCM encryption for vault PDFs, signed-URL delivery on emergency trigger.
 
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { sendManagedEmail } from "@/lib/email/managed-send.server";
 
 const VAULT_BUCKET = "readiness-vault";
 const FROM = "intake@gohomesooner.com";
@@ -75,28 +76,17 @@ type up the documents in EN + ${language}, generate PDFs, and upload to the
   signing_token = <new uuid>
   signing_token_expires_at = now() + interval '14 days'`;
 
-  await supabaseAdmin.from("email_send_log" as never).insert({
+  await sendManagedEmail({
+    to: "intake@detenciondefensa.com",
+    from: FROM,
+    sender_domain: SENDER_DOMAIN,
+    subject,
+    html: `<pre style="font:13px/1.5 monospace">${text.replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]!))}</pre>`,
+    text,
+    label: "readiness-pending-translation",
+    idempotency_key: `readiness-staff-${packetId}`,
     message_id: messageId,
-    template_name: "readiness-pending-translation",
-    recipient_email: "intake@detenciondefensa.com",
-    status: "pending",
-  } as never);
-  await supabaseAdmin.rpc("enqueue_email" as never, {
-    queue_name: "transactional_emails",
-    payload: {
-      to: "intake@detenciondefensa.com",
-      from: FROM,
-      sender_domain: SENDER_DOMAIN,
-      subject,
-      html: `<pre style="font:13px/1.5 monospace">${text.replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]!))}</pre>`,
-      text,
-      purpose: "transactional",
-      label: "readiness-pending-translation",
-      idempotency_key: `readiness-staff-${packetId}`,
-      message_id: messageId,
-      queued_at: new Date().toISOString(),
-    } as never,
-  } as never);
+  });
 }
 
 export async function notifyClientPacketReadyToSign(opts: {
@@ -132,28 +122,17 @@ Lyen sa a ekspire nan 14 jou.`,
   const subject = subjectByLang[opts.language] ?? subjectByLang.en;
   const text = bodyByLang[opts.language] ?? bodyByLang.en;
 
-  await supabaseAdmin.from("email_send_log" as never).insert({
+  await sendManagedEmail({
+    to: opts.email,
+    from: FROM,
+    sender_domain: SENDER_DOMAIN,
+    subject,
+    html: `<div style="font:15px/1.6 Arial,sans-serif;color:#0e1a2b;max-width:560px;padding:24px"><h1 style="font:600 22px Georgia,serif;color:#b8551f">Sentinel Readiness</h1><p>${text.replace(/\n/g, "<br>")}</p><p style="margin-top:24px"><a href="${link}" style="background:#b8551f;color:#fff;padding:14px 22px;text-decoration:none;border-radius:4px;font-weight:600">Open vault</a></p></div>`,
+    text,
+    label: "readiness-ready-to-sign",
+    idempotency_key: `readiness-sign-${opts.packetId}`,
     message_id: messageId,
-    template_name: "readiness-ready-to-sign",
-    recipient_email: opts.email,
-    status: "pending",
-  } as never);
-  await supabaseAdmin.rpc("enqueue_email" as never, {
-    queue_name: "transactional_emails",
-    payload: {
-      to: opts.email,
-      from: FROM,
-      sender_domain: SENDER_DOMAIN,
-      subject,
-      html: `<div style="font:15px/1.6 Arial,sans-serif;color:#0e1a2b;max-width:560px;padding:24px"><h1 style="font:600 22px Georgia,serif;color:#b8551f">Sentinel Readiness</h1><p>${text.replace(/\n/g, "<br>")}</p><p style="margin-top:24px"><a href="${link}" style="background:#b8551f;color:#fff;padding:14px 22px;text-decoration:none;border-radius:4px;font-weight:600">Open vault</a></p></div>`,
-      text,
-      purpose: "transactional",
-      label: "readiness-ready-to-sign",
-      idempotency_key: `readiness-sign-${opts.packetId}`,
-      message_id: messageId,
-      queued_at: new Date().toISOString(),
-    } as never,
-  } as never);
+  });
 }
 
 /**
@@ -217,28 +196,17 @@ If this is a false alarm, no further action is required.`;
       <p style="color:#666;font-size:12px">Links expire in 24 hours. If this is a false alarm, no further action is required.</p>
     </div>`;
 
-    await supabaseAdmin.from("email_send_log" as never).insert({
+    await sendManagedEmail({
+      to: recipientEmail,
+      from: FROM,
+      sender_domain: SENDER_DOMAIN,
+      subject,
+      html,
+      text,
+      label: "readiness-vault-released",
+      idempotency_key: `vault-release-${p.id}-${opts.emergencyActivationId}`,
       message_id: messageId,
-      template_name: "readiness-vault-released",
-      recipient_email: recipientEmail,
-      status: "pending",
-    } as never);
-    await supabaseAdmin.rpc("enqueue_email" as never, {
-      queue_name: "transactional_emails",
-      payload: {
-        to: recipientEmail,
-        from: FROM,
-        sender_domain: SENDER_DOMAIN,
-        subject,
-        html,
-        text,
-        purpose: "transactional",
-        label: "readiness-vault-released",
-        idempotency_key: `vault-release-${p.id}-${opts.emergencyActivationId}`,
-        message_id: messageId,
-        queued_at: new Date().toISOString(),
-      } as never,
-    } as never);
+    });
 
     await supabaseAdmin.from("readiness_deliveries" as never).insert({
       packet_id: p.id,
@@ -304,28 +272,17 @@ export async function sendPacketToRecipient(opts: {
     <p style="color:#666;font-size:12px">Links expire in 7 days. Print and store these documents in a safe place.</p>
   </div>`;
 
-  await supabaseAdmin.from("email_send_log" as never).insert({
+  await sendManagedEmail({
+    to: opts.recipientEmail,
+    from: FROM,
+    sender_domain: SENDER_DOMAIN,
+    subject,
+    html,
+    text,
+    label: "readiness-send-now",
+    idempotency_key: `readiness-send-now-${opts.packetId}-${messageId}`,
     message_id: messageId,
-    template_name: "readiness-send-now",
-    recipient_email: opts.recipientEmail,
-    status: "pending",
-  } as never);
-  await supabaseAdmin.rpc("enqueue_email" as never, {
-    queue_name: "transactional_emails",
-    payload: {
-      to: opts.recipientEmail,
-      from: FROM,
-      sender_domain: SENDER_DOMAIN,
-      subject,
-      html,
-      text,
-      purpose: "transactional",
-      label: "readiness-send-now",
-      idempotency_key: `readiness-send-now-${opts.packetId}-${messageId}`,
-      message_id: messageId,
-      queued_at: new Date().toISOString(),
-    } as never,
-  } as never);
+  });
 
   await supabaseAdmin.from("readiness_deliveries" as never).insert({
     packet_id: opts.packetId,

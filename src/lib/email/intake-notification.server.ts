@@ -4,6 +4,7 @@
 // (for the user's records, NOT for filing).
 
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { sendManagedEmail } from "@/lib/email/managed-send.server";
 import { buildIntakePdfs } from "./intake-pdfs.server";
 import { buildMotionReferralPdf } from "./motion-referral.server";
 import { buildJs44Pdf } from "./js44.server";
@@ -307,51 +308,19 @@ ${Object.entries(a)
   if (doInternal) {
     for (const recipient of RECIPIENTS) {
       const messageId = crypto.randomUUID();
-
-      let unsubscribeToken: string;
-      const { data: existing } = await supabaseAdmin
-        .from("email_unsubscribe_tokens" as never)
-        .select("token")
-        .eq("email", recipient)
-        .maybeSingle();
-      if (existing && (existing as { token: string }).token) {
-        unsubscribeToken = (existing as { token: string }).token;
-      } else {
-        unsubscribeToken = crypto.randomUUID();
-        await supabaseAdmin
-          .from("email_unsubscribe_tokens" as never)
-          .insert({ email: recipient, token: unsubscribeToken } as never);
-      }
-
-      const payload = {
+      const result = await sendManagedEmail({
         to: recipient,
         from: FROM,
         sender_domain: SENDER_DOMAIN,
         subject,
         html,
         text,
-        purpose: "transactional",
         label: "client-signup",
         idempotency_key: `intake-${sessionId}-${recipient}-${messageId}`,
         message_id: messageId,
-        unsubscribe_token: unsubscribeToken,
-        queued_at: new Date().toISOString(),
-      };
-
-      await supabaseAdmin.from("email_send_log" as never).insert({
-        message_id: messageId,
-        template_name: "intake-submission",
-        recipient_email: recipient,
-        status: "pending",
-      } as never);
-
-      const { error } = await supabaseAdmin.rpc("enqueue_email" as never, {
-        queue_name: "transactional_emails",
-        payload: payload as never,
-      } as never);
-
-      if (error) {
-        console.error("Failed to enqueue intake notification email", { recipient, error });
+      });
+      if (!result.sent && result.reason === "failed") {
+        console.error("Failed to send intake notification email", { error: result.error });
       }
     }
   }

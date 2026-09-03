@@ -1,6 +1,7 @@
 // Server-only: family-facing case tracking lifecycle.
 
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { sendManagedEmail } from "@/lib/email/managed-send.server";
 
 
 const FROM = "info@gohomesooner.com";
@@ -18,48 +19,20 @@ interface FamilyEmailParams {
 
 async function enqueueFamilyEmail(p: FamilyEmailParams): Promise<void> {
   const messageId = crypto.randomUUID();
-  let unsubscribeToken: string;
-  const { data: existing } = await supabaseAdmin
-    .from("email_unsubscribe_tokens" as never)
-    .select("token")
-    .eq("email", p.to)
-    .maybeSingle();
-  if (existing && (existing as { token: string }).token) {
-    unsubscribeToken = (existing as { token: string }).token;
-  } else {
-    unsubscribeToken = crypto.randomUUID();
-    await supabaseAdmin
-      .from("email_unsubscribe_tokens" as never)
-      .insert({ email: p.to, token: unsubscribeToken } as never);
-  }
-
-  const payload = {
+  const result = await sendManagedEmail({
     to: p.to,
     from: FROM,
     sender_domain: SENDER_DOMAIN,
     subject: p.subject,
     html: p.html,
     text: p.text,
-    purpose: "transactional",
     label: p.template,
     idempotency_key: `${p.template}-${p.trackingToken}-${messageId}`,
     message_id: messageId,
-    unsubscribe_token: unsubscribeToken,
-    queued_at: new Date().toISOString(),
-  };
-
-  await supabaseAdmin.from("email_send_log" as never).insert({
-    message_id: messageId,
-    template_name: p.template,
-    recipient_email: p.to,
-    status: "pending",
-  } as never);
-
-  const { error } = await supabaseAdmin.rpc("enqueue_email" as never, {
-    queue_name: "transactional_emails",
-    payload: payload as never,
-  } as never);
-  if (error) console.error("Family email enqueue failed", { template: p.template, error });
+  });
+  if (!result.sent && result.reason === "failed") {
+    console.error("Family email send failed", { template: p.template, error: result.error });
+  }
 }
 
 const COPY = {

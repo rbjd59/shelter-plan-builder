@@ -28,4 +28,4 @@
 - [x] App "Send my info" returns 400 "could not send" (api/public/app-update-request)
 - [ ] Customers not receiving app-download/activation-code emails
 - [ ] (Premio app) missing cancel-PIN field on SOS screen — report to app dev
-- [x] Email-sending version update — started (rewrite turn pending)
+- [x] Email-sending version update — rewrite done, awaiting user review + publish

@@ -450,47 +450,28 @@ export const emailPacketToMe = createServerFn({ method: "POST" })
       .map((s) => `${s.label}: ${s.url ?? "(unavailable)"}`)
       .join("\n")}`;
 
-    // Reuse the transactional email queue.
-    let unsub: string | null = null;
-    const { data: existing } = await supabaseAdmin
-      .from("email_unsubscribe_tokens" as never)
-      .select("token")
-      .eq("email", to)
-      .maybeSingle();
-    if (existing && (existing as { token: string }).token) {
-      unsub = (existing as { token: string }).token;
-    } else {
-      unsub = crypto.randomUUID();
-      await supabaseAdmin
-        .from("email_unsubscribe_tokens" as never)
-        .insert({ email: to, token: unsub } as never);
-    }
-
+    // Send through Lovable's managed email API (this is a .functions.ts module,
+    // so the server-only transport is loaded inside the handler).
+    const { sendManagedEmail } = await import("@/lib/email/managed-send.server");
     const messageId = crypto.randomUUID();
-    await supabaseAdmin.from("email_send_log" as never).insert({
+    const result = await sendManagedEmail({
+      to,
+      from: "intake@gohomesooner.com",
+      sender_domain: "notify.gohomesooner.com",
+      subject: `Attorney Document Packet — ${sid}`,
+      html,
+      text,
+      label: "firm-packet",
+      idempotency_key: `firm-packet-${sid}-${messageId}`,
       message_id: messageId,
-      template_name: "firm-packet",
-      recipient_email: to,
-      status: "pending",
-    } as never);
-    const { error } = await supabaseAdmin.rpc("enqueue_email" as never, {
-      queue_name: "transactional_emails",
-      payload: {
-        to,
-        from: "intake@gohomesooner.com",
-        sender_domain: "notify.gohomesooner.com",
-        subject: `Attorney Document Packet — ${sid}`,
-        html,
-        text,
-        purpose: "transactional",
-        label: "firm-packet",
-        idempotency_key: `firm-packet-${sid}-${messageId}`,
-        message_id: messageId,
-        unsubscribe_token: unsub,
-        queued_at: new Date().toISOString(),
-      } as never,
-    } as never);
-    if (error) throw new Error(`Email enqueue failed: ${error.message}`);
+    });
+    if (!result.sent) {
+      throw new Error(
+        result.reason === "recipient_suppressed"
+          ? "Email send failed: recipient is unsubscribed or previously bounced"
+          : `Email send failed: ${result.error}`,
+      );
+    }
 
     return { ok: true, to, sent: signed.filter((s) => s.url).length };
   });
