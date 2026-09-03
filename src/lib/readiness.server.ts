@@ -2,6 +2,7 @@
 // AES-GCM encryption for vault PDFs, signed-URL delivery on emergency trigger.
 
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { sendManagedEmail } from "@/lib/email/managed-send.server";
 
 const VAULT_BUCKET = "readiness-vault";
 const FROM = "intake@gohomesooner.com";
