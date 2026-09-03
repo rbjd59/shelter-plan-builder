@@ -39,53 +39,18 @@ interface EnqueueArgs {
 }
 
 async function enqueueOne(args: EnqueueArgs): Promise<void> {
-  const messageId = crypto.randomUUID();
-
-  // Ensure an unsubscribe token exists for the recipient (queue worker requires one).
-  let unsubscribeToken: string;
-  const { data: existing } = await supabaseAdmin
-    .from("email_unsubscribe_tokens" as never)
-    .select("token")
-    .eq("email", args.to)
-    .maybeSingle();
-  if (existing && (existing as { token: string }).token) {
-    unsubscribeToken = (existing as { token: string }).token;
-  } else {
-    unsubscribeToken = crypto.randomUUID();
-    await supabaseAdmin
-      .from("email_unsubscribe_tokens" as never)
-      .insert({ email: args.to, token: unsubscribeToken } as never);
-  }
-
-  const payload = {
+  const result = await sendManagedEmail({
     to: args.to,
     from: FROM,
     sender_domain: SENDER_DOMAIN,
     subject: args.subject,
     html: args.html,
     text: args.text,
-    purpose: "transactional",
     label: args.label,
     idempotency_key: args.idempotencyKey,
-    message_id: messageId,
-    unsubscribe_token: unsubscribeToken,
-    queued_at: new Date().toISOString(),
-  };
-
-  await supabaseAdmin.from("email_send_log" as never).insert({
-    message_id: messageId,
-    template_name: args.label,
-    recipient_email: args.to,
-    status: "pending",
-  } as never);
-
-  const { error } = await supabaseAdmin.rpc("enqueue_email" as never, {
-    queue_name: "transactional_emails",
-    payload: payload as never,
-  } as never);
-
-  if (error) {
-    console.error("Activation email enqueue failed", { to: args.to, label: args.label, error });
+  });
+  if (!result.sent && result.reason === "failed") {
+    console.error("Activation email send failed", { label: args.label, error: result.error });
   }
 }
 
