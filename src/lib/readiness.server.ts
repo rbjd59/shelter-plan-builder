@@ -132,28 +132,17 @@ Lyen sa a ekspire nan 14 jou.`,
   const subject = subjectByLang[opts.language] ?? subjectByLang.en;
   const text = bodyByLang[opts.language] ?? bodyByLang.en;
 
-  await supabaseAdmin.from("email_send_log" as never).insert({
+  await sendManagedEmail({
+    to: opts.email,
+    from: FROM,
+    sender_domain: SENDER_DOMAIN,
+    subject,
+    html: `<div style="font:15px/1.6 Arial,sans-serif;color:#0e1a2b;max-width:560px;padding:24px"><h1 style="font:600 22px Georgia,serif;color:#b8551f">Sentinel Readiness</h1><p>${text.replace(/\n/g, "<br>")}</p><p style="margin-top:24px"><a href="${link}" style="background:#b8551f;color:#fff;padding:14px 22px;text-decoration:none;border-radius:4px;font-weight:600">Open vault</a></p></div>`,
+    text,
+    label: "readiness-ready-to-sign",
+    idempotency_key: `readiness-sign-${opts.packetId}`,
     message_id: messageId,
-    template_name: "readiness-ready-to-sign",
-    recipient_email: opts.email,
-    status: "pending",
-  } as never);
-  await supabaseAdmin.rpc("enqueue_email" as never, {
-    queue_name: "transactional_emails",
-    payload: {
-      to: opts.email,
-      from: FROM,
-      sender_domain: SENDER_DOMAIN,
-      subject,
-      html: `<div style="font:15px/1.6 Arial,sans-serif;color:#0e1a2b;max-width:560px;padding:24px"><h1 style="font:600 22px Georgia,serif;color:#b8551f">Sentinel Readiness</h1><p>${text.replace(/\n/g, "<br>")}</p><p style="margin-top:24px"><a href="${link}" style="background:#b8551f;color:#fff;padding:14px 22px;text-decoration:none;border-radius:4px;font-weight:600">Open vault</a></p></div>`,
-      text,
-      purpose: "transactional",
-      label: "readiness-ready-to-sign",
-      idempotency_key: `readiness-sign-${opts.packetId}`,
-      message_id: messageId,
-      queued_at: new Date().toISOString(),
-    } as never,
-  } as never);
+  });
 }
 
 /**
