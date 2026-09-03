@@ -67,16 +67,21 @@ export const Route = createFileRoute("/api/public/app-trigger")({
         try {
           parsedBody = JSON.parse(rawBody);
         } catch {
+          console.warn("[app-trigger] 400 invalid_json", { bytes: rawBody.length, preview: rawBody.slice(0, 200) });
           return json({ ok: false, error: "invalid_json" }, { status: 400 });
         }
         const parsed = TriggerSchema.safeParse(parsedBody);
         if (!parsed.success) {
+          const bodyKeys = parsedBody && typeof parsedBody === "object" ? Object.keys(parsedBody as object) : [];
+          console.warn("[app-trigger] 400 schema", { issues: parsed.error.flatten(), bodyKeys, has_signature: !!signature });
           return json({ ok: false, error: parsed.error.flatten() }, { status: 400 });
         }
 
-        const caseId = parsed.data.case_id.trim().toUpperCase();
+        // Accept "X5956-EN" style codes: the app may append the language.
+        const caseId = parsed.data.case_id.trim().toUpperCase().split("-")[0]!;
 
         if (!/^[A-Z0-9]{5,8}$/.test(caseId)) {
+          console.warn("[app-trigger] 400 invalid_case_id", { case_id: parsed.data.case_id, action: parsed.data.action ?? "trigger" });
           return json({ ok: false, error: "invalid_case_id" }, { status: 400 });
         }
 
