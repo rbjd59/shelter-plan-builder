@@ -79,10 +79,39 @@ export const Route = createFileRoute("/api/public/app/activate")({
         const lang = String(bundle.language ?? "en").toLowerCase();
         const legalNotice = LEGAL_NOTICE[lang as keyof typeof LEGAL_NOTICE] ?? LEGAL_NOTICE.en;
 
+        // Safety net: if the bundle has no PIN (legacy client), set 0000 now so
+        // the phone's cancel screen works, and return it in this response.
+        if (!bundle.cancellation_pin) {
+          const { error: pinErr } = await supabaseAdmin.rpc("set_sos_cancel_pin_admin" as never, {
+            _client_id: bundle.client_id,
+            _pin: "0000",
+          } as never);
+          if (!pinErr) {
+            bundle.cancellation_pin = "0000";
+            bundle.cancel_pin = "0000";
+          } else {
+            console.warn("[app/activate] default PIN set failed", code, pinErr.message);
+          }
+        }
+
+        // A successful code exchange IS the activation. Fan out the
+        // "your loved one activated" notices right here (idempotent — only the
+        // first activation sends) instead of waiting for a second signed
+        // { action: "activated" } webhook the phone may never send.
+        let activation: Record<string, unknown> = {};
+        try {
+          const { notifyAppActivation } = await import("@/lib/alert-fanout.server");
+          activation = await notifyAppActivation(code);
+          console.log("[app/activate] activation fan-out", code, activation);
+        } catch (e) {
+          console.error("[app/activate] activation fan-out failed", code, e);
+        }
+
         return json({
           ok: true,
           ...bundle,
           legal_notice: legalNotice,
+          activation_notices: activation,
           // v4.3: emergency contacts are the one section the client may edit
           // in the app; edits are pushed back via /api/public/app/sync-contacts.
           contacts_editable_in_app: true,
