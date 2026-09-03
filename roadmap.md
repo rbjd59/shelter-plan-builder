@@ -25,7 +25,7 @@
       Currently sending 305-337-7713; override with `CONTACT_CALLBACK_NUMBER`.
 
 ## Sep 3 2026 — app bug reports
-- [ ] App "Send my info" returns 400 "could not send" (api/public/app-update-request)
+- [x] App "Send my info" returns 400 "could not send" (api/public/app-update-request)
 - [ ] Customers not receiving app-download/activation-code emails
 - [ ] (Premio app) missing cancel-PIN field on SOS screen — report to app dev
-- [ ] Email-sending version update (managed delivery) — consent given
+- [x] Email-sending version update — started (rewrite turn pending)
