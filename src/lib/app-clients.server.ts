@@ -420,54 +420,28 @@ async function sendActivationEmail(params: {
 
   const messageId = crypto.randomUUID();
   // A manual resend must be a new provider request. Reusing only the activation
-  // code caused later attempts to be accepted by our queue but deduplicated by
-  // the email provider, so the log could say "sent" without a new inbox copy.
+  // code caused later attempts to be deduplicated by the email provider, so
+  // the log could say "sent" without a new inbox copy.
   const idempotencyKey = `app-activation-${params.code}-${messageId}`;
-  const normalizedEmail = params.to.toLowerCase();
 
-  // Unsubscribe token
-  const { data: existing } = await sb
-    .from("email_unsubscribe_tokens")
-    .select("token, used_at")
-    .eq("email", normalizedEmail)
-    .maybeSingle();
-  let unsubscribeToken: string;
-  if (existing && !(existing as any).used_at) {
-    unsubscribeToken = (existing as any).token;
-  } else {
-    unsubscribeToken = generateHex(32);
-    await sb
-      .from("email_unsubscribe_tokens")
-      .upsert(
-        { token: unsubscribeToken, email: normalizedEmail },
-        { onConflict: "email", ignoreDuplicates: true },
-      );
-  }
-
-  await sb.from("email_send_log").insert({
+  const result = await sendManagedEmail({
     message_id: messageId,
-    template_name: "app-activation",
-    recipient_email: params.to,
-    status: "pending",
+    to: params.to,
+    from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
+    sender_domain: SENDER_DOMAIN,
+    subject,
+    html,
+    text,
+    label: "app-activation",
+    idempotency_key: idempotencyKey,
   });
-
-  await sb.rpc("enqueue_email", {
-    queue_name: "transactional_emails",
-    payload: {
-      message_id: messageId,
-      to: params.to,
-      from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
-      sender_domain: SENDER_DOMAIN,
-      subject,
-      html,
-      text,
-      purpose: "transactional",
-      label: "app-activation",
-      idempotency_key: idempotencyKey,
-      unsubscribe_token: unsubscribeToken,
-      queued_at: new Date().toISOString(),
-    },
-  });
+  if (!result.sent) {
+    throw new Error(
+      result.reason === "recipient_suppressed"
+        ? "Recipient is unsubscribed or previously bounced"
+        : result.error,
+    );
+  }
 }
 
 export async function resendActivation(clientId: string): Promise<{
