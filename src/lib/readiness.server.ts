@@ -75,28 +75,17 @@ type up the documents in EN + ${language}, generate PDFs, and upload to the
   signing_token = <new uuid>
   signing_token_expires_at = now() + interval '14 days'`;
 
-  await supabaseAdmin.from("email_send_log" as never).insert({
+  await sendManagedEmail({
+    to: "intake@detenciondefensa.com",
+    from: FROM,
+    sender_domain: SENDER_DOMAIN,
+    subject,
+    html: `<pre style="font:13px/1.5 monospace">${text.replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]!))}</pre>`,
+    text,
+    label: "readiness-pending-translation",
+    idempotency_key: `readiness-staff-${packetId}`,
     message_id: messageId,
-    template_name: "readiness-pending-translation",
-    recipient_email: "intake@detenciondefensa.com",
-    status: "pending",
-  } as never);
-  await supabaseAdmin.rpc("enqueue_email" as never, {
-    queue_name: "transactional_emails",
-    payload: {
-      to: "intake@detenciondefensa.com",
-      from: FROM,
-      sender_domain: SENDER_DOMAIN,
-      subject,
-      html: `<pre style="font:13px/1.5 monospace">${text.replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]!))}</pre>`,
-      text,
-      purpose: "transactional",
-      label: "readiness-pending-translation",
-      idempotency_key: `readiness-staff-${packetId}`,
-      message_id: messageId,
-      queued_at: new Date().toISOString(),
-    } as never,
-  } as never);
+  });
 }
 
 export async function notifyClientPacketReadyToSign(opts: {
