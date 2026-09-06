@@ -22,7 +22,23 @@ export interface RetryStats {
 }
 
 const MAX_ATTEMPTS = 5;
+/** How far back we look for failed rows at all. */
 const WINDOW_DAYS = 30;
+/**
+ * Non-urgent emails (welcome, forms, internal notices) are only retried if
+ * the original send is younger than this. Older ones are marked dlq.
+ */
+const GENERAL_MAX_AGE_MS = 48 * 60 * 60 * 1000;
+/**
+ * Time-sensitive alerts (SOS fan-out, emergency notices, cancellations) are
+ * useless — and alarming — if delivered late. Only retry within this window.
+ */
+const URGENT_MAX_AGE_MS = 2 * 60 * 60 * 1000;
+const URGENT_LABEL_RE = /^(sos-|emergency-|locate_handoff$)/;
+
+function isUrgentLabel(label: string): boolean {
+  return URGENT_LABEL_RE.test(label);
+}
 
 interface LogRow {
   id: string;
