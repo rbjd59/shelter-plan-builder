@@ -22,7 +22,23 @@ export interface RetryStats {
 }
 
 const MAX_ATTEMPTS = 5;
+/** How far back we look for failed rows at all. */
 const WINDOW_DAYS = 30;
+/**
+ * Non-urgent emails (welcome, forms, internal notices) are only retried if
+ * the original send is younger than this. Older ones are marked dlq.
+ */
+const GENERAL_MAX_AGE_MS = 48 * 60 * 60 * 1000;
+/**
+ * Time-sensitive alerts (SOS fan-out, emergency notices, cancellations) are
+ * useless — and alarming — if delivered late. Only retry within this window.
+ */
+const URGENT_MAX_AGE_MS = 2 * 60 * 60 * 1000;
+const URGENT_LABEL_RE = /^(sos-|emergency-|locate_handoff$)/;
+
+function isUrgentLabel(label: string): boolean {
+  return URGENT_LABEL_RE.test(label);
+}
 
 interface LogRow {
   id: string;
@@ -67,16 +83,28 @@ export async function retryDlqEmails(batchSize = 25): Promise<RetryStats> {
 
     const attempts = rows.filter((r) => r.status === "failed").length;
     const payload = rows.find((r) => r.metadata?.retry_payload)?.metadata?.retry_payload;
+    // Age is measured from the ORIGINAL failed send, not the latest retry.
+    const firstFailedAt = new Date(rows[rows.length - 1]!.created_at).getTime();
+    const ageMs = Date.now() - firstFailedAt;
+    const urgent = isUrgentLabel(latest.template_name);
+    const maxAgeMs = urgent ? URGENT_MAX_AGE_MS : GENERAL_MAX_AGE_MS;
 
-    if (!payload || attempts >= MAX_ATTEMPTS) {
+    let giveUpReason: string | null = null;
+    if (!payload) giveUpReason = "No stored payload to retry (sent before retry support)";
+    else if (attempts >= MAX_ATTEMPTS) giveUpReason = `Gave up after ${attempts} failed attempts`;
+    else if (ageMs > maxAgeMs) {
+      giveUpReason = urgent
+        ? "Time-sensitive alert too old to re-send safely (>2h)"
+        : "Too old to re-send (>48h)";
+    }
+
+    if (giveUpReason || !payload) {
       await supabaseAdmin.from("email_send_log" as never).insert({
         message_id: latest.message_id,
         template_name: latest.template_name,
         recipient_email: latest.recipient_email,
         status: "dlq",
-        error_message: !payload
-          ? "No stored payload to retry (sent before retry support)"
-          : `Gave up after ${attempts} failed attempts`,
+        error_message: giveUpReason,
       } as never);
       stats.dropped++;
       continue;
