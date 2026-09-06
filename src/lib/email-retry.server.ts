@@ -98,7 +98,7 @@ export async function retryDlqEmails(batchSize = 25): Promise<RetryStats> {
         : "Too old to re-send (>48h)";
     }
 
-    if (giveUpReason) {
+    if (giveUpReason || !payload) {
       await supabaseAdmin.from("email_send_log" as never).insert({
         message_id: latest.message_id,
         template_name: latest.template_name,
