@@ -1,5 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { z } from "zod";
+import { readSiteLang } from "@/lib/site-lang";
 
 
 const searchSchema = z.object({
@@ -81,9 +83,25 @@ const T = {
 
 function CheckoutPage() {
   const { lang } = Route.useSearch();
-  const L = lang as Lang;
-  const t = T[L];
   const navigate = useNavigate();
+
+  // If the URL carries no explicit ?lang=, follow the language the visitor
+  // selected on the site instead of the schema default.
+  const [siteLang, setSiteLang] = useState<Lang | null>(null);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const raw = new URLSearchParams(window.location.search).get("lang");
+    if (raw === "en" || raw === "es" || raw === "ht") {
+      setSiteLang(raw);
+      return;
+    }
+    const site = readSiteLang() as Lang;
+    setSiteLang(site);
+    navigate({ to: "/checkout", search: (prev) => ({ ...prev, lang: site }), replace: true });
+  }, [navigate]);
+
+  const L = (siteLang ?? (lang as Lang));
+  const t = T[L];
 
   const langs: Lang[] = ["es", "en", "ht"];
   const langBtn = (active: boolean): React.CSSProperties => ({

@@ -130,9 +130,14 @@ export default function SiteShell() {
           }
           return;
         }
-        if (href === "/checkout") {
+        if (href === "/checkout" || href.startsWith("/checkout?")) {
           e.preventDefault();
           navigate({ to: "/checkout", search: { lang } as never });
+          return;
+        }
+        if (href === "/agreement" || href.startsWith("/agreement?")) {
+          e.preventDefault();
+          navigate({ to: "/agreement", search: { lang } as never });
           return;
         }
         if (href === "/intake" || href.startsWith("/intake?")) {
