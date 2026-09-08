@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
 import { z } from "zod";
-import { readSiteLang, urlLangOrSite } from "@/lib/site-lang";
+import { readSiteLang } from "@/lib/site-lang";
 
 
 const searchSchema = z.object({
