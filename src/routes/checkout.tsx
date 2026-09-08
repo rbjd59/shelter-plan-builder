@@ -82,25 +82,26 @@ const T = {
 } as const;
 
 function CheckoutPage() {
-  const { lang } = Route.useSearch();
   const navigate = useNavigate();
 
   // If the URL carries no explicit ?lang=, follow the language the visitor
-  // selected on the site instead of the schema default.
-  const [siteLang, setSiteLang] = useState<Lang | null>(null);
+  // selected on the site instead of the schema default. The active language
+  // must always track the URL so the EN/ES/HT buttons switch immediately.
+  const didRewriteRef = useRef(false);
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (didRewriteRef.current) return;
     const raw = new URLSearchParams(window.location.search).get("lang");
     if (raw === "en" || raw === "es" || raw === "ht") {
-      setSiteLang(raw);
+      didRewriteRef.current = true;
       return;
     }
     const site = readSiteLang() as Lang;
-    setSiteLang(site);
+    didRewriteRef.current = true;
     navigate({ to: "/checkout", search: (prev) => ({ ...prev, lang: site }), replace: true });
   }, [navigate]);
 
-  const L = (siteLang ?? (lang as Lang));
+  const L = urlLangOrSite() as Lang;
   const t = T[L];
 
   const langs: Lang[] = ["es", "en", "ht"];
