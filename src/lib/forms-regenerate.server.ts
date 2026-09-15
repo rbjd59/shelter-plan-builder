@@ -83,8 +83,22 @@ export async function buildAnswersForClient(clientId: string): Promise<Record<st
   set("federal_id", d["federal_id"]);
   set("locate_notes", d["notes"]);
 
+  // Attorney edits win over everything else.
+  const { data: override } = await supabaseAdmin
+    .from("client_form_answers")
+    .select("answers")
+    .eq("client_id", clientId)
+    .maybeSingle();
+  const ov = (override as { answers?: Record<string, unknown> } | null)?.answers;
+  if (ov && typeof ov === "object") {
+    for (const [k, v] of Object.entries(ov)) {
+      if (typeof v === "string" ? v.trim() !== "" : v != null) answers[k] = v;
+    }
+  }
+
   return answers;
 }
+
 
 /** True once the desk has recorded enough to remove every placeholder. */
 export async function locateIsComplete(clientId: string): Promise<boolean> {
