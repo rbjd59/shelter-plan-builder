@@ -121,18 +121,18 @@ const COPY = {
 
 const QR_COPY = {
   en: {
-    title: "Scan this code with your phone camera",
-    help: "Open the Camera app on your Android phone, point it at this square, and tap the link that appears. The download starts automatically.",
+    title: "Reading this on a computer? Scan with your phone",
+    help: "If you are on a phone, just tap the button above — you do not need this square. On a computer, open your phone camera, point it here, and tap the link that appears.",
     codeNote: (c: string) => `After installing, open the app and enter your activation code: ${c}`,
   },
   es: {
-    title: "Escanee este codigo con la camara de su telefono",
-    help: "Abra la camara de su telefono Android, apuntela a este cuadro y toque el enlace que aparece. La descarga comienza automaticamente.",
+    title: "¿Lo lee en una computadora? Escanee con su telefono",
+    help: "Si esta en el telefono, solo toque el boton de arriba; no necesita este cuadro. En una computadora, abra la camara del telefono, apuntela aqui y toque el enlace que aparece.",
     codeNote: (c: string) => `Despues de instalar, abra la app e ingrese su codigo de activacion: ${c}`,
   },
   ht: {
-    title: "Eskane kod sa a ak kamera telefòn ou",
-    help: "Ouvri kamera telefòn Android ou, vize kare sa a, epi peze lyen ki parèt la. Telechajman an kòmanse otomatikman.",
+    title: "W ap li sa sou yon òdinatè? Eskane ak telefòn ou",
+    help: "Si ou sou yon telefòn, jis peze bouton anwo a — ou pa bezwen kare sa a. Sou yon òdinatè, ouvri kamera telefòn ou, vize isit la, epi peze lyen ki parèt la.",
     codeNote: (c: string) => `Apre enstalasyon an, ouvri app la epi antre kòd aktivasyon ou: ${c}`,
   },
 };
@@ -164,13 +164,6 @@ const Email = ({
 
           <Text style={text}>{t.instructions}</Text>
 
-          <Heading as="h2" style={h2}>{t.manualTitle}</Heading>
-          <Section style={manualBox}>
-            {t.installSteps.map((step, index) => (
-              <Text key={step} style={stepText}><strong>{index + 1}.</strong> {step}</Text>
-            ))}
-          </Section>
-
           <Section style={{ textAlign: "center", margin: "24px 0" }}>
             {apkUrl ? (
               <Button href={apkUrl} style={btnPrimary}>
@@ -179,6 +172,13 @@ const Email = ({
             ) : null}
             <br />
             <Text style={comingSoon}>{t.iosBtn}</Text>
+          </Section>
+
+          <Heading as="h2" style={h2}>{t.manualTitle}</Heading>
+          <Section style={manualBox}>
+            {t.installSteps.map((step, index) => (
+              <Text key={step} style={stepText}><strong>{index + 1}.</strong> {step}</Text>
+            ))}
           </Section>
 
           {qrUrl ? (

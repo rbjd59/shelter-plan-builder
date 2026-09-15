@@ -317,6 +317,31 @@ export async function enqueueActivationEmails(p: ActivationEmailParams): Promise
         </div>`
       : "";
 
+    // One email only: the self-help / notarized family package and the
+    // nonprofit information now ride inside the welcome email.
+    const ff = familyFormsContent(lang, clientName);
+    const ffBlock = `
+      <div style="border:1px solid #f0c9a8;background:#fff7ed;border-radius:8px;padding:16px;margin:0 0 22px;">
+        <p style="margin:0 0 8px;font-size:16px;color:#7c2d12;"><strong>${esc(ff.heading)}</strong></p>
+        <p style="margin:0 0 10px;font-size:13px;color:#1f2937;">${esc(ff.body[0])}</p>
+        <p style="margin:0 0 12px;font-size:13px;color:#1f2937;">${esc(ff.body[1])}</p>
+        ${ff.steps.map((s, i) => `<p style="margin:0 0 8px;font-size:13px;color:#1f2937;"><strong>${i + 1}.</strong> ${esc(s)}</p>`).join("")}
+        <p style="margin:14px 0 0;text-align:center;">
+          <a href="${ff.url}" style="display:inline-block;background:#b8551f;color:#ffffff;text-decoration:none;padding:12px 22px;border-radius:8px;font-weight:600;">${esc(ff.button)}</a>
+        </p>
+        ${familyDocRows.length ? `<div style="margin:14px 0 0;">
+          ${familyDocRows.map((r) => `<p style="margin:0 0 6px;"><a href="${r.url}" style="color:#0a58ca;text-decoration:underline;font-size:14px;">${esc(r.label)}</a></p>`).join("")}
+        </div>` : ""}
+      </div>`;
+    const ffText = `${ff.heading}
+${ff.body[0]}
+${ff.body[1]}
+${ff.steps.map((s, i) => `${i + 1}. ${s}`).join("\n")}
+${ff.button}: ${ff.url}
+${familyDocRows.map((r) => `- ${r.label}: ${r.url}`).join("\n")}`;
+
+
+
     const html = wrap(`
       <h1 style="font-size:22px;margin:0 0 14px;color:#0f172a;">${esc(w.heading)}</h1>
       <p style="margin:0 0 14px;">${esc(w.body[0])}</p>
@@ -343,8 +368,10 @@ export async function enqueueActivationEmails(p: ActivationEmailParams): Promise
           <a href="${CONFIGURE_URL}" style="display:inline-block;background:#1d4ed8;color:#ffffff;text-decoration:none;padding:12px 22px;border-radius:8px;font-weight:600;">${esc(w.configureButton)}</a>
         </p>
       </div>
+      ${ffBlock}
       <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;"/>
       <p style="margin:0;color:#666;font-size:12px;">${esc(w.footer)}</p>
+
     `);
     const text = `${w.heading}
 
@@ -372,6 +399,8 @@ ${w.configureHeading}
 ${w.configureBody}
 ${w.configureButton}: ${CONFIGURE_URL}
 
+${ffText}
+
 ${w.footer}`;
     await enqueueOne({
       to: clientEmail,
@@ -379,52 +408,11 @@ ${w.footer}`;
       html,
       text,
       label: "activation-client-welcome",
-      idempotencyKey: `activation-client-welcome-${p.sessionId}-v2`,
-    });
-
-    // 5) Separate family-forms email — print, sign, notarize, seal with family.
-    const ff = familyFormsContent(lang, clientName);
-    const ffHtml = wrap(`
-      <h1 style="font-size:22px;margin:0 0 14px;color:#0f172a;">${esc(ff.heading)}</h1>
-      <p style="margin:0 0 14px;">${esc(ff.body[0])}</p>
-      <p style="margin:0 0 20px;">${esc(ff.body[1])}</p>
-      <div style="border:1px solid #cbd5e1;background:#f8fafc;border-radius:8px;padding:16px;margin:0 0 22px;">
-        ${ff.steps.map((s, i) => `<p style="margin:0 0 8px;font-size:13px;color:#1f2937;"><strong>${i + 1}.</strong> ${esc(s)}</p>`).join("")}
-      </div>
-      <p style="margin:0 0 22px;text-align:center;">
-        <a href="${ff.url}" style="display:inline-block;background:#b8551f;color:#ffffff;text-decoration:none;padding:14px 26px;border-radius:8px;font-weight:600;font-size:16px;">${esc(ff.button)}</a>
-      </p>
-      ${familyDocRows.length ? `<div style="border:1px solid #d0d7de;border-radius:8px;padding:16px;background:#f6f8fa;margin:0 0 22px;">
-        <p style="margin:0 0 10px;font-size:14px;color:#0f172a;"><strong>${lang === "es" ? "Sus formularios familiares (para imprimir y notarizar)" : lang === "ht" ? "Fòm fanmi ou yo (pou enprime epi notarye)" : "Your family documents (print and notarize)"}</strong></p>
-        ${familyDocRows.map((r) => `<p style="margin:0 0 6px;"><a href="${r.url}" style="color:#0a58ca;text-decoration:underline;font-size:14px;">${esc(r.label)}</a></p>`).join("")}
-        <p style="margin:10px 0 0;font-size:11px;color:#666;">Secure download links expire in 14 days.</p>
-      </div>` : ""}
-
-      <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;"/>
-      <p style="margin:0;color:#666;font-size:12px;">${esc(ff.footer)}</p>
-    `);
-    const ffText = `${ff.heading}
-
-${ff.body[0]}
-
-${ff.body[1]}
-
-${ff.steps.map((s, i) => `${i + 1}. ${s}`).join("\n")}
-
-${ff.button}: ${ff.url}
-${familyDocRows.map((r) => `- ${r.label}: ${r.url}`).join("\n")}
-
-${ff.footer}`;
-
-    await enqueueOne({
-      to: clientEmail,
-      subject: ff.subject,
-      html: ffHtml,
-      text: ffText,
-      label: "activation-family-forms",
-      idempotencyKey: `activation-family-forms-${p.sessionId}-v1`,
+      idempotencyKey: `activation-client-welcome-${p.sessionId}-v3`,
     });
   }
+
+
 }
 
 

@@ -284,70 +284,26 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
   // Pet rescue removed from the product — nothing to persist.
 
 
-  // Generate the actual PDFs before the bundle is exposed to the phone.
-  // The phone expects raw base64 in `content`; placeholder prose causes its
-  // PDF viewer to open a blank white screen.
-  const toB64 = (bytes: Uint8Array) => Buffer.from(bytes).toString("base64");
-  const generated = new Map<string, string>();
-  try {
-    const [{ buildIntakePdfs }, { buildMotionReferralPdf }, { buildJs44Pdf }, { buildMemorandumOfLawPdf }] = await Promise.all([
-      import("@/lib/email/intake-pdfs.server"),
-      import("@/lib/email/motion-referral.server"),
-      import("@/lib/email/js44.server"),
-      import("@/lib/email/memorandum-of-law.server"),
-    ]);
-    const intake = await buildIntakePdfs(a);
-    generated.set("ao_242", toB64(intake.habeas));
-    generated.set("ao_240", toB64(intake.ifp));
-    generated.set("motion_for_counsel", toB64(await buildMotionReferralPdf(a)));
-    generated.set("civil_cover_sheet", toB64(await buildJs44Pdf(a)));
-    generated.set("memorandum_of_law", toB64(await buildMemorandumOfLawPdf(a)));
-  } catch (e) {
-    console.error("core app PDF generation failed", e);
-  }
+  // NO forms are built at signup any more. Everything the person told us is
+  // stored against their activation code; the attorney creates the packet on
+  // demand from the board once the person is detained and located.
+  const snapshot = await sb
+    .from("client_form_answers")
+    .upsert({ client_id: clientId, intake_snapshot: a as never } as never, {
+      onConflict: "client_id",
+    });
 
-  // Family Docs (power of attorney, school pickup, vehicle impound, bank
-  // access, property access) are NOT generated into or bundled with the app.
-  // They must be printed, signed and notarized, so they are emailed to the
-  // client separately (see the family-forms email in activation-emails.server).
-
-  // document_type strings MUST match Premio's router.
-  const coreLegalDocs: Array<{ type: string; title: string }> = [
-    { type: "ao_242", title: "AO 242 — Petition for Writ of Habeas Corpus" },
-    { type: "ao_240", title: "AO 240 — Application to Proceed In Forma Pauperis" },
-    { type: "civil_cover_sheet", title: "JS-44 — Civil Cover Sheet" },
-    { type: "motion_for_counsel", title: "SDFL Motion for Referral to Volunteer Attorney" },
-    { type: "memorandum_of_law", title: "Memorandum of Law" },
-  ];
-
-  const docSet = [...coreLegalDocs];
-
-
-
-
-  const seedDocs = docSet.map((d) => ({
-    client_id: clientId,
-    title: d.title,
-    content: generated.get(d.type) ?? "",
-    document_type: d.type,
-    send_on_alert: true,
-    from_app: false,
-  }));
-
-  const docInsert = await sb.from("client_documents").insert(seedDocs as never);
   await logDelivery({
     intakeSessionId: params.intakeSessionId,
     clientId,
     activationCode: code,
     step: "documents_generated",
-    status: docInsert.error ? "failed" : "success",
-    errorMessage: docInsert.error?.message ?? null,
-    target: "phone bundle",
-    metadata: {
-      documents: docSet.map((d) => d.type),
-      empty: docSet.filter((d) => !generated.get(d.type)).map((d) => d.type),
-    },
+    status: snapshot.error ? "failed" : "skipped",
+    errorMessage: snapshot.error?.message ?? "forms are created on demand after activation",
+    target: "attorney board",
+    metadata: { intake_answers_stored: !snapshot.error },
   });
+
 
   // Send activation email
   if (email) {

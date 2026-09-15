@@ -52,6 +52,16 @@ export async function buildAnswersForClient(clientId: string): Promise<Record<st
     if (a && typeof a === "object") answers = { ...a };
   }
 
+  // Fall back to the sign-up snapshot when the intake row is gone.
+  const { data: stored } = await supabaseAdmin
+    .from("client_form_answers")
+    .select("answers, intake_snapshot")
+    .eq("client_id", clientId)
+    .maybeSingle();
+  const snap = (stored as { intake_snapshot?: Record<string, unknown> } | null)?.intake_snapshot;
+  if (snap && typeof snap === "object") answers = { ...snap, ...answers };
+
+
   const set = (key: string, value: string | null | undefined) => {
     const v = (value ?? "").trim();
     if (v) answers[key] = v;
@@ -83,8 +93,18 @@ export async function buildAnswersForClient(clientId: string): Promise<Record<st
   set("federal_id", d["federal_id"]);
   set("locate_notes", d["notes"]);
 
+  // Attorney edits win over everything else.
+  const ov = (stored as { answers?: Record<string, unknown> } | null)?.answers;
+  if (ov && typeof ov === "object") {
+    for (const [k, v] of Object.entries(ov)) {
+      if (typeof v === "string" ? v.trim() !== "" : v != null) answers[k] = v;
+    }
+  }
+
+
   return answers;
 }
+
 
 /** True once the desk has recorded enough to remove every placeholder. */
 export async function locateIsComplete(clientId: string): Promise<boolean> {

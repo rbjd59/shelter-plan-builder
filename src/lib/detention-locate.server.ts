@@ -76,19 +76,21 @@ export async function saveDetentionInfoAndNotifyAttorney(input: DetentionInput) 
     recordId = (inserted as { id: string }).id;
   }
 
-  // Rebuild every legal form with the real facility/warden/address data so no
-  // placeholders survive. The attorney board reads review_status from here.
+  // Forms are NO LONGER built here. The attorney presses "Create forms" on the
+  // board once the locate details are in; this only reports whether enough has
+  // been recorded for a complete packet.
   let formsResult: { regenerated: string[]; failed: string[]; ready: boolean } = {
     regenerated: [],
     failed: [],
     ready: false,
   };
   try {
-    const { regenerateClientForms } = await import("@/lib/forms-regenerate.server");
-    formsResult = await regenerateClientForms(input.clientId);
+    const { locateIsComplete } = await import("@/lib/forms-regenerate.server");
+    formsResult.ready = await locateIsComplete(input.clientId);
   } catch (e) {
-    console.error("form regeneration after locate failed", e);
+    console.error("locate completeness check failed", e);
   }
+
 
   const { data: client } = await supabaseAdmin
     .from("app_clients")
@@ -101,8 +103,9 @@ export async function saveDetentionInfoAndNotifyAttorney(input: DetentionInput) 
   const c = (client ?? {}) as Record<string, string | null>;
   const code = c["invite_token"] ?? "—";
   const subject = formsResult.ready
-    ? `LOCATED — forms completed and ready for review: ${code} — ${c["full_name"] ?? "client"}`
+    ? `LOCATED — ready to create forms: ${code} — ${c["full_name"] ?? "client"}`
     : `LOCATED: ${code} — ${c["full_name"] ?? "client"} found at ${row.facility_name ?? "facility TBD"}`;
+
 
 
   const line = (label: string, value: string | null) =>
@@ -132,13 +135,14 @@ export async function saveDetentionInfoAndNotifyAttorney(input: DetentionInput) 
     `</div>` +
     (formsResult.ready
       ? `<div style="background:#ecfdf5;border-left:4px solid #047857;padding:12px;margin:12px 0;">` +
-        `<p style="margin:0;font-weight:bold;color:#065f46;">Forms completed — ready for review and mailing</p>` +
-        `<p style="margin:6px 0 0;font-size:13px;">${formsResult.regenerated.length} form(s) rebuilt with the facility, address, warden and A-number above. No placeholders remain.</p>` +
+        `<p style="margin:0;font-weight:bold;color:#065f46;">Ready to create the forms</p>` +
+        `<p style="margin:6px 0 0;font-size:13px;">Open the attorney board and press <strong>Create forms</strong>. The packet will be filled with the intake answers plus the facility, address, warden and A-number above, and can then be edited on screen.</p>` +
         `</div>`
       : `<div style="background:#fffbeb;border-left:4px solid #b45309;padding:12px;margin:12px 0;">` +
-        `<p style="margin:0;font-weight:bold;color:#92400e;">Forms updated — still incomplete</p>` +
+        `<p style="margin:0;font-weight:bold;color:#92400e;">Not enough yet to create the forms</p>` +
         `<p style="margin:6px 0 0;font-size:13px;">Facility name, mailing address and warden are all required before the packet is mailable.</p>` +
         `</div>`) +
+
     `<p style="font-size:13px;">Open the client file: ` +
     `<a href="https://detenciondefensa.com/attorney-board">attorney board</a>. ` +
     `Mail the completed packet to the person at the facility address above as a pro se litigant.</p>` +
@@ -155,8 +159,9 @@ export async function saveDetentionInfoAndNotifyAttorney(input: DetentionInput) 
     `Arrest date: ${row.arrest_date ?? "—"}\n` +
     `Notes: ${row.notes ?? "—"}\n` +
     (formsResult.ready
-      ? `\nForms completed — ready for review and mailing (${formsResult.regenerated.join(", ")}).\n`
-      : `\nForms updated but incomplete — facility, address and warden are all required.\n`);
+      ? `\nReady to create the forms — open the attorney board and press "Create forms".\n`
+      : `\nNot enough yet — facility, address and warden are all required.\n`);
+
 
 
   const messageId = `locate_${recordId}_${Date.now()}`;

@@ -484,3 +484,84 @@ export const pinSaveLocateInfo = createServerFn({ method: "POST" })
     const { pin: _pin, ...rest } = data;
     return saveDetentionInfoAndNotifyAttorney(rest);
   });
+
+/**
+ * The merged answer sheet behind a client's forms: intake answers, the locate
+ * desk's data, and any corrections the attorney has already saved.
+ */
+export const pinGetFormAnswers = createServerFn({ method: "POST" })
+  .inputValidator((d: { pin: string; clientId: string }) => d)
+  .handler(async ({ data }) => {
+    check(data.pin);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { buildAnswersForClient, locateIsComplete } = await import(
+      "@/lib/forms-regenerate.server"
+    );
+    const { REQUIRED_FORM_FIELDS } = await import("@/lib/form-fields");
+
+    const [{ data: client }, answers, locateReady] = await Promise.all([
+      supabaseAdmin
+        .from("app_clients")
+        .select("id, invite_token, full_name, language, activated_at")
+        .eq("id", data.clientId)
+        .maybeSingle(),
+      buildAnswersForClient(data.clientId),
+      locateIsComplete(data.clientId),
+    ]);
+    if (!client) throw new Error("Client not found");
+
+    const { data: docs } = await supabaseAdmin
+      .from("client_documents")
+      .select("id, title, document_type, review_status, loaded_at")
+      .eq("client_id", data.clientId)
+      .eq("from_app", false)
+      .order("loaded_at", { ascending: true });
+
+    const flat: Record<string, string> = {};
+    for (const [k, v] of Object.entries(answers)) {
+      if (v == null) continue;
+      flat[k] = typeof v === "string" ? v : typeof v === "object" ? JSON.stringify(v) : String(v);
+    }
+    const missing = REQUIRED_FORM_FIELDS.filter((k) => !(flat[k] ?? "").trim());
+
+    return {
+      client,
+      answers: flat,
+      missing,
+      locate_ready: locateReady,
+      documents: docs ?? [],
+    };
+  });
+
+/** Saves the attorney's corrections. They override intake and locate data. */
+export const pinSaveFormAnswers = createServerFn({ method: "POST" })
+  .inputValidator((d: { pin: string; clientId: string; answers: Record<string, string> }) => d)
+  .handler(async ({ data }) => {
+    check(data.pin);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const cleaned: Record<string, string> = {};
+    for (const [k, v] of Object.entries(data.answers ?? {})) {
+      const s = (v ?? "").trim();
+      if (s) cleaned[k] = s;
+    }
+    const { error } = await supabaseAdmin.from("client_form_answers").upsert(
+      {
+        client_id: data.clientId,
+        answers: cleaned as never,
+        updated_by: "attorney-board",
+        updated_at: new Date().toISOString(),
+      } as never,
+      { onConflict: "client_id" },
+    );
+    if (error) throw new Error(error.message);
+    return { ok: true, saved: Object.keys(cleaned).length };
+  });
+
+/** Builds (or rebuilds) the whole packet on demand from the current answers. */
+export const pinGenerateForms = createServerFn({ method: "POST" })
+  .inputValidator((d: { pin: string; clientId: string }) => d)
+  .handler(async ({ data }) => {
+    check(data.pin);
+    const { regenerateClientForms } = await import("@/lib/forms-regenerate.server");
+    return regenerateClientForms(data.clientId);
+  });
