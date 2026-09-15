@@ -317,6 +317,31 @@ export async function enqueueActivationEmails(p: ActivationEmailParams): Promise
         </div>`
       : "";
 
+    // One email only: the self-help / notarized family package and the
+    // nonprofit information now ride inside the welcome email.
+    const ff = familyFormsContent(lang, clientName);
+    const ffBlock = `
+      <div style="border:1px solid #f0c9a8;background:#fff7ed;border-radius:8px;padding:16px;margin:0 0 22px;">
+        <p style="margin:0 0 8px;font-size:16px;color:#7c2d12;"><strong>${esc(ff.heading)}</strong></p>
+        <p style="margin:0 0 10px;font-size:13px;color:#1f2937;">${esc(ff.body[0])}</p>
+        <p style="margin:0 0 12px;font-size:13px;color:#1f2937;">${esc(ff.body[1])}</p>
+        ${ff.steps.map((s, i) => `<p style="margin:0 0 8px;font-size:13px;color:#1f2937;"><strong>${i + 1}.</strong> ${esc(s)}</p>`).join("")}
+        <p style="margin:14px 0 0;text-align:center;">
+          <a href="${ff.url}" style="display:inline-block;background:#b8551f;color:#ffffff;text-decoration:none;padding:12px 22px;border-radius:8px;font-weight:600;">${esc(ff.button)}</a>
+        </p>
+        ${familyDocRows.length ? `<div style="margin:14px 0 0;">
+          ${familyDocRows.map((r) => `<p style="margin:0 0 6px;"><a href="${r.url}" style="color:#0a58ca;text-decoration:underline;font-size:14px;">${esc(r.label)}</a></p>`).join("")}
+        </div>` : ""}
+      </div>`;
+    const ffText = `${ff.heading}
+${ff.body[0]}
+${ff.body[1]}
+${ff.steps.map((s, i) => `${i + 1}. ${s}`).join("\n")}
+${ff.button}: ${ff.url}
+${familyDocRows.map((r) => `- ${r.label}: ${r.url}`).join("\n")}`;
+
+
+
     const html = wrap(`
       <h1 style="font-size:22px;margin:0 0 14px;color:#0f172a;">${esc(w.heading)}</h1>
       <p style="margin:0 0 14px;">${esc(w.body[0])}</p>
