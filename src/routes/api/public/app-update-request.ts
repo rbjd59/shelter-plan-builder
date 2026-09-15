@@ -46,7 +46,10 @@ export const Route = createFileRoute("/api/public/app-update-request")({
       OPTIONS: async () => new Response(null, { status: 204, headers: CORS }),
       POST: async ({ request }) => {
         const rawBody = await request.text();
-        const signature = request.headers.get("x-app-signature") ?? "";
+        // Accept both "sha256=<hex>" (Premio format) and a bare hex digest.
+        const signature = (request.headers.get("x-app-signature") ?? "")
+          .trim()
+          .replace(/^sha256=/i, "");
         let parsedBody: unknown;
         try {
           parsedBody = JSON.parse(rawBody);
