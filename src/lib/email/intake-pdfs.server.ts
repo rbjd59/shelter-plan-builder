@@ -103,11 +103,11 @@ async function fillAO242(a: A): Promise<Uint8Array> {
   setText(form, "Petitioner", petitionerName);
   setText(form, "Respondent", respondent || "Warden of the facility of confinement");
 
-  // Question 2: name of institution / address. Intentionally left BLANK —
-  // the petitioner fills these in after detention, since the facility is
-  // not known until ICE designates one.
-  setText(form, "a  Name of institution", "");
-  setText(form, "b  Address", "");
+  // Question 2: name of institution / address. Filled from the locate desk
+  // once the facility is known; left blank before detention so the
+  // petitioner can handwrite it.
+  setText(form, "a  Name of institution", facilityName);
+  setText(form, "b  Address", facilityAddress);
   setText(form, "c Your identification number", inmateNumber);
 
   setCheckOption(form, "personal3", "federal");
