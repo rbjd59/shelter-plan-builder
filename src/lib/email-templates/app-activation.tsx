@@ -18,6 +18,7 @@ interface Props {
   code?: string;
   language?: "en" | "es" | "ht";
   apkUrl?: string;
+  qrUrl?: string;
   testflightUrl?: string;
   fullName?: string;
 }
@@ -125,6 +126,7 @@ const Email = ({
   apkUrl,
   testflightUrl,
   fullName = "",
+  qrUrl = "https://detenciondefensa.com/qr-get-app.png",
 }: Props) => {
   const normalizedLanguage = normalizeEmailLanguage(language);
   const t = COPY[normalizedLanguage];
