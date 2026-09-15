@@ -289,9 +289,10 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
   // demand from the board once the person is detained and located.
   const snapshot = await sb
     .from("client_form_answers")
-    .upsert({ client_id: clientId, answers: a as never, updated_by: "intake" } as never, {
+    .upsert({ client_id: clientId, intake_snapshot: a as never } as never, {
       onConflict: "client_id",
     });
+
   await logDelivery({
     intakeSessionId: params.intakeSessionId,
     clientId,
