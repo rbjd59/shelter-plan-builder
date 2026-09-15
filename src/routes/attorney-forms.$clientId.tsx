@@ -39,6 +39,7 @@ function FormEditor({ pin, clientId }: { pin: string; clientId: string }) {
   const saveFn = useServerFn(pinSaveFormAnswers);
   const buildFn = useServerFn(pinGenerateForms);
   const downloadFn = useServerFn(pinDownloadDocument);
+  const preview = usePdfPreview();
 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["attorney-form-answers", clientId],
