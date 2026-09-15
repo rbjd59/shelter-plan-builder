@@ -52,6 +52,16 @@ export async function buildAnswersForClient(clientId: string): Promise<Record<st
     if (a && typeof a === "object") answers = { ...a };
   }
 
+  // Fall back to the sign-up snapshot when the intake row is gone.
+  const { data: stored } = await supabaseAdmin
+    .from("client_form_answers")
+    .select("answers, intake_snapshot")
+    .eq("client_id", clientId)
+    .maybeSingle();
+  const snap = (stored as { intake_snapshot?: Record<string, unknown> } | null)?.intake_snapshot;
+  if (snap && typeof snap === "object") answers = { ...snap, ...answers };
+
+
   const set = (key: string, value: string | null | undefined) => {
     const v = (value ?? "").trim();
     if (v) answers[key] = v;
