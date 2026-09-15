@@ -51,7 +51,12 @@ export const Route = createFileRoute("/api/public/app/update-info")({
           return json({ ok: false, error: parsed.error.flatten() }, { status: 400 });
         }
 
-        const caseId = (parsed.data.case_id ?? parsed.data.token ?? "").trim().toUpperCase();
+        // Tolerate "RVW26-EN" (code + language suffix), like activation,
+        // trigger, and the primary update endpoint.
+        const caseId = (parsed.data.case_id ?? parsed.data.token ?? "")
+          .trim()
+          .toUpperCase()
+          .split("-")[0];
         if (!/^[A-Z0-9]{5,8}$/.test(caseId)) {
           return json({ ok: false, error: "invalid_case_id" }, { status: 400 });
         }
