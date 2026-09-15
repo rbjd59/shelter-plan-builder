@@ -159,8 +159,9 @@ export async function saveDetentionInfoAndNotifyAttorney(input: DetentionInput) 
     `Arrest date: ${row.arrest_date ?? "—"}\n` +
     `Notes: ${row.notes ?? "—"}\n` +
     (formsResult.ready
-      ? `\nForms completed — ready for review and mailing (${formsResult.regenerated.join(", ")}).\n`
-      : `\nForms updated but incomplete — facility, address and warden are all required.\n`);
+      ? `\nReady to create the forms — open the attorney board and press "Create forms".\n`
+      : `\nNot enough yet — facility, address and warden are all required.\n`);
+
 
 
   const messageId = `locate_${recordId}_${Date.now()}`;
