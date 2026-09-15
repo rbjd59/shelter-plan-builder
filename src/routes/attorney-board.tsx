@@ -133,7 +133,7 @@ function AttorneyBoard({ pin }: { pin: string }) {
                       <td className="px-4 py-2">
                         {r.full_name ?? <span className="text-slate-400">—</span>}
                         <div className="text-[11px] text-slate-500">
-                          {r.email ?? "no email"}
+                          Their own: {r.email ?? "no email"}
                           {r.phone ? ` · ${r.phone}` : ""}
                         </div>
                       </td>
