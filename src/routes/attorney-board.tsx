@@ -330,12 +330,14 @@ function ClientDetail({ pin, clientId }: { pin: string; clientId: string }) {
       <div className="grid gap-4 sm:grid-cols-2 text-xs">
 
         <div className="rounded border border-slate-200 bg-white p-3">
-          <div className="font-bold uppercase tracking-wide text-slate-500 mb-1">Client</div>
+          <div className="font-bold uppercase tracking-wide text-slate-500 mb-1">
+            The detained person
+          </div>
           <div>{client.full_name ?? "—"}</div>
           <div className="font-mono text-slate-700">A# {client.a_number ?? "—"}</div>
           <div className="text-slate-600">DOB: {client.date_of_birth ?? "—"}</div>
-          <div className="text-slate-600">{client.email ?? "no email"}</div>
-          <div className="text-slate-600">{client.phone_e164 ?? "no phone"}</div>
+          <div className="text-slate-600">Their own email: {client.email ?? "none on file"}</div>
+          <div className="text-slate-600">Their own phone: {client.phone_e164 ?? "none on file"}</div>
           <div className="mt-1 text-slate-500">
             Birth place: {client.place_of_birth ?? "—"} · {client.country_of_origin ?? "—"}
           </div>
@@ -343,26 +345,52 @@ function ClientDetail({ pin, clientId }: { pin: string; clientId: string }) {
 
         <div className="rounded border border-slate-200 bg-white p-3">
           <div className="font-bold uppercase tracking-wide text-slate-500 mb-1">
-            Emergency contacts ({contacts.length})
+            Who to call for this person
           </div>
           {contactsUpdatedAt && (
             <div className="mb-1 text-slate-500">
               Last updated: {new Date(contactsUpdatedAt).toLocaleString()}
             </div>
           )}
-          {contacts.length === 0 && <div className="text-slate-500">None.</div>}
-          <ul className="space-y-1">
-            {contacts.map((c: any) => (
-              <li key={c.id}>
-                <span className="font-semibold">{c.name}</span>
-                {c.relationship ? ` · ${c.relationship}` : ""}
-                <span className="ml-1 rounded bg-slate-100 px-1.5 py-0.5 font-semibold uppercase text-slate-600">
-                  {c.role ?? "family"}
-                </span>
-                <div className="text-slate-600">{c.phone_e164 ?? "—"} · {c.email ?? "—"}</div>
-              </li>
-            ))}
-          </ul>
+          {(() => {
+            const family = contacts.filter((c: any) => (c.role ?? "family") === "family");
+            const internal = contacts.filter((c: any) => (c.role ?? "family") !== "family");
+            return (
+              <>
+                <div className="mb-0.5 font-semibold text-slate-700">
+                  Family contacts ({family.length})
+                </div>
+                {family.length === 0 && (
+                  <div className="text-slate-500">No family contact on file.</div>
+                )}
+                <ul className="space-y-1">
+                  {family.map((c: any) => (
+                    <li key={c.id}>
+                      <span className="font-semibold">{c.name}</span>
+                      {c.relationship ? ` · ${c.relationship}` : ""}
+                      <div className="text-slate-600">
+                        {c.phone_e164 ?? "—"} · {c.email ?? "—"}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+                {internal.length > 0 && (
+                  <>
+                    <div className="mt-2 mb-0.5 font-semibold text-slate-700">
+                      Always notified (legal team, not family)
+                    </div>
+                    <ul className="space-y-1">
+                      {internal.map((c: any) => (
+                        <li key={c.id} className="text-slate-500">
+                          {c.name} · {c.email ?? c.phone_e164 ?? "—"}
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+              </>
+            );
+          })()}
         </div>
       </div>
 
