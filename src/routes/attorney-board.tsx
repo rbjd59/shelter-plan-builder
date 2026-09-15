@@ -501,3 +501,150 @@ function ClientDetail({ pin, clientId }: { pin: string; clientId: string }) {
     </div>
   );
 }
+
+const LOCATE_FIELDS: Array<{ key: string; label: string; type?: string; multiline?: boolean }> = [
+  { key: "facility_name", label: "Facility" },
+  { key: "facility_address", label: "Mailing address", multiline: true },
+  { key: "warden_name", label: "Warden / officer in charge" },
+  { key: "a_number", label: "A-number" },
+  { key: "arrest_date", label: "Date of arrest", type: "date" },
+  { key: "federal_id", label: "Booking / federal ID" },
+  { key: "notes", label: "Notes", multiline: true },
+];
+
+/**
+ * Where the locate details are entered and the packet is created. Nothing is
+ * generated at signup — the attorney presses "Create forms" here once the
+ * facility, mailing address and warden are known.
+ */
+function LocateAndForms({
+  pin,
+  clientId,
+  detention,
+  client,
+}: {
+  pin: string;
+  clientId: string;
+  detention: any;
+  client: any;
+}) {
+  const saveLocate = useServerFn(pinSaveLocateInfo);
+  const buildForms = useServerFn(pinGenerateForms);
+  const queryClient = useQueryClient();
+
+  const [values, setValues] = React.useState<Record<string, string>>(() => {
+    const seed: Record<string, string> = {};
+    for (const f of LOCATE_FIELDS) seed[f.key] = (detention?.[f.key] as string) ?? "";
+    if (!seed["a_number"]) seed["a_number"] = client?.a_number ?? "";
+    return seed;
+  });
+  const [busy, setBusy] = React.useState(false);
+  const [status, setStatus] = React.useState<string | null>(null);
+
+  const ready = Boolean(
+    values["facility_name"]?.trim() &&
+      values["facility_address"]?.trim() &&
+      values["warden_name"]?.trim(),
+  );
+
+  const refresh = () =>
+    queryClient.invalidateQueries({ queryKey: ["attorney-client", clientId] });
+
+  const onSave = async () => {
+    setBusy(true);
+    setStatus(null);
+    try {
+      await saveLocate({ data: { pin, clientId, ...values, located_by: "attorney-board" } });
+      setStatus("Location saved.");
+      await refresh();
+    } catch (e) {
+      setStatus(`Could not save: ${(e as Error).message}`);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const onBuild = async () => {
+    setBusy(true);
+    setStatus(null);
+    try {
+      await saveLocate({ data: { pin, clientId, ...values, located_by: "attorney-board" } });
+      const res = await buildForms({ data: { pin, clientId } });
+      setStatus(
+        res.failed.length
+          ? `Created ${res.regenerated.length} form(s); ${res.failed.length} failed.`
+          : `Created ${res.regenerated.length} form(s) from the intake answers and the details above.`,
+      );
+      await refresh();
+    } catch (e) {
+      setStatus(`Could not create the forms: ${(e as Error).message}`);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div className="rounded border border-slate-300 bg-white p-3">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h3 className="text-xs font-bold uppercase tracking-wide text-slate-700">
+          Locate details and forms
+        </h3>
+        <Link
+          to="/attorney-forms/$clientId"
+          params={{ clientId }}
+          className="text-xs font-semibold underline"
+          style={{ color: "#6B4F4F" }}
+        >
+          Open the full editable form sheet →
+        </Link>
+      </div>
+      <div className="mt-3 grid gap-3 sm:grid-cols-2">
+        {LOCATE_FIELDS.map((f) => (
+          <label key={f.key} className={`block text-xs ${f.multiline ? "sm:col-span-2" : ""}`}>
+            <span className="font-semibold text-slate-600">{f.label}</span>
+            {f.multiline ? (
+              <textarea
+                rows={2}
+                value={values[f.key] ?? ""}
+                onChange={(e) => setValues((v) => ({ ...v, [f.key]: e.target.value }))}
+                className="mt-1 w-full rounded border border-slate-300 px-2 py-1.5 text-sm"
+              />
+            ) : (
+              <input
+                type={f.type === "date" ? "date" : "text"}
+                value={values[f.key] ?? ""}
+                onChange={(e) => setValues((v) => ({ ...v, [f.key]: e.target.value }))}
+                className="mt-1 w-full rounded border border-slate-300 px-2 py-1.5 text-sm"
+              />
+            )}
+          </label>
+        ))}
+      </div>
+      <div className="mt-3 flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          onClick={() => void onSave()}
+          disabled={busy}
+          className="rounded border border-slate-300 px-3 py-1.5 text-xs font-semibold disabled:opacity-60"
+        >
+          {busy ? "Working…" : "Save location"}
+        </button>
+        <button
+          type="button"
+          onClick={() => void onBuild()}
+          disabled={busy || !ready}
+          className="rounded bg-emerald-700 px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-50"
+          title={ready ? "" : "Facility, mailing address and warden are required first"}
+        >
+          Create forms
+        </button>
+        {!ready && (
+          <span className="text-xs text-slate-500">
+            Facility, mailing address and warden are needed before the forms can be created.
+          </span>
+        )}
+        {status && <span className="text-xs text-slate-700">{status}</span>}
+      </div>
+    </div>
+  );
+}
