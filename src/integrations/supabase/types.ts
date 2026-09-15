@@ -479,6 +479,7 @@ export type Database = {
           client_id: string
           created_at: string
           id: string
+          intake_snapshot: Json
           updated_at: string
           updated_by: string | null
         }
@@ -487,6 +488,7 @@ export type Database = {
           client_id: string
           created_at?: string
           id?: string
+          intake_snapshot?: Json
           updated_at?: string
           updated_by?: string | null
         }
@@ -495,6 +497,7 @@ export type Database = {
           client_id?: string
           created_at?: string
           id?: string
+          intake_snapshot?: Json
           updated_at?: string
           updated_by?: string | null
         }
