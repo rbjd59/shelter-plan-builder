@@ -106,11 +106,10 @@ function PdfPages({ b64, filename }: { b64: string; filename: string }) {
           canvas.className = "mx-auto block max-w-full bg-white shadow";
           host.appendChild(canvas);
           await page.render({
-            canvas,
             canvasContext: context,
             viewport,
             transform: pixelRatio === 1 ? undefined : [pixelRatio, 0, 0, pixelRatio, 0, 0],
-          }).promise;
+          } as Parameters<typeof page.render>[0]).promise;
         }
       } catch (cause) {
         if (!cancelled) {
