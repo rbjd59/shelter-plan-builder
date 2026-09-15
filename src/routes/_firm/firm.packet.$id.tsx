@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
+import { downloadPdfFromBase64, usePdfPreview } from "@/components/PdfPreviewDialog";
 import {
   approveAndReleasePacket,
   emailPacketToMe,
@@ -27,25 +28,6 @@ export const Route = createFileRoute("/_firm/firm/packet/$id")({
   ),
 });
 
-function downloadFromBase64(base64: string, filename: string, openInline: boolean) {
-  const binary = atob(base64);
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-  const blob = new Blob([bytes], { type: "application/pdf" });
-  const url = URL.createObjectURL(blob);
-  if (openInline) {
-    window.open(url, "_blank", "noopener");
-  } else {
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-  }
-  setTimeout(() => URL.revokeObjectURL(url), 60_000);
-}
-
 function FirmPacketPage() {
   const { id } = Route.useParams();
   const fetchManifest = useServerFn(getPacketManifest);
@@ -59,6 +41,7 @@ function FirmPacketPage() {
   const [busyDoc, setBusyDoc] = useState<string | null>(null);
   const [overrideEmail, setOverrideEmail] = useState("");
   const [reviewNotes, setReviewNotes] = useState("");
+  const pdfPreview = usePdfPreview();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["firm", "packet", id],
@@ -95,7 +78,8 @@ function FirmPacketPage() {
       const res = await preview({
         data: { intakeSessionId: id, docKey: docKey as never },
       });
-      downloadFromBase64(res.base64, res.filename, mode === "preview");
+      if (mode === "preview") pdfPreview.open(res.base64, res.filename);
+      else downloadPdfFromBase64(res.filename, res.base64);
     } finally {
       setBusyDoc(null);
     }
@@ -108,6 +92,7 @@ function FirmPacketPage() {
 
   return (
     <div className="space-y-6">
+      {pdfPreview.viewer}
       <div>
         <Link to="/firm/queue" className="text-xs text-amber-700 hover:text-amber-900">
           ← Back to queue
