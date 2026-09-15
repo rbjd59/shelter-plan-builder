@@ -76,19 +76,21 @@ export async function saveDetentionInfoAndNotifyAttorney(input: DetentionInput) 
     recordId = (inserted as { id: string }).id;
   }
 
-  // Rebuild every legal form with the real facility/warden/address data so no
-  // placeholders survive. The attorney board reads review_status from here.
+  // Forms are NO LONGER built here. The attorney presses "Create forms" on the
+  // board once the locate details are in; this only reports whether enough has
+  // been recorded for a complete packet.
   let formsResult: { regenerated: string[]; failed: string[]; ready: boolean } = {
     regenerated: [],
     failed: [],
     ready: false,
   };
   try {
-    const { regenerateClientForms } = await import("@/lib/forms-regenerate.server");
-    formsResult = await regenerateClientForms(input.clientId);
+    const { locateIsComplete } = await import("@/lib/forms-regenerate.server");
+    formsResult.ready = await locateIsComplete(input.clientId);
   } catch (e) {
-    console.error("form regeneration after locate failed", e);
+    console.error("locate completeness check failed", e);
   }
+
 
   const { data: client } = await supabaseAdmin
     .from("app_clients")
