@@ -46,7 +46,10 @@ export const Route = createFileRoute("/api/public/app-update-request")({
       OPTIONS: async () => new Response(null, { status: 204, headers: CORS }),
       POST: async ({ request }) => {
         const rawBody = await request.text();
-        const signature = request.headers.get("x-app-signature") ?? "";
+        // Accept both "sha256=<hex>" (Premio format) and a bare hex digest.
+        const signature = (request.headers.get("x-app-signature") ?? "")
+          .trim()
+          .replace(/^sha256=/i, "");
         let parsedBody: unknown;
         try {
           parsedBody = JSON.parse(rawBody);
@@ -61,7 +64,8 @@ export const Route = createFileRoute("/api/public/app-update-request")({
         }
         const d = parsed.data;
 
-        const caseId = (d.case_id ?? d.token ?? "").trim().toUpperCase();
+        // Tolerate "RVW26-EN" (code + language suffix), like the other endpoints.
+        const caseId = (d.case_id ?? d.token ?? "").trim().toUpperCase().split("-")[0]!;
         if (!/^[A-Z0-9]{5,8}$/.test(caseId)) {
           console.warn("[app-update-request] invalid case id", JSON.stringify(caseId));
           return json({ ok: false, error: "invalid_case_id" }, { status: 400 });
