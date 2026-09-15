@@ -87,8 +87,8 @@ function AttorneyBoard({ pin }: { pin: string }) {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6">
-      <div className="mx-auto max-w-6xl space-y-5">
+    <div className="min-h-screen w-full overflow-x-hidden bg-slate-50 p-3 sm:p-6">
+      <div className="mx-auto w-full max-w-6xl space-y-5">
         <header>
           <h1 className="text-2xl font-bold" style={{ color: "#6B4F4F" }}>
             Attorney Board — Client Files
