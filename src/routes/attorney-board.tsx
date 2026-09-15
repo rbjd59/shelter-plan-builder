@@ -222,6 +222,7 @@ function ClientDetail({ pin, clientId }: { pin: string; clientId: string }) {
   });
 
   const [busy, setBusy] = React.useState<string | null>(null);
+  const preview = usePdfPreview();
 
   const runDoc = async (
     docId: string,
@@ -232,7 +233,7 @@ function ClientDetail({ pin, clientId }: { pin: string; clientId: string }) {
     setBusy(`${docId}:${mode}`);
     try {
       const res = await downloadFn({ data: { pin, documentId: docId } });
-      if (mode === "preview") previewPdfFromBase64(res.pdfB64);
+      if (mode === "preview") preview.open(res.pdfB64, res.filename);
       else downloadPdfFromBase64(res.filename, res.pdfB64);
     } catch (e) {
       console.error("PDF action failed, falling back to text", e);
