@@ -108,13 +108,12 @@ function FormEditor({ pin, clientId }: { pin: string; clientId: string }) {
 
   const openPdf = async (documentId: string) => {
     const res = await downloadFn({ data: { pin, documentId } });
-    const url = URL.createObjectURL(pdfBlobFromBase64(res.pdfB64));
-    window.open(url, "_blank", "noopener,noreferrer");
-    setTimeout(() => URL.revokeObjectURL(url), 60_000);
+    preview.open(res.pdfB64, res.filename);
   };
 
   return (
     <div className="min-h-screen bg-slate-50 p-6">
+      {preview.viewer}
       <div className="mx-auto max-w-4xl space-y-5">
         <header>
           <Link to="/attorney-board" className="text-xs font-semibold underline text-slate-600">
