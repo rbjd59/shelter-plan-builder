@@ -473,6 +473,41 @@ export type Database = {
           },
         ]
       }
+      client_form_answers: {
+        Row: {
+          answers: Json
+          client_id: string
+          created_at: string
+          id: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          answers?: Json
+          client_id: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          answers?: Json
+          client_id?: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_form_answers_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: true
+            referencedRelation: "app_clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       client_pet_rescue: {
         Row: {
           access_instructions: string | null
