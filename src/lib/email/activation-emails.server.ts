@@ -399,6 +399,8 @@ ${w.configureHeading}
 ${w.configureBody}
 ${w.configureButton}: ${CONFIGURE_URL}
 
+${ffText}
+
 ${w.footer}`;
     await enqueueOne({
       to: clientEmail,
@@ -406,9 +408,10 @@ ${w.footer}`;
       html,
       text,
       label: "activation-client-welcome",
-      idempotencyKey: `activation-client-welcome-${p.sessionId}-v2`,
+      idempotencyKey: `activation-client-welcome-${p.sessionId}-v3`,
     });
   }
+
 
 }
 
