@@ -368,8 +368,10 @@ ${familyDocRows.map((r) => `- ${r.label}: ${r.url}`).join("\n")}`;
           <a href="${CONFIGURE_URL}" style="display:inline-block;background:#1d4ed8;color:#ffffff;text-decoration:none;padding:12px 22px;border-radius:8px;font-weight:600;">${esc(w.configureButton)}</a>
         </p>
       </div>
+      ${ffBlock}
       <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;"/>
       <p style="margin:0;color:#666;font-size:12px;">${esc(w.footer)}</p>
+
     `);
     const text = `${w.heading}
 
