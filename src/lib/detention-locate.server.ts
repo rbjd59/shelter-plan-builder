@@ -103,8 +103,9 @@ export async function saveDetentionInfoAndNotifyAttorney(input: DetentionInput) 
   const c = (client ?? {}) as Record<string, string | null>;
   const code = c["invite_token"] ?? "—";
   const subject = formsResult.ready
-    ? `LOCATED — forms completed and ready for review: ${code} — ${c["full_name"] ?? "client"}`
+    ? `LOCATED — ready to create forms: ${code} — ${c["full_name"] ?? "client"}`
     : `LOCATED: ${code} — ${c["full_name"] ?? "client"} found at ${row.facility_name ?? "facility TBD"}`;
+
 
 
   const line = (label: string, value: string | null) =>
