@@ -18,6 +18,7 @@ interface Props {
   code?: string;
   language?: "en" | "es" | "ht";
   apkUrl?: string;
+  qrUrl?: string;
   testflightUrl?: string;
   fullName?: string;
 }
@@ -118,6 +119,23 @@ const COPY = {
   },
 };
 
+const QR_COPY = {
+  en: {
+    title: "Scan this code with your phone camera",
+    help: "Open the Camera app on your Android phone, point it at this square, and tap the link that appears. The download starts automatically.",
+    codeNote: (c: string) => `After installing, open the app and enter your activation code: ${c}`,
+  },
+  es: {
+    title: "Escanee este codigo con la camara de su telefono",
+    help: "Abra la camara de su telefono Android, apuntela a este cuadro y toque el enlace que aparece. La descarga comienza automaticamente.",
+    codeNote: (c: string) => `Despues de instalar, abra la app e ingrese su codigo de activacion: ${c}`,
+  },
+  ht: {
+    title: "Eskane kod sa a ak kamera telefòn ou",
+    help: "Ouvri kamera telefòn Android ou, vize kare sa a, epi peze lyen ki parèt la. Telechajman an kòmanse otomatikman.",
+    codeNote: (c: string) => `Apre enstalasyon an, ouvri app la epi antre kòd aktivasyon ou: ${c}`,
+  },
+};
 
 const Email = ({
   code = "XXXXXXXX",
@@ -125,6 +143,7 @@ const Email = ({
   apkUrl,
   testflightUrl,
   fullName = "",
+  qrUrl = "https://detenciondefensa.com/qr-get-app.png",
 }: Props) => {
   const normalizedLanguage = normalizeEmailLanguage(language);
   const t = COPY[normalizedLanguage];
@@ -161,6 +180,22 @@ const Email = ({
             <br />
             <Text style={comingSoon}>{t.iosBtn}</Text>
           </Section>
+
+          {qrUrl ? (
+            <Section style={qrBox}>
+              <Text style={qrTitleStyle}>{QR_COPY[normalizedLanguage].title}</Text>
+              <img
+                src={qrUrl}
+                width={190}
+                height={190}
+                alt={QR_COPY[normalizedLanguage].title}
+                style={{ display: "block", margin: "0 auto", border: "1px solid #e5e7eb", borderRadius: "8px" }}
+              />
+              <Text style={qrHelpStyle}>{QR_COPY[normalizedLanguage].help}</Text>
+              <Text style={qrHelpStyle}>{QR_COPY[normalizedLanguage].codeNote(code)}</Text>
+            </Section>
+          ) : null}
+
 
           <Heading as="h2" style={h2}>{t.setupTitle}</Heading>
           <Section style={manualBox}>
@@ -245,3 +280,13 @@ const btnSecondary = {
 };
 const hr = { borderColor: "#e5e7eb", margin: "24px 0" };
 const small = { color: "#6b7280", fontSize: "12px", lineHeight: "18px", margin: "8px 0" };
+const qrBox = {
+  background: "#ffffff",
+  border: "2px solid #0b1220",
+  borderRadius: "10px",
+  padding: "18px",
+  textAlign: "center" as const,
+  margin: "8px 0 24px",
+};
+const qrTitleStyle = { color: "#0b1220", fontSize: "15px", fontWeight: 700, margin: "0 0 12px" };
+const qrHelpStyle = { color: "#374151", fontSize: "13px", lineHeight: "19px", margin: "10px 0 0" };
