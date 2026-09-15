@@ -1,8 +1,5 @@
 import { useState } from "react";
-
-const PIN = "5688";
-// Must match SHARED_KEY in PinAccessGate so the boards don't ask again.
-const SHARED_KEY = "dd_pin_ok";
+import { STAFF_PIN as PIN, rememberStaffPin } from "@/lib/staff-pin";
 
 /**
  * Renders a single tile-styled button that opens a modal containing the
@@ -52,17 +49,14 @@ function PinModal({ onClose }: { onClose: () => void }) {
       setPin("");
       return;
     }
-    try {
-      sessionStorage.setItem(SHARED_KEY, PIN);
-      localStorage.setItem(SHARED_KEY, PIN);
-    } catch {
-      /* ignore */
-    }
+    const persisted = rememberStaffPin(PIN);
     // Carry the PIN through the navigation as well as saving it locally. This
     // keeps board access intact even when the hosting layer changes domains
     // during navigation (browser storage is scoped to the old domain).
     const boardPath = role === "company" ? "/company-board" : "/attorney-board";
-    window.location.assign(`${boardPath}?pin=${encodeURIComponent(PIN)}`);
+    window.location.assign(
+      persisted ? boardPath : `${boardPath}?pin=${encodeURIComponent(PIN)}`,
+    );
     onClose();
   };
 

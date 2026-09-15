@@ -1,8 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
-
-const PIN = "5688";
-// Single shared unlock key: one PIN entry unlocks both staff boards for the session.
-const SHARED_KEY = "dd_pin_ok";
+import { STAFF_PIN as PIN, rememberStaffPin, readStaffPin } from "@/lib/staff-pin";
 
 export default function PinAccessGate({
   storageKey: _storageKey,
@@ -21,28 +18,28 @@ export default function PinAccessGate({
 
   useEffect(() => {
     try {
-      // 1) PIN passed in the URL (?pin=5688) — survives cross-domain hops.
-      const fromUrl = new URL(window.location.href).searchParams.get("pin");
-      const normalizedUrlPin = fromUrl?.trim().replace(/^"|"$/g, "");
-      if (normalizedUrlPin === PIN) {
-        try {
-          sessionStorage.setItem(SHARED_KEY, PIN);
-          localStorage.setItem(SHARED_KEY, PIN);
-        } catch { /* ignore */ }
-        setPin(PIN);
-        onPin?.(PIN);
-        // Do not leave the staff PIN visible in the address bar/history after
-        // it has been safely persisted on the destination domain.
-        const cleanUrl = new URL(window.location.href);
-        cleanUrl.searchParams.delete("pin");
-        window.history.replaceState(window.history.state, "", `${cleanUrl.pathname}${cleanUrl.search}${cleanUrl.hash}`);
-        return;
-      }
-      // 2) Previously unlocked in this session / on this device.
-      const saved = sessionStorage.getItem(SHARED_KEY) ?? localStorage.getItem(SHARED_KEY);
+      // 1) Already unlocked on this device (session, local, or cookie).
+      const saved = readStaffPin();
       if (saved === PIN) {
         setPin(saved);
         onPin?.(saved);
+        return;
+      }
+      // 2) PIN passed in the URL (?pin=5688) — survives cross-domain hops.
+      const fromUrl = new URL(window.location.href).searchParams.get("pin");
+      const normalizedUrlPin = fromUrl?.trim().replace(/^"|"$/g, "");
+      if (normalizedUrlPin === PIN) {
+        const persisted = rememberStaffPin(PIN);
+        setPin(PIN);
+        onPin?.(PIN);
+        // Only scrub the PIN from the address bar once it is safely stored
+        // somewhere. If nothing could be stored, keeping it in the URL is what
+        // stops the next page from asking again.
+        if (persisted) {
+          const cleanUrl = new URL(window.location.href);
+          cleanUrl.searchParams.delete("pin");
+          window.history.replaceState(window.history.state, "", `${cleanUrl.pathname}${cleanUrl.search}${cleanUrl.hash}`);
+        }
       }
     } catch { /* ignore */ }
   }, [onPin]);
@@ -52,10 +49,7 @@ export default function PinAccessGate({
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     if (value.trim() === PIN) {
-      try {
-        sessionStorage.setItem(SHARED_KEY, PIN);
-        localStorage.setItem(SHARED_KEY, PIN);
-      } catch { /* ignore */ }
+      rememberStaffPin(PIN);
       setPin(PIN);
       onPin?.(PIN);
     } else {
@@ -63,6 +57,7 @@ export default function PinAccessGate({
       setValue("");
     }
   };
+
 
   return (
     <div style={{ minHeight: "100vh", background: "#f7f6f3", display: "flex", alignItems: "center", justifyContent: "center", padding: 20, fontFamily: "Inter, system-ui, sans-serif" }}>
