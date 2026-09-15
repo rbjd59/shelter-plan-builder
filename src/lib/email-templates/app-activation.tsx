@@ -119,6 +119,23 @@ const COPY = {
   },
 };
 
+const QR_COPY = {
+  en: {
+    title: "Scan this code with your phone camera",
+    help: "Open the Camera app on your Android phone, point it at this square, and tap the link that appears. The download starts automatically.",
+    codeNote: (c: string) => `After installing, open the app and enter your activation code: ${c}`,
+  },
+  es: {
+    title: "Escanee este codigo con la camara de su telefono",
+    help: "Abra la camara de su telefono Android, apuntela a este cuadro y toque el enlace que aparece. La descarga comienza automaticamente.",
+    codeNote: (c: string) => `Despues de instalar, abra la app e ingrese su codigo de activacion: ${c}`,
+  },
+  ht: {
+    title: "Eskane kod sa a ak kamera telefòn ou",
+    help: "Ouvri kamera telefòn Android ou, vize kare sa a, epi peze lyen ki parèt la. Telechajman an kòmanse otomatikman.",
+    codeNote: (c: string) => `Apre enstalasyon an, ouvri app la epi antre kòd aktivasyon ou: ${c}`,
+  },
+};
 
 const Email = ({
   code = "XXXXXXXX",
