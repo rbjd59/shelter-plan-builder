@@ -55,6 +55,7 @@ import { Route as ReadinessSignRouteImport } from './routes/readiness/sign'
 import { Route as ReadinessReviewRouteImport } from './routes/readiness/review'
 import { Route as ReadinessIntakeRouteImport } from './routes/readiness/intake'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
+import { Route as AttorneyFormsClientIdRouteImport } from './routes/attorney-forms.$clientId'
 import { Route as AlertaTokenRouteImport } from './routes/alerta.$token'
 import { Route as AuthenticatedMiAppRouteImport } from './routes/_authenticated/mi-app'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -330,6 +331,11 @@ const ReadinessIntakeRoute = ReadinessIntakeRouteImport.update({
 const AuthCallbackRoute = AuthCallbackRouteImport.update({
   id: '/auth/callback',
   path: '/auth/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AttorneyFormsClientIdRoute = AttorneyFormsClientIdRouteImport.update({
+  id: '/attorney-forms/$clientId',
+  path: '/attorney-forms/$clientId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AlertaTokenRoute = AlertaTokenRouteImport.update({
@@ -633,6 +639,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/mi-app': typeof AuthenticatedMiAppRoute
   '/alerta/$token': typeof AlertaTokenRoute
+  '/attorney-forms/$clientId': typeof AttorneyFormsClientIdRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/readiness/intake': typeof ReadinessIntakeRoute
   '/readiness/review': typeof ReadinessReviewRoute
@@ -727,6 +734,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/mi-app': typeof AuthenticatedMiAppRoute
   '/alerta/$token': typeof AlertaTokenRoute
+  '/attorney-forms/$clientId': typeof AttorneyFormsClientIdRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/readiness/intake': typeof ReadinessIntakeRoute
   '/readiness/review': typeof ReadinessReviewRoute
@@ -825,6 +833,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/mi-app': typeof AuthenticatedMiAppRoute
   '/alerta/$token': typeof AlertaTokenRoute
+  '/attorney-forms/$clientId': typeof AttorneyFormsClientIdRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/readiness/intake': typeof ReadinessIntakeRoute
   '/readiness/review': typeof ReadinessReviewRoute
@@ -921,6 +930,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/mi-app'
     | '/alerta/$token'
+    | '/attorney-forms/$clientId'
     | '/auth/callback'
     | '/readiness/intake'
     | '/readiness/review'
@@ -1015,6 +1025,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/mi-app'
     | '/alerta/$token'
+    | '/attorney-forms/$clientId'
     | '/auth/callback'
     | '/readiness/intake'
     | '/readiness/review'
@@ -1112,6 +1123,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/mi-app'
     | '/alerta/$token'
+    | '/attorney-forms/$clientId'
     | '/auth/callback'
     | '/readiness/intake'
     | '/readiness/review'
@@ -1206,6 +1218,7 @@ export interface RootRouteChildren {
   VenuesRoute: typeof VenuesRoute
   VideosRoute: typeof VideosRoute
   AlertaTokenRoute: typeof AlertaTokenRoute
+  AttorneyFormsClientIdRoute: typeof AttorneyFormsClientIdRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
   ReadinessIntakeRoute: typeof ReadinessIntakeRoute
   ReadinessReviewRoute: typeof ReadinessReviewRoute
@@ -1558,6 +1571,13 @@ declare module '@tanstack/react-router' {
       path: '/auth/callback'
       fullPath: '/auth/callback'
       preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/attorney-forms/$clientId': {
+      id: '/attorney-forms/$clientId'
+      path: '/attorney-forms/$clientId'
+      fullPath: '/attorney-forms/$clientId'
+      preLoaderRoute: typeof AttorneyFormsClientIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/alerta/$token': {
@@ -2054,6 +2074,7 @@ const rootRouteChildren: RootRouteChildren = {
   VenuesRoute: VenuesRoute,
   VideosRoute: VideosRoute,
   AlertaTokenRoute: AlertaTokenRoute,
+  AttorneyFormsClientIdRoute: AttorneyFormsClientIdRoute,
   AuthCallbackRoute: AuthCallbackRoute,
   ReadinessIntakeRoute: ReadinessIntakeRoute,
   ReadinessReviewRoute: ReadinessReviewRoute,

@@ -288,8 +288,8 @@ function ClientDetail({ pin, clientId }: { pin: string; clientId: string }) {
       >
         <div className="font-bold">
           {forms_ready
-            ? "Forms completed — ready for review and mailing"
-            : "Forms incomplete — waiting on the locate desk"}
+            ? "Located — ready to create the forms"
+            : "Waiting on the locate desk before the forms can be created"}
         </div>
         <div className="mt-2 grid gap-x-6 gap-y-1 text-xs sm:grid-cols-2">
           <div><span className="font-semibold">Facility:</span> {detention?.facility_name ?? "—"}</div>
@@ -304,11 +304,14 @@ function ClientDetail({ pin, clientId }: { pin: string; clientId: string }) {
           {detention?.located_at && (
             <div className="sm:col-span-2 text-[11px] opacity-80">
               Located {new Date(detention.located_at).toLocaleString()}
-              {detention.located_by ? ` by ${detention.located_by}` : ""} — every form below was rebuilt with these values.
+              {detention.located_by ? ` by ${detention.located_by}` : ""}.
             </div>
           )}
         </div>
       </div>
+
+      <LocateAndForms pin={pin} clientId={clientId} detention={detention} client={client} />
+
 
       {(update_requests ?? []).length > 0 && (
         <div className="rounded border border-sky-300 bg-sky-50 p-3 text-xs text-sky-900">
