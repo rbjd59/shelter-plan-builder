@@ -280,3 +280,13 @@ const btnSecondary = {
 };
 const hr = { borderColor: "#e5e7eb", margin: "24px 0" };
 const small = { color: "#6b7280", fontSize: "12px", lineHeight: "18px", margin: "8px 0" };
+const qrBox = {
+  background: "#ffffff",
+  border: "2px solid #0b1220",
+  borderRadius: "10px",
+  padding: "18px",
+  textAlign: "center" as const,
+  margin: "8px 0 24px",
+};
+const qrTitleStyle = { color: "#0b1220", fontSize: "15px", fontWeight: 700, margin: "0 0 12px" };
+const qrHelpStyle = { color: "#374151", fontSize: "13px", lineHeight: "19px", margin: "10px 0 0" };
