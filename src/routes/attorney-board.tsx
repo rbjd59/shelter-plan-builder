@@ -258,6 +258,7 @@ function ClientDetail({ pin, clientId }: { pin: string; clientId: string }) {
 
   return (
     <div className="space-y-5">
+      {preview.viewer}
       <div
         className={`rounded border p-3 text-sm ${
           forms_ready
