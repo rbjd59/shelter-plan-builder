@@ -164,6 +164,22 @@ const Email = ({
             <Text style={comingSoon}>{t.iosBtn}</Text>
           </Section>
 
+          {qrUrl ? (
+            <Section style={qrBox}>
+              <Text style={qrTitleStyle}>{QR_COPY[normalizedLanguage].title}</Text>
+              <img
+                src={qrUrl}
+                width={190}
+                height={190}
+                alt={QR_COPY[normalizedLanguage].title}
+                style={{ display: "block", margin: "0 auto", border: "1px solid #e5e7eb", borderRadius: "8px" }}
+              />
+              <Text style={qrHelpStyle}>{QR_COPY[normalizedLanguage].help}</Text>
+              <Text style={qrHelpStyle}>{QR_COPY[normalizedLanguage].codeNote(code)}</Text>
+            </Section>
+          ) : null}
+
+
           <Heading as="h2" style={h2}>{t.setupTitle}</Heading>
           <Section style={manualBox}>
             {t.setupSteps.map((step, index) => (
