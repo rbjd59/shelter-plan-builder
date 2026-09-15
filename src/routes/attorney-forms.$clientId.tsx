@@ -32,18 +32,14 @@ export const Route = createFileRoute("/attorney-forms/$clientId")({
   },
 });
 
-function pdfBlobFromBase64(b64: string): Blob {
-  const bin = atob(b64);
-  const bytes = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-  return new Blob([bytes], { type: "application/pdf" });
-}
+import { usePdfPreview } from "@/components/PdfPreviewDialog";
 
 function FormEditor({ pin, clientId }: { pin: string; clientId: string }) {
   const getFn = useServerFn(pinGetFormAnswers);
   const saveFn = useServerFn(pinSaveFormAnswers);
   const buildFn = useServerFn(pinGenerateForms);
   const downloadFn = useServerFn(pinDownloadDocument);
+  const preview = usePdfPreview();
 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["attorney-form-answers", clientId],
@@ -112,13 +108,12 @@ function FormEditor({ pin, clientId }: { pin: string; clientId: string }) {
 
   const openPdf = async (documentId: string) => {
     const res = await downloadFn({ data: { pin, documentId } });
-    const url = URL.createObjectURL(pdfBlobFromBase64(res.pdfB64));
-    window.open(url, "_blank", "noopener,noreferrer");
-    setTimeout(() => URL.revokeObjectURL(url), 60_000);
+    preview.open(res.pdfB64, res.filename);
   };
 
   return (
     <div className="min-h-screen bg-slate-50 p-6">
+      {preview.viewer}
       <div className="mx-auto max-w-4xl space-y-5">
         <header>
           <Link to="/attorney-board" className="text-xs font-semibold underline text-slate-600">
