@@ -1,14 +1,17 @@
 import * as React from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import PinAccessGate from "@/components/PinAccessGate";
 import {
   pinListAttorneyBoard,
   pinGetAttorneyClient,
   pinDownloadDocument,
+  pinSaveLocateInfo,
+  pinGenerateForms,
 } from "@/lib/pin-access.functions";
+
 
 export const Route = createFileRoute("/attorney-board")({
   head: () => ({
