@@ -1,9 +1,8 @@
 import * as React from "react";
-
-const PDF_WORKER_URL = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url,
-).toString();
+// `?url` makes Vite emit the worker as a real asset and hand back its built
+// URL. A bare `new URL(specifier, import.meta.url)` is left untouched by Vite
+// and 404s in the built app, which broke the preview.
+import PDF_WORKER_URL from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 
 export function pdfBlobFromBase64(b64: string): Blob {
   const bin = atob(b64);

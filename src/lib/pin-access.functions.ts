@@ -539,10 +539,23 @@ export const pinSaveFormAnswers = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     check(data.pin);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const cleaned: Record<string, string> = {};
+    // Only the fields the attorney actually edited arrive here, so merge them
+    // into any earlier edits instead of replacing the whole override set.
+    const { data: prev } = await supabaseAdmin
+      .from("client_form_answers")
+      .select("answers")
+      .eq("client_id", data.clientId)
+      .maybeSingle();
+    const cleaned: Record<string, string> = {
+      ...(((prev as { answers?: Record<string, string> } | null)?.answers ?? {}) as Record<
+        string,
+        string
+      >),
+    };
     for (const [k, v] of Object.entries(data.answers ?? {})) {
       const s = (v ?? "").trim();
       if (s) cleaned[k] = s;
+      else delete cleaned[k];
     }
     const { error } = await supabaseAdmin.from("client_form_answers").upsert(
       {

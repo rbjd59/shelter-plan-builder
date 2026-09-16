@@ -47,16 +47,43 @@ function FormEditor({ pin, clientId }: { pin: string; clientId: string }) {
   });
 
   const [draft, setDraft] = React.useState<Record<string, string> | null>(null);
+  // What the server sent us. Anything the attorney did not touch is NOT saved
+  // as an override, so later locate-desk corrections still reach the forms.
+  const baseline = React.useRef<Record<string, string>>({});
   const [status, setStatus] = React.useState<string | null>(null);
   const [busy, setBusy] = React.useState(false);
 
   React.useEffect(() => {
-    if (data?.answers) setDraft({ ...(data.answers as Record<string, string>) });
+    if (data?.answers) {
+      baseline.current = { ...(data.answers as Record<string, string>) };
+      setDraft({ ...(data.answers as Record<string, string>) });
+    }
   }, [data]);
 
+  if (error)
+    return (
+      <div className="space-y-3 p-8">
+        <p className="text-red-600">{(error as Error).message}</p>
+        <button
+          type="button"
+          onClick={() => void refetch()}
+          className="rounded border border-slate-300 px-3 py-1.5 text-sm font-semibold"
+        >
+          Try again
+        </button>
+      </div>
+    );
   if (isLoading || !draft) return <div className="p-8 text-slate-500">Loading case file…</div>;
-  if (error) return <div className="p-8 text-red-600">{(error as Error).message}</div>;
   if (!data) return null;
+
+  /** Only the fields the attorney actually changed become stored overrides. */
+  const changedOnly = (d: Record<string, string>) => {
+    const out: Record<string, string> = {};
+    for (const [k, v] of Object.entries(d)) {
+      if ((v ?? "").trim() !== (baseline.current[k] ?? "").trim()) out[k] = v;
+    }
+    return out;
+  };
 
   const client = data.client as { invite_token: string; full_name: string | null };
   const documents = (data.documents ?? []) as Array<{
@@ -77,7 +104,7 @@ function FormEditor({ pin, clientId }: { pin: string; clientId: string }) {
     setBusy(true);
     setStatus(null);
     try {
-      await saveFn({ data: { pin, clientId, answers: draft } });
+      await saveFn({ data: { pin, clientId, answers: changedOnly(draft) } });
       setStatus("Saved.");
       await refetch();
     } catch (e) {
@@ -91,7 +118,7 @@ function FormEditor({ pin, clientId }: { pin: string; clientId: string }) {
     setBusy(true);
     setStatus(null);
     try {
-      await saveFn({ data: { pin, clientId, answers: draft } });
+      await saveFn({ data: { pin, clientId, answers: changedOnly(draft) } });
       const res = await buildFn({ data: { pin, clientId } });
       setStatus(
         res.failed.length
