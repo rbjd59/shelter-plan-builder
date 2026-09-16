@@ -118,7 +118,7 @@ function FormEditor({ pin, clientId }: { pin: string; clientId: string }) {
     setBusy(true);
     setStatus(null);
     try {
-      await saveFn({ data: { pin, clientId, answers: draft } });
+      await saveFn({ data: { pin, clientId, answers: changedOnly(draft) } });
       const res = await buildFn({ data: { pin, clientId } });
       setStatus(
         res.failed.length
