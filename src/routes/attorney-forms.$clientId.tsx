@@ -104,7 +104,7 @@ function FormEditor({ pin, clientId }: { pin: string; clientId: string }) {
     setBusy(true);
     setStatus(null);
     try {
-      await saveFn({ data: { pin, clientId, answers: draft } });
+      await saveFn({ data: { pin, clientId, answers: changedOnly(draft) } });
       setStatus("Saved.");
       await refetch();
     } catch (e) {
