@@ -553,9 +553,9 @@ export const pinSaveFormAnswers = createServerFn({ method: "POST" })
       >),
     };
     for (const [k, v] of Object.entries(data.answers ?? {})) {
-      const s = (v ?? "").trim();
-      if (s) cleaned[k] = s;
-      else delete cleaned[k];
+      // A cleared field is stored as an empty override so the wrong intake or
+      // locate value stays out of the forms instead of coming back.
+      cleaned[k] = (v ?? "").trim();
     }
     const { error } = await supabaseAdmin.from("client_form_answers").upsert(
       {

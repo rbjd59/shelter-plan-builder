@@ -93,11 +93,12 @@ export async function buildAnswersForClient(clientId: string): Promise<Record<st
   set("federal_id", d["federal_id"]);
   set("locate_notes", d["notes"]);
 
-  // Attorney edits win over everything else.
+  // Attorney edits win over everything else — including a deliberate blank,
+  // which is how the attorney removes a wrong value pulled in from intake.
   const ov = (stored as { answers?: Record<string, unknown> } | null)?.answers;
   if (ov && typeof ov === "object") {
     for (const [k, v] of Object.entries(ov)) {
-      if (typeof v === "string" ? v.trim() !== "" : v != null) answers[k] = v;
+      if (v != null) answers[k] = v;
     }
   }
 
