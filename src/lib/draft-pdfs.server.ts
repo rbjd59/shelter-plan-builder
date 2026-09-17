@@ -159,9 +159,25 @@ export async function buildDocumentPdf(documentId: string): Promise<{
   if (error || !doc) throw new Error("Document not found");
   const d = doc as any;
 
-  const answers = await buildSyntheticAnswers(d.client_id);
   const safeTitle = (d.title ?? "document").replace(/[^a-z0-9]+/gi, "_");
   const filename = `${safeTitle}.pdf`;
+
+  // Prefer the PDF that was actually generated and saved for this client
+  // (it carries the locate-desk data and the attorney's corrections).
+  // Rebuilding here would silently drop both.
+  const stored = typeof d.content === "string" ? d.content.trim() : "";
+  if (stored) {
+    try {
+      const bytes = new Uint8Array(Buffer.from(stored, "base64"));
+      const head = String.fromCharCode(...bytes.slice(0, 5));
+      if (head === "%PDF-") return { bytes, filename };
+    } catch {
+      /* fall through to rebuilding below */
+    }
+  }
+
+  const answers = await buildSyntheticAnswers(d.client_id);
+
 
   // Route by document_type to the right builder
   switch (d.document_type as string) {
