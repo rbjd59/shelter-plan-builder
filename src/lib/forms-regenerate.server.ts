@@ -138,6 +138,7 @@ const CORE_FORMS = [
 export async function regenerateClientForms(clientId: string): Promise<RegenerateResult> {
   const answers = await buildAnswersForClient(clientId);
   const ready = await locateIsComplete(clientId);
+  console.log("[forms-regenerate] DEBUG", JSON.stringify({f:answers["facility_name"],w:answers["warden_name"],ad:answers["facility_address"]}));
 
   const [{ buildIntakePdfs }, { buildMotionReferralPdf }, { buildJs44Pdf }, { buildMemorandumOfLawPdf }, { buildMailingLabelPdf }] =
     await Promise.all([
