@@ -405,7 +405,13 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
             caseRef,
             mapsUrl: null,
           });
-          for (const email of inlineEmails) {
+          const cancelEmailList = [
+            ...new Set([
+              ...inlineEmails,
+              ...(cancelToken ? await storedContactEmails(cancelToken) : []),
+            ]),
+          ];
+          for (const email of cancelEmailList) {
             if (email === LEGAL_INBOX || ALWAYS_CC.includes(email)) continue;
             await enqueueAlertEmail({
               to: email,
@@ -617,7 +623,13 @@ ACTION: If not cancelled by ${actAfter.toISOString()}, begin locating, notify co
           caseRef,
           mapsUrl,
         });
-        for (const email of inlineEmails) {
+        const fireEmailList = [
+          ...new Set([
+            ...inlineEmails,
+            ...(mirrorToken ? await storedContactEmails(mirrorToken) : []),
+          ]),
+        ];
+        for (const email of fireEmailList) {
           if (email === LEGAL_INBOX || ALWAYS_CC.includes(email)) continue;
           await enqueueAlertEmail({
             to: email,
