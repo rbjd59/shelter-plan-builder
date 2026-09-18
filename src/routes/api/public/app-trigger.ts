@@ -26,13 +26,16 @@ function json(body: unknown, init?: ResponseInit) {
 
 const TriggerSchema = z.object({
   case_id: z.string().min(1).max(64),
-  action: z.enum(["trigger", "cancel", "activated", "activate", "activation"]).optional(),
+  // The phone app sends "sos" for a real emergency; older builds send "trigger".
+  action: z.enum(["trigger", "sos", "cancel", "activated", "activate", "activation"]).optional(),
   activated_at: z.string().max(64).optional(),
   cancelled_at: z.string().max(64).optional(),
   phone_model: z.string().max(120).nullable().optional(),
   os_version: z.string().max(120).nullable().optional(),
 
   triggered_at: z.string().max(64).optional(),
+  // Some builds label the trigger time "timestamp".
+  timestamp: z.string().max(64).optional(),
   cancel_pin: z.string().regex(/^\d{4,8}$/).optional(),
   // GPS may arrive nested (documented shape) or flat (what the phone app
   // actually sends). Accept both so coordinates never get silently dropped.
