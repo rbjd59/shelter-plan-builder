@@ -186,7 +186,7 @@ export const Route = createFileRoute("/api/public/app-trigger")({
             _payload: {
               case_id: caseId,
               source: "primo_app_trigger",
-              triggered_at: parsed.data.triggered_at ?? null,
+              triggered_at: parsed.data.triggered_at ?? parsed.data.timestamp ?? null,
               arrest_location_hint: parsed.data.arrest_location_hint ?? null,
             },
           } as never,
@@ -200,7 +200,7 @@ export const Route = createFileRoute("/api/public/app-trigger")({
         console.log("[app-trigger] alert recorded", {
           alert_id: alertId,
           case_id: caseId,
-          triggered_at: parsed.data.triggered_at ?? null,
+          triggered_at: parsed.data.triggered_at ?? parsed.data.timestamp ?? null,
           has_location: lat !== null && lng !== null,
         });
 
@@ -213,7 +213,7 @@ export const Route = createFileRoute("/api/public/app-trigger")({
             lat,
             lng,
             alertId: (alertId as string | null) ?? null,
-            triggeredAt: parsed.data.triggered_at ?? null,
+            triggeredAt: parsed.data.triggered_at ?? parsed.data.timestamp ?? null,
           });
           console.log("[app-trigger] alert fan-out", fan);
         } catch (e) {
