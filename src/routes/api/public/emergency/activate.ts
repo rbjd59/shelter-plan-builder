@@ -218,6 +218,34 @@ function contactEmails(contacts: { email?: string | null }[] | undefined): strin
 }
 
 
+/**
+ * Emails of the family contacts stored on the client record. The database
+ * trigger that used to email these people was removed, so this route has to
+ * notify them itself.
+ */
+async function storedContactEmails(token: string): Promise<string[]> {
+  try {
+    const { data: client } = await supabaseAdmin
+      .from("app_clients" as never)
+      .select("id")
+      .eq("invite_token", token)
+      .maybeSingle();
+    const clientId = (client as { id?: string } | null)?.id;
+    if (!clientId) return [];
+    const { data: rows } = await supabaseAdmin
+      .from("client_contacts" as never)
+      .select("email, role, notify_on_sos")
+      .eq("client_id", clientId);
+    const list = (rows ?? []) as { email?: string | null; role?: string | null; notify_on_sos?: boolean | null }[];
+    return contactEmails(
+      list.filter((c) => (c.role ?? "family") === "family" && c.notify_on_sos !== false),
+    );
+  } catch (e) {
+    console.error("[activate] stored contact lookup failed", e);
+    return [];
+  }
+}
+
 /** SMS the contacts the app sent inline, skipping numbers already texted. */
 async function smsInlineContacts(opts: {
   contacts: { name?: string | null; phone?: string | null; phone_e164?: string | null }[];
