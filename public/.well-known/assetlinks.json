@@ -1,10 +1,15 @@
 [
   {
-    "relation": ["delegate_permission/common.handle_all_urls"],
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
     "target": {
       "namespace": "android_app",
       "package_name": "com.detenciondefensa.sosconnect",
-      "sha256_cert_fingerprints": ["REPLACE_WITH_PLAY_APP_SIGNING_SHA256"]
+      "sha256_cert_fingerprints": [
+        "8D:07:F6:D4:AC:6F:7B:55:2B:43:70:D7:D1:57:5A:52:4B:05:5F:9C:E8:3C:DD:E1:AE:88:BF:37:D8:84:EC:C8"
+      ]
     }
   }
 ]
