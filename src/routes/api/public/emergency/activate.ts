@@ -109,7 +109,7 @@ function esc(s: unknown): string {
 }
 
 function normalizeActivationCode(value: string | undefined): string | null {
-  const normalized = value?.trim().toUpperCase() ?? "";
+  const normalized = (value?.trim().toUpperCase() ?? "").replace(/-[A-Z]{2}$/, "");
   return /^[A-Z0-9]{5,8}$/.test(normalized) ? normalized : null;
 }
 
