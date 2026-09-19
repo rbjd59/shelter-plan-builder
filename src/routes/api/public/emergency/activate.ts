@@ -24,8 +24,8 @@ const AppContactSchema = z.object({
 
 const ActivateSchema = z.object({
   intake_session_id: z.string().min(1).max(128).optional(),
-  activation_code: z.string().regex(/^[A-Za-z0-9]{8}$/).optional(),
-  token: z.string().regex(/^[A-Za-z0-9]{8}$/).optional(),
+  activation_code: z.string().regex(/^[A-Za-z0-9]{5,8}(-[A-Za-z]{2})?$/).optional(),
+  token: z.string().regex(/^[A-Za-z0-9]{5,8}(-[A-Za-z]{2})?$/).optional(),
   role: z.enum(["client", "family"]).default("client"),
   full_name: z.string().min(1).max(200).optional(),
   alert_email: z.string().email().max(200).optional(),
@@ -109,7 +109,7 @@ function esc(s: unknown): string {
 }
 
 function normalizeActivationCode(value: string | undefined): string | null {
-  const normalized = value?.trim().toUpperCase() ?? "";
+  const normalized = (value?.trim().toUpperCase() ?? "").replace(/-[A-Z]{2}$/, "");
   return /^[A-Z0-9]{5,8}$/.test(normalized) ? normalized : null;
 }
 
@@ -433,7 +433,46 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
           return jsonResponse({ ok: true, cancelled: d.cancel_of ?? caseRef }, { status: 200 });
         }
 
-        // Fire path — insert row, compute act-after window, send alert.
+        // Fire path — REQUIRE a real client record. Unknown codes must never
+        // page the legal team: anyone who knows this URL could otherwise fire
+        // an alert with a made-up case id (e.g. "TEST1234", "ZZZZ9999").
+        {
+          const codeGuess = explicitCode ?? caseRef.trim().toUpperCase();
+          const { data: knownClient } = await supabaseAdmin
+            .from("app_clients" as never)
+            .select("id")
+            .or(
+              `invite_token.eq.${codeGuess},intake_session_id.eq.${caseRef}`,
+            )
+            .maybeSingle();
+          if (!knownClient) {
+            console.warn("[activate] rejected unknown case code", {
+              caseRef,
+              codeGuess,
+              ip,
+              ua,
+            });
+            try {
+              await supabaseAdmin.from("intake_delivery_log" as never).insert({
+                intake_session_id: caseRef,
+                activation_code: explicitCode,
+                step: "emergency_activate",
+                status: "rejected_unknown_code",
+                target: ip,
+                error_message: "no matching client record",
+                metadata: { user_agent: ua, full_name: fullName },
+              } as never);
+            } catch (e) {
+              console.error("[activate] reject log failed", e);
+            }
+            return jsonResponse(
+              { ok: false, error: "unknown_activation_code" },
+              { status: 404 },
+            );
+          }
+        }
+
+        // Insert row, compute act-after window, send alert.
         const isFamily = d.role === "family";
         const windowMs = isFamily ? 12 * 3600_000 : 2 * 3600_000;
         const firedAt = new Date();
