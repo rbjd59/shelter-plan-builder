@@ -379,7 +379,7 @@ async function sendActivationEmail(params: {
   const template = TEMPLATES["app-activation"];
   if (!template) throw new Error("app-activation template not registered");
 
-  const apkUrl = "https://detenciondefensa.com/get-app";
+  const apkUrl = `https://detenciondefensa.com/get-app?code=${encodeURIComponent(params.code)}`;
 
   const templateData = {
     code: params.code,
