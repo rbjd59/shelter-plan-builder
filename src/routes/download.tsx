@@ -338,6 +338,8 @@ function DownloadPage() {
   const [androidStep, setAndroidStep] = useState<1 | 2>(1);
   const [iosSafari, setIosSafari] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [code, setCode] = useState("");
+  const [codeError, setCodeError] = useState<string | null>(null);
 
   useEffect(() => {
     const p = detectPlatform();
@@ -345,6 +347,8 @@ function DownloadPage() {
     setTab(p === "ios" ? "ios" : "android");
     setIosSafari(p !== "ios" || isIOSSafari());
     setAndroidMajor(parseAndroidVersion());
+    const fromUrl = new URLSearchParams(window.location.search).get("code");
+    if (fromUrl) setCode(fromUrl.toUpperCase().slice(0, 11));
   }, []);
 
   const installUrl =
@@ -386,8 +390,19 @@ function DownloadPage() {
     androidMajor < minMajorVersion;
 
   const handleDownload = () => {
+    const clean = code.trim().toUpperCase().replace(/-[A-Z]{2}$/, "");
+    if (!/^[A-Z0-9]{5,8}$/.test(clean)) {
+      setCodeError(
+        lang === "es"
+          ? "Ingrese el código de activación de su correo de registro."
+          : lang === "ht"
+          ? "Antre kòd aktivasyon ki nan imèl enskripsyon ou."
+          : "Enter the activation code from your sign-up email.",
+      );
+      return;
+    }
     if (android?.url) {
-      window.location.href = android.url;
+      window.location.href = `${android.url}?code=${encodeURIComponent(clean)}`;
       setTimeout(() => setAndroidStep(2), 800);
     }
   };
@@ -536,6 +551,40 @@ function DownloadPage() {
             <span style={styles.pill}>1 / 2</span>
             <h2 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 8px" }}>{t.aStep1Heading}</h2>
             <p style={styles.intro}>{t.aStep1Body}</p>
+            <div style={{ textAlign: "left", marginBottom: 14 }}>
+              <label
+                htmlFor="activation-code"
+                style={{ display: "block", fontSize: 13, color: "#d4d4d8", marginBottom: 6 }}
+              >
+                {lang === "es"
+                  ? "Código de activación (de su correo de registro)"
+                  : lang === "ht"
+                  ? "Kòd aktivasyon (nan imèl enskripsyon ou)"
+                  : "Activation code (from your sign-up email)"}
+              </label>
+              <input
+                id="activation-code"
+                value={code}
+                onChange={(e) => {
+                  setCode(e.target.value.toUpperCase().replace(/[^A-Z0-9-]/g, "").slice(0, 11));
+                  setCodeError(null);
+                }}
+                placeholder="X5956"
+                style={{
+                  width: "100%",
+                  padding: "12px 14px",
+                  fontSize: 18,
+                  letterSpacing: 2,
+                  borderRadius: 10,
+                  border: "1px solid #52525b",
+                  background: "#18181b",
+                  color: "#fff",
+                }}
+              />
+              {codeError && (
+                <p style={{ color: "#fca5a5", fontSize: 13, margin: "8px 0 0" }}>{codeError}</p>
+              )}
+            </div>
             <button onClick={handleDownload} style={styles.primaryBtn}>
               {t.aDownloadBtn}
             </button>

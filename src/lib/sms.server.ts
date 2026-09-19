@@ -99,13 +99,13 @@ export async function sendSms(params: SendSmsParams): Promise<{
   }
 }
 
+const installLink = (c: string) =>
+  `https://detenciondefensa.com/get-app?code=${encodeURIComponent(c)}`;
+
 const ACTIVATION_BODY: Record<string, (code: string) => string> = {
-  en: (c) =>
-    `DetencionDefensa: your code is ${c}. Tap to install the app: https://detenciondefensa.com/get-app`,
-  es: (c) =>
-    `DetencionDefensa: su codigo es ${c}. Toque para instalar la app: https://detenciondefensa.com/get-app`,
-  ht: (c) =>
-    `DetencionDefensa: kòd ou se ${c}. Peze pou enstale aplikasyon an: https://detenciondefensa.com/get-app`,
+  en: (c) => `DetencionDefensa: your code is ${c}. Tap to install the app: ${installLink(c)}`,
+  es: (c) => `DetencionDefensa: su codigo es ${c}. Toque para instalar la app: ${installLink(c)}`,
+  ht: (c) => `DetencionDefensa: kòd ou se ${c}. Peze pou enstale aplikasyon an: ${installLink(c)}`,
 };
 
 export function activationSmsBody(code: string, language: string): string {

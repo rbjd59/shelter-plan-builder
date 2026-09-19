@@ -14,13 +14,21 @@ export const Route = createFileRoute("/get-app")({
         const ua = (request.headers.get("user-agent") ?? "").toLowerCase();
         const isAndroid = ua.includes("android");
         const isIOS = /iphone|ipad|ipod/.test(ua) || (ua.includes("mac") && ua.includes("mobile"));
+        // Carry the activation code through so the download page can pre-fill it.
+        const incoming = new URL(request.url).searchParams.get("code");
+        const codeParam = incoming
+          ? `&code=${encodeURIComponent(incoming.toUpperCase().slice(0, 11))}`
+          : "";
 
         if (isAndroid) {
           // Send Android users to the guided 2-step page instead of straight at
           // the binary. Chrome shows a scary "this file may be harmful" prompt
           // for a bare .apk navigation and gives no hint about opening the file
           // afterwards, which is why installs appeared to "do nothing".
-          return Response.redirect("https://detenciondefensa.com/download?platform=android", 302);
+          return Response.redirect(
+            `https://detenciondefensa.com/download?platform=android${codeParam}`,
+            302,
+          );
         }
 
         if (isIOS) {
