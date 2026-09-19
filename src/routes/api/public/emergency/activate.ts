@@ -458,18 +458,48 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
         // page the legal team: anyone who knows this URL could otherwise fire
         // an alert with a made-up case id (e.g. "TEST1234", "ZZZZ9999").
         {
-          const codeGuess = explicitCode ?? caseRef.trim().toUpperCase();
-          const { data: knownClient } = await supabaseAdmin
-            .from("app_clients" as never)
-            .select("id")
-            .or(
-              `invite_token.eq.${codeGuess},intake_session_id.eq.${caseRef}`,
-            )
-            .maybeSingle();
-          if (!knownClient) {
+          // Build every plausible form of the code: explicit, the case ref as
+          // given, and the case ref with a "-EN"/"-ES"/"-HT" language suffix
+          // stripped. Never interpolate raw input into .or().
+          const rawRef = caseRef.trim().toUpperCase();
+          const strippedRef = rawRef.replace(/-[A-Z]{2}$/, "");
+          const tokenCandidates = [...new Set(
+            [explicitCode, rawRef, strippedRef].filter(
+              (v): v is string => !!v && /^[A-Z0-9]{5,8}$/.test(v),
+            ),
+          )];
+
+          let knownClient: unknown = null;
+          let lookupFailed = false;
+          try {
+            if (tokenCandidates.length) {
+              const { data, error: tokErr } = await supabaseAdmin
+                .from("app_clients" as never)
+                .select("id")
+                .in("invite_token", tokenCandidates)
+                .limit(1);
+              if (tokErr) lookupFailed = true;
+              if (data && data.length) knownClient = data[0];
+            }
+            if (!knownClient) {
+              const { data, error: sessErr } = await supabaseAdmin
+                .from("app_clients" as never)
+                .select("id")
+                .eq("intake_session_id", caseRef)
+                .limit(1);
+              if (sessErr) lookupFailed = true;
+              if (data && data.length) knownClient = data[0];
+            }
+          } catch {
+            lookupFailed = true;
+          }
+
+          // Fail OPEN when the database lookup itself errored — this is a
+          // life-safety path, a broken query must never silence an alert.
+          if (!knownClient && !lookupFailed) {
             console.warn("[activate] rejected unknown case code", {
               caseRef,
-              codeGuess,
+              tokenCandidates,
               ip,
               ua,
             });
@@ -491,7 +521,11 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
               { status: 404 },
             );
           }
+          if (lookupFailed) {
+            console.error("[activate] client lookup failed — proceeding fail-open", { caseRef });
+          }
         }
+
 
         // Insert row, compute act-after window, send alert.
         const isFamily = d.role === "family";

@@ -347,8 +347,21 @@ function DownloadPage() {
     setTab(p === "ios" ? "ios" : "android");
     setIosSafari(p !== "ios" || isIOSSafari());
     setAndroidMajor(parseAndroidVersion());
-    const fromUrl = new URLSearchParams(window.location.search).get("code");
-    if (fromUrl) setCode(fromUrl.toUpperCase().slice(0, 11));
+    const params = new URLSearchParams(window.location.search);
+    const fromUrl = params.get("code");
+    const clean = (fromUrl ?? "").toUpperCase().replace(/[^A-Z0-9-]/g, "").slice(0, 11);
+    if (clean && clean !== "PENDING") setCode(clean);
+    if (params.get("denied")) {
+      setCodeError(
+        lang === "es"
+          ? "No reconocemos ese código de activación. Use el código exacto de su correo de registro o escriba a support@detenciondefensa.com."
+          : lang === "ht"
+          ? "Nou pa rekonèt kòd aktivasyon sa a. Itilize kòd egzak ki nan imèl enskripsyon ou oswa ekri support@detenciondefensa.com."
+          : "We don't recognize that activation code. Use the exact code from your sign-up email, or email support@detenciondefensa.com.",
+      );
+      setTab("android");
+    }
+
   }, []);
 
   const installUrl =

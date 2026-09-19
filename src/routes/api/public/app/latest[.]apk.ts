@@ -57,10 +57,15 @@ export const Route = createFileRoute("/api/public/app/latest.apk")({
             target: getClientIp(request),
             metadata: { code_supplied: rawCode || null },
           });
-          return new Response(
-            "This installer is only available to registered clients. Enter the activation code from your sign-up email at https://detenciondefensa.com/download",
-            { status: 403, headers: { "Content-Type": "text/plain; charset=utf-8" } },
-          );
+          // Send them back to the download page with an in-page message
+          // instead of dumping a bare text page with no way back.
+          return new Response(null, {
+            status: 302,
+            headers: {
+              Location: `/download?platform=android&denied=1${rawCode ? `&code=${encodeURIComponent(rawCode)}` : ""}`,
+            },
+          });
+
         }
 
         await logAttempt({
