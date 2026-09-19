@@ -24,8 +24,8 @@ const AppContactSchema = z.object({
 
 const ActivateSchema = z.object({
   intake_session_id: z.string().min(1).max(128).optional(),
-  activation_code: z.string().regex(/^[A-Za-z0-9]{8}$/).optional(),
-  token: z.string().regex(/^[A-Za-z0-9]{8}$/).optional(),
+  activation_code: z.string().regex(/^[A-Za-z0-9]{5,8}(-[A-Za-z]{2})?$/).optional(),
+  token: z.string().regex(/^[A-Za-z0-9]{5,8}(-[A-Za-z]{2})?$/).optional(),
   role: z.enum(["client", "family"]).default("client"),
   full_name: z.string().min(1).max(200).optional(),
   alert_email: z.string().email().max(200).optional(),
