@@ -433,7 +433,46 @@ Cancelled at (UTC): ${new Date().toISOString()}`;
           return jsonResponse({ ok: true, cancelled: d.cancel_of ?? caseRef }, { status: 200 });
         }
 
-        // Fire path — insert row, compute act-after window, send alert.
+        // Fire path — REQUIRE a real client record. Unknown codes must never
+        // page the legal team: anyone who knows this URL could otherwise fire
+        // an alert with a made-up case id (e.g. "TEST1234", "ZZZZ9999").
+        {
+          const codeGuess = explicitCode ?? caseRef.trim().toUpperCase();
+          const { data: knownClient } = await supabaseAdmin
+            .from("app_clients" as never)
+            .select("id")
+            .or(
+              `invite_token.eq.${codeGuess},intake_session_id.eq.${caseRef}`,
+            )
+            .maybeSingle();
+          if (!knownClient) {
+            console.warn("[activate] rejected unknown case code", {
+              caseRef,
+              codeGuess,
+              ip,
+              ua,
+            });
+            try {
+              await supabaseAdmin.from("intake_delivery_log" as never).insert({
+                intake_session_id: caseRef,
+                activation_code: explicitCode,
+                step: "emergency_activate",
+                status: "rejected_unknown_code",
+                target: ip,
+                error_message: "no matching client record",
+                metadata: { user_agent: ua, full_name: fullName },
+              } as never);
+            } catch (e) {
+              console.error("[activate] reject log failed", e);
+            }
+            return jsonResponse(
+              { ok: false, error: "unknown_activation_code" },
+              { status: 404 },
+            );
+          }
+        }
+
+        // Insert row, compute act-after window, send alert.
         const isFamily = d.role === "family";
         const windowMs = isFamily ? 12 * 3600_000 : 2 * 3600_000;
         const firedAt = new Date();
