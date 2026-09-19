@@ -350,7 +350,7 @@ ${familyDocRows.map((r) => `- ${r.label}: ${r.url}`).join("\n")}`;
       <p style="margin:0 0 14px;">${esc(w.body[2])}</p>
       <p style="margin:0 0 22px;">${esc(w.body[3])}</p>
       <p style="margin:0 0 22px;text-align:center;">
-        <a href="${DOWNLOAD_URL}" style="display:inline-block;background:#0f172a;color:#ffffff;text-decoration:none;padding:14px 26px;border-radius:8px;font-weight:600;font-size:16px;">${esc(w.button)}</a>
+        <a href="${DOWNLOAD_URL}?code=${encodeURIComponent(code)}" style="display:inline-block;background:#0f172a;color:#ffffff;text-decoration:none;padding:14px 26px;border-radius:8px;font-weight:600;font-size:16px;">${esc(w.button)}</a>
       </p>
       <div style="border:1px solid #cbd5e1;background:#f8fafc;border-radius:8px;padding:16px;margin:0 0 22px;">
         <p style="margin:0 0 10px;font-size:16px;color:#0f172a;"><strong>${esc(w.manualHeading)}</strong></p>
@@ -385,7 +385,7 @@ ${docRows.map((r) => `- ${r.label}: ${r.url}`).join("\n")}
 
 ${w.body[3]}
 
-${w.button}: ${DOWNLOAD_URL}
+${w.button}: ${DOWNLOAD_URL}?code=${encodeURIComponent(code)}
 
 ${w.manualHeading}
 Android:
