@@ -10,6 +10,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { getClientIp } from "@/lib/abuse-guard.server";
 import { sendManagedEmail } from "@/lib/email/managed-send.server";
 import { triggerVaultRelease } from "@/lib/readiness.server";
 import { sendSosSmsToContacts, sendSms, normalizeE164 } from "@/lib/twilio-sms.server";
@@ -280,6 +281,26 @@ export const Route = createFileRoute("/api/public/emergency/activate")({
   server: {
     handlers: {
       POST: async ({ request }) => {
+        // Abuse guard: an address that has already been rejected repeatedly
+        // for unknown activation codes is blocked before we do any work.
+        const callerIp = getClientIp(request);
+        if (callerIp !== "unknown") {
+          try {
+            const since = new Date(Date.now() - 60 * 60_000).toISOString();
+            const { count } = await supabaseAdmin
+              .from("intake_delivery_log")
+              .select("id", { count: "exact", head: true })
+              .eq("step", "emergency_activate")
+              .eq("status", "rejected_unknown_code")
+              .eq("target", callerIp)
+              .gte("created_at", since);
+            if ((count ?? 0) >= 8) {
+              return jsonResponse({ ok: false, error: "too_many_requests" }, { status: 429 });
+            }
+          } catch {
+            /* never block a real emergency on a failed guard query */
+          }
+        }
         let body: unknown;
         try {
           body = await request.json();
