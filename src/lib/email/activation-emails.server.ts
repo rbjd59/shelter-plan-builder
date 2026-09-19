@@ -268,7 +268,13 @@ function clientWelcomeContent(lang: string, name: string, code: string) {
 
 export async function enqueueActivationEmails(p: ActivationEmailParams): Promise<void> {
   const a = p.answers;
-  const code = (p.activationCode ?? "").trim() || "(pending)";
+  const rawCode = (p.activationCode ?? "").trim();
+  const code = rawCode || "(pending)";
+  // Only append a real code — "(pending)" would be refused by the installer.
+  const downloadLink = /^[A-Za-z0-9]{5,8}$/.test(rawCode)
+    ? `${DOWNLOAD_URL}?code=${encodeURIComponent(rawCode.toUpperCase())}`
+    : DOWNLOAD_URL;
+
   const activatedAt = (p.activatedAt ?? new Date()).toISOString();
   // Client identity only — never an emergency/family contact.
   const clientName = String(
