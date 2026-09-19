@@ -5,6 +5,7 @@
 // even when we publish a new build — admins just upload a new APK via
 // /admin/app-builds.
 import { createFileRoute } from "@tanstack/react-router";
+import { getClientIp, logAttempt, isRateLimited, TOO_MANY } from "@/lib/abuse-guard.server";
 
 export const Route = createFileRoute("/api/public/app/latest.apk")({
   server: {
@@ -12,12 +13,71 @@ export const Route = createFileRoute("/api/public/app/latest.apk")({
       GET: async ({ request }) => {
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
+        // ---- Access gate: the installer is only for people we signed up. ----
+        const url = new URL(request.url);
+        const rawCode = (url.searchParams.get("code") ?? "").trim().toUpperCase().replace(/-[A-Z]{2}$/, "");
+        const bootstrap = (url.searchParams.get("t") ?? url.searchParams.get("bootstrap") ?? "").trim();
+
+        if (
+          await isRateLimited({ step: "app_download", request, max: 20, windowMinutes: 60 })
+        ) {
+          return TOO_MANY();
+        }
+
+        let allowed = false;
+        let grantedTo: string | null = null;
+        if (/^[A-Z0-9]{5,8}$/.test(rawCode)) {
+          const { data } = await supabaseAdmin
+            .from("app_clients")
+            .select("id")
+            .eq("invite_token", rawCode)
+            .maybeSingle();
+          if (data) {
+            allowed = true;
+            grantedTo = rawCode;
+          }
+        }
+        if (!allowed && /^[0-9a-f-]{36}$/i.test(bootstrap)) {
+          const { data } = await supabaseAdmin
+            .from("app_install_tokens")
+            .select("token, expires_at")
+            .eq("token", bootstrap)
+            .maybeSingle();
+          if (data && new Date(data.expires_at).getTime() > Date.now()) {
+            allowed = true;
+            grantedTo = "install_token";
+          }
+        }
+
+        if (!allowed) {
+          await logAttempt({
+            step: "app_download",
+            status: "denied_no_code",
+            request,
+            target: getClientIp(request),
+            metadata: { code_supplied: rawCode || null },
+          });
+          return new Response(
+            "This installer is only available to registered clients. Enter the activation code from your sign-up email at https://detenciondefensa.com/download",
+            { status: 403, headers: { "Content-Type": "text/plain; charset=utf-8" } },
+          );
+        }
+
+        await logAttempt({
+          step: "app_download",
+          status: "granted",
+          request,
+          target: getClientIp(request),
+          metadata: { granted_to: grantedTo },
+        });
+
         const { data: release, error } = await supabaseAdmin
           .from("app_releases")
           .select("apk_path, version")
           .eq("platform", "android")
           .eq("is_current", true)
           .maybeSingle();
+
 
         if (error || !release?.apk_path) {
           return new Response(
