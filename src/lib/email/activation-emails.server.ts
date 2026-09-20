@@ -268,12 +268,45 @@ function clientWelcomeContent(lang: string, name: string, code: string) {
 
 export async function enqueueActivationEmails(p: ActivationEmailParams): Promise<void> {
   const a = p.answers;
-  const rawCode = (p.activationCode ?? "").trim();
-  const code = rawCode || "(pending)";
-  // Only append a real code — "(pending)" would be refused by the installer.
-  const downloadLink = /^[A-Za-z0-9]{5,8}$/.test(rawCode)
-    ? `${DOWNLOAD_URL}?code=${encodeURIComponent(rawCode.toUpperCase())}`
-    : DOWNLOAD_URL;
+  let rawCode = (p.activationCode ?? "").trim();
+
+  // Never send a "(pending)" placeholder: the email's code + download link
+  // must resolve to a real client record. If the caller raced provisioning
+  // (or provisioning hiccuped), recover here — look the client up by intake
+  // session, and if the row doesn't exist yet, provision it now (safe:
+  // provisionAppClient returns the existing code on a conflict).
+  if (!/^[A-Za-z0-9]{5,8}$/.test(rawCode)) {
+    try {
+      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+      const { data: existing } = await supabaseAdmin
+        .from("app_clients")
+        .select("invite_token")
+        .eq("intake_session_id", p.sessionId)
+        .maybeSingle();
+      if (existing?.invite_token) {
+        rawCode = String(existing.invite_token).trim();
+      } else {
+        const { provisionAppClient } = await import("@/lib/app-clients.server");
+        const provisioned = await provisionAppClient({
+          intakeSessionId: p.sessionId,
+          language: p.language || String(a.language || "en"),
+          answers: a,
+        });
+        if (provisioned?.code) rawCode = String(provisioned.code).trim();
+      }
+    } catch (e) {
+      console.error("Activation code recovery failed:", e);
+    }
+  }
+
+  const hasCode = /^[A-Za-z0-9]{5,8}$/.test(rawCode);
+  const code = hasCode ? rawCode.toUpperCase() : "";
+  // With a real code the link one-taps straight into the download. In the
+  // (now rare) no-code case, send them to the web setup page — a real page
+  // where they can sign in and finish setup — never a dead "(pending)".
+  const downloadLink = hasCode
+    ? `${DOWNLOAD_URL}?code=${encodeURIComponent(code)}`
+    : CONFIGURE_URL;
 
   const activatedAt = (p.activatedAt ?? new Date()).toISOString();
   // Client identity only — never an emergency/family contact.
@@ -351,8 +384,9 @@ ${familyDocRows.map((r) => `- ${r.label}: ${r.url}`).join("\n")}`;
     const html = wrap(`
       <h1 style="font-size:22px;margin:0 0 14px;color:#0f172a;">${esc(w.heading)}</h1>
       <p style="margin:0 0 14px;">${esc(w.body[0])}</p>
+      ${hasCode ? `
       <p style="margin:0 0 6px;">${esc(w.body[1])}</p>
-      <p style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:28px;font-weight:800;letter-spacing:3px;background:#f1f5f9;border:1px solid #cbd5e1;border-radius:8px;padding:14px 18px;margin:0 0 18px;text-align:center;">${esc(code)}</p>
+      <p style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:28px;font-weight:800;letter-spacing:3px;background:#f1f5f9;border:1px solid #cbd5e1;border-radius:8px;padding:14px 18px;margin:0 0 18px;text-align:center;">${esc(code)}</p>` : ""}
       <p style="margin:0 0 14px;">${esc(w.body[2])}</p>
       <p style="margin:0 0 22px;">${esc(w.body[3])}</p>
       <p style="margin:0 0 22px;text-align:center;">
@@ -383,8 +417,7 @@ ${familyDocRows.map((r) => `- ${r.label}: ${r.url}`).join("\n")}`;
 
 ${w.body[0]}
 
-${w.body[1]}
-${code}
+${hasCode ? `${w.body[1]}\n${code}` : ""}
 
 ${w.body[2]}
 ${docRows.map((r) => `- ${r.label}: ${r.url}`).join("\n")}
