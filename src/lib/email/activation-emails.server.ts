@@ -268,12 +268,45 @@ function clientWelcomeContent(lang: string, name: string, code: string) {
 
 export async function enqueueActivationEmails(p: ActivationEmailParams): Promise<void> {
   const a = p.answers;
-  const rawCode = (p.activationCode ?? "").trim();
-  const code = rawCode || "(pending)";
-  // Only append a real code — "(pending)" would be refused by the installer.
-  const downloadLink = /^[A-Za-z0-9]{5,8}$/.test(rawCode)
-    ? `${DOWNLOAD_URL}?code=${encodeURIComponent(rawCode.toUpperCase())}`
-    : DOWNLOAD_URL;
+  let rawCode = (p.activationCode ?? "").trim();
+
+  // Never send a "(pending)" placeholder: the email's code + download link
+  // must resolve to a real client record. If the caller raced provisioning
+  // (or provisioning hiccuped), recover here — look the client up by intake
+  // session, and if the row doesn't exist yet, provision it now (safe:
+  // provisionAppClient returns the existing code on a conflict).
+  if (!/^[A-Za-z0-9]{5,8}$/.test(rawCode)) {
+    try {
+      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+      const { data: existing } = await supabaseAdmin
+        .from("app_clients")
+        .select("invite_token")
+        .eq("intake_session_id", p.sessionId)
+        .maybeSingle();
+      if (existing?.invite_token) {
+        rawCode = String(existing.invite_token).trim();
+      } else {
+        const { provisionAppClient } = await import("@/lib/app-clients.server");
+        const provisioned = await provisionAppClient({
+          intakeSessionId: p.sessionId,
+          language: p.language || String(a.language || "en"),
+          answers: a,
+        });
+        if (provisioned?.code) rawCode = String(provisioned.code).trim();
+      }
+    } catch (e) {
+      console.error("Activation code recovery failed:", e);
+    }
+  }
+
+  const hasCode = /^[A-Za-z0-9]{5,8}$/.test(rawCode);
+  const code = hasCode ? rawCode.toUpperCase() : "";
+  // With a real code the link one-taps straight into the download. In the
+  // (now rare) no-code case, send them to the web setup page — a real page
+  // where they can sign in and finish setup — never a dead "(pending)".
+  const downloadLink = hasCode
+    ? `${DOWNLOAD_URL}?code=${encodeURIComponent(code)}`
+    : CONFIGURE_URL;
 
   const activatedAt = (p.activatedAt ?? new Date()).toISOString();
   // Client identity only — never an emergency/family contact.
