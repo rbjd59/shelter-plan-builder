@@ -384,8 +384,9 @@ ${familyDocRows.map((r) => `- ${r.label}: ${r.url}`).join("\n")}`;
     const html = wrap(`
       <h1 style="font-size:22px;margin:0 0 14px;color:#0f172a;">${esc(w.heading)}</h1>
       <p style="margin:0 0 14px;">${esc(w.body[0])}</p>
+      ${hasCode ? `
       <p style="margin:0 0 6px;">${esc(w.body[1])}</p>
-      <p style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:28px;font-weight:800;letter-spacing:3px;background:#f1f5f9;border:1px solid #cbd5e1;border-radius:8px;padding:14px 18px;margin:0 0 18px;text-align:center;">${esc(code)}</p>
+      <p style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:28px;font-weight:800;letter-spacing:3px;background:#f1f5f9;border:1px solid #cbd5e1;border-radius:8px;padding:14px 18px;margin:0 0 18px;text-align:center;">${esc(code)}</p>` : ""}
       <p style="margin:0 0 14px;">${esc(w.body[2])}</p>
       <p style="margin:0 0 22px;">${esc(w.body[3])}</p>
       <p style="margin:0 0 22px;text-align:center;">
