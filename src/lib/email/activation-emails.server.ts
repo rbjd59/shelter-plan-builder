@@ -417,8 +417,7 @@ ${familyDocRows.map((r) => `- ${r.label}: ${r.url}`).join("\n")}`;
 
 ${w.body[0]}
 
-${w.body[1]}
-${code}
+${hasCode ? `${w.body[1]}\n${code}` : ""}
 
 ${w.body[2]}
 ${docRows.map((r) => `- ${r.label}: ${r.url}`).join("\n")}
