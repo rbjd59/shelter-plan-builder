@@ -1,0 +1,152 @@
+{
+  "brand": "DetencionDefensa.com",
+  "product": "DetencionDefensa SOS Connect",
+  "description": "Creative asset kit for Zealy AI ad generation — images, copy, brand colors, legal disclaimers, and audience angles for DetencionDefensa SOS Connect.",
+  "landing_page": "https://detenciondefensa.com",
+  "bundle": {
+    "name": "DetencionDefensa Zealy Creative Kit (ZIP)",
+    "url": "/__l5e/assets-v1/38d73d54-749f-4f11-9503-5aaa00c026fb/zealy-assets.zip",
+    "size_bytes": 3378173,
+    "content_type": "application/zip"
+  },
+  "copy_brief_url": "https://detenciondefensa.com/zealy-ad-brief.md",
+  "legal_disclaimer": "DetencionDefensa.com, Inc. is a technology platform, not a law firm. Legal services are provided by Sorrentino Law Firm, PLLC, Rosario Kyle Sorrentino, Esq., FL Bar No. 1049132. NO LEGAL ADVICE. No outcome guaranteed.",
+  "brand": {
+    "primary_dark": "#0e1a2b",
+    "paper_cream": "#f4efe6",
+    "accent_orange": "#b8551f",
+    "gold": "#c9a961",
+    "alert_red": "#ff4d4d",
+    "heading_fonts": ["Roboto Slab", "Fraunces"],
+    "body_fonts": ["Work Sans", "Inter Tight"],
+    "mood": "Serious, trustworthy, urgent but not alarmist. Community protection, family safety, legal preparedness."
+  },
+  "audience_angles": [
+    "Hard to find the right legal help quickly",
+    "Getting into a safety plan before ICE comes",
+    "Worried about family separation",
+    "Need trilingual help (Spanish/English/Haitian Creole)",
+    "Want attorney-reviewed documents ready now",
+    "Free pro bono protection during the crisis"
+  ],
+  "headlines": [
+    "Before ICE comes, your defense plan is ready.",
+    "Un botón de emergencia para tu familia.",
+    "Free attorney-reviewed defense plan for immigrant families.",
+    "Protege a tu familia antes de que pase.",
+    "SOS + plan legal gratis. No es un bufete de abogados."
+  ],
+  "body_copy": [
+    "Sign up free. Get the app. If ICE detains you, one button alerts your family and attorney — and your federal defense forms are already started.",
+    "Attorney-reviewed, trilingual, and protected by attorney-client privilege. Available in Spanish, English, and Haitian Creole.",
+    "Normalmente $199. Ahora gratis por la crisis comunitaria. Ofrecido por Sorrentino Law Firm PLLC bajo licencia."
+  ],
+  "ctas": [
+    "Get your free plan",
+    "Descarga la app gratis",
+    "Protege a tu familia ahora",
+    "Start your defense plan"
+  ],
+  "assets": [
+    {
+      "id": "01-app-icon-512",
+      "filename": "01-app-icon-512.png",
+      "url": "/__l5e/assets-v1/b6fd7a38-7f75-4efa-bda4-6056a5d2e5fd/01-app-icon-512.png",
+      "size_bytes": 295090,
+      "content_type": "image/png",
+      "name": "DetencionDefensa App Icon 512",
+      "description": "Legacy 512×512 app launcher icon. Use for older icon placements or small logo treatments.",
+      "tags": ["app icon", "logo", "small format"]
+    },
+    {
+      "id": "02-app-icon-sos-red",
+      "filename": "02-app-icon-sos-red.png",
+      "url": "/__l5e/assets-v1/42712272-26e8-4491-a36d-47ec7cf59bee/02-app-icon-sos-red.png",
+      "size_bytes": 890441,
+      "content_type": "image/png",
+      "name": "DetencionDefensa SOS Red Icon",
+      "description": "Recommended primary logo/app icon. Square red SOS button on dark navy background. Use as profile picture, logo, and app icon mockups.",
+      "tags": ["recommended logo", "app icon", "SOS button", "primary brand"]
+    },
+    {
+      "id": "03-feature-graphic-1024x500",
+      "filename": "03-feature-graphic-1024x500.png",
+      "url": "/__l5e/assets-v1/2401ad4e-3567-49a1-8816-f85addc9917c/03-feature-graphic-1024x500.png",
+      "size_bytes": 445049,
+      "content_type": "image/png",
+      "name": "DetencionDefensa Feature Graphic",
+      "description": "1024×500 Google Play feature graphic. Use for wide banner ads and store listing-style creatives.",
+      "tags": ["banner", "feature graphic", "Google Play style"]
+    },
+    {
+      "id": "04-family-hero",
+      "filename": "04-family-hero.jpg",
+      "url": "/__l5e/assets-v1/3be0ecf1-9fc4-4cbf-b2bc-f0155a172b3f/04-family-hero.jpg",
+      "size_bytes": 113576,
+      "content_type": "image/jpeg",
+      "name": "Family Hero Image",
+      "description": "Warm, diverse immigrant working family at home. Use for emotional, trust-building hero creatives. Avoid fear-based or enforcement imagery.",
+      "tags": ["hero image", "family", "trust", "community protection"]
+    },
+    {
+      "id": "05-detention-interior",
+      "filename": "05-detention-interior.jpg",
+      "url": "/__l5e/assets-v1/3dec25ee-3fb1-4aa6-b642-199ce34bdffc/05-detention-interior.jpg",
+      "size_bytes": 142030,
+      "content_type": "image/jpeg",
+      "name": "Detention Interior Context",
+      "description": "Contextual detention facility interior. Use sparingly and only with hopeful or solution-focused copy. Must include the NOT A LAW FIRM disclaimer.",
+      "tags": ["context image", "detention", "serious tone"]
+    },
+    {
+      "id": "06-android-play-512",
+      "filename": "06-android-play-512.png",
+      "url": "/__l5e/assets-v1/78dc5e66-75a0-41a9-9383-b21e509b49c6/06-android-play-512.png",
+      "size_bytes": 219108,
+      "content_type": "image/png",
+      "name": "Android Play Icon 512",
+      "description": "512×512 Android Play Store icon. Use in Android download creatives and phone mockups.",
+      "tags": ["Android", "Play Store", "app icon"]
+    },
+    {
+      "id": "07-ios-appstore-1024",
+      "filename": "07-ios-appstore-1024.png",
+      "url": "/__l5e/assets-v1/71ab54c1-ee44-4bf2-b936-c868befb3559/07-ios-appstore-1024.png",
+      "size_bytes": 698792,
+      "content_type": "image/png",
+      "name": "iOS App Store Icon 1024",
+      "description": "1024×1024 iOS App Store icon. Use in iPhone mockups and Apple-style creatives.",
+      "tags": ["iOS", "App Store", "app icon"]
+    },
+    {
+      "id": "08-qr-get-app",
+      "filename": "08-qr-get-app.png",
+      "url": "/__l5e/assets-v1/cd171fb2-816d-445d-89fb-dc2f8df8cc39/08-qr-get-app.png",
+      "size_bytes": 3942,
+      "content_type": "image/png",
+      "name": "QR Install Code",
+      "description": "QR code graphic for app install. Use for 'scan to download' or signup-to-app conversion creatives.",
+      "tags": ["QR code", "download", "app install"]
+    },
+    {
+      "id": "09-favicon",
+      "filename": "09-favicon.png",
+      "url": "/__l5e/assets-v1/fe15ee0c-07ea-442a-ab85-a9cc27a26355/09-favicon.png",
+      "size_bytes": 7964,
+      "content_type": "image/png",
+      "name": "DetencionDefensa Favicon",
+      "description": "64×64 favicon. Use as small logo watermark or tiny icon placement.",
+      "tags": ["favicon", "small logo", "watermark"]
+    },
+    {
+      "id": "10-source-icon-1024",
+      "filename": "10-source-icon-1024.png",
+      "url": "/__l5e/assets-v1/d5224256-c0f0-49cd-abca-64ada139cd85/10-source-icon-1024.png",
+      "size_bytes": 890441,
+      "content_type": "image/png",
+      "name": "DetencionDefensa Source Icon 1024",
+      "description": "Master 1024×1024 source icon. Use when the platform requires a square master file.",
+      "tags": ["master icon", "source file", "app icon"]
+    }
+  ]
+}
