@@ -1,15 +1,63 @@
 import type { Lang } from "@/context/LanguageContext";
 
-export type StationKey = "radiopaz" | "wrhc" | "woir" | "wmbm" | "lzm" | "default";
+export type StationKey =
+  | "radiopaz" | "wrhc" | "woir" | "wmbm" | "lzm"
+  | "wsrf" | "actualidad" | "wlqy"
+  | "default";
 
 // Per-station tracking numbers. Replace with real CallRail/Twilio numbers before launch.
-export const STATION_NUMBERS: Record<StationKey, { display: string; tel: string; name: string }> = {
+export const STATION_NUMBERS: Record<StationKey, { display: string; tel: string; name: string; format?: string }> = {
   radiopaz: { display: "(305) 521-0830", tel: "+13055210830", name: "Radio Paz 830 AM / 96.1 FM" },
   wrhc:     { display: "(305) 521-1550", tel: "+13055211550", name: "WRHC 1550 AM" },
   woir:     { display: "(305) 521-1430", tel: "+13055211430", name: "WOIR 1430 AM" },
   wmbm:     { display: "(305) 521-1490", tel: "+13055211490", name: "WMBM 1490 AM" },
   lzm:      { display: "(305) 521-0895", tel: "+13055210895", name: "LZM Radio 89.5" },
+  wsrf:       { display: "(305) 521-1580", tel: "+13055211580", name: "WSRF 1580 AM & 99.5 FM", format: "Haitian Creole Radio" },
+  actualidad: { display: "(305) 521-1040", tel: "+13055211040", name: "Actualidad Radio 1040 AM / 103.9 FM", format: "Spanish News/Talk" },
+  wlqy:       { display: "(305) 521-1320", tel: "+13055211320", name: "WLQY 1320 AM" },
   default:  { display: "(305) 521-0199", tel: "+13055210199", name: "DetencionDefensa" },
+};
+
+export function resolveStation(src: string | undefined): StationKey {
+  const key = (src ?? "").toLowerCase();
+  return key !== "default" && key in STATION_NUMBERS ? (key as StationKey) : "default";
+}
+
+export const SAVE_MY_HOME_URL = "https://savemyhometrust.com";
+
+export const RADIO_BANNER: Record<Lang, {
+  eyebrow: string; title: string; body: string; verify: string; plan: string; trust: string; adLabel: string; adDisclaimer: string;
+}> = {
+  es: {
+    eyebrow: "Oyentes de radio",
+    title: "¿Nos escuchó en la radio? Esta es la alianza verificada.",
+    body: "DetencionDefensa y SaveMyHomeTrust.com trabajan juntos: prepare su plan de emergencia en español o criollo y proteja el valor de su casa en un fideicomiso antes de una detención.",
+    verify: "Verificar alianza",
+    plan: "Plan de emergencia gratis",
+    trust: "Proteger mi casa (SaveMyHomeTrust.com)",
+    adLabel: "PUBLICIDAD",
+    adDisclaimer: "La contratación de un abogado es una decisión importante que no debe basarse únicamente en anuncios. Antes de decidir, pídanos información escrita gratuita sobre nuestras calificaciones y experiencia.",
+  },
+  en: {
+    eyebrow: "Radio listeners",
+    title: "Heard us on the radio? Here is the verified partnership.",
+    body: "DetencionDefensa and SaveMyHomeTrust.com work together: prepare your emergency plan in Spanish or Creole and protect your home equity in a trust before a detention happens.",
+    verify: "Verify partnership",
+    plan: "Free emergency plan",
+    trust: "Protect my home (SaveMyHomeTrust.com)",
+    adLabel: "ADVERTISEMENT",
+    adDisclaimer: "The hiring of a lawyer is an important decision that should not be based solely upon advertisements. Before you decide, ask us to send you free written information about our qualifications and experience.",
+  },
+  ht: {
+    eyebrow: "Moun k ap koute radyo",
+    title: "Ou tande nou nan radyo? Men patenarya verifye a.",
+    body: "DetencionDefensa ak SaveMyHomeTrust.com travay ansanm: prepare plan dijans ou an Kreyòl oswa Panyòl epi pwoteje valè kay ou nan yon fidisi anvan yon detansyon rive.",
+    verify: "Verifye patenarya a",
+    plan: "Plan dijans gratis",
+    trust: "Pwoteje kay mwen (SaveMyHomeTrust.com)",
+    adLabel: "PIBLISITE",
+    adDisclaimer: "Anboche yon avoka se yon desizyon enpòtan ki pa dwe baze sèlman sou piblisite. Anvan ou deside, mande nou voye ba ou enfòmasyon ekri gratis sou kalifikasyon ak eksperyans nou.",
+  },
 };
 
 type Copy = {

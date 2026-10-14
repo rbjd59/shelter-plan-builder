@@ -1,7 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { useLang, type Lang } from "@/context/LanguageContext";
-import { PASTORS, STATION_NUMBERS, type StationKey } from "@/lib/pastors-content";
+import {
+  PASTORS,
+  STATION_NUMBERS,
+  RADIO_BANNER,
+  SAVE_MY_HOME_URL,
+  resolveStation,
+  type StationKey,
+} from "@/lib/pastors-content";
+import { FIRM } from "@/lib/firm-info";
 
 export const Route = createFileRoute("/pastors")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -40,13 +48,8 @@ function PastorsPage() {
   const { src } = Route.useSearch();
   const t = PASTORS[lang];
 
-  const station = useMemo<StationKey>(() => {
-    const key = (src ?? "").toLowerCase();
-    if (key === "radiopaz" || key === "wrhc" || key === "woir" || key === "wmbm" || key === "lzm") {
-      return key;
-    }
-    return "default";
-  }, [src]);
+  const station = useMemo<StationKey>(() => resolveStation(src), [src]);
+  const r = RADIO_BANNER[lang];
 
   const number = STATION_NUMBERS[station];
 
@@ -74,6 +77,44 @@ function PastorsPage() {
           </div>
         </div>
       </header>
+
+      {/* Radio listener banner */}
+      <section className="bg-[#e8a04a] text-[#0b0b0e]">
+        <div className="max-w-6xl mx-auto px-6 py-6 lg:py-8">
+          <div className="flex flex-wrap items-center gap-3 text-xs font-mono uppercase tracking-[0.18em]">
+            <span className="px-2 py-0.5 border border-[#0b0b0e]/60 rounded">{r.adLabel}</span>
+            <span>📻 {r.eyebrow}</span>
+            {station !== "default" && (
+              <span className="font-semibold">
+                · {number.name}
+                {number.format ? ` — ${number.format}` : ""}
+              </span>
+            )}
+          </div>
+          <h2 className="mt-3 font-serif text-2xl lg:text-3xl leading-tight">{r.title}</h2>
+          <p className="mt-2 max-w-3xl text-sm lg:text-base">{r.body}</p>
+          <div className="mt-4 flex flex-wrap gap-3 text-sm">
+            <a href="#partnership" className="px-4 py-2 rounded-full bg-[#0b0b0e] text-[#f5f1ea]">
+              ✓ {r.verify}
+            </a>
+            <Link
+              to="/intake"
+              search={{ lang } as never}
+              className="px-4 py-2 rounded-full border border-[#0b0b0e]"
+            >
+              {r.plan}
+            </Link>
+            <a
+              href={SAVE_MY_HOME_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 rounded-full border border-[#0b0b0e]"
+            >
+              🏠 {r.trust}
+            </a>
+          </div>
+        </div>
+      </section>
 
       {/* Hero */}
       <section className="max-w-6xl mx-auto px-6 pt-16 pb-16 lg:pt-28 lg:pb-24">
@@ -186,6 +227,45 @@ function PastorsPage() {
             >
               {t.packetCta}
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Partnership verification + Rule 4-7 disclosures */}
+      <section id="partnership" className="border-t border-white/8 bg-white/[0.02]">
+        <div className="max-w-6xl mx-auto px-6 py-14 grid md:grid-cols-2 gap-8 text-sm leading-relaxed">
+          <div className="rounded-xl border border-white/10 p-6">
+            <h3 className="font-serif text-xl text-[#e8a04a] mb-3">
+              DetencionDefensa × SaveMyHomeTrust.com
+            </h3>
+            <ul className="space-y-1 text-white/75 font-mono text-xs">
+              {(["wsrf", "actualidad", "wlqy", "radiopaz", "wrhc", "woir", "wmbm", "lzm"] as StationKey[]).map((k) => (
+                <li key={k} className={k === station ? "text-[#e8a04a]" : ""}>
+                  {STATION_NUMBERS[k].name}
+                  {STATION_NUMBERS[k].format ? ` (${STATION_NUMBERS[k].format})` : ""} —{" "}
+                  <a href={`tel:${STATION_NUMBERS[k].tel}`} className="underline">
+                    {STATION_NUMBERS[k].display}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <a href={SAVE_MY_HOME_URL} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block text-[#e8a04a] underline">
+              SaveMyHomeTrust.com →
+            </a>
+          </div>
+          <div className="rounded-xl border border-[#e8a04a]/40 p-6 text-white/80">
+            <div className="text-xs font-mono uppercase tracking-[0.18em] text-[#e8a04a] mb-3">
+              {r.adLabel} · Florida Bar Rule 4-7
+            </div>
+            <p>
+              {FIRM.legalName} — {FIRM.attorney}, {FIRM.flBarNumber}.
+            </p>
+            <p>Bona fide office: {FIRM.address}.</p>
+            <p>
+              <a href={`tel:${FIRM.phone.replace(/[^+\d]/g, "")}`} className="underline">{FIRM.phone}</a>
+            </p>
+            <p className="mt-3">{r.adDisclaimer}</p>
+            <p className="mt-3 text-white/60">No outcome is guaranteed; past results do not predict future results.</p>
           </div>
         </div>
       </section>

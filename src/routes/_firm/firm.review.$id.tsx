@@ -9,7 +9,7 @@ export const Route = createFileRoute("/_firm/firm/review/$id")({
   component: FirmReviewPage,
   errorComponent: ({ error }) => (
     <div className="rounded-md border border-red-200 bg-red-50 p-4 text-sm text-red-800">
-      {error.message}
+      {(error as Error).message}
     </div>
   ),
 });
