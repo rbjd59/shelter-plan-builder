@@ -1,5 +1,11 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
+## Josh Pastor signup correction
+- [x] Cancel the agent-triggered simulated SOS and send an all-clear; Josh only signed up.
+- [x] Remove simulated activation/device state and verify signup-only status; retain clearly labeled test documents and installation instructions.
+- [x] Refire Josh's authorized test and verify fresh notifications and both boards.
+- [ ] Resolve Josh's iPhone activation-code error: published activation accepts B9733 and B9733-EN; awaiting the exact phone error/screenshot. Diagnostic activation timestamp cleared; physical installation unverified.
+
 ## Done
 - [x] Central fan-out (`src/lib/alert-fanout.server.ts`): activation, trigger, cancel.
       One send per recipient (15-min idempotency bucket + SMS log guard) — no duplicates.
