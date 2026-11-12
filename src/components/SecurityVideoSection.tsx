@@ -1,6 +1,6 @@
+import posterAsset from "@/assets/home-security-poster.jpg.asset.json";
 import { useEffect, useRef, useState } from "react";
 import { useLang } from "@/context/LanguageContext";
-import { useAutoplayOnHash } from "@/hooks/useAutoplayOnHash";
 import { PlayOverlay } from "@/components/AdVideoSection";
 import enVid from "@/assets/videos/security-faq-en-v1.mp4.asset.json";
 import esVid from "@/assets/videos/security-faq-es-v1.mp4.asset.json";
@@ -59,7 +59,7 @@ export default function SecurityVideoSection() {
     }
   };
 
-  useAutoplayOnHash("security-video", handlePlay);
+  
 
   return (
     <section
@@ -110,10 +110,11 @@ export default function SecurityVideoSection() {
             ref={videoRef}
             key={lang}
             src={SRC[lang] ?? SRC.en}
-            controls={started}
+            controls
             playsInline
             {...({ "webkit-playsinline": "true" } as Record<string, string>)}
-            preload="metadata"
+            preload="none"
+            poster={posterAsset.url}
             style={{
               width: "100%",
               height: "100%",

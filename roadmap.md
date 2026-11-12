@@ -1,5 +1,8 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
+## Homepage arrangement
+- [x] Rearrange and restyle the homepage while preserving all original link destinations, three video URLs, and every translated HTML paragraph; verify 360px mobile, desktop, language switching, FAQ expansion and video playback. Intake, backend, native app and sitewide SEO remain unchanged.
+
 ## Two-stage intake
 - [x] Separate consent, signup and referral details from the complete form questionnaire; signed-in save/reload and back navigation verified, with 14 passing regression tests. No forms submitted or alerts sent during verification.
 

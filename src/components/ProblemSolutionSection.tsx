@@ -1,36 +1,8 @@
 import type { ReactNode } from "react";
 import { useLang, type Lang } from "@/context/LanguageContext";
 import { withLang } from "@/lib/outbound-lang";
-
-const pillStyle: React.CSSProperties = {
-  display: "inline-block",
-  marginTop: 10,
-  padding: "8px 14px",
-  background: "#e8a04a",
-  color: "#0f1830",
-  borderRadius: 999,
-  fontSize: 13,
-  fontWeight: 800,
-  textDecoration: "none",
-  letterSpacing: "0.02em",
-};
-
-function SaveMyHomeButton({ tld = "com", lang }: { tld?: "com" | "io"; lang: Lang }) {
-  return (
-    <a href={withLang(`https://savemyhometrust.${tld}/trust`, lang)} target="_blank" rel="noopener noreferrer" style={pillStyle}>
-      SaveMyHomeTrust.{tld} →
-    </a>
-  );
-}
-
-function DefensaSiempreButton({ lang }: { lang: Lang }) {
-  return (
-    <a href={withLang("https://defensasiempre.com", lang)} target="_blank" rel="noopener noreferrer" style={pillStyle}>
-      DefensaSiempre.com →
-    </a>
-  );
-}
-
+function SaveMyHomeButton({ tld = "com", lang }: { tld?: "com" | "io"; lang: Lang }) { return <a className="home-text-link" href={withLang(`https://savemyhometrust.${tld}/trust`, lang)} target="_blank" rel="noopener noreferrer">SaveMyHomeTrust.{tld} →</a>; }
+function DefensaSiempreButton({ lang }: { lang: Lang }) { return <a className="home-text-link" href={withLang("https://defensasiempre.com", lang)} target="_blank" rel="noopener noreferrer">DefensaSiempre.com →</a>; }
 const COPY: Record<
   Lang,
   {
@@ -128,147 +100,12 @@ const COPY: Record<
   },
 };
 
+
 export default function ProblemSolutionSection() {
-  const { lang } = useLang();
-  const t = COPY[lang];
-
-  return (
-    <section
-      style={{
-        background: "linear-gradient(180deg, #081d3a 0%, #0d2c54 100%)",
-        color: "#ffffff",
-        padding: "72px 24px 80px",
-        fontFamily: '"Work Sans", -apple-system, Roboto, Helvetica, Arial, sans-serif',
-      }}
-    >
-      <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gap: "48px" }}>
-        <Block
-          label={t.problemLabel}
-          items={t.problems}
-          accent="#7fc4ff"
-          action={<WatchMoreButton label={t.watchMore} />}
-        />
-        <Block label={t.solutionLabel} items={t.solutions(lang)} accent="#8ed3ff" />
-        <p
-          style={{
-            textAlign: "center",
-            fontSize: 14,
-            color: "rgba(255,255,255,0.7)",
-            maxWidth: 720,
-            margin: "0 auto",
-            lineHeight: 1.6,
-            fontStyle: "italic",
-          }}
-        >
-          {t.faqNote}
-        </p>
-      </div>
-    </section>
-  );
+ const {lang}=useLang(); const t=COPY[lang];
+ return <section className="home-band home-problem-solution"><div className="home-container">
+ <div className="home-comparison"><div><h2>{t.problemLabel}</h2><ol>{t.problems.map((item,i)=><li key={i}><span>{String(i+1).padStart(2,"0")}</span><div>{item}</div></li>)}</ol><a className="home-text-link" href="/videos">{t.watchMore} →</a></div>
+ <div className="home-solution"><h2>{t.solutionLabel}</h2><ol>{t.solutions(lang).slice(0,3).map((item,i)=><li key={i}><span>{String(i+1).padStart(2,"0")}</span><div>{item}</div></li>)}</ol></div></div>
+ <p className="home-faq-note"><a href="#preguntas">{t.faqNote}</a></p></div></section>;
 }
-
-function Block({
-  label,
-  items,
-  accent,
-  action,
-}: {
-  label: string;
-  items: ReactNode[];
-  accent: string;
-  action?: ReactNode;
-}) {
-  return (
-    <div>
-      <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 22, flexWrap: "wrap" }}>
-        <span
-          aria-hidden
-          style={{
-            width: 10,
-            height: 10,
-            borderRadius: "50%",
-            background: accent,
-            boxShadow: `0 0 0 4px ${accent}22`,
-          }}
-        />
-        <span
-          style={{
-            fontSize: 11,
-            fontWeight: 700,
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            color: accent,
-          }}
-        >
-          {label}
-        </span>
-        {action && <div style={{ marginLeft: "auto" }}>{action}</div>}
-      </div>
-      <ul
-        style={{
-          listStyle: "none",
-          padding: 0,
-          margin: 0,
-          display: "grid",
-          gap: 12,
-          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-        }}
-      >
-        {items.map((it, i) => (
-          <li
-            key={i}
-            style={{
-              background: "rgba(255,255,255,0.06)",
-              border: "1px solid rgba(255,255,255,0.12)",
-              borderRadius: 14,
-              padding: "20px 22px",
-              fontSize: 15,
-              lineHeight: 1.5,
-              color: "rgba(255,255,255,0.92)",
-              display: "flex",
-              gap: 12,
-              alignItems: "flex-start",
-            }}
-          >
-            <span
-              aria-hidden
-              style={{
-                fontFamily: '"Roboto Slab", Georgia, serif',
-                fontSize: 18,
-                color: accent,
-                lineHeight: 1.3,
-                flexShrink: 0,
-                minWidth: 22,
-              }}
-            >
-              {String(i + 1).padStart(2, "0")}
-            </span>
-            <span>{it}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function WatchMoreButton({ label }: { label: string }) {
-  return (
-    <a
-      href="/videos"
-      style={{
-        display: "inline-block",
-        background: "#e8a04a",
-        color: "#0f1830",
-        padding: "0.7rem 1.4rem",
-        borderRadius: 999,
-        fontWeight: 800,
-        fontSize: "0.95rem",
-        textDecoration: "none",
-        whiteSpace: "nowrap",
-        boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
-      }}
-    >
-      {label}
-    </a>
-  );
-}
+export function PaidSolutions() { const {lang}=useLang(); return <div className="home-paid-grid">{COPY[lang].solutions(lang).slice(3).map((item,i)=><article key={i}><span className="home-item-number">{String(i+4).padStart(2,"0")}</span><div>{item}</div></article>)}</div>; }

@@ -1,8 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Menu, X, Play, Smartphone, Home, ShieldCheck, Building2, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useLang, type Lang } from "@/context/LanguageContext";
-
 import logoAsset from "@/assets/dd-logo.png.asset.json";
-import detentionNightAsset from "@/assets/hero-family.jpg.asset.json";
+import familyAsset from "@/assets/hero-family.jpg.asset.json";
+import howPoster from "@/assets/home-how-poster.jpg.asset.json";
+import homePoster from "@/assets/home-property-poster.jpg.asset.json";
+import securityPoster from "@/assets/home-security-poster.jpg.asset.json";
+import employerPoster from "@/assets/home-employer-poster.jpg.asset.json";
 
 const COPY = {
   es: {
@@ -80,495 +85,67 @@ const COPY = {
 >;
 
 
+
 export default function HeroIntro() {
   const { lang, setLang } = useLang();
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const mql = window.matchMedia("(max-width: 720px)");
-    const onChange = () => setIsMobile(mql.matches);
-    onChange();
-    mql.addEventListener("change", onChange);
-    return () => mql.removeEventListener("change", onChange);
-  }, []);
-
-  return (
-    <section
-      style={{
-        backgroundImage: `linear-gradient(155deg, rgba(8,22,45,0.55) 0%, rgba(8,22,45,0.35) 32%, rgba(8,22,45,0.30) 58%, rgba(8,22,45,0.62) 100%), url(${detentionNightAsset.url})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        color: "#ffffff",
-        minHeight: "78vh",
-        display: "flex",
-        flexDirection: "column",
-        fontFamily:
-          '"Work Sans", -apple-system, Roboto, Helvetica, Arial, sans-serif',
-        textAlign: "center",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: 1200,
-          margin: "0 auto",
-          width: "100%",
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          padding: isMobile ? "0.75rem" : "1rem",
-          position: "relative",
-        }}
-      >
-        {/* Nav */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: isMobile ? "column" : "row",
-            alignItems: "center",
-            justifyContent: isMobile ? "center" : "space-between",
-            gap: isMobile ? 10 : 12,
-            flexWrap: "wrap",
-            paddingTop: 4,
-            textAlign: "center",
-          }}
-        >
-          <a
-            href="/"
-            aria-label="DetencionDefensa.com home"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 10,
-              textDecoration: "none",
-              color: "#ffffff",
-              minWidth: 0,
-              justifyContent: "center",
-            }}
-          >
-            <img
-              src={logoAsset.url}
-              alt="Community Service Program logo"
-              width={40}
-              height={40}
-              style={{
-                width: isMobile ? 32 : 40,
-                height: isMobile ? 32 : 40,
-                display: "block",
-                flexShrink: 0,
-              }}
-            />
-            <span
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: isMobile ? "center" : "flex-start",
-                minWidth: 0,
-              }}
-            >
-              <span
-                style={{
-                  fontSize: isMobile ? 14 : 16,
-                  fontWeight: 700,
-                  letterSpacing: -0.2,
-                  color: "#ffffff",
-                  whiteSpace: "nowrap",
-                  lineHeight: 1.2,
-                  textAlign: isMobile ? "center" : "left",
-                }}
-              >
-                DetencionDefensa.com
-              </span>
-              <span
-                style={{
-                  fontSize: isMobile ? 10 : 11,
-                  fontWeight: 600,
-                  letterSpacing: "0.04em",
-                  color: "#cfe6ff",
-                  lineHeight: 1.3,
-                  textAlign: isMobile ? "center" : "left",
-                }}
-              >
-                ListoAhora.org · PareKounya.org
-              </span>
-            </span>
-          </a>
-
-
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-              flexShrink: 0,
-              flexWrap: "wrap",
-              justifyContent: "center",
-              width: isMobile ? "100%" : "auto",
-            }}
-          >
-            <div
-              style={{
-                display: "inline-flex",
-                justifyContent: "center",
-                gap: 4,
-                background: "#fff",
-                border: "1px solid rgba(10,22,51,0.15)",
-                borderRadius: 999,
-                padding: 3,
-                flexShrink: 0,
-                maxWidth: "100%",
-              }}
-            >
-              {(["es", "en", "ht"] as Lang[]).map((code) => (
-                <button
-                  key={code}
-                  type="button"
-                  onClick={() => {
-                    setLang(code);
-                  }}
-                  style={{
-                    background: lang === code ? "#112e51" : "transparent",
-                    color: lang === code ? "#fff" : "#112e51",
-                    border: "none",
-                    borderRadius: 999,
-                    padding: isMobile ? "6px 10px" : "8px 16px",
-                    fontSize: isMobile ? 12 : 13,
-                    fontWeight: 700,
-                    letterSpacing: isMobile ? "0.04em" : "0.14em",
-                    cursor: "pointer",
-                    fontFamily: "inherit",
-                    touchAction: "manipulation",
-                    WebkitTapHighlightColor: "transparent",
-                  }}
-                >
-                  {code === "es" ? "Español" : code === "en" ? "English" : "Kreyòl"}
-                </button>
-              ))}
-            </div>
-          </div>
+  const [open, setOpen] = useState(false);
+  const t = COPY[lang];
+  const start = lang === "es" ? "Comience Ahora →" : lang === "en" ? "Start Now →" : "Kòmanse Kounye a →";
+  return <>
+    <a className="home-skip" href="#home-content">{lang === "es" ? "Ir al contenido" : lang === "en" ? "Skip to content" : "Ale nan kontni an"}</a>
+    <header className="home-header">
+      <div className="home-header-inner">
+        <a href="/" className="home-brand" aria-label="DetencionDefensa.com home">
+          <img src={logoAsset.url} alt="Community Service Program logo" width="48" height="48" />
+          <span><strong>DetencionDefensa.com</strong><small>ListoAhora.org · PareKounya.org</small></span>
+        </a>
+        <nav className={`home-nav ${open ? "is-open" : ""}`} aria-label="Main">
+          <a href="#how-it-works-video" onClick={() => setOpen(false)}>{lang === "es" ? "Cómo funciona" : lang === "en" ? "How it works" : "Kijan li mache"}</a>
+          <a href="/videos">{lang === "ht" ? "Videyo" : "Videos"}</a>
+          <a href="#precio" onClick={() => setOpen(false)}>{lang === "es" ? "Precio" : lang === "en" ? "Price" : "Pri"}</a>
+          <a href="#preguntas" onClick={() => setOpen(false)}>{lang === "es" ? "Preguntas" : lang === "en" ? "FAQ" : "Kesyon"}</a>
+          <a href="/attorney">{lang === "es" ? "Abogado" : lang === "en" ? "Attorney" : "Avoka"}</a>
+        </nav>
+        <div className="home-languages" role="group" aria-label="Language">
+          {(["es", "en", "ht"] as Lang[]).map(code => <Button key={code} variant="ghost" aria-pressed={lang === code} onClick={() => setLang(code)}>{code === "es" ? "Español" : code === "en" ? "English" : "Kreyòl"}</Button>)}
         </div>
-
-        {/* Hero content over the image */}
-          <div
-            style={{
-              flex: 1,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "flex-start",
-              padding: isMobile ? "0.5rem 0" : "0.75rem 0",
-              gap: isMobile ? "0.9rem" : "1.1rem",
-            }}
-          >
-          <div
-            style={{
-              fontFamily: '"Roboto Slab", Georgia, serif',
-              maxWidth: 1240,
-              margin: "0 auto",
-              width: "100%",
-              textAlign: "center",
-              display: "flex",
-              flexDirection: "column",
-              gap: isMobile ? "0.5rem" : "0.75rem",
-            }}
-          >
-            <p
-              style={{
-                fontSize: isMobile ? "1.5rem" : "clamp(2rem, 5vw, 3.4rem)",
-                lineHeight: 1.15,
-                fontWeight: 800,
-                color: "#00d4ff",
-                margin: 0,
-                whiteSpace: "normal",
-                textShadow: "0 1px 2px rgba(255,255,255,0.6)",
-                textTransform: "uppercase",
-              }}
-            >
-              {COPY[lang].plan}
-            </p>
-
-            <p
-              style={{
-                fontFamily: '"Roboto Slab", Georgia, serif',
-                fontSize: isMobile ? "1.25rem" : "clamp(1.4rem, 3vw, 2.2rem)",
-                lineHeight: 1.2,
-                fontWeight: 800,
-                color: "#ffffff",
-                margin: 0,
-                textShadow: "0 2px 10px rgba(0,0,0,0.6)",
-              }}
-            >
-              <span
-                style={{
-                  color: "#ff4d4d",
-                  textDecoration: "line-through",
-                  textDecorationColor: "#ff4d4d",
-                  textDecorationThickness: "3px",
-                  marginRight: "0.5rem",
-                }}
-              >
-                {COPY[lang].wasPrice}
-              </span>
-              {COPY[lang].freeText}
-            </p>
-          </div>
-
-          {/* Feature boxes */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-              gap: isMobile ? "0.35rem" : "0.5rem",
-              maxWidth: 700,
-              width: "100%",
-              margin: "calc(2.5rem + 40px) auto 0",
-            }}
-          >
-            {/* Free app */}
-            <div
-              style={{
-                background: "rgba(255,255,255,0.10)",
-                backdropFilter: "blur(4px)",
-                border: "1px solid rgba(232,160,74,0.7)",
-                borderRadius: 12,
-                padding: isMobile ? "0.6rem 0.8rem" : "0.7rem 1rem",
-                textAlign: "center",
-                boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
-              }}
-            >
-              <h3
-                style={{
-                  margin: 0,
-                  fontFamily: '"Roboto Slab", Georgia, serif',
-                  fontWeight: 900,
-                  fontSize: isMobile ? "1.15rem" : "clamp(1.1rem, 2vw, 1.4rem)",
-                  letterSpacing: "0.06em",
-                  color: "#00d4ff",
-                  textTransform: "uppercase",
-                  width: "100%",
-                  lineHeight: 1.2,
-                }}
-              >
-                {COPY[lang].appBoxHeading}
-              </h3>
-              <a
-                href="#how-it-works-video"
-                style={{
-                  display: "inline-block",
-                  marginTop: "0.45rem",
-                  background: "#e8a04a",
-                  color: "#0f1830",
-                  textDecoration: "none",
-                  fontWeight: 800,
-                  fontSize: isMobile ? "0.8rem" : "0.74rem",
-                  letterSpacing: "0.05em",
-                  textTransform: "uppercase",
-                  padding: "6px 14px",
-                  borderRadius: 999,
-                }}
-              >
-                {COPY[lang].appBoxBtn}
-              </a>
-            </div>
-
-            {/* Protect your home */}
-            <div
-              style={{
-                background: "rgba(255,255,255,0.10)",
-                backdropFilter: "blur(4px)",
-                border: "1px solid rgba(232,160,74,0.7)",
-                borderRadius: 12,
-                padding: isMobile ? "0.6rem 0.8rem" : "0.7rem 1rem",
-                textAlign: "center",
-                boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
-              }}
-            >
-              <h3
-                style={{
-                  margin: 0,
-                  fontFamily: '"Roboto Slab", Georgia, serif',
-                  fontWeight: 900,
-                  fontSize: isMobile ? "1.15rem" : "clamp(1.1rem, 2vw, 1.4rem)",
-                  letterSpacing: "0.06em",
-                  color: "#00d4ff",
-                  textTransform: "uppercase",
-                  width: "100%",
-                  lineHeight: 1.2,
-                }}
-              >
-                {COPY[lang].homeBoxHeading}
-              </h3>
-              <a
-                href="#homeowner-video"
-                style={{
-                  display: "inline-block",
-                  marginTop: "0.45rem",
-                  background: "#e8a04a",
-                  color: "#0f1830",
-                  textDecoration: "none",
-                  fontWeight: 800,
-                  fontSize: isMobile ? "0.8rem" : "0.74rem",
-                  letterSpacing: "0.05em",
-                  textTransform: "uppercase",
-                  padding: "6px 14px",
-                  borderRadius: 999,
-                }}
-              >
-                {COPY[lang].appBoxBtn}
-              </a>
-            </div>
-
-            {/* Best in class */}
-            <a
-              href="#security-video"
-              style={{
-                display: "block",
-                textDecoration: "none",
-                background: "rgba(255,255,255,0.10)",
-                backdropFilter: "blur(4px)",
-                border: "1px solid rgba(232,160,74,0.7)",
-                borderRadius: 12,
-                padding: isMobile ? "0.6rem 0.8rem" : "0.7rem 1rem",
-                textAlign: "center",
-                boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
-                transition: "transform 0.15s ease, box-shadow 0.15s ease",
-                WebkitTapHighlightColor: "transparent",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "scale(1.02)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "scale(1)";
-              }}
-            >
-              <h3
-                style={{
-                  margin: 0,
-                  fontFamily: '"Roboto Slab", Georgia, serif',
-                  fontWeight: 900,
-                  fontSize: isMobile ? "1.15rem" : "clamp(1.1rem, 2vw, 1.4rem)",
-                  letterSpacing: "0.06em",
-                  color: "#00d4ff",
-                  textTransform: "uppercase",
-                  width: "100%",
-                  lineHeight: 1.2,
-                }}
-              >
-                {COPY[lang].secBoxHeading}
-              </h3>
-              <span
-                style={{
-                  display: "inline-block",
-                  marginTop: "0.45rem",
-                  background: "#e8a04a",
-                  color: "#0f1830",
-                  textDecoration: "none",
-                  fontWeight: 800,
-                  fontSize: isMobile ? "0.8rem" : "0.74rem",
-                  letterSpacing: "0.05em",
-                  textTransform: "uppercase",
-                  padding: "6px 14px",
-                  borderRadius: 999,
-                }}
-              >
-                {COPY[lang].secBoxBtn}
-              </span>
-            </a>
-
-            {/* Employers & churches */}
-            <div
-              style={{
-                background: "rgba(255,255,255,0.10)",
-                backdropFilter: "blur(4px)",
-                border: "1px solid rgba(232,160,74,0.7)",
-                borderRadius: 12,
-                padding: isMobile ? "0.6rem 0.8rem" : "0.7rem 1rem",
-                textAlign: "center",
-                boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
-              }}
-            >
-              <h3
-                style={{
-                  margin: 0,
-                  fontFamily: '"Roboto Slab", Georgia, serif',
-                  fontWeight: 900,
-                  fontSize: isMobile ? "1.15rem" : "clamp(1.1rem, 2vw, 1.4rem)",
-                  letterSpacing: "0.06em",
-                  color: "#00d4ff",
-                  textTransform: "uppercase",
-                  width: "100%",
-                  lineHeight: 1.2,
-                }}
-              >
-                {COPY[lang].employerHeading}
-              </h3>
-              <a
-                href="/videos#employer-video"
-                style={{
-                  display: "inline-block",
-                  marginTop: "0.45rem",
-                  background: "#e8a04a",
-                  color: "#0f1830",
-                  textDecoration: "none",
-                  fontWeight: 800,
-                  fontSize: isMobile ? "0.8rem" : "0.74rem",
-                  letterSpacing: "0.05em",
-                  textTransform: "uppercase",
-                  padding: "6px 14px",
-                  borderRadius: 999,
-                }}
-              >
-                {COPY[lang].appBoxBtn}
-              </a>
-            </div>
-          </div>
-
-          {/* Privilege notice below the four boxes */}
-          <p
-            className="notice-stop-sign"
-            style={{
-              fontFamily: '"Roboto Slab", Georgia, serif',
-              fontSize: isMobile ? "0.7rem" : "0.78rem",
-              lineHeight: 1.45,
-              fontWeight: 500,
-              textAlign: "center",
-              maxWidth: 560,
-              margin: "1.25rem auto 0",
-            }}
-          >
-            {COPY[lang].privilegeNotice}
-          </p>
-
-
-        </div>
-
-        {/* Bottom notice */}
-        <div
-          style={{
-            padding: isMobile ? "0.75rem 0 0.5rem" : "1rem 0 0.5rem",
-            marginTop: "auto",
-            textAlign: "center",
-            display: "flex",
-            flexDirection: "column",
-            gap: "0.5rem",
-          }}
-        >
-          <p
-            style={{
-              fontFamily: "Inter, system-ui, sans-serif",
-              fontSize: "8pt",
-              lineHeight: 1.4,
-              color: "#ffffff",
-              margin: 0,
-              maxWidth: 900,
-              marginInline: "auto",
-              textShadow: "0 1px 3px rgba(0,0,0,0.6)",
-            }}
-          >
-            {COPY[lang].disclaimer}
-          </p>
-        </div>
+        <Button className="home-menu" variant="ghost" size="icon" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X /> : <Menu />}</Button>
       </div>
-    </section>
-  );
+    </header>
+    <main id="home-content">
+      <section className="home-hero">
+        <img className="home-hero-background" src={familyAsset.url} alt="" width="1536" height="1024" fetchPriority="high" />
+        <div className="home-hero-shade" />
+        <div className="home-container home-hero-content">
+          <p className="home-eyebrow">DetencionDefensa.com · ListoAhora.org · PareKounya.org</p>
+          <h1>{t.plan}</h1>
+          <p className="home-hero-tagline">{t.tagline}</p>
+          <div className="home-price" id="precio"><del>{t.wasPrice}</del><strong>{t.freeText}</strong></div>
+          <div className="home-actions">
+            <Button asChild className="home-primary"><a href={`/intake?lang=${lang}`}>{start}</a></Button>
+            <Button asChild variant="outline" className="home-video-action"><a href="#how-it-works-video"><Play />{t.appBoxBtn}</a></Button>
+          </div>
+          <p className="home-hero-languages"><ShieldCheck size={20} /> Español · English · Kreyòl</p>
+        </div>
+      </section>
+      <div className="home-notices home-container"><ShieldCheck className="home-notice-icon" /><div><p>{t.privilegeNotice}</p><p>{t.disclaimer}</p></div></div>
+    </main>
+  </>;
+}
+
+export function VideoHub() {
+  const { lang } = useLang(); const t = COPY[lang];
+  const cards = [
+    { title: t.appBoxHeading, body: t.appBoxBody, href: "#how-it-works-video", icon: Smartphone, poster: howPoster.url },
+    { title: t.homeBoxHeading, body: t.homeBoxBody, href: "#homeowner-video", icon: Home, poster: homePoster.url },
+    { title: t.secBoxHeading, body: t.secBoxBody, href: "#security-video", icon: ShieldCheck, poster: securityPoster.url },
+    { title: t.employerHeading, body: "", href: "/videos#employer-video", icon: Building2, poster: employerPoster.url },
+  ];
+  return <section className="home-video-hub home-band"><div className="home-container">
+    <div className="home-section-heading"><h2>{lang === "es" ? "Mira los videos" : lang === "en" ? "Watch the videos" : "Gade videyo yo"}</h2><a href="/videos">{lang === "es" ? "Mira Más Videos" : lang === "en" ? "Watch More Videos" : "Gade Plis Videyo"}<ArrowRight size={18} /></a></div>
+    <div className="home-video-grid">{cards.map((card, i) => <article className="home-video-card" key={card.href}>
+      <a className="home-video-thumb" href={card.href} aria-label={card.title}><img src={card.poster} alt={card.title} loading="lazy" width="640" height="360" /><span><Play size={28} /></span></a>
+      <div className="home-video-card-text"><card.icon size={22} /><h3><a href={card.href}>{card.title}</a></h3><p>{card.body}</p><a href={card.href}>{i === 2 ? t.secBoxBtn : t.appBoxBtn}<ArrowRight size={16}/></a></div>
+    </article>)}</div>
+  </div></section>;
 }

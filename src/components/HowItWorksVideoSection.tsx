@@ -1,7 +1,7 @@
+import posterAsset from "@/assets/home-how-poster.jpg.asset.json";
 import { useRef, useState, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import { useLang } from "@/context/LanguageContext";
-import { useAutoplayOnHash } from "@/hooks/useAutoplayOnHash";
 import enAsset from "@/assets/videos/how-it-works-en-v3.mp4.asset.json";
 import esAsset from "@/assets/videos/how-it-works-es-v3.mp4.asset.json";
 import htAsset from "@/assets/videos/how-it-works-ht-v3.mp4.asset.json";
@@ -47,7 +47,7 @@ export default function HowItWorksVideoSection() {
     }
   };
 
-  useAutoplayOnHash("how-it-works-video", handlePlay);
+  
 
   return (
     <section
@@ -87,10 +87,11 @@ export default function HowItWorksVideoSection() {
             ref={videoRef}
             key={lang}
             src={SRC[lang] ?? SRC.en}
-            controls={started}
+            controls
             playsInline
             {...({ "webkit-playsinline": "true" } as Record<string, string>)}
-            preload="metadata"
+            preload="none"
+            poster={posterAsset.url}
             style={{
               width: "100%",
               height: "100%",

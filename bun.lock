@@ -7,7 +7,9 @@
       "dependencies": {
         "@ai-sdk/openai-compatible": "^3.0.5",
         "@cloudflare/vite-plugin": "^1.42.2",
+        "@fontsource/public-sans": "^5.3.0",
         "@fontsource/roboto-slab": "^5.2.8",
+        "@fontsource/source-serif-4": "^5.3.1",
         "@hookform/resolvers": "^5.2.2",
         "@lovable.dev/email-js": "0.1.0",
         "@lovable.dev/webhooks-js": "^0.0.1",
@@ -255,7 +257,11 @@
 
     "@floating-ui/utils": ["@floating-ui/utils@0.2.11", "https://europe-west4-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache/@floating-ui/utils/-/utils-0.2.11.tgz", {}, "sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg=="],
 
+    "@fontsource/public-sans": ["@fontsource/public-sans@5.3.0", "", {}, "sha512-kjODI0S3zdv0mBYCIQ8TbBayaiqszpc2UbhJiO3bjIqVVXzcWfHSt2o3WBCLOY3juaGaQoy4MoWCcgmfI5hCuA=="],
+
     "@fontsource/roboto-slab": ["@fontsource/roboto-slab@5.2.8", "https://europe-west4-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache/@fontsource/roboto-slab/-/roboto-slab-5.2.8.tgz", {}, "sha512-8+iMCsoUZsDwQUe5omwCp7JPNTVdyAgay5AdhmnFZPEVIVabujrmYaFkSuZ1+GUemPEWlzEQ6aQkg2mPL84SAA=="],
+
+    "@fontsource/source-serif-4": ["@fontsource/source-serif-4@5.3.1", "", {}, "sha512-cWcTCXjYYrgF9A67fThVir1VSc0lPEYmwQ6jA4pPt01s2MSCi/maINUcZoCzaqnU8fyUReDO97eGcBUkHgOeug=="],
 
     "@hookform/resolvers": ["@hookform/resolvers@5.4.0", "https://europe-west4-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache/@hookform/resolvers/-/resolvers-5.4.0.tgz", { "dependencies": { "@standard-schema/utils": "^0.3.0" }, "peerDependencies": { "react-hook-form": "^7.55.0" } }, "sha512-EIsqr/t/qbinPIhGjMdtvutIN1Kk4uwbROE9/UQ93CAVGR7GkA7Y92+fX80OzXi/OB67jVFYwKGO1WzkxmkFZw=="],
 

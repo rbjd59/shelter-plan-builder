@@ -1,6 +1,8 @@
+import { Button } from "@/components/ui/button";
+import { Play } from "lucide-react";
+import posterAsset from "@/assets/home-property-poster.jpg.asset.json";
 import { useEffect, useRef, useState } from "react";
 import { useLang } from "@/context/LanguageContext";
-import { useAutoplayOnHash } from "@/hooks/useAutoplayOnHash";
 import { withLang } from "@/lib/outbound-lang";
 import enAd from "@/assets/videos/protect-what-you-built-en.mp4.asset.json";
 import esAd from "@/assets/videos/protect-what-you-built-es.mp4.asset.json";
@@ -42,7 +44,7 @@ const DISCLAIMER: Record<string, string> = {
   ht: "Videyo sa a se yon piblisite peye. Chak ka jere endepandamman, e rezilta a pa garanti.",
 };
 
-export default function AdVideoSection() {
+export default function AdVideoSection({ children }: { children?: React.ReactNode }) {
   const { lang } = useLang();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [started, setStarted] = useState(false);
@@ -68,7 +70,7 @@ export default function AdVideoSection() {
     }
   };
 
-  useAutoplayOnHash("homeowner-video", handlePlay);
+  
 
   return (
     <section
@@ -81,6 +83,7 @@ export default function AdVideoSection() {
       }}
     >
       <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
+        <p className="home-paid-label">{lang === "es" ? "Publicidad pagada" : lang === "en" ? "Paid advertising" : "Piblisite peye"}</p>
         <h2
           style={{
             fontFamily: '"Work Sans", -apple-system, Roboto, Helvetica, Arial, sans-serif',
@@ -122,10 +125,11 @@ export default function AdVideoSection() {
             ref={videoRef}
             key={lang}
             src={SRC[lang] ?? SRC.en}
-            controls={started}
+            controls
             playsInline
             {...({ "webkit-playsinline": "true" } as Record<string, string>)}
-            preload="metadata"
+            preload="none"
+            poster={posterAsset.url}
             style={{
               width: "100%",
               height: "100%",
@@ -188,65 +192,12 @@ export default function AdVideoSection() {
         >
           {DISCLAIMER[lang] ?? DISCLAIMER.en}
         </p>
+        {children}
       </div>
     </section>
   );
 }
 
 export function PlayOverlay({ onClick }: { onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label="Play video"
-      style={{
-        position: "absolute",
-        inset: 0,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "rgba(0,0,0,0.35)",
-        border: "none",
-        cursor: "pointer",
-        padding: 0,
-        zIndex: 5,
-      }}
-    >
-      <span
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: 150,
-          height: 150,
-          borderRadius: "50%",
-          background: "rgba(15,24,48,0.85)",
-          border: "6px solid #e8a04a",
-          boxShadow: "0 0 0 0 rgba(232,160,74,0.55), 0 12px 40px rgba(0,0,0,0.55)",
-          animation: "dd-pulse-play 1.6s ease-out infinite",
-        }}
-      >
-        <span
-          aria-hidden
-          style={{
-            display: "inline-block",
-            width: 0,
-            height: 0,
-            marginLeft: 14,
-            borderTop: "28px solid transparent",
-            borderBottom: "28px solid transparent",
-            borderLeft: "44px solid #e8a04a",
-            filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.35))",
-          }}
-        />
-      </span>
-      <style>{`
-        @keyframes dd-pulse-play {
-          0% { box-shadow: 0 0 0 0 rgba(232,160,74,0.55), 0 12px 40px rgba(0,0,0,0.55); transform: scale(1); }
-          50% { box-shadow: 0 0 0 22px rgba(232,160,74,0), 0 12px 40px rgba(0,0,0,0.55); transform: scale(1.05); }
-          100% { box-shadow: 0 0 0 0 rgba(232,160,74,0), 0 12px 40px rgba(0,0,0,0.55); transform: scale(1); }
-        }
-      `}</style>
-    </button>
-  );
+  return <Button type="button" variant="ghost" onClick={onClick} aria-label="Play video" className="home-play-overlay"><span><Play size={32} aria-hidden="true" /></span></Button>;
 }

@@ -1,7 +1,7 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import SiteShell from "@/components/SiteShell";
-import HeroIntro from "@/components/HeroIntro";
-import ProblemSolutionSection from "@/components/ProblemSolutionSection";
+import { HomepageSection } from "@/components/HomepageContent";
+import HeroIntro, { VideoHub } from "@/components/HeroIntro";
+import ProblemSolutionSection, { PaidSolutions } from "@/components/ProblemSolutionSection";
 import HowItWorksVideoSection from "@/components/HowItWorksVideoSection";
 import AdVideoSection from "@/components/AdVideoSection";
 import SecurityVideoSection from "@/components/SecurityVideoSection";
@@ -57,14 +57,20 @@ export const Route = createFileRoute("/")({
   }),
 
   component: () => (
-    <>
+    <div className="home-redesign">
       <HeroIntro />
-      <HowItWorksVideoSection />
-      <AdVideoSection />
-      <SecurityVideoSection />
+      <VideoHub />
       <ProblemSolutionSection />
-
-      <SiteShell />
-    </>
+      <div className="home-video-section"><HowItWorksVideoSection /></div>
+      <HomepageSection section="steps" />
+      <HomepageSection section="roles" />
+      <div className="home-video-section"><SecurityVideoSection /></div>
+      <HomepageSection section="attorney" />
+      <HomepageSection section="features" />
+      <div className="home-video-section home-paid-section"><AdVideoSection><PaidSolutions /></AdVideoSection></div>
+      <HomepageSection section="faq" />
+      <span id="app" />
+      <HomepageSection section="footer" />
+    </div>
   ),
 });
