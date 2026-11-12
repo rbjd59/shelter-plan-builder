@@ -1,5 +1,10 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
+## November 12 — complete board reset and Josh refire
+- [ ] Clear all existing board cases except Josh's retained test file and clear his old alerts.
+- [ ] Verify the published activation bundle, refire one labeled server test, and email Josh his activation code and current TestFlight instructions.
+- [ ] Verify both boards show only Josh; physical Premium iPhone synchronization remains unverified until a real device confirms activation.
+
 ## Josh Pastor signup correction
 - [x] Cancel the agent-triggered simulated SOS and send an all-clear; Josh only signed up.
 - [x] Remove simulated activation/device state and verify signup-only status; retain clearly labeled test documents and installation instructions.
