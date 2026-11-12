@@ -3,7 +3,7 @@ import { Menu, X, Play, Smartphone, Home, ShieldCheck, Building2, ArrowRight } f
 import { Button } from "@/components/ui/button";
 import { useLang, type Lang } from "@/context/LanguageContext";
 import logoAsset from "@/assets/dd-logo.png.asset.json";
-import familyAsset from "@/assets/hero-family.jpg.asset.json";
+import haitianFamily from "@/assets/home-family-haitian.jpg";
 import spanishFamily from "@/assets/home-family-spanish.jpg";
 import unitedFamilies from "@/assets/home-families-united.jpg";
 import howPoster from "@/assets/home-how-poster.jpg.asset.json";
@@ -92,7 +92,7 @@ export default function HeroIntro() {
   const { lang, setLang } = useLang();
   const [open, setOpen] = useState(false);
   const t = COPY[lang];
-  const familyPhoto = lang === "ht" ? familyAsset.url : lang === "es" ? spanishFamily : unitedFamilies;
+  const familyPhoto = lang === "ht" ? haitianFamily : lang === "es" ? spanishFamily : unitedFamilies;
   const start = lang === "es" ? "Comience Ahora →" : lang === "en" ? "Start Now →" : "Kòmanse Kounye a →";
   return <>
     <a className="home-skip" href="#home-content">{lang === "es" ? "Ir al contenido" : lang === "en" ? "Skip to content" : "Ale nan kontni an"}</a>
