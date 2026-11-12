@@ -3,6 +3,11 @@
 ## Two-stage intake
 - [x] Separate consent, signup and referral details from the complete form questionnaire; signed-in save/reload and back navigation verified, with 14 passing regression tests. No forms submitted or alerts sent during verification.
 
+## November 12 — Apple resubmission prerequisites
+- [ ] Apple Developer Program License Agreement updated: the Account Holder must sign in to the Apple Developer website, review and accept it. Until accepted, no existing app can be updated and no new app can be submitted — this blocks the v4.2 resubmission. Account Holder action only; not possible from this project.
+- [ ] Fix App Privacy answers (tracking = No) per Apple's Guideline 5.1.2 rejection before resubmitting.
+- [ ] Repair TestFlight activation (see blocker above) so the reviewer can complete setup.
+
 ## November 12 — complete board reset and Josh refire
 - [x] Clear all existing board cases except Josh's retained test file and clear his old alerts.
 - [x] Verify the published activation bundle, refire one labeled server test, and email Josh his activation code and current TestFlight instructions.
