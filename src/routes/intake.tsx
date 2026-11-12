@@ -13,6 +13,9 @@ import type { User } from "@supabase/supabase-js";
 
 import { BilingualField } from "@/components/intake/BilingualField";
 import { AuthSaveBar } from "@/components/intake/AuthSaveBar";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, ArrowLeft } from "lucide-react";
+import { canStartQuestionnaire, signupDetails } from "@/lib/intake-signup";
 import { readSiteLang } from "@/lib/site-lang";
 import { resolveIntakeGate } from "@/lib/intake-gate";
 
@@ -41,6 +44,7 @@ export const Route = createFileRoute("/intake")({
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://detenciondefensa.com/intake" },
       { name: "robots", content: "noindex" },
+      { name: "twitter:card", content: "summary" },
     ],
     links: [{ rel: "canonical", href: "https://detenciondefensa.com/intake" }],
   }),
@@ -285,6 +289,15 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
   const [user, setUser] = useState<User | null>(null);
   const [draftLoaded, setDraftLoaded] = useState(false);
   const skipNextSaveRef = useRef(false);
+  const [stage, setStage] = useState<"signup" | "forms">("signup");
+  const [stageBusy, setStageBusy] = useState(false);
+  const [stageError, setStageError] = useState("");
+  const text = (en: string, es: string, ht: string) => L === "es" ? es : L === "ht" ? ht : en;
+  const setSignupField = (key: string, value: string) => setAnswers(a => ({ ...a, [key]: value }));
+  const persistNow = async () => {
+    if (!user || !draftLoaded) throw new Error(text("Please wait for your saved work to load.", "Espere a que se cargue su trabajo guardado.", "Tanpri tann travay ou te sove a chaje."));
+    await saveDraftFn({ data: { answers, englishAnswers, approvals, language: L, sessionId: _session_id ?? null } });
+  };
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -316,7 +329,10 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
     let cancelled = false;
     loadDraftFn()
       .then((draft) => {
-        if (cancelled || !draft) {
+        if (cancelled) return;
+        if (!draft) {
+          const registered = user.user_metadata?.intake_signup;
+          setAnswers(a => ({ ...a, ...(registered && typeof registered === "object" ? signupDetails(registered) : {}), client_email: user.email || a.client_email || "" }));
           setDraftLoaded(true);
           return;
         }
@@ -377,6 +393,10 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
     if (!allApproved) {
       setErrMsg(L === "es" ? "Apruebe todas las traducciones al inglés antes de enviar." : L === "ht" ? "Apwouve tout tradiksyon Angle yo anvan w voye." : "Approve all English translations before submitting.");
       setStatus("error");
+      return;
+    }
+    if (!canStartQuestionnaire(answers, !!user)) {
+      setStage("signup");
       return;
     }
     if (!smsConsent) {
@@ -630,13 +650,44 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
     <div style={wrap}>
       <div style={container}>
         <LangSwitcher current={L} />
-        <h1 style={{ fontSize: 32, fontWeight: 700, marginBottom: 8, fontFamily: "Fraunces, serif" }}>{ui.title}</h1>
+        <h1 style={{ fontSize: 32, fontWeight: 700, marginBottom: 8, fontFamily: "Fraunces, serif", overflowWrap: "anywhere" }}>{ui.title}</h1>
+        <nav aria-label={text("Intake stages", "Etapas", "Etap yo")} className="intake-stage-navigation">
+          <span aria-current={stage === "signup" ? "step" : undefined}>{text("Signup & consent", "Registro y consentimiento", "Enskripsyon ak konsantman")}</span>
+          <ArrowRight size={16} aria-hidden="true" />
+          <span aria-current={stage === "forms" ? "step" : undefined}>{text("Information for the forms", "Información para los formularios", "Enfòmasyon pou fòm yo")}</span>
+        </nav>
+        {stage === "signup" ? <div className="intake-stage">
+          <PrivilegeNotice lang={L} />
+          <label className="mb-6 flex items-start gap-3 text-sm leading-relaxed">
+            <input type="checkbox" className="mt-1 shrink-0" checked={answers.intake_terms_accepted === true} onChange={e => setAnswers(a => ({ ...a, intake_terms_accepted: e.target.checked, intake_terms_accepted_at: e.target.checked ? new Date().toISOString() : "" }))} />
+            <span>{text("I have read the privilege notice and agree to the", "He leído el aviso de privilegio y acepto los", "Mwen li avi privilèj la epi mwen dakò ak")} <Link to="/terms" className="underline">{text("Terms and Conditions", "Términos y Condiciones", "Kondisyon yo")}</Link> {text("and", "y", "ak")} <Link to="/privacy" className="underline">{text("Privacy Policy", "Política de Privacidad", "Règleman Konfidansyalite")}</Link>.</span>
+          </label>
+          <section className="intake-stage-band">
+            <h2 className="mb-5 text-xl font-bold">{text("How you found us", "Cómo nos encontró", "Kijan ou jwenn nou")}</h2>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {[
+                ["referral_church", text("Church name (if applicable)", "Iglesia (si corresponde)", "Non legliz (si sa aplikab)")],
+                ["referral_pastor", text("Pastor name (if applicable)", "Pastor (si corresponde)", "Non pastè (si sa aplikab)")],
+                ["signup_assisted_by", text("Who helped you sign up?", "¿Quién le ayudó a registrarse?", "Kiyès ki ede ou enskri?")],
+                ["heard_about_app", text("Where did you hear about the app?", "¿Dónde escuchó sobre la app?", "Ki kote ou te tande pale de app la?")],
+              ].map(([key, label]) => <label key={key} className="block text-sm font-semibold">{label}<input className="intake-stage-input mt-2" value={String(answers[key] || "")} onChange={e => setSignupField(key, e.target.value)} /></label>)}
+            </div>
+          </section>
+          <AuthSaveBar lang={L} user={user} onAuthChange={setUser} answers={answers} onChange={setSignupField} beforeSignOut={persistNow} />
+          {stageError && <p role="alert" className="mb-4">{stageError}</p>}
+          <Button type="button" className="intake-stage-primary h-auto min-h-11 w-full whitespace-normal" disabled={!draftLoaded || !canStartQuestionnaire(answers, !!user) || stageBusy} onClick={async () => {
+            setStageBusy(true); setStageError("");
+            try { await persistNow(); setStage("forms"); window.scrollTo(0, 0); }
+            catch (error) { setStageError((error as Error).message); }
+            finally { setStageBusy(false); }
+          }}>{stageBusy ? text("Saving…", "Guardando…", "Ap sove…") : text("Continue to information for the forms", "Continuar a los formularios", "Kontinye nan enfòmasyon pou fòm yo")}<ArrowRight /></Button>
+        </div> : <>
+        <Button type="button" variant="ghost" className="intake-stage mb-4" onClick={() => { setStage("signup"); window.scrollTo(0, 0); }}><ArrowLeft />{text("Back to signup", "Volver al registro", "Retounen nan enskripsyon")}</Button>
+        <h2 className="mb-3 text-2xl font-bold">{text("Information for the forms", "Información para los formularios", "Enfòmasyon pou fòm yo")}</h2>
         <p style={{ color: "#a8a59a", marginBottom: 16 }}>{ui.sub}</p>
         <div style={{ background: "#3a2a00", border: "1px solid #e8a04a", padding: 14, borderRadius: 4, marginBottom: 16, fontSize: 14, lineHeight: 1.5, color: "#fff5d6" }}>
           <strong>⚠ {ui.upl}</strong>
         </div>
-        <PrivilegeNotice lang={L as "en" | "es" | "ht"} />
-        <AuthSaveBar lang={L} user={user} onAuthChange={setUser} />
         <form onSubmit={handleSubmit}>
           {sections.map((s) => {
             return (
@@ -766,6 +817,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
           </button>
           {errMsg && status === "error" && <p style={{ color: "#ff8080", marginTop: 12 }}>{errMsg}</p>}
         </form>
+        </>}
       </div>
     </div>
   );

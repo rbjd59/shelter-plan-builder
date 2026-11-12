@@ -1,5 +1,8 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
+## Two-stage intake
+- [x] Separate consent, signup and referral details from the complete form questionnaire; signed-in save/reload and back navigation verified, with 14 passing regression tests. No forms submitted or alerts sent during verification.
+
 ## November 12 — complete board reset and Josh refire
 - [x] Clear all existing board cases except Josh's retained test file and clear his old alerts.
 - [x] Verify the published activation bundle, refire one labeled server test, and email Josh his activation code and current TestFlight instructions.
