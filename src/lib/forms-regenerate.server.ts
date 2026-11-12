@@ -8,6 +8,7 @@
  * mailing".
  */
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { mapFormAnswers } from "@/lib/form-answer-mapping";
 
 const toB64 = (bytes: Uint8Array) => Buffer.from(bytes).toString("base64");
 
@@ -103,7 +104,8 @@ export async function buildAnswersForClient(clientId: string): Promise<Record<st
   }
 
 
-  return answers;
+  answers["activation_code"] = c["invite_token"] ?? "";
+  return mapFormAnswers(answers);
 }
 
 

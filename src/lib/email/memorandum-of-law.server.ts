@@ -51,12 +51,13 @@ class Writer {
   font: PDFFont;
   bold: PDFFont;
   italic: PDFFont;
-  page!: PDFPage;
+  page: PDFPage;
   y = 0;
 
   constructor(doc: PDFDocument, font: PDFFont, bold: PDFFont, italic: PDFFont) {
     this.doc = doc; this.font = font; this.bold = bold; this.italic = italic;
-    this.newPage();
+    this.page = doc.addPage([PAGE_W, PAGE_H]);
+    this.y = PAGE_H - MARGIN;
   }
   newPage() {
     this.page = this.doc.addPage([PAGE_W, PAGE_H]);
@@ -91,10 +92,12 @@ class Writer {
     this.paragraph(text, { bold: true, size: HEADING_SIZE });
   }
   center(text: string, font: PDFFont, size: number) {
-    this.ensure(LINE_H);
-    const w = font.widthOfTextAtSize(text, size);
-    this.page.drawText(text, { x: (PAGE_W - w) / 2, y: this.y, font, size, color: rgb(0, 0, 0) });
-    this.y -= LINE_H;
+    for (const line of wrap(text, font, size, PAGE_W - MARGIN * 2)) {
+      this.ensure(LINE_H);
+      const width = font.widthOfTextAtSize(line, size);
+      this.page.drawText(line, { x: (PAGE_W - width) / 2, y: this.y, font, size, color: rgb(0, 0, 0) });
+      this.y -= LINE_H;
+    }
   }
 }
 
@@ -140,27 +143,39 @@ export async function buildMemorandumOfLawPdf(
 
   // Caption box: Petitioner v. Respondent | Case No.
   const captionTop = w.y;
-  w.page.drawText(petitioner.toUpperCase() + ",", { x: MARGIN, y: captionTop, font: w.bold, size: 11 });
-  w.page.drawText("Petitioner,", { x: MARGIN + 18, y: captionTop - LINE_H, font: w.font, size: 11 });
-  w.page.drawText("v.", { x: MARGIN + 18, y: captionTop - LINE_H * 3, font: w.font, size: 11 });
-  w.page.drawText(`${warden.toUpperCase()}, in his/her official`, { x: MARGIN, y: captionTop - LINE_H * 5, font: w.bold, size: 11 });
-  w.page.drawText(`capacity as Warden of ${facility};`, { x: MARGIN, y: captionTop - LINE_H * 6, font: w.font, size: 11 });
-  w.page.drawText("et al.,", { x: MARGIN, y: captionTop - LINE_H * 7, font: w.font, size: 11 });
-  w.page.drawText("Respondents.", { x: MARGIN + 18, y: captionTop - LINE_H * 8, font: w.font, size: 11 });
-
-  // Right side of caption — case no. line
   const captionRightX = 360;
-  w.page.drawText("Case No.: ____________________", { x: captionRightX, y: captionTop, font: w.font, size: 11 });
-  w.page.drawText("PETITION UNDER 28 U.S.C. § 2241", { x: captionRightX, y: captionTop - LINE_H * 2, font: w.bold, size: 11 });
+  let leftY = captionTop;
+  const captionText = (text: string, f = w.font) => {
+    for (const line of wrap(text, f, BODY_SIZE, captionRightX - MARGIN - 18)) {
+      w.page.drawText(line, { x: MARGIN, y: leftY, font: f, size: BODY_SIZE });
+      leftY -= LINE_H;
+    }
+  };
+  captionText(petitioner.toUpperCase() + ",", w.bold);
+  captionText("Petitioner,");
+  leftY -= LINE_H;
+  captionText("v.");
+  leftY -= LINE_H;
+  captionText(`${warden.toUpperCase()}, in his/her official capacity as Warden of ${facility};`, w.bold);
+  captionText("et al.,");
+  captionText("Respondents.");
+  let rightY = captionTop;
+  for (const text of ["Case No.: ____________________", "", "PETITION UNDER 28 U.S.C. § 2241"]) {
+    for (const line of wrap(text, w.font, BODY_SIZE, PAGE_W - MARGIN - captionRightX)) {
+      w.page.drawText(line, { x: captionRightX, y: rightY, font: w.font, size: BODY_SIZE });
+      rightY -= LINE_H;
+    }
+  }
+  const dividerY = Math.min(leftY, rightY) - 8;
 
   // Caption divider
   w.page.drawLine({
-    start: { x: MARGIN, y: captionTop - LINE_H * 9 - 4 },
-    end: { x: PAGE_W - MARGIN, y: captionTop - LINE_H * 9 - 4 },
+    start: { x: MARGIN, y: dividerY },
+    end: { x: PAGE_W - MARGIN, y: dividerY },
     thickness: 0.5,
     color: rgb(0, 0, 0),
   });
-  w.y = captionTop - LINE_H * 10 - 8;
+  w.y = dividerY - LINE_H * 2;
 
   // Title
   w.center("MEMORANDUM OF LAW IN SUPPORT OF", w.bold, 12);

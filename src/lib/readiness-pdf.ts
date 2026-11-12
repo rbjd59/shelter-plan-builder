@@ -111,28 +111,26 @@ function drawBilingual(
 }
 
 function drawTitle(ctx: Ctx, en: string, tr: string) {
-  ensureSpace(ctx, 40);
-  const startY = Math.min(ctx.yL, ctx.yR);
-  ctx.page.drawText(en, { x: MARGIN, y: startY - 18, size: 14, font: ctx.bold });
-  ctx.page.drawText(tr, { x: MARGIN + COL_W + COL_GAP, y: startY - 18, size: 14, font: ctx.bold });
+  drawBilingual(ctx, en, tr, { bold: true, size: 14, gap: 8 });
+  const lineY = Math.min(ctx.yL, ctx.yR);
   ctx.page.drawLine({
-    start: { x: MARGIN, y: startY - 24 },
-    end: { x: PAGE_W - MARGIN, y: startY - 24 },
+    start: { x: MARGIN, y: lineY },
+    end: { x: PAGE_W - MARGIN, y: lineY },
     thickness: 0.5,
     color: rgb(0.7, 0.4, 0.1),
   });
-  ctx.yL = startY - 32;
-  ctx.yR = startY - 32;
+  ctx.yL = lineY - 8;
+  ctx.yR = lineY - 8;
 }
 
-function drawSignatureBlock(ctx: Ctx, t: T) {
+function drawSignatureBlock(ctx: Ctx, t: T, principal: string) {
   ensureSpace(ctx, 140);
   const startY = Math.min(ctx.yL, ctx.yR) - 20;
   ctx.yL = startY;
   ctx.yR = startY;
   drawBilingual(ctx, "SIGNATURE", t.signature, { bold: true, size: 11 });
   drawBilingual(ctx, "X _______________________________", "X _______________________________");
-  drawBilingual(ctx, `Print name: __________________`, `${t.printName}: __________________`);
+  drawBilingual(ctx, `Print name: ${principal}`, `${t.printName}: ${principal}`);
   drawBilingual(ctx, "Date: ______________", `${t.date}: ______________`);
   drawBilingual(ctx, "State: ______________", `${t.state}: ______________`);
 
@@ -278,7 +276,7 @@ async function renderPOA(answers: Answers, lang: Lang, recipient: Recipient): Pr
     { size: 9 },
   );
 
-  drawSignatureBlock(ctx, t);
+  drawSignatureBlock(ctx, t, principal);
   drawDisclaimer(ctx, t);
   return await ctx.doc.save();
 }
@@ -334,7 +332,7 @@ async function renderGuardianship(answers: Answers, lang: Lang, recipient: Recip
     { size: 9 },
   );
 
-  drawSignatureBlock(ctx, t);
+  drawSignatureBlock(ctx, t, parent);
   drawDisclaimer(ctx, t);
   return await ctx.doc.save();
 }
@@ -364,7 +362,7 @@ async function renderSchoolPickup(answers: Answers, lang: Lang, recipient: Recip
       { size: 9 },
     );
   }
-  drawSignatureBlock(ctx, t);
+  drawSignatureBlock(ctx, t, parent);
   drawDisclaimer(ctx, t);
   return await ctx.doc.save();
 }
@@ -395,7 +393,7 @@ async function renderHIPAA(answers: Answers, lang: Lang, recipient: Recipient): 
         : "",
     { size: 9 },
   );
-  drawSignatureBlock(ctx, t);
+  drawSignatureBlock(ctx, t, patient);
   drawDisclaimer(ctx, t);
   return await ctx.doc.save();
 }
@@ -500,7 +498,7 @@ async function renderLandlordAuthorization(answers: Answers, lang: Lang, recipie
   drawBilingual(ctx,
     `I, ${principal}, authorize ${agent} to communicate with my landlord, obtain account and lease information, pay rent and utilities from funds I make available, enter my residence, secure my belongings, receive notices, and arrange lawful removal or storage of my personal property while I am detained or unavailable.`,
     lang === "es" ? `Yo, ${principal}, autorizo a ${agent} a comunicarse con mi arrendador, obtener información de la cuenta y contrato, pagar alquiler y servicios con fondos que yo proporcione, entrar a mi residencia, proteger mis pertenencias, recibir avisos y organizar legalmente el retiro o almacenamiento de mis bienes mientras esté detenido o no disponible.` : lang === "ht" ? `Mwen menm, ${principal}, otorize ${agent} pou kominike ak pwopriyetè kay mwen, jwenn enfòmasyon sou kont ak kontra lwaye, peye lwaye ak sèvis ak lajan mwen bay, antre lakay mwen, pwoteje byen mwen, resevwa avi, epi òganize retire oswa depoze byen mwen legalman pandan yo detni mwen oswa mwen pa disponib.` : "");
-  drawSignatureBlock(ctx, t);
+  drawSignatureBlock(ctx, t, principal);
   drawDisclaimer(ctx, t);
   return await ctx.doc.save();
 }
@@ -514,7 +512,7 @@ async function renderVehicleRetrieval(answers: Answers, lang: Lang, recipient: R
   drawBilingual(ctx,
     `I, ${principal}, authorize ${agent} to locate, retrieve, receive, tow, store, and take possession of any vehicle owned or lawfully used by me, including from a police or private impound lot, and to receive property from the vehicle. Vehicle: ${s(answers.vehicle_description)}. VIN / plate: ${s(answers.vehicle_vin_plate)}.`,
     lang === "es" ? `Yo, ${principal}, autorizo a ${agent} a localizar, retirar, recibir, remolcar, almacenar y tomar posesión de cualquier vehículo de mi propiedad o uso legal, incluso de un depósito policial o privado, y recibir los bienes dentro del vehículo. Vehículo: ${s(answers.vehicle_description)}. VIN / placa: ${s(answers.vehicle_vin_plate)}.` : lang === "ht" ? `Mwen menm, ${principal}, otorize ${agent} pou lokalize, rekipere, resevwa, remoke, estoke epi pran posesyon nenpòt machin mwen posede oswa itilize legalman, menm nan depo lapolis oswa prive, epi resevwa byen ki nan machin nan. Machin: ${s(answers.vehicle_description)}. VIN / plak: ${s(answers.vehicle_vin_plate)}.` : "");
-  drawSignatureBlock(ctx, t);
+  drawSignatureBlock(ctx, t, principal);
   drawDisclaimer(ctx, t);
   return await ctx.doc.save();
 }

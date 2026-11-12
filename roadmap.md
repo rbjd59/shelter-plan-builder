@@ -1,9 +1,11 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
 ## November 12 — complete board reset and Josh refire
-- [ ] Clear all existing board cases except Josh's retained test file and clear his old alerts.
-- [ ] Verify the published activation bundle, refire one labeled server test, and email Josh his activation code and current TestFlight instructions.
-- [ ] Verify both boards show only Josh; physical Premium iPhone synchronization remains unverified until a real device confirms activation.
+- [x] Clear all existing board cases except Josh's retained test file and clear his old alerts.
+- [x] Verify the published activation bundle, refire one labeled server test, and email Josh his activation code and current TestFlight instructions.
+- [x] Verify both boards show only Josh; physical Premium iPhone synchronization remains unverified until a real device confirms activation.
+- [x] Double-check all 16 Josh test PDFs; correct alias mappings, memo caption overlap, family printed names/title wrapping and motion respondent/address. Regenerate and email corrected packet to Josh, Rick and Sorrentino. Six regression checks passed; AO 240/JS-44 intentionally blank, signatures/service/filing date require completion.
+- [ ] Verify device activation through TestFlight; blocked on Josh completing setup or providing the exact phone error.
 
 ## Josh Pastor signup correction
 - [x] Cancel the agent-triggered simulated SOS and send an all-clear; Josh only signed up.

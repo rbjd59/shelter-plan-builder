@@ -60,6 +60,8 @@ export async function buildMotionReferralPdf(a: A): Promise<Uint8Array> {
   draw("Case No.", left + 300, y, { font: bold });
   line(y - 3, left + 360, right);
   y -= 22;
+  const respondent = firstText(a, "warden_name", "respondent_name");
+  if (respondent) draw(respondent, left, y + 2);
   line(y, left, left + 260);
   draw(", Defendant(s)", left + 262, y + 2);
   y -= 36;
@@ -116,7 +118,8 @@ export async function buildMotionReferralPdf(a: A): Promise<Uint8Array> {
   const addrLines = [facilityName, inmateNumber ? `#${inmateNumber}` : "", facilityAddress]
     .filter(Boolean)
     .join("\n")
-    .split("\n");
+    .split("\n")
+    .flatMap((part) => wrap(part, right - left - 80));
   let ay = y;
   for (let i = 0; i < Math.max(2, addrLines.length); i++) {
     draw(addrLines[i] || "", left + 80, ay);
