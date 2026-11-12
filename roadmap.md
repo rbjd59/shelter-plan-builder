@@ -4,7 +4,7 @@
 - [x] Separate consent, signup and referral details from the complete form questionnaire; signed-in save/reload and back navigation verified, with 14 passing regression tests. No forms submitted or alerts sent during verification.
 
 ## November 12 — Apple resubmission prerequisites
-- [ ] Apple Developer Program License Agreement updated: the Account Holder must sign in to the Apple Developer website, review and accept it. Until accepted, no existing app can be updated and no new app can be submitted — this blocks the v4.2 resubmission. Account Holder action only; not possible from this project.
+- [ ] Apple Developer Program License Agreement updated: the Account Holder must sign in to the Apple Developer website, review and accept it. Until accepted, no existing app can be updated and no new app can be submitted — this blocks the v4.2 resubmission. Account Holder action only; not possible from this project. If no banner appears: check the pop-up blocker, open the Agreements section on the account page, then App Store Connect → Business (Agreements, Tax, and Banking) — the pending item is often the Paid Applications Schedule there, not the developer portal.
 - [ ] Fix App Privacy answers (tracking = No) per Apple's Guideline 5.1.2 rejection before resubmitting.
 - [ ] Repair TestFlight activation (see blocker above) so the reviewer can complete setup.
 
