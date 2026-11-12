@@ -1,6 +1,7 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
 ## Homepage arrangement
+- [x] Set the homepage background to white and switch the hero family photo with Español, English and Kreyòl; preserve videos and links and verify desktop/mobile.
 - [x] Rearrange and restyle the homepage while preserving all original link destinations, three video URLs, and every translated HTML paragraph; verify 360px mobile, desktop, language switching, FAQ expansion and video playback. Intake, backend, native app and sitewide SEO remain unchanged.
 
 ## Two-stage intake

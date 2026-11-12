@@ -3094,12 +3094,12 @@ html { overflow-x: hidden !important; max-width: 100vw; }
   --home-blue: #1E4E8C;
   --home-amber: #F2A900;
   --home-emergency: #C62828;
-  --home-ivory: #FAF8F3;
+  --home-ivory: #FFFFFF;
   --home-surface: #FFFFFF;
   --home-text: #1A1A1A;
   --home-muted: #5B6472;
   --home-border: #E3E6EB;
-  --home-soft: #EDF2F6;
+  --home-soft: #FFFFFF;
   --home-overlay: rgb(11 31 58 / 74%);
   --home-shadow: 0 8px 28px rgb(11 31 58 / 8%);
   --background: var(--home-ivory);

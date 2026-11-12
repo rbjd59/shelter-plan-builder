@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { useLang, type Lang } from "@/context/LanguageContext";
 import logoAsset from "@/assets/dd-logo.png.asset.json";
 import familyAsset from "@/assets/hero-family.jpg.asset.json";
+import spanishFamily from "@/assets/home-family-spanish.jpg";
+import unitedFamilies from "@/assets/home-families-united.jpg";
 import howPoster from "@/assets/home-how-poster.jpg.asset.json";
 import homePoster from "@/assets/home-property-poster.jpg.asset.json";
 import securityPoster from "@/assets/home-security-poster.jpg.asset.json";
@@ -90,6 +92,7 @@ export default function HeroIntro() {
   const { lang, setLang } = useLang();
   const [open, setOpen] = useState(false);
   const t = COPY[lang];
+  const familyPhoto = lang === "ht" ? familyAsset.url : lang === "es" ? spanishFamily : unitedFamilies;
   const start = lang === "es" ? "Comience Ahora →" : lang === "en" ? "Start Now →" : "Kòmanse Kounye a →";
   return <>
     <a className="home-skip" href="#home-content">{lang === "es" ? "Ir al contenido" : lang === "en" ? "Skip to content" : "Ale nan kontni an"}</a>
@@ -114,7 +117,7 @@ export default function HeroIntro() {
     </header>
     <main id="home-content">
       <section className="home-hero">
-        <img className="home-hero-background" src={familyAsset.url} alt="" width="1536" height="1024" fetchPriority="high" />
+        <img className="home-hero-background" src={familyPhoto} alt="" width="1536" height="1024" fetchPriority="high" />
         <div className="home-hero-shade" />
         <div className="home-container home-hero-content">
           <p className="home-eyebrow">DetencionDefensa.com · ListoAhora.org · PareKounya.org</p>
