@@ -11,7 +11,8 @@
 - [x] Cancel the agent-triggered simulated SOS and send an all-clear; Josh only signed up.
 - [x] Remove simulated activation/device state and verify signup-only status; retain clearly labeled test documents and installation instructions.
 - [x] Refire Josh's authorized test and verify fresh notifications and both boards.
-- [ ] Resolve Josh's iPhone activation-code error: published activation accepts B9733 and B9733-EN; awaiting the exact phone error/screenshot. Diagnostic activation timestamp cleared; physical installation unverified.
+- [x] Diagnose Josh's iPhone screenshot: direct `redeem_invite_token` call returns 401/42501 because activation RPCs are server-only. Confirm registered code matches B9733 and setup/activation remain unrecorded; correct the phone-app handoff to use HTTPS activation and accept 5–8 characters.
+- [ ] Repair and verify TestFlight activation: blocked on the phone-app developer replacing direct RPC calls with `/api/public/app/activate` and supplying an updated TestFlight build; native phone-app source is not in this repository. Keep server-only permissions intact.
 
 ## Done
 - [x] Central fan-out (`src/lib/alert-fanout.server.ts`): activation, trigger, cancel.

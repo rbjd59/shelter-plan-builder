@@ -15,13 +15,15 @@ attached to their activation code.
 
 ## 1. Activation code format
 
-Codes are issued in the form:
+Lookup codes contain **5–8 uppercase alphanumeric characters**, with an optional
+language suffix. Do not enforce exactly eight characters or treat example text
+in the input as a real code. Codes are issued in the form:
 
 ```
 XXXXXX-<LANG>
 ```
 
-- `XXXXXX` — 6-character alphanumeric case ID (e.g. `A3F7B2`)
+- `XXXXXX` — 5–8-character alphanumeric case ID (e.g. `A3F7B2`)
 - `<LANG>` — two-letter uppercase language tag: `EN`, `ES`, or `HT`
 
 Examples:
@@ -40,7 +42,30 @@ The app should:
 
 ## 2. Activation endpoint (what the app calls)
 
-`POST` to our backend RPC `get_client_bundle` with `{ code: "A3F7B2" }`.
+`POST https://detenciondefensa.com/api/public/app/activate`
+with `Content-Type: application/json` and body
+`{ "activation_code": "<client's emailed code>" }`.
+
+**Do not call `redeem_invite_token` or `get_client_bundle` directly from the
+phone.** Both database functions are restricted to the server. Do not grant
+public execution or embed a privileged key in the app to bypass that restriction.
+The HTTPS endpoint validates the supplied code and returns the bundle with
+`ok: true`; handle non-2xx responses without displaying raw database errors.
+
+### November 12, 2026 — TestFlight activation blocker
+
+The supplied iPhone screenshot reports `401`, database code `42501`, and
+`permission denied for function redeem_invite_token`. Live permissions confirm
+that the function cannot be called by anonymous or signed-in phone clients.
+This is an obsolete app call, not evidence that the registered code is invalid.
+The screenshot's `A3F7B2E1` does not establish which code was submitted.
+
+Required phone-app change: replace the direct redemption/bundle RPC calls with
+the HTTPS activation request above, allow 5–8-character codes, save the returned
+bundle securely, and upload a new TestFlight build. This web repository does not
+contain the native phone-app source. Confirm successful setup on the actual
+iPhone before recording the test as passed; a diagnostic request is not proof
+of physical installation. Do not press SOS merely to verify activation.
 
 Returns (already implemented on our side). The response includes
 `hmac_secret` — a per-client 64-char hex secret. Store it in
@@ -266,8 +291,9 @@ suffix language and this screen is not shown again.
 
 ## 9. Primo action items for v0.4.0
 
-- [ ] `XXXXXX-<LANG>` code parsing in `ActivationService` (split on last
-      `-`, set `LocaleProvider`, send base code to `get_client_bundle`).
+- [ ] 5–8-character code parsing in `ActivationService` (optional suffix:
+      split on last `-`, set `LocaleProvider`, send base code to the HTTPS
+      `/api/public/app/activate` endpoint; no direct activation RPC calls).
       Existing no-suffix codes must keep working.
 - [ ] Multilingual first-run screen (EN + ES + HT stacked, per §4).
 - [ ] Read + persist `hmac_secret` from bundle into
