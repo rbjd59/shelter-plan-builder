@@ -178,6 +178,17 @@ export async function notifyAppActivation(
   if (!loaded) return { ok: false, skipped: "client_not_found" };
   const { client, contacts } = loaded;
 
+  // Store reviewers may activate the same non-expiring code on every review
+  // device. Record each setup, but never fan out. Real clients keep the
+  // original first-activation-only behavior below.
+  if (client.is_reviewer) {
+    await supabaseAdmin
+      .from("app_clients")
+      .update({ activated_at: new Date().toISOString() } as never)
+      .eq("id", client.id);
+    return { ok: true, skipped: "reviewer_no_fanout", contacts_notified: 0 };
+  }
+
   // Idempotent: the app may retry. Only the first successful activation fans out.
   if (client.activated_at && !opts?.force) {
     return { ok: true, skipped: "already_activated" };
@@ -186,11 +197,6 @@ export async function notifyAppActivation(
     .from("app_clients")
     .update({ activated_at: new Date().toISOString() } as never)
     .eq("id", client.id);
-
-  // Reviewer accounts never fan out — activation is recorded only.
-  if (client.is_reviewer) {
-    return { ok: true, skipped: "reviewer_no_fanout", contacts_notified: 0 };
-  }
 
   const name = client.full_name || "the client";
   const code = client.invite_token;

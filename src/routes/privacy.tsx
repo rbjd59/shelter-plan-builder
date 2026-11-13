@@ -36,7 +36,7 @@ export const Route = createFileRoute("/privacy")({
 const COPY = {
   en: {
     title: "Privacy Policy — DetencionDefensa",
-    dates: "Effective date: May 25, 2026\u00a0\u00a0Last updated: May 25, 2026",
+    dates: "Effective date: May 25, 2026\u00a0\u00a0Last updated: November 13, 2026",
     intro:
       'This Privacy Policy explains what information DetencionDefensa ("we," "us," "the app") collects, how it is used, and the choices you have. This policy applies to both the DetencionDefensa mobile app and the detenciondefensa.com website.',
     s1title: "Plain-English Summary",
@@ -44,10 +44,10 @@ const COPY = {
       "We collect only what you give us to make the emergency alert work: your name, your A-number, your date of birth, your country of origin, your emergency contacts, and your intake answers about your case.",
     s1li2:
       "We use this information only to (a) send your emergency contacts a notification if you press the alert button, and (b) automatically fill out federal court forms (habeas corpus petition, IFP application, civil cover sheet, attorney referral) attached to that notification.",
-    s1li3: "We do not track your location.",
-    s1li4: "We do not show advertising.",
+    s1li3: "We collect precise GPS location only at the moment you hold the SOS button. We do not track your location in the background.",
+    s1li4: "We do not show third-party advertising and do not sell or share data for advertising.",
     s1li5pre:
-      "We do not sell or share your data with any third party except the email delivery service that sends your alert (Resend.com), and only at the moment the alert is triggered.",
+      "We use only the service providers listed below as necessary to operate your account, activate the app, host our database, and deliver alerts; we do not use data brokers or advertising trackers.",
     s1li6pre: "You can delete your data at any time by emailing",
     s1li6post: ".",
     s2title: "What We Collect",
@@ -59,13 +59,15 @@ const COPY = {
     s2_1li3label: "Case intake answers:",
     s2_1li3:
       "Information you enter on the website intake form, including the name and address of the facility where you fear detention, prior immigration history, financial information for in-forma-pauperis applications, and the legal grounds and relief you wish to request in a habeas corpus petition.",
+    s2_1li4label: "In-app updates:",
+    s2_1li4: "Your name and mobile number when you use Update My Info.",
     s2_2title: "2.2 Information collected automatically",
     s2_2li1label: "Device technical information:",
-    s2_2li1: "App version, operating system version, language preference.",
+    s2_2li1: "Your phone model and operating system version once at activation, plus app version and language preference.",
     s2_2li2label: "Pairing code:",
     s2_2li2: "A unique 6-digit code (expires in 24 hours) used to link your website intake form to your phone app.",
     s2_3title: "2.3 What we do NOT collect",
-    s2_3li1: "We do not request or collect your location.",
+    s2_3li1: "We do not collect background location or track your movements. Precise GPS location is collected only at the moment you hold the SOS button.",
     s2_3li2: "We do not access your camera, microphone, contacts list, photos, or files.",
     s2_3li3: "We do not use cookies for tracking or advertising on the website.",
     s2_3li4: "We do not use any analytics SDK that builds a profile of you.",
@@ -79,8 +81,9 @@ const COPY = {
       "That email automatically attaches four PDF legal documents pre-filled with your information: Petition for Writ of Habeas Corpus (AO-242), Application to Proceed In Forma Pauperis (AO-240), Civil Cover Sheet (JS-44), and an Attorney Referral / Motion letter.",
     s3li3: 'If you cancel the alert within 2 hours using your 4-digit PIN, an "all-clear" email is sent to the same contacts.',
     s3li4: "We do not use your information for marketing, advertising, profiling, research, or any other purpose.",
+    s3li5: "At the moment you hold SOS, your precise GPS location is sent to the DetencionDefensa locate desk and the supervising attorney, Sorrentino Law Firm PLLC, to help find you. There is no background location tracking.",
     s4title: "Who We Share Information With",
-    s4p1: "We share your information only with the following services, only as necessary to deliver the alert, and only at the moment you trigger it:",
+    s4p1: "We share information only with the supervising attorney and the following service providers, as necessary to operate your account, activate the app, host our database, and deliver alerts:",
     tableService: "Service",
     tablePurpose: "Purpose",
     tableData: "Data shared",
@@ -90,11 +93,18 @@ const COPY = {
     tRow2Data: "Encrypted-in-transit copies of intake data as it passes through our servers",
     tRow3Purpose: "SMS delivery (activation code, case alerts)",
     tRow3Data: "Your mobile phone number and the SMS message body only",
+    tRow4Purpose: "Database hosting",
+    tRow4Data: "Account and intake data, activation and device details, and SOS location records",
     s4_1title: "4.1 SMS / Text Messaging Privacy",
     s4_1p1:
       "When you check the SMS consent box on our intake form, you opt in to receive text messages from DetencionDefensa.com, Inc. at the mobile number you provide. Messages include your one-time activation code and emergency-case notifications related to your account. Message frequency varies. Message and data rates may apply. Reply STOP to unsubscribe or HELP for help.",
     s4_1p2:
       "No mobile information, SMS opt-in data, or consent records will be shared with third parties or affiliates for marketing or promotional purposes. Phone numbers collected for SMS communications are used only to deliver the messages you opted in to receive, and are transmitted solely to our SMS carrier (Twilio) for that delivery.",
+    s4_2title: "4.2 Website visitor analytics",
+    s4_2p1: "Lovable collects visitor analytics for us. It uses no cookies, stores nothing on the visitor's device, does not keep IP addresses and does not identify visitors. It records pages visited, where visitors came from, their country, browser, operating system and device type, how long they stay, how fast pages load, errors, and clicks. Detailed data is kept for 90 days and daily summaries for a year. Lovable collects this data for us.",
+    s4_2link: "Lovable's privacy policy explains how it handles it.",
+    s4_2p2: "This site has no analytics consent banner. Page visits, time on page, page speed, errors and clicks are recorded for every visitor, without cookies and without identifying anyone; browser privacy controls may hold back clicks.",
+    s4_2p3: "Our own security and operations log records the page path, referring page, IP address, browser/user agent, device type and approximate country/city when a page is visited. We use it to operate and protect the site, not for advertising.",
     s4p2: "We do not share your data with:",
     s4li1: "Advertisers",
     s4li2: "Data brokers",
@@ -113,6 +123,7 @@ const COPY = {
     s6li1label: "Delete all of your data",
     s6li1mid: "by emailing",
     s6li1post: 'with the subject "Delete my data" — we will remove it within 7 days.',
+    s6deleteLink: "You can also use our /delete-my-data page.",
     s6li2label: "Request a copy",
     s6li2: "of your data we hold, by emailing the same address.",
     s6li3label: "Update or correct",
@@ -136,7 +147,7 @@ const COPY = {
   },
   es: {
     title: "Política de Privacidad — DetencionDefensa",
-    dates: "Fecha de vigencia: 25 de mayo de 2026\u00a0\u00a0Última actualización: 25 de mayo de 2026",
+    dates: "Fecha de vigencia: 25 de mayo de 2026\u00a0\u00a0Última actualización: 13 de noviembre de 2026",
     intro:
       'Esta Política de Privacidad explica qué información recopila DetencionDefensa ("nosotros," "la app"), cómo se usa, y las opciones que usted tiene. Esta política aplica tanto a la aplicación móvil de DetencionDefensa como al sitio web detenciondefensa.com.',
     s1title: "Resumen en lenguaje sencillo",
@@ -144,10 +155,10 @@ const COPY = {
       "Solo recopilamos lo que usted nos proporciona para que funcione la alerta de emergencia: su nombre, su número A, su fecha de nacimiento, su país de origen, sus contactos de emergencia y sus respuestas de admisión sobre su caso.",
     s1li2:
       "Usamos esta información únicamente para (a) enviar una notificación a sus contactos de emergencia si presiona el botón de alerta, y (b) completar automáticamente formularios de la corte federal (petición de habeas corpus, solicitud IFP, hoja de cubierta civil, referencia de abogado) adjuntos a esa notificación.",
-    s1li3: "No rastreamos su ubicación.",
-    s1li4: "No mostramos publicidad.",
+    s1li3: "Recopilamos su ubicación GPS precisa únicamente en el momento en que mantiene presionado el botón SOS. No rastreamos su ubicación en segundo plano.",
+    s1li4: "No mostramos publicidad de terceros ni vendemos o compartimos datos para publicidad.",
     s1li5pre:
-      "No vendemos ni compartimos sus datos con ningún tercero, excepto el servicio de entrega de correo que envía su alerta (Resend.com), y solo en el momento en que se activa la alerta.",
+      "Usamos únicamente los proveedores de servicios enumerados a continuación según sea necesario para operar su cuenta, activar la app, alojar nuestra base de datos y entregar alertas; no usamos corredores de datos ni rastreadores publicitarios.",
     s1li6pre: "Puede eliminar sus datos en cualquier momento enviando un correo a",
     s1li6post: ".",
     s2title: "Qué Recopilamos",
@@ -159,13 +170,15 @@ const COPY = {
     s2_1li3label: "Respuestas de admisión del caso:",
     s2_1li3:
       "Información que ingresa en el formulario de admisión del sitio web, incluyendo el nombre y dirección de la instalación donde teme ser detenido, historial migratorio previo, información financiera para solicitudes in-forma-pauperis, y los fundamentos legales y el remedio que desea solicitar en una petición de habeas corpus.",
+    s2_1li4label: "Actualizaciones en la app:",
+    s2_1li4: "Su nombre y número de teléfono móvil cuando usa Actualizar Mi Información (Update My Info).",
     s2_2title: "2.2 Información recopilada automáticamente",
     s2_2li1label: "Información técnica del dispositivo:",
-    s2_2li1: "Versión de la app, versión del sistema operativo, preferencia de idioma.",
+    s2_2li1: "El modelo de su teléfono y la versión del sistema operativo una vez durante la activación, además de la versión de la app y la preferencia de idioma.",
     s2_2li2label: "Código de emparejamiento:",
     s2_2li2: "Un código único de 6 dígitos (expira en 24 horas) usado para vincular su formulario de admisión del sitio web con la app de su teléfono.",
     s2_3title: "2.3 Qué NO recopilamos",
-    s2_3li1: "No solicitamos ni recopilamos su ubicación.",
+    s2_3li1: "No recopilamos ubicación en segundo plano ni rastreamos sus movimientos. La ubicación GPS precisa se recopila únicamente en el momento en que mantiene presionado el botón SOS.",
     s2_3li2: "No accedemos a su cámara, micrófono, lista de contactos, fotos ni archivos.",
     s2_3li3: "No usamos cookies para rastreo o publicidad en el sitio web.",
     s2_3li4: "No usamos ningún SDK de análisis que cree un perfil sobre usted.",
@@ -179,8 +192,9 @@ const COPY = {
       "Ese correo adjunta automáticamente cuatro documentos legales en PDF prellenados con su información: Petición de Auto de Habeas Corpus (AO-242), Solicitud para Proceder In Forma Pauperis (AO-240), Hoja de Cubierta Civil (JS-44), y una carta de Referencia de Abogado / Moción.",
     s3li3: 'Si cancela la alerta dentro de 2 horas usando su PIN de 4 dígitos, se envía un correo de "todo bien" a los mismos contactos.',
     s3li4: "No usamos su información para marketing, publicidad, creación de perfiles, investigación, ni ningún otro propósito.",
+    s3li5: "En el momento en que mantiene presionado SOS, su ubicación GPS precisa se envía al centro de localización de DetencionDefensa y al abogado supervisor, Sorrentino Law Firm PLLC, para ayudar a encontrarlo. No hay rastreo de ubicación en segundo plano.",
     s4title: "Con Quién Compartimos Información",
-    s4p1: "Compartimos su información únicamente con los siguientes servicios, solo cuando es necesario para entregar la alerta, y solo en el momento en que usted la activa:",
+    s4p1: "Compartimos información únicamente con el abogado supervisor y los siguientes proveedores de servicios, según sea necesario para operar su cuenta, activar la app, alojar nuestra base de datos y entregar alertas:",
     tableService: "Servicio",
     tablePurpose: "Propósito",
     tableData: "Datos compartidos",
@@ -190,11 +204,18 @@ const COPY = {
     tRow2Data: "Copias cifradas en tránsito de los datos de admisión mientras pasan por nuestros servidores",
     tRow3Purpose: "Entrega de SMS (código de activación, alertas de caso)",
     tRow3Data: "Solo su número de teléfono móvil y el contenido del mensaje SMS",
+    tRow4Purpose: "Alojamiento de la base de datos",
+    tRow4Data: "Datos de cuenta y admisión, detalles de activación y dispositivo, y registros de ubicación SOS",
     s4_1title: "4.1 Privacidad de SMS / Mensajes de Texto",
     s4_1p1:
       "Al marcar la casilla de consentimiento de SMS en nuestro formulario de admisión, usted acepta recibir mensajes de texto de DetencionDefensa.com, Inc. al número móvil que proporcione. Los mensajes incluyen su código de activación de un solo uso y notificaciones de casos de emergencia relacionadas con su cuenta. La frecuencia de los mensajes varía. Pueden aplicar tarifas de mensajes y datos. Responda STOP para cancelar la suscripción o HELP para ayuda.",
     s4_1p2:
       "No se compartirá ninguna información móvil, datos de aceptación de SMS ni registros de consentimiento con terceros o afiliados con fines de marketing o promocionales. Los números de teléfono recopilados para comunicaciones por SMS se usan únicamente para entregar los mensajes que usted aceptó recibir, y se transmiten únicamente a nuestro proveedor de SMS (Twilio) para esa entrega.",
+    s4_2title: "4.2 Analítica de visitantes del sitio web",
+    s4_2p1: "Lovable recopila analítica de visitantes para nosotros. No usa cookies, no almacena nada en el dispositivo del visitante, no conserva direcciones IP y no identifica a los visitantes. Registra las páginas visitadas, el origen de los visitantes, su país, navegador, sistema operativo y tipo de dispositivo, cuánto tiempo permanecen, la velocidad de carga de las páginas, los errores y los clics. Los datos detallados se conservan 90 días y los resúmenes diarios durante un año. Lovable recopila estos datos para nosotros.",
+    s4_2link: "La política de privacidad de Lovable explica cómo los trata.",
+    s4_2p2: "Este sitio no tiene un banner de consentimiento de analítica. Las visitas, el tiempo en la página, la velocidad, los errores y los clics se registran para cada visitante, sin cookies y sin identificar a nadie; los controles de privacidad del navegador pueden impedir el registro de clics.",
+    s4_2p3: "Nuestro propio registro de seguridad y operaciones guarda la ruta de la página, la página de origen, la dirección IP, el navegador/agente de usuario, el tipo de dispositivo y el país/ciudad aproximados cuando se visita una página. Lo usamos para operar y proteger el sitio, no para publicidad.",
     s4p2: "No compartimos sus datos con:",
     s4li1: "Anunciantes",
     s4li2: "Corredores de datos",
@@ -213,6 +234,7 @@ const COPY = {
     s6li1label: "Eliminar todos sus datos",
     s6li1mid: "enviando un correo a",
     s6li1post: 'con el asunto "Eliminar mis datos" — los eliminaremos dentro de 7 días.',
+    s6deleteLink: "También puede usar nuestra página /delete-my-data.",
     s6li2label: "Solicitar una copia",
     s6li2: "de los datos que tenemos sobre usted, enviando un correo a la misma dirección.",
     s6li3label: "Actualizar o corregir",
@@ -236,7 +258,7 @@ const COPY = {
   },
   ht: {
     title: "Politik Konfidansyalite — DetencionDefensa",
-    dates: "Dat antre an vigè: 25 me 2026\u00a0\u00a0Dènye mizajou: 25 me 2026",
+    dates: "Dat antre an vigè: 25 me 2026\u00a0\u00a0Dènye mizajou: 13 novanm 2026",
     intro:
       'Politik Konfidansyalite sa a eksplike ki enfòmasyon DetencionDefensa ("nou," "aplikasyon an") kolekte, kijan yo itilize l, ak chwa ou genyen. Politik sa a aplike ni pou aplikasyon mobil DetencionDefensa ni pou sit entènèt detenciondefensa.com.',
     s1title: "Rezime an Kreyòl Fasil",
@@ -244,10 +266,10 @@ const COPY = {
       "Nou sèlman kolekte sa ou ban nou pou fè alèt ijans lan fonksyone: non ou, nimewo A ou, dat nesans ou, peyi orijin ou, kontak ijans ou yo, ak repons ou bay nan admisyon konsènan ka ou.",
     s1li2:
       "Nou itilize enfòmasyon sa a sèlman pou (a) voye yon notifikasyon bay kontak ijans ou yo si ou peze bouton alèt la, ak (b) ranpli otomatikman fòm tribinal federal (petisyon habeas corpus, aplikasyon IFP, fèy kouvèti sivil, referans avoka) ki tache ak notifikasyon sa a.",
-    s1li3: "Nou pa suiv kote ou ye.",
-    s1li4: "Nou pa montre reklam.",
+    s1li3: "Nou kolekte kote ou ye ak GPS presi sèlman nan moman ou kenbe bouton SOS la. Nou pa suiv kote ou ye nan background.",
+    s1li4: "Nou pa montre reklam twazyèm pati epi nou pa vann oswa pataje done pou reklam.",
     s1li5pre:
-      "Nou pa vann oswa pataje done ou ak okenn twazyèm pati eksepte sèvis livrezon imèl ki voye alèt ou a (Resend.com), e sèlman nan moman alèt la deklanche.",
+      "Nou itilize sèlman founisè sèvis ki nan lis anba yo jan sa nesesè pou jere kont ou, aktive aplikasyon an, ebèje baz done nou an, e livre alèt; nou pa itilize konpayi ki vann done oswa zouti swiv pou reklam.",
     s1li6pre: "Ou ka efase done ou nenpòt lè lè ou voye yon imèl bay",
     s1li6post: ".",
     s2title: "Sa Nou Kolekte",
@@ -259,13 +281,15 @@ const COPY = {
     s2_1li3label: "Repons admisyon ka a:",
     s2_1li3:
       "Enfòmasyon ou antre nan fòm admisyon sit entènèt la, tankou non ak adrès etablisman kote ou pè detansyon, istwa imigrasyon anvan, enfòmasyon finansye pou aplikasyon in-forma-pauperis, ak rezon legal ak sekou ou vle mande nan yon petisyon habeas corpus.",
+    s2_1li4label: "Mizajou nan aplikasyon an:",
+    s2_1li4: "Non ou ak nimewo telefòn mobil ou lè ou itilize Update My Info (Mete Enfòmasyon Mwen Ajou).",
     s2_2title: "2.2 Enfòmasyon kolekte otomatikman",
     s2_2li1label: "Enfòmasyon teknik aparèy la:",
-    s2_2li1: "Vèsyon aplikasyon an, vèsyon sistèm opere a, preferans lang.",
+    s2_2li1: "Modèl telefòn ou ak vèsyon sistèm opere a yon sèl fwa pandan aktivasyon, ansanm ak vèsyon aplikasyon an ak preferans lang.",
     s2_2li2label: "Kòd koneksyon:",
     s2_2li2: "Yon kòd inik 6 chif (ekspire nan 24 èdtan) itilize pou konekte fòm admisyon sit entènèt ou ak aplikasyon telefòn ou.",
     s2_3title: "2.3 Sa nou PA kolekte",
-    s2_3li1: "Nou pa mande oswa kolekte kote ou ye.",
+    s2_3li1: "Nou pa kolekte kote ou ye nan background oswa suiv deplasman ou. Nou kolekte kote ou ye ak GPS presi sèlman nan moman ou kenbe bouton SOS la.",
     s2_3li2: "Nou pa jwenn aksè kamera, mikwofòn, lis kontak, foto, oswa fichye ou yo.",
     s2_3li3: "Nou pa itilize cookies pou swiv oswa pou reklam sou sit entènèt la.",
     s2_3li4: "Nou pa itilize okenn SDK analiz ki bati yon pwofil sou ou.",
@@ -279,8 +303,9 @@ const COPY = {
       "Imèl sa a otomatikman tache kat dokiman legal PDF ranpli davans ak enfòmasyon ou: Petisyon pou Manda Habeas Corpus (AO-242), Aplikasyon pou Pwosede In Forma Pauperis (AO-240), Fèy Kouvèti Sivil (JS-44), ak yon lèt Referans Avoka / Mosyon.",
     s3li3: 'Si ou anile alèt la nan lespas 2 èdtan lè w itilize PIN 4 chif ou, yon imèl "tout bagay anfòm" ap voye bay menm kontak yo.',
     s3li4: "Nou pa itilize enfòmasyon ou pou maketing, piblisite, kreyasyon pwofil, rechèch, oswa nenpòt lòt objektif.",
+    s3li5: "Nan moman ou kenbe SOS la, kote ou ye ak GPS presi voye bay biwo DetencionDefensa ki responsab jwenn moun nan ak avoka sipervizè a, Sorrentino Law Firm PLLC, pou ede jwenn ou. Pa gen swiv kote ou ye nan background.",
     s4title: "Ak Ki Moun Nou Pataje Enfòmasyon",
-    s4p1: "Nou pataje enfòmasyon ou sèlman ak sèvis annapre yo, sèlman lè sa nesesè pou livre alèt la, e sèlman nan moman ou deklanche l:",
+    s4p1: "Nou pataje enfòmasyon sèlman ak avoka sipervizè a ak founisè sèvis annapre yo, jan sa nesesè pou jere kont ou, aktive aplikasyon an, ebèje baz done nou an, e livre alèt:",
     tableService: "Sèvis",
     tablePurpose: "Objektif",
     tableData: "Done pataje",
@@ -290,11 +315,18 @@ const COPY = {
     tRow2Data: "Kopi kripte pandan transpò done admisyon yo pandan yo pase nan sèvè nou yo",
     tRow3Purpose: "Livrezon SMS (kòd aktivasyon, alèt ka)",
     tRow3Data: "Sèlman nimewo telefòn mobil ou ak kò mesaj SMS la",
+    tRow4Purpose: "Ebèjman baz done",
+    tRow4Data: "Done kont ak admisyon, detay aktivasyon ak aparèy, ak dosye kote SOS te ye",
     s4_1title: "4.1 Konfidansyalite SMS / Mesaj Tèks",
     s4_1p1:
       "Lè ou koche kaz konsantman SMS la nan fòm admisyon nou an, ou aksepte resevwa mesaj tèks nan men DetencionDefensa.com, Inc. nan nimewo mobil ou bay la. Mesaj yo gen ladan kòd aktivasyon yon sèl fwa ou ak notifikasyon ka ijans ki gen rapò ak kont ou. Frekans mesaj yo varye. Frè mesaj ak done ka aplike. Reponn STOP pou dezabòne oswa HELP pou èd.",
     s4_1p2:
       "Okenn enfòmasyon mobil, done konsantman SMS, oswa dosye konsantman p ap pataje ak twazyèm pati oswa afilye pou objektif maketing oswa pwomosyon. Nimewo telefòn kolekte pou kominikasyon SMS itilize sèlman pou livre mesaj ou te aksepte resevwa yo, e yo transmèt sèlman bay founisè SMS nou an (Twilio) pou livrezon sa a.",
+    s4_2title: "4.2 Analitik vizitè sit entènèt la",
+    s4_2p1: "Lovable kolekte analitik vizitè pou nou. Li pa itilize cookies, li pa estoke anyen sou aparèy vizitè a, li pa kenbe adrès IP epi li pa idantifye vizitè yo. Li anrejistre paj yo vizite, kote vizitè yo soti, peyi yo, navigatè, sistèm opere ak kalite aparèy, konbyen tan yo rete, vitès paj yo chaje, erè, ak klik. Yo kenbe done detaye pandan 90 jou ak rezime chak jou pandan yon ane. Lovable kolekte done sa yo pou nou.",
+    s4_2link: "Politik konfidansyalite Lovable la eksplike kijan li jere yo.",
+    s4_2p2: "Sit sa a pa gen banyè konsantman analitik. Vizit paj yo, tan sou paj la, vitès paj la, erè ak klik anrejistre pou chak vizitè, san cookies epi san idantifye pèsonn; kontwòl konfidansyalite navigatè a ka anpeche klik anrejistre.",
+    s4_2p3: "Pwòp jounal sekirite ak operasyon nou an anrejistre chemen paj la, paj ki voye vizitè a, adrès IP, navigatè/agent itilizatè, kalite aparèy ak peyi/vil apwoksimatif lè yon paj vizite. Nou itilize l pou opere epi pwoteje sit la, pa pou reklam.",
     s4p2: "Nou pa pataje done ou ak:",
     s4li1: "Anonsè",
     s4li2: "Konpayi ki vann done",
@@ -313,6 +345,7 @@ const COPY = {
     s6li1label: "Efase tout done ou",
     s6li1mid: "lè ou voye yon imèl bay",
     s6li1post: 'ak sijè "Efase done mwen" — n ap retire yo nan lespas 7 jou.',
+    s6deleteLink: "Ou ka itilize paj /delete-my-data nou an tou.",
     s6li2label: "Mande yon kopi",
     s6li2: "done nou genyen sou ou, lè ou voye yon imèl nan menm adrès la.",
     s6li3label: "Mete ajou oswa korije",
@@ -382,6 +415,9 @@ function PrivacyPage() {
               <li>
                 <strong className="text-[#f6efe1]">{t.s2_1li3label}</strong> {t.s2_1li3}
               </li>
+              <li>
+                <strong className="text-[#f6efe1]">{t.s2_1li4label}</strong> {t.s2_1li4}
+              </li>
             </ul>
           </SubSection>
 
@@ -420,6 +456,7 @@ function PrivacyPage() {
             <li>{t.s3li2}</li>
             <li>{t.s3li3}</li>
             <li>{t.s3li4}</li>
+            <li>{t.s3li5}</li>
           </ul>
         </Section>
 
@@ -452,10 +489,15 @@ function PrivacyPage() {
                   <td className="px-4 py-2 text-[#cfc8b8]">{t.tRow2Purpose}</td>
                   <td className="px-4 py-2 text-[#cfc8b8]">{t.tRow2Data}</td>
                 </tr>
-                <tr>
+                <tr className="border-b border-[#3a4458]">
                   <td className="px-4 py-2 text-[#f6efe1]">Twilio</td>
                   <td className="px-4 py-2 text-[#cfc8b8]">{t.tRow3Purpose}</td>
                   <td className="px-4 py-2 text-[#cfc8b8]">{t.tRow3Data}</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 text-[#f6efe1]">Lovable Cloud / Supabase</td>
+                  <td className="px-4 py-2 text-[#cfc8b8]">{t.tRow4Purpose}</td>
+                  <td className="px-4 py-2 text-[#cfc8b8]">{t.tRow4Data}</td>
                 </tr>
               </tbody>
             </table>
@@ -464,6 +506,17 @@ function PrivacyPage() {
           <SubSection title={t.s4_1title}>
             <p className="text-[#cfc8b8] leading-relaxed mb-3">{t.s4_1p1}</p>
             <p className="text-[#cfc8b8] leading-relaxed font-semibold">{t.s4_1p2}</p>
+          </SubSection>
+
+          <SubSection title={t.s4_2title}>
+            <p className="text-[#cfc8b8] leading-relaxed mb-3">{t.s4_2p1}</p>
+            <p className="text-[#cfc8b8] leading-relaxed mb-3">
+              <a href="https://lovable.dev/privacy" className="text-[#e8a04a] underline" target="_blank" rel="noreferrer">
+                {t.s4_2link}
+              </a>
+            </p>
+            <p className="text-[#cfc8b8] leading-relaxed mb-3">{t.s4_2p2}</p>
+            <p className="text-[#cfc8b8] leading-relaxed">{t.s4_2p3}</p>
           </SubSection>
 
           <p className="text-[#f6efe1] font-semibold mb-2">{t.s4p2}</p>
@@ -501,7 +554,10 @@ function PrivacyPage() {
               <a href="mailto:legal@detenciondefensa.com" className="text-[#e8a04a] underline">
                 legal@detenciondefensa.com
               </a>{" "}
-              {t.s6li1post}
+              {t.s6li1post}{" "}
+              <a href="/delete-my-data" className="text-[#e8a04a] underline">
+                {t.s6deleteLink}
+              </a>
             </li>
             <li>
               <strong className="text-[#f6efe1]">{t.s6li2label}</strong> {t.s6li2}

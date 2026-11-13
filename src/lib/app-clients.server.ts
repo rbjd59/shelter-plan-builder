@@ -55,6 +55,8 @@ interface ProvisionParams {
   intakeSessionId: string;
   language: string;
   answers: Record<string, unknown>;
+  /** Store-review accounts are provisioned normally but never notify anyone. */
+  isReviewer?: boolean;
 }
 
 export async function provisionAppClient(params: ProvisionParams): Promise<{
@@ -113,6 +115,7 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
         country_of_origin: countryOfOrigin,
         has_asset_protection: hasAssetProtection,
         has_pet_rescue: hasPetRescue,
+        is_reviewer: params.isReviewer === true,
         // Per-client signing key for POST /api/public/app-trigger. Without it
         // verify_app_trigger_signature() returns invalid_token and every SOS
         // fire/cancel from the phone is rejected with 401.
@@ -236,14 +239,17 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
   addContact(a.contact_name, a.contact_phone, a.contact_email, "family", 4);
 
   // Locked legal-team contact so the alert inbox is visible inside the app.
-  addContact(
-    "DetencionDefensa Legal Alerts",
-    null,
-    "alerts@detenciondefensa.com",
-    "legal-team",
-    5,
-    "company",
-  );
+  // Store reviewers must have no contacts and no notification recipients.
+  if (!params.isReviewer) {
+    addContact(
+      "DetencionDefensa Legal Alerts",
+      null,
+      "alerts@detenciondefensa.com",
+      "legal-team",
+      5,
+      "company",
+    );
+  }
 
   // De-duplicate: the family contact is often the same person as emergency #1.
   {
@@ -305,8 +311,9 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
   });
 
 
-  // Send activation email
-  if (email) {
+  // Send activation email. Reviewer provisioning is always silent, even if
+  // an administrative caller accidentally supplies contact details.
+  if (email && !params.isReviewer) {
     await trackDelivery(
       {
         intakeSessionId: params.intakeSessionId,
@@ -330,12 +337,14 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
       activationCode: code,
       step: "activation_email",
       status: "skipped",
-      errorMessage: "no client email captured on the intake form",
+      errorMessage: params.isReviewer
+        ? "store reviewer notifications disabled"
+        : "no client email captured on the intake form",
     });
   }
 
   // Send activation SMS
-  if (phone) {
+  if (phone && !params.isReviewer) {
     await trackDelivery(
       {
         intakeSessionId: params.intakeSessionId,
@@ -359,7 +368,9 @@ export async function provisionAppClient(params: ProvisionParams): Promise<{
       activationCode: code,
       step: "activation_sms",
       status: "skipped",
-      errorMessage: "no client mobile number captured on the intake form",
+      errorMessage: params.isReviewer
+        ? "store reviewer notifications disabled"
+        : "no client mobile number captured on the intake form",
     });
   }
 
