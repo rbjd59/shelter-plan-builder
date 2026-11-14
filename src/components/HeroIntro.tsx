@@ -17,6 +17,9 @@ const COPY = {
     wasPrice: "$199",
     freeText: "Gratis — pro bono por la crisis comunitaria.",
     tagline: "Alerta de emergencia de un clic y plan de defensa legal revisado por un abogado",
+    crisisTitle: "No espere una detención para buscar un abogado.",
+    crisisBody: "Contratar en una emergencia puede costar $5,000–$15,000 o más y llevar a las familias a comprar opciones que quizás no sean viables. Evalúe su situación hoy, prepare su expediente y permita que un abogado calificado revise su verdadera situación legal.",
+    screenBtn: "Evaluar mi preparación",
     btn1: "Cómo funciona el plan de protección",
     btn2: "Si eres propietario de una vivienda",
     watchVideo: "Mira un video de un minuto",
@@ -40,6 +43,9 @@ const COPY = {
     wasPrice: "$199",
     freeText: "Free — pro bono due to the community crisis.",
     tagline: "One-click emergency alert and attorney-reviewed legal defense plan",
+    crisisTitle: "Don’t wait for detention to find a lawyer.",
+    crisisBody: "Emergency hiring can cost $5,000–$15,000+ and leave families buying options that may not be viable. Pre-screen now, organize your case file, and have qualified counsel assess your actual legal standing.",
+    screenBtn: "Check my readiness",
     btn1: "How Protection Plan Works",
     btn2: "If You're a Homeowner",
     watchVideo: "Watch a one-minute video",
@@ -63,6 +69,9 @@ const COPY = {
     wasPrice: "$199",
     freeText: "Gratis — pro bono akòz kriz kominotè a.",
     tagline: "Sijè a alèt dijans yon sèl kli epi plan defans legal revize pa yon avoka",
+    crisisTitle: "Pa tann yo detni w anvan w chèche yon avoka.",
+    crisisBody: "Anboche yon avoka nan ijans ka koute $5,000–$15,000 oswa plis epi fanmi ka achte opsyon ki pa vrèman posib. Fè evalyasyon kounye a, prepare dosye w, epi pèmèt yon avoka kalifye evalye vrè sitiyasyon legal ou.",
+    screenBtn: "Verifye preparasyon mwen",
     btn1: "Ki jan plan pwoteksyon an fonksyone",
     btn2: "Si w se yon pwopriyetè kay",
     watchVideo: "Gade yon videyo yon minit",
@@ -83,7 +92,7 @@ const COPY = {
   },
 } satisfies Record<
   Lang,
-  { plan: string; wasPrice: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; employerHeading: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; homeBox: string; homeBoxHeading: string; homeBoxBody: string; privilegeNotice: string; disclaimer: string }
+  { plan: string; wasPrice: string; freeText: string; tagline: string; crisisTitle: string; crisisBody: string; screenBtn: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; employerHeading: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; homeBox: string; homeBoxHeading: string; homeBoxBody: string; privilegeNotice: string; disclaimer: string }
 >;
 
 
@@ -121,11 +130,13 @@ export default function HeroIntro() {
         <div className="home-hero-shade" />
         <div className="home-container home-hero-content">
           <p className="home-eyebrow">DetencionDefensa.com · ListoAhora.org · PareKounya.org</p>
-          <h1>{t.plan}</h1>
-          <p className="home-hero-tagline">{t.tagline}</p>
+          <h1>{t.crisisTitle}</h1>
+          <p className="home-hero-tagline">{t.crisisBody}</p>
+          <p className="home-hero-plan"><strong>{t.plan}</strong><span>{t.tagline}</span></p>
           <div className="home-price" id="precio"><del>{t.wasPrice}</del><strong>{t.freeText}</strong></div>
           <div className="home-actions">
             <Button asChild className="home-primary"><a href={`/intake?lang=${lang}`}>{start}</a></Button>
+            <Button asChild variant="outline" className="home-video-action"><a href="#readiness-screener">{t.screenBtn}<ArrowRight size={18} /></a></Button>
             <Button asChild variant="outline" className="home-video-action"><a href="#how-it-works-video"><Play />{t.appBoxBtn}</a></Button>
           </div>
           <p className="home-hero-languages"><ShieldCheck size={20} /> Español · English · Kreyòl</p>

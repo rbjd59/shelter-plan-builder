@@ -5,6 +5,8 @@
 - [x] Correct English, Spanish and Haitian Creole privacy policies for SOS-only GPS, Update My Info, activation device details, hosting providers and advertising; retain deletion routes and update the revision date.
 
 ## Homepage arrangement
+- [x] Add the emergency-readiness model: crisis-versus-preparation hero messaging, four integrated pillars, trilingual legal/statistical disclosures, app highlights, and a private on-device legal-posture screener linked to intake, Save My Home and Save My Business. Preserve all existing videos, links and legal workflows; verify all languages and mobile without publishing.
+- [x] Emphasize the proprietary mobile app as the key differentiator: immediate one-tap phone SOS, automated detention tracking and ICE locator monitoring, and instant family/emergency-contact alerts with facility location and case-status updates, in all three languages.
 - [x] Add Save My Business alongside the existing homeowner video, with English, Spanish and Haitian Creole trust/corporation copy, language-aware savemybusiness.com links and disclosures; verify all languages and mobile without publishing.
 - [x] Set the homepage background to white and switch the hero family photo with Español, English and Kreyòl; preserve videos and links and verify desktop/mobile.
 - [x] Rearrange and restyle the homepage while preserving all original link destinations, three video URLs, and every translated HTML paragraph; verify 360px mobile, desktop, language switching, FAQ expansion and video playback. Intake, backend, native app and sitewide SEO remain unchanged.
