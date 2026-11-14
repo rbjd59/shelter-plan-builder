@@ -1,5 +1,8 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
+## November 14 — free statutory screening
+- [x] Add a shared English/Spanish/Haitian Creole five-step screening flow on the homepage and intake, with a validated backend assessment, statutory caveats, counsel review and optional economic-defense links; 29 tests and live trilingual / intake assessments passed, with no mobile overflow or publication. Results identify review issues, not individual odds or definitive eligibility.
+
 ## November 13 — store launch preparation (owner review before publish)
 - [x] Create one silent, reusable store-reviewer account through the normal provisioning path; verify 12+ activations, signed SOS/cancel board records, and zero email/SMS fan-out.
 - [x] Correct English, Spanish and Haitian Creole privacy policies for SOS-only GPS, Update My Info, activation device details, hosting providers and advertising; retain deletion routes and update the revision date.

@@ -3421,3 +3421,37 @@ body:not(.splash-active) .home-redesign .home-hero-background { height: 100%; }
   .home-readiness-results article { gap: 12px; }
   .home-readiness-firm { padding: 22px; gap: 12px; }
 }
+
+/* Shared screening tool: semantic roles inherit each page's theme. */
+.legal-screening { background: var(--background); color: var(--foreground); padding: 40px 0; border-block: 1px solid var(--input, var(--gold-soft)); }
+.legal-screening-inner { max-width: 1100px; margin: auto; padding-inline: 24px; }
+.legal-screening header { max-width: 900px; margin-bottom: 24px; }
+.legal-screening header > svg { color: var(--primary); margin-bottom: 16px; }
+.legal-screening h2 { font-size: 30px; line-height: 1.25; margin-bottom: 18px; overflow-wrap: anywhere; }
+.legal-screening p { line-height: 1.7; margin-bottom: 18px; }
+.legal-screening-note, .legal-screening-disclaimer { font-size: 13px; }
+.legal-screening-panel { padding-block: 24px; border-block: 1px solid var(--input, var(--gold-soft)); margin-bottom: 24px; }
+.legal-screening-step { color: var(--primary); font-weight: 700; }
+.legal-screening fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+.legal-screening legend { font-size: 21px; font-weight: 700; margin-bottom: 20px; }
+.legal-screening-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.legal-screening-options label { display: flex; align-items: center; gap: 12px; min-height: 56px; border: 1px solid var(--input, var(--gold-soft)); padding: 12px; border-radius: 6px; cursor: pointer; }
+.legal-screening-options label:has(input:checked) { border-color: var(--primary); background: var(--accent, var(--background)); }
+.legal-screening input { flex-shrink: 0; width: 18px; height: 18px; accent-color: var(--primary); }
+.legal-screening-actions { display: flex; gap: 12px; margin-top: 24px; }
+.legal-screening button, .legal-screening a[data-slot] { min-height: 48px; white-space: normal; }
+.legal-screening-results h3 { font-size: 24px; line-height: 1.4; margin-bottom: 14px; }
+.legal-screening-results ul { padding-left: 22px; }
+.legal-screening-results li { padding-block: 12px; line-height: 1.75; }
+.legal-screening-warning { border-left: 3px solid var(--primary); padding-left: 16px; }
+.legal-screening-economic { margin-block: 24px; border-top: 1px solid var(--input, var(--gold-soft)); padding-top: 24px; }
+.legal-screening-economic h4 { font-size: 18px; line-height: 1.6; margin-bottom: 18px; }
+.legal-screening a { text-decoration: underline; text-underline-offset: 3px; }
+.legal-screening-economic a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; }
+.legal-screening summary { cursor: pointer; min-height: 44px; }
+@media (max-width: 767px) {
+  .legal-screening-options { grid-template-columns: 1fr; }
+  .legal-screening-inner { padding-inline: 16px; }
+  .legal-screening h2 { font-size: 26px; }
+  .legal-screening-results > a { width: 100%; height: auto; padding: 14px; white-space: normal; }
+}

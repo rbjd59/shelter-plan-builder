@@ -6,6 +6,7 @@
 - Phone apps exchange activation codes through `/api/public/app/activate`, never direct activation database RPCs; keep those RPCs server-only to preserve the client-data boundary.
 
 # Intake stages
+- Share the validated, deterministic legal-screening engine between homepage and intake; public assessments accept only categorical answers and never persist, notify, decide eligibility or generate individual odds, because five answers cannot establish legal standing.
 - Keep signup identity, referral attribution and consent in the intake answer record used by existing authenticated drafts; persist before continuing or signing out so both stages retain one source of truth.
 - Account registration may carry only allowlisted non-secret signup fields in intake_signup metadata; passwords stay transient and email confirmation must complete before authenticated draft saving.
 

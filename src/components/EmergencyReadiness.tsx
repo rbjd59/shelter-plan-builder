@@ -1,4 +1,3 @@
-import { useMemo, useState } from "react";
 import {
   AlertTriangle,
   ArrowRight,
@@ -8,7 +7,6 @@ import {
   Gavel,
   Home,
   MapPin,
-  RotateCcw,
   Scale,
   Smartphone,
   UsersRound,
@@ -16,12 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useLang } from "@/context/LanguageContext";
 import { withLang } from "@/lib/outbound-lang";
-import {
-  buildReadinessPlan,
-  EMPTY_READINESS_ANSWERS,
-  isReadinessScreenComplete,
-  type ReadinessAnswers,
-} from "@/lib/readiness-screener";
+import LegalScreening from "@/components/LegalScreening";
 
 const COPY = {
   en: {
@@ -42,7 +35,7 @@ const COPY = {
       "Give a vetted detention attorney a usable file instead of starting from scratch.",
     ],
     statsNote:
-      "The roughly 12–15% range sometimes cited in historical general reporting for certain emergency change-of-status or relief postures is illustrative, not a current official rate. Approval rates vary by posture, jurisdiction, facts and time period. Historical statistics and fee examples do not predict or guarantee any individual outcome.",
+      "Fee examples are illustrative, not verified market rates. No overall approval rate can predict your case. Individual facts, legal posture and current law require licensed review.",
     pillarsEyebrow: "Four integrated pillars",
     pillarsHeading: "One readiness plan for your case, home, business and counsel.",
     pillars: [
@@ -76,49 +69,6 @@ const COPY = {
     ],
     appCta: "See how the app works",
     appStart: "Start my readiness file",
-    screenerEyebrow: "Private interactive pre-screening",
-    screenerHeading: "Identify your readiness priorities.",
-    screenerIntro:
-      "Answer five basic questions. This tool does not decide eligibility, relief or legal standing; it only organizes planning priorities. Answers stay on this page and are not sent or saved.",
-    questions: {
-      time: {
-        legend: "1. How long have you lived in the United States?",
-        options: { under2: "Less than 2 years", "2to10": "2–10 years", over10: "More than 10 years", unsure: "Not sure / prefer not to say" },
-      },
-      status: {
-        legend: "2. What best describes your current immigration posture?",
-        options: { none: "No current lawful status", tps: "TPS", daca: "DACA", lawful: "Permanent resident or visa holder", pending: "Pending asylum or other application", other: "Other / not sure" },
-      },
-      prior: {
-        legend: "3. Do you have a prior deportation or removal order?",
-        options: { yes: "Yes", no: "No", unsure: "Not sure" },
-      },
-      home: {
-        legend: "4. Do you own a home or residential equity?",
-        options: { yes: "Yes", no: "No" },
-      },
-      business: {
-        legend: "5. Do you own a route, service business or other business?",
-        options: { yes: "Yes", no: "No" },
-      },
-    },
-    completeNote: "Answer all five questions to view your planning priorities.",
-    submit: "View my readiness priorities",
-    reset: "Clear answers",
-    resultTitle: "Your planning priorities",
-    resultCaseTitle: "Prepare the case file first",
-    resultCaseBody:
-      "Continue to the full intake to organize your A-number, immigration history and emergency contacts. Qualified licensed counsel must independently evaluate your actual legal standing and any viable relief.",
-    resultPriorTitle: "Prior-order review needs prompt licensed-counsel attention",
-    resultPriorBody:
-      "A prior removal order—or uncertainty about one—requires individual legal review. A § 2241 habeas petition does not cancel a removal order and is not a substitute for a petition for review or immigration counsel.",
-    resultHomeTitle: "Add residential equity planning",
-    resultHomeBody: "Explore whether a Save My Home trust structure fits your facts. No trust prevents every sale, creditor action or loss.",
-    resultBusinessTitle: "Add business continuity planning",
-    resultBusinessBody: "Explore a trust-and-corporation structure for continuity, transfer or sale. Licensing, control and outcomes require professional review.",
-    resultCta: "Continue to full intake",
-    resultDisclaimer:
-      "These are organizational next steps, not a legal opinion or an eligibility determination. Completing the intake does not guarantee counsel acceptance or representation.",
     legalHeading: "Strict limits: what habeas corpus can and cannot do",
     legalCanTitle: "It may challenge physical detention",
     legalCan:
@@ -148,7 +98,7 @@ const COPY = {
       "Entregue a un abogado de detención evaluado un expediente útil, en vez de comenzar desde cero.",
     ],
     statsNote:
-      "El rango aproximado de 12–15% citado a veces en reportes históricos generales para ciertas situaciones de cambio de estatus o alivio de emergencia es ilustrativo, no una tasa oficial actual. Las tasas de aprobación varían según la situación, jurisdicción, hechos y período. Las estadísticas históricas y los ejemplos de honorarios no predicen ni garantizan ningún resultado individual.",
+      "Los honorarios son ejemplos, no tarifas de mercado verificadas. Ninguna tasa general predice su caso. Los hechos, la situación legal y la ley vigente requieren revisión por un abogado autorizado.",
     pillarsEyebrow: "Cuatro pilares integrados",
     pillarsHeading: "Un solo plan de preparación para su caso, casa, negocio y abogado.",
     pillars: [
@@ -182,49 +132,6 @@ const COPY = {
     ],
     appCta: "Vea cómo funciona la app",
     appStart: "Comenzar mi expediente",
-    screenerEyebrow: "Evaluación preliminar interactiva y privada",
-    screenerHeading: "Identifique sus prioridades de preparación.",
-    screenerIntro:
-      "Responda cinco preguntas básicas. Esta herramienta no decide elegibilidad, alivio ni situación legal; solo organiza prioridades de planificación. Las respuestas permanecen en esta página y no se envían ni se guardan.",
-    questions: {
-      time: {
-        legend: "1. ¿Cuánto tiempo ha vivido en Estados Unidos?",
-        options: { under2: "Menos de 2 años", "2to10": "2–10 años", over10: "Más de 10 años", unsure: "No estoy seguro / prefiero no decir" },
-      },
-      status: {
-        legend: "2. ¿Qué describe mejor su situación migratoria actual?",
-        options: { none: "Sin estatus legal actual", tps: "TPS", daca: "DACA", lawful: "Residente permanente o titular de visa", pending: "Asilo u otra solicitud pendiente", other: "Otra / no estoy seguro" },
-      },
-      prior: {
-        legend: "3. ¿Tiene una orden previa de deportación o remoción?",
-        options: { yes: "Sí", no: "No", unsure: "No estoy seguro" },
-      },
-      home: {
-        legend: "4. ¿Es dueño de una casa o tiene valor acumulado en una vivienda?",
-        options: { yes: "Sí", no: "No" },
-      },
-      business: {
-        legend: "5. ¿Es dueño de una ruta, negocio de servicios u otro negocio?",
-        options: { yes: "Sí", no: "No" },
-      },
-    },
-    completeNote: "Responda las cinco preguntas para ver sus prioridades de planificación.",
-    submit: "Ver mis prioridades de preparación",
-    reset: "Borrar respuestas",
-    resultTitle: "Sus prioridades de planificación",
-    resultCaseTitle: "Prepare primero el expediente",
-    resultCaseBody:
-      "Continúe al formulario completo para organizar su número A, historial migratorio y contactos de emergencia. Un abogado autorizado y calificado debe evaluar independientemente su verdadera situación legal y cualquier alivio viable.",
-    resultPriorTitle: "Una orden previa requiere atención pronta de un abogado autorizado",
-    resultPriorBody:
-      "Una orden de remoción previa—o la duda sobre su existencia—requiere revisión legal individual. Una petición de habeas corpus bajo § 2241 no cancela una orden de remoción ni sustituye una petición de revisión o un abogado de inmigración.",
-    resultHomeTitle: "Añada planificación para el valor de su vivienda",
-    resultHomeBody: "Explore si un fideicomiso Save My Home se ajusta a sus hechos. Ningún fideicomiso evita toda venta, acción de acreedores o pérdida.",
-    resultBusinessTitle: "Añada planificación de continuidad del negocio",
-    resultBusinessBody: "Explore una estructura de fideicomiso y corporación para continuidad, transferencia o venta. Las licencias, el control y los resultados requieren revisión profesional.",
-    resultCta: "Continuar al formulario completo",
-    resultDisclaimer:
-      "Estos son pasos de organización, no una opinión legal ni una determinación de elegibilidad. Completar el formulario no garantiza que un abogado acepte el caso o lo represente.",
     legalHeading: "Límites estrictos: qué puede y qué no puede hacer el habeas corpus",
     legalCanTitle: "Puede cuestionar la detención física",
     legalCan:
@@ -254,7 +161,7 @@ const COPY = {
       "Bay yon avoka detansyon yo verifye yon dosye li ka itilize, pito li rekòmanse a zewo.",
     ],
     statsNote:
-      "Chif apeprè 12–15% rapò istorik jeneral pafwa site pou kèk sitiyasyon ijans chanjman estati oswa sekou se yon egzanp, se pa yon pousantaj ofisyèl aktyèl. Pousantaj apwobasyon yo varye selon sitiyasyon, jiridiksyon, enfòmasyon ak peryòd. Estatistik istorik ak egzanp frè yo pa prevwa ni garanti okenn rezilta endividyèl.",
+      "Frè yo se egzanp, pa pri mache verifye. Okenn pousantaj jeneral pa prevwa dosye ou. Enfòmasyon endividyèl, sitiyasyon legal ak lwa aktyèl mande revizyon yon avoka ki gen lisans.",
     pillarsEyebrow: "Kat pilye ki travay ansanm",
     pillarsHeading: "Yon sèl plan preparasyon pou dosye w, kay ou, biznis ou ak avoka w.",
     pillars: [
@@ -288,49 +195,6 @@ const COPY = {
     ],
     appCta: "Gade kijan app la mache",
     appStart: "Kòmanse dosye mwen",
-    screenerEyebrow: "Evalyasyon preliminè entèraktif prive",
-    screenerHeading: "Idantifye priyorite preparasyon ou.",
-    screenerIntro:
-      "Reponn senk kesyon debaz. Zouti sa a pa deside eligibilite, sekou oswa sitiyasyon legal; li sèlman òganize priyorite planifikasyon. Repons yo rete sou paj sa a epi yo pa voye ni sove yo.",
-    questions: {
-      time: {
-        legend: "1. Konbyen tan ou ap viv Etazini?",
-        options: { under2: "Mwens pase 2 an", "2to10": "2–10 an", over10: "Plis pase 10 an", unsure: "Mwen pa sèten / mwen prefere pa di" },
-      },
-      status: {
-        legend: "2. Ki sa ki dekri sitiyasyon imigrasyon ou pi byen kounye a?",
-        options: { none: "Mwen pa gen estati legal kounye a", tps: "TPS", daca: "DACA", lawful: "Rezidan pèmanan oswa moun ki gen viza", pending: "Azil oswa yon lòt demann annatant", other: "Lòt / mwen pa sèten" },
-      },
-      prior: {
-        legend: "3. Èske ou gen yon ansyen lòd depòtasyon oswa revokasyon?",
-        options: { yes: "Wi", no: "Non", unsure: "Mwen pa sèten" },
-      },
-      home: {
-        legend: "4. Èske ou gen yon kay oswa kapital nan yon kay?",
-        options: { yes: "Wi", no: "Non" },
-      },
-      business: {
-        legend: "5. Èske ou gen yon wout, biznis sèvis oswa yon lòt biznis?",
-        options: { yes: "Wi", no: "Non" },
-      },
-    },
-    completeNote: "Reponn tout senk kesyon yo pou wè priyorite planifikasyon ou.",
-    submit: "Wè priyorite preparasyon mwen",
-    reset: "Efase repons yo",
-    resultTitle: "Priyorite planifikasyon ou",
-    resultCaseTitle: "Prepare dosye a an premye",
-    resultCaseBody:
-      "Kontinye nan fòm konplè a pou òganize nimewo A ou, istorik imigrasyon ou ak kontak ijans yo. Yon avoka kalifye ki gen lisans dwe evalye vrè sitiyasyon legal ou ak nenpòt sekou ki posib poukont li.",
-    resultPriorTitle: "Yon ansyen lòd mande atansyon rapid yon avoka ki gen lisans",
-    resultPriorBody:
-      "Yon ansyen lòd revokasyon—oswa ensètitid sou li—mande revizyon legal endividyèl. Yon petisyon habeas corpus dapre § 2241 pa anile yon lòd revokasyon epi li pa ranplase yon petisyon pou revizyon oswa yon avoka imigrasyon.",
-    resultHomeTitle: "Ajoute planifikasyon pou kapital kay ou",
-    resultHomeBody: "Eksplore si yon estrikti fidisi Save My Home adapte ak sitiyasyon ou. Okenn fidisi pa anpeche tout vant, aksyon kretyanse oswa pèt.",
-    resultBusinessTitle: "Ajoute planifikasyon kontiniite biznis",
-    resultBusinessBody: "Eksplore yon estrikti fidisi ak kòporasyon pou kontiniite, transfè oswa vant. Lisans, kontwòl ak rezilta yo mande revizyon pwofesyonèl.",
-    resultCta: "Kontinye nan fòm konplè a",
-    resultDisclaimer:
-      "Sa yo se etap òganizasyon, se pa yon opinyon legal ni yon desizyon sou eligibilite. Ranpli fòm nan pa garanti yon avoka ap aksepte dosye a oswa reprezante w.",
     legalHeading: "Limit egzat: sa habeas corpus ka fè ak sa li pa ka fè",
     legalCanTitle: "Li ka konteste detansyon fizik",
     legalCan:
@@ -350,27 +214,11 @@ const APP_ICONS = [Smartphone, MapPin, UsersRound];
 export default function EmergencyReadiness() {
   const { lang } = useLang();
   const t = COPY[lang];
-  const [answers, setAnswers] = useState<ReadinessAnswers>({ ...EMPTY_READINESS_ANSWERS });
-  const [showResults, setShowResults] = useState(false);
-  const complete = isReadinessScreenComplete(answers);
-  const plan = useMemo(() => buildReadinessPlan(answers), [answers]);
   const intakeHref = `/intake?lang=${lang}`;
   const homeHref = withLang("https://savemyhometrust.com/trust", lang);
   const businessHref = withLang("https://savemybusiness.com", lang);
   const pillarLinks = ["#readiness-screener", homeHref, businessHref, intakeHref];
 
-  const update = (key: keyof ReadinessAnswers, value: string) => {
-    setAnswers((current) => ({ ...current, [key]: value }) as ReadinessAnswers);
-    setShowResults(false);
-  };
-
-  const questions = [
-    { key: "timeInUs" as const, legend: t.questions.time.legend, options: Object.entries(t.questions.time.options) },
-    { key: "currentStatus" as const, legend: t.questions.status.legend, options: Object.entries(t.questions.status.options) },
-    { key: "priorRemoval" as const, legend: t.questions.prior.legend, options: Object.entries(t.questions.prior.options) },
-    { key: "ownsHome" as const, legend: t.questions.home.legend, options: Object.entries(t.questions.home.options) },
-    { key: "ownsBusiness" as const, legend: t.questions.business.legend, options: Object.entries(t.questions.business.options) },
-  ];
 
   return <>
     <section className="home-band home-readiness" id="emergency-readiness" aria-labelledby="readiness-heading">
@@ -433,47 +281,7 @@ export default function EmergencyReadiness() {
       </div>
     </section>
 
-    <section className="home-band home-readiness-screen" id="readiness-screener" aria-labelledby="screener-heading">
-      <div className="home-container home-readiness-screen-layout">
-        <div className="home-readiness-screen-intro">
-          <p className="home-readiness-eyebrow">{t.screenerEyebrow}</p>
-          <h2 id="screener-heading">{t.screenerHeading}</h2>
-          <p>{t.screenerIntro}</p>
-          <Scale aria-hidden="true" />
-        </div>
-        <form className="home-readiness-form" onSubmit={(event) => { event.preventDefault(); if (complete) setShowResults(true); }}>
-          {questions.map((question) => <fieldset key={question.key}>
-            <legend>{question.legend}</legend>
-            <div className="home-readiness-options">
-              {question.options.map(([value, label]) => <label key={value}>
-                <input
-                  type="radio"
-                  name={`readiness-${question.key}`}
-                  value={value}
-                  checked={answers[question.key] === value}
-                  onChange={() => update(question.key, value)}
-                />
-                <span>{label}</span>
-              </label>)}
-            </div>
-          </fieldset>)}
-          <div className="home-readiness-form-actions">
-            <Button type="submit" className="home-primary" disabled={!complete}>{t.submit}<ArrowRight size={18} /></Button>
-            <Button type="button" variant="outline" onClick={() => { setAnswers({ ...EMPTY_READINESS_ANSWERS }); setShowResults(false); }}><RotateCcw size={17} />{t.reset}</Button>
-          </div>
-          {!complete && <p className="home-readiness-complete-note">{t.completeNote}</p>}
-        </form>
-      </div>
-      {showResults && complete && <div className="home-container home-readiness-results" role="status" aria-live="polite">
-        <h3>{t.resultTitle}</h3>
-        <article><FileCheck2 aria-hidden="true" /><div><h4>{t.resultCaseTitle}</h4><p>{t.resultCaseBody}</p></div></article>
-        {plan.counselReviewUrgent && <article className="home-readiness-priority"><AlertTriangle aria-hidden="true" /><div><h4>{t.resultPriorTitle}</h4><p>{t.resultPriorBody}</p></div></article>}
-        {plan.showHome && <article><Home aria-hidden="true" /><div><h4>{t.resultHomeTitle}</h4><p>{t.resultHomeBody}</p><a href={homeHref} target="_blank" rel="noopener noreferrer">SaveMyHomeTrust.com<ArrowRight size={16} /></a></div></article>}
-        {plan.showBusiness && <article><BriefcaseBusiness aria-hidden="true" /><div><h4>{t.resultBusinessTitle}</h4><p>{t.resultBusinessBody}</p><a href={businessHref} target="_blank" rel="noopener noreferrer">SaveMyBusiness.com<ArrowRight size={16} /></a></div></article>}
-        <Button asChild className="home-primary"><a href={intakeHref}>{t.resultCta}<ArrowRight size={18} /></a></Button>
-        <p className="home-readiness-result-disclaimer">{t.resultDisclaimer}</p>
-      </div>}
-    </section>
+    <LegalScreening lang={lang} />
 
     <section className="home-band home-readiness-legal" aria-labelledby="habeas-limits-heading">
       <div className="home-container">

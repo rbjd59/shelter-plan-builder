@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import LegalScreening from "@/components/LegalScreening";
 import { PrivilegeNotice } from "@/components/PrivilegeNotice";
 import { useEffect, useState, useMemo, useRef } from "react";
 import { z } from "zod";
@@ -656,6 +657,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
           <ArrowRight size={16} aria-hidden="true" />
           <span aria-current={stage === "forms" ? "step" : undefined}>{text("Information for the forms", "Información para los formularios", "Enfòmasyon pou fòm yo")}</span>
         </nav>
+        <LegalScreening lang={L} inIntake />
         {stage === "signup" ? <div className="intake-stage">
           <PrivilegeNotice lang={L} />
           <label className="mb-6 flex items-start gap-3 text-sm leading-relaxed">
