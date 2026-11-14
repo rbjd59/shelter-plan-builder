@@ -3148,7 +3148,8 @@ html { overflow-x: hidden !important; max-width: 100vw; }
 .home-hero-content { position: relative; padding-block: 62px; color: var(--home-surface); }
 .home-eyebrow { color: var(--home-amber); font-size: 13px; font-weight: 600; margin-bottom: 22px; }
 .home-hero h1 { font-size: 54px; max-width: 690px; margin: 0 0 18px; font-weight: 700; }
-.home-hero-tagline { max-width: 600px; font-size: 20px; margin-bottom: 26px; }
+.home-hero-tagline { max-width: 660px; font-size: 18px; line-height: 1.62; margin-bottom: 26px; }
+.home-hero-tagline + .home-hero-tagline { margin-top: -14px; }
 .home-price { display: flex; align-items: baseline; gap: 14px; max-width: 620px; margin-bottom: 26px; }
 .home-price del { color: var(--home-surface); text-decoration-color: var(--home-emergency); text-decoration-thickness: 3px; font-size: 27px; }
 .home-price strong { font-size: 24px; color: var(--home-amber); line-height: 1.4; }

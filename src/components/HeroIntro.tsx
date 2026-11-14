@@ -17,8 +17,8 @@ const COPY = {
     wasPrice: "$199",
     freeText: "Gratis — pro bono por la crisis comunitaria.",
     tagline: "Alerta de emergencia de un clic y plan de defensa legal revisado por un abogado",
-    crisisTitle: "No espere una detención para buscar un abogado.",
-    crisisBody: "Contratar en una emergencia puede costar $5,000–$15,000 o más y llevar a las familias a comprar opciones que quizás no sean viables. Evalúe su situación hoy, prepare su expediente y permita que un abogado calificado revise su verdadera situación legal.",
+    crisisTitle: "Proteja el Sueño Americano",
+    crisisBody: ["Usted vino aquí arriesgándolo todo por un nuevo comienzo. Su meta era comprar una casa, abrir un negocio, educar a sus hijos y darles un futuro mejor. Trabajó, ahorró, hizo planes y luchó, y hoy podría perderlo todo.", "El Plan de Protección ante Detención ICE le ofrece una manera de salvar lo que ha construido. No espere a que lo detengan o a que sea demasiado tarde. Proteja a su familia, su casa y su negocio hoy."],
     screenBtn: "Evaluar mi preparación",
     btn1: "Cómo funciona el plan de protección",
     btn2: "Si eres propietario de una vivienda",
@@ -43,8 +43,8 @@ const COPY = {
     wasPrice: "$199",
     freeText: "Free — pro bono due to the community crisis.",
     tagline: "One-click emergency alert and attorney-reviewed legal defense plan",
-    crisisTitle: "Don’t wait for detention to find a lawyer.",
-    crisisBody: "Emergency hiring can cost $5,000–$15,000+ and leave families buying options that may not be viable. Pre-screen now, organize your case file, and have qualified counsel assess your actual legal standing.",
+    crisisTitle: "Protect the American Dream",
+    crisisBody: ["You came here risking everything for a new beginning. Your goal was to buy a home, open a business, educate your children, and give them a better future. You worked, you saved, you planned, you struggled, and today, you could lose it all.", "The ICE Detention Protection Plan offers you a way to save what you built. Do not wait until you’re detained or it’s too late. Protect your family, your home, and your business today."],
     screenBtn: "Check my readiness",
     btn1: "How Protection Plan Works",
     btn2: "If You're a Homeowner",
@@ -69,8 +69,8 @@ const COPY = {
     wasPrice: "$199",
     freeText: "Gratis — pro bono akòz kriz kominotè a.",
     tagline: "Sijè a alèt dijans yon sèl kli epi plan defans legal revize pa yon avoka",
-    crisisTitle: "Pa tann yo detni w anvan w chèche yon avoka.",
-    crisisBody: "Anboche yon avoka nan ijans ka koute $5,000–$15,000 oswa plis epi fanmi ka achte opsyon ki pa vrèman posib. Fè evalyasyon kounye a, prepare dosye w, epi pèmèt yon avoka kalifye evalye vrè sitiyasyon legal ou.",
+    crisisTitle: "Pwoteje Rèv Ameriken an",
+    crisisBody: ["Ou vin isit la apre riske tout bagay pou yon nouvo kòmansman. Objektif ou se te achte yon kay, louvri yon biznis, edike pitit ou yo, epi ba yo yon pi bon avni. Ou travay, ou ekonomize, ou fè plan, ou batay, epi jodi a ou ka pèdi tout sa.", "Plan Pwoteksyon pou Arestasyon ICE la ofri w yon fason pou sove sa ou bati a. Pa tann yo detni w oswa li twò ta. Pwoteje fanmi w, kay ou, ak biznis ou jodi a."],
     screenBtn: "Verifye preparasyon mwen",
     btn1: "Ki jan plan pwoteksyon an fonksyone",
     btn2: "Si w se yon pwopriyetè kay",
@@ -92,7 +92,7 @@ const COPY = {
   },
 } satisfies Record<
   Lang,
-  { plan: string; wasPrice: string; freeText: string; tagline: string; crisisTitle: string; crisisBody: string; screenBtn: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; employerHeading: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; homeBox: string; homeBoxHeading: string; homeBoxBody: string; privilegeNotice: string; disclaimer: string }
+  { plan: string; wasPrice: string; freeText: string; tagline: string; crisisTitle: string; crisisBody: string[]; screenBtn: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; employerHeading: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; homeBox: string; homeBoxHeading: string; homeBoxBody: string; privilegeNotice: string; disclaimer: string }
 >;
 
 
@@ -131,7 +131,7 @@ export default function HeroIntro() {
         <div className="home-container home-hero-content">
           <p className="home-eyebrow">DetencionDefensa.com · ListoAhora.org · PareKounya.org</p>
           <h1>{t.crisisTitle}</h1>
-          <p className="home-hero-tagline">{t.crisisBody}</p>
+          {t.crisisBody.map((paragraph, i) => <p className="home-hero-tagline" key={i}>{paragraph}</p>)}
           <p className="home-hero-plan"><strong>{t.plan}</strong><span>{t.tagline}</span></p>
           <div className="home-price" id="precio"><del>{t.wasPrice}</del><strong>{t.freeText}</strong></div>
           <div className="home-actions">
