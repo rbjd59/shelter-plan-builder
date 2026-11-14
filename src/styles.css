@@ -3228,6 +3228,11 @@ html { overflow-x: hidden !important; max-width: 100vw; }
 .home-redesign .kf-hint { display: block; font-size: 12px; font-family: 'Public Sans',sans-serif; color: var(--home-muted); margin-top: 8px; }
 .home-redesign .home-paid-section > section { background: var(--home-ivory) !important; border-top: 6px solid var(--home-border); border-bottom: 1px solid var(--home-border); }
 .home-redesign .home-paid-label { display: inline-block; border: 1px solid var(--home-border); background: var(--home-surface); padding: 6px 14px; margin-bottom: 22px !important; font-size: 13px !important; }
+.home-redesign .home-business-offering { margin-top: 36px; padding-top: 32px; border-top: 1px solid var(--home-border); text-align: left; }
+.home-redesign .home-business-offering h3 { color: var(--home-navy); font-size: 28px; line-height: 1.3; margin-bottom: 16px; overflow-wrap: anywhere; }
+.home-redesign .home-business-offering p { margin-bottom: 20px; line-height: 1.7; }
+.home-redesign .home-business-offering a { display: inline-flex; gap: 10px; max-width: 100%; white-space: normal; height: auto; }
+.home-redesign .home-video-section .home-business-disclosure { font-size: 13px !important; margin-top: 20px; }
 .home-paid-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 20px; margin-top: 36px; text-align: left; }
 .home-paid-grid article { background: var(--home-surface); border: 1px solid var(--home-border); border-radius: 12px; padding: 24px; font-size: 15px; }
 .home-item-number { display: block; color: var(--home-blue); margin-bottom: 14px; font-family: 'Source Serif 4',serif; font-size: 24px; }

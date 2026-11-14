@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import { useLang, type Lang } from "@/context/LanguageContext";
 import { withLang } from "@/lib/outbound-lang";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 function SaveMyHomeButton({ tld = "com", lang }: { tld?: "com" | "io"; lang: Lang }) { return <a className="home-text-link" href={withLang(`https://savemyhometrust.${tld}/trust`, lang)} target="_blank" rel="noopener noreferrer">SaveMyHomeTrust.{tld} →</a>; }
 function DefensaSiempreButton({ lang }: { lang: Lang }) { return <a className="home-text-link" href={withLang("https://defensasiempre.com", lang)} target="_blank" rel="noopener noreferrer">DefensaSiempre.com →</a>; }
 const COPY: Record<
@@ -108,4 +110,37 @@ export default function ProblemSolutionSection() {
  <div className="home-solution"><h2>{t.solutionLabel}</h2><ol>{t.solutions(lang).slice(0,3).map((item,i)=><li key={i}><span>{String(i+1).padStart(2,"0")}</span><div>{item}</div></li>)}</ol></div></div>
  <p className="home-faq-note"><a href="#preguntas">{t.faqNote}</a></p></div></section>;
 }
-export function PaidSolutions() { const {lang}=useLang(); return <div className="home-paid-grid">{COPY[lang].solutions(lang).slice(3).map((item,i)=><article key={i}><span className="home-item-number">{String(i+4).padStart(2,"0")}</span><div>{item}</div></article>)}</div>; }
+const BUSINESS_COPY = {
+  en: {
+    heading: "Save My Business",
+    body: "We can create a trust for your business and form a corporation owned by that trust. The corporation can hold and structure the business to make it sellable, transferable and marketable, so you do not have to walk away from what you built.",
+    cta: "Explore Save My Business",
+    disclosure: "Advertising, not a legal recommendation. The appropriate structure depends on your circumstances and applicable law; outcomes are not guaranteed. Consult a licensed attorney before transferring a business or forming a trust or corporation.",
+  },
+  es: {
+    heading: "Save My Business — Proteja su negocio",
+    body: "Podemos crear un fideicomiso para su negocio y constituir una corporación propiedad de ese fideicomiso. La corporación puede ser titular del negocio y estructurarlo para facilitar su venta, transferencia y comercialización, sin que usted tenga que abandonar lo que construyó.",
+    cta: "Conozca Save My Business",
+    disclosure: "Publicidad, no una recomendación legal. La estructura adecuada depende de sus circunstancias y de la legislación aplicable; los resultados no están garantizados. Consulte a un abogado autorizado antes de transferir un negocio o constituir un fideicomiso o una corporación.",
+  },
+  ht: {
+    heading: "Save My Business — Pwoteje biznis ou",
+    body: "Nou ka kreye yon fidisi pou biznis ou epi fòme yon kòporasyon ki pou fidisi sa a. Kòporasyon an ka posede biznis la epi òganize l pou fasilite vant li, transfè li ak maketing li, pou ou pa oblije abandone sa ou bati a.",
+    cta: "Dekouvri Save My Business",
+    disclosure: "Piblisite, se pa yon rekòmandasyon legal. Estrikti ki apwopriye a depann de sitiyasyon ou ak lwa ki aplikab yo; rezilta yo pa garanti. Konsilte yon avoka ki gen lisans anvan ou transfere yon biznis oswa kreye yon fidisi oswa yon kòporasyon.",
+  },
+} satisfies Record<Lang, { heading: string; body: string; cta: string; disclosure: string }>;
+
+export function PaidSolutions() {
+  const { lang } = useLang();
+  const business = BUSINESS_COPY[lang];
+  return <>
+    <section className="home-business-offering" aria-labelledby="save-my-business-heading">
+      <h3 id="save-my-business-heading">{business.heading}</h3>
+      <p>{business.body}</p>
+      <Button asChild className="home-primary"><a href={withLang("https://savemybusiness.com", lang)} target="_blank" rel="noopener noreferrer">{business.cta}<ArrowRight size={18} aria-hidden="true" /></a></Button>
+      <p className="home-business-disclosure">{business.disclosure}</p>
+    </section>
+    <div className="home-paid-grid">{COPY[lang].solutions(lang).slice(3).map((item,i)=><article key={i}><span className="home-item-number">{String(i+4).padStart(2,"0")}</span><div>{item}</div></article>)}</div>
+  </>;
+}
