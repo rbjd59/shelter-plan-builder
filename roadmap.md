@@ -1,5 +1,12 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
+## November 14 — full platform revamp
+- [ ] Revamp trilingual homepage messaging and replace previous homepage video sections with four requested core topics; obtain the new video files or URLs before substituting footage.
+- [ ] Extend shared screening and authenticated intake with children, home, service-business, vehicle and detention questions; preserve informational-only assessments and require licensed review for habeas access.
+- [ ] Generate an answer-selected personalized family packet, bundle it, and deliver a private download link through existing managed email after confirmed signup and completed intake; verify real authenticated saving, generation and delivery without notifying unrelated contacts.
+- [ ] Add trilingual federal declaration, Florida identity/notarization guidance, firm/commercial-service and fee/commission disclosures; verify statutory conditions and avoid unsupported success, valuation, immediate-location or criminal-charge guarantees.
+- [ ] Verify all languages, existing unaffected workflows, document field mappings and desktop/mobile layouts; keep changes unpublished for owner review.
+
 ## November 14 — free statutory screening
 - [x] Add a shared English/Spanish/Haitian Creole five-step screening flow on the homepage and intake, with a validated backend assessment, statutory caveats, counsel review and optional economic-defense links; 29 tests and live trilingual / intake assessments passed, with no mobile overflow or publication. Results identify review issues, not individual odds or definitive eligibility.
 
