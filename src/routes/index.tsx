@@ -64,7 +64,6 @@ export const Route = createFileRoute("/")({
       <HomepageSection section="steps" />
       <HomepageSection section="roles" />
       <HomepageSection section="attorney" />
-      <HomepageSection section="features" />
       <div className="home-band home-paid-section"><PaidSolutions /></div>
       <PreparednessDisclosures />
       <HomepageSection section="faq" />

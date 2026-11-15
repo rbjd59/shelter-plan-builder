@@ -1,11 +1,12 @@
 import { useLang } from "@/context/LanguageContext";
 import { PREPAREDNESS_COPY } from "@/lib/preparedness-content";
+import { HOME_REFINEMENT } from "@/lib/home-refinement-content";
 
 export function PreparednessVideos() {
   const { lang } = useLang();
   const t = PREPAREDNESS_COPY[lang];
   return <section className="home-band home-preparedness" id="how-it-works-video"><div className="home-container">
-    <h2>{t.videoHeading}</h2>
+    <h2>{HOME_REFINEMENT[lang].videos}</h2>
     <div className="home-script-grid">{t.videos.map((video, i) => <article key={video.title} id={i === 0 ? "how-app-works" : undefined}>
       <span className="home-readiness-eyebrow">0{i + 1}</span><h3>{video.title}</h3>
       <details><summary>{t.scriptLabel}</summary><p>{video.script}</p></details>

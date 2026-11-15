@@ -1,5 +1,10 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
+## November 15 — homepage refinement
+- [x] Add three prominent trilingual hero pillars and remove obsolete hero messaging.
+- [x] Reorder videos, app, integrated pillars, prepared-file comparison, screening and release guidance; replace comparison with seven problems/four solutions and remove Key Features.
+- [x] Preserve Save My Business, signing guidance and legal safeguards; verify all three languages, script expansion, screening links and desktop/mobile layout. No publication or backend changes.
+
 ## November 14 — full platform revamp
 - [x] Revamp trilingual homepage messaging and replace old homepage video sections with four script topics; remove the Employers & Churches card while preserving the separate video library.
 - [ ] Produce the four finished videos; blocked on owner script approval and supplied footage or authorization to produce videos. The homepage shows proposed scripts, not mislabeled old footage.

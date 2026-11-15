@@ -3425,6 +3425,16 @@ body:not(.splash-active) .home-redesign .home-hero-background { height: 100%; }
 /* Shared screening tool: semantic roles inherit each page's theme. */
 .home-redesign .home-hero-subheading { font-size: 23px; font-weight: 700; line-height: 1.4; margin: 18px 0; }
 .home-redesign .home-hero-content { padding-block: 60px; }
+.home-redesign .home-hero-pillars { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 28px; margin-block: 28px; }
+.home-redesign .home-hero-pillars article { border-top: 2px solid var(--home-amber); padding-top: 16px; min-width: 0; }
+.home-redesign .home-hero-pillar-number { color: var(--home-amber); font-weight: 700; }
+.home-redesign .home-hero-pillars h2 { color: var(--home-surface); font-size: 23px; line-height: 1.35; margin-block: 12px; }
+.home-redesign .home-hero-pillars h2 a { color: var(--home-surface) !important; }
+.home-redesign .home-hero-pillars h2 a:hover { color: var(--home-amber) !important; }
+.home-redesign .home-hero-pillars p { color: var(--home-surface); font-size: 15px; line-height: 1.65; overflow-wrap: anywhere; }
+.home-redesign .home-solution h3 { font-size: 21px; line-height: 1.35; margin-bottom: 10px; }
+.home-redesign .home-solution li { align-items: flex-start; }
+@media(max-width:900px) { .home-redesign .home-hero-pillars { grid-template-columns: 1fr; gap: 16px; } }
 .home-redesign .home-preparedness { background: var(--home-surface); }
 .home-redesign .home-preparedness p { line-height: 1.8; color: var(--home-muted); margin-block: 18px; overflow-wrap: anywhere; }
 .home-redesign .home-preparedness h2 { margin-block: 28px; }

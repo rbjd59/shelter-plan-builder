@@ -7,6 +7,7 @@ import haitianFamily from "@/assets/home-family-haitian.jpg";
 import spanishFamily from "@/assets/home-family-spanish.jpg";
 import unitedFamilies from "@/assets/home-families-united.jpg";
 import { PREPAREDNESS_COPY } from "@/lib/preparedness-content";
+import { HOME_REFINEMENT } from "@/lib/home-refinement-content";
 
 const COPY = {
   es: {
@@ -15,7 +16,6 @@ const COPY = {
     freeText: "Gratis — pro bono por la crisis comunitaria.",
     tagline: "Alerta de emergencia de un clic y plan de defensa legal revisado por un abogado",
     crisisTitle: "Proteja el Sueño Americano",
-    crisisBody: ["Usted vino aquí arriesgándolo todo por un nuevo comienzo. Su meta era comprar una casa, abrir un negocio, educar a sus hijos y darles un futuro mejor. Trabajó, ahorró, hizo planes y luchó, y hoy podría perderlo todo.", "El Plan de Protección ante Detención ICE le ofrece una manera de salvar lo que ha construido. No espere a que lo detengan o a que sea demasiado tarde. Proteja a su familia, su casa y su negocio hoy."],
     screenBtn: "Evaluar mi preparación",
     btn1: "Cómo funciona el plan de protección",
     btn2: "Si eres propietario de una vivienda",
@@ -41,7 +41,6 @@ const COPY = {
     freeText: "Free — pro bono due to the community crisis.",
     tagline: "One-click emergency alert and attorney-reviewed legal defense plan",
     crisisTitle: "Protect the American Dream",
-    crisisBody: ["You came here risking everything for a new beginning. Your goal was to buy a home, open a business, educate your children, and give them a better future. You worked, you saved, you planned, you struggled, and today, you could lose it all.", "The ICE Detention Protection Plan offers you a way to save what you built. Do not wait until you’re detained or it’s too late. Protect your family, your home, and your business today."],
     screenBtn: "Check my readiness",
     btn1: "How Protection Plan Works",
     btn2: "If You're a Homeowner",
@@ -67,7 +66,6 @@ const COPY = {
     freeText: "Gratis — pro bono akòz kriz kominotè a.",
     tagline: "Sijè a alèt dijans yon sèl kli epi plan defans legal revize pa yon avoka",
     crisisTitle: "Pwoteje Rèv Ameriken an",
-    crisisBody: ["Ou vin isit la apre riske tout bagay pou yon nouvo kòmansman. Objektif ou se te achte yon kay, louvri yon biznis, edike pitit ou yo, epi ba yo yon pi bon avni. Ou travay, ou ekonomize, ou fè plan, ou batay, epi jodi a ou ka pèdi tout sa.", "Plan Pwoteksyon pou Arestasyon ICE la ofri w yon fason pou sove sa ou bati a. Pa tann yo detni w oswa li twò ta. Pwoteje fanmi w, kay ou, ak biznis ou jodi a."],
     screenBtn: "Verifye preparasyon mwen",
     btn1: "Ki jan plan pwoteksyon an fonksyone",
     btn2: "Si w se yon pwopriyetè kay",
@@ -89,7 +87,7 @@ const COPY = {
   },
 } satisfies Record<
   Lang,
-  { plan: string; wasPrice: string; freeText: string; tagline: string; crisisTitle: string; crisisBody: string[]; screenBtn: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; employerHeading: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; homeBox: string; homeBoxHeading: string; homeBoxBody: string; privilegeNotice: string; disclaimer: string }
+  { plan: string; wasPrice: string; freeText: string; tagline: string; crisisTitle: string; screenBtn: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; employerHeading: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; homeBox: string; homeBoxHeading: string; homeBoxBody: string; privilegeNotice: string; disclaimer: string }
 >;
 
 
@@ -99,6 +97,7 @@ export default function HeroIntro() {
   const [open, setOpen] = useState(false);
   const t = COPY[lang];
   const preparedness = PREPAREDNESS_COPY[lang];
+  const refined = HOME_REFINEMENT[lang];
   const familyPhoto = lang === "ht" ? haitianFamily : lang === "es" ? spanishFamily : unitedFamilies;
   const start = lang === "es" ? "Comience Ahora →" : lang === "en" ? "Start Now →" : "Kòmanse Kounye a →";
   return <>
@@ -130,8 +129,7 @@ export default function HeroIntro() {
           <p className="home-eyebrow">DetencionDefensa.com · ListoAhora.org · PareKounya.org</p>
           <h1>{t.crisisTitle}</h1>
           <p className="home-hero-subheading">{preparedness.subheading}</p>
-          {preparedness.body.map((paragraph, i) => <p className="home-hero-tagline" key={i}>{paragraph}</p>)}
-          <p className="home-hero-plan"><strong>{t.plan}</strong><span>{preparedness.positioning}</span></p>
+          <div className="home-hero-pillars">{refined.pillars.map((pillar, i) => <article key={pillar.title}><span className="home-hero-pillar-number">0{i + 1}</span><h2><a href={pillar.href}>{pillar.title}</a></h2><p>{pillar.body}</p></article>)}</div>
           <div className="home-price" id="precio"><del>{t.wasPrice}</del><strong>{t.freeText}</strong></div>
           <div className="home-actions">
             <Button asChild className="home-primary"><a href={`/intake?lang=${lang}`}>{start}</a></Button>

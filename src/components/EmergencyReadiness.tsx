@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { useLang } from "@/context/LanguageContext";
 import { withLang } from "@/lib/outbound-lang";
 import LegalScreening from "@/components/LegalScreening";
+import { HOME_REFINEMENT } from "@/lib/home-refinement-content";
 
 const COPY = {
   en: {
@@ -214,6 +215,7 @@ const APP_ICONS = [Smartphone, MapPin, UsersRound];
 export default function EmergencyReadiness() {
   const { lang } = useLang();
   const t = COPY[lang];
+  const refined = HOME_REFINEMENT[lang];
   const intakeHref = `/intake?lang=${lang}`;
   const homeHref = withLang("https://savemyhometrust.com/trust", lang);
   const businessHref = withLang("https://savemybusiness.com", lang);
@@ -221,24 +223,20 @@ export default function EmergencyReadiness() {
 
 
   return <>
-    <section className="home-band home-readiness" id="emergency-readiness" aria-labelledby="readiness-heading">
+    <section className="home-readiness-app" id="readiness-app" aria-labelledby="readiness-app-heading">
       <div className="home-container">
-        <p className="home-readiness-eyebrow">{t.eyebrow}</p>
-        <h2 id="readiness-heading">{t.heading}</h2>
-        <p className="home-readiness-intro">{t.intro}</p>
-        <div className="home-readiness-comparison">
-          <article className="home-readiness-crisis">
-            <AlertTriangle aria-hidden="true" />
-            <h3>{t.crisisTitle}</h3>
-            <ul>{t.crisisItems.map((item) => <li key={item}>{item}</li>)}</ul>
-          </article>
-          <article className="home-readiness-prepared">
-            <CheckCircle2 aria-hidden="true" />
-            <h3>{t.preparedTitle}</h3>
-            <ul>{t.preparedItems.map((item) => <li key={item}>{item}</li>)}</ul>
-          </article>
+        <p className="home-readiness-eyebrow">{t.appEyebrow}</p>
+        <h2 id="readiness-app-heading">{t.appHeading}</h2>
+        <div className="home-readiness-app-grid">
+          {t.appItems.map((item, index) => {
+            const Icon = APP_ICONS[index];
+            return <article key={item.title}><Icon aria-hidden="true" /><h3>{item.title}</h3><p>{item.body}</p></article>;
+          })}
         </div>
-        <p className="home-readiness-stats">{t.statsNote}</p>
+        <div className="home-readiness-app-actions">
+          <Button asChild className="home-primary"><a href="#how-app-works">{t.appCta}<ArrowRight size={18} /></a></Button>
+          <a href={intakeHref}>{t.appStart}<ArrowRight size={18} /></a>
+        </div>
       </div>
     </section>
 
@@ -264,28 +262,36 @@ export default function EmergencyReadiness() {
       </div>
     </section>
 
-    <section className="home-readiness-app" aria-labelledby="readiness-app-heading">
+
+    <section className="home-band home-readiness" id="emergency-readiness" aria-labelledby="readiness-heading">
       <div className="home-container">
-        <p className="home-readiness-eyebrow">{t.appEyebrow}</p>
-        <h2 id="readiness-app-heading">{t.appHeading}</h2>
-        <div className="home-readiness-app-grid">
-          {t.appItems.map((item, index) => {
-            const Icon = APP_ICONS[index];
-            return <article key={item.title}><Icon aria-hidden="true" /><h3>{item.title}</h3><p>{item.body}</p></article>;
-          })}
+        <p className="home-readiness-eyebrow">{t.eyebrow}</p>
+        <h2 id="readiness-heading">{refined.comparison}</h2>
+        <p className="home-readiness-intro">{refined.comparisonIntro}</p>
+        <div className="home-readiness-comparison">
+          <article className="home-readiness-crisis">
+            <AlertTriangle aria-hidden="true" />
+            <h3>{t.crisisTitle}</h3>
+            <ul>{t.crisisItems.map((item) => <li key={item}>{item}</li>)}</ul>
+          </article>
+          <article className="home-readiness-prepared">
+            <CheckCircle2 aria-hidden="true" />
+            <h3>{t.preparedTitle}</h3>
+            <ul>{t.preparedItems.map((item) => <li key={item}>{item}</li>)}</ul>
+          </article>
         </div>
-        <div className="home-readiness-app-actions">
-          <Button asChild className="home-primary"><a href="#how-app-works">{t.appCta}<ArrowRight size={18} /></a></Button>
-          <a href={intakeHref}>{t.appStart}<ArrowRight size={18} /></a>
-        </div>
+        <p className="home-readiness-stats">{t.statsNote}</p>
       </div>
     </section>
+
 
     <LegalScreening lang={lang} />
 
     <section className="home-band home-readiness-legal" aria-labelledby="habeas-limits-heading">
       <div className="home-container">
-        <h2 id="habeas-limits-heading">{t.legalHeading}</h2>
+        <h2 id="habeas-limits-heading">{refined.release}</h2>
+        <p className="home-readiness-intro">{refined.releaseIntro}</p>
+        <Button asChild className="home-primary"><a href="#readiness-screener">{t.pillars[0].cta}<ArrowRight size={18} /></a></Button>
         <div className="home-readiness-legal-grid">
           <article><Gavel aria-hidden="true" /><h3>{t.legalCanTitle}</h3><p>{t.legalCan}</p></article>
           <article><AlertTriangle aria-hidden="true" /><h3>{t.legalCannotTitle}</h3><p>{t.legalCannot}</p></article>

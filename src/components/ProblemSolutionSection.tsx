@@ -3,6 +3,7 @@ import { useLang, type Lang } from "@/context/LanguageContext";
 import { withLang } from "@/lib/outbound-lang";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { HOME_REFINEMENT } from "@/lib/home-refinement-content";
 function SaveMyHomeButton({ tld = "com", lang }: { tld?: "com" | "io"; lang: Lang }) { return <a className="home-text-link" href={withLang(`https://savemyhometrust.${tld}/trust`, lang)} target="_blank" rel="noopener noreferrer">SaveMyHomeTrust.{tld} →</a>; }
 function DefensaSiempreButton({ lang }: { lang: Lang }) { return <a className="home-text-link" href={withLang("https://defensasiempre.com", lang)} target="_blank" rel="noopener noreferrer">DefensaSiempre.com →</a>; }
 const COPY: Record<
@@ -104,11 +105,12 @@ const COPY: Record<
 
 
 export default function ProblemSolutionSection() {
- const {lang}=useLang(); const t=COPY[lang];
- return <section className="home-band home-problem-solution"><div className="home-container">
- <div className="home-comparison"><div><h2>{t.problemLabel}</h2><ol>{t.problems.map((item,i)=><li key={i}><span>{String(i+1).padStart(2,"0")}</span><div>{item}</div></li>)}</ol><a className="home-text-link" href="/videos">{t.watchMore} →</a></div>
- <div className="home-solution"><h2>{t.solutionLabel}</h2><ol>{t.solutions(lang).slice(0,3).map((item,i)=><li key={i}><span>{String(i+1).padStart(2,"0")}</span><div>{item}</div></li>)}</ol></div></div>
- <p className="home-faq-note"><a href="#preguntas">{t.faqNote}</a></p></div></section>;
+ const {lang}=useLang(); const t=HOME_REFINEMENT[lang];
+ return <section className="home-band home-problem-solution" id="problems-solutions"><div className="home-container">
+ <p className="home-readiness-intro">{t.problemsIntro}</p>
+ <div className="home-comparison"><div><h2>{t.problemsHeading}</h2><ol>{t.problems.map((item,i)=><li key={i}><span>{String(i+1).padStart(2,"0")}</span><div>{item}</div></li>)}</ol><a className="home-text-link" href="/videos">{COPY[lang].watchMore} →</a></div>
+ <div className="home-solution"><h2>{t.solutionsHeading}</h2><ol>{t.solutions.map((item,i)=><li key={i}><span>{String(i+1).padStart(2,"0")}</span><div><h3>{item.title}</h3><p>{item.body}</p></div></li>)}</ol></div></div>
+ <p className="home-faq-note"><a href="#preguntas">{COPY[lang].faqNote}</a></p></div></section>;
 }
 const BUSINESS_COPY = {
   en: {
