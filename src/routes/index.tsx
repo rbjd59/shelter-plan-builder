@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { HomepageSection } from "@/components/HomepageContent";
-import HeroIntro, { VideoHub } from "@/components/HeroIntro";
+import HeroIntro, { HeroCallToAction, VideoHub } from "@/components/HeroIntro";
 import ProblemSolutionSection, { PaidSolutions } from "@/components/ProblemSolutionSection";
 import HowItWorksVideoSection from "@/components/HowItWorksVideoSection";
 import AdVideoSection from "@/components/AdVideoSection";
@@ -62,6 +62,7 @@ export const Route = createFileRoute("/")({
       <VideoHub />
       <ProblemSolutionSection />
       <div className="home-video-section"><HowItWorksVideoSection /></div>
+      <HeroCallToAction />
       <HomepageSection section="steps" />
       <HomepageSection section="roles" />
       <div className="home-video-section"><SecurityVideoSection /></div>

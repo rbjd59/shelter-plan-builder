@@ -13,6 +13,10 @@ import employerPoster from "@/assets/home-employer-poster.jpg.asset.json";
 
 const COPY = {
   es: {
+    heroTitle: "Proteja su sueño americano.",
+    heroPoints: ["Tenga un plan claro.", "Entienda sus opciones.", "Conozca los riesgos."],
+    heroSub: "Avance con una estrategia hecha para usted.",
+    watchVideoCta: "Vea el video.",
     plan: "Plan de protección ante detención ICE ",
     wasPrice: "$199",
     freeText: "Gratis — pro bono por la crisis comunitaria.",
@@ -36,6 +40,10 @@ const COPY = {
       "ListoAhora.org y PareKounya.org son nombres comerciales (DBA) de DetencionDefensa.com, Inc. Sorrentino Law Firm PLLC opera este sitio bajo licencia de DetencionDefensa.com, Inc. DetencionDefensa.com, Inc. es estrictamente el desarrollador tecnológico y operador del sitio web; la Firma tiene el control exclusivo de todos los servicios legales, el asesoramiento legal y el contenido legal.",
   },
   en: {
+    heroTitle: "Protect your American dream.",
+    heroPoints: ["Get a clear plan.", "Understand your options.", "Know the risks."],
+    heroSub: "Move forward with a strategy built for you.",
+    watchVideoCta: "Watch the video.",
     plan: "ICE detention protection plan ",
     wasPrice: "$199",
     freeText: "Free — pro bono due to the community crisis.",
@@ -59,6 +67,10 @@ const COPY = {
       "ListoAhora.org and PareKounya.org are DBAs (trade names) of DetencionDefensa.com, Inc. Sorrentino Law Firm PLLC operates this site under license from DetencionDefensa.com, Inc. DetencionDefensa.com, Inc. is strictly the technology developer and website operator; the Firm has sole control of all legal services, legal advice, and legal content.",
   },
   ht: {
+    heroTitle: "Pwoteje rèv ameriken ou.",
+    heroPoints: ["Jwenn yon plan klè.", "Konprann opsyon ou yo.", "Konnen risk yo."],
+    heroSub: "Avanse ak yon estrateji ki fèt pou ou.",
+    watchVideoCta: "Gade videyo a.",
     plan: "Plan pwoteksyon pou arestasyon ICE ",
     wasPrice: "$199",
     freeText: "Gratis — pro bono akòz kriz kominotè a.",
@@ -83,7 +95,7 @@ const COPY = {
   },
 } satisfies Record<
   Lang,
-  { plan: string; wasPrice: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; employerHeading: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; homeBox: string; homeBoxHeading: string; homeBoxBody: string; privilegeNotice: string; disclaimer: string }
+  { heroTitle: string; heroPoints: string[]; heroSub: string; watchVideoCta: string; plan: string; wasPrice: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; employerHeading: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; homeBox: string; homeBoxHeading: string; homeBoxBody: string; privilegeNotice: string; disclaimer: string }
 >;
 
 
@@ -93,7 +105,6 @@ export default function HeroIntro() {
   const [open, setOpen] = useState(false);
   const t = COPY[lang];
   const familyPhoto = lang === "ht" ? haitianFamily : lang === "es" ? spanishFamily : unitedFamilies;
-  const start = lang === "es" ? "Comience Ahora →" : lang === "en" ? "Start Now →" : "Kòmanse Kounye a →";
   return <>
     <a className="home-skip" href="#home-content">{lang === "es" ? "Ir al contenido" : lang === "en" ? "Skip to content" : "Ale nan kontni an"}</a>
     <header className="home-header">
@@ -121,19 +132,31 @@ export default function HeroIntro() {
         <div className="home-hero-shade" />
         <div className="home-container home-hero-content">
           <p className="home-eyebrow">DetencionDefensa.com · ListoAhora.org · PareKounya.org</p>
-          <h1>{t.plan}</h1>
-          <p className="home-hero-tagline">{t.tagline}</p>
-          <div className="home-price" id="precio"><del>{t.wasPrice}</del><strong>{t.freeText}</strong></div>
-          <div className="home-actions">
-            <Button asChild className="home-primary"><a href={`/intake?lang=${lang}`}>{start}</a></Button>
-            <Button asChild variant="outline" className="home-video-action"><a href="#how-it-works-video"><Play />{t.appBoxBtn}</a></Button>
-          </div>
+          <h1>
+            <span className="home-hero-title-main">{t.heroTitle}</span>
+            <span className="home-hero-title-points">{t.heroPoints.map(point => <span key={point}>{point}</span>)}</span>
+          </h1>
+          <p className="home-hero-tagline">{t.heroSub}</p>
+          <a className="home-hero-watch" href="#how-it-works-video"><Play size={20} />{t.watchVideoCta}</a>
           <p className="home-hero-languages"><ShieldCheck size={20} /> Español · English · Kreyòl</p>
         </div>
       </section>
       <div className="home-notices home-container"><ShieldCheck className="home-notice-icon" /><div><p>{t.privilegeNotice}</p><p>{t.disclaimer}</p></div></div>
     </main>
   </>;
+}
+
+export function HeroCallToAction() {
+  const { lang } = useLang();
+  const t = COPY[lang];
+  const start = lang === "es" ? "Comience Ahora →" : lang === "en" ? "Start Now →" : "Kòmanse Kounye a →";
+  return <section className="home-cta-band"><div className="home-container">
+    <div className="home-price" id="precio"><del>{t.wasPrice}</del><strong>{t.freeText}</strong></div>
+    <div className="home-actions">
+      <Button asChild className="home-primary"><a href={`/intake?lang=${lang}`}>{start}</a></Button>
+      <Button asChild variant="outline" className="home-video-action"><a href="#how-it-works-video"><Play size={18} />{t.watchVideoCta}</a></Button>
+    </div>
+  </div></section>;
 }
 
 export function VideoHub() {
