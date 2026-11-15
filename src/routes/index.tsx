@@ -38,13 +38,13 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Know your rights, explore statutory issues for licensed review, and prepare your family documents with Detención Defensa's free screening and SOS app. Home and business structuring are separate paid services.",
+          "Sorrentino Law Firm PLLC’s educational website for Detención Defensa, licensed by DetencionDefensa.com, Inc. Free screening and SOS app; home and business services cost extra.",
       },
       { property: "og:title", content: "Protect the American Dream — DetencionDefensa.com" },
       {
         property: "og:description",
         content:
-          "Free statutory screening, SOS app and family preparedness. Explore home and business planning with separate professional fees and licensed legal review.",
+          "An educational website from Sorrentino Law Firm PLLC, operated under license from DetencionDefensa.com, Inc. Free screening, SOS app and family preparedness.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://detenciondefensa.com/" },
