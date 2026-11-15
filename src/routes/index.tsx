@@ -63,12 +63,9 @@ export const Route = createFileRoute("/")({
       <VideoHub />
       <HeroCallToAction />
       <HomepageSection section="steps" />
-      <HomepageSection section="roles" />
       <div className="home-video-section"><SecurityVideoSection /></div>
       <HomepageSection section="attorney" />
-      <HomepageSection section="features" />
       <div className="home-video-section home-paid-section"><AdVideoSection><PaidSolutions /></AdVideoSection></div>
-      <HomepageSection section="faq" />
       <span id="app" />
       <HomepageSection section="footer" />
     </div>
