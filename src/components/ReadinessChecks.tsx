@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ArrowRight, RotateCcw } from 'lucide-react';
+import { Link } from '@tanstack/react-router';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useLang } from '@/context/LanguageContext';
@@ -35,7 +36,7 @@ export default function ReadinessChecks() {
  const equity=homeEquity(amount(8),amount(9));
  return <section className="home-band home-preparedness" id="readiness-checks"><div className="home-container">
   <h2>{t.heading}</h2><HomePoints items={[c.intro]}/>
-  <div className="home-script-grid">{c.titles.map((title,i)=><article key={title}><h3>{title}</h3><HomePoints items={c.points[i]}/><Button asChild={i===1} variant="outline" onClick={i===1?undefined:()=>choose(i)}>{i===1?<a href="#readiness-screener">{t.open}<ArrowRight/></a>:<>{t.open}<ArrowRight/></>}</Button></article>)}</div>
+  <div className="home-script-grid">{c.titles.map((title,i)=><article key={title}><h3>{title}</h3><HomePoints items={c.points[i]}/><Button asChild={i===1} variant="outline" onClick={i===1?undefined:()=>choose(i)}>{i===1?<Link to="/qualify" search={{lang}}>{t.open}<ArrowRight/></Link>:<>{t.open}<ArrowRight/></>}</Button></article>)}</div>
   {active!==null && <div className="legal-screening-panel" id="readiness-check-panel">
    <h3>{card!==null?c.titles[card]:t.titles[active]}</h3><p>{t.note}</p>
    {!done?<form className="space-y-5" onSubmit={e=>{e.preventDefault();setDone(true);}}>

@@ -40,6 +40,7 @@ import { Route as PastorsRouteImport } from './routes/pastors'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as QualifyRouteImport } from './routes/qualify'
 import { Route as RetainerRouteImport } from './routes/retainer'
+import { Route as SaveMyBusinessRouteImport } from './routes/save-my-business'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as SecurityFaqRouteImport } from './routes/security-faq'
 import { Route as SentinelTrustRouteImport } from './routes/sentinel-trust'
@@ -258,6 +259,11 @@ const QualifyRoute = QualifyRouteImport.update({
 const RetainerRoute = RetainerRouteImport.update({
   id: '/retainer',
   path: '/retainer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SaveMyBusinessRoute = SaveMyBusinessRouteImport.update({
+  id: '/save-my-business',
+  path: '/save-my-business',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SecurityRoute = SecurityRouteImport.update({
@@ -637,6 +643,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/qualify': typeof QualifyRoute
   '/retainer': typeof RetainerRoute
+  '/save-my-business': typeof SaveMyBusinessRoute
   '/security': typeof SecurityRoute
   '/security-faq': typeof SecurityFaqRoute
   '/sentinel-trust': typeof SentinelTrustRoute
@@ -734,6 +741,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/qualify': typeof QualifyRoute
   '/retainer': typeof RetainerRoute
+  '/save-my-business': typeof SaveMyBusinessRoute
   '/security': typeof SecurityRoute
   '/security-faq': typeof SecurityFaqRoute
   '/sentinel-trust': typeof SentinelTrustRoute
@@ -835,6 +843,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/qualify': typeof QualifyRoute
   '/retainer': typeof RetainerRoute
+  '/save-my-business': typeof SaveMyBusinessRoute
   '/security': typeof SecurityRoute
   '/security-faq': typeof SecurityFaqRoute
   '/sentinel-trust': typeof SentinelTrustRoute
@@ -934,6 +943,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/qualify'
     | '/retainer'
+    | '/save-my-business'
     | '/security'
     | '/security-faq'
     | '/sentinel-trust'
@@ -1031,6 +1041,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/qualify'
     | '/retainer'
+    | '/save-my-business'
     | '/security'
     | '/security-faq'
     | '/sentinel-trust'
@@ -1131,6 +1142,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/qualify'
     | '/retainer'
+    | '/save-my-business'
     | '/security'
     | '/security-faq'
     | '/sentinel-trust'
@@ -1232,6 +1244,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   QualifyRoute: typeof QualifyRoute
   RetainerRoute: typeof RetainerRoute
+  SaveMyBusinessRoute: typeof SaveMyBusinessRoute
   SecurityRoute: typeof SecurityRoute
   SecurityFaqRoute: typeof SecurityFaqRoute
   SentinelTrustRoute: typeof SentinelTrustRoute
@@ -1492,6 +1505,13 @@ declare module '@tanstack/react-router' {
       path: '/retainer'
       fullPath: '/retainer'
       preLoaderRoute: typeof RetainerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/save-my-business': {
+      id: '/save-my-business'
+      path: '/save-my-business'
+      fullPath: '/save-my-business'
+      preLoaderRoute: typeof SaveMyBusinessRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/security': {
@@ -2104,6 +2124,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   QualifyRoute: QualifyRoute,
   RetainerRoute: RetainerRoute,
+  SaveMyBusinessRoute: SaveMyBusinessRoute,
   SecurityRoute: SecurityRoute,
   SecurityFaqRoute: SecurityFaqRoute,
   SentinelTrustRoute: SentinelTrustRoute,

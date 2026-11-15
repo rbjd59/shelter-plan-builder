@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Menu, X, Play, ShieldCheck, ArrowRight } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { useLang, type Lang } from "@/context/LanguageContext";
 import logoAsset from "@/assets/dd-logo.png.asset.json";
@@ -16,7 +17,7 @@ const COPY = {
     wasPrice: "$199",
     freeText: "Gratis — pro bono por la crisis comunitaria.",
     tagline: "Alerta de emergencia de un clic y plan de defensa legal revisado por un abogado",
-    crisisTitle: "Proteja el Sueño Americano",
+    crisisTitle: "No espere a que ICE lo detenga. Haga un plan claro para proteger a su familia, su casa y su negocio.",
     screenBtn: "Evaluar mi preparación",
     btn1: "Cómo funciona el plan de protección",
     btn2: "Si eres propietario de una vivienda",
@@ -41,7 +42,7 @@ const COPY = {
     wasPrice: "$199",
     freeText: "Free — pro bono due to the community crisis.",
     tagline: "One-click emergency alert and attorney-reviewed legal defense plan",
-    crisisTitle: "Protect the American Dream",
+    crisisTitle: "Don’t wait for an ICE detention. Get a clear plan to protect your family, home, and business.",
     screenBtn: "Check my readiness",
     btn1: "How Protection Plan Works",
     btn2: "If You're a Homeowner",
@@ -66,7 +67,7 @@ const COPY = {
     wasPrice: "$199",
     freeText: "Gratis — pro bono akòz kriz kominotè a.",
     tagline: "Sijè a alèt dijans yon sèl kli epi plan defans legal revize pa yon avoka",
-    crisisTitle: "Pwoteje Rèv Ameriken an",
+    crisisTitle: "Pa tann ICE arete ou. Fè yon plan klè pou pwoteje fanmi ou, kay ou ak biznis ou.",
     screenBtn: "Verifye preparasyon mwen",
     btn1: "Ki jan plan pwoteksyon an fonksyone",
     btn2: "Si w se yon pwopriyetè kay",
@@ -100,7 +101,7 @@ export default function HeroIntro() {
   const preparedness = PREPAREDNESS_COPY[lang];
   const refined = HOME_PLAIN[lang];
   const familyPhoto = lang === "ht" ? haitianFamily : lang === "es" ? spanishFamily : unitedFamilies;
-  const start = lang === "es" ? "Comience Ahora →" : lang === "en" ? "Start Now →" : "Kòmanse Kounye a →";
+  const start = lang === "es" ? "Pida una revisión →" : lang === "en" ? "Request a Review →" : "Mande yon revizyon →";
   return <>
     <a className="home-skip" href="#home-content">{lang === "es" ? "Ir al contenido" : lang === "en" ? "Skip to content" : "Ale nan kontni an"}</a>
     <header className="home-header">
@@ -112,7 +113,7 @@ export default function HeroIntro() {
         <nav className={`home-nav ${open ? "is-open" : ""}`} aria-label="Main">
           <a href="#how-it-works-video" onClick={() => setOpen(false)}>{lang === "es" ? "Cómo funciona" : lang === "en" ? "How it works" : "Kijan li mache"}</a>
           <a href="/videos">{lang === "ht" ? "Videyo" : "Videos"}</a>
-          <a href="#precio" onClick={() => setOpen(false)}>{lang === "es" ? "Precio" : lang === "en" ? "Price" : "Pri"}</a>
+          <a href="#request-review" onClick={() => setOpen(false)}>{lang === "es" ? "Pida una revisión" : lang === "en" ? "Request a Review" : "Mande yon revizyon"}</a>
           <a href="#preguntas" onClick={() => setOpen(false)}>{lang === "es" ? "Preguntas" : lang === "en" ? "FAQ" : "Kesyon"}</a>
           <a href="/attorney">{lang === "es" ? "Abogado" : lang === "en" ? "Attorney" : "Avoka"}</a>
         </nav>
@@ -123,7 +124,7 @@ export default function HeroIntro() {
       </div>
     </header>
     <main id="home-content">
-      <section className="home-hero">
+      <section className="home-hero home-review-hero">
         <img className="home-hero-background" src={familyPhoto} alt="" width="1536" height="1024" fetchPriority="high" />
         <div className="home-hero-shade" />
         <div className="home-container home-hero-content">
@@ -132,10 +133,10 @@ export default function HeroIntro() {
           <p className="home-hero-position">{refined.oneStop}</p>
           <p className="home-hero-subheading">{preparedness.subheading} {lang === "en" ? "Create a plan. Don’t get ripped off." : lang === "es" ? "Haga un plan. No se deje estafar." : "Fè yon plan. Pa kite yo twonpe ou."}</p>
           <div className="home-hero-tagline"><HomePoints items={preparedness.body[0].split(/(?<=[.!?])\s+/)} /></div>
-          <div className="home-price" id="precio"><del>{t.wasPrice}</del><strong>{lang === "en" ? "Free app. Free check." : lang === "es" ? "App gratis. Revisión gratis." : "App gratis. Ti tès gratis."}</strong></div>
+          <div className="home-price" id="precio"><strong>{lang === "en" ? "Free app. Free check." : lang === "es" ? "App gratis. Revisión gratis." : "App gratis. Ti tès gratis."}</strong></div>
           <div className="home-actions">
-            <Button asChild className="home-primary"><a href={`/intake?lang=${lang}`}>{start}</a></Button>
-            <Button asChild variant="outline" className="home-video-action"><a href="#readiness-screener">{lang === "en" ? "Take the free check" : lang === "es" ? "Hacer la revisión gratis" : "Fè ti tès gratis la"}<ArrowRight size={18} /></a></Button>
+            <Button asChild className="home-primary"><a href="#request-review">{start}</a></Button>
+            <Button asChild variant="outline" className="home-video-action"><Link to="/qualify" search={{ lang }}>{lang === "en" ? "Take the free check" : lang === "es" ? "Hacer la revisión gratis" : "Fè ti tès gratis la"}<ArrowRight size={18} /></Link></Button>
             <Button asChild variant="outline" className="home-video-action"><a href="#how-it-works-video"><Play />{t.appBoxBtn}</a></Button>
           </div>
           <p className="home-hero-languages"><ShieldCheck size={20} /> Español · English · Kreyòl</p>

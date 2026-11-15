@@ -1,5 +1,11 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
+## November 15 — review-first homepage
+- [x] Rebuild the homepage around the attorney presentation video, a trilingual Request a Review form, five clean public program cards and a with-plan/without-plan comparison: SOS app, Save My Home, Save My Business, family documents, and stay/go legal screening.
+- [x] Save validated review requests to the existing leads system, notify the existing company/firm inboxes, test one submission end to end and delete only that test row. Both notification emails showed sent; the test lead was deleted by its ID.
+- [x] Put the legal screener at `/qualify`, align `/own-property` with Save My Home Trust, and create a clean trilingual `/save-my-business` landing page; leave the private `/company-board` and all staff links unchanged.
+- [x] Verify all three languages, program links, video playback, mobile layout and lead delivery; 97 tests pass, no browser errors or mobile overflow. Not published.
+
 ## November 15 — five readiness checks
 - [x] Rework the video-area overview into five trilingual checks: family papers, legal options, moving abroad, home/business planning and deadlines; preserve existing scripts and videos.
 - [x] Add local planning questions and answer-based summaries for family, moving, assets and deadlines; reuse the existing legal assessment without automatic eligibility, country acceptance, loan approval or habeas release. Financial calculations use entered estimates only; dates are gathered for counsel, not treated as final legal deadlines.

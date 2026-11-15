@@ -1,249 +1,105 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { z } from "zod";
+import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { HomePoints } from "@/components/HomePoints";
+import { withLang } from "@/lib/outbound-lang";
+import "@/home-review.css";
 
 const search = z.object({ lang: z.enum(["en", "es", "ht"]).catch("en") });
 
-export const Route = createFileRoute("/own-property")({
-  validateSearch: search,
-  component: OwnPropertyPage,
-  head: () => ({
-    meta: [
-      { title: "Own Property — Sentinel Trust Property Management Group" },
-      {
-        name: "description",
-        content:
-          "No family in the U.S. to manage your real estate? Sentinel Trust Property Management Group manages, rents, and sells foreign-owned property under licensed legal supervision.",
-      },
-      { property: "og:title", content: "Own Property — Sentinel Trust Property Management Group" },
-      {
-        property: "og:description",
-        content:
-          "Property management, rental, and sale services for non-citizen owners — supervised by a licensed law group.",
-      },
-    ],
-  }),
-});
-
 const COPY = {
   en: {
-    kicker: "SENTINEL — PROPERTY DIVISION",
-    title: "Own Property",
-    subtitle:
-      "No family in the United States? No one you trust with your property? No one capable of managing real estate?",
-    intro: (
-      <>
-        <strong>Sentinel Trust Property Management Group</strong> is an option to have your
-        property <em>managed</em>, <em>rented</em>, or <em>sold</em> under the supervision of a
-        licensed law group designed to handle foreign-owned real estate.
-      </>
-    ),
+    eyebrow: "Save My Home Trust",
+    title: "Make a plan for your home before an emergency.",
+    intro: "Do not wait until you are detained or behind on payments. Ask what may work for your home, your loan and your family.",
     cards: [
-      {
-        h: "Managed",
-        p: "Ongoing oversight of your home or building — taxes paid, maintenance arranged, tenants vetted, accounting reported across borders.",
-      },
-      {
-        h: "Rented",
-        p: "Income-producing leasing handled end-to-end so your property continues to support your family even while you are outside the United States.",
-      },
-      {
-        h: "Sold",
-        p: "When the time comes to liquidate, sales are conducted under attorney supervision with proceeds routed to the trust or beneficiary you designate.",
-      },
+      { title: "Deed into a trust", points: ["A lawyer may move the home deed into a trust when it fits your case.", "The trust may apply for its own EIN tax number.", "Your lender, title company and lawyer must review the details."] },
+      { title: "Ask about a 50–65% loan", points: ["Some asset-based lenders may consider a loan for 50–65% of the home's value.", "The lender looks at value, debt, title and its own rules.", "Approval, rate and cash amount are not promised."] },
+      { title: "Do not sign in a panic", points: ["A fast cash buyer may offer much less than your home is worth.", "Ask a lawyer or trusted real estate professional to review the papers.", "Planning early gives you more time to compare choices."] },
     ],
-    visit: "Visit Sentinel Trust Services Group at:",
-    linkLabel: "www.defendermicasa.com →",
-    disclaimer:
-      "Sentinel Trust Property Management Group is operated in partnership with a licensed Arizona law firm (launching Spring 2027). This page is informational only and is not legal advice or an offer to provide legal services.",
-    home: "← Return home",
+    cta: "Visit Save My Home Trust",
+    review: "Ask for a home review",
+    disclosure: "This is a commercial planning service. Trust structures and legal review are performed in conjunction with Sorrentino Law Firm PLLC. Trust setup and other services cost extra. A trust does not erase a mortgage or guarantee protection, a loan or a sale. Ask for all fees in writing.",
+    propertyHelp: "Need someone to manage, rent or sell property while you are outside the U.S.?",
+    propertyLink: "Visit DefenderMiCasa.com",
+    home: "Back to home",
   },
   es: {
-    kicker: "SENTINEL — DIVISIÓN DE PROPIEDADES",
-    title: "Sea Propietario",
-    subtitle:
-      "¿No tiene familia en los Estados Unidos? ¿No hay nadie de confianza para su propiedad? ¿Nadie capaz de administrar bienes raíces?",
-    intro: (
-      <>
-        <strong>Sentinel Trust Property Management Group</strong> es una opción para que su
-        propiedad sea <em>administrada</em>, <em>alquilada</em> o <em>vendida</em> bajo la
-        supervisión de un grupo legal con licencia diseñado para manejar bienes raíces
-        propiedad de extranjeros.
-      </>
-    ),
+    eyebrow: "Save My Home Trust",
+    title: "Haga un plan para su casa antes de una emergencia.",
+    intro: "No espere hasta estar detenido o atrasado en los pagos. Pregunte qué puede funcionar para su casa, su préstamo y su familia.",
     cards: [
-      {
-        h: "Administrada",
-        p: "Supervisión continua de su casa o edificio: pago de impuestos, mantenimiento coordinado, inquilinos verificados y contabilidad reportada a través de fronteras.",
-      },
-      {
-        h: "Alquilada",
-        p: "El arrendamiento generador de ingresos se maneja de principio a fin para que su propiedad siga apoyando a su familia incluso mientras usted está fuera de los Estados Unidos.",
-      },
-      {
-        h: "Vendida",
-        p: "Cuando llegue el momento de liquidar, las ventas se realizan bajo la supervisión de un abogado, con las ganancias enviadas al fideicomiso o beneficiario que usted designe.",
-      },
+      { title: "Escritura a un fideicomiso", points: ["Un abogado puede pasar la escritura a un fideicomiso si sirve para su caso.", "El fideicomiso puede pedir su propio número de impuestos EIN.", "El prestamista, la compañía de título y el abogado deben revisar los detalles."] },
+      { title: "Pregunte por un préstamo de 50–65%", points: ["Algunos prestamistas pueden considerar un préstamo de 50–65% del valor de la casa.", "El prestamista revisa el valor, la deuda, el título y sus propias reglas.", "No se prometen aprobación, tasa ni cantidad de dinero."] },
+      { title: "No firme por pánico", points: ["Un comprador de efectivo rápido puede ofrecer mucho menos de lo que vale su casa.", "Pida a un abogado o profesional de confianza que revise los papeles.", "Planear temprano le da más tiempo para comparar opciones."] },
     ],
-    visit: "Visite Sentinel Trust Services Group en:",
-    linkLabel: "www.defendermicasa.com →",
-    disclaimer:
-      "Sentinel Trust Property Management Group opera en asociación con un bufete de abogados con licencia en Arizona (lanzamiento en primavera de 2027). Esta página es solo informativa y no constituye asesoría legal ni una oferta de servicios legales.",
-    home: "← Volver al inicio",
+    cta: "Visite Save My Home Trust",
+    review: "Pida una revisión de su casa",
+    disclosure: "Este es un servicio comercial de planificación. Las estructuras de fideicomiso y la revisión legal se realizan junto con Sorrentino Law Firm PLLC. El fideicomiso y otros servicios cuestan aparte. Un fideicomiso no borra la hipoteca ni garantiza protección, préstamo o venta. Pida todos los costos por escrito.",
+    propertyHelp: "¿Necesita a alguien para administrar, alquilar o vender su propiedad mientras está fuera de EE.UU.?",
+    propertyLink: "Visite DefenderMiCasa.com",
+    home: "Volver al inicio",
   },
   ht: {
-    kicker: "SENTINEL — DIVIZYON PWOPRIYETE",
-    title: "Posede Pwopriyete",
-    subtitle:
-      "Ou pa gen fanmi ozetazini? Ou pa gen pèsòn ou fè konfyans ak pwopriyete w? Pèsòn ki kapab jere byen imobilye?",
-    intro: (
-      <>
-        <strong>Sentinel Trust Property Management Group</strong> se yon opsyon pou fè
-        pwopriyete w <em>jere</em>, <em>lwe</em>, oswa <em>vann</em> anba sipèvizyon yon gwoup
-        legal ki gen lisans e ki fèt pou jere byen imobilye ki pou moun ki pa sitwayen.
-      </>
-    ),
+    eyebrow: "Save My Home Trust",
+    title: "Fè yon plan pou kay ou anvan yon ijans.",
+    intro: "Pa tann yo arete ou oswa bòdwo a reta. Mande sa ki ka mache pou kay ou, prè ou ak fanmi ou.",
     cards: [
-      {
-        h: "Jere",
-        p: "Sipèvizyon kontinyèl sou kay oswa bilding ou — taks peye, antretyen òganize, lokatè verifye, kontablite rapòte atravè fwontyè.",
-      },
-      {
-        h: "Lwe",
-        p: "Lokasyon ki jenere revni jere depi kòmansman jiska fen pou pwopriyete w ka kontinye sipòte fanmi w menm lè ou deyò Etazini.",
-      },
-      {
-        h: "Vann",
-        p: "Lè lè a rive pou likide, vant yo fèt anba sipèvizyon yon avoka ak lajan an voye nan trust oswa benefisyè ou chwazi.",
-      },
+      { title: "Mete tit kay la nan yon fidisi", points: ["Yon avoka ka mete tit kay la nan yon fidisi si sa mache pou dosye ou.", "Fidisi a ka mande pwòp nimewo taks EIN.", "Prestataire, konpayi tit ak avoka dwe revize detay yo."] },
+      { title: "Mande sou yon prè 50–65%", points: ["Gen prestataire ki ka konsidere yon prè pou 50–65% valè kay la.", "Prestataire a gade valè, dèt, tit ak pwòp règ li.", "Yo pa pwomèt apwobasyon, to ni kantite lajan."] },
+      { title: "Pa siyen nan panik", points: ["Yon achtè kach rapid ka ofri anpil mwens pase valè kay ou.", "Mande yon avoka oswa pwofesyonèl imobilye ou fè konfyans revize papye yo.", "Planifye bonè ba ou plis tan pou konpare chwa."] },
     ],
-    visit: "Vizite Sentinel Trust Services Group nan:",
-    linkLabel: "www.defendermicasa.com →",
-    disclaimer:
-      "Sentinel Trust Property Management Group opere an patenarya avèk yon biwo avoka ki gen lisans nan Arizona (k ap lanse nan Prentan 2027). Paj sa a se sèlman pou enfòmasyon e li pa yon konsèy legal ni yon òf pou bay sèvis legal.",
-    home: "← Retounen lakay",
+    cta: "Vizite Save My Home Trust",
+    review: "Mande yon revizyon pou kay ou",
+    disclosure: "Sa a se yon sèvis planifikasyon komèsyal. Estrikti fidisi ak revizyon legal fèt ansanm ak Sorrentino Law Firm PLLC. Fidisi ak lòt sèvis koute apa. Yon fidisi pa efase ipotèk epi li pa garanti pwoteksyon, prè oswa vant. Mande tout frè alekri.",
+    propertyHelp: "Ou bezwen yon moun pou jere, lwe oswa vann pwopriyete ou pandan ou deyò Etazini?",
+    propertyLink: "Vizite DefenderMiCasa.com",
+    home: "Retounen lakay",
   },
 } as const;
 
+export const Route = createFileRoute("/own-property")({
+  validateSearch: search,
+  head: () => ({
+    meta: [
+      { title: "Save My Home Trust — Home Equity Planning" },
+      { name: "description", content: "Ask about deeding your home to a trust, a possible 50–65% asset-based loan, and ways to avoid a rushed cash sale." },
+      { property: "og:title", content: "Save My Home Trust — Detención Defensa" },
+      { property: "og:description", content: "Make a plan for your home before an emergency. Loans, protection and sales are not guaranteed." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
+  component: OwnPropertyPage,
+});
+
 function OwnPropertyPage() {
   const { lang } = Route.useSearch();
-  const t = COPY[(lang as keyof typeof COPY) ?? "es"];
+  const t = COPY[lang];
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "#0e1a2b",
-        color: "#f4efe6",
-        fontFamily: "Inter Tight, system-ui, sans-serif",
-      }}
-    >
-      <div style={{ maxWidth: 880, margin: "0 auto", padding: "60px 24px 80px" }}>
-        <div
-          style={{
-            fontFamily: "JetBrains Mono, monospace",
-            fontSize: 11,
-            letterSpacing: "0.15em",
-            color: "#c9a961",
-            marginBottom: 10,
-          }}
-        >
-          {t.kicker}
+    <main className="home-redesign public-program-page">
+      <section className="public-program-hero">
+        <div className="home-container">
+          <p className="home-readiness-eyebrow">{t.eyebrow}</p>
+          <h1>{t.title}</h1>
+          <p>{t.intro}</p>
         </div>
-        <h1
-          style={{
-            fontFamily: "Fraunces, Georgia, serif",
-            fontSize: 56,
-            fontWeight: 500,
-            margin: "0 0 12px",
-            letterSpacing: "-0.02em",
-            lineHeight: 1.05,
-          }}
-        >
-          {t.title}
-        </h1>
-        <p
-          style={{
-            fontFamily: "Fraunces, Georgia, serif",
-            fontSize: 22,
-            fontStyle: "italic",
-            color: "#c9a961",
-            margin: "0 0 28px",
-          }}
-        >
-          {t.subtitle}
-        </p>
-
-        <p style={{ fontSize: 17, lineHeight: 1.65, maxWidth: 680, color: "#e6e0d2" }}>
-          {t.intro}
-        </p>
-
-        <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 18, marginTop: 40 }}>
-          {t.cards.map((p: { h: string; p: string }) => (
-            <div
-              key={p.h}
-              style={{
-                background: "#1a2940",
-                padding: "22px 24px",
-                borderRadius: 6,
-                borderLeft: "3px solid #c9a961",
-              }}
-            >
-              <h3
-                style={{
-                  fontFamily: "Fraunces, Georgia, serif",
-                  fontSize: 20,
-                  fontWeight: 600,
-                  margin: "0 0 6px",
-                  color: "#c9a961",
-                }}
-              >
-                {p.h}
-              </h3>
-              <p style={{ fontSize: 14.5, lineHeight: 1.6, margin: 0, color: "#e6e0d2" }}>{p.p}</p>
-            </div>
-          ))}
+      </section>
+      <section className="public-program-body">
+        <div className="home-container">
+          <div className="public-program-grid">
+            {t.cards.map((card) => <article key={card.title}><h2>{card.title}</h2><HomePoints items={[...card.points]} /></article>)}
+          </div>
+          <div className="public-program-actions">
+            <Button asChild className="home-primary"><a href={withLang("https://savemyhometrust.com/trust", lang)} target="_blank" rel="noopener noreferrer">{t.cta}<ArrowRight /></a></Button>
+            <Button asChild variant="outline"><Link to="/" search={{ lang }} hash="request-review">{t.review}<ArrowRight /></Link></Button>
+          </div>
+          <p className="public-program-disclosure">{t.disclosure}</p>
+          <p className="public-program-extra">{t.propertyHelp} <a href={`https://www.defendermicasa.com/?lang=${lang}`} target="_blank" rel="noopener noreferrer">{t.propertyLink} →</a></p>
+          <p className="public-program-extra"><Link to="/" search={{ lang }}>← {t.home}</Link></p>
         </div>
-
-        <div style={{ marginTop: 44 }}>
-          <p style={{ fontSize: 15, color: "#e6e0d2", margin: "0 0 14px" }}>
-            {t.visit}
-          </p>
-          <a
-            href={`https://www.defendermicasa.com/?lang=${lang}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: "inline-block",
-              background: "#c9a961",
-              color: "#0e1a2b",
-              padding: "16px 30px",
-              fontWeight: 700,
-              textDecoration: "none",
-              borderRadius: 4,
-              letterSpacing: "0.02em",
-            }}
-          >
-            {t.linkLabel}
-          </a>
-        </div>
-
-        <p
-          style={{
-            marginTop: 36,
-            fontSize: 12,
-            color: "#8a9bb0",
-            lineHeight: 1.55,
-            maxWidth: 600,
-          }}
-        >
-          {t.disclaimer}
-        </p>
-        <Link
-          to="/"
-          style={{ display: "inline-block", marginTop: 20, color: "#c9a961", textDecoration: "none" }}
-        >
-          {t.home}
-        </Link>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }

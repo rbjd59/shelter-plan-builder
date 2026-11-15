@@ -2,10 +2,10 @@ import HowItWorksVideoSection from "@/components/HowItWorksVideoSection";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { HomepageSection } from "@/components/HomepageContent";
 import HeroIntro from "@/components/HeroIntro";
-import DraftHomeLayout from "@/components/DraftHomeLayout";
-import ProblemSolutionSection, { PaidSolutions } from "@/components/ProblemSolutionSection";
+import { PaidSolutions } from "@/components/ProblemSolutionSection";
 import { PreparednessVideos, PreparednessDisclosures } from "@/components/PreparednessSections";
-import EmergencyReadiness from "@/components/EmergencyReadiness";
+import HomeReviewSections from "@/components/HomeReviewSections";
+import "@/home-review.css";
 
 const DEFENDER_HOSTS = new Set([
   "defendermicasa.com",
@@ -36,13 +36,13 @@ export const Route = createFileRoute("/")({
   },
   head: () => ({
     meta: [
-      { title: "Protect the American Dream — DetencionDefensa.com" },
+      { title: "Don’t Wait for an ICE Detention — DetencionDefensa.com" },
       {
         name: "description",
         content:
           "Sorrentino Law Firm PLLC’s educational website for Detención Defensa, licensed by DetencionDefensa.com, Inc. Free screening and SOS app; home and business services cost extra.",
       },
-      { property: "og:title", content: "Protect the American Dream — DetencionDefensa.com" },
+      { property: "og:title", content: "Don’t Wait for an ICE Detention — DetencionDefensa.com" },
       {
         property: "og:description",
         content:
@@ -61,10 +61,8 @@ export const Route = createFileRoute("/")({
     <div className="home-redesign">
       <HeroIntro />
       <HowItWorksVideoSection />
+      <HomeReviewSections />
       <PreparednessVideos />
-      <DraftHomeLayout />
-      <EmergencyReadiness />
-      <ProblemSolutionSection />
       <HomepageSection section="steps" />
       <HomepageSection section="roles" />
       <HomepageSection section="attorney" />
