@@ -1,4 +1,5 @@
 import type { ScreeningFinding } from "./legal-screening";
+import { SCREENING_SIMPLE } from "./screening-simple-content";
 
 type Copy = {
   heading: string; intro: string; privacy: string; questions: string[]; options: string[][];
@@ -18,6 +19,7 @@ export const SCREENING_COPY: Record<"en" | "es" | "ht", Copy> = {
     next: "Next", back: "Back", submit: "View assessment", busy: "Assessing…", reset: "Start over", error: "The assessment could not be completed. Please try again.", none: "No listed assets",
     indicators: { urgent_review: "Prior-order uncertainty or barrier: prompt licensed review", potential_review: "Potential path or protection to review—not confirmed eligibility", limited_information: "Limited routine options identified—other relief needs licensed review" },
     findings: {
+      ...SCREENING_SIMPLE.en.findings,
       status: "INA §§ 248 / 245 (8 U.S.C. §§ 1258 / 1255): expired TPS or lack of status can bar routine change or adjustment of status. Change under § 248 generally requires maintained nonimmigrant status; TPS is not itself nonimmigrant status. Adjustment is different: admission or parole, an available immigrant visa and admissibility matter. Immediate relatives, § 245(i) grandfathering, VAWA and other exceptions may overcome particular bars. Marriage alone does not cure unlawful entry. Ask for the actual statutory basis—not an easy ‘status switch.’",
       tps: "Valid TPS provides temporary protection while effective, not permanent residence. A TPS grant alone is not an admission for INA § 245(a). Confirm country designation, extensions, court orders, entry / travel history and an independent immigrant-visa basis with counsel.",
       daca: "DACA is deferred action, not lawful immigration status or a green-card pathway by itself. Entry history, family or humanitarian grounds and other facts require independent review.",
@@ -30,7 +32,7 @@ export const SCREENING_COPY: Record<"en" | "es" | "ht", Copy> = {
       prior_unknown: "Obtain and review your immigration and court records promptly. An unknown order cannot be treated as no order, but does not establish reinstatement or rule out relief.",
       immediate: "A U.S. citizen spouse or adult child age 21+ may provide an immediate-relative petition basis. A petition alone does not grant status: admission / parole, admissibility, prior orders, visa procedures and possible waivers still require review. An adult child is not automatically a qualifying hardship ‘child’ for cancellation.",
       lpr: "An LPR spouse may petition in a preference category, subject to visa availability and other barriers. An LPR parent can petition only for qualifying unmarried sons / daughters; age and marital status matter. This family tie alone does not establish adjustment eligibility.",
-      no_family: "No listed family tie does not mean no relief. Fear-based protection, VAWA, U / T visas, employment pathways, § 245(i) grandfathering or other exceptions may need review; these five answers cannot exclude them.",
+      no_family: "No listed family tie does not mean no relief. Fear-based protection, VAWA, U / T visas, employment pathways, § 245(i) grandfathering or other exceptions may need review; these answers cannot exclude them.",
     },
     odds: "No reliable individual probability can be calculated from five answers. A general 10–15% figure would not predict your case; this is a statutory issue screen, not a diagnosis or approval forecast.",
     fees: "Before paying a $5,000–$15,000 emergency retainer (an illustrative range, not a verified market rate), request a written statutory basis, realistic options, scope and fees. No professional can guarantee approval. Limited options here are not a finding that no path exists—do not miss legal deadlines.",
@@ -50,6 +52,7 @@ export const SCREENING_COPY: Record<"en" | "es" | "ht", Copy> = {
     next: "Siguiente", back: "Atrás", submit: "Ver evaluación", busy: "Evaluando…", reset: "Empezar de nuevo", error: "No se pudo completar la evaluación. Inténtelo de nuevo.", none: "Ninguno de estos bienes",
     indicators: { urgent_review: "Orden previa o incertidumbre: revisión pronta por abogado", potential_review: "Posible vía o protección para revisar: elegibilidad no confirmada", limited_information: "Opciones ordinarias limitadas: otros alivios requieren revisión" },
     findings: {
+      ...SCREENING_SIMPLE.es.findings,
       status: "INA §§ 248 / 245 (8 U.S.C. §§ 1258 / 1255): TPS vencido o falta de estatus pueden impedir cambios o ajustes ordinarios. El cambio bajo § 248 generalmente exige mantener estatus no inmigrante; TPS no es por sí mismo estatus no inmigrante. El ajuste es distinto: importan admisión o parole, visa inmigrante disponible y admisibilidad. Familiares inmediatos, protección bajo § 245(i), VAWA y otras excepciones pueden superar ciertas barreras. Casarse no subsana por sí solo una entrada irregular. Exija la base legal, no un ‘cambio fácil de estatus’.",
       tps: "TPS vigente brinda protección temporal mientras esté en efecto, no residencia permanente. La concesión de TPS por sí sola no es admisión bajo INA § 245(a). Revise designaciones, prórrogas, órdenes judiciales, entrada / viajes y una base independiente de visa inmigrante con un abogado.",
       daca: "DACA es acción diferida, no estatus migratorio legal ni una vía por sí sola a la residencia. La entrada, los vínculos familiares, motivos humanitarios y otros hechos requieren revisión independiente.",
@@ -62,7 +65,7 @@ export const SCREENING_COPY: Record<"en" | "es" | "ht", Copy> = {
       prior_unknown: "Obtenga y revise pronto sus registros migratorios y judiciales. Una orden desconocida no equivale a ausencia de orden, pero no demuestra reinstalación ni excluye alivio.",
       immediate: "Un cónyuge ciudadano o hijo ciudadano de 21 años o más podría aportar una petición de familiar inmediato. La petición no concede estatus: admisión / parole, admisibilidad, órdenes previas, trámites de visa y posibles perdones requieren revisión. Un hijo adulto no es automáticamente un ‘hijo’ que califique para perjuicio en cancelación.",
       lpr: "Un cónyuge residente permanente puede presentar una petición en una categoría de preferencia, sujeta a visas y barreras. Un padre o madre residente solo puede pedir hijos solteros que califiquen; edad y estado civil importan. Este vínculo no demuestra elegibilidad para ajuste.",
-      no_family: "No tener estos vínculos no significa que no haya alivio. Protección por temor, VAWA, visas U / T, vías laborales, § 245(i) y otras excepciones pueden requerir revisión; cinco respuestas no las excluyen.",
+      no_family: "No tener estos vínculos no significa que no haya alivio. Protección por temor, VAWA, visas U / T, vías laborales, § 245(i) y otras excepciones pueden requerir revisión; estas respuestas no las excluyen.",
     },
     odds: "Cinco respuestas no permiten calcular una probabilidad individual fiable. Una cifra general de 10–15% no predice su caso; esto identifica cuestiones legales, no es diagnóstico ni pronóstico de aprobación.",
     fees: "Antes de pagar $5,000–$15,000 por una contratación de emergencia (rango ilustrativo, no tarifa de mercado verificada), pida por escrito base legal, opciones realistas, alcance y honorarios. Nadie puede garantizar aprobación. Opciones limitadas aquí no significan ausencia de toda vía; no pierda plazos legales.",
@@ -82,6 +85,7 @@ export const SCREENING_COPY: Record<"en" | "es" | "ht", Copy> = {
     next: "Swivan", back: "Retounen", submit: "Wè evalyasyon", busy: "Ap evalye…", reset: "Rekòmanse", error: "Evalyasyon an pa t fini. Tanpri eseye ankò.", none: "Okenn nan byen sa yo",
     indicators: { urgent_review: "Ansyen lòd oswa ensètitid: revizyon rapid pa avoka", potential_review: "Yon chemen oswa pwoteksyon pou revize: eligibilite poko konfime", limited_information: "Opsyon nòmal limite: lòt sekou mande revizyon" },
     findings: {
+      ...SCREENING_SIMPLE.ht.findings,
       status: "INA §§ 248 / 245 (8 U.S.C. §§ 1258 / 1255): TPS ekspire oswa mank estati ka bloke chanjman oswa ajisteman nòmal. Chanjman dapre § 248 jeneralman mande kenbe estati non-imigran; TPS pa estati non-imigran poukont li. Ajisteman diferan: admisyon oswa parole, viza imigran disponib ak admisibilite enpòtan. Fanmi imedya, pwoteksyon § 245(i), VAWA ak lòt eksepsyon ka depase sèten baryè. Maryaj poukont li pa korije antre ilegal. Mande baz legal la, pa yon ‘chanjman estati fasil’.",
       tps: "TPS valab bay pwoteksyon tanporè pandan li an vigè, pa rezidans pèmanan. Yon TPS poukont li pa yon admisyon dapre INA § 245(a). Verifye deziyasyon peyi, pwolongasyon, lòd tribinal, antre / vwayaj ak yon baz viza imigran endepandan avèk avoka.",
       daca: "DACA se aksyon difere, pa estati imigrasyon legal ni yon chemen kat vèt poukont li. Istorik antre, fanmi, rezon imanitè ak lòt enfòmasyon mande revizyon endepandan.",
@@ -94,7 +98,7 @@ export const SCREENING_COPY: Record<"en" | "es" | "ht", Copy> = {
       prior_unknown: "Jwenn epi revize dosye imigrasyon ak tribinal ou rapidman. Yon lòd ou pa konnen pa vle di pa gen lòd, men li pa etabli retablisman ni elimine sekou.",
       immediate: "Yon mari / madanm sitwayen oswa pitit sitwayen ki gen 21 an oswa plis ka bay baz petisyon fanmi imedya. Petisyon pa bay estati: admisyon / parole, admisibilite, lòd anvan, pwosedi viza ak dispans posib mande revizyon. Yon pitit granmoun pa otomatikman yon ‘pitit’ ki kalifye pou difikilte nan anilasyon.",
       lpr: "Yon mari / madanm rezidan pèmanan ka fè petisyon nan kategori preferans, selon viza ak lòt baryè. Yon paran rezidan ka mande sèlman pou pitit ki pa marye e ki kalifye; laj ak maryaj enpòtan. Lyen sa a pa etabli eligibilite ajisteman.",
-      no_family: "Pa gen fanmi sa yo pa vle di pa gen sekou. Pwoteksyon poutèt pè, VAWA, viza U / T, chemen travay, § 245(i) oswa lòt eksepsyon ka mande revizyon; senk repons sa yo pa ka elimine yo.",
+      no_family: "Pa gen fanmi sa yo pa vle di pa gen sekou. Pwoteksyon poutèt pè, VAWA, viza U / T, chemen travay, § 245(i) oswa lòt eksepsyon ka mande revizyon; repons sa yo pa ka elimine yo.",
     },
     odds: "Senk repons pa ka kalkile yon pwobabilite endividyèl serye. Yon chif jeneral 10–15% pa prevwa dosye ou; sa se idantifikasyon kesyon legal, pa dyagnostik ni previzyon apwobasyon.",
     fees: "Anvan ou peye $5,000–$15,000 pou anboche nan ijans (yon egzanp, pa pri mache verifye), mande baz legal, opsyon reyalis, travay ak frè yo alekri. Pèsonn pa ka garanti apwobasyon. Opsyon limite isit pa vle di pa gen okenn chemen; pa rate delè legal.",

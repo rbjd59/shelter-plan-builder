@@ -3,6 +3,36 @@ import { assessLegalScreening, screeningSchema, type ScreeningAnswers } from "./
 const base: ScreeningAnswers = { status: "expired_tps", time: "1to10", prior: "no", family: "none", assets: [] };
 
 describe("statutory screening assessment", () => {
+  it("prioritizes missed court dates and ICE visits for urgent review", () => {
+    for (const missed of ["court", "ice", "both", "unknown"] as const) {
+      const r = assessLegalScreening({ ...base, missed });
+      expect(r.indicator).toBe("urgent_review");
+      expect(r.findings).toContain("missed");
+    }
+    expect(assessLegalScreening({ ...base, missed: "no" }).findings).not.toContain("missed");
+  });
+  it("flags changed asylum circumstances without granting eligibility or resetting the deadline", () => {
+    const r = assessLegalScreening({ ...base, changed: "yes", fear: "yes" });
+    expect(r.findings).toEqual(expect.arrayContaining(["changed", "fear", "asylum_deadline"]));
+    expect(r.eligibilityDetermined).toBe(false);
+  });
+  it("records a prior asylum filing as a review fact rather than declaring it late", () => {
+    expect(assessLegalScreening({ ...base, asylumFiled: "yes" }).findings).toContain("filed");
+    expect(assessLegalScreening({ ...base, asylumFiled: "no" }).findings).not.toContain("filed");
+  });
+  it("flags entry and reentry history without automatically establishing a bar", () => {
+    const r = assessLegalScreening({ ...base, entry: "without_check", returned: "yes" });
+    expect(r.findings).toEqual(expect.arrayContaining(["entry", "returned"]));
+    expect(r.eligibilityDetermined).toBe(false);
+  });
+  it("offers departure planning only when requested and never grants departure eligibility or odds", () => {
+    const r = assessLegalScreening({ ...base, departure: "considering", funds: "yes", documents: "yes" });
+    expect(r.departurePlanning).toBe(true);
+    expect(r.findings).toContain("departure");
+    expect(r.eligibilityDetermined).toBe(false);
+    expect(r.probability).toBeNull();
+    expect(assessLegalScreening({ ...base, departure: "no" }).departurePlanning).toBe(false);
+  });
   it("selects child and vehicle document planning without unlocking habeas for six months", () => {
     const r = assessLegalScreening({ ...base, children: "yes", vehicle: "yes", detention: "sixplus" });
     expect(r.childDocuments).toBe(true); expect(r.vehicleDocument).toBe(true); expect(r.habeasUnlocked).toBe(false);

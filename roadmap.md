@@ -1,5 +1,10 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
+## November 15 — expanded plain-language screening
+- [x] Replace vague screening labels with 21 direct trilingual questions; add entry, missed appointments, asylum history, fear, family hardship, belongings and departure planning. Country and dates remain local for counsel review.
+- [x] Provide answer-based review guidance and planning links without final eligibility decisions, personal probabilities or automatic voluntary-departure eligibility; 22 rule tests pass.
+- [x] Verify homepage and intake public screening in all languages, with selected and unknown answers; mobile has no overflow, build passes. Clarify matching intake labels; retain legal notices and do not publish. Existing homepage uses plain-language copy; other pages have not had a complete website-wide reading-level audit.
+
 ## November 15 — emergency video truth script
 - [x] Save the full trilingual proposed script and revise only the first homepage video title, bullets and script; retain screening, loan, app and commercial safeguards.
 - [x] Verify the first script opens in all three languages, all four video sections remain and mobile has no overflow or browser errors; build passes. No publication.
