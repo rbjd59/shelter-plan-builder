@@ -15,7 +15,7 @@ const COPY = {
   es: {
     heroTitle: "Proteja su sueño americano.",
     heroPoints: ["Tenga un plan claro.", "Entienda sus opciones.", "Conozca los riesgos."],
-    heroSub: "Avance con una estrategia hecha para usted.",
+    heroSub: "Lo arriesgó todo para venir a Estados Unidos, comprar una casa, crear un negocio y pagar los estudios de sus hijos. Y hoy, todo está en riesgo. Antes de gastar un centavo más en una estrategia... Sepa dónde está realmente hoy. No deje que lo estafen.",
     watchVideoCta: "Vea el video.",
     plan: "Plan de protección ante detención ICE ",
     wasPrice: "$199",
@@ -42,7 +42,7 @@ const COPY = {
   en: {
     heroTitle: "Protect your American dream.",
     heroPoints: ["Get a clear plan.", "Understand your options.", "Know the risks."],
-    heroSub: "Move forward with a strategy built for you.",
+    heroSub: "You risked everything to come to America, to buy a home, to build a business, to put your kids through school. And today, it's all at risk. Before you spend another penny on a strategy... Know where you really stand today. Don't get ripped off.",
     watchVideoCta: "Watch the video.",
     plan: "ICE detention protection plan ",
     wasPrice: "$199",
@@ -69,7 +69,7 @@ const COPY = {
   ht: {
     heroTitle: "Pwoteje rèv ameriken ou.",
     heroPoints: ["Jwenn yon plan klè.", "Konprann opsyon ou yo.", "Konnen risk yo."],
-    heroSub: "Avanse ak yon estrateji ki fèt pou ou.",
+    heroSub: "Ou te riske tout sa ou genyen pou vini Ozetazini, achte yon kay, bati yon biznis epi peye lekòl pou pitit ou yo. E jodi a, tout bagay an danje. Anvan ou depanse yon lòt kòb nan yon estrateji... Konnen ki kote ou kanpe toutbon jodi a. Pa kite yo twonpe ou.",
     watchVideoCta: "Gade videyo a.",
     plan: "Plan pwoteksyon pou arestasyon ICE ",
     wasPrice: "$199",

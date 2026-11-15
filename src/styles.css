@@ -3164,10 +3164,10 @@ html { overflow-x: hidden !important; max-width: 100vw; }
 .home-cta-band { background: var(--home-navy); color: var(--home-surface); padding: 44px 0; }
 .home-cta-band .home-price { margin-bottom: 22px; }
 .home-hero-languages { display: flex; gap: 9px; align-items: center; font-size: 14px; margin-top: 24px; }
-.home-notices { display: flex; gap: 20px; padding-block: 32px; }
-.home-notice-icon { color: var(--home-blue); flex-shrink: 0; width: 30px; height: 30px; }
-.home-notices p { font-size: 14px; line-height: 1.75; }
-.home-notices p + p { color: var(--home-muted); margin-top: 14px; font-size: 12px; }
+.home-notices { display: flex; gap: 10px; padding-block: 10px; }
+.home-notice-icon { color: var(--home-blue); flex-shrink: 0; width: 18px; height: 18px; }
+.home-notices p { font-size: 12px; line-height: 1.45; margin: 0; }
+.home-notices p + p { color: var(--home-muted); margin-top: 4px; font-size: 11px; }
 .home-video-hub { background: var(--home-surface); }
 .home-section-heading { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 28px; }
 .home-section-heading > a { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; min-height: 48px; }
@@ -3294,9 +3294,9 @@ html { overflow-x: hidden !important; max-width: 100vw; }
   .home-price del { font-size: 24px; }
   .home-actions { flex-direction: column; }
   .home-actions a { width: 100%; white-space: normal; }
-  .home-notices { padding-block: 26px; gap: 12px; }
-  .home-notices p { font-size: 14px; }
-  .home-notice-icon { width: 22px; }
+  .home-notices { padding-block: 10px; gap: 8px; }
+  .home-notices p { font-size: 12px; }
+  .home-notice-icon { width: 18px; }
   .home-band { padding: 42px 0; }
   .home-redesign h2 { font-size: 28px !important; }
   .home-section-heading { display: block; }
