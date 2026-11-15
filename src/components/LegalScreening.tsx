@@ -7,6 +7,8 @@ import { screeningSchema, type ScreeningAnswers, type ScreeningAssessment } from
 import { SCREENING_COPY } from "@/lib/legal-screening-content";
 import { withLang } from "@/lib/outbound-lang";
 import { PREPAREDNESS_COPY } from "@/lib/preparedness-content";
+import { HOME_PLAIN } from "@/lib/home-plain-content";
+import { HomePoints } from "@/components/HomePoints";
 
 const OPTIONS = [
   ["valid_tps", "expired_tps", "daca", "pending_asylum", "overstay", "undocumented"],
@@ -27,6 +29,7 @@ const SOURCES = [
 export default function LegalScreening({ lang, inIntake = false }: { lang: "en" | "es" | "ht"; inIntake?: boolean }) {
   const t = SCREENING_COPY[lang];
   const p = PREPAREDNESS_COPY[lang];
+  const plain = HOME_PLAIN[lang];
   const questions = [...t.questions, p.children, p.vehicle, p.detention];
   const optionLabels = [...t.options, [p.yes, p.no, p.unknown], [p.yes, p.no, p.unknown], p.detentionOptions];
   const assess = useServerFn(assessScreening);
@@ -44,7 +47,7 @@ export default function LegalScreening({ lang, inIntake = false }: { lang: "en" 
 
   return <section id="readiness-screener" className="legal-screening" aria-labelledby="legal-screening-heading">
     <div className="legal-screening-inner">
-      <header><Scale aria-hidden="true" /><h2 id="legal-screening-heading">{t.heading}</h2><p>{t.intro}</p><p className="legal-screening-note">{t.privacy}</p></header>
+      <header><Scale aria-hidden="true" /><h2 id="legal-screening-heading">{inIntake ? t.heading : plain.screeningHeading}</h2>{inIntake ? <p>{t.intro}</p> : <HomePoints items={plain.screeningPoints} />}<p className="legal-screening-note">{inIntake ? t.privacy : plain.screeningNote}</p></header>
       <div ref={panel} tabIndex={-1} className="legal-screening-panel">
         {!result ? <form onSubmit={async e => {
           e.preventDefault();
@@ -86,7 +89,7 @@ export default function LegalScreening({ lang, inIntake = false }: { lang: "en" 
         </form> : <div className="legal-screening-results" aria-live="polite">
           <h3>{t.indicators[result.indicator]}</h3>
           <p className="legal-screening-note">{t.odds}</p>
-          <ul>{result.findings.map(finding => <li key={finding}>{t.findings[finding]}</li>)}</ul>
+          {inIntake ? <ul>{result.findings.map(finding => <li key={finding}>{t.findings[finding]}</li>)}</ul> : <><HomePoints items={plain.releasePoints.slice(1)} /><details><summary>{plain.details}</summary><ul>{result.findings.map(finding => <li key={finding}>{t.findings[finding]}</li>)}</ul></details></>}
           <p className="legal-screening-warning">{t.fees}</p>
           <p>{p.habeas}</p>
           {(result.childDocuments || result.vehicleDocument) && <p><strong>{p.packetHeading}</strong><br />{p.packetNote}</p>}
@@ -101,7 +104,7 @@ export default function LegalScreening({ lang, inIntake = false }: { lang: "en" 
           <Button type="button" variant="outline" onClick={reset}><RotateCcw />{t.reset}</Button>
         </div>}
       </div>
-      <p className="legal-screening-disclaimer">{t.disclaimer}</p>
+      {inIntake ? <p className="legal-screening-disclaimer">{t.disclaimer}</p> : <details><summary>{plain.details}</summary><p className="legal-screening-disclaimer">{t.disclaimer}</p></details>}
       <details><summary>{t.sources}</summary><ul>{SOURCES.map(([label, href]) => <li key={href}><a href={href} target="_blank" rel="noopener noreferrer">{label}</a></li>)}</ul></details>
     </div>
   </section>;

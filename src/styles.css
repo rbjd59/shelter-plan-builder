@@ -3432,6 +3432,11 @@ body:not(.splash-active) .home-redesign .home-hero-background { height: 100%; }
 .home-redesign .home-hero-pillars h2 a { color: var(--home-surface) !important; }
 .home-redesign .home-hero-pillars h2 a:hover { color: var(--home-amber) !important; }
 .home-redesign .home-hero-pillars p { color: var(--home-surface); font-size: 15px; line-height: 1.65; overflow-wrap: anywhere; }
+.home-redesign .home-simple-points { list-style: disc; padding-left: 22px; margin-block: 16px; }
+.home-redesign .home-simple-points li { display: list-item; border: 0; padding: 0; font-size: 16px; line-height: 1.6; overflow-wrap: anywhere; }
+.home-redesign .home-simple-points li + li { margin-top: 10px; }
+.home-redesign .home-hero-pillars .home-simple-points { color: var(--home-surface); }
+.home-redesign details > summary { cursor: pointer; min-height: 44px; padding-block: 10px; }
 .home-redesign .home-solution h3 { font-size: 21px; line-height: 1.35; margin-bottom: 10px; }
 .home-redesign .home-solution li { align-items: flex-start; }
 @media(max-width:900px) { .home-redesign .home-hero-pillars { grid-template-columns: 1fr; gap: 16px; } }

@@ -1,15 +1,18 @@
 import { useLang } from "@/context/LanguageContext";
 import { PREPAREDNESS_COPY } from "@/lib/preparedness-content";
-import { HOME_REFINEMENT } from "@/lib/home-refinement-content";
+import { HOME_PLAIN, HOME_EXTRA } from "@/lib/home-plain-content";
+import { HomePoints } from "@/components/HomePoints";
 
 export function PreparednessVideos() {
   const { lang } = useLang();
   const t = PREPAREDNESS_COPY[lang];
+  const plain = HOME_PLAIN[lang];
   return <section className="home-band home-preparedness" id="how-it-works-video"><div className="home-container">
-    <h2>{HOME_REFINEMENT[lang].videos}</h2>
+    <h2>{HOME_PLAIN[lang].videos}</h2>
     <div className="home-script-grid">{t.videos.map((video, i) => <article key={video.title} id={i === 0 ? "how-app-works" : undefined}>
-      <span className="home-readiness-eyebrow">0{i + 1}</span><h3>{video.title}</h3>
-      <details><summary>{t.scriptLabel}</summary><p>{video.script}</p></details>
+      <span className="home-readiness-eyebrow">0{i + 1}</span><h3>{HOME_EXTRA[lang].videos[i]}</h3>
+      <HomePoints items={HOME_EXTRA[lang].videoPoints[i]} />
+      <details><summary>{t.scriptLabel}</summary><HomePoints items={video.script.split(/(?<=[.!?])\s+/)} /></details>
     </article>)}</div>
   </div></section>;
 }
@@ -17,9 +20,10 @@ export function PreparednessVideos() {
 export function PreparednessDisclosures() {
   const { lang } = useLang();
   const t = PREPAREDNESS_COPY[lang];
+  const plain = HOME_PLAIN[lang];
   return <section className="home-band home-preparedness" id="signing-alternatives"><div className="home-container">
-    <h2>{t.identityHeading}</h2><p>{t.federal}</p><p>{t.witnesses}</p><p>{t.passport}</p>
+    <h2>{plain.signingHeading}</h2><HomePoints items={plain.signingPoints} /><details><summary>{plain.details}</summary><p>{t.federal}</p><p>{t.witnesses}</p><p>{t.passport}</p></details>
     <div className="home-preparedness-sources"><a href="https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title28-section1746&num=0&edition=prelim" target="_blank" rel="noopener noreferrer">28 U.S.C. § 1746</a><a href="https://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0100-0199/0117/Sections/0117.05.html" target="_blank" rel="noopener noreferrer">Fla. Stat. § 117.05</a><a href="https://www.floridabar.org/public/consumer/pamphlet/poa/" target="_blank" rel="noopener noreferrer">Florida Power of Attorney</a><a href="https://www.floridanotaryonline.com/" target="_blank" rel="noopener noreferrer">Florida · Remote Online Notarization</a></div>
-    <h2>{t.commercialHeading}</h2><p>{t.commercial}</p>
+    <h2>{plain.firmHeading}</h2><HomePoints items={plain.firmPoints} /><details><summary>{plain.details}</summary><p>{t.commercial}</p></details>
   </div></section>;
 }

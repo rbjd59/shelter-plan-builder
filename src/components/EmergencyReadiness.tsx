@@ -15,7 +15,8 @@ import { Button } from "@/components/ui/button";
 import { useLang } from "@/context/LanguageContext";
 import { withLang } from "@/lib/outbound-lang";
 import LegalScreening from "@/components/LegalScreening";
-import { HOME_REFINEMENT } from "@/lib/home-refinement-content";
+import { HOME_PLAIN } from "@/lib/home-plain-content";
+import { HomePoints } from "@/components/HomePoints";
 
 const COPY = {
   en: {
@@ -215,7 +216,7 @@ const APP_ICONS = [Smartphone, MapPin, UsersRound];
 export default function EmergencyReadiness() {
   const { lang } = useLang();
   const t = COPY[lang];
-  const refined = HOME_REFINEMENT[lang];
+  const refined = HOME_PLAIN[lang];
   const intakeHref = `/intake?lang=${lang}`;
   const homeHref = withLang("https://savemyhometrust.com/trust", lang);
   const businessHref = withLang("https://savemybusiness.com", lang);
@@ -225,12 +226,12 @@ export default function EmergencyReadiness() {
   return <>
     <section className="home-readiness-app" id="readiness-app" aria-labelledby="readiness-app-heading">
       <div className="home-container">
-        <p className="home-readiness-eyebrow">{t.appEyebrow}</p>
-        <h2 id="readiness-app-heading">{t.appHeading}</h2>
+        <p className="home-readiness-eyebrow">{refined.appEyebrow}</p>
+        <h2 id="readiness-app-heading">{refined.appHeading}</h2>
         <div className="home-readiness-app-grid">
-          {t.appItems.map((item, index) => {
+          {refined.appItems.map((item, index) => {
             const Icon = APP_ICONS[index];
-            return <article key={item.title}><Icon aria-hidden="true" /><h3>{item.title}</h3><p>{item.body}</p></article>;
+            return <article key={item.title}><Icon aria-hidden="true" /><h3>{item.title}</h3><HomePoints items={item.points} /></article>;
           })}
         </div>
         <div className="home-readiness-app-actions">
@@ -242,17 +243,17 @@ export default function EmergencyReadiness() {
 
     <section className="home-band home-readiness-pillars" aria-labelledby="pillars-heading">
       <div className="home-container">
-        <p className="home-readiness-eyebrow">{t.pillarsEyebrow}</p>
-        <h2 id="pillars-heading">{t.pillarsHeading}</h2>
+        <p className="home-readiness-eyebrow">{refined.planEyebrow}</p>
+        <h2 id="pillars-heading">{refined.planHeading}</h2>
         <div className="home-readiness-pillar-grid">
-          {t.pillars.map((pillar, index) => {
+          {refined.planItems.map((pillar, index) => {
             const Icon = PILLAR_ICONS[index];
             const external = index === 1 || index === 2;
             return <article key={pillar.title}>
               <span className="home-readiness-pillar-number">0{index + 1}</span>
               <Icon aria-hidden="true" />
               <h3>{pillar.title}</h3>
-              <p>{pillar.body}</p>
+              <HomePoints items={pillar.points} />
               <a href={pillarLinks[index]} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
                 {pillar.cta}<ArrowRight size={17} aria-hidden="true" />
               </a>
@@ -267,20 +268,20 @@ export default function EmergencyReadiness() {
       <div className="home-container">
         <p className="home-readiness-eyebrow">{t.eyebrow}</p>
         <h2 id="readiness-heading">{refined.comparison}</h2>
-        <p className="home-readiness-intro">{refined.comparisonIntro}</p>
+        <HomePoints items={refined.comparisonPoints} />
         <div className="home-readiness-comparison">
           <article className="home-readiness-crisis">
             <AlertTriangle aria-hidden="true" />
-            <h3>{t.crisisTitle}</h3>
-            <ul>{t.crisisItems.map((item) => <li key={item}>{item}</li>)}</ul>
+            <h3>{refined.crisisTitle}</h3>
+            <ul>{refined.crisisItems.map((item) => <li key={item}>{item}</li>)}</ul>
           </article>
           <article className="home-readiness-prepared">
             <CheckCircle2 aria-hidden="true" />
-            <h3>{t.preparedTitle}</h3>
-            <ul>{t.preparedItems.map((item) => <li key={item}>{item}</li>)}</ul>
+            <h3>{refined.preparedTitle}</h3>
+            <ul>{refined.preparedItems.map((item) => <li key={item}>{item}</li>)}</ul>
           </article>
         </div>
-        <p className="home-readiness-stats">{t.statsNote}</p>
+        <p className="home-readiness-stats">{refined.statsNote}</p>
       </div>
     </section>
 
@@ -290,13 +291,13 @@ export default function EmergencyReadiness() {
     <section className="home-band home-readiness-legal" aria-labelledby="habeas-limits-heading">
       <div className="home-container">
         <h2 id="habeas-limits-heading">{refined.release}</h2>
-        <p className="home-readiness-intro">{refined.releaseIntro}</p>
+        <HomePoints items={refined.releasePoints} />
         <Button asChild className="home-primary"><a href="#readiness-screener">{t.pillars[0].cta}<ArrowRight size={18} /></a></Button>
         <div className="home-readiness-legal-grid">
-          <article><Gavel aria-hidden="true" /><h3>{t.legalCanTitle}</h3><p>{t.legalCan}</p></article>
-          <article><AlertTriangle aria-hidden="true" /><h3>{t.legalCannotTitle}</h3><p>{t.legalCannot}</p></article>
+          <article><Gavel aria-hidden="true" /><h3>{refined.legalCanTitle}</h3><HomePoints items={refined.legalCanPoints} /></article>
+          <article><AlertTriangle aria-hidden="true" /><h3>{refined.legalCannotTitle}</h3><HomePoints items={refined.legalCannotPoints} /></article>
         </div>
-        <div className="home-readiness-firm"><Scale aria-hidden="true" /><div><h3>{t.firmHeading}</h3><p>{t.firmBody}</p></div></div>
+        <div className="home-readiness-firm"><Scale aria-hidden="true" /><div><h3>{refined.firmHeading}</h3><HomePoints items={refined.firmPoints} /><details><summary>{refined.details}</summary><p>{t.legalCan}</p><p>{t.legalCannot}</p><p>{t.firmBody}</p></details></div></div>
       </div>
     </section>
   </>;

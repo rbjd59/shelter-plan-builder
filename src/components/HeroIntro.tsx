@@ -7,7 +7,8 @@ import haitianFamily from "@/assets/home-family-haitian.jpg";
 import spanishFamily from "@/assets/home-family-spanish.jpg";
 import unitedFamilies from "@/assets/home-families-united.jpg";
 import { PREPAREDNESS_COPY } from "@/lib/preparedness-content";
-import { HOME_REFINEMENT } from "@/lib/home-refinement-content";
+import { HOME_PLAIN } from "@/lib/home-plain-content";
+import { HomePoints } from "@/components/HomePoints";
 
 const COPY = {
   es: {
@@ -97,7 +98,7 @@ export default function HeroIntro() {
   const [open, setOpen] = useState(false);
   const t = COPY[lang];
   const preparedness = PREPAREDNESS_COPY[lang];
-  const refined = HOME_REFINEMENT[lang];
+  const refined = HOME_PLAIN[lang];
   const familyPhoto = lang === "ht" ? haitianFamily : lang === "es" ? spanishFamily : unitedFamilies;
   const start = lang === "es" ? "Comience Ahora →" : lang === "en" ? "Start Now →" : "Kòmanse Kounye a →";
   return <>
@@ -129,17 +130,17 @@ export default function HeroIntro() {
           <p className="home-eyebrow">DetencionDefensa.com · ListoAhora.org · PareKounya.org</p>
           <h1>{t.crisisTitle}</h1>
           <p className="home-hero-subheading">{preparedness.subheading}</p>
-          <div className="home-hero-pillars">{refined.pillars.map((pillar, i) => <article key={pillar.title}><span className="home-hero-pillar-number">0{i + 1}</span><h2><a href={pillar.href}>{pillar.title}</a></h2><p>{pillar.body}</p></article>)}</div>
-          <div className="home-price" id="precio"><del>{t.wasPrice}</del><strong>{t.freeText}</strong></div>
+          <div className="home-hero-pillars">{refined.pillars.map((pillar, i) => <article key={pillar.title}><span className="home-hero-pillar-number">0{i + 1}</span><h2><a href={pillar.href}>{pillar.title}</a></h2><HomePoints items={pillar.points} /></article>)}</div>
+          <div className="home-price" id="precio"><del>{t.wasPrice}</del><strong>{lang === "en" ? "Free app. Free check." : lang === "es" ? "App gratis. Revisión gratis." : "App gratis. Ti tès gratis."}</strong></div>
           <div className="home-actions">
             <Button asChild className="home-primary"><a href={`/intake?lang=${lang}`}>{start}</a></Button>
-            <Button asChild variant="outline" className="home-video-action"><a href="#readiness-screener">{t.screenBtn}<ArrowRight size={18} /></a></Button>
+            <Button asChild variant="outline" className="home-video-action"><a href="#readiness-screener">{lang === "en" ? "Take the free check" : lang === "es" ? "Hacer la revisión gratis" : "Fè ti tès gratis la"}<ArrowRight size={18} /></a></Button>
             <Button asChild variant="outline" className="home-video-action"><a href="#how-it-works-video"><Play />{t.appBoxBtn}</a></Button>
           </div>
           <p className="home-hero-languages"><ShieldCheck size={20} /> Español · English · Kreyòl</p>
         </div>
       </section>
-      <div className="home-notices home-container"><ShieldCheck className="home-notice-icon" /><div><p>{t.privilegeNotice}</p><p>{t.disclaimer}</p></div></div>
+      <div className="home-notices home-container"><ShieldCheck className="home-notice-icon" /><div><HomePoints items={refined.firmPoints.slice(0, 2)} /><details><summary>{refined.details}</summary><p>{t.privilegeNotice}</p><p>{t.disclaimer}</p></details></div></div>
     </main>
   </>;
 }

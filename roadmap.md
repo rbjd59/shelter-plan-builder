@@ -1,5 +1,9 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
+## November 15 — plain-language front page
+- [x] Replace main homepage explanations with short trilingual bullet points; keep original scripts, legal notices and detailed sections available under expandable details.
+- [x] Verify all three languages, complete free screening, expandable details and desktop/mobile layout; 15 rule tests pass. No intake logic changes or publication.
+
 ## November 15 — homepage refinement
 - [x] Add three prominent trilingual hero pillars and remove obsolete hero messaging.
 - [x] Reorder videos, app, integrated pillars, prepared-file comparison, screening and release guidance; replace comparison with seven problems/four solutions and remove Key Features.

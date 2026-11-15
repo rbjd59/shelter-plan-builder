@@ -13,6 +13,7 @@
 - Account registration may carry only allowlisted non-secret signup fields in intake_signup metadata; passwords stay transient and email confirmation must complete before authenticated draft saving.
 
 # Homepage presentation
+- Keep simplified homepage copy separate from shared legal/PDF copy and retain full legal notices in expandable details; this prevents readability edits from changing intake or document rules.
 - Keep homepage refinement copy in a browser-safe trilingual module and order readiness sections as app, integrated pillars, comparison, screening and release guidance; this keeps presentation changes separate from intake and assessment logic.
 - Keep the homepage arrangement scoped to `.home-redesign` and reuse verbatim exported HTML sections; isolated styles prevent redesigns from changing intake, staff or legal workflows.
 - Keep related business-offering copy in the language-aware paid-solutions area and use `withLang` for outbound links so homepage language selection carries through without altering existing videos.
