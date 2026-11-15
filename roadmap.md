@@ -1,5 +1,12 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
+## November 15 — five readiness checks
+- [x] Rework the video-area overview into five trilingual checks: family papers, legal options, moving abroad, home/business planning and deadlines; preserve existing scripts and videos.
+- [x] Add local planning questions and answer-based summaries for family, moving, assets and deadlines; reuse the existing legal assessment without automatic eligibility, country acceptance, loan approval or habeas release. Financial calculations use entered estimates only; dates are gathered for counsel, not treated as final legal deadlines.
+- [x] Update app setup/location guidance and replace panic-hiring comparison with act-today/deadline guidance; verify all languages, family next steps, moving total, home equity and mobile layout. 23 tests pass; no publication or changes to notification/document generation.
+- [ ] Supply verified country-specific visa/residency fees and processing times, independent business valuations and firm-reviewed individual deadlines; blocked on current official destination information and professional review. No fabricated rates or eligibility determinations are shown.
+- [ ] Confirm revised firm suffix and technology-provider domain before replacing the current licensed-website attribution; blocked on owner clarification.
+
 ## November 15 — expanded plain-language screening
 - [x] Replace vague screening labels with 21 direct trilingual questions; add entry, missed appointments, asylum history, fear, family hardship, belongings and departure planning. Country and dates remain local for counsel review.
 - [x] Provide answer-based review guidance and planning links without final eligibility decisions, personal probabilities or automatic voluntary-departure eligibility; 22 rule tests pass.

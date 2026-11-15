@@ -2,7 +2,6 @@ import {
   AlertTriangle,
   ArrowRight,
   BriefcaseBusiness,
-  CheckCircle2,
   FileCheck2,
   Gavel,
   Home,
@@ -16,6 +15,7 @@ import { useLang } from "@/context/LanguageContext";
 import { withLang } from "@/lib/outbound-lang";
 import LegalScreening from "@/components/LegalScreening";
 import { HOME_PLAIN } from "@/lib/home-plain-content";
+import { READINESS_CHECKS } from "@/lib/readiness-checks";
 import { HomePoints } from "@/components/HomePoints";
 
 const COPY = {
@@ -266,22 +266,9 @@ export default function EmergencyReadiness() {
 
     <section className="home-band home-readiness" id="emergency-readiness" aria-labelledby="readiness-heading">
       <div className="home-container">
-        <p className="home-readiness-eyebrow">{t.eyebrow}</p>
-        <h2 id="readiness-heading">{refined.comparison}</h2>
-        <HomePoints items={refined.comparisonPoints} />
-        <div className="home-readiness-comparison">
-          <article className="home-readiness-crisis">
-            <AlertTriangle aria-hidden="true" />
-            <h3>{refined.crisisTitle}</h3>
-            <ul>{refined.crisisItems.map((item) => <li key={item}>{item}</li>)}</ul>
-          </article>
-          <article className="home-readiness-prepared">
-            <CheckCircle2 aria-hidden="true" />
-            <h3>{refined.preparedTitle}</h3>
-            <ul>{refined.preparedItems.map((item) => <li key={item}>{item}</li>)}</ul>
-          </article>
-        </div>
-        <p className="home-readiness-stats">{refined.statsNote}</p>
+        <h2 id="readiness-heading">{READINESS_CHECKS[lang].deadline}</h2>
+        <HomePoints items={READINESS_CHECKS[lang].deadlinePoints} />
+        <Button asChild className="home-primary"><a href="#readiness-checks">{READINESS_CHECKS[lang].titles[4]}<ArrowRight size={18}/></a></Button>
       </div>
     </section>
 

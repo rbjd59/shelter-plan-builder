@@ -1,20 +1,21 @@
 import { useLang } from "@/context/LanguageContext";
 import { PREPAREDNESS_COPY } from "@/lib/preparedness-content";
 import { HOME_PLAIN, HOME_EXTRA } from "@/lib/home-plain-content";
+import ReadinessChecks from "@/components/ReadinessChecks";
 import { HomePoints } from "@/components/HomePoints";
 
 export function PreparednessVideos() {
   const { lang } = useLang();
   const t = PREPAREDNESS_COPY[lang];
   const plain = HOME_PLAIN[lang];
-  return <section className="home-band home-preparedness" id="how-it-works-video"><div className="home-container">
+  return <><ReadinessChecks /><section className="home-band home-preparedness" id="how-it-works-video"><div className="home-container">
     <h2>{HOME_PLAIN[lang].videos}</h2>
     <div className="home-script-grid">{t.videos.map((video, i) => <article key={video.title} id={i === 0 ? "how-app-works" : undefined}>
       <span className="home-readiness-eyebrow">0{i + 1}</span><h3>{HOME_EXTRA[lang].videos[i]}</h3>
       <HomePoints items={HOME_EXTRA[lang].videoPoints[i]} />
       <details><summary>{t.scriptLabel}</summary><HomePoints items={video.script.split(/(?<=[.!?])\s+/)} /></details>
     </article>)}</div>
-  </div></section>;
+  </div></section></>;
 }
 
 export function PreparednessDisclosures() {
