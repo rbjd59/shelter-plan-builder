@@ -1,6 +1,7 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { HomepageSection } from "@/components/HomepageContent";
 import HeroIntro from "@/components/HeroIntro";
+import DraftHomeLayout from "@/components/DraftHomeLayout";
 import ProblemSolutionSection, { PaidSolutions } from "@/components/ProblemSolutionSection";
 import { PreparednessVideos, PreparednessDisclosures } from "@/components/PreparednessSections";
 import EmergencyReadiness from "@/components/EmergencyReadiness";
@@ -58,6 +59,7 @@ export const Route = createFileRoute("/")({
   component: () => (
     <div className="home-redesign">
       <HeroIntro />
+      <DraftHomeLayout />
       <PreparednessVideos />
       <EmergencyReadiness />
       <ProblemSolutionSection />
