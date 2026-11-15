@@ -114,3 +114,5 @@
 - [x] app-trigger now logs the reason for every 400 (schema issues / body keys).
 - [ ] Client activation email: logs show `sent` to proseforms@atomicmail.io and njbittelman@gmail.com — check spam/atomicmail delivery; sender domain still notify.gohomesooner.com.
 - [ ] NEEDS PUBLISH for all of the above.
+- [x] Readiness checks: remove move check, split home/business
+- [x] Put videos at the top of the homepage
