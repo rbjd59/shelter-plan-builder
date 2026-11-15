@@ -3423,6 +3423,7 @@ body:not(.splash-active) .home-redesign .home-hero-background { height: 100%; }
 }
 
 /* Shared screening tool: semantic roles inherit each page's theme. */
+.home-redesign .home-hero-position { font-size: 19px; font-weight: 700; line-height: 1.5; max-width: 660px; margin: 0 0 4px; color: var(--home-surface); border-left: 3px solid var(--home-amber); padding-left: 14px; }
 .home-redesign .home-hero-subheading { font-size: 23px; font-weight: 700; line-height: 1.4; margin: 18px 0; }
 .home-redesign .home-hero-content { padding-block: 60px; }
 .home-redesign .home-hero-pillars { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 28px; margin-block: 28px; }
