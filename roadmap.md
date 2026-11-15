@@ -5,6 +5,7 @@
 - [x] Correct English, Spanish and Haitian Creole privacy policies for SOS-only GPS, Update My Info, activation device details, hosting providers and advertising; retain deletion routes and update the revision date.
 
 ## Homepage arrangement
+- [x] Remove the homepage Problem and Solution section in all three languages; keep the video library and paid home/business offerings unchanged.
 - [ ] November 15 follow-up: deliver the complete 3–4 minute English video first, not only its short presenter opening, then complete Haitian Creole; Spanish generation remains blocked and must not be bypassed.
 - [ ] Replace the homepage how-it-works video with English and Haitian Creole process overviews using revised immigration-review wording, directly below the opening photo; preserve original videos in the video library and verify playback without publishing.
 - [ ] Create the Spanish process overview; blocked by the video service's content-safety refusal, so retain the existing Spanish video until a new authorized generation is available.
