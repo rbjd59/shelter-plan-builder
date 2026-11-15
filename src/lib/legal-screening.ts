@@ -5,6 +5,9 @@ export const screeningSchema = z.object({
   time: z.enum(["under1", "1to10", "10plus"]),
   prior: z.enum(["yes", "no", "unknown"]),
   family: z.enum(["usc_spouse", "usc_child21", "lpr_family", "none"]),
+  children: z.enum(["yes", "no", "unknown"]).optional(),
+  vehicle: z.enum(["yes", "no", "unknown"]).optional(),
+  detention: z.enum(["none", "undersix", "sixplus", "unknown"]).optional(),
   assets: z.array(z.enum(["home", "business", "equipment"])).max(3).refine(a => new Set(a).size === a.length),
 }).strict();
 
@@ -36,6 +39,9 @@ export function assessLegalScreening(input: ScreeningAnswers) {
     home: a.assets.includes("home"),
     business: a.assets.includes("business"),
     equipment: a.assets.includes("equipment"),
+    childDocuments: a.children === "yes",
+    vehicleDocument: a.vehicle === "yes",
+    habeasUnlocked: false,
   } as const;
 }
 export type ScreeningAssessment = ReturnType<typeof assessLegalScreening>;

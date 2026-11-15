@@ -1,10 +1,8 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { HomepageSection } from "@/components/HomepageContent";
-import HeroIntro, { VideoHub } from "@/components/HeroIntro";
+import HeroIntro from "@/components/HeroIntro";
 import ProblemSolutionSection, { PaidSolutions } from "@/components/ProblemSolutionSection";
-import HowItWorksVideoSection from "@/components/HowItWorksVideoSection";
-import AdVideoSection from "@/components/AdVideoSection";
-import SecurityVideoSection from "@/components/SecurityVideoSection";
+import { PreparednessVideos, PreparednessDisclosures } from "@/components/PreparednessSections";
 import EmergencyReadiness from "@/components/EmergencyReadiness";
 
 const DEFENDER_HOSTS = new Set([
@@ -36,17 +34,17 @@ export const Route = createFileRoute("/")({
   },
   head: () => ({
     meta: [
-      { title: "DetencionDefensa.com — Plan de Defensa Pre-Detención · Gratis" },
+      { title: "Protect the American Dream — DetencionDefensa.com" },
       {
         name: "description",
         content:
-          "Free pre-detention defense plan for immigrant working families. No fee and no monthly charge: the emergency app is free and a Florida attorney reviews your documents pro bono. DetencionDefensa.com, Inc. is the technology operator only; Sorrentino Law Firm PLLC operates the site under license and provides all legal services.",
+          "Know your rights, explore statutory issues for licensed review, and prepare your family documents with Detención Defensa's free screening and SOS app. Home and business structuring are separate paid services.",
       },
-      { property: "og:title", content: "DetencionDefensa.com — Plan de Defensa Pre-Detención · Gratis" },
+      { property: "og:title", content: "Protect the American Dream — DetencionDefensa.com" },
       {
         property: "og:description",
         content:
-          "No fee, no monthly charge. Free emergency app plus pro bono attorney-reviewed federal documents. DetencionDefensa.com, Inc. is the technology operator only; Sorrentino Law Firm PLLC operates the site under license and provides all legal services.",
+          "Free statutory screening, SOS app and family preparedness. Explore home and business planning with separate professional fees and licensed legal review.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://detenciondefensa.com/" },
@@ -60,16 +58,15 @@ export const Route = createFileRoute("/")({
   component: () => (
     <div className="home-redesign">
       <HeroIntro />
-      <VideoHub />
+      <PreparednessVideos />
       <EmergencyReadiness />
       <ProblemSolutionSection />
-      <div className="home-video-section"><HowItWorksVideoSection /></div>
       <HomepageSection section="steps" />
       <HomepageSection section="roles" />
-      <div className="home-video-section"><SecurityVideoSection /></div>
       <HomepageSection section="attorney" />
       <HomepageSection section="features" />
-      <div className="home-video-section home-paid-section"><AdVideoSection><PaidSolutions /></AdVideoSection></div>
+      <div className="home-band home-paid-section"><PaidSolutions /></div>
+      <PreparednessDisclosures />
       <HomepageSection section="faq" />
       <span id="app" />
       <HomepageSection section="footer" />

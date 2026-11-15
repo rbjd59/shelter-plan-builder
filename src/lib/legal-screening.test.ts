@@ -3,6 +3,11 @@ import { assessLegalScreening, screeningSchema, type ScreeningAnswers } from "./
 const base: ScreeningAnswers = { status: "expired_tps", time: "1to10", prior: "no", family: "none", assets: [] };
 
 describe("statutory screening assessment", () => {
+  it("selects child and vehicle document planning without unlocking habeas for six months", () => {
+    const r = assessLegalScreening({ ...base, children: "yes", vehicle: "yes", detention: "sixplus" });
+    expect(r.childDocuments).toBe(true); expect(r.vehicleDocument).toBe(true); expect(r.habeasUnlocked).toBe(false);
+    expect(assessLegalScreening({ ...base, children: "no", vehicle: "no" }).childDocuments).toBe(false);
+  });
   it("flags expired TPS for status-bar review rather than an easy status switch", () => {
     expect(assessLegalScreening(base).findings).toContain("status");
     expect(assessLegalScreening(base).indicator).toBe("limited_information");

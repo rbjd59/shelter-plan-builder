@@ -1,15 +1,12 @@
 import { useState } from "react";
-import { Menu, X, Play, Smartphone, Home, ShieldCheck, Building2, ArrowRight } from "lucide-react";
+import { Menu, X, Play, ShieldCheck, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLang, type Lang } from "@/context/LanguageContext";
 import logoAsset from "@/assets/dd-logo.png.asset.json";
 import haitianFamily from "@/assets/home-family-haitian.jpg";
 import spanishFamily from "@/assets/home-family-spanish.jpg";
 import unitedFamilies from "@/assets/home-families-united.jpg";
-import howPoster from "@/assets/home-how-poster.jpg.asset.json";
-import homePoster from "@/assets/home-property-poster.jpg.asset.json";
-import securityPoster from "@/assets/home-security-poster.jpg.asset.json";
-import employerPoster from "@/assets/home-employer-poster.jpg.asset.json";
+import { PREPAREDNESS_COPY } from "@/lib/preparedness-content";
 
 const COPY = {
   es: {
@@ -101,6 +98,7 @@ export default function HeroIntro() {
   const { lang, setLang } = useLang();
   const [open, setOpen] = useState(false);
   const t = COPY[lang];
+  const preparedness = PREPAREDNESS_COPY[lang];
   const familyPhoto = lang === "ht" ? haitianFamily : lang === "es" ? spanishFamily : unitedFamilies;
   const start = lang === "es" ? "Comience Ahora →" : lang === "en" ? "Start Now →" : "Kòmanse Kounye a →";
   return <>
@@ -131,8 +129,9 @@ export default function HeroIntro() {
         <div className="home-container home-hero-content">
           <p className="home-eyebrow">DetencionDefensa.com · ListoAhora.org · PareKounya.org</p>
           <h1>{t.crisisTitle}</h1>
-          {t.crisisBody.map((paragraph, i) => <p className="home-hero-tagline" key={i}>{paragraph}</p>)}
-          <p className="home-hero-plan"><strong>{t.plan}</strong><span>{t.tagline}</span></p>
+          <p className="home-hero-subheading">{preparedness.subheading}</p>
+          {preparedness.body.map((paragraph, i) => <p className="home-hero-tagline" key={i}>{paragraph}</p>)}
+          <p className="home-hero-plan"><strong>{t.plan}</strong><span>{preparedness.positioning}</span></p>
           <div className="home-price" id="precio"><del>{t.wasPrice}</del><strong>{t.freeText}</strong></div>
           <div className="home-actions">
             <Button asChild className="home-primary"><a href={`/intake?lang=${lang}`}>{start}</a></Button>
@@ -147,19 +146,3 @@ export default function HeroIntro() {
   </>;
 }
 
-export function VideoHub() {
-  const { lang } = useLang(); const t = COPY[lang];
-  const cards = [
-    { title: t.appBoxHeading, body: t.appBoxBody, href: "#how-it-works-video", icon: Smartphone, poster: howPoster.url },
-    { title: t.homeBoxHeading, body: t.homeBoxBody, href: "#homeowner-video", icon: Home, poster: homePoster.url },
-    { title: t.secBoxHeading, body: t.secBoxBody, href: "#security-video", icon: ShieldCheck, poster: securityPoster.url },
-    { title: t.employerHeading, body: "", href: "/videos#employer-video", icon: Building2, poster: employerPoster.url },
-  ];
-  return <section className="home-video-hub home-band"><div className="home-container">
-    <div className="home-section-heading"><h2>{lang === "es" ? "Mira los videos" : lang === "en" ? "Watch the videos" : "Gade videyo yo"}</h2><a href="/videos">{lang === "es" ? "Mira Más Videos" : lang === "en" ? "Watch More Videos" : "Gade Plis Videyo"}<ArrowRight size={18} /></a></div>
-    <div className="home-video-grid">{cards.map((card, i) => <article className="home-video-card" key={card.href}>
-      <a className="home-video-thumb" href={card.href} aria-label={card.title}><img src={card.poster} alt={card.title} loading="lazy" width="640" height="360" /><span><Play size={28} /></span></a>
-      <div className="home-video-card-text"><card.icon size={22} /><h3><a href={card.href}>{card.title}</a></h3><p>{card.body}</p><a href={card.href}>{i === 2 ? t.secBoxBtn : t.appBoxBtn}<ArrowRight size={16}/></a></div>
-    </article>)}</div>
-  </div></section>;
-}

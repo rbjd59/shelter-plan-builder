@@ -12,7 +12,7 @@ export const SCREENING_COPY: Record<"en" | "es" | "ht", Copy> = {
   en: {
     heading: "Free Screening Tool: Don't Let Professionals Fool You",
     intro: "Don't pay thousands for false promises. Explore your legal situation, what relief may be possible under current immigration law, and how to plan for your home and business—with licensed review before spending money.",
-    privacy: "No name or contact details required. These five answers are sent for assessment, not saved to your intake record, and do not send notifications.",
+    privacy: "No name or contact details required. Your categorical answers are assessed without being saved to your intake record or sending notifications.",
     questions: ["1. Current legal status", "2. Time in the United States", "3. Prior removal / deportation orders", "4. Qualifying family ties", "5. Assets at risk"],
     options: [["Valid, unexpired TPS", "Expired TPS / no status", "DACA", "Pending asylum", "Visa overstay", "Undocumented"], ["Less than 1 year", "1–10 years (less than 10)", "10+ years"], ["Yes", "No", "Don't know"], ["U.S. citizen spouse", "U.S. citizen adult child age 21+", "LPR spouse / parent", "None of these"], ["Home with equity", "Route / service business / LLC", "Vehicles / equipment"]],
     next: "Next", back: "Back", submit: "View assessment", busy: "Assessing…", reset: "Start over", error: "The assessment could not be completed. Please try again.", none: "No listed assets",
@@ -44,7 +44,7 @@ export const SCREENING_COPY: Record<"en" | "es" | "ht", Copy> = {
   es: {
     heading: "Herramienta gratuita de evaluación: No deje que los profesionales lo engañen",
     intro: "No pague miles por falsas promesas. Explore su situación legal, qué alivio podría ser posible bajo la ley migratoria vigente y cómo planificar para su casa y negocio, con revisión de un abogado autorizado antes de gastar.",
-    privacy: "No se requiere nombre ni datos de contacto. Estas cinco respuestas se envían para la evaluación; no se guardan en su formulario ni generan notificaciones.",
+    privacy: "No se requiere nombre ni datos de contacto. Sus respuestas categóricas se evalúan sin guardarse en su formulario ni generar notificaciones.",
     questions: ["1. Estatus legal actual", "2. Tiempo en Estados Unidos", "3. Órdenes previas de remoción / deportación", "4. Vínculos familiares", "5. Bienes en riesgo"],
     options: [["TPS válido y vigente", "TPS vencido / sin estatus", "DACA", "Asilo pendiente", "Permanencia después de vencer la visa", "Indocumentado"], ["Menos de 1 año", "1–10 años (menos de 10)", "10 años o más"], ["Sí", "No", "No sé"], ["Cónyuge ciudadano estadounidense", "Hijo ciudadano estadounidense de 21 años o más", "Cónyuge / padre o madre residente permanente", "Ninguno de estos"], ["Casa con valor acumulado", "Negocio de rutas / servicios / LLC", "Vehículos / equipos"]],
     next: "Siguiente", back: "Atrás", submit: "Ver evaluación", busy: "Evaluando…", reset: "Empezar de nuevo", error: "No se pudo completar la evaluación. Inténtelo de nuevo.", none: "Ninguno de estos bienes",
@@ -76,7 +76,7 @@ export const SCREENING_COPY: Record<"en" | "es" | "ht", Copy> = {
   ht: {
     heading: "Zouti evalyasyon gratis: Pa kite pwofesyonèl twonpe ou",
     intro: "Pa peye plizyè milye pou fo pwomès. Eksplore sitiyasyon legal ou, ki sekou ki ka posib dapre lwa imigrasyon aktyèl la, ak kijan pou planifye pou kay ak biznis ou, avèk revizyon yon avoka ki gen lisans anvan ou depanse.",
-    privacy: "Ou pa bezwen bay non ni kontak. Yo voye senk repons sa yo pou evalyasyon; yo pa sove yo nan dosye enskripsyon ou epi yo pa voye notifikasyon.",
+    privacy: "Ou pa bezwen bay non ni kontak. Yo evalye repons kategori ou san yo pa sove yo nan dosye enskripsyon ou ni voye notifikasyon.",
     questions: ["1. Estati legal aktyèl", "2. Tan ou genyen Etazini", "3. Ansyen lòd depòtasyon / ekspilsyon", "4. Lyen fanmi ki ka kalifye", "5. Byen ki an risk"],
     options: [["TPS valab ki poko ekspire", "TPS ekspire / san estati", "DACA", "Azil annatant", "Rete apre viza ekspire", "San papye"], ["Mwens pase 1 an", "1–10 an (mwens pase 10)", "10 an oswa plis"], ["Wi", "Non", "Mwen pa konnen"], ["Mari / madanm sitwayen ameriken", "Pitit sitwayen ameriken ki gen 21 an oswa plis", "Mari / madanm oswa paran rezidan pèmanan", "Okenn nan sa yo"], ["Kay ki gen kapital ladan", "Biznis wout / sèvis / LLC", "Machin / ekipman"]],
     next: "Swivan", back: "Retounen", submit: "Wè evalyasyon", busy: "Ap evalye…", reset: "Rekòmanse", error: "Evalyasyon an pa t fini. Tanpri eseye ankò.", none: "Okenn nan byen sa yo",

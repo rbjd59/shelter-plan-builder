@@ -1,11 +1,14 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
 ## November 14 — full platform revamp
-- [ ] Revamp trilingual homepage messaging and replace previous homepage video sections with four requested core topics; obtain the new video files or URLs before substituting footage.
-- [ ] Extend shared screening and authenticated intake with children, home, service-business, vehicle and detention questions; preserve informational-only assessments and require licensed review for habeas access.
-- [ ] Generate an answer-selected personalized family packet, bundle it, and deliver a private download link through existing managed email after confirmed signup and completed intake; verify real authenticated saving, generation and delivery without notifying unrelated contacts.
-- [ ] Add trilingual federal declaration, Florida identity/notarization guidance, firm/commercial-service and fee/commission disclosures; verify statutory conditions and avoid unsupported success, valuation, immediate-location or criminal-charge guarantees.
-- [ ] Verify all languages, existing unaffected workflows, document field mappings and desktop/mobile layouts; keep changes unpublished for owner review.
+- [x] Revamp trilingual homepage messaging and replace old homepage video sections with four script topics; remove the Employers & Churches card while preserving the separate video library.
+- [ ] Produce the four finished videos; blocked on owner script approval and supplied footage or authorization to produce videos. The homepage shows proposed scripts, not mislabeled old footage.
+- [x] Extend shared screening with children, vehicle and detention categories alongside home/business assets; retain informational-only results and no individual odds. Add saved family form details to authenticated intake.
+- [x] Build an answer-selected family PDF packet with official custody and vehicle forms, child-care/travel drafts and optional §1746 declaration. Add a confirmed-account-only private-link email action, with no family/staff notification fan-out.
+- [ ] Verify real packet email delivery end-to-end and automate it after full intake; not completed. The new action currently requires the signed-in client to request the packet. Do not claim delivery was tested.
+- [ ] Replace the legacy intake legal-petition delivery with a firm-authorized habeas gate; blocked on the firm defining its approval standard and execution-ready child-care/travel templates. New public screening and family packet never unlock habeas; legacy attorney/intake generation remains unchanged.
+- [x] Add trilingual federal declaration, Florida identity/notarization guidance, firm/commercial-service and fee/commission disclosures, with statutory caveats and no unsupported statistical/valuation guarantees.
+- [x] Check trilingual screening, sample packet generation, native official-form name positions and mobile overflow; build passes. Changes remain unpublished. Signed-in intake opens; real packet saving/email still unverified.
 
 ## November 14 — free statutory screening
 - [x] Add a shared English/Spanish/Haitian Creole five-step screening flow on the homepage and intake, with a validated backend assessment, statutory caveats, counsel review and optional economic-defense links; 29 tests and live trilingual / intake assessments passed, with no mobile overflow or publication. Results identify review issues, not individual odds or definitive eligibility.

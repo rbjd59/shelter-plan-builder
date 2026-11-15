@@ -6,13 +6,15 @@ import { assessScreening } from "@/lib/legal-screening.functions";
 import { screeningSchema, type ScreeningAnswers, type ScreeningAssessment } from "@/lib/legal-screening";
 import { SCREENING_COPY } from "@/lib/legal-screening-content";
 import { withLang } from "@/lib/outbound-lang";
+import { PREPAREDNESS_COPY } from "@/lib/preparedness-content";
 
 const OPTIONS = [
   ["valid_tps", "expired_tps", "daca", "pending_asylum", "overstay", "undocumented"],
   ["under1", "1to10", "10plus"], ["yes", "no", "unknown"],
   ["usc_spouse", "usc_child21", "lpr_family", "none"], ["home", "business", "equipment"],
+  ["yes", "no", "unknown"], ["yes", "no", "unknown"], ["none", "undersix", "sixplus", "unknown"],
 ] as const;
-const KEYS = ["status", "time", "prior", "family"] as const;
+const KEYS = ["status", "time", "prior", "family", "assets", "children", "vehicle", "detention"] as const;
 const SOURCES = [
   ["INA § 248", "https://www.law.cornell.edu/uscode/text/8/1258"],
   ["INA § 245", "https://www.law.cornell.edu/uscode/text/8/1255"],
@@ -24,6 +26,9 @@ const SOURCES = [
 
 export default function LegalScreening({ lang, inIntake = false }: { lang: "en" | "es" | "ht"; inIntake?: boolean }) {
   const t = SCREENING_COPY[lang];
+  const p = PREPAREDNESS_COPY[lang];
+  const questions = [...t.questions, p.children, p.vehicle, p.detention];
+  const optionLabels = [...t.options, [p.yes, p.no, p.unknown], [p.yes, p.no, p.unknown], p.detentionOptions];
   const assess = useServerFn(assessScreening);
   const [answers, setAnswers] = useState<Partial<ScreeningAnswers>>({ assets: [] });
   const [step, setStep] = useState(0);
@@ -44,7 +49,7 @@ export default function LegalScreening({ lang, inIntake = false }: { lang: "en" 
         {!result ? <form onSubmit={async e => {
           e.preventDefault();
           if (busy || !canContinue) return;
-          if (step < 4) { setStep(step + 1); focusPanel(); return; }
+          if (step < 7) { setStep(step + 1); focusPanel(); return; }
           const parsed = screeningSchema.safeParse(answers);
           if (!parsed.success) { setError(true); return; }
           setBusy(true); setError(false);
@@ -52,8 +57,8 @@ export default function LegalScreening({ lang, inIntake = false }: { lang: "en" 
           catch { setError(true); }
           finally { setBusy(false); }
         }}>
-          <p className="legal-screening-step" aria-live="polite">{step + 1} / 5</p>
-          <fieldset disabled={busy}><legend>{t.questions[step]}</legend>
+          <p className="legal-screening-step" aria-live="polite">{step + 1} / 8</p>
+          <fieldset disabled={busy}><legend>{questions[step]}</legend>
             <div className="legal-screening-options">
               {OPTIONS[step].map((value, i) => <label key={value}>
                 <input type={step === 4 ? "checkbox" : "radio"} name={`legal-${step}`} value={value}
@@ -68,14 +73,14 @@ export default function LegalScreening({ lang, inIntake = false }: { lang: "en" 
                       setAnswers(current => ({ ...current, assets: checked ? [...(current.assets ?? []), asset] : current.assets?.filter(a => a !== asset) ?? [] }));
                     } else if (key) setAnswers(current => ({ ...current, [key]: value }));
                   }} />
-                <span>{t.options[step][i]}</span>
+                <span>{optionLabels[step][i]}</span>
               </label>)}
               {step === 4 && <label><input type="checkbox" checked={assetsAnswered && answers.assets?.length === 0} onChange={e => { setAssetsAnswered(e.target.checked); setAnswers(current => ({ ...current, assets: [] })); }} /><span>{t.none}</span></label>}
             </div>
           </fieldset>
           <div className="legal-screening-actions">
             {step > 0 && <Button variant="outline" type="button" disabled={busy} onClick={() => { setStep(step - 1); setError(false); focusPanel(); }}><ArrowLeft />{t.back}</Button>}
-            <Button type="submit" disabled={!canContinue || busy}>{busy ? t.busy : step === 4 ? t.submit : t.next}<ArrowRight /></Button>
+            <Button type="submit" disabled={!canContinue || busy}>{busy ? t.busy : step === 7 ? t.submit : t.next}<ArrowRight /></Button>
           </div>
           {error && <p role="alert">{t.error}</p>}
         </form> : <div className="legal-screening-results" aria-live="polite">
@@ -83,6 +88,8 @@ export default function LegalScreening({ lang, inIntake = false }: { lang: "en" 
           <p className="legal-screening-note">{t.odds}</p>
           <ul>{result.findings.map(finding => <li key={finding}>{t.findings[finding]}</li>)}</ul>
           <p className="legal-screening-warning">{t.fees}</p>
+          <p>{p.habeas}</p>
+          {(result.childDocuments || result.vehicleDocument) && <p><strong>{p.packetHeading}</strong><br />{p.packetNote}</p>}
           {!inIntake && <Button asChild><a href={`/intake?lang=${lang}`}>{t.counsel}<ArrowRight /></a></Button>}
           {inIntake && <p><strong>{t.counsel}</strong></p>}
           {(result.home || result.business || result.equipment) && <div className="legal-screening-economic">

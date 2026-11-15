@@ -3423,6 +3423,18 @@ body:not(.splash-active) .home-redesign .home-hero-background { height: 100%; }
 }
 
 /* Shared screening tool: semantic roles inherit each page's theme. */
+.home-redesign .home-hero-subheading { font-size: 23px; font-weight: 700; line-height: 1.4; margin: 18px 0; }
+.home-redesign .home-hero-content { padding-block: 60px; }
+.home-redesign .home-preparedness { background: var(--home-surface); }
+.home-redesign .home-preparedness p { line-height: 1.8; color: var(--home-muted); margin-block: 18px; overflow-wrap: anywhere; }
+.home-redesign .home-preparedness h2 { margin-block: 28px; }
+.home-redesign .home-script-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 32px; }
+.home-redesign .home-script-grid article { border-top: 2px solid var(--home-blue); padding-block: 24px; }
+.home-redesign .home-script-grid h3 { font-size: 23px; margin-block: 16px; }
+.home-redesign .home-script-grid summary { cursor: pointer; min-height: 48px; color: var(--home-blue); }
+.home-redesign .home-preparedness-sources { display: flex; gap: 20px; flex-wrap: wrap; margin-block: 24px; }
+.home-redesign .home-preparedness-sources a { text-decoration: underline; min-height: 44px; }
+@media(max-width:767px) { .home-redesign .home-script-grid { grid-template-columns: 1fr; } .home-redesign .home-hero-content { padding-block: 36px; } }
 .legal-screening { background: var(--background); color: var(--foreground); padding: 40px 0; border-block: 1px solid var(--input, var(--gold-soft)); }
 .legal-screening-inner { max-width: 1100px; margin: auto; padding-inline: 24px; }
 .legal-screening header { max-width: 900px; margin-bottom: 24px; }
