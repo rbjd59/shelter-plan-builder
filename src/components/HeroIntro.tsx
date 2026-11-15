@@ -129,8 +129,8 @@ export default function HeroIntro() {
         <div className="home-container home-hero-content">
           <p className="home-eyebrow">DetencionDefensa.com · ListoAhora.org · PareKounya.org</p>
           <h1>{t.crisisTitle}</h1>
-          <p className="home-hero-subheading">{preparedness.subheading}</p>
-          <div className="home-hero-pillars">{refined.pillars.map((pillar, i) => <article key={pillar.title}><span className="home-hero-pillar-number">0{i + 1}</span><h2><a href={pillar.href}>{pillar.title}</a></h2><HomePoints items={pillar.points} /></article>)}</div>
+          <p className="home-hero-subheading">{preparedness.subheading} {lang === "en" ? "Create a plan. Don’t get ripped off." : lang === "es" ? "Haga un plan. No se deje estafar." : "Fè yon plan. Pa kite yo twonpe ou."}</p>
+          <div className="home-hero-tagline"><HomePoints items={preparedness.body[0].split(/(?<=[.!?])\s+/)} /></div>
           <div className="home-price" id="precio"><del>{t.wasPrice}</del><strong>{lang === "en" ? "Free app. Free check." : lang === "es" ? "App gratis. Revisión gratis." : "App gratis. Ti tès gratis."}</strong></div>
           <div className="home-actions">
             <Button asChild className="home-primary"><a href={`/intake?lang=${lang}`}>{start}</a></Button>
