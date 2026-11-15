@@ -1,5 +1,9 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
+## November 15 — emergency video truth script
+- [x] Save the full trilingual proposed script and revise only the first homepage video title, bullets and script; retain screening, loan, app and commercial safeguards.
+- [x] Verify the first script opens in all three languages, all four video sections remain and mobile has no overflow or browser errors; build passes. No publication.
+
 ## November 15 — plain-language front page
 - [x] Replace main homepage explanations with short trilingual bullet points; keep original scripts, legal notices and detailed sections available under expandable details.
 - [x] Verify all three languages, complete free screening, expandable details and desktop/mobile layout; 15 rule tests pass. No intake logic changes or publication.
