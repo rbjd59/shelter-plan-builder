@@ -21,7 +21,7 @@ function Badge({ children, paid }: { children: React.ReactNode; paid?: boolean }
   return <span className={`inline-block rounded-full px-3 py-1 text-xs font-bold ${paid ? "bg-secondary text-secondary-foreground" : "bg-primary text-primary-foreground"}`}>{children}</span>;
 }
 
-const PARTNERS = [
+export const PARTNERS = [
   { name: "Sorrentino Law Firm", role: "Save My Home Trust, legal review, habeas (first 250 who qualify)" },
   { name: "United Realty", role: "Sell the home — we prepare the pre-title file" },
   { name: "Joe Mondelli", role: "Mortgage / HELOC — before detention" },
@@ -97,6 +97,7 @@ export default function DraftHomeLayout() {
           ))}
         </div>
         <p className="text-sm text-muted-foreground">Disclosure: partners pay Detención Defensa for leads and prepared files. This is advertising. [Firm to review for Florida Bar Rule 4-7.]</p>
+        <Link to="/advertise" className="inline-block rounded-md bg-primary px-5 py-3 font-bold text-primary-foreground">Advertise with us — see options →</Link>
       </Section>
     </main>
   );

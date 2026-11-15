@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/_admin'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as FirmRouteImport } from './routes/_firm'
+import { Route as AdvertiseRouteImport } from './routes/advertise'
 import { Route as AgreementRouteImport } from './routes/agreement'
 import { Route as AltRouteImport } from './routes/alt'
 import { Route as AppRouteImport } from './routes/app'
@@ -122,6 +123,11 @@ const AuthenticatedRoute = AuthenticatedRouteImport.update({
 } as any)
 const FirmRoute = FirmRouteImport.update({
   id: '/_firm',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdvertiseRoute = AdvertiseRouteImport.update({
+  id: '/advertise',
+  path: '/advertise',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AgreementRoute = AgreementRouteImport.update({
@@ -604,6 +610,7 @@ const LovableEmailTransactionalPreviewRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/advertise': typeof AdvertiseRoute
   '/agreement': typeof AgreementRoute
   '/alt': typeof AltRoute
   '/app': typeof AppRoute
@@ -700,6 +707,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/advertise': typeof AdvertiseRoute
   '/agreement': typeof AgreementRoute
   '/alt': typeof AltRoute
   '/app': typeof AppRoute
@@ -800,6 +808,7 @@ export interface FileRoutesById {
   '/_admin': typeof AdminRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_firm': typeof FirmRouteWithChildren
+  '/advertise': typeof AdvertiseRoute
   '/agreement': typeof AgreementRoute
   '/alt': typeof AltRoute
   '/app': typeof AppRoute
@@ -898,6 +907,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/advertise'
     | '/agreement'
     | '/alt'
     | '/app'
@@ -994,6 +1004,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/advertise'
     | '/agreement'
     | '/alt'
     | '/app'
@@ -1093,6 +1104,7 @@ export interface FileRouteTypes {
     | '/_admin'
     | '/_authenticated'
     | '/_firm'
+    | '/advertise'
     | '/agreement'
     | '/alt'
     | '/app'
@@ -1193,6 +1205,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   FirmRoute: typeof FirmRouteWithChildren
+  AdvertiseRoute: typeof AdvertiseRoute
   AgreementRoute: typeof AgreementRoute
   AltRoute: typeof AltRoute
   AppRoute: typeof AppRoute
@@ -1290,6 +1303,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof FirmRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/advertise': {
+      id: '/advertise'
+      path: '/advertise'
+      fullPath: '/advertise'
+      preLoaderRoute: typeof AdvertiseRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/agreement': {
@@ -2057,6 +2077,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   FirmRoute: FirmRouteWithChildren,
+  AdvertiseRoute: AdvertiseRoute,
   AgreementRoute: AgreementRoute,
   AltRoute: AltRoute,
   AppRoute: AppRoute,
