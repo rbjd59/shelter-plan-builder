@@ -59,9 +59,9 @@ export const Route = createFileRoute("/")({
   component: () => (
     <div className="home-redesign">
       <HeroIntro />
+      <div className="home-video-section"><HowItWorksVideoSection /></div>
       <VideoHub />
       <ProblemSolutionSection />
-      <div className="home-video-section"><HowItWorksVideoSection /></div>
       <HeroCallToAction />
       <HomepageSection section="steps" />
       <HomepageSection section="roles" />

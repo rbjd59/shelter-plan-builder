@@ -5,7 +5,8 @@
 - [x] Correct English, Spanish and Haitian Creole privacy policies for SOS-only GPS, Update My Info, activation device details, hosting providers and advertising; retain deletion routes and update the revision date.
 
 ## Homepage arrangement
-- [ ] Create the approved English process overview with revised immigration-review wording and place it before the existing video choices; preserve all existing videos and links, without publishing.
+- [ ] Replace the homepage how-it-works video with English and Haitian Creole process overviews using revised immigration-review wording, directly below the opening photo; preserve original videos in the video library and verify playback without publishing.
+- [ ] Create the Spanish process overview; blocked by the video service's content-safety refusal, so retain the existing Spanish video until a new authorized generation is available.
 - [x] Replace the homepage supporting message in all three languages and compact the notice below the banner without removing legal wording or videos; verify desktop and mobile, without publishing.
 - [x] Add Save My Business alongside the existing homeowner video, with English, Spanish and Haitian Creole trust/corporation copy, language-aware savemybusiness.com links and disclosures; verify all languages and mobile without publishing.
 - [x] Set the homepage background to white and switch the hero family photo with Español, English and Kreyòl; preserve videos and links and verify desktop/mobile.
