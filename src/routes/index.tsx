@@ -1,11 +1,10 @@
-import HowItWorksVideoSection from "@/components/HowItWorksVideoSection";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { HomepageSection } from "@/components/HomepageContent";
-import HeroIntro from "@/components/HeroIntro";
-import { PaidSolutions } from "@/components/ProblemSolutionSection";
-import { PreparednessVideos, PreparednessDisclosures } from "@/components/PreparednessSections";
-import HomeReviewSections from "@/components/HomeReviewSections";
-import "@/home-review.css";
+import HeroIntro, { VideoHub } from "@/components/HeroIntro";
+import ProblemSolutionSection, { PaidSolutions } from "@/components/ProblemSolutionSection";
+import HowItWorksVideoSection from "@/components/HowItWorksVideoSection";
+import AdVideoSection from "@/components/AdVideoSection";
+import SecurityVideoSection from "@/components/SecurityVideoSection";
 
 const DEFENDER_HOSTS = new Set([
   "defendermicasa.com",
@@ -36,17 +35,17 @@ export const Route = createFileRoute("/")({
   },
   head: () => ({
     meta: [
-      { title: "Don’t Wait for an ICE Detention — DetencionDefensa.com" },
+      { title: "DetencionDefensa.com — Plan de Defensa Pre-Detención · Gratis" },
       {
         name: "description",
         content:
-          "Sorrentino Law Firm PLLC’s educational website for Detención Defensa, licensed by DetencionDefensa.com, Inc. Free screening and SOS app; home and business services cost extra.",
+          "Free pre-detention defense plan for immigrant working families. No fee and no monthly charge: the emergency app is free and a Florida attorney reviews your documents pro bono. DetencionDefensa.com, Inc. is the technology operator only; Sorrentino Law Firm PLLC operates the site under license and provides all legal services.",
       },
-      { property: "og:title", content: "Don’t Wait for an ICE Detention — DetencionDefensa.com" },
+      { property: "og:title", content: "DetencionDefensa.com — Plan de Defensa Pre-Detención · Gratis" },
       {
         property: "og:description",
         content:
-          "An educational website from Sorrentino Law Firm PLLC, operated under license from DetencionDefensa.com, Inc. Free screening, SOS app and family preparedness.",
+          "No fee, no monthly charge. Free emergency app plus pro bono attorney-reviewed federal documents. DetencionDefensa.com, Inc. is the technology operator only; Sorrentino Law Firm PLLC operates the site under license and provides all legal services.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://detenciondefensa.com/" },
@@ -60,14 +59,15 @@ export const Route = createFileRoute("/")({
   component: () => (
     <div className="home-redesign">
       <HeroIntro />
-      <HowItWorksVideoSection />
-      <HomeReviewSections />
-      <PreparednessVideos />
+      <VideoHub />
+      <ProblemSolutionSection />
+      <div className="home-video-section"><HowItWorksVideoSection /></div>
       <HomepageSection section="steps" />
       <HomepageSection section="roles" />
+      <div className="home-video-section"><SecurityVideoSection /></div>
       <HomepageSection section="attorney" />
-      <div className="home-band home-paid-section"><PaidSolutions /></div>
-      <PreparednessDisclosures />
+      <HomepageSection section="features" />
+      <div className="home-video-section home-paid-section"><AdVideoSection><PaidSolutions /></AdVideoSection></div>
       <HomepageSection section="faq" />
       <span id="app" />
       <HomepageSection section="footer" />

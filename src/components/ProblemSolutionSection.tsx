@@ -3,8 +3,6 @@ import { useLang, type Lang } from "@/context/LanguageContext";
 import { withLang } from "@/lib/outbound-lang";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { HOME_PLAIN } from "@/lib/home-plain-content";
-import { HomePoints } from "@/components/HomePoints";
 function SaveMyHomeButton({ tld = "com", lang }: { tld?: "com" | "io"; lang: Lang }) { return <a className="home-text-link" href={withLang(`https://savemyhometrust.${tld}/trust`, lang)} target="_blank" rel="noopener noreferrer">SaveMyHomeTrust.{tld} →</a>; }
 function DefensaSiempreButton({ lang }: { lang: Lang }) { return <a className="home-text-link" href={withLang("https://defensasiempre.com", lang)} target="_blank" rel="noopener noreferrer">DefensaSiempre.com →</a>; }
 const COPY: Record<
@@ -106,12 +104,11 @@ const COPY: Record<
 
 
 export default function ProblemSolutionSection() {
- const {lang}=useLang(); const t=HOME_PLAIN[lang];
- return <section className="home-band home-problem-solution" id="problems-solutions"><div className="home-container">
- <p className="home-readiness-intro">{t.problemsIntro}</p>
- <div className="home-comparison"><div><h2>{t.problemsHeading}</h2><ol>{t.problems.map((item,i)=><li key={i}><span>{String(i+1).padStart(2,"0")}</span><div>{item}</div></li>)}</ol><a className="home-text-link" href="/videos">{COPY[lang].watchMore} →</a></div>
- <div className="home-solution"><h2>{t.solutionsHeading}</h2><ol>{t.solutions.map((item,i)=><li key={i}><span>{String(i+1).padStart(2,"0")}</span><div><h3>{item.title}</h3><HomePoints items={item.points} /></div></li>)}</ol></div></div>
- <p className="home-faq-note"><a href="#preguntas">{COPY[lang].faqNote}</a></p></div></section>;
+ const {lang}=useLang(); const t=COPY[lang];
+ return <section className="home-band home-problem-solution"><div className="home-container">
+ <div className="home-comparison"><div><h2>{t.problemLabel}</h2><ol>{t.problems.map((item,i)=><li key={i}><span>{String(i+1).padStart(2,"0")}</span><div>{item}</div></li>)}</ol><a className="home-text-link" href="/videos">{t.watchMore} →</a></div>
+ <div className="home-solution"><h2>{t.solutionLabel}</h2><ol>{t.solutions(lang).slice(0,3).map((item,i)=><li key={i}><span>{String(i+1).padStart(2,"0")}</span><div>{item}</div></li>)}</ol></div></div>
+ <p className="home-faq-note"><a href="#preguntas">{t.faqNote}</a></p></div></section>;
 }
 const BUSINESS_COPY = {
   en: {
@@ -137,13 +134,12 @@ const BUSINESS_COPY = {
 export function PaidSolutions() {
   const { lang } = useLang();
   const business = BUSINESS_COPY[lang];
-  const plain = HOME_PLAIN[lang];
   return <>
     <section className="home-business-offering" aria-labelledby="save-my-business-heading">
       <h3 id="save-my-business-heading">{business.heading}</h3>
-      <HomePoints items={plain.businessPoints} />
+      <p>{business.body}</p>
       <Button asChild className="home-primary"><a href={withLang("https://savemybusiness.com", lang)} target="_blank" rel="noopener noreferrer">{business.cta}<ArrowRight size={18} aria-hidden="true" /></a></Button>
-      <p className="home-business-disclosure">{plain.businessNote}</p><details><summary>{plain.details}</summary><p>{business.body}</p><p>{business.disclosure}</p></details>
+      <p className="home-business-disclosure">{business.disclosure}</p>
     </section>
     <div className="home-paid-grid">{COPY[lang].solutions(lang).slice(3).map((item,i)=><article key={i}><span className="home-item-number">{String(i+4).padStart(2,"0")}</span><div>{item}</div></article>)}</div>
   </>;

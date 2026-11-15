@@ -33,7 +33,7 @@ function esc(s: unknown): string {
     .replace(/"/g, "&quot;");
 }
 
-async function enqueue(to: string, subject: string, html: string, text: string, label: string, leadId: string) {
+async function enqueue(to: string, subject: string, html: string, text: string, label: string) {
   const messageId = crypto.randomUUID();
   const result = await sendManagedEmail({
     to,
@@ -43,7 +43,7 @@ async function enqueue(to: string, subject: string, html: string, text: string, 
     html,
     text,
     label,
-    idempotency_key: `${label}-${leadId}`,
+    idempotency_key: `${label}-${messageId}`,
     message_id: messageId,
   });
   if (!result.sent && result.reason === "failed") {
@@ -91,8 +91,8 @@ export async function createLead(input: LeadInput): Promise<{ id: string }> {
     `<p style="font-family:system-ui;font-size:12px;color:#666">This is an inquiry only. No attorney-client relationship is formed until Sorrentino Law Firm PLLC accepts the matter in writing.</p>`;
   const text = lines.map(([k, v]) => `${k}: ${v}`).join("\n") + `\n\n${row.message ?? ""}`;
 
-  await enqueue(COMPANY_INBOX, `New lead — ${row.full_name}`, html, text, "lead-company", id);
-  await enqueue(FIRM_INBOX, `New lead for firm review — ${row.full_name}`, html, text, "lead-firm", id);
+  await enqueue(COMPANY_INBOX, `New lead — ${row.full_name}`, html, text, "lead-company");
+  await enqueue(FIRM_INBOX, `New lead for firm review — ${row.full_name}`, html, text, "lead-firm");
 
   await supabaseAdmin
     .from("leads" as never)

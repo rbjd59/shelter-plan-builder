@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { Menu, X, Play, ShieldCheck, ArrowRight } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import { Menu, X, Play, Smartphone, Home, ShieldCheck, Building2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLang, type Lang } from "@/context/LanguageContext";
 import logoAsset from "@/assets/dd-logo.png.asset.json";
 import haitianFamily from "@/assets/home-family-haitian.jpg";
 import spanishFamily from "@/assets/home-family-spanish.jpg";
 import unitedFamilies from "@/assets/home-families-united.jpg";
-import { PREPAREDNESS_COPY } from "@/lib/preparedness-content";
-import { HOME_PLAIN } from "@/lib/home-plain-content";
-import { HomePoints } from "@/components/HomePoints";
+import howPoster from "@/assets/home-how-poster.jpg.asset.json";
+import homePoster from "@/assets/home-property-poster.jpg.asset.json";
+import securityPoster from "@/assets/home-security-poster.jpg.asset.json";
+import employerPoster from "@/assets/home-employer-poster.jpg.asset.json";
 
 const COPY = {
   es: {
@@ -17,8 +17,6 @@ const COPY = {
     wasPrice: "$199",
     freeText: "Gratis — pro bono por la crisis comunitaria.",
     tagline: "Alerta de emergencia de un clic y plan de defensa legal revisado por un abogado",
-    crisisTitle: "No espere a que ICE lo detenga. Haga un plan claro para proteger a su familia, su casa y su negocio.",
-    screenBtn: "Evaluar mi preparación",
     btn1: "Cómo funciona el plan de protección",
     btn2: "Si eres propietario de una vivienda",
     watchVideo: "Mira un video de un minuto",
@@ -42,8 +40,6 @@ const COPY = {
     wasPrice: "$199",
     freeText: "Free — pro bono due to the community crisis.",
     tagline: "One-click emergency alert and attorney-reviewed legal defense plan",
-    crisisTitle: "Don’t wait for an ICE detention. Get a clear plan to protect your family, home, and business.",
-    screenBtn: "Check my readiness",
     btn1: "How Protection Plan Works",
     btn2: "If You're a Homeowner",
     watchVideo: "Watch a one-minute video",
@@ -67,8 +63,6 @@ const COPY = {
     wasPrice: "$199",
     freeText: "Gratis — pro bono akòz kriz kominotè a.",
     tagline: "Sijè a alèt dijans yon sèl kli epi plan defans legal revize pa yon avoka",
-    crisisTitle: "Pa tann ICE arete ou. Fè yon plan klè pou pwoteje fanmi ou, kay ou ak biznis ou.",
-    screenBtn: "Verifye preparasyon mwen",
     btn1: "Ki jan plan pwoteksyon an fonksyone",
     btn2: "Si w se yon pwopriyetè kay",
     watchVideo: "Gade yon videyo yon minit",
@@ -89,7 +83,7 @@ const COPY = {
   },
 } satisfies Record<
   Lang,
-  { plan: string; wasPrice: string; freeText: string; tagline: string; crisisTitle: string; screenBtn: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; employerHeading: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; homeBox: string; homeBoxHeading: string; homeBoxBody: string; privilegeNotice: string; disclaimer: string }
+  { plan: string; wasPrice: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; employerHeading: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; homeBox: string; homeBoxHeading: string; homeBoxBody: string; privilegeNotice: string; disclaimer: string }
 >;
 
 
@@ -98,10 +92,8 @@ export default function HeroIntro() {
   const { lang, setLang } = useLang();
   const [open, setOpen] = useState(false);
   const t = COPY[lang];
-  const preparedness = PREPAREDNESS_COPY[lang];
-  const refined = HOME_PLAIN[lang];
   const familyPhoto = lang === "ht" ? haitianFamily : lang === "es" ? spanishFamily : unitedFamilies;
-  const start = lang === "es" ? "Pida una revisión →" : lang === "en" ? "Request a Review →" : "Mande yon revizyon →";
+  const start = lang === "es" ? "Comience Ahora →" : lang === "en" ? "Start Now →" : "Kòmanse Kounye a →";
   return <>
     <a className="home-skip" href="#home-content">{lang === "es" ? "Ir al contenido" : lang === "en" ? "Skip to content" : "Ale nan kontni an"}</a>
     <header className="home-header">
@@ -113,7 +105,7 @@ export default function HeroIntro() {
         <nav className={`home-nav ${open ? "is-open" : ""}`} aria-label="Main">
           <a href="#how-it-works-video" onClick={() => setOpen(false)}>{lang === "es" ? "Cómo funciona" : lang === "en" ? "How it works" : "Kijan li mache"}</a>
           <a href="/videos">{lang === "ht" ? "Videyo" : "Videos"}</a>
-          <a href="#request-review" onClick={() => setOpen(false)}>{lang === "es" ? "Pida una revisión" : lang === "en" ? "Request a Review" : "Mande yon revizyon"}</a>
+          <a href="#precio" onClick={() => setOpen(false)}>{lang === "es" ? "Precio" : lang === "en" ? "Price" : "Pri"}</a>
           <a href="#preguntas" onClick={() => setOpen(false)}>{lang === "es" ? "Preguntas" : lang === "en" ? "FAQ" : "Kesyon"}</a>
           <a href="/attorney">{lang === "es" ? "Abogado" : lang === "en" ? "Attorney" : "Avoka"}</a>
         </nav>
@@ -124,26 +116,39 @@ export default function HeroIntro() {
       </div>
     </header>
     <main id="home-content">
-      <section className="home-hero home-review-hero">
+      <section className="home-hero">
         <img className="home-hero-background" src={familyPhoto} alt="" width="1536" height="1024" fetchPriority="high" />
         <div className="home-hero-shade" />
         <div className="home-container home-hero-content">
           <p className="home-eyebrow">DetencionDefensa.com · ListoAhora.org · PareKounya.org</p>
-          <h1>{t.crisisTitle}</h1>
-          <p className="home-hero-position">{refined.oneStop}</p>
-          <p className="home-hero-subheading">{preparedness.subheading} {lang === "en" ? "Create a plan. Don’t get ripped off." : lang === "es" ? "Haga un plan. No se deje estafar." : "Fè yon plan. Pa kite yo twonpe ou."}</p>
-          <div className="home-hero-tagline"><HomePoints items={preparedness.body[0].split(/(?<=[.!?])\s+/)} /></div>
-          <div className="home-price" id="precio"><strong>{lang === "en" ? "Free app. Free check." : lang === "es" ? "App gratis. Revisión gratis." : "App gratis. Ti tès gratis."}</strong></div>
+          <h1>{t.plan}</h1>
+          <p className="home-hero-tagline">{t.tagline}</p>
+          <div className="home-price" id="precio"><del>{t.wasPrice}</del><strong>{t.freeText}</strong></div>
           <div className="home-actions">
-            <Button asChild className="home-primary"><a href="#request-review">{start}</a></Button>
-            <Button asChild variant="outline" className="home-video-action"><Link to="/qualify" search={{ lang }}>{lang === "en" ? "Take the free check" : lang === "es" ? "Hacer la revisión gratis" : "Fè ti tès gratis la"}<ArrowRight size={18} /></Link></Button>
+            <Button asChild className="home-primary"><a href={`/intake?lang=${lang}`}>{start}</a></Button>
             <Button asChild variant="outline" className="home-video-action"><a href="#how-it-works-video"><Play />{t.appBoxBtn}</a></Button>
           </div>
           <p className="home-hero-languages"><ShieldCheck size={20} /> Español · English · Kreyòl</p>
         </div>
       </section>
-      <div className="home-notices home-container"><ShieldCheck className="home-notice-icon" /><div><HomePoints items={refined.firmPoints.slice(0, 2)} /><details><summary>{refined.details}</summary><p>{t.privilegeNotice}</p><p>{t.disclaimer}</p></details></div></div>
+      <div className="home-notices home-container"><ShieldCheck className="home-notice-icon" /><div><p>{t.privilegeNotice}</p><p>{t.disclaimer}</p></div></div>
     </main>
   </>;
 }
 
+export function VideoHub() {
+  const { lang } = useLang(); const t = COPY[lang];
+  const cards = [
+    { title: t.appBoxHeading, body: t.appBoxBody, href: "#how-it-works-video", icon: Smartphone, poster: howPoster.url },
+    { title: t.homeBoxHeading, body: t.homeBoxBody, href: "#homeowner-video", icon: Home, poster: homePoster.url },
+    { title: t.secBoxHeading, body: t.secBoxBody, href: "#security-video", icon: ShieldCheck, poster: securityPoster.url },
+    { title: t.employerHeading, body: "", href: "/videos#employer-video", icon: Building2, poster: employerPoster.url },
+  ];
+  return <section className="home-video-hub home-band"><div className="home-container">
+    <div className="home-section-heading"><h2>{lang === "es" ? "Mira los videos" : lang === "en" ? "Watch the videos" : "Gade videyo yo"}</h2><a href="/videos">{lang === "es" ? "Mira Más Videos" : lang === "en" ? "Watch More Videos" : "Gade Plis Videyo"}<ArrowRight size={18} /></a></div>
+    <div className="home-video-grid">{cards.map((card, i) => <article className="home-video-card" key={card.href}>
+      <a className="home-video-thumb" href={card.href} aria-label={card.title}><img src={card.poster} alt={card.title} loading="lazy" width="640" height="360" /><span><Play size={28} /></span></a>
+      <div className="home-video-card-text"><card.icon size={22} /><h3><a href={card.href}>{card.title}</a></h3><p>{card.body}</p><a href={card.href}>{i === 2 ? t.secBoxBtn : t.appBoxBtn}<ArrowRight size={16}/></a></div>
+    </article>)}</div>
+  </div></section>;
+}

@@ -17,22 +17,18 @@ import {
 import { createPlaidLinkToken, exchangePlaidPublicToken } from "@/lib/plaid.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { useLang, type Lang } from "@/context/LanguageContext";
-import LegalScreening from "@/components/LegalScreening";
 
 
 export const Route = createFileRoute("/qualify")({
   head: () => ({
     meta: [
-      { title: "Free 5-Minute Legal Check — DetencionDefensa.com" },
+      { title: "See if you qualify — DetencionDefensa.com" },
       {
         name: "description",
         content:
-          "Answer simple questions about your dates, entries and history. Learn what topics to discuss with a licensed lawyer before you pay.",
+          "Check if you qualify for our no-cost or low-cost pre-detention defense program. A quick income and household questionnaire.",
       },
-      { property: "og:title", content: "Free 5-Minute Legal Check — DetencionDefensa.com" },
-      { property: "og:description", content: "A free, private legal screening in English, Spanish and Haitian Creole. No final eligibility decision is made." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      { name: "robots", content: "noindex" },
     ],
   }),
   component: QualifyPage,
@@ -717,10 +713,8 @@ function QualifyPage() {
   }
 
   return (
-    <>
-      <LegalScreening lang={lang} />
-      <div className="min-h-screen bg-gray-50">
-        <div className="mx-auto max-w-3xl px-4 py-10">
+    <div className="min-h-screen bg-gray-50">
+      <div className="mx-auto max-w-3xl px-4 py-10">
         <div className="mb-6">
           <Link to="/" className="text-sm text-red-700 hover:underline">
             {t.backHome}
@@ -1298,8 +1292,7 @@ function QualifyPage() {
         }
         .btn-secondary:hover { background: #d1d5db; }
       `}</style>
-      </div>
-    </>
+    </div>
   );
 }
 

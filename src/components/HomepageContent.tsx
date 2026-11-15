@@ -2,12 +2,8 @@ import { useEffect, useRef } from "react";
 import { HOMEPAGE_SECTIONS } from "@/lib/homepage-sections";
 import { Building2, Scale, UserRound, Gavel, ShieldCheck, Zap, Wallet, Languages, Smartphone, BadgeCheck } from "lucide-react";
 import { createRoot } from "react-dom/client";
-import { useLang } from "@/context/LanguageContext";
-import { HOME_EXTRA } from "@/lib/home-plain-content";
-import { HomePoints } from "@/components/HomePoints";
 
 export function HomepageSection({ section }: { section: keyof typeof HOMEPAGE_SECTIONS }) {
-  const { lang } = useLang();
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const root = ref.current;
@@ -33,10 +29,5 @@ export function HomepageSection({ section }: { section: keyof typeof HOMEPAGE_SE
     root.addEventListener("click", click);
     return () => { root.removeEventListener("click", click); roots.forEach(item => item.unmount()); };
   }, [section]);
-  const original = <div className={`home-preserved home-preserved-${section}`} ref={ref} dangerouslySetInnerHTML={{ __html: HOMEPAGE_SECTIONS[section] }} />;
-  if (section === "steps" || section === "roles" || section === "attorney") {
-    const t = HOME_EXTRA[lang].sections[section];
-    return <section className="home-band home-preparedness"><div className="home-container"><h2>{t.title}</h2><HomePoints items={t.points} /><details><summary>{HOME_EXTRA[lang].more}</summary>{original}</details></div></section>;
-  }
-  return original;
+  return <div className={`home-preserved home-preserved-${section}`} ref={ref} dangerouslySetInnerHTML={{ __html: HOMEPAGE_SECTIONS[section] }} />;
 }

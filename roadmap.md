@@ -1,56 +1,10 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
-## November 15 — review-first homepage
-- [x] Rebuild the homepage around the attorney presentation video, a trilingual Request a Review form, five clean public program cards and a with-plan/without-plan comparison: SOS app, Save My Home, Save My Business, family documents, and stay/go legal screening.
-- [x] Save validated review requests to the existing leads system, notify the existing company/firm inboxes, test one submission end to end and delete only that test row. Both notification emails showed sent; the test lead was deleted by its ID.
-- [x] Put the legal screener at `/qualify`, align `/own-property` with Save My Home Trust, and create a clean trilingual `/save-my-business` landing page; leave the private `/company-board` and all staff links unchanged.
-- [x] Verify all three languages, program links, video playback, mobile layout and lead delivery; 97 tests pass, no browser errors or mobile overflow. Not published.
-
-## November 15 — five readiness checks
-- [x] Rework the video-area overview into five trilingual checks: family papers, legal options, moving abroad, home/business planning and deadlines; preserve existing scripts and videos.
-- [x] Add local planning questions and answer-based summaries for family, moving, assets and deadlines; reuse the existing legal assessment without automatic eligibility, country acceptance, loan approval or habeas release. Financial calculations use entered estimates only; dates are gathered for counsel, not treated as final legal deadlines.
-- [x] Update app setup/location guidance and replace panic-hiring comparison with act-today/deadline guidance; verify all languages, family next steps, moving total, home equity and mobile layout. 23 tests pass; no publication or changes to notification/document generation.
-- [ ] Supply verified country-specific visa/residency fees and processing times, independent business valuations and firm-reviewed individual deadlines; blocked on current official destination information and professional review. No fabricated rates or eligibility determinations are shown.
-- [ ] Confirm revised firm suffix and technology-provider domain before replacing the current licensed-website attribution; blocked on owner clarification.
-
-## November 15 — expanded plain-language screening
-- [x] Replace vague screening labels with 21 direct trilingual questions; add entry, missed appointments, asylum history, fear, family hardship, belongings and departure planning. Country and dates remain local for counsel review.
-- [x] Provide answer-based review guidance and planning links without final eligibility decisions, personal probabilities or automatic voluntary-departure eligibility; 22 rule tests pass.
-- [x] Verify homepage and intake public screening in all languages, with selected and unknown answers; mobile has no overflow, build passes. Clarify matching intake labels; retain legal notices and do not publish. Existing homepage uses plain-language copy; other pages have not had a complete website-wide reading-level audit.
-
-## November 15 — emergency video truth script
-- [x] Save the full trilingual proposed script and revise only the first homepage video title, bullets and script; retain screening, loan, app and commercial safeguards.
-- [x] Verify the first script opens in all three languages, all four video sections remain and mobile has no overflow or browser errors; build passes. No publication.
-
-## November 15 — plain-language front page
-- [x] Replace main homepage explanations with short trilingual bullet points; keep original scripts, legal notices and detailed sections available under expandable details.
-- [x] Verify all three languages, complete free screening, expandable details and desktop/mobile layout; 15 rule tests pass. No intake logic changes or publication.
-
-## November 15 — homepage refinement
-- [x] Add three prominent trilingual hero pillars and remove obsolete hero messaging.
-- [x] Reorder videos, app, integrated pillars, prepared-file comparison, screening and release guidance; replace comparison with seven problems/four solutions and remove Key Features.
-- [x] Preserve Save My Business, signing guidance and legal safeguards; verify all three languages, script expansion, screening links and desktop/mobile layout. No publication or backend changes.
-
-## November 14 — full platform revamp
-- [x] Revamp trilingual homepage messaging and replace old homepage video sections with four script topics; remove the Employers & Churches card while preserving the separate video library.
-- [ ] Produce the four finished videos; blocked on owner script approval and supplied footage or authorization to produce videos. The homepage shows proposed scripts, not mislabeled old footage.
-- [x] Extend shared screening with children, vehicle and detention categories alongside home/business assets; retain informational-only results and no individual odds. Add saved family form details to authenticated intake.
-- [x] Build an answer-selected family PDF packet with official custody and vehicle forms, child-care/travel drafts and optional §1746 declaration. Add a confirmed-account-only private-link email action, with no family/staff notification fan-out.
-- [ ] Verify real packet email delivery end-to-end and automate it after full intake; not completed. The new action currently requires the signed-in client to request the packet. Do not claim delivery was tested.
-- [ ] Replace the legacy intake legal-petition delivery with a firm-authorized habeas gate; blocked on the firm defining its approval standard and execution-ready child-care/travel templates. New public screening and family packet never unlock habeas; legacy attorney/intake generation remains unchanged.
-- [x] Add trilingual federal declaration, Florida identity/notarization guidance, firm/commercial-service and fee/commission disclosures, with statutory caveats and no unsupported statistical/valuation guarantees.
-- [x] Check trilingual screening, sample packet generation, native official-form name positions and mobile overflow; build passes. Changes remain unpublished. Signed-in intake opens; real packet saving/email still unverified.
-
-## November 14 — free statutory screening
-- [x] Add a shared English/Spanish/Haitian Creole five-step screening flow on the homepage and intake, with a validated backend assessment, statutory caveats, counsel review and optional economic-defense links; 29 tests and live trilingual / intake assessments passed, with no mobile overflow or publication. Results identify review issues, not individual odds or definitive eligibility.
-
 ## November 13 — store launch preparation (owner review before publish)
 - [x] Create one silent, reusable store-reviewer account through the normal provisioning path; verify 12+ activations, signed SOS/cancel board records, and zero email/SMS fan-out.
 - [x] Correct English, Spanish and Haitian Creole privacy policies for SOS-only GPS, Update My Info, activation device details, hosting providers and advertising; retain deletion routes and update the revision date.
 
 ## Homepage arrangement
-- [x] Add the emergency-readiness model: crisis-versus-preparation hero messaging, four integrated pillars, trilingual legal/statistical disclosures, app highlights, and a private on-device legal-posture screener linked to intake, Save My Home and Save My Business. Preserve all existing videos, links and legal workflows; verify all languages and mobile without publishing.
-- [x] Emphasize the proprietary mobile app as the key differentiator: immediate one-tap phone SOS, automated detention tracking and ICE locator monitoring, and instant family/emergency-contact alerts with facility location and case-status updates, in all three languages.
 - [x] Add Save My Business alongside the existing homeowner video, with English, Spanish and Haitian Creole trust/corporation copy, language-aware savemybusiness.com links and disclosures; verify all languages and mobile without publishing.
 - [x] Set the homepage background to white and switch the hero family photo with Español, English and Kreyòl; preserve videos and links and verify desktop/mobile.
 - [x] Rearrange and restyle the homepage while preserving all original link destinations, three video URLs, and every translated HTML paragraph; verify 360px mobile, desktop, language switching, FAQ expansion and video playback. Intake, backend, native app and sitewide SEO remain unchanged.
@@ -120,5 +74,3 @@
 - [x] app-trigger now logs the reason for every 400 (schema issues / body keys).
 - [ ] Client activation email: logs show `sent` to proseforms@atomicmail.io and njbittelman@gmail.com — check spam/atomicmail delivery; sender domain still notify.gohomesooner.com.
 - [ ] NEEDS PUBLISH for all of the above.
-- [x] Readiness checks: remove move check, split home/business
-- [x] Put videos at the top of the homepage

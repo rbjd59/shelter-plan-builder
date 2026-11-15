@@ -1,6 +1,4 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import LegalScreening from "@/components/LegalScreening";
-import { FamilyPacketForm } from "@/components/intake/FamilyPacketForm";
 import { PrivilegeNotice } from "@/components/PrivilegeNotice";
 import { useEffect, useState, useMemo, useRef } from "react";
 import { z } from "zod";
@@ -65,7 +63,7 @@ type FieldDef = {
 const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, string>; fields: FieldDef[] }[] = [
   {
     id: "petitioner",
-    title: { en: "1. About You", es: "1. Sobre usted", ht: "1. Sou ou" },
+    title: { en: "1. About You", es: "1. Sobre el Peticionario", ht: "1. Konsènan Petisyonè a" },
     intro: {
       en: "Form AO 242 — Petition for Writ of Habeas Corpus under 28 U.S.C. § 2241.",
       es: "Formulario AO 242 — Petición de Habeas Corpus bajo 28 U.S.C. § 2241.",
@@ -82,22 +80,22 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
         hint: { en: "Leave blank to use 0000. You can change it later in Mi App.", es: "Déjelo en blanco para usar 0000. Puede cambiarlo después en Mi App.", ht: "Kite l vid pou itilize 0000. Ou ka chanje l pita nan Mi App." },
       },
       { key: "other_names_used", label: { en: "Other names used", es: "Otros nombres usados", ht: "Lòt non yo te itilize" } },
-      { key: "a_number", label: { en: "Your A-number (on your immigration papers)", es: "Su número A (en sus papeles de inmigración)", ht: "Nimewo A ou (sou papye imigrasyon ou)" } },
+      { key: "a_number", label: { en: "Alien Registration Number (A#)", es: "Número de Registro de Extranjero (A#)", ht: "Nimewo Anrejistreman Etranje (A#)" } },
       { key: "dob", label: { en: "Date of birth", es: "Fecha de nacimiento", ht: "Dat nesans" }, type: "date" },
       { key: "place_of_birth", label: { en: "Place of birth / country of origin (city, state/province, country)", es: "Lugar de nacimiento / país de origen (ciudad, estado/provincia, país)", ht: "Kote ou te fèt / peyi orijin (vil, eta/pwovens, peyi)" } },
     ],
   },
   {
     id: "detainer",
-    title: { en: "2. Your immigration papers", es: "2. Sus papeles de inmigración", ht: "2. Papye imigrasyon ou" },
+    title: { en: "2. Immigration Status", es: "2. Detención de ICE", ht: "2. Detainer ICE" },
     intro: {
-      en: "Has a judge or immigration officer told you to leave the U.S.?",
-      es: "¿Un juez o agente de inmigración le dijo que salga de EE.UU.?",
-      ht: "Èske yon jij oswa ajan imigrasyon di ou kite Etazini?",
+      en: "Has Immigration issued a Order of Removal",
+      es: "Información sobre la retención migratoria.",
+      ht: "Enfòmasyon sou kenbe imigrasyon an.",
     },
     fields: [
       { key: "serious_felony", type: "yes_no", label: { en: "Have you ever been convicted of a serious felony anywhere?", es: "¿Alguna vez ha sido condenado por un delito grave en cualquier lugar?", ht: "Èske ou janm te kondane pou yon krim grav nenpòt kote?" } },
-      { key: "prior_immigration_proceedings", type: "textarea", label: { en: "What permission to stay did you have before? What do you have now?", es: "¿Qué permiso tenía para quedarse antes? ¿Qué tiene ahora?", ht: "Ki pèmisyon pou rete ou te genyen anvan? Ki sa ou genyen kounye a?" } },
+      { key: "prior_immigration_proceedings", type: "textarea", label: { en: "Describe prior Immigration Status", es: "Describa procedimientos migratorios anteriores", ht: "Dekri pwosedi imigrasyon anvan" } },
     ],
   },
 
@@ -163,12 +161,12 @@ const sections: { id: string; title: Record<Lang, string>; intro: Record<Lang, s
       { key: "atty_us_family", type: "textarea", label: { en: "Do you have a spouse, child, or parent who is a U.S. citizen or legal resident? (who and their status)", es: "¿Tiene esposo/a, hijo/a o padre/madre que sea ciudadano o residente legal de EE.UU.? (quién y su estatus)", ht: "Èske ou gen mari/madanm, pitit, oswa paran ki sitwayen oswa rezidan legal Ameriken? (kilès ak estati yo)" } },
       { key: "atty_address_years", label: { en: "How long have you lived at your current address?", es: "¿Cuánto tiempo ha vivido en su dirección actual?", ht: "Konbyen tan ou ap viv nan adrès aktyèl ou a?" } },
       { key: "atty_work", type: "textarea", label: { en: "Do you work in the U.S.? (employer name and how long)", es: "¿Trabaja en EE.UU.? (nombre del empleador y cuánto tiempo)", ht: "Èske ou travay Ozetazini? (non anplwayè a ak konbyen tan)" } },
-      { key: "atty_property", type: "textarea", label: { en: "What do you own in the U.S.? List a home, car, work tools or business. Do you owe money on any of them?", es: "¿Qué tiene en EE.UU.? Liste casa, carro, herramientas o negocio. ¿Debe dinero por alguno?", ht: "Ki sa ou posede Etazini? Fè lis kay, machin, zouti oswa biznis. Èske ou dwe lajan sou yo?" } },
+      { key: "atty_property", type: "textarea", label: { en: "Do you own a home, car, or business in the U.S.?", es: "¿Es dueño de una casa, carro o negocio en EE.UU.?", ht: "Èske ou gen yon kay, machin, oswa biznis Ozetazini?" } },
       { key: "atty_serious_crime", type: "textarea", label: { en: "Have you ever been arrested in the USA for a serious crime? (if yes, briefly: what and outcome)", es: "¿Alguna vez lo arrestaron en EE.UU. por un delito grave? (si sí, brevemente: qué y resultado)", ht: "Èske yo te janm arete ou Ozetazini pou yon krim grav? (si wi, an kèk mo: ki sa epi rezilta)" } },
       { key: "atty_medical", type: "textarea", label: { en: "Do you have any serious medical conditions or take prescription medication?", es: "¿Tiene alguna condición médica seria o toma medicamento recetado?", ht: "Èske ou gen pwoblèm medikal grav oswa pran medikaman preskripsyon?" } },
       { key: "atty_fear_return", type: "textarea", label: { en: "Are you afraid to return to your home country? Why? (gangs, government, family, religion, politics, persecution)", es: "¿Tiene miedo de regresar a su país? ¿Por qué? (pandillas, gobierno, familia, religión, política, persecución)", ht: "Èske ou pè retounen nan peyi ou? Poukisa? (gang, gouvènman, fanmi, relijyon, politik, pèsekisyon)" } },
       { key: "atty_dependents", type: "textarea", label: { en: "Does anyone depend on you for money or care? (who)", es: "¿Alguien depende de usted para dinero o cuidado? (quién)", ht: "Èske gen moun ki depann sou ou pou lajan oswa swen? (kilès)" } },
-      { key: "atty_missed_court", type: "textarea", label: { en: "Have you missed a court date or an ICE check-in? Did you tell immigration when you moved?", es: "¿Faltó a la corte o a una cita con ICE? ¿Avisó a inmigración cuando se mudó?", ht: "Èske ou rate tribinal oswa randevou ICE? Èske ou di imigrasyon lè ou demenaje?" } },
+      { key: "atty_missed_court", type: "textarea", label: { en: "Have you ever missed an immigration court date or forgotten to send a change of address to immigration?", es: "¿Alguna vez faltó a una cita en la corte de inmigración o se olvidó de enviar cambio de dirección a inmigración?", ht: "Èske ou te janm manke yon dat tribinal imigrasyon oswa bliye voye yon chanjman adrès bay imigrasyon?" } },
     ],
   },
 ];
@@ -658,7 +656,6 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
           <ArrowRight size={16} aria-hidden="true" />
           <span aria-current={stage === "forms" ? "step" : undefined}>{text("Information for the forms", "Información para los formularios", "Enfòmasyon pou fòm yo")}</span>
         </nav>
-        <LegalScreening lang={L} inIntake />
         {stage === "signup" ? <div className="intake-stage">
           <PrivilegeNotice lang={L} />
           <label className="mb-6 flex items-start gap-3 text-sm leading-relaxed">
@@ -691,7 +688,6 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
         <div style={{ background: "#3a2a00", border: "1px solid #e8a04a", padding: 14, borderRadius: 4, marginBottom: 16, fontSize: 14, lineHeight: 1.5, color: "#fff5d6" }}>
           <strong>⚠ {ui.upl}</strong>
         </div>
-        <FamilyPacketForm lang={L} answers={answers} onChange={setSignupField} save={persistNow} signedIn={!!user && draftLoaded} />
         <form onSubmit={handleSubmit}>
           {sections.map((s) => {
             return (

@@ -1,7 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { requestReviewSchema, REVIEW_NEED_LABELS } from "@/lib/review-request";
 
 const leadSchema = z.object({
   fullName: z.string().min(2).max(120),
@@ -20,21 +19,6 @@ export const submitLead = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { createLead } = await import("./leads.server");
     return await createLead(data);
-  });
-
-/** Public: validated Request a Review form on the homepage. */
-export const requestReview = createServerFn({ method: "POST" })
-  .inputValidator((d: unknown) => requestReviewSchema.parse(d))
-  .handler(async ({ data }) => {
-    const { createLead } = await import("./leads.server");
-    return await createLead({
-      fullName: data.fullName,
-      phone: data.phone,
-      email: data.email,
-      language: data.language,
-      need: REVIEW_NEED_LABELS[data.need],
-      source: "homepage-request-review",
-    });
   });
 
 export type LeadRow = {

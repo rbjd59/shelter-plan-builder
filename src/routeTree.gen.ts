@@ -13,7 +13,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/_admin'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as FirmRouteImport } from './routes/_firm'
-import { Route as AdvertiseRouteImport } from './routes/advertise'
 import { Route as AgreementRouteImport } from './routes/agreement'
 import { Route as AltRouteImport } from './routes/alt'
 import { Route as AppRouteImport } from './routes/app'
@@ -27,7 +26,6 @@ import { Route as ContactoRouteImport } from './routes/contacto'
 import { Route as DagRouteImport } from './routes/dag'
 import { Route as DeleteMyDataRouteImport } from './routes/delete-my-data'
 import { Route as DownloadRouteImport } from './routes/download'
-import { Route as DraftHomeRouteImport } from './routes/draft-home'
 import { Route as FamilyFormsRouteImport } from './routes/family-forms'
 import { Route as FirmarRouteImport } from './routes/firmar'
 import { Route as GetAppRouteImport } from './routes/get-app'
@@ -40,7 +38,6 @@ import { Route as PastorsRouteImport } from './routes/pastors'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as QualifyRouteImport } from './routes/qualify'
 import { Route as RetainerRouteImport } from './routes/retainer'
-import { Route as SaveMyBusinessRouteImport } from './routes/save-my-business'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as SecurityFaqRouteImport } from './routes/security-faq'
 import { Route as SentinelTrustRouteImport } from './routes/sentinel-trust'
@@ -126,11 +123,6 @@ const FirmRoute = FirmRouteImport.update({
   id: '/_firm',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdvertiseRoute = AdvertiseRouteImport.update({
-  id: '/advertise',
-  path: '/advertise',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AgreementRoute = AgreementRouteImport.update({
   id: '/agreement',
   path: '/agreement',
@@ -196,11 +188,6 @@ const DownloadRoute = DownloadRouteImport.update({
   path: '/download',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DraftHomeRoute = DraftHomeRouteImport.update({
-  id: '/draft-home',
-  path: '/draft-home',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const FamilyFormsRoute = FamilyFormsRouteImport.update({
   id: '/family-forms',
   path: '/family-forms',
@@ -259,11 +246,6 @@ const QualifyRoute = QualifyRouteImport.update({
 const RetainerRoute = RetainerRouteImport.update({
   id: '/retainer',
   path: '/retainer',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SaveMyBusinessRoute = SaveMyBusinessRouteImport.update({
-  id: '/save-my-business',
-  path: '/save-my-business',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SecurityRoute = SecurityRouteImport.update({
@@ -616,7 +598,6 @@ const LovableEmailTransactionalPreviewRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/advertise': typeof AdvertiseRoute
   '/agreement': typeof AgreementRoute
   '/alt': typeof AltRoute
   '/app': typeof AppRoute
@@ -630,7 +611,6 @@ export interface FileRoutesByFullPath {
   '/dag': typeof DagRoute
   '/delete-my-data': typeof DeleteMyDataRoute
   '/download': typeof DownloadRoute
-  '/draft-home': typeof DraftHomeRoute
   '/family-forms': typeof FamilyFormsRoute
   '/firmar': typeof FirmarRoute
   '/get-app': typeof GetAppRoute
@@ -643,7 +623,6 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/qualify': typeof QualifyRoute
   '/retainer': typeof RetainerRoute
-  '/save-my-business': typeof SaveMyBusinessRoute
   '/security': typeof SecurityRoute
   '/security-faq': typeof SecurityFaqRoute
   '/sentinel-trust': typeof SentinelTrustRoute
@@ -714,7 +693,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/advertise': typeof AdvertiseRoute
   '/agreement': typeof AgreementRoute
   '/alt': typeof AltRoute
   '/app': typeof AppRoute
@@ -728,7 +706,6 @@ export interface FileRoutesByTo {
   '/dag': typeof DagRoute
   '/delete-my-data': typeof DeleteMyDataRoute
   '/download': typeof DownloadRoute
-  '/draft-home': typeof DraftHomeRoute
   '/family-forms': typeof FamilyFormsRoute
   '/firmar': typeof FirmarRoute
   '/get-app': typeof GetAppRoute
@@ -741,7 +718,6 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/qualify': typeof QualifyRoute
   '/retainer': typeof RetainerRoute
-  '/save-my-business': typeof SaveMyBusinessRoute
   '/security': typeof SecurityRoute
   '/security-faq': typeof SecurityFaqRoute
   '/sentinel-trust': typeof SentinelTrustRoute
@@ -816,7 +792,6 @@ export interface FileRoutesById {
   '/_admin': typeof AdminRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_firm': typeof FirmRouteWithChildren
-  '/advertise': typeof AdvertiseRoute
   '/agreement': typeof AgreementRoute
   '/alt': typeof AltRoute
   '/app': typeof AppRoute
@@ -830,7 +805,6 @@ export interface FileRoutesById {
   '/dag': typeof DagRoute
   '/delete-my-data': typeof DeleteMyDataRoute
   '/download': typeof DownloadRoute
-  '/draft-home': typeof DraftHomeRoute
   '/family-forms': typeof FamilyFormsRoute
   '/firmar': typeof FirmarRoute
   '/get-app': typeof GetAppRoute
@@ -843,7 +817,6 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/qualify': typeof QualifyRoute
   '/retainer': typeof RetainerRoute
-  '/save-my-business': typeof SaveMyBusinessRoute
   '/security': typeof SecurityRoute
   '/security-faq': typeof SecurityFaqRoute
   '/sentinel-trust': typeof SentinelTrustRoute
@@ -916,7 +889,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/advertise'
     | '/agreement'
     | '/alt'
     | '/app'
@@ -930,7 +902,6 @@ export interface FileRouteTypes {
     | '/dag'
     | '/delete-my-data'
     | '/download'
-    | '/draft-home'
     | '/family-forms'
     | '/firmar'
     | '/get-app'
@@ -943,7 +914,6 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/qualify'
     | '/retainer'
-    | '/save-my-business'
     | '/security'
     | '/security-faq'
     | '/sentinel-trust'
@@ -1014,7 +984,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/advertise'
     | '/agreement'
     | '/alt'
     | '/app'
@@ -1028,7 +997,6 @@ export interface FileRouteTypes {
     | '/dag'
     | '/delete-my-data'
     | '/download'
-    | '/draft-home'
     | '/family-forms'
     | '/firmar'
     | '/get-app'
@@ -1041,7 +1009,6 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/qualify'
     | '/retainer'
-    | '/save-my-business'
     | '/security'
     | '/security-faq'
     | '/sentinel-trust'
@@ -1115,7 +1082,6 @@ export interface FileRouteTypes {
     | '/_admin'
     | '/_authenticated'
     | '/_firm'
-    | '/advertise'
     | '/agreement'
     | '/alt'
     | '/app'
@@ -1129,7 +1095,6 @@ export interface FileRouteTypes {
     | '/dag'
     | '/delete-my-data'
     | '/download'
-    | '/draft-home'
     | '/family-forms'
     | '/firmar'
     | '/get-app'
@@ -1142,7 +1107,6 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/qualify'
     | '/retainer'
-    | '/save-my-business'
     | '/security'
     | '/security-faq'
     | '/sentinel-trust'
@@ -1217,7 +1181,6 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   FirmRoute: typeof FirmRouteWithChildren
-  AdvertiseRoute: typeof AdvertiseRoute
   AgreementRoute: typeof AgreementRoute
   AltRoute: typeof AltRoute
   AppRoute: typeof AppRoute
@@ -1231,7 +1194,6 @@ export interface RootRouteChildren {
   DagRoute: typeof DagRoute
   DeleteMyDataRoute: typeof DeleteMyDataRoute
   DownloadRoute: typeof DownloadRoute
-  DraftHomeRoute: typeof DraftHomeRoute
   FamilyFormsRoute: typeof FamilyFormsRoute
   FirmarRoute: typeof FirmarRoute
   GetAppRoute: typeof GetAppRoute
@@ -1244,7 +1206,6 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   QualifyRoute: typeof QualifyRoute
   RetainerRoute: typeof RetainerRoute
-  SaveMyBusinessRoute: typeof SaveMyBusinessRoute
   SecurityRoute: typeof SecurityRoute
   SecurityFaqRoute: typeof SecurityFaqRoute
   SentinelTrustRoute: typeof SentinelTrustRoute
@@ -1316,13 +1277,6 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof FirmRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/advertise': {
-      id: '/advertise'
-      path: '/advertise'
-      fullPath: '/advertise'
-      preLoaderRoute: typeof AdvertiseRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/agreement': {
@@ -1416,13 +1370,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DownloadRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/draft-home': {
-      id: '/draft-home'
-      path: '/draft-home'
-      fullPath: '/draft-home'
-      preLoaderRoute: typeof DraftHomeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/family-forms': {
       id: '/family-forms'
       path: '/family-forms'
@@ -1505,13 +1452,6 @@ declare module '@tanstack/react-router' {
       path: '/retainer'
       fullPath: '/retainer'
       preLoaderRoute: typeof RetainerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/save-my-business': {
-      id: '/save-my-business'
-      path: '/save-my-business'
-      fullPath: '/save-my-business'
-      preLoaderRoute: typeof SaveMyBusinessRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/security': {
@@ -2097,7 +2037,6 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   FirmRoute: FirmRouteWithChildren,
-  AdvertiseRoute: AdvertiseRoute,
   AgreementRoute: AgreementRoute,
   AltRoute: AltRoute,
   AppRoute: AppRoute,
@@ -2111,7 +2050,6 @@ const rootRouteChildren: RootRouteChildren = {
   DagRoute: DagRoute,
   DeleteMyDataRoute: DeleteMyDataRoute,
   DownloadRoute: DownloadRoute,
-  DraftHomeRoute: DraftHomeRoute,
   FamilyFormsRoute: FamilyFormsRoute,
   FirmarRoute: FirmarRoute,
   GetAppRoute: GetAppRoute,
@@ -2124,7 +2062,6 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   QualifyRoute: QualifyRoute,
   RetainerRoute: RetainerRoute,
-  SaveMyBusinessRoute: SaveMyBusinessRoute,
   SecurityRoute: SecurityRoute,
   SecurityFaqRoute: SecurityFaqRoute,
   SentinelTrustRoute: SentinelTrustRoute,
