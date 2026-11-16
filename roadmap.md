@@ -5,7 +5,7 @@
 - [x] Correct English, Spanish and Haitian Creole privacy policies for SOS-only GPS, Update My Info, activation device details, hosting providers and advertising; retain deletion routes and update the revision date.
 
 ## Homepage arrangement
-- [ ] November 16: revise all three process videos to describe Rosario's personal review, emailed options, app downloads and home/business website referrals; remove repetitive video disclaimers, preserve site legal disclosures, and do not publish.
+- [ ] November 16: rebuild all three process videos in simpler language: Rosario and the program's team directly review submissions and offer discounted help, honest answers and emailed options, with no required outside-firm referral; cover the complete process, app downloads and home/business sites. Remove repetitive video disclaimers, preserve site legal disclosures, and do not publish.
 - [x] Remove the homepage Problem and Solution section in all three languages; keep the video library and paid home/business offerings unchanged.
 - [ ] November 15 follow-up: deliver the complete 3–4 minute English video first, not only its short presenter opening, then complete Haitian Creole; Spanish generation remains blocked and must not be bypassed.
 - [ ] Replace the homepage how-it-works video with English and Haitian Creole process overviews using revised immigration-review wording, directly below the opening photo; preserve original videos in the video library and verify playback without publishing.
