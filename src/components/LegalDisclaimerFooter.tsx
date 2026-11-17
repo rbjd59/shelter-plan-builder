@@ -14,6 +14,9 @@ import StaffAccessTile from "@/components/StaffAccessPinBox";
 export function LegalDisclaimerFooter() {
   const { lang } = useLang();
   const t = COPY[lang] ?? COPY.en;
+  // The legal name already ends in "INC." — drop its trailing dot so the
+  // copyright sentence adds exactly one period.
+  const copyrightCompany = COMPANY.legalName.replace(/\.\s*$/, "");
 
   return (
     <footer
@@ -64,7 +67,7 @@ export function LegalDisclaimerFooter() {
         </p>
 
         <p style={{ margin: 0, color: "#71717a", fontSize: 11 }}>
-          © {new Date().getFullYear()} {COMPANY.legalName}. {t.allRightsReserved}.{" "}
+          © {new Date().getFullYear()} {copyrightCompany}. {t.allRightsReserved}.{" "}
           <Link to="/privacy" style={{ color: "#a1a1aa", textDecoration: "underline" }}>
             {t.privacy}
           </Link>
