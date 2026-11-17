@@ -3,6 +3,7 @@ import { HomepageSection } from "@/components/HomepageContent";
 import HeroIntro from "@/components/HeroIntro";
 import HowItWorksVideoSection from "@/components/HowItWorksVideoSection";
 import AssessmentSection from "@/components/AssessmentSection";
+import HomeServiceVideos from "@/components/HomeServiceVideos";
 
 const DEFENDER_HOSTS = new Set([
   "defendermicasa.com",
@@ -58,6 +59,7 @@ export const Route = createFileRoute("/")({
     <div className="home-redesign">
       <HeroIntro />
       <div className="home-video-section"><HowItWorksVideoSection /></div>
+      <HomeServiceVideos />
       <AssessmentSection />
       <HomepageSection section="steps" />
       <HomepageSection section="attorney" />

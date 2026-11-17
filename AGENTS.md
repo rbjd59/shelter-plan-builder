@@ -13,6 +13,7 @@
 - Account registration may carry only allowlisted non-secret signup fields in intake_signup metadata; passwords stay transient and email confirmation must complete before authenticated draft saving.
 
 # Homepage presentation
+- Keep optional homepage service-video previews click-to-play and separate from automatic qualified-result playback; this prevents simultaneous audio while keeping account setup below the previews.
 - Overview video covers and labels must switch with the same language as the video source, so a localized recording never appears behind an unrelated-language cover.
 - Keep the homepage arrangement scoped to `.home-redesign` and reuse verbatim exported HTML sections; isolated styles prevent redesigns from changing intake, staff or legal workflows.
 - Keep related business-offering copy in the language-aware paid-solutions area and use `withLang` for outbound links so homepage language selection carries through without altering existing videos.

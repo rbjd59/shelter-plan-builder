@@ -16,6 +16,7 @@
 - [x] Correct English, Spanish and Haitian Creole privacy policies for SOS-only GPS, Update My Info, activation device details, hosting providers and advertising; retain deletion routes and update the revision date.
 
 ## Homepage arrangement
+- [x] November 17: stack Save My Home then Do Not Forget Your Business under How it works, with localized Start Now links below each; keep account setup immediately after both videos. Verified EN/ES/HT source/link/order, audible business playback and mobile fit. Existing business recordings still contain their earlier branding; video re-edit is outside this arrangement change.
 - [x] November 17: replace the Spanish-only overview cover with English, Spanish and Haitian Creole “How it works” covers; keep the matching full videos and verify the top language switch updates both cover and playback.
 - [ ] November 16: rebuild all three process videos in simpler language: Rosario and the program's team directly review submissions and offer discounted help, honest answers and emailed options, with no required outside-firm referral; cover the complete process, app downloads and home/business sites. Remove repetitive video disclaimers, preserve site legal disclosures, and do not publish.
 - [x] Remove the homepage Problem and Solution section in all three languages; keep the video library and paid home/business offerings unchanged.
