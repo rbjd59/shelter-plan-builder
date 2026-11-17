@@ -81,6 +81,13 @@
 - [ ] Client activation email: logs show `sent` to proseforms@atomicmail.io and njbittelman@gmail.com — check spam/atomicmail delivery; sender domain still notify.gohomesooner.com.
 - [ ] NEEDS PUBLISH for all of the above.
 
+## November 17 — business reports and support
+- [ ] Build a trilingual client business report with a transparent value range, marketing plan and document checklist; link qualifying results to it and email the report link to the client and attorney.
+- [ ] Add a business valuation tool and business call page; provide immediate call and text buttons for the paralegal at 305-773-7737.
+- [ ] Put complete contact, questionnaire, property, business, report, appointment and family-form information on the attorney and company dashboards.
+- [ ] Add a trilingual AI question box with clear limits and server-only AI access; preserve the selected language.
+- [ ] Finish account sign-up, saved questionnaire progress, later-path Home → Business videos and one unfinished-assessment reminder from the preceding request; verify all flows together.
+
 ## November 17 — homepage questionnaire
 - [ ] Simplify the landing page: keep the process video, app steps and attorney section; remove pro bono/community pricing, app security and paid homeowner/business boxes; show only “Free” on the opening screen.
 - [ ] Replace anonymous contact capture with account sign-up after the process video: name, sign-in email, password and phone/SMS contact; then answer questions or choose “I’ll answer later.” Keep Save My Home followed by Save My Business available on the later path.
