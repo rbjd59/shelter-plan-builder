@@ -10,9 +10,9 @@ import businessPoster from "@/assets/business-owner-hero.jpg";
 import homeEn from "@/assets/videos/protect-what-you-built-en.mp4.asset.json";
 import homeEs from "@/assets/videos/protect-what-you-built-es.mp4.asset.json";
 import homeHt from "@/assets/videos/protect-what-you-built-ht.mp4.asset.json";
-import businessEn from "@/assets/videos/save-my-business-en-v1.mp4.asset.json";
-import businessEs from "@/assets/videos/save-my-business-es-v1.mp4.asset.json";
-import businessHt from "@/assets/videos/save-my-business-ht-v1.mp4.asset.json";
+import businessEn from "@/assets/videos/save-my-business-en-v2.mp4.asset.json";
+import businessEs from "@/assets/videos/save-my-business-es-v2.mp4.asset.json";
+import businessHt from "@/assets/videos/save-my-business-ht-v2.mp4.asset.json";
 
 const VIDEOS = {
   home: { en: homeEn.url, es: homeEs.url, ht: homeHt.url },

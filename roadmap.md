@@ -1,5 +1,8 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
+## November 17 — homepage video audio quality
+- [ ] Diagnose all nine homepage voiceovers; preserve every script, visual, position and original file. Regenerate only confirmed chunked-audio cases as continuous takes, use the current English voice, Venezuelan Spanish and genuine Haitian Creole, verify full playback, then switch only the affected homepage media references. Run the complete tests.
+
 ## November 17 — approved homepage and business-domain tidy-up
 - [x] Job 1: preserve homepage section order; add the translated hero start button, shorten only the hero notice, keep full disclosures on legal notices/footer, make walkthrough language switching explicit, use light-only styling and align existing section spacing/buttons.
 - [x] Job 2 code: route both business hosts to the existing business page with its own branding and defense cross-link; add the trilingual corporation/trust/agent/director explanation and separate-agreement conflict disclosure. Six routing tests and trilingual browser checks pass.
