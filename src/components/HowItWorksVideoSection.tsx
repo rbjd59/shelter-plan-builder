@@ -2,17 +2,17 @@ import posterAsset from "@/assets/home-how-poster.jpg.asset.json";
 import { useRef, useState, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import { useLang } from "@/context/LanguageContext";
-import enAsset from "@/assets/videos/how-it-works-en-v3.mp4.asset.json";
-import esAsset from "@/assets/videos/how-it-works-es-v3.mp4.asset.json";
-import htAsset from "@/assets/videos/how-it-works-ht-v3.mp4.asset.json";
+import enAsset from "@/assets/videos/process-overview-en-v2.mp4.asset.json";
+import esAsset from "@/assets/videos/process-overview-es-v2.mp4.asset.json";
+import htAsset from "@/assets/videos/process-overview-ht-v2.mp4.asset.json";
 import { PlayOverlay } from "@/components/AdVideoSection";
 
 const SRC: Record<string, string> = { en: enAsset.url, es: esAsset.url, ht: htAsset.url };
 
 const HEADING: Record<string, string> = {
-  en: "How It Works",
-  es: "Cómo Funciona",
-  ht: "Kijan Li Fonksyone",
+  en: "Process Overview",
+  es: "Resumen del Proceso",
+  ht: "Apèsi sou Pwosesis la",
 };
 
 const CTA: Record<string, string> = {
@@ -103,7 +103,8 @@ export default function HowItWorksVideoSection() {
           {!started && <PlayOverlay onClick={handlePlay} />}
         </div>
         <Link
-          to="/intake"
+          to="/"
+          hash="assessment"
           search={{ lang }}
           style={{
             display: "inline-block",
