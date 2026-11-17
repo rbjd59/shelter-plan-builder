@@ -82,6 +82,8 @@
 - [ ] NEEDS PUBLISH for all of the above.
 
 ## November 17 — homepage questionnaire
+- [ ] Simplify the landing page: keep the process video, app steps and attorney section; remove pro bono/community pricing, app security and paid homeowner/business boxes; show only “Free” on the opening screen.
+- [ ] Require and save name, email and phone before the questionnaire; offer a skip-to-videos path with Save My Home followed by Save My Business, without changing qualifying-result video playback.
 - [x] Remove the homepage watch-video boxes; expose all three business videos in the video library for preview; play qualifying home then business videos consecutively before call scheduling.
 - [x] Process Overview v2 video (EN/ES/HT) on homepage; tap-to-answer questionnaire below it with "I need help" buttons, scoring (stay 0–15% / over 15%, come-back bars, habeas, Save My Home 60%/120-day rule, $899 trust, Save My Business trades), Save My Home video then business step, results page, document authorization, 2-day paralegal call, disclosures.
 - [ ] Expand the flow in this order: stay, come back, family forms, detailed home, detailed business, relocation, contact details. Prepare family-form drafts for review before home/business videos; add separate home/business scheduling and app-download steps.

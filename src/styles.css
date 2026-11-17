@@ -3161,6 +3161,7 @@ html { overflow-x: hidden !important; max-width: 100vw; }
 .home-hero-title-points span { margin-right: 10px; white-space: nowrap; }
 .home-redesign .home-hero-watch { display: inline-flex; align-items: center; gap: 11px; min-height: 52px; padding: 12px 20px; border-radius: 6px; background: var(--home-surface); color: var(--home-blue); font-size: 21px; font-weight: 700; text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 2px; }
 .home-redesign .home-hero-watch:hover { background: var(--home-amber); color: var(--home-navy); }
+.home-redesign .home-hero-free { margin: 0 0 18px; color: var(--home-amber); font-family: 'Source Serif 4', Georgia, serif; font-size: 36px; font-weight: 700; line-height: 1.2; }
 .home-cta-band { background: var(--home-navy); color: var(--home-surface); padding: 44px 0; }
 .home-cta-band .home-price { margin-bottom: 22px; }
 .home-hero-languages { display: flex; gap: 9px; align-items: center; font-size: 14px; margin-top: 24px; }
@@ -3346,6 +3347,14 @@ body:has(.home-redesign)::before, body:has(.home-redesign)::after { display: non
 .home-redesign .asmt-h { text-align: center; color: var(--home-navy); font-size: clamp(1.6rem, 4vw, 2.2rem); margin: 0 0 1rem; }
 .home-redesign .asmt-card { border: 2px solid var(--home-border); border-radius: 16px; padding: 1.5rem; box-shadow: var(--home-shadow); }
 .home-redesign .asmt-big { font-size: 1.2rem; }
+.home-redesign .asmt-contact-field { display: grid; gap: .35rem; margin: 0 0 1rem; font-weight: 700; }
+.home-redesign .asmt-contact-field input { width: 100%; padding: .8rem; font-size: 1.1rem; border: 2px solid var(--home-border); border-radius: 10px; }
+.home-redesign .asmt-entry-actions { display: grid; gap: .75rem; margin-top: 1rem; }
+.home-redesign .asmt-skip { min-height: 52px; border: 2px solid var(--home-blue); border-radius: 999px; background: transparent; color: var(--home-navy); padding: .8rem 1.25rem; font-size: 1.05rem; font-weight: 700; cursor: pointer; }
+.home-redesign .asmt-saved { color: var(--home-blue); font-weight: 700; }
+.home-redesign .asmt-public-video { margin-top: 1.5rem; }
+.home-redesign .asmt-public-video h3 { margin-bottom: .5rem; }
+.home-redesign .asmt-public-video video { display: block; width: 100%; background: var(--home-navy); border-radius: 12px; }
 .home-redesign .asmt-progress { color: var(--home-muted); margin: 0; font-weight: 700; }
 .home-redesign .asmt-title { color: var(--home-navy); font-size: 1.5rem; margin: .25rem 0 1rem; }
 .home-redesign .asmt-q { border: 0; border-top: 1px solid var(--home-border); padding: 1rem 0; margin: 0; }

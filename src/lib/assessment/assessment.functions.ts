@@ -2,6 +2,22 @@ import { createServerFn } from "@tanstack/react-start";
 import { getRequest } from "@tanstack/react-start/server";
 import { score } from "./score";
 import type { Answers } from "./questions";
+import { parseAssessmentLead, type AssessmentLeadInput } from "./lead";
+
+export const submitAssessmentLead = createServerFn({ method: "POST" })
+  .inputValidator((d: AssessmentLeadInput) => parseAssessmentLead(d))
+  .handler(async ({ data }) => {
+    const { createLead } = await import("../leads.server");
+    return createLead({
+      fullName: data.fullName,
+      email: data.email,
+      phone: data.phone,
+      language: data.language,
+      need: "Homepage questionnaire",
+      message: data.next === "videos" ? "Chose to watch Save My Home and Save My Business before answering questions." : "Started the homepage questionnaire.",
+      source: "homepage-assessment",
+    });
+  });
 
 type Input = { language: string; answers: Answers; help: string[]; signedName: string };
 type ScheduleInput = { assessmentId: string; accessToken: string; kind: "home" | "business"; appointmentAt: string };

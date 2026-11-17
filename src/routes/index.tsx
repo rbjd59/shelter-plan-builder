@@ -1,10 +1,7 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { HomepageSection } from "@/components/HomepageContent";
-import HeroIntro, { HeroCallToAction } from "@/components/HeroIntro";
-import { PaidSolutions } from "@/components/ProblemSolutionSection";
+import HeroIntro from "@/components/HeroIntro";
 import HowItWorksVideoSection from "@/components/HowItWorksVideoSection";
-import AdVideoSection from "@/components/AdVideoSection";
-import SecurityVideoSection from "@/components/SecurityVideoSection";
 import AssessmentSection from "@/components/AssessmentSection";
 
 const DEFENDER_HOSTS = new Set([
@@ -40,13 +37,13 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Free pre-detention defense plan for immigrant working families. No fee and no monthly charge: the emergency app is free and a Florida attorney reviews your documents pro bono. DetencionDefensa.com, Inc. is the technology operator only; Sorrentino Law Firm PLLC operates the site under license and provides all legal services.",
+          "Free pre-detention defense plan for immigrant working families. The emergency app has no fee or monthly charge, and a Florida attorney reviews your documents. DetencionDefensa.com, Inc. is the technology operator only; Sorrentino Law Firm PLLC operates the site under license and provides all legal services.",
       },
       { property: "og:title", content: "DetencionDefensa.com — Plan de Defensa Pre-Detención · Gratis" },
       {
         property: "og:description",
         content:
-          "No fee, no monthly charge. Free emergency app plus pro bono attorney-reviewed federal documents. DetencionDefensa.com, Inc. is the technology operator only; Sorrentino Law Firm PLLC operates the site under license and provides all legal services.",
+          "Free emergency app with no monthly charge and attorney-reviewed federal documents. DetencionDefensa.com, Inc. is the technology operator only; Sorrentino Law Firm PLLC operates the site under license and provides all legal services.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://detenciondefensa.com/" },

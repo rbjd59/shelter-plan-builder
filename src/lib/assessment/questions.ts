@@ -161,9 +161,4 @@ export const SECTIONS: Section[] = [
     { id: "residency", q: "Do you want papers to live in that country (residency)?", opts: yn() },
     { id: "lawyerMoney", q: "Do you have money to pay a lawyer for those papers?", opts: yn() },
   ]},
-  { id: "you", title: "7. How do we reach you?", questions: [
-    { id: "name", q: "Your name", text: "name" },
-    { id: "phone", q: "Your phone", text: "phone" },
-    { id: "email", q: "Your email (if you have one)", text: "email" },
-  ]},
 ];

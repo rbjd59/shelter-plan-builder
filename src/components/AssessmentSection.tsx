@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { SECTIONS, type Answers, type Q } from "@/lib/assessment/questions";
 import { score, type Results } from "@/lib/assessment/score";
-import { scheduleAssessment, submitAssessment } from "@/lib/assessment/assessment.functions";
+import { scheduleAssessment, submitAssessment, submitAssessmentLead } from "@/lib/assessment/assessment.functions";
 import { zillowSearchUrl, type PropertyEstimate } from "@/lib/assessment/property";
 import { useLang } from "@/context/LanguageContext";
 import homeVideo from "@/assets/videos/protect-what-you-built-en.mp4.asset.json";
