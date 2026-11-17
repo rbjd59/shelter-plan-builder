@@ -6,3 +6,11 @@ export const BUSINESS_HOSTS = new Set([
   "donotforgetyourbusiness.com",
   "www.donotforgetyourbusiness.com",
 ]);
+
+export function businessRootRedirect(requestUrl: string): URL | null {
+  const source = new URL(requestUrl);
+  if (source.pathname !== "/" || !BUSINESS_HOSTS.has(source.hostname.toLowerCase())) return null;
+  const destination = new URL(source);
+  destination.pathname = "/business";
+  return destination;
+}

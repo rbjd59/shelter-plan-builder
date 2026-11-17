@@ -2,7 +2,8 @@
 
 ## November 17 — approved homepage and business-domain tidy-up
 - [x] Job 1: preserve homepage section order; add the translated hero start button, shorten only the hero notice, keep full disclosures on legal notices/footer, make walkthrough language switching explicit, use light-only styling and align existing section spacing/buttons.
-- [ ] Job 2: route both business hosts to the existing business page with its own branding and defense cross-link; add the trilingual corporation/trust/agent/director explanation and separate-agreement conflict disclosure.
+- [x] Job 2 code: route both business hosts to the existing business page with its own branding and defense cross-link; add the trilingual corporation/trust/agent/director explanation and separate-agreement conflict disclosure. Six routing tests and trilingual browser checks pass.
+- [ ] Live multi-domain serving: a workspace admin must unset donotforgetyourbusiness.com as Primary in Project Settings → Domains and publish. Hosting currently 302-redirects detenciondefensa.com, listoahora.org and parekounya.org to the business domain before app code runs.
 
 ## November 17 — business conversion video revision
 - [x] Write EN/ES/HT narration centered on guided conversion-program signup, corporate setup, phone-based job/payment records and hands-on assistance; do not build operating tools or invent tier prices, sale values or payment-provider guarantees.

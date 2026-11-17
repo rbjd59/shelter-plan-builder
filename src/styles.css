@@ -3429,6 +3429,7 @@ body:has(.home-redesign)::before, body:has(.home-redesign)::after { display: non
 .business-steps article { padding: 22px; border-top: 3px solid var(--business-gold); background: var(--business-light); }
 .business-steps article > span { color: var(--business-green); font-family: 'Source Serif 4',serif; font-size: 30px; }
 .business-steps p, .business-cost-grid p { color: var(--business-muted); font-size: 15px; }
+.business-structure-note { max-width: 900px; margin-top: 26px; color: var(--business-muted); font-size: 15px; }
 .business-cost-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 18px; }
 .business-cost-grid article { padding: 26px; border: 1px solid var(--business-border); border-radius: 12px; }
 .business-cost-grid article > strong { display: block; color: var(--business-green); font-family: 'Source Serif 4',serif; font-size: 46px; }

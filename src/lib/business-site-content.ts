@@ -40,6 +40,9 @@ export type BusinessSiteCopy = {
   planTitle: string;
   planBody: string;
   steps: { title: string; body: string }[];
+  structureTitle: string;
+  structureSteps: { title: string; body: string }[];
+  structureNote: string;
   paymentsTitle: string;
   paymentsBody: string;
   squareLink: string;
@@ -85,6 +88,14 @@ export const BUSINESS_SITE_COPY: Record<Lang, BusinessSiteCopy> = {
       { title: "Protect the ownership", body: "The business can be owned by a trust. If you already have a home trust, the attorney reviews whether the same trust can be used." },
       { title: "Sell it or keep it running", body: "We train you and your team. You can prepare for a sale, run the company from abroad, or have a trusted person run it here." },
     ],
+    structureTitle: "How the business setup works",
+    structureSteps: [
+      { title: "Your work becomes a company", body: "Your work becomes a Florida C corporation. The company keeps its own records and gets its own EIN." },
+      { title: "Your trust owns the company", body: "Your trust owns the corporation. If you already have a home trust, the attorney checks whether that trust can own it." },
+      { title: "An agent gets official mail", body: "A registered agent receives official mail for the company, so your home address is not listed publicly as the company's registered-agent address." },
+      { title: "A director can help with paperwork", body: "A director can handle the company's paperwork if you have to leave." },
+    ],
+    structureNote: "Sorrentino Law Firm, PLLC may serve as registered agent or director under a separate written agreement. It includes a conflict disclosure that you sign. You may choose any other provider.",
     paymentsTitle: "Get paid in the company’s name", paymentsBody: "After the company is set up, we help you apply for a business payment account. Square can take cards and send invoices. PayPal is another option. You choose. The payment company must approve the account.",
     squareLink: "See Square for business", paypalLink: "See PayPal for business", costsTitle: "Clear costs. No big trust payment all at once.", costsBody: "The tools above are free. Paid setup help is optional. You get the full agreement before you pay.",
     monthlyPrice: "$199", monthlyLabel: "per month to start", included: ["Simple training and document help", "Help setting up the company and its records", "Customer, job, invoice, and receipt tools", "Help preparing the business to run or sell"],
@@ -120,6 +131,14 @@ export const BUSINESS_SITE_COPY: Record<Lang, BusinessSiteCopy> = {
       { title: "Proteja quién es dueño", body: "Un fideicomiso puede ser dueño del negocio. Si ya tiene un fideicomiso para su casa, el abogado revisa si se puede usar el mismo." },
       { title: "Véndalo o siga trabajando", body: "Capacitamos a usted y a su equipo. Puede preparar el negocio para venderlo, manejarlo desde otro país o dejar que una persona de confianza lo maneje aquí." },
     ],
+    structureTitle: "Cómo funciona la estructura del negocio",
+    structureSteps: [
+      { title: "Su trabajo se convierte en una compañía", body: "Su trabajo se convierte en una corporación C de Florida. La compañía lleva sus propios registros y obtiene su propio número EIN." },
+      { title: "Su fideicomiso es dueño de la compañía", body: "Su fideicomiso es dueño de la corporación. Si ya tiene un fideicomiso para su casa, el abogado revisa si ese mismo fideicomiso puede ser dueño." },
+      { title: "Un agente recibe el correo oficial", body: "Un agente registrado recibe el correo oficial de la compañía. Así, su dirección de casa no aparece públicamente como la dirección del agente registrado." },
+      { title: "Un director puede ayudar con los documentos", body: "Un director puede encargarse de los documentos de la compañía si usted tiene que salir." },
+    ],
+    structureNote: "Sorrentino Law Firm, PLLC puede servir como agente registrado o director mediante un acuerdo escrito separado. El acuerdo incluye una divulgación de conflicto que usted firma. Puede elegir cualquier otro proveedor.",
     paymentsTitle: "Reciba el dinero a nombre de la compañía", paymentsBody: "Después de formar la compañía, le ayudamos a pedir una cuenta de pagos del negocio. Square puede aceptar tarjetas y enviar facturas. PayPal es otra opción. Usted elige. La compañía de pagos debe aprobar la cuenta.",
     squareLink: "Vea Square para negocios", paypalLink: "Vea PayPal para negocios", costsTitle: "Costos claros. No pague todo el fideicomiso de una vez.", costsBody: "Las herramientas son gratis. La ayuda para formar el negocio es opcional. Usted recibe el acuerdo completo antes de pagar.",
     monthlyPrice: "$199", monthlyLabel: "al mes para empezar", included: ["Capacitación fácil y ayuda con documentos", "Ayuda para formar la compañía y llevar registros", "Herramientas de clientes, trabajos, facturas y recibos", "Ayuda para preparar el negocio para operar o vender"],
@@ -155,6 +174,14 @@ export const BUSINESS_SITE_COPY: Record<Lang, BusinessSiteCopy> = {
       { title: "Pwoteje moun ki met biznis la", body: "Yon fidisi ka met biznis la. Si ou gen yon fidisi pou kay ou deja, avoka a tcheke si ou ka sèvi ak menm fidisi a." },
       { title: "Vann li oswa kite l mache", body: "Nou fòme ou ansanm ak ekip ou. Ou ka prepare biznis la pou vann, dirije l depi lòt peyi, oswa kite yon moun ou fè konfyans dirije l isit la." },
     ],
+    structureTitle: "Kijan estrikti biznis la mache",
+    structureSteps: [
+      { title: "Travay ou a tounen yon konpayi", body: "Travay ou a tounen yon kòporasyon C nan Florid. Konpayi an kenbe pwòp rejis li epi li jwenn pwòp nimewo EIN li." },
+      { title: "Fidisi ou a se met konpayi an", body: "Fidisi ou a se met kòporasyon an. Si ou gen yon fidisi pou kay ou deja, avoka a tcheke si menm fidisi sa a ka met konpayi an." },
+      { title: "Yon ajan resevwa lèt ofisyèl", body: "Yon ajan anrejistre resevwa lèt ofisyèl pou konpayi an. Konsa, adrès kay ou pa parèt piblikman kòm adrès ajan anrejistre konpayi an." },
+      { title: "Yon direktè ka ede ak papye yo", body: "Yon direktè ka okipe papye konpayi an si ou oblije ale." },
+    ],
+    structureNote: "Sorrentino Law Firm, PLLC ka sèvi kòm ajan anrejistre oswa direktè ak yon kontra ekri apa. Kontra a gen yon divilgasyon konfli ou dwe siyen. Ou ka chwazi nenpòt lòt founisè.",
     paymentsTitle: "Resevwa lajan nan non konpani an", paymentsBody: "Apre konpani an fòme, nou ede w mande yon kont peman pou biznis la. Square ka pran kat epi voye fakti. PayPal se yon lòt chwa. Se ou ki chwazi. Konpani peman an dwe apwouve kont lan.",
     squareLink: "Gade Square pou biznis", paypalLink: "Gade PayPal pou biznis", costsTitle: "Pri klè. Ou pa oblije peye tout fidisi a yon sèl kou.", costsBody: "Zouti yo gratis. Èd pou fòme biznis la se yon chwa. Ou jwenn tout kontra a anvan ou peye.",
     monthlyPrice: "$199", monthlyLabel: "pa mwa pou kòmanse", included: ["Fòmasyon senp ak èd ak papye", "Èd pou fòme konpani an epi kenbe rejis", "Zouti pou kliyan, travay, fakti ak resi", "Èd pou prepare biznis la pou mache oswa pou vann"],

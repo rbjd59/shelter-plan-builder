@@ -30,20 +30,16 @@ export const Route = createFileRoute("/")({
         throw redirect({ to: "/coming-soon" });
       }
     }
-    try {
-      const url = new URL(location.href, "http://localhost");
-      const host = url.hostname.toLowerCase();
-      if (BUSINESS_HOSTS.has(host)) {
-        throw redirect({
-          to: "/business",
-          search: { lang: url.searchParams.get("lang") ?? undefined },
-        });
-      }
-      if (DEFENDER_HOSTS.has(host)) {
-        throw redirect({ to: "/coming-soon" });
-      }
-    } catch {
-      /* ignore */
+    const url = new URL(location.href, "http://localhost");
+    const host = url.hostname.toLowerCase();
+    if (BUSINESS_HOSTS.has(host)) {
+      throw redirect({
+        to: "/business",
+        search: { lang: url.searchParams.get("lang") ?? undefined },
+      });
+    }
+    if (DEFENDER_HOSTS.has(host)) {
+      throw redirect({ to: "/coming-soon" });
     }
   },
   head: () => ({
