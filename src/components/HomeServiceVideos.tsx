@@ -49,7 +49,7 @@ function ServiceVideo({ kind, lang }: { kind: "home" | "business"; lang: Lang })
         </Button>}
       </div>
       <div className="mt-6 flex flex-wrap justify-center gap-3">
-        <Button asChild size="lg"><a href={kind === "home" ? withLang("https://savemyhometrust.com/trust", lang) : `/business?lang=${lang}`}>{copy.start}</a></Button>
+        <Button asChild size="lg"><a href={kind === "home" ? withLang("https://savemyhometrust.com/trust", lang) : `/?lang=${lang}#assessment`}>{copy.start}</a></Button>
         <Button asChild size="lg" variant="outline"><a href={`tel:${BUSINESS_PARALEGAL_PHONE}`}><Phone />{lang === "es" ? `Llame al ${BUSINESS_PARALEGAL_PHONE_DISPLAY}` : lang === "ht" ? `Rele ${BUSINESS_PARALEGAL_PHONE_DISPLAY}` : `Call ${BUSINESS_PARALEGAL_PHONE_DISPLAY}`}</a></Button>
         <Button asChild size="lg" variant="outline"><a href="#schedule-call">{lang === "es" ? "Chatee con nosotros" : lang === "ht" ? "Chat avèk nou" : "Chat with us"}</a></Button>
       </div>
