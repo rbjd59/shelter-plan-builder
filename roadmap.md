@@ -83,7 +83,12 @@
 
 ## November 17 — homepage questionnaire
 - [x] Process Overview v2 video (EN/ES/HT) on homepage; tap-to-answer questionnaire below it with "I need help" buttons, scoring (stay 0–15% / over 15%, come-back bars, habeas, Save My Home 60%/120-day rule, $899 trust, Save My Business trades), Save My Home video then business step, results page, document authorization, 2-day paralegal call, disclosures.
+- [ ] Expand the flow in this order: stay, come back, family forms, detailed home, detailed business, relocation, contact details. Prepare family-form drafts for review before home/business videos; add separate home/business scheduling and app-download steps.
+- [ ] Home: collect address, purchase timing/price, balances/payments, mortgage count and late/default status, owners, beds/baths/age/condition, liens, and rent/sell/family goal. Save My Home requires 60% LTV to leave at least $40,000 and cover 120 days of housing costs; otherwise an owner gets the $899 trust path.
+- [ ] Business: collect monthly income, workers, time in business, weekly/repeat customers, advertising, company type, records, and sell/run-from-abroad/family-run goal; send qualified cases to the business board.
+- [ ] Automatic sale/rent estimates: no property-data provider is connected. Keep a server-side RentCast-ready lookup and Zillow address link as fallback; do not invent a home value.
 - [ ] Spanish and Haitian Creole wording for the questionnaire (English only now; needs professional translation).
 - [ ] Save My Business video (not made yet; a link to savemybusiness.com shows instead).
-- [ ] Show questionnaire results on the attorney/company boards and send the 24-hour report email.
+- [ ] Show questionnaire results and family-form drafts on the attorney/company boards and send the 24-hour report email.
+- [ ] Customer login/password creation and instant app provisioning remain to be connected to the existing authenticated intake; do not collect or store plaintext passwords in the public assessment.
 - [ ] Remove one test entry ("Test Person") from saved questionnaires.
