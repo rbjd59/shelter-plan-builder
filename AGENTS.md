@@ -1,4 +1,7 @@
 # Form generation
+- Service-client operations require authenticated admin authorization; never use the shared board PIN to authorize new service-file edits, callback assignments or email sends.
+- Store operational callback schedules separately from sending infrastructure; managed reminders use per-callback idempotency keys and respect cancellation.
+- Keep simple family PDF generation separate from detention litigation forms, and keep real-estate authority out of family powers; trust preparation remains attorney-review drafting instructions until a complete approved instrument exists.
 - Normalize canonical attorney form fields to PDF aliases after merging edits, so names, custody dates, booking IDs and case details cannot diverge between generators.
 - Keep memo caption columns width-constrained and wrap variable text, so long client and custodian names do not overlap the case-number column.
 

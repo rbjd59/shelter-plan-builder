@@ -1,0 +1,1 @@
+ALTER TABLE public.app_clients ADD COLUMN IF NOT EXISTS service_file jsonb NOT NULL DEFAULT '{}'::jsonb;

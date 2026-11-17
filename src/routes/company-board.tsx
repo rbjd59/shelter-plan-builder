@@ -14,6 +14,11 @@ export const Route = createFileRoute("/company-board")({
   head: () => ({
     meta: [
       { title: "Company Board — DetencionDefensa" },
+      { name: "description", content: "Detención Defensa company service files, appointments and document packages." },
+      { property: "og:title", content: "Company Service Board — Detención Defensa" },
+      { property: "og:description", content: "Private service follow-ups and client document packages." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
     ],
   }),

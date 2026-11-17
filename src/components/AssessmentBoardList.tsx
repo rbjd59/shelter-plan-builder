@@ -3,6 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { pinDownloadAssessmentDocument, pinListAssessmentBoard } from "@/lib/pin-access.functions";
 import { downloadPdfFromBase64 } from "@/components/PdfPreviewDialog";
+import ServiceClientFile from './ServiceClientFile';
 
 type AssessmentRow = {
   id: string;
@@ -52,7 +53,7 @@ export default function AssessmentBoardList({ pin }: { pin: string }) {
             <Badge>{text(row.results.stayBand) === "high" ? "Stay: over 15%" : "Stay: 0–15%"}</Badge>
             <Badge>{`Habeas: ${text(row.results.habeas)}`}</Badge>
             {text(row.results.home) !== "none" && <Badge>{`Home: ${text(row.results.home)}`}</Badge>}
-            {row.results.business === true && <Badge>Save My Business</Badge>}
+            {row.results.business === true && <Badge>Do Not Forget Your Business</Badge>}
             {docs.length > 0 && <Badge>{docs.length} family packet{docs.length === 1 ? "" : "s"}</Badge>}
           </div>
         </summary>
@@ -62,6 +63,8 @@ export default function AssessmentBoardList({ pin }: { pin: string }) {
           <div><h3 className="font-semibold">Home and business</h3><p>Address: {text(row.answers.homeAddress)}<br />Goal: {text(row.answers.homePlan)}<br />Sale estimate: {money(row.property_estimate?.value)}<br />Rent estimate: {money(row.property_estimate?.rent)}</p><p className="mt-2">Business goal: {text(row.answers.businessGoal)}<br />Trade: {text(row.answers.trade)}<br />Monthly income: {text(row.answers.monthlyIncome)}</p></div>
           <div><h3 className="font-semibold">Family forms and help</h3><p>Children: {text(row.answers.childrenNames)}<br />Forms: {text(row.answers.formsNeeded)}<br />Help requested: {row.help_requested.length ? row.help_requested.join(", ") : "None"}</p></div>
           {docs.length > 0 && <div className="md:col-span-2"><h3 className="mb-2 font-semibold">Family-form drafts</h3><div className="flex flex-wrap gap-2">{docs.map((doc) => <button key={doc.id} type="button" className="rounded-md border border-border px-3 py-2 text-left text-xs hover:bg-accent" onClick={async () => { const file = await downloadFn({ data: { pin, documentId: doc.id } }); downloadPdfFromBase64(file.filename, file.pdfB64); }}>{doc.title}<br /><span className="text-muted-foreground">{doc.review_status} — download PDF</span></button>)}</div></div>}
+          <details className="md:col-span-2"><summary className="cursor-pointer font-semibold">All questionnaire answers</summary><dl className="mt-2 grid gap-2 sm:grid-cols-2">{Object.entries(row.answers).map(([key,value])=><div key={key}><dt className="text-xs text-muted-foreground">{key}</dt><dd className="break-words">{text(value)}</dd></div>)}</dl></details>
+          <div className="md:col-span-2"><ServiceClientFile id={row.id} source="assessment"/></div>
         </div>
       </details>;
     })}</div>}

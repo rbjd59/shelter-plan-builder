@@ -84,6 +84,7 @@ export const SECTIONS: Section[] = [
       { v: "usc", l: "U.S. citizen" }, { v: "lpr", l: "Has a green card" }, { v: "papers", l: "Has other papers" },
       { v: "nopapers", l: "No papers" }, { v: "single", l: "I'm not married" }] },
     { id: "spouseName", q: "Husband or wife's full name (if you know it)", text: "text", show: (a) => !!a.spouse && a.spouse !== "single" },
+    { id: "authorizedPerson", q: "Who do you trust to help with your children, bills, car, or lawyer?", text: "text", hint: "Full name. Ask for help if you need it. This person cannot sell, rent, or borrow against your home." },
     { id: "kids", q: "Your children (tap all):", multi: true, opts: [
       { v: "us_born", l: "Born in the U.S." }, { v: "abroad", l: "Born in another country" }, { v: "under18", l: "Some are under 18" }, { v: "none", l: "No children" }] },
     { id: "childrenNames", q: "Names and ages of children under 18", text: "text", hint: "Example: Maria, 8 and Jose, 12. You can ask for help instead.", show: hasKids },

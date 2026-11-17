@@ -96,6 +96,7 @@ import { Route as ApiPublicAppSyncContactsRouteImport } from './routes/api/publi
 import { Route as ApiPublicAppUpdateInfoRouteImport } from './routes/api/public/app/update-info'
 import { Route as ApiPublicCronProcessDueActivationsRouteImport } from './routes/api/public/cron/process-due-activations'
 import { Route as ApiPublicCronRetryFailedEmailsRouteImport } from './routes/api/public/cron/retry-failed-emails'
+import { Route as ApiPublicCronServiceCallbacksRouteImport } from './routes/api/public/cron/service-callbacks'
 import { Route as ApiPublicDevFireDemoClientRouteImport } from './routes/api/public/dev/fire-demo-client'
 import { Route as ApiPublicDevSendInstallRouteImport } from './routes/api/public/dev/send-install'
 import { Route as ApiPublicEmergencyActivateRouteImport } from './routes/api/public/emergency/activate'
@@ -545,6 +546,12 @@ const ApiPublicCronRetryFailedEmailsRoute =
     path: '/api/public/cron/retry-failed-emails',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicCronServiceCallbacksRoute =
+  ApiPublicCronServiceCallbacksRouteImport.update({
+    id: '/api/public/cron/service-callbacks',
+    path: '/api/public/cron/service-callbacks',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicDevFireDemoClientRoute =
   ApiPublicDevFireDemoClientRouteImport.update({
     id: '/api/public/dev/fire-demo-client',
@@ -681,6 +688,7 @@ export interface FileRoutesByFullPath {
   '/api/public/app/update-info': typeof ApiPublicAppUpdateInfoRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/cron/retry-failed-emails': typeof ApiPublicCronRetryFailedEmailsRoute
+  '/api/public/cron/service-callbacks': typeof ApiPublicCronServiceCallbacksRoute
   '/api/public/dev/fire-demo-client': typeof ApiPublicDevFireDemoClientRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
@@ -776,6 +784,7 @@ export interface FileRoutesByTo {
   '/api/public/app/update-info': typeof ApiPublicAppUpdateInfoRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/cron/retry-failed-emails': typeof ApiPublicCronRetryFailedEmailsRoute
+  '/api/public/cron/service-callbacks': typeof ApiPublicCronServiceCallbacksRoute
   '/api/public/dev/fire-demo-client': typeof ApiPublicDevFireDemoClientRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
@@ -875,6 +884,7 @@ export interface FileRoutesById {
   '/api/public/app/update-info': typeof ApiPublicAppUpdateInfoRoute
   '/api/public/cron/process-due-activations': typeof ApiPublicCronProcessDueActivationsRoute
   '/api/public/cron/retry-failed-emails': typeof ApiPublicCronRetryFailedEmailsRoute
+  '/api/public/cron/service-callbacks': typeof ApiPublicCronServiceCallbacksRoute
   '/api/public/dev/fire-demo-client': typeof ApiPublicDevFireDemoClientRoute
   '/api/public/dev/send-install': typeof ApiPublicDevSendInstallRoute
   '/api/public/emergency/activate': typeof ApiPublicEmergencyActivateRoute
@@ -972,6 +982,7 @@ export interface FileRouteTypes {
     | '/api/public/app/update-info'
     | '/api/public/cron/process-due-activations'
     | '/api/public/cron/retry-failed-emails'
+    | '/api/public/cron/service-callbacks'
     | '/api/public/dev/fire-demo-client'
     | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
@@ -1067,6 +1078,7 @@ export interface FileRouteTypes {
     | '/api/public/app/update-info'
     | '/api/public/cron/process-due-activations'
     | '/api/public/cron/retry-failed-emails'
+    | '/api/public/cron/service-callbacks'
     | '/api/public/dev/fire-demo-client'
     | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
@@ -1165,6 +1177,7 @@ export interface FileRouteTypes {
     | '/api/public/app/update-info'
     | '/api/public/cron/process-due-activations'
     | '/api/public/cron/retry-failed-emails'
+    | '/api/public/cron/service-callbacks'
     | '/api/public/dev/fire-demo-client'
     | '/api/public/dev/send-install'
     | '/api/public/emergency/activate'
@@ -1238,6 +1251,7 @@ export interface RootRouteChildren {
   ApiPublicAppUpdateInfoRoute: typeof ApiPublicAppUpdateInfoRoute
   ApiPublicCronProcessDueActivationsRoute: typeof ApiPublicCronProcessDueActivationsRoute
   ApiPublicCronRetryFailedEmailsRoute: typeof ApiPublicCronRetryFailedEmailsRoute
+  ApiPublicCronServiceCallbacksRoute: typeof ApiPublicCronServiceCallbacksRoute
   ApiPublicDevFireDemoClientRoute: typeof ApiPublicDevFireDemoClientRoute
   ApiPublicDevSendInstallRoute: typeof ApiPublicDevSendInstallRoute
   ApiPublicEmergencyActivateRoute: typeof ApiPublicEmergencyActivateRoute
@@ -1860,6 +1874,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicCronRetryFailedEmailsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/cron/service-callbacks': {
+      id: '/api/public/cron/service-callbacks'
+      path: '/api/public/cron/service-callbacks'
+      fullPath: '/api/public/cron/service-callbacks'
+      preLoaderRoute: typeof ApiPublicCronServiceCallbacksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/dev/fire-demo-client': {
       id: '/api/public/dev/fire-demo-client'
       path: '/api/public/dev/fire-demo-client'
@@ -2095,6 +2116,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicCronProcessDueActivationsRoute:
     ApiPublicCronProcessDueActivationsRoute,
   ApiPublicCronRetryFailedEmailsRoute: ApiPublicCronRetryFailedEmailsRoute,
+  ApiPublicCronServiceCallbacksRoute: ApiPublicCronServiceCallbacksRoute,
   ApiPublicDevFireDemoClientRoute: ApiPublicDevFireDemoClientRoute,
   ApiPublicDevSendInstallRoute: ApiPublicDevSendInstallRoute,
   ApiPublicEmergencyActivateRoute: ApiPublicEmergencyActivateRoute,

@@ -57,6 +57,7 @@ export type Database = {
           last_checkin_at: string | null
           phone_e164: string | null
           place_of_birth: string | null
+          service_file: Json
           setup_completed_at: string | null
           updated_at: string
           user_id: string | null
@@ -88,6 +89,7 @@ export type Database = {
           last_checkin_at?: string | null
           phone_e164?: string | null
           place_of_birth?: string | null
+          service_file?: Json
           setup_completed_at?: string | null
           updated_at?: string
           user_id?: string | null
@@ -119,6 +121,7 @@ export type Database = {
           last_checkin_at?: string | null
           phone_e164?: string | null
           place_of_birth?: string | null
+          service_file?: Json
           setup_completed_at?: string | null
           updated_at?: string
           user_id?: string | null
@@ -318,6 +321,7 @@ export type Database = {
           phone: string | null
           property_estimate: Json
           results: Json
+          service_file: Json
           status: string
           updated_at: string
           user_id: string | null
@@ -342,6 +346,7 @@ export type Database = {
           phone?: string | null
           property_estimate?: Json
           results?: Json
+          service_file?: Json
           status?: string
           updated_at?: string
           user_id?: string | null
@@ -366,6 +371,7 @@ export type Database = {
           phone?: string | null
           property_estimate?: Json
           results?: Json
+          service_file?: Json
           status?: string
           updated_at?: string
           user_id?: string | null
@@ -1622,6 +1628,66 @@ export type Database = {
           vaulted_at?: string | null
         }
         Relationships: []
+      }
+      service_callbacks: {
+        Row: {
+          app_client_id: string | null
+          assessment_id: string | null
+          created_at: string
+          handled_reminders: number[]
+          id: string
+          notes: string
+          paralegal_email: string
+          reminder_minutes: number[]
+          starts_at: string
+          status: string
+          timezone: string
+          title: string
+        }
+        Insert: {
+          app_client_id?: string | null
+          assessment_id?: string | null
+          created_at?: string
+          handled_reminders?: number[]
+          id?: string
+          notes?: string
+          paralegal_email: string
+          reminder_minutes?: number[]
+          starts_at: string
+          status?: string
+          timezone?: string
+          title: string
+        }
+        Update: {
+          app_client_id?: string | null
+          assessment_id?: string | null
+          created_at?: string
+          handled_reminders?: number[]
+          id?: string
+          notes?: string
+          paralegal_email?: string
+          reminder_minutes?: number[]
+          starts_at?: string
+          status?: string
+          timezone?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_callbacks_app_client_id_fkey"
+            columns: ["app_client_id"]
+            isOneToOne: false
+            referencedRelation: "app_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "service_callbacks_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "assessments"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       sms_send_log: {
         Row: {

@@ -11,8 +11,10 @@ export interface TemplateEntry {
 
 import { template as adminInviteTemplate } from './admin-invite'
 import { template as appActivationTemplate } from './app-activation'
+import { template as serviceNoticeTemplate } from './service-notice'
 
 export const TEMPLATES: Record<string, TemplateEntry> = {
   'admin-invite': adminInviteTemplate,
   'app-activation': appActivationTemplate,
+  'service-notice': serviceNoticeTemplate,
 }

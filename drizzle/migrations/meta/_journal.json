@@ -29,6 +29,20 @@
       "when": 1794893420134,
       "tag": "0003_add_business_reports",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1794895583048,
+      "tag": "0004_service_client_files_and_callbacks",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1794895668213,
+      "tag": "0005_app_client_service_file",
+      "breakpoints": true
     }
   ]
 }

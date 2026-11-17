@@ -5,6 +5,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import PinAccessGate from "@/components/PinAccessGate";
 import AssessmentBoardList from "@/components/AssessmentBoardList";
+import ServiceClientFile from '@/components/ServiceClientFile';
 import {
   pinListAttorneyBoard,
   pinGetAttorneyClient,
@@ -18,6 +19,11 @@ export const Route = createFileRoute("/attorney-board")({
   head: () => ({
     meta: [
       { title: "Attorney Board — DetencionDefensa" },
+      { name: "description", content: "Detención Defensa attorney client files, follow-ups and document preparation." },
+      { property: "og:title", content: "Attorney Client Files — Detención Defensa" },
+      { property: "og:description", content: "Private attorney review and client document preparation." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -81,7 +87,7 @@ function AttorneyBoard({ pin }: { pin: string }) {
     return "quiet";
   };
   const order = { active: 0, ready: 1, cancelled: 2, quiet: 3 } as Record<string, number>;
-  const rows = [...all].sort((a, b) => order[statusOf(a)]! - order[statusOf(b)]!);
+  const rows = [...all].sort((a, b) => (order[statusOf(a)] ?? 3) - (order[statusOf(b)] ?? 3));
   const counts = {
     active: all.filter((r: any) => statusOf(r) === "active").length,
     ready: all.filter((r: any) => statusOf(r) === "ready").length,
@@ -143,7 +149,7 @@ function AttorneyBoard({ pin }: { pin: string }) {
                       <td className="px-4 py-2 text-xs">
                         {status === "active" && (
                           <span className="rounded bg-red-600 px-2 py-1 font-bold text-white">
-                            🔴 DETAINED — {new Date(r.latest_alert!.triggered_at).toLocaleString()}
+                            🔴 DETAINED — {r.latest_alert?.triggered_at ? new Date(r.latest_alert.triggered_at).toLocaleString() : "Time pending"}
                           </span>
                         )}
                         {status === "ready" && (
@@ -294,6 +300,7 @@ function ClientDetail({ pin, clientId }: { pin: string; clientId: string }) {
       </div>
 
       <LocateAndForms pin={pin} clientId={clientId} detention={detention} client={client} />
+      <ServiceClientFile id={clientId} source="app" />
 
 
       {(update_requests ?? []).length > 0 && (

@@ -1,5 +1,13 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
+## November 17 — complete service client files
+- [ ] Add shared client-file follow-ups and 60/30/15-minute paralegal reminders, document checklist and package preparation on both boards.
+- [ ] Research Clear Capital home-equity/origination products; provide real ordering/contact links and track valuation/title requests without inventing provider access.
+- [ ] Generate attorney-review trust setup drafts and simple limited family authority, school, paycheck and vehicle letters; exclude all real-estate powers from family authority.
+- [ ] Prepare HELOC/sale/rental/business handoff packages and partner-agreement drafts with explicit consent/review gates; do not activate unreviewed closing-contingent referral fees or liens.
+- [ ] Send client document-request and appointment emails from the client file; distinguish operational messages from marketing.
+- [ ] Verify saved client files, follow-ups and draft downloads on the boards; disclose external credentials and legal approvals still needed before publishing.
+
 ## November 13 — store launch preparation (owner review before publish)
 - [x] Create one silent, reusable store-reviewer account through the normal provisioning path; verify 12+ activations, signed SOS/cancel board records, and zero email/SMS fan-out.
 - [x] Correct English, Spanish and Haitian Creole privacy policies for SOS-only GPS, Update My Info, activation device details, hosting providers and advertising; retain deletion routes and update the revision date.
