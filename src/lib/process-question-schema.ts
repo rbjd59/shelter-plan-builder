@@ -15,6 +15,7 @@ export const processQuestionSchema = z
                 z.object({ type: z.literal("text"), text: z.string().max(4000) }),
                 z.object({ type: z.literal("reasoning"), text: z.string().max(16000) }),
                 z.object({ type: z.literal("step-start") }),
+                z.object({ type: z.literal("custom") }),
               ]),
             )
             .max(20)

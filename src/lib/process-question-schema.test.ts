@@ -22,6 +22,7 @@ describe("public process questions", () => {
             role: "assistant",
             parts: [
               { type: "step-start" },
+              { type: "custom" },
               { type: "text", text: "Answer the screening questions." },
             ],
           },
