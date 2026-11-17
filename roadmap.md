@@ -83,6 +83,9 @@
 
 ## November 17 — homepage questionnaire
 - [ ] Simplify the landing page: keep the process video, app steps and attorney section; remove pro bono/community pricing, app security and paid homeowner/business boxes; show only “Free” on the opening screen.
+- [ ] Replace anonymous contact capture with account sign-up after the process video: name, sign-in email, password and phone/SMS contact; then answer questions or choose “I’ll answer later.” Keep Save My Home followed by Save My Business available on the later path.
+- [ ] Add “Save my progress” throughout the questionnaire so signed-in users can stop and resume; preserve contact details in the final assessment.
+- [ ] Add an unfinished-assessment reminder only with the required consent and supported sending path; ongoing promotional drip messages require a separate marketing service and are not part of built-in app email.
 - [ ] Require and save name, email and phone before the questionnaire; offer a skip-to-videos path with Save My Home followed by Save My Business, without changing qualifying-result video playback.
 - [x] Remove the homepage watch-video boxes; expose all three business videos in the video library for preview; play qualifying home then business videos consecutively before call scheduling.
 - [x] Process Overview v2 video (EN/ES/HT) on homepage; tap-to-answer questionnaire below it with "I need help" buttons, scoring (stay 0–15% / over 15%, come-back bars, habeas, Save My Home 60%/120-day rule, $899 trust, Save My Business trades), Save My Home video then business step, results page, document authorization, 2-day paralegal call, disclosures.

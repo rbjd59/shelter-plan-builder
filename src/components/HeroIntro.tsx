@@ -116,8 +116,6 @@ export default function HeroIntro() {
         <nav className={`home-nav ${open ? "is-open" : ""}`} aria-label="Main">
           <a href="#how-it-works-video" onClick={() => setOpen(false)}>{lang === "es" ? "Cómo funciona" : lang === "en" ? "How it works" : "Kijan li mache"}</a>
           <a href="/videos">{lang === "ht" ? "Videyo" : "Videos"}</a>
-          <a href="#precio" onClick={() => setOpen(false)}>{lang === "es" ? "Precio" : lang === "en" ? "Price" : "Pri"}</a>
-          <a href="#preguntas" onClick={() => setOpen(false)}>{lang === "es" ? "Preguntas" : lang === "en" ? "FAQ" : "Kesyon"}</a>
           <a href="/attorney">{lang === "es" ? "Abogado" : lang === "en" ? "Attorney" : "Avoka"}</a>
         </nav>
         <div className="home-languages" role="group" aria-label="Language">
@@ -137,6 +135,7 @@ export default function HeroIntro() {
             <span className="home-hero-title-points">{t.heroPoints.map(point => <span key={point}>{point}</span>)}</span>
           </h1>
           <p className="home-hero-tagline">{t.heroSub}</p>
+          <p className="home-hero-free">{t.freeText}</p>
           <a className="home-hero-watch" href="#how-it-works-video"><Play size={20} />{t.watchVideoCta}</a>
           <p className="home-hero-languages"><ShieldCheck size={20} /> Español · English · Kreyòl</p>
         </div>

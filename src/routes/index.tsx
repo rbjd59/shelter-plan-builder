@@ -49,7 +49,7 @@ export const Route = createFileRoute("/")({
       { property: "og:url", content: "https://detenciondefensa.com/" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "DetencionDefensa.com — Plan de Defensa Pre-Detención · Gratis" },
-      { name: "twitter:description", content: "No fee, no monthly charge. Free emergency app plus pro bono attorney-reviewed federal documents." },
+      { name: "twitter:description", content: "Free emergency app with no monthly charge and attorney-reviewed federal documents." },
     ],
     links: [{ rel: "canonical", href: "https://detenciondefensa.com/" }],
   }),
@@ -59,11 +59,8 @@ export const Route = createFileRoute("/")({
       <HeroIntro />
       <div className="home-video-section"><HowItWorksVideoSection /></div>
       <AssessmentSection />
-      <HeroCallToAction />
       <HomepageSection section="steps" />
-      <div className="home-video-section"><SecurityVideoSection /></div>
       <HomepageSection section="attorney" />
-      <div className="home-video-section home-paid-section"><AdVideoSection><PaidSolutions /></AdVideoSection></div>
       <span id="app" />
       <HomepageSection section="footer" />
     </div>
