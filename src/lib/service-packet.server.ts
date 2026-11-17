@@ -1,5 +1,7 @@
 import { PDFDocument, StandardFonts } from "pdf-lib";
 import { CHECKLISTS, LIMITED_POWERS, EXCLUDED_POWERS, type ServiceKind } from "./service-file";
+import { businessTrustDetails, BUSINESS_TRUST_FEE } from "./business-trust";
+import { FIRM } from "./firm-info";
 export async function textPacket(title: string, sections: { heading: string; lines: string[] }[]) {
   const pdf = await PDFDocument.create();
   const font = await pdf.embedFont(StandardFonts.Helvetica);
@@ -126,7 +128,9 @@ export async function servicePacket(
     {
       heading: "Saved setup and provider references",
       lines: Object.entries(file)
-        .filter(([k]) => kind !== "trust" || !["notes", "checklist"].includes(k))
+        .filter(
+          ([k]) => k !== "business" && (kind !== "trust" || !["notes", "checklist"].includes(k)),
+        )
         .map(([k, v]) => `${k}: ${safe(v)}`),
     },
     ...(kind === "trust"
@@ -179,5 +183,62 @@ export async function servicePacket(
             ],
           },
         ]),
+  ]);
+}
+export async function businessTrustPacket(
+  client: { full_name: string | null; answers: unknown },
+  file: Record<string, unknown>,
+) {
+  const business = businessTrustDetails(client, file);
+  const value = (v: unknown) =>
+    v === "" || v === null || v === undefined ? "[to be completed]" : String(v);
+  const answers = (client.answers ?? {}) as Record<string, unknown>;
+  return textPacket(`Do Not Forget Your Business trust - ${client.full_name ?? "Client"}`, [
+    {
+      heading: "Client and business",
+      lines: [
+        `Client / proposed Settlor: ${value(client.full_name)}`,
+        `Business name: ${value(business.name)}`,
+        `Current company type: ${value(business.entity)}`,
+        `Goal: ${value(answers.businessGoal)}`,
+        `Business assets and ownership interests proposed for Schedule A: ${value(business.assets)}`,
+      ],
+    },
+    {
+      heading: "Trust setup - incomplete attorney-review draft",
+      lines: [
+        `Trust path: ${business.trustMode === "existing_home" ? "Attorney to review adding business interests to the existing home trust; no second trust presumed." : "Proposed new business trust."}`,
+        `Trust name: ${value(business.trustName)}`,
+        `Proposed Trustee: ${value(file.trustee)}; successor: ${value(file.backupTrustee)}`,
+        `Beneficiaries and instructions: ${value(file.beneficiaries)}`,
+        "The Settlor proposes that only business interests lawfully transferred by separate approved instruments be held in trust. This draft transfers nothing.",
+        "Attorney to supply governing state, approved trust terms, ownership shares, distribution rules, revocation and amendment provisions, incapacity and successor rules, trustee duties and execution requirements before signing.",
+        "Proposed structure: trust-owned Florida C corporation and EIN. Company formation, EIN issuance and ownership transfers are not completed by this document. Counsel must review existing entity conversion, tax and license consequences.",
+        "Existing home-trust use requires attorney approval of the trust and separate business transfer documents; it does not authorize any real-estate transfer.",
+        "State-required signatures, witnesses, notary and trustee acceptance: [attorney to complete in the approved final instruments].",
+      ],
+    },
+    {
+      heading: "Monthly service fee - client record, not a bill",
+      lines: [
+        `Offered starting service fee: $${business.monthlyFee}/month, subject to signed agreement.`,
+        `Client fee status: ${business.feeStatus}; recorded start date: ${value(business.startDate)}`,
+        `New trust offered fee: $${BUSINESS_TRUST_FEE}, payable over time under a separate agreed plan. Existing home-trust use and any fee must be confirmed by the attorney; no duplicate trust fee is presumed.`,
+        `Trust payment-plan / agreement reference: ${value(business.paymentPlan)}`,
+        "No installment amount has been set automatically. No subscription, card charge, payment receipt or collection authorization is created by this file.",
+        "Florida filing costs and third-party registered-agent fees are separate. Optional local director: $50/month under a separate agreement.",
+        "Any sale commission requires a separate reviewed broker agreement and required licensing. No commission or sale is created by this package.",
+      ],
+    },
+    {
+      heading: "Documents and review",
+      lines: [
+        ...CHECKLISTS.business.map((s) => "[ ] " + s),
+        "[ ] Existing trust, if used; business ownership and separate transfer instruments",
+        "[ ] Attorney-approved trust/company terms and signed service fee agreement",
+        `${FIRM.legalName} - ${FIRM.city}. Legal documents require the Firm's approval before signing or use. The client may choose other providers.`,
+        "This is an incomplete preparation draft, not an executed trust, corporation or transfer document.",
+      ],
+    },
   ]);
 }

@@ -1,8 +1,11 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
+import { businessFileSchema, isTrustDocument } from "./business-trust";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "@/integrations/supabase/types";
 const reference = z.object({ id: z.string().uuid(), source: z.enum(["assessment", "app"]) });
-async function staff(context: { supabase: { rpc: Function }; userId: string }) {
+async function staff(context: { supabase: SupabaseClient<Database>; userId: string }) {
   const { data, error } = await context.supabase.rpc("has_role", {
     _user_id: context.userId,
     _role: "admin",
@@ -28,15 +31,15 @@ export const getServiceFile = createServerFn({ method: "POST" })
       data.source === "assessment"
         ? await supabaseAdmin
             .from("assessment_documents")
-            .select("id,title,review_status,created_at")
+            .select("id,title,review_status,created_at,document_type")
             .eq("assessment_id", data.id)
-            .eq("document_type", "service_trust")
+            .in("document_type", ["service_trust", "service_business_trust"])
             .order("created_at", { ascending: false })
         : await supabaseAdmin
             .from("client_documents")
-            .select("id,title,review_status,created_at")
+            .select("id,title,review_status,created_at,document_type")
             .eq("client_id", data.id)
-            .eq("document_type", "service_trust")
+            .in("document_type", ["service_trust", "service_business_trust"])
             .order("created_at", { ascending: false });
     if (documents.error) throw new Error(documents.error.message);
     return { client, callbacks: callbacks ?? [], trustDocuments: documents.data };
@@ -51,6 +54,7 @@ const fileSchema = z.object({
   authorizedPerson: z.string().max(200).default(""),
   providerOrder: z.string().max(500).default(""),
   titleOrder: z.string().max(500).default(""),
+  business: businessFileSchema,
   checklist: z.record(z.enum(["missing", "requested", "received", "reviewed"])).default({}),
 });
 export const saveServiceFile = createServerFn({ method: "POST" })
@@ -157,14 +161,17 @@ export const updateServiceCallback = createServerFn({ method: "POST" })
 export const generateServicePacket = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator(
-    reference.extend({ kind: z.enum(["heloc", "sale", "rental", "trust", "business", "family"]) }),
+    reference.extend({
+      kind: z.enum(["heloc", "sale", "rental", "trust", "business", "business_trust", "family"]),
+    }),
   )
   .handler(async ({ data, context }) => {
     await staff(context);
     const { loadServiceClient } = await import("./service-client.server");
     const client = await loadServiceClient(data.id, data.source);
     const file = (client.service_file ?? {}) as Record<string, unknown>;
-    const { servicePacket, familyPacket } = await import("./service-packet.server");
+    const { servicePacket, familyPacket, businessTrustPacket } =
+      await import("./service-packet.server");
     const answers = (client.answers ?? {}) as Record<string, unknown>;
     const bytes =
       data.kind === "family"
@@ -172,7 +179,9 @@ export const generateServicePacket = createServerFn({ method: "POST" })
             { ...answers, authorizedPerson: file.authorizedPerson },
             client.full_name ?? "Client",
           )
-        : await servicePacket(data.kind, client, file);
+        : data.kind === "business_trust"
+          ? await businessTrustPacket(client, file)
+          : await servicePacket(data.kind, client, file);
     const b64 = Buffer.from(bytes).toString("base64");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     if (data.source === "assessment") {
@@ -237,19 +246,20 @@ export const emailTrustPackage = createServerFn({ method: "POST" })
       data.source === "assessment"
         ? await supabaseAdmin
             .from("assessment_documents")
-            .select("id,content")
+            .select("id,content,document_type")
             .eq("id", data.documentId)
             .eq("assessment_id", data.id)
-            .eq("document_type", "service_trust")
+            .in("document_type", ["service_trust", "service_business_trust"])
             .single()
         : await supabaseAdmin
             .from("client_documents")
-            .select("id,content")
+            .select("id,content,document_type")
             .eq("id", data.documentId)
             .eq("client_id", data.id)
-            .eq("document_type", "service_trust")
+            .in("document_type", ["service_trust", "service_business_trust"])
             .single();
     if (result.error || !result.data) throw new Error("Trust PDF not found in this client file.");
+    if (!isTrustDocument(result.data.document_type)) throw new Error("Trust PDF not found.");
     if (!Buffer.from(result.data.content, "base64").subarray(0, 5).equals(Buffer.from("%PDF-")))
       throw new Error("Prepare a valid PDF first.");
     const key = process.env["LOVABLE_API_KEY"];
@@ -266,6 +276,7 @@ export const emailTrustPackage = createServerFn({ method: "POST" })
     return sendTemplateEmail("trust-package", client.email, {
       templateData: {
         name: client.full_name,
+        packageKind: result.data.document_type === "service_business_trust" ? "business" : "home",
         language: client.language === "es" ? "es" : client.language === "ht" ? "ht" : "en",
         downloadUrl: `https://detenciondefensa.com/api/public/trust-package?${params}`,
       },

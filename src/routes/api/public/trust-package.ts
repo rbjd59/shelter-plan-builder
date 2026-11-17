@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
+import { isTrustDocument } from "@/lib/business-trust";
 export const Route = createFileRoute("/api/public/trust-package")({
   server: {
     handlers: {
@@ -27,7 +28,7 @@ export const Route = createFileRoute("/api/public/trust-package")({
           .select("content,document_type")
           .eq("id", p.id)
           .single();
-        if (error || !data || data.document_type !== "service_trust")
+        if (error || !data || !isTrustDocument(data.document_type))
           return new Response("PDF not found.", { status: 404 });
         const bytes = Buffer.from(data.content, "base64");
         if (bytes.subarray(0, 5).toString() !== "%PDF-")
@@ -35,7 +36,10 @@ export const Route = createFileRoute("/api/public/trust-package")({
         return new Response(bytes, {
           headers: {
             "Content-Type": "application/pdf",
-            "Content-Disposition": 'attachment; filename="save-my-home-trust-draft.pdf"',
+            "Content-Disposition":
+              data.document_type === "service_business_trust"
+                ? 'attachment; filename="do-not-forget-your-business-trust-draft.pdf"'
+                : 'attachment; filename="save-my-home-trust-draft.pdf"',
             "Cache-Control": "private, no-store",
             "Referrer-Policy": "no-referrer",
             "X-Content-Type-Options": "nosniff",

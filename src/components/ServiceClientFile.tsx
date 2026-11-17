@@ -13,6 +13,12 @@ import {
   emailTrustPackage,
 } from "@/lib/service-file.functions";
 import { CHECKLISTS, type ServiceKind } from "@/lib/service-file";
+import {
+  emptyBusinessFile,
+  BUSINESS_MONTHLY_FEE,
+  BUSINESS_TRUST_FEE,
+  type BusinessFile,
+} from "@/lib/business-trust";
 import { downloadPdfFromBase64 } from "./PdfPreviewDialog";
 type FileValues = {
   notes: string;
@@ -24,6 +30,7 @@ type FileValues = {
   authorizedPerson: string;
   providerOrder: string;
   titleOrder: string;
+  business: BusinessFile;
   checklist: Record<string, "missing" | "requested" | "received" | "reviewed">;
 };
 const empty: FileValues = {
@@ -36,6 +43,7 @@ const empty: FileValues = {
   authorizedPerson: "",
   providerOrder: "",
   titleOrder: "",
+  business: emptyBusinessFile,
   checklist: {},
 };
 export default function ServiceClientFile({
@@ -65,6 +73,9 @@ export default function ServiceClientFile({
     ...empty,
     ...((data?.client.service_file as Partial<FileValues>) ?? {}),
   };
+  const business = { ...emptyBusinessFile, ...values.business };
+  const changeBusiness = (updates: Partial<BusinessFile>) =>
+    setFile({ ...values, business: { ...business, ...updates } });
   const work = async (action: () => Promise<unknown>, message: string) => {
     setBusy(true);
     setStatus("");
@@ -88,10 +99,10 @@ export default function ServiceClientFile({
       </div>
     );
   if (!data) return <p className="text-sm text-muted-foreground">Loading service file…</p>;
-  const change = (key: keyof Omit<FileValues, "checklist">, value: string) =>
+  const change = (key: keyof Omit<FileValues, "checklist" | "business">, value: string) =>
     setFile({ ...values, [key]: value });
   const saveCurrent = () => save({ data: { id, source, file: values } });
-  const download = async (packetKind: ServiceKind | "family") => {
+  const download = async (packetKind: ServiceKind | "family" | "business_trust") => {
     await saveCurrent();
     const result = await generate({ data: { id, source, kind: packetKind } });
     downloadPdfFromBase64(result.filename, result.pdfB64);
@@ -189,6 +200,122 @@ export default function ServiceClientFile({
           </label>
         </div>
       </div>
+      {kind === "business" && (
+        <div className="space-y-3 border-t border-border pt-4">
+          <h4 className="font-semibold">Do Not Forget Your Business · trust and monthly fee</h4>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <label className="text-sm">
+              Business name
+              <input
+                value={
+                  business.name ||
+                  String((data.client.answers as Record<string, unknown>)?.businessName ?? "")
+                }
+                onChange={(e) => changeBusiness({ name: e.target.value })}
+                className="mt-1 w-full rounded border border-input bg-background p-2"
+              />
+            </label>
+            <label className="text-sm">
+              Current company type
+              <input
+                value={
+                  business.entity ||
+                  String((data.client.answers as Record<string, unknown>)?.entity ?? "")
+                }
+                onChange={(e) => changeBusiness({ entity: e.target.value })}
+                className="mt-1 w-full rounded border border-input bg-background p-2"
+              />
+            </label>
+            <label className="text-sm">
+              Trust to use
+              <select
+                value={business.trustMode}
+                onChange={(e) =>
+                  changeBusiness({ trustMode: e.target.value as BusinessFile["trustMode"] })
+                }
+                className="mt-1 w-full rounded border border-input bg-background p-2"
+              >
+                <option value="new">New business trust · attorney review</option>
+                <option value="existing_home">Existing home trust · attorney review</option>
+              </select>
+            </label>
+            <label className="text-sm">
+              Business trust name
+              <input
+                value={
+                  business.trustMode === "existing_home" ? values.trustName : business.trustName
+                }
+                disabled={business.trustMode === "existing_home"}
+                onChange={(e) => changeBusiness({ trustName: e.target.value })}
+                className="mt-1 w-full rounded border border-input bg-background p-2"
+              />
+            </label>
+            <label className="text-sm sm:col-span-2">
+              Business assets and ownership shares
+              <textarea
+                value={business.assets}
+                onChange={(e) => changeBusiness({ assets: e.target.value })}
+                rows={3}
+                className="mt-1 w-full rounded border border-input bg-background p-2"
+              />
+            </label>
+            <p className="text-sm sm:col-span-2">
+              Starting service fee: ${BUSINESS_MONTHLY_FEE}/month. New trust: ${BUSINESS_TRUST_FEE},
+              payable over time under a separate agreement. Existing home trust use and fees need
+              attorney confirmation. Filing and registered-agent fees are separate.
+            </p>
+            <label className="text-sm">
+              Monthly-fee status
+              <select
+                value={business.feeStatus}
+                onChange={(e) =>
+                  changeBusiness({ feeStatus: e.target.value as BusinessFile["feeStatus"] })
+                }
+                className="mt-1 w-full rounded border border-input bg-background p-2"
+              >
+                <option value="proposed">Proposed · no agreement yet</option>
+                <option value="agreed">Agreed · signed agreement on file</option>
+                <option value="active">Active · service record only</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </label>
+            <label className="text-sm">
+              Agreed service start date
+              <input
+                type="date"
+                value={business.startDate}
+                onChange={(e) => changeBusiness({ startDate: e.target.value })}
+                className="mt-1 w-full rounded border border-input bg-background p-2"
+              />
+            </label>
+            <label className="text-sm sm:col-span-2">
+              Trust payment plan / signed agreement reference
+              <textarea
+                value={business.paymentPlan}
+                onChange={(e) => changeBusiness({ paymentPlan: e.target.value })}
+                rows={2}
+                className="mt-1 w-full rounded border border-input bg-background p-2"
+              />
+            </label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            This records the fee only. It does not charge the client or confirm payment.
+          </p>
+          <Button
+            variant="outline"
+            disabled={busy}
+            onClick={() =>
+              void work(
+                () => download("business_trust"),
+                "Business trust draft and fee record saved in the client file and downloaded.",
+              )
+            }
+          >
+            <Download />
+            Prepare business trust PDF
+          </Button>
+        </div>
+      )}
       <div className="flex flex-wrap gap-2">
         <Button disabled={busy} onClick={() => void work(saveCurrent, "Client file saved.")}>
           <Save />
@@ -231,39 +358,53 @@ export default function ServiceClientFile({
           Email client checklist
         </Button>
       </div>
-      <div className="border-t border-border pt-4">
-        <h4 className="font-semibold">Save My Home Trust · this client's PDFs</h4>
-        <ul className="divide-y divide-border">
-          {data.trustDocuments.map((doc) => (
-            <li
-              key={doc.id}
-              className="flex flex-wrap items-center justify-between gap-3 py-3 text-sm"
-            >
-              <span>
-                {doc.title} · {new Date(doc.created_at).toLocaleDateString()} · {doc.review_status}
-              </span>
-              <Button
-                variant="outline"
-                disabled={busy}
-                onClick={() =>
-                  void work(async () => {
-                    const result = await sendTrust({ data: { id, source, documentId: doc.id } });
-                    if (!result.sent) throw new Error("Client has opted out of app emails.");
-                  }, "Trust PDF download link sent to the client. Inbox receipt is not confirmed.")
-                }
-              >
-                <Mail />
-                Email trust PDF
-              </Button>
-            </li>
-          ))}
-        </ul>
-        {!data.trustDocuments.length && (
-          <p className="text-sm text-muted-foreground">
-            Choose Trust, then Prepare trust package to save this client's PDF.
-          </p>
-        )}
-      </div>
+      {(["service_trust", "service_business_trust"] as const).map((documentType) => (
+        <div key={documentType} className="border-t border-border pt-4">
+          <h4 className="font-semibold">
+            {documentType === "service_trust"
+              ? "Save My Home Trust"
+              : "Do Not Forget Your Business trust"}{" "}
+            · this client's PDFs
+          </h4>
+          <ul className="divide-y divide-border">
+            {data.trustDocuments
+              .filter((doc) => doc.document_type === documentType)
+              .map((doc) => (
+                <li
+                  key={doc.id}
+                  className="flex flex-wrap items-center justify-between gap-3 py-3 text-sm"
+                >
+                  <span>
+                    {doc.title} · {new Date(doc.created_at).toLocaleDateString()} ·{" "}
+                    {doc.review_status}
+                  </span>
+                  <Button
+                    variant="outline"
+                    disabled={busy}
+                    onClick={() =>
+                      void work(async () => {
+                        const result = await sendTrust({
+                          data: { id, source, documentId: doc.id },
+                        });
+                        if (!result.sent) throw new Error("Client has opted out of app emails.");
+                      }, "Trust PDF download link sent to the client. Inbox receipt is not confirmed.")
+                    }
+                  >
+                    <Mail />
+                    Email trust PDF
+                  </Button>
+                </li>
+              ))}
+          </ul>
+          {!data.trustDocuments.some((doc) => doc.document_type === documentType) && (
+            <p className="text-sm text-muted-foreground">
+              {documentType === "service_trust"
+                ? "Choose Trust, then Prepare trust package to save this client's PDF."
+                : "Choose Do Not Forget Your Business, then Prepare business trust PDF."}
+            </p>
+          )}
+        </div>
+      ))}
       <p className="text-sm text-muted-foreground">
         Drafts need attorney review. Family forms do not allow selling, renting or mortgaging a
         home. Trust drafts are not executed trusts and do not transfer property. Fees and partner

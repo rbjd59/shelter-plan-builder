@@ -1,4 +1,5 @@
 # Form generation
+- Store business trust setup and monthly-fee status in each client's service-file business record; generate a separate immutable business-trust PDF and reuse signed trust downloads, never infer payment or activate charges from a file edit.
 - Trust package emails reference an immutable client-document ID using an expiring signed download capability; only authenticated admins may generate or email packages, and drafts remain clearly non-executable.
 - Service-client operations require authenticated admin authorization; never use the shared board PIN to authorize new service-file edits, callback assignments or email sends.
 - Store operational callback schedules separately from sending infrastructure; managed reminders use per-callback idempotency keys and respect cancellation.
