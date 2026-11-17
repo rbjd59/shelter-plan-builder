@@ -4,6 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import PinAccessGate from "@/components/PinAccessGate";
+import AssessmentBoardList from "@/components/AssessmentBoardList";
 import {
   pinListAttorneyBoard,
   pinGetAttorneyClient,
@@ -107,6 +108,8 @@ function AttorneyBoard({ pin }: { pin: string }) {
             </span>
           </div>
         </header>
+
+        <AssessmentBoardList pin={pin} />
 
         <div className="w-full overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm">
           <table className="w-full min-w-[720px] text-sm">

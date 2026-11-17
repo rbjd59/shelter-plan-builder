@@ -22,7 +22,12 @@ export type Results = {
 };
 
 const has = (a: Answers, k: string, v: string) => { const x = a[k]; return Array.isArray(x) ? x.includes(v) : x === v; };
-const num = (a: Answers, k: string) => { const x = Number(a[k]); return Number.isFinite(x) ? x : null; };
+const num = (a: Answers, k: string) => {
+  const raw = a[k];
+  if (typeof raw !== "string" || raw.trim() === "") return null;
+  const x = Number(raw);
+  return Number.isFinite(x) ? x : null;
+};
 
 export const TPS_STILL_ACTIVE = new Set(["el_salvador"]);
 export const ANTI_BOND_STATES = new Set(["texas", "louisiana", "mississippi", "arkansas", "iowa", "minnesota", "missouri", "nebraska", "north_dakota", "south_dakota"]);
@@ -93,23 +98,45 @@ export function score(a: Answers): Results {
   // ---- Home ----
   const hor: string[] = []; let home: Results["home"] = "none";
   if (a.ownHome === "yes") {
-    const v = num(a, "homeValue"), o = num(a, "owed"), m = num(a, "monthly");
+    const automaticValue = num(a, "estimatedValue");
+    const guessedRange = num(a, "homeValue");
+    const v = automaticValue ?? (guessedRange !== null ? guessedRange * 1000 : null);
+    const o = a.mortgages === "0" ? 0 : num(a, "owed");
+    const m = num(a, "monthly");
     if (v !== null && o !== null && m !== null) {
-      const loan = v * 1000 * 0.6 - o * 1000; const need = m * 4;
-      if (loan >= need) { home = "save_my_home"; hor.push(`A loan at 60% of the home's value could give about $${Math.round(loan).toLocaleString()} — enough to pay the home for 120 days (about $${need.toLocaleString()}).`); }
-      else { home = "trust_899"; hor.push("There is not enough equity for a home loan to cover 120 days. A $899 trust can still protect the home for your family."); }
-    } else { home = "trust_899"; hor.push("We need your home numbers. You qualify at least for the $899 trust; we may qualify you for more."); }
-    if (a.repairs === "yes") hor.push("Repairs may be needed before renting or selling.");
-    if (a.liens === "yes") hor.push("Liens or judgments must be checked.");
+      const cashAvailable = v * 0.6 - o;
+      const carryNeed = m * 4;
+      if (cashAvailable >= 40_000 && cashAvailable >= carryNeed) {
+        home = "save_my_home";
+        hor.push(`A loan at 60% of the home's value could leave about $${Math.round(cashAvailable).toLocaleString()} after paying the current loans. That is at least $40,000 and covers about 120 days of home costs ($${Math.round(carryNeed).toLocaleString()}). This is an estimate, not a loan offer.`);
+      } else {
+        home = "trust_899";
+        hor.push(`The estimated loan money is about $${Math.max(0, Math.round(cashAvailable)).toLocaleString()}. Save My Home needs at least $40,000 and enough for 120 days of home costs. The $899 trust path is available instead.`);
+      }
+    } else {
+      home = "trust_899";
+      hor.push("We need the current value, loan balance, and monthly cost to check Save My Home. The $899 trust path is available while we get those numbers.");
+    }
+    if (automaticValue !== null) hor.push("The current value came from an automatic property estimate. A realtor and lender must still check it.");
+    if (a.condition === "major" || a.condition === "minor") hor.push("Fix-up costs must be counted before renting or selling.");
+    if (a.liens === "yes") hor.push("Liens, judgments, or unpaid tax must be checked.");
+    if (a.late === "late" || a.late === "default") hor.push("Late payments or foreclosure need urgent review.");
+    if (a.homePlan === "rent") hor.push("You chose to rent the home. We will check the rent estimate and rent-out steps.");
+    if (a.homePlan === "sell") hor.push("You chose to sell the home. We will check the sale estimate and sale steps.");
+    if (a.homePlan === "family") hor.push("You chose to keep your family in the home.");
   } else hor.push("You do not own a home, so no home trust is needed.");
 
   // ---- Business ----
   const br: string[] = []; let business = false;
   if (a.trade && a.trade !== "none") {
-    business = a.customers === "10to29" || a.customers === "30plus" || a.workers === "1to2" || a.workers === "3plus";
-    if (business) br.push("Your work has regular customers. It can become a business you can sell or run from another country.");
-    else br.push("With fewer than 10 regular customers and no workers, it is hard to sell. Grow your customer list first.");
-    if (a.records === "cash") br.push("We understand this is a cash business and you have not kept records. To sell it or run it from abroad, you must start keeping records now. We will link you to simple tools for this.");
+    business = ["10to19", "20plus"].includes(String(a.customersWeek)) || ["1to2", "3to5", "6plus"].includes(String(a.workers)) || (a.repeatCustomers === "yes" && a.businessYears !== "lt1");
+    if (business) br.push("Your regular work may be a business you can sell, run from another country, or have your family run.");
+    else br.push("We need more customers, records, or workers before this work is ready to sell. A paralegal can help you build the records.");
+    if (a.records === "cash" || a.records === "some") br.push("We understand this may be a cash business. Start keeping a list of customers, jobs, money coming in, and money spent. We will give you simple tools.");
+    if (a.entity === "sole" || a.entity === "dk") br.push("Save My Business can form a company owned by a trust. The attorney will check the right setup.");
+    if (a.businessGoal === "sell") br.push("You want to sell the business. We will plan how to show its customers, income, equipment, and work history.");
+    if (a.businessGoal === "abroad") br.push("You want to run it from another country. We will plan who does the daily work and how money and records reach you.");
+    if (a.businessGoal === "family") br.push("You want your family to run it. We will plan who can sign, bank, and manage the work.");
   }
 
   // ---- Documents ----

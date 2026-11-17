@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import PinAccessGate from "@/components/PinAccessGate";
+import AssessmentBoardList from "@/components/AssessmentBoardList";
 import {
   pinListCompanyBoard,
   pinCompanyLocateFile,
@@ -61,7 +62,7 @@ function CompanyBoard({ pin }: { pin: string }) {
 
   return (
     <div className="min-h-screen bg-slate-50 p-6">
-      <div className="mx-auto max-w-3xl space-y-6">
+      <div className="mx-auto max-w-6xl space-y-6">
         <header>
           <h1 className="text-2xl font-bold text-slate-900">Company Board — Activations</h1>
           <p className="mt-1 text-xs text-slate-500">
@@ -82,6 +83,8 @@ function CompanyBoard({ pin }: { pin: string }) {
             <div className="text-2xl font-bold text-red-700">{triggeredCount}</div>
           </div>
         </div>
+
+        <AssessmentBoardList pin={pin} />
 
         {rows.length === 0 ? (
           <p className="rounded border border-dashed border-slate-300 bg-white p-6 text-center text-sm text-slate-500">
@@ -176,8 +179,9 @@ function CompanyBoard({ pin }: { pin: string }) {
         )}
 
         <p className="text-xs text-slate-400">
-          Client identity, emergency contacts and legal forms are released here only
-          while an alert is live. The full permanent file lives on /attorney-board.
+          Activation identity, emergency contacts and legal forms are released above only
+          while an alert is live. Questionnaire contact details, property leads and family-form
+          drafts are listed separately in New questionnaires for the service team.
         </p>
       </div>
     </div>

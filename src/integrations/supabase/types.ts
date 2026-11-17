@@ -194,51 +194,104 @@ export type Database = {
         }
         Relationships: []
       }
+      assessment_documents: {
+        Row: {
+          assessment_id: string
+          content: string
+          created_at: string
+          document_type: string
+          id: string
+          review_status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          assessment_id: string
+          content: string
+          created_at?: string
+          document_type?: string
+          id?: string
+          review_status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          assessment_id?: string
+          content?: string
+          created_at?: string
+          document_type?: string
+          id?: string
+          review_status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assessment_documents_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "assessments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       assessments: {
         Row: {
+          access_token_hash: string | null
           answers: Json
           authorization_signed_at: string | null
           authorization_signed_name: string | null
+          business_appointment_at: string | null
           created_at: string
           email: string | null
           full_name: string | null
           help_requested: string[]
+          home_appointment_at: string | null
           id: string
           language: string
           paralegal_call_at: string | null
           phone: string | null
+          property_estimate: Json
           results: Json
           status: string
           updated_at: string
         }
         Insert: {
+          access_token_hash?: string | null
           answers?: Json
           authorization_signed_at?: string | null
           authorization_signed_name?: string | null
+          business_appointment_at?: string | null
           created_at?: string
           email?: string | null
           full_name?: string | null
           help_requested?: string[]
+          home_appointment_at?: string | null
           id?: string
           language?: string
           paralegal_call_at?: string | null
           phone?: string | null
+          property_estimate?: Json
           results?: Json
           status?: string
           updated_at?: string
         }
         Update: {
+          access_token_hash?: string | null
           answers?: Json
           authorization_signed_at?: string | null
           authorization_signed_name?: string | null
+          business_appointment_at?: string | null
           created_at?: string
           email?: string | null
           full_name?: string | null
           help_requested?: string[]
+          home_appointment_at?: string | null
           id?: string
           language?: string
           paralegal_call_at?: string | null
           phone?: string | null
+          property_estimate?: Json
           results?: Json
           status?: string
           updated_at?: string

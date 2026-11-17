@@ -578,3 +578,42 @@ export const pinGenerateForms = createServerFn({ method: "POST" })
     const { regenerateClientForms } = await import("@/lib/forms-regenerate.server");
     return regenerateClientForms(data.clientId);
   });
+
+/** New homepage questionnaires, including property leads and family-form drafts. */
+export const pinListAssessmentBoard = createServerFn({ method: "POST" })
+  .inputValidator((d: { pin: string }) => d)
+  .handler(async ({ data }) => {
+    check(data.pin);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: assessments, error } = await supabaseAdmin
+      .from("assessments")
+      .select("id, full_name, phone, email, language, answers, results, help_requested, status, created_at, paralegal_call_at, home_appointment_at, business_appointment_at, property_estimate")
+      .order("created_at", { ascending: false })
+      .limit(200);
+    if (error) throw new Error("Could not load questionnaires");
+    const ids = (assessments ?? []).map((row) => row.id);
+    const { data: documents, error: documentsError } = ids.length
+      ? await supabaseAdmin
+          .from("assessment_documents")
+          .select("id, assessment_id, title, document_type, review_status, created_at")
+          .in("assessment_id", ids)
+          .order("created_at", { ascending: true })
+      : { data: [], error: null };
+    if (documentsError) throw new Error("Could not load family-form drafts");
+    return { assessments: assessments ?? [], documents: documents ?? [] };
+  });
+
+/** Staff-only download of a stored family-form draft PDF. */
+export const pinDownloadAssessmentDocument = createServerFn({ method: "POST" })
+  .inputValidator((d: { pin: string; documentId: string }) => d)
+  .handler(async ({ data }) => {
+    check(data.pin);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: document, error } = await supabaseAdmin
+      .from("assessment_documents")
+      .select("id, title, content")
+      .eq("id", data.documentId)
+      .maybeSingle();
+    if (error || !document) throw new Error("Document not found");
+    return { pdfB64: document.content, filename: `${document.title.replace(/[^a-z0-9]+/gi, "_")}.pdf` };
+  });

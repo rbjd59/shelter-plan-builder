@@ -8,6 +8,13 @@
       "when": 1794885940222,
       "tag": "0000_create_assessments",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794888424200,
+      "tag": "0001_expand_assessment_scheduling_and_family_packets",
+      "breakpoints": true
     }
   ]
 }
