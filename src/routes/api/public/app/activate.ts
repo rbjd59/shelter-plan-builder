@@ -14,6 +14,7 @@
  */
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
+import { refuseAppCode } from "@/lib/app-code-guard.server";
 
 const CORS = {
   "access-control-allow-origin": "*",
@@ -65,6 +66,11 @@ export const Route = createFileRoute("/api/public/app/activate")({
           .split("-")[0]!; // tolerate "X5956-EN" (code + language suffix)
         if (!/^[A-Z0-9]{5,8}$/.test(code)) {
           return json({ ok: false, error: "invalid_activation_code" }, { status: 400 });
+        }
+
+        {
+          const refused = await refuseAppCode(code, "/api/public/app/activate", request);
+          if (refused) return json({ ok: false, error: "invalid_activation_code" }, { status: refused });
         }
 
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");

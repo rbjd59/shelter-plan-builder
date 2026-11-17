@@ -5,6 +5,8 @@
 // even when we publish a new build — admins just upload a new APK via
 // /admin/app-builds.
 import { createFileRoute } from "@tanstack/react-router";
+import { refuseAppCode } from "@/lib/app-code-guard.server";
+import { isRetiredDemoCode } from "@/lib/app-code-guard";
 import { getClientIp, logAttempt, isRateLimited, TOO_MANY } from "@/lib/abuse-guard.server";
 
 export const Route = createFileRoute("/api/public/app/latest.apk")({
@@ -22,6 +24,11 @@ export const Route = createFileRoute("/api/public/app/latest.apk")({
           await isRateLimited({ step: "app_download", request, max: 20, windowMinutes: 60 })
         ) {
           return TOO_MANY();
+        }
+
+        if (isRetiredDemoCode(rawCode)) {
+          await refuseAppCode(rawCode, "/api/public/app/latest.apk", request);
+          return new Response(null, { status: 401 });
         }
 
         let allowed = false;

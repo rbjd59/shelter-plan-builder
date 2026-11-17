@@ -1733,6 +1733,36 @@ export type Database = {
         }
         Relationships: []
       }
+      refused_app_codes: {
+        Row: {
+          code: string
+          created_at: string
+          endpoint: string
+          id: string
+          ip: string | null
+          reason: string
+          user_agent: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          endpoint: string
+          id?: string
+          ip?: string | null
+          reason: string
+          user_agent?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          endpoint?: string
+          id?: string
+          ip?: string | null
+          reason?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       service_callbacks: {
         Row: {
           app_client_id: string | null

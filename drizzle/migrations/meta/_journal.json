@@ -71,6 +71,13 @@
       "when": 1794904801249,
       "tag": "0009_business_trust_packet_snapshots",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1794931949103,
+      "tag": "0010_migration",
+      "breakpoints": true
     }
   ]
 }

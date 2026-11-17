@@ -10,6 +10,7 @@
 
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
+import { refuseAppCode } from "@/lib/app-code-guard.server";
 
 const CORS = {
   "access-control-allow-origin": "*",
@@ -86,6 +87,11 @@ export const Route = createFileRoute("/api/public/app-trigger")({
         if (!/^[A-Z0-9]{5,8}$/.test(caseId)) {
           console.warn("[app-trigger] 400 invalid_case_id", { case_id: parsed.data.case_id, action: parsed.data.action ?? "trigger" });
           return json({ ok: false, error: "invalid_case_id" }, { status: 400 });
+        }
+
+        {
+          const refused = await refuseAppCode(caseId, "/api/public/app-trigger", request);
+          if (refused) return json({ ok: false, error: "invalid_activation_code" }, { status: refused });
         }
 
         if (!signature) {

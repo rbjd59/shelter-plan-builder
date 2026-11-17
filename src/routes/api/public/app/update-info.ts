@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
+import { refuseAppCode } from "@/lib/app-code-guard.server";
 
 const CORS = {
   "access-control-allow-origin": "*",
@@ -59,6 +60,11 @@ export const Route = createFileRoute("/api/public/app/update-info")({
           .split("-")[0];
         if (!/^[A-Z0-9]{5,8}$/.test(caseId)) {
           return json({ ok: false, error: "invalid_case_id" }, { status: 400 });
+        }
+
+        {
+          const refused = await refuseAppCode(caseId, "/api/public/app/update-info", request);
+          if (refused) return json({ ok: false, error: "invalid_activation_code" }, { status: refused });
         }
         if (!signature) {
           return json({ ok: false, error: "missing_signature" }, { status: 401 });

@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
+import { refuseAppCode } from "@/lib/app-code-guard.server";
 
 const ContactSchema = z.object({
   name: z.string().max(160).optional().nullable(),
@@ -92,6 +93,11 @@ export const Route = createFileRoute("/api/public/app/sync-contacts")({
 
         if (!token) {
           return jsonResponse({ ok: false, error: "client_not_found" }, { status: 404 });
+        }
+
+        {
+          const refused = await refuseAppCode(token, "/api/public/app/sync-contacts", request);
+          if (refused) return jsonResponse({ ok: false, error: "invalid_activation_code" }, { status: refused });
         }
 
         const result: Record<string, unknown> = { ok: true, case_id: token };

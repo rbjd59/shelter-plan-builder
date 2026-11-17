@@ -9,6 +9,8 @@
 
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
+import { refuseAppCode } from "@/lib/app-code-guard.server";
+import { isRetiredDemoCode } from "@/lib/app-code-guard";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { getClientIp } from "@/lib/abuse-guard.server";
 import { sendManagedEmail } from "@/lib/email/managed-send.server";
@@ -316,6 +318,14 @@ export const Route = createFileRoute("/api/public/emergency/activate")({
         const caseRef = d.intake_session_id ?? explicitCode;
         if (!caseRef) {
           return jsonResponse({ ok: false, error: "missing_activation_code" }, { status: 400 });
+        }
+        {
+          // Any code-shaped reference must belong to a real client; retired demo codes are always refused.
+          const codeRef = explicitCode ?? (/^[A-Za-z0-9]{5,8}(-[A-Za-z]{2})?$/.test(caseRef) ? caseRef : null);
+          if (codeRef || isRetiredDemoCode(caseRef)) {
+            const refused = await refuseAppCode(codeRef ?? caseRef, "/api/public/emergency/activate", request);
+            if (refused) return jsonResponse({ ok: false, error: "invalid_activation_code" }, { status: refused });
+          }
         }
         // The Flutter app sends lat/lng (and name inside payload); older
         // callers send gps_lat/gps_lng/full_name. Normalize both shapes.
