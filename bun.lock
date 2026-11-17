@@ -69,6 +69,7 @@
         "motion": "^14.14.0",
         "nanoid": "^6.0.2",
         "nitro": "3.0.260603-beta",
+        "parse5": "7.1.2",
         "pdf-lib": "^1.17.1",
         "pdfjs-dist": "4.10.38",
         "qrcode": "^1.5.4",
@@ -119,6 +120,7 @@
   },
   "overrides": {
     "entities": "4.5.0",
+    "parse5": "7.1.2",
   },
   "packages": {
     "@ai-sdk/anthropic": ["@ai-sdk/anthropic@4.0.105", "", { "dependencies": { "@ai-sdk/provider": "4.0.38", "@ai-sdk/provider-utils": "5.0.81" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-i6kmv6y+FGTBxOPtLRrb5I+92WcFFGubhd33CD0JeaSyFOnLJ8my4a9olkAgyR9fACHMzxFBmoEHd0uO4i72bA=="],
@@ -1707,7 +1709,7 @@
 
     "parse-entities": ["parse-entities@4.0.2", "", { "dependencies": { "@types/unist": "^2.0.0", "character-entities-legacy": "^3.0.0", "character-reference-invalid": "^2.0.0", "decode-named-character-reference": "^1.0.0", "is-alphanumerical": "^2.0.0", "is-decimal": "^2.0.0", "is-hexadecimal": "^2.0.0" } }, "sha512-GG2AQYWoLgL877gQIKeRPGO1xF9+eG1ujIb5soS5gPvLQ1y2o8FL90w2QWNdf9I361Mpp7726c+lj3U0qK1uGw=="],
 
-    "parse5": ["parse5@8.1.1", "", { "dependencies": { "entities": "^9.0.0" } }, "sha512-EcR/6WDcU7b2N3vQSxKALCk9lXGtUMQxXio008OEMBE0kavu/7JLfBEeFPzi43nMqVDSbEn3QCK+BMCc9zO//w=="],
+    "parse5": ["parse5@7.1.2", "", { "dependencies": { "entities": "^4.4.0" } }, "sha512-Czj1WaSVpaoj0wbhMzLmWD69anp2WH7FXMB9n1Sy8/ZFF9jolSQVMu1Ij5WIyGmcBmhk7EOndpO4mIpihVqAXw=="],
 
     "parseley": ["parseley@0.12.1", "https://europe-west4-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache/parseley/-/parseley-0.12.1.tgz", { "dependencies": { "leac": "^0.6.0", "peberminta": "^0.9.0" } }, "sha512-e6qHKe3a9HWr0oMRVDTRhKce+bRO8VGQR3NyVwcjwrbhMmFCX9KszEV35+rn4AdilFAq9VPxP/Fe1wC9Qjd2lw=="],
 
