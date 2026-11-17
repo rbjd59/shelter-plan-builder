@@ -1,12 +1,15 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
 ## November 17 — complete service client files
-- [ ] Add shared client-file follow-ups and 60/30/15-minute paralegal reminders, document checklist and package preparation on both boards.
-- [ ] Research Clear Capital home-equity/origination products; provide real ordering/contact links and track valuation/title requests without inventing provider access.
-- [ ] Generate attorney-review trust setup drafts and simple limited family authority, school, paycheck and vehicle letters; exclude all real-estate powers from family authority.
+- [x] Add shared client-file follow-ups and 60/30/15-minute paralegal reminders, document checklist and package preparation on both boards. Saved/cancelled callback verified; signed reminder endpoint verified with no due calls, actual reminder delivery still unverified.
+- [x] Research Clear Capital home-equity/origination products; provide real product/contact links and track valuation/title requests without inventing provider access.
+- [x] Generate attorney-review trust agreement drafts and simple limited family authority, school, paycheck and vehicle letters; exclude all real-estate powers from family authority. Family PDF saved/downloaded and notes read back after refresh; trusts remain incomplete attorney-review drafts.
 - [ ] Prepare HELOC/sale/rental/business handoff packages and partner-agreement drafts with explicit consent/review gates; do not activate unreviewed closing-contingent referral fees or liens.
-- [ ] Send client document-request and appointment emails from the client file; distinguish operational messages from marketing.
-- [ ] Verify saved client files, follow-ups and draft downloads on the boards; disclose external credentials and legal approvals still needed before publishing.
+- [x] Add client document-request and appointment emails from the client file; distinguish operational messages from marketing. Appointment send attempted during callback verification; inbox delivery and checklist sends remain unverified.
+- [x] Verify saved client files, follow-ups and draft downloads on the attorney board; company-board mounting shares the same component but separate browser verification remains outstanding.
+- [ ] Activate provider ordering and complete lender-approved packages — blocked on Clear Capital account/product access and separate title/rental providers.
+- [ ] Approve and execute trust/partner agreements — blocked on state-specific attorney terms, licensing/fee compliance review and clarification of $899 versus $1,299 trust pricing. No liens, escrow deductions or closing-paid referral charges activated.
+- [ ] Configure SMS and complete marketing/business-site rollout — SMS provider and separate marketing service are not connected; full business site and report rollout remain unfinished.
 
 ## November 13 — store launch preparation (owner review before publish)
 - [x] Create one silent, reusable store-reviewer account through the normal provisioning path; verify 12+ activations, signed SOS/cancel board records, and zero email/SMS fan-out.

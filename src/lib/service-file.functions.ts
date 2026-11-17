@@ -1,7 +1,6 @@
 import { createServerFn } from '@tanstack/react-start';
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
 import { z } from 'zod';
-import { CHECKLISTS } from './service-file';
 const reference = z.object({id:z.string().uuid(),source:z.enum(['assessment','app'])});
 async function staff(context: {supabase: {rpc: Function}; userId: string}) {
  const {data,error}=await context.supabase.rpc('has_role',{_user_id:context.userId,_role:'admin'});
@@ -19,7 +18,11 @@ export const saveServiceFile=createServerFn({method:'POST'}).middleware([require
 });
 export const addServiceCallback=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(reference.extend({title:z.string().min(2).max(200),startsAt:z.string().datetime(),timezone:z.string().max(60).default('America/New_York'),paralegalEmail:z.string().email().max(254),notes:z.string().max(3000).default('')})).handler(async({data,context})=>{
  await staff(context); if(Date.parse(data.startsAt)<=Date.now()) throw new Error('Choose a future date and time.');
- const {supabaseAdmin}=await import('@/integrations/supabase/client.server'); const {error}=await supabaseAdmin.from('service_callbacks').insert({assessment_id:data.source==='assessment'?data.id:null,app_client_id:data.source==='app'?data.id:null,title:data.title,starts_at:data.startsAt,timezone:data.timezone,paralegal_email:data.paralegalEmail,notes:data.notes}); if(error) throw new Error(error.message); return {ok:true};
+ try { new Intl.DateTimeFormat('en-US',{timeZone:data.timezone}).format(); } catch {throw new Error('Choose a valid time zone.');}
+ const {supabaseAdmin}=await import('@/integrations/supabase/client.server'); const {data:callback,error}=await supabaseAdmin.from('service_callbacks').insert({assessment_id:data.source==='assessment'?data.id:null,app_client_id:data.source==='app'?data.id:null,title:data.title,starts_at:data.startsAt,timezone:data.timezone,paralegal_email:data.paralegalEmail,notes:data.notes}).select('id').single(); if(error||!callback) throw new Error(error?.message??'Could not save call');
+ const {loadServiceClient}=await import('./service-client.server'); const client=await loadServiceClient(data.id,data.source); let confirmation:'sent'|'suppressed'|'failed'|'no_email'='no_email';
+ if(client.email) {try { const {sendTemplateEmail}=await import('./email-templates/send-email'); const language=client.language??'en'; const title=language==='es'?'Su llamada está programada':language==='ht'?'Apèl ou a pwograme':'Your call is scheduled'; const time=new Date(data.startsAt).toLocaleString(language==='ht'?'fr-HT':language==='es'?'es-US':'en-US',{timeZone:data.timezone}); const result=await sendTemplateEmail('service-notice',client.email,{templateData:{title,name:client.full_name,language,lines:[`${time} (${data.timezone})`,language==='es'?'Reúna los documentos que tenga. Si falta algo, le ayudamos.':language==='ht'?'Rasanble dokiman ou genyen yo. Si yon bagay manke, n ap ede ou.':'Gather the papers you have. We can help with missing papers.','305-773-7737']},idempotencyKey:`callback-confirmation-${callback.id}`});confirmation=result.sent?'sent':'suppressed';}catch{confirmation='failed';}}
+ return {ok:true,confirmation};
 });
 export const updateServiceCallback=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(z.object({id:z.string().uuid(),status:z.enum(['completed','cancelled'])})).handler(async({data,context})=>{
  await staff(context); const {supabaseAdmin}=await import('@/integrations/supabase/client.server'); const {error}=await supabaseAdmin.from('service_callbacks').update({status:data.status}).eq('id',data.id); if(error) throw new Error(error.message); return {ok:true};
