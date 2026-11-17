@@ -3,13 +3,14 @@ import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { BriefcaseBusiness, Phone, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useLang, type Lang } from "@/context/LanguageContext";
+import { type Lang } from "@/context/LanguageContext";
+import { useBusinessLang } from "@/lib/business-lang";
 import { BUSINESS_INTAKE_COPY, businessIntakeSchema } from "@/lib/business-intake";
 import { submitBusinessIntake } from "@/lib/business-intake.functions";
 import { BUSINESS_PARALEGAL_PHONE, BUSINESS_PARALEGAL_PHONE_DISPLAY } from "@/lib/business-config";
 
 export default function BusinessIntake() {
-  const { lang, setLang } = useLang();
+  const { lang, setLang } = useBusinessLang();
   const c = BUSINESS_INTAKE_COPY[lang];
   const submit = useServerFn(submitBusinessIntake);
   const [requestId, setRequestId] = useState<string>();

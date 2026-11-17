@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { BriefcaseBusiness, Calculator, Check, Phone, MessageSquareText } from "lucide-react";
-import { useLang, type Lang } from "@/context/LanguageContext";
+import { type Lang } from "@/context/LanguageContext";
+import { useBusinessLang } from "@/lib/business-lang";
 import { BUSINESS_SITE_COPY, TRADES } from "@/lib/business-site-content";
 import { BUSINESS_PARALEGAL_PHONE, BUSINESS_PARALEGAL_PHONE_DISPLAY } from "@/lib/business-config";
 import { calculateBusinessValue } from "@/lib/assessment/business-report";
@@ -12,7 +13,7 @@ import { BUSINESS_INTAKE_COPY } from "@/lib/business-intake";
 const money = (value: number) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(value);
 
 export default function BusinessSite() {
-  const { lang, setLang } = useLang();
+  const { lang, setLang } = useBusinessLang();
   const c = BUSINESS_SITE_COPY[lang];
   const [revenue, setRevenue] = useState("");
   const [costs, setCosts] = useState("");
