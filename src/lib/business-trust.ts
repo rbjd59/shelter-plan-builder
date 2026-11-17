@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { BusinessTrustLanguage } from "./business-trust-forms";
 
 export const BUSINESS_MONTHLY_FEE = 199;
 export const BUSINESS_TRUST_FEE = 899;
@@ -26,6 +27,15 @@ export type BusinessFile = z.infer<typeof businessFileSchema>;
 export const emptyBusinessFile = businessFileSchema.parse({});
 export function isTrustDocument(type: string) {
   return type === "service_trust" || type === "service_business_trust";
+}
+export function normalizeBusinessTrustLanguage(value: unknown): BusinessTrustLanguage {
+  return value === "es" || value === "ht" ? value : "en";
+}
+export function trustDocumentLanguage(title: string, fallback: unknown): BusinessTrustLanguage {
+  const match = title.match(/\[(en|es|ht)\]$/i);
+  return match
+    ? normalizeBusinessTrustLanguage(match[1]?.toLowerCase())
+    : normalizeBusinessTrustLanguage(fallback);
 }
 export function businessTrustDetails(
   client: { full_name: string | null; answers: unknown },

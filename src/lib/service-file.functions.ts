@@ -1,7 +1,16 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
-import { businessFileSchema, isTrustDocument } from "./business-trust";
+import {
+  businessFileSchema,
+  isTrustDocument,
+  normalizeBusinessTrustLanguage,
+  trustDocumentLanguage,
+} from "./business-trust";
+import {
+  BUSINESS_TRUST_LANGUAGES,
+  languageNames,
+} from "./business-trust-forms";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
 const reference = z.object({ id: z.string().uuid(), source: z.enum(["assessment", "app"]) });
@@ -163,6 +172,7 @@ export const generateServicePacket = createServerFn({ method: "POST" })
   .inputValidator(
     reference.extend({
       kind: z.enum(["heloc", "sale", "rental", "trust", "business", "business_trust", "family"]),
+      language: z.enum(BUSINESS_TRUST_LANGUAGES).optional(),
     }),
   )
   .handler(async ({ data, context }) => {
@@ -173,6 +183,7 @@ export const generateServicePacket = createServerFn({ method: "POST" })
     const { servicePacket, familyPacket, businessTrustPacket } =
       await import("./service-packet.server");
     const answers = (client.answers ?? {}) as Record<string, unknown>;
+    const packetLanguage = normalizeBusinessTrustLanguage(data.language ?? client.language);
     const bytes =
       data.kind === "family"
         ? await familyPacket(
@@ -180,14 +191,18 @@ export const generateServicePacket = createServerFn({ method: "POST" })
             client.full_name ?? "Client",
           )
         : data.kind === "business_trust"
-          ? await businessTrustPacket(client, file)
+          ? await businessTrustPacket(client, file, packetLanguage)
           : await servicePacket(data.kind, client, file);
     const b64 = Buffer.from(bytes).toString("base64");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const documentTitle =
+      data.kind === "business_trust"
+        ? `Business trust forms (${languageNames[packetLanguage]}) [${packetLanguage}]`
+        : `${data.kind} preparation draft`;
     if (data.source === "assessment") {
       const { error } = await supabaseAdmin.from("assessment_documents").insert({
         assessment_id: data.id,
-        title: `${data.kind} preparation draft`,
+        title: documentTitle,
         document_type: `service_${data.kind}`,
         content: b64,
         review_status: "draft_pending_review",
@@ -196,7 +211,7 @@ export const generateServicePacket = createServerFn({ method: "POST" })
     } else {
       const { error } = await supabaseAdmin.from("client_documents").insert({
         client_id: data.id,
-        title: `${data.kind} preparation draft`,
+        title: documentTitle,
         document_type: `service_${data.kind}`,
         content: b64,
         review_status: "draft_pending_review",
@@ -204,7 +219,13 @@ export const generateServicePacket = createServerFn({ method: "POST" })
       });
       if (error) throw new Error(error.message);
     }
-    return { pdfB64: b64, filename: `${data.kind}-preparation-draft.pdf` };
+    return {
+      pdfB64: b64,
+      filename:
+        data.kind === "business_trust"
+          ? `business-trust-forms-${packetLanguage}.pdf`
+          : `${data.kind}-preparation-draft.pdf`,
+    };
   });
 export const emailClientChecklist = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -246,14 +267,14 @@ export const emailTrustPackage = createServerFn({ method: "POST" })
       data.source === "assessment"
         ? await supabaseAdmin
             .from("assessment_documents")
-            .select("id,content,document_type")
+            .select("id,title,content,document_type")
             .eq("id", data.documentId)
             .eq("assessment_id", data.id)
             .in("document_type", ["service_trust", "service_business_trust"])
             .single()
         : await supabaseAdmin
             .from("client_documents")
-            .select("id,content,document_type")
+            .select("id,title,content,document_type")
             .eq("id", data.documentId)
             .eq("client_id", data.id)
             .in("document_type", ["service_trust", "service_business_trust"])

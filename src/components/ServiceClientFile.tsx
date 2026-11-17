@@ -19,6 +19,11 @@ import {
   BUSINESS_TRUST_FEE,
   type BusinessFile,
 } from "@/lib/business-trust";
+import {
+  BUSINESS_TRUST_LANGUAGES,
+  languageNames,
+  type BusinessTrustLanguage,
+} from "@/lib/business-trust-forms";
 import { downloadPdfFromBase64 } from "./PdfPreviewDialog";
 type FileValues = {
   notes: string;
@@ -64,6 +69,8 @@ export default function ServiceClientFile({
   const [kind, setKind] = useState<ServiceKind>("heloc");
   const [status, setStatus] = useState("");
   const [busy, setBusy] = useState(false);
+  const [selectedPacketLanguage, setSelectedPacketLanguage] =
+    useState<BusinessTrustLanguage | null>(null);
   const { data, error, refetch } = useQuery({
     queryKey: ["service-file", source, id],
     queryFn: () => load({ data: { id, source } }),
@@ -99,12 +106,18 @@ export default function ServiceClientFile({
       </div>
     );
   if (!data) return <p className="text-sm text-muted-foreground">Loading service file…</p>;
+  const packetLanguage: BusinessTrustLanguage =
+    selectedPacketLanguage ??
+    (data.client.language === "es" || data.client.language === "ht" ? data.client.language : "en");
   const change = (key: keyof Omit<FileValues, "checklist" | "business">, value: string) =>
     setFile({ ...values, [key]: value });
   const saveCurrent = () => save({ data: { id, source, file: values } });
-  const download = async (packetKind: ServiceKind | "family" | "business_trust") => {
+  const download = async (
+    packetKind: ServiceKind | "family" | "business_trust",
+    language?: BusinessTrustLanguage,
+  ) => {
     await saveCurrent();
-    const result = await generate({ data: { id, source, kind: packetKind } });
+    const result = await generate({ data: { id, source, kind: packetKind, language } });
     downloadPdfFromBase64(result.filename, result.pdfB64);
   };
   return (
@@ -301,19 +314,37 @@ export default function ServiceClientFile({
           <p className="text-sm text-muted-foreground">
             This records the fee only. It does not charge the client or confirm payment.
           </p>
-          <Button
-            variant="outline"
-            disabled={busy}
-            onClick={() =>
-              void work(
-                () => download("business_trust"),
-                "Business trust draft and fee record saved in the client file and downloaded.",
-              )
-            }
-          >
-            <Download />
-            Prepare business trust PDF
-          </Button>
+          <div className="flex flex-wrap items-end gap-3">
+            <label className="text-sm">
+              PDF and email language
+              <select
+                value={packetLanguage}
+                onChange={(event) =>
+                  setSelectedPacketLanguage(event.target.value as BusinessTrustLanguage)
+                }
+                className="mt-1 block rounded border border-input bg-background p-2"
+              >
+                {BUSINESS_TRUST_LANGUAGES.map((language) => (
+                  <option key={language} value={language}>
+                    {languageNames[language]}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <Button
+              variant="outline"
+              disabled={busy}
+              onClick={() =>
+                void work(
+                  () => download("business_trust", packetLanguage),
+                  `${languageNames[packetLanguage]} business trust forms saved in the client file and downloaded.`,
+                )
+              }
+            >
+              <Download />
+              Prepare {languageNames[packetLanguage]} business trust PDF
+            </Button>
+          </div>
         </div>
       )}
       <div className="flex flex-wrap gap-2">
@@ -400,7 +431,7 @@ export default function ServiceClientFile({
             <p className="text-sm text-muted-foreground">
               {documentType === "service_trust"
                 ? "Choose Trust, then Prepare trust package to save this client's PDF."
-                : "Choose Do Not Forget Your Business, then Prepare business trust PDF."}
+                : "Choose Do Not Forget Your Business, select a language, then Prepare business trust PDF."}
             </p>
           )}
         </div>

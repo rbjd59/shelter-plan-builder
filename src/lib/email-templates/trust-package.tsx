@@ -18,7 +18,7 @@ const copy = {
     expiry: "This private link works for 7 days. Ask our team for a new link if needed.",
     businessTitle: "Your Do Not Forget Your Business trust PDF",
     businessNote:
-      "Your PDF includes your business trust draft and monthly-fee record. It is not a signed trust or a bill. Do not sign or transfer business ownership until the attorney approves the complete documents.",
+      "Your PDF includes the business trust agreement, schedules, trustee acceptance, paralegal preparation page and monthly-fee record. It is not a signed trust or a bill. Do not sign or transfer business ownership until the attorney approves the complete documents.",
   },
   es: {
     title: "Su PDF de Save My Home Trust",
@@ -27,7 +27,7 @@ const copy = {
     expiry: "Este enlace privado dura 7 días. Pida otro enlace a nuestro equipo si lo necesita.",
     businessTitle: "Su PDF del fideicomiso de Do Not Forget Your Business",
     businessNote:
-      "Su PDF incluye el borrador de su fideicomiso para el negocio y el registro de la cuota mensual. No es un fideicomiso firmado ni una factura. No firme ni transfiera el negocio hasta que el abogado apruebe todos los documentos.",
+      "Su PDF incluye el acuerdo del fideicomiso, los anexos, la aceptación del fiduciario, la página de preparación del paralegal y el registro de la cuota mensual. No es un fideicomiso firmado ni una factura. No firme ni transfiera el negocio hasta que el abogado apruebe todos los documentos.",
   },
   ht: {
     title: "PDF Save My Home Trust ou a",
@@ -36,7 +36,7 @@ const copy = {
     expiry: "Lyen prive sa a mache pandan 7 jou. Mande ekip nou an yon lòt lyen si ou bezwen li.",
     businessTitle: "PDF fidisi Do Not Forget Your Business ou a",
     businessNote:
-      "PDF ou a gen bouyon fidisi biznis ou ak rejis frè pa mwa a. Se pa yon fidisi siyen ni yon bòdwo. Pa siyen ni transfere biznis ou jiskaske avoka a apwouve tout dokiman yo.",
+      "PDF ou a gen akò fidisi a, anèks yo, akseptasyon fidisyè a, paj preparasyon paralegal la ak rejis frè pa mwa a. Se pa yon fidisi siyen ni yon bòdwo. Pa siyen ni transfere biznis ou jiskaske avoka a apwouve tout dokiman yo.",
   },
 };
 export const template = {
