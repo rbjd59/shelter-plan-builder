@@ -11,6 +11,10 @@ describe("intake first stage", () => {
       expect(canStartQuestionnaire({ ...details, [key]: "" }, true)).toBe(false);
     }
   });
+  it("keeps SMS consent but never stores a password in signup metadata", () => {
+    expect(signupDetails({ ...details, assessment_sms_consent: true, password: "must-not-persist" })).toMatchObject({ assessment_sms_consent: true });
+    expect(signupDetails({ ...details, password: "must-not-persist" })).not.toHaveProperty("password");
+  });
   it("retains who assisted, church, pastor and where the client heard about the app without passwords", () => {
     expect(signupDetails({ ...details, referral_church: "Test Church", referral_pastor: "Test Pastor", signup_assisted_by: "Test Helper", heard_about_app: "WSRF", password: "must-not-persist", a_number: "A999999999" })).toEqual({ ...details, referral_church: "Test Church", referral_pastor: "Test Pastor", signup_assisted_by: "Test Helper", heard_about_app: "WSRF" });
   });

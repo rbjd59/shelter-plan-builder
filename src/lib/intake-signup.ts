@@ -2,7 +2,7 @@ export type IntakeSignupAnswers = Record<string, string | boolean>;
 
 // Only non-secret intake fields may travel with account registration.
 export function signupDetails(answers: IntakeSignupAnswers): IntakeSignupAnswers {
-  const keys = ["full_name", "client_email", "client_mobile", "referral_church", "referral_pastor", "signup_assisted_by", "heard_about_app", "intake_terms_accepted", "intake_terms_accepted_at"];
+  const keys = ["full_name", "client_email", "client_mobile", "assessment_sms_consent", "referral_church", "referral_pastor", "signup_assisted_by", "heard_about_app", "intake_terms_accepted", "intake_terms_accepted_at"];
   return Object.fromEntries(keys.filter((key) => answers[key] !== undefined).map((key) => [key, answers[key]]));
 }
 

@@ -301,9 +301,12 @@ export type Database = {
         Row: {
           access_token_hash: string | null
           answers: Json
+          attorney_report_sent_at: string | null
           authorization_signed_at: string | null
           authorization_signed_name: string | null
           business_appointment_at: string | null
+          business_report: Json | null
+          business_report_sent_at: string | null
           created_at: string
           email: string | null
           full_name: string | null
@@ -322,9 +325,12 @@ export type Database = {
         Insert: {
           access_token_hash?: string | null
           answers?: Json
+          attorney_report_sent_at?: string | null
           authorization_signed_at?: string | null
           authorization_signed_name?: string | null
           business_appointment_at?: string | null
+          business_report?: Json | null
+          business_report_sent_at?: string | null
           created_at?: string
           email?: string | null
           full_name?: string | null
@@ -343,9 +349,12 @@ export type Database = {
         Update: {
           access_token_hash?: string | null
           answers?: Json
+          attorney_report_sent_at?: string | null
           authorization_signed_at?: string | null
           authorization_signed_name?: string | null
           business_appointment_at?: string | null
+          business_report?: Json | null
+          business_report_sent_at?: string | null
           created_at?: string
           email?: string | null
           full_name?: string | null

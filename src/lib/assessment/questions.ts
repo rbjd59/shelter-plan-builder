@@ -137,6 +137,12 @@ export const SECTIONS: Section[] = [
     { id: "monthlyIncome", q: "About how much money does this work bring in each month?", show: hasWork, opts: [
       { v: "lt1000", l: "Under $1,000" }, { v: "1000to3000", l: "$1,000–$3,000" }, { v: "3000to6000", l: "$3,000–$6,000" },
       { v: "6000to10000", l: "$6,000–$10,000" }, { v: "10000plus", l: "More than $10,000" }, { v: "dk", l: "I don't know" }] },
+    { id: "monthlyCosts", q: "About how much do you pay for workers, gas, supplies, rent and other work costs each month?", show: hasWork, opts: [
+      { v: "none", l: "Nothing" }, { v: "lt1000", l: "Under $1,000" }, { v: "1000to3000", l: "$1,000–$3,000" }, { v: "3000to6000", l: "$3,000–$6,000" },
+      { v: "6000to10000", l: "$6,000–$10,000" }, { v: "10000plus", l: "More than $10,000" }, { v: "dk", l: "I don't know" }] },
+    { id: "equipmentValue", q: "About how much are your work vehicles, tools and equipment worth today?", show: hasWork, opts: [
+      { v: "none", l: "Nothing" }, { v: "lt5000", l: "Under $5,000" }, { v: "5000to15000", l: "$5,000–$15,000" },
+      { v: "15000to50000", l: "$15,000–$50,000" }, { v: "50000plus", l: "More than $50,000" }, { v: "dk", l: "I don't know" }] },
     { id: "customersWeek", q: "How many customers do you see in a normal week?", show: hasWork, opts: [
       { v: "lt5", l: "Less than 5" }, { v: "5to9", l: "5–9" }, { v: "10to19", l: "10–19" }, { v: "20plus", l: "20 or more" }] },
     { id: "repeatCustomers", q: "Are they mostly the same customers every week or month?", show: hasWork, opts: [
