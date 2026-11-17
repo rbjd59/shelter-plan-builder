@@ -412,7 +412,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
         ...answers,
         sms_consent: true,
         sms_consent_text:
-          "I agree to receive SMS messages from DetencionDefensa.com, Inc. at the phone number provided, including an activation code and emergency-case notifications. Message and data rates may apply. Message frequency varies. Reply STOP to unsubscribe, HELP for help.",
+          "I agree to receive SMS messages from DETENCIONDEFENSACOM, INC. at the phone number provided, including an activation code and emergency-case notifications. Message and data rates may apply. Message frequency varies. Reply STOP to unsubscribe, HELP for help.",
         sms_consent_at: new Date().toISOString(),
       };
       if (isBilingual) {
@@ -803,11 +803,11 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
             />
             <span style={{ fontSize: 13, lineHeight: 1.5, color: "#e8eef7" }}>
               {L === "es" ? (
-                <>Acepto recibir mensajes SMS de <strong>DetencionDefensa.com, Inc.</strong> al número de teléfono proporcionado, incluyendo un código de activación y notificaciones de emergencia del caso. Pueden aplicar tarifas de mensajes y datos. La frecuencia varía. Responda STOP para cancelar la suscripción, HELP para ayuda. Consulte la <a href="/privacy" target="_blank" style={{ color: "#e8a04a" }}>Política de Privacidad</a> y los <a href="/terms" target="_blank" style={{ color: "#e8a04a" }}>Términos</a>.</>
+                <>Acepto recibir mensajes SMS de <strong>DETENCIONDEFENSACOM, INC.</strong> al número de teléfono proporcionado, incluyendo un código de activación y notificaciones de emergencia del caso. Pueden aplicar tarifas de mensajes y datos. La frecuencia varía. Responda STOP para cancelar la suscripción, HELP para ayuda. Consulte la <a href="/privacy" target="_blank" style={{ color: "#e8a04a" }}>Política de Privacidad</a> y los <a href="/terms" target="_blank" style={{ color: "#e8a04a" }}>Términos</a>.</>
               ) : L === "ht" ? (
-                <>Mwen dakò pou m resevwa mesaj SMS soti nan <strong>DetencionDefensa.com, Inc.</strong> nan nimewo telefòn mwen bay la, ki gen ladann yon kòd aktivasyon ak notifikasyon ka ijans. Tarif mesaj ak done ka aplike. Frekans mesaj la varye. Reponn STOP pou w dezabòne, HELP pou èd. Gade <a href="/privacy" target="_blank" style={{ color: "#e8a04a" }}>Règleman Konfidansyalite</a> ak <a href="/terms" target="_blank" style={{ color: "#e8a04a" }}>Kondisyon yo</a>.</>
+                <>Mwen dakò pou m resevwa mesaj SMS soti nan <strong>DETENCIONDEFENSACOM, INC.</strong> nan nimewo telefòn mwen bay la, ki gen ladann yon kòd aktivasyon ak notifikasyon ka ijans. Tarif mesaj ak done ka aplike. Frekans mesaj la varye. Reponn STOP pou w dezabòne, HELP pou èd. Gade <a href="/privacy" target="_blank" style={{ color: "#e8a04a" }}>Règleman Konfidansyalite</a> ak <a href="/terms" target="_blank" style={{ color: "#e8a04a" }}>Kondisyon yo</a>.</>
               ) : (
-                <>I agree to receive SMS messages from <strong>DetencionDefensa.com, Inc.</strong> at the phone number provided, including an activation code and emergency-case notifications. Message and data rates may apply. Message frequency varies. Reply STOP to unsubscribe, HELP for help. See our <a href="/privacy" target="_blank" style={{ color: "#e8a04a" }}>Privacy Policy</a> and <a href="/terms" target="_blank" style={{ color: "#e8a04a" }}>Terms</a>.</>
+                <>I agree to receive SMS messages from <strong>DETENCIONDEFENSACOM, INC.</strong> at the phone number provided, including an activation code and emergency-case notifications. Message and data rates may apply. Message frequency varies. Reply STOP to unsubscribe, HELP for help. See our <a href="/privacy" target="_blank" style={{ color: "#e8a04a" }}>Privacy Policy</a> and <a href="/terms" target="_blank" style={{ color: "#e8a04a" }}>Terms</a>.</>
               )}
             </span>
           </label>

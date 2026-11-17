@@ -34,7 +34,7 @@ export const FIRM = {
 } as const;
 
 export const COMPANY = {
-  legalName: "DetencionDefensa.com, Inc.",
+  legalName: "DETENCIONDEFENSACOM, INC.",
   state: "Delaware corporation",
   domain: "detenciondefensa.com",
 } as const;

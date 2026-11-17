@@ -190,7 +190,7 @@ export async function signBlankForms(input: SignInput) {
       "a notary (including a Florida power of attorney, which also requires two witnesses) must",
       "still be notarized in person or through a licensed remote online notary.",
       "",
-      "DetencionDefensa.com, Inc. is a Delaware corporation. It is not a law firm and does not",
+      "DETENCIONDEFENSACOM, INC. is a Delaware corporation. It is not a law firm and does not",
       "provide legal advice.",
     ]) {
       cert.drawText(line, { x: 54, y, size: 9, font });

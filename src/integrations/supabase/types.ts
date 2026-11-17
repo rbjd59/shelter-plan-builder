@@ -1827,6 +1827,39 @@ export type Database = {
         }
         Relationships: []
       }
+      video_question_threads: {
+        Row: {
+          blocked_reason: string | null
+          created_at: string
+          id: string
+          messages: Json
+          title: string
+          topic: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          blocked_reason?: string | null
+          created_at?: string
+          id?: string
+          messages?: Json
+          title?: string
+          topic: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          blocked_reason?: string | null
+          created_at?: string
+          id?: string
+          messages?: Json
+          title?: string
+          topic?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       webhook_send_log: {
         Row: {
           created_at: string

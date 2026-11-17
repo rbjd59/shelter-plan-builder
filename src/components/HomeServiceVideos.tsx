@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useLang, type Lang } from "@/context/LanguageContext";
 import { withLang } from "@/lib/outbound-lang";
 import { FIRM } from "@/lib/firm-info";
+import VideoQuestionBox from "@/components/VideoQuestionBox";
 import homePoster from "@/assets/home-property-poster.jpg.asset.json";
 import businessPoster from "@/assets/business-owner-hero.jpg";
 import homeEn from "@/assets/videos/protect-what-you-built-en.mp4.asset.json";
@@ -51,6 +52,7 @@ function ServiceVideo({ kind, lang }: { kind: "home" | "business"; lang: Lang })
         <Button asChild size="lg"><a href={withLang(kind === "home" ? "https://savemyhometrust.com/trust" : "https://donotforgetyourbusiness.com", lang)}>{copy.start}</a></Button>
       </div>
       {kind === "home" && <p className="home-business-disclosure">{FIRM.legalName} · {FIRM.city}</p>}
+      <VideoQuestionBox topic={kind} />
     </div>
   </section>;
 }

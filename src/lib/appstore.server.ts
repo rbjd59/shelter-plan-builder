@@ -393,7 +393,7 @@ export async function submitBuildForReview(
   await upsertLocalization(version.id, {
     locale: "en-US",
     description:
-      "Free emergency app for immigrant working families. One-click SOS alert, family contact notifications, and secure document delivery. Built by DetencionDefensa.com, Inc. and operated under license by Sorrentino Law Firm PLLC.",
+      "Free emergency app for immigrant working families. One-click SOS alert, family contact notifications, and secure document delivery. Built by DETENCIONDEFENSACOM, INC. and operated under license by Sorrentino Law Firm PLLC.",
     keywords: "immigration,ICE,emergency,defense,alerts,pro bono",
     ...(opts.whatsNew ? { whatsNew: opts.whatsNew } : {}),
     marketingUrl: "https://detenciondefensa.com",

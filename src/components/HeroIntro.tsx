@@ -1,3 +1,4 @@
+import { OPERATING_NOTICE, PRIVILEGE_NOTICE, PRIVILEGE_SCOPE, LANGUAGE_EDITION_NOTICE } from "@/lib/operating-disclosure";
 import { useState } from "react";
 import { Menu, X, Play, Smartphone, Home, ShieldCheck, Building2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -15,7 +16,7 @@ const COPY = {
   es: {
     heroTitle: "Proteja su sueño americano.",
     heroPoints: ["Tenga un plan claro.", "Entienda sus opciones.", "Conozca los riesgos."],
-    heroSub: "Lo arriesgó todo para venir a Estados Unidos, comprar una casa, crear un negocio y pagar los estudios de sus hijos. Y hoy, todo está en riesgo. Antes de gastar un centavo más en una estrategia... Sepa dónde está realmente hoy. No deje que lo estafen.",
+    heroSub: "Lo arriesgó todo para venir a Estados Unidos, comprar una casa, crear un negocio y pagar los estudios de sus hijos. Y hoy, todo está en riesgo. Antes de gastar un centavo más en una estrategia... Sepa dónde está realmente hoy. No se deje engañar por notarios ni consultores que no son abogados.",
     watchVideoCta: "Vea el video.",
     plan: "Plan de protección ante detención ICE ",
     wasPrice: "$199",
@@ -34,15 +35,12 @@ const COPY = {
     homeBox: "Video de Protección para Propietarios",
     homeBoxHeading: "Proteja su casa",
     homeBoxBody: "Protección de fideicomiso de bajo costo diseñada por un abogado para proteger su casa.",
-    privilegeNotice:
-      "Toda la información ingresada aquí está protegida por el privilegio abogado-cliente, exactamente como si hubiera contratado a un abogado de inmigración. Como este servicio es gratuito, usted sigue recibiendo la misma protección segura y confidencial de privacidad bajo la ley entre usted y su abogado.",
-    disclaimer:
-      "ListoAhora.org y PareKounya.org son nombres comerciales (DBA) de DetencionDefensa.com, Inc. Sorrentino Law Firm PLLC opera este sitio bajo licencia de DetencionDefensa.com, Inc. DetencionDefensa.com, Inc. es estrictamente el desarrollador tecnológico y operador del sitio web; la Firma tiene el control exclusivo de todos los servicios legales, el asesoramiento legal y el contenido legal.",
+    disclaimer: OPERATING_NOTICE.es,
   },
   en: {
     heroTitle: "Protect your American dream.",
     heroPoints: ["Get a clear plan.", "Understand your options.", "Know the risks."],
-    heroSub: "You risked everything to come to America, to buy a home, to build a business, to put your kids through school. And today, it's all at risk. Before you spend another penny on a strategy... Know where you really stand today. Don't get ripped off.",
+    heroSub: "You risked everything to come to America, to buy a home, to build a business, to put your kids through school. And today, it's all at risk. Before you spend another penny on a strategy... Know where you really stand today. Don't be fooled by notarios or consultants who are not lawyers.",
     watchVideoCta: "Watch the video.",
     plan: "ICE detention protection plan ",
     wasPrice: "$199",
@@ -61,20 +59,17 @@ const COPY = {
     homeBox: "Homeowner Protection Video",
     homeBoxHeading: "Protect your home",
     homeBoxBody: "Low-cost trust protection designed by an attorney to protect your home.",
-    privilegeNotice:
-      "All information entered here is protected under attorney-client privilege, exactly as if you had hired an immigration attorney. Because this service is free, you still receive the same secure and confidential privacy protection under the law between you and your attorney.",
-    disclaimer:
-      "ListoAhora.org and PareKounya.org are DBAs (trade names) of DetencionDefensa.com, Inc. Sorrentino Law Firm PLLC operates this site under license from DetencionDefensa.com, Inc. DetencionDefensa.com, Inc. is strictly the technology developer and website operator; the Firm has sole control of all legal services, legal advice, and legal content.",
+    disclaimer: OPERATING_NOTICE.en,
   },
   ht: {
     heroTitle: "Pwoteje rèv ameriken ou.",
     heroPoints: ["Jwenn yon plan klè.", "Konprann opsyon ou yo.", "Konnen risk yo."],
-    heroSub: "Ou te riske tout sa ou genyen pou vini Ozetazini, achte yon kay, bati yon biznis epi peye lekòl pou pitit ou yo. E jodi a, tout bagay an danje. Anvan ou depanse yon lòt kòb nan yon estrateji... Konnen ki kote ou kanpe toutbon jodi a. Pa kite yo twonpe ou.",
+    heroSub: "Ou te riske tout sa ou genyen pou vini Ozetazini, achte yon kay, bati yon biznis epi peye lekòl pou pitit ou yo. E jodi a, tout bagay an danje. Anvan ou depanse yon lòt kòb nan yon estrateji... Konnen ki kote ou kanpe toutbon jodi a. Pa kite notè oswa konsiltan ki pa avoka twonpe w.",
     watchVideoCta: "Gade videyo a.",
     plan: "Plan pwoteksyon pou arestasyon ICE ",
     wasPrice: "$199",
     freeText: "Gratis",
-    tagline: "Sijè a alèt dijans yon sèl kli epi plan defans legal revize pa yon avoka",
+    tagline: "Alèt dijans ak yon sèl klik, ak yon plan defans legal yon avoka revize",
     btn1: "Ki jan plan pwoteksyon an fonksyone",
     btn2: "Si w se yon pwopriyetè kay",
     watchVideo: "Gade yon videyo yon minit",
@@ -88,14 +83,11 @@ const COPY = {
     homeBox: "Videyo Pwoteksyon Pwopriyetè Kay",
     homeBoxHeading: "Pwoteje kay ou",
     homeBoxBody: "Pwoteksyon fidisyè ki ba pri ki fèt pa yon avoka pou pwoteje kay ou.",
-    privilegeNotice:
-      "Tout enfòmasyon ou antre isit la pwoteje pa privilèj avoka-kliyan, menm jan si ou te anboche yon avoka imigrasyon. Paske sèvis sa a gratis, ou toujou resevwa menm pwoteksyon sekirite ak konfidansyalite anba lwa a ant ou menm ak avoka w.",
-    disclaimer:
-      "ListoAhora.org ak PareKounya.org se non komèsyal (DBA) DetencionDefensa.com, Inc. Se Sorrentino Law Firm PLLC k ap opere sit sa a anba yon lisans DetencionDefensa.com, Inc. bay. DetencionDefensa.com, Inc. se sèlman devlopè teknoloji a ak operatè sit la; Kabinè a gen kontwòl total sou tout sèvis legal, konsèy legal, ak kontni legal.",
+    disclaimer: OPERATING_NOTICE.ht,
   },
 } satisfies Record<
   Lang,
-  { heroTitle: string; heroPoints: string[]; heroSub: string; watchVideoCta: string; plan: string; wasPrice: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; employerHeading: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; homeBox: string; homeBoxHeading: string; homeBoxBody: string; privilegeNotice: string; disclaimer: string }
+  { heroTitle: string; heroPoints: string[]; heroSub: string; watchVideoCta: string; plan: string; wasPrice: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; employerHeading: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; homeBox: string; homeBoxHeading: string; homeBoxBody: string; disclaimer: string }
 >;
 
 
@@ -140,7 +132,7 @@ export default function HeroIntro() {
           <p className="home-hero-languages"><ShieldCheck size={20} /> Español · English · Kreyòl</p>
         </div>
       </section>
-      <div className="home-notices home-container"><ShieldCheck className="home-notice-icon" /><div><p>{t.privilegeNotice}</p><p>{t.disclaimer}</p></div></div>
+      <div className="home-notices home-container"><ShieldCheck className="home-notice-icon" /><div><p>{PRIVILEGE_NOTICE[lang]}</p><p>{PRIVILEGE_SCOPE[lang]}</p><p>{t.disclaimer}</p><p>{LANGUAGE_EDITION_NOTICE[lang]}</p></div></div>
     </main>
   </>;
 }

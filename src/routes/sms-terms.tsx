@@ -39,7 +39,7 @@ const COPY = {
     programName: (
       <>
         DetencionDefensa.com Case &amp; Emergency Notifications, operated by{" "}
-        <strong className="text-[#f6efe1]">DetencionDefensa.com, Inc.</strong>
+        <strong className="text-[#f6efe1]">DETENCIONDEFENSACOM, INC.</strong>
       </>
     ),
     optInTitle: "How to Opt In",
@@ -54,7 +54,7 @@ const COPY = {
       </>
     ),
     optInQuote:
-      '"I agree to receive text messages from DetencionDefensa.com, Inc. at the mobile number I provided, including my one-time activation code and emergency-case notifications related to my account. Message and data rates may apply. Message frequency varies. Reply STOP to unsubscribe or HELP for help. See our SMS Terms and Privacy Policy."',
+      '"I agree to receive text messages from DETENCIONDEFENSACOM, INC. at the mobile number I provided, including my one-time activation code and emergency-case notifications related to my account. Message and data rates may apply. Message frequency varies. Reply STOP to unsubscribe or HELP for help. See our SMS Terms and Privacy Policy."',
     optInFooter:
       "By submitting the intake form with this box checked, you provide your express written consent to receive the SMS messages described below.",
     typesTitle: "Types of Messages You Will Receive",
@@ -113,7 +113,7 @@ const COPY = {
     contactTitle: "Contact",
     contact: (
       <>
-        DetencionDefensa.com, Inc.
+        DETENCIONDEFENSACOM, INC.
         <br />
         Email:{" "}
         <a className="text-[#e8a04a] underline" href="mailto:legal@detenciondefensa.com">
@@ -126,7 +126,7 @@ const COPY = {
         </a>
       </>
     ),
-    copyright: "© 2026 DetencionDefensa.com, Inc.",
+    copyright: "© 2026 DETENCIONDEFENSACOM, INC.",
   },
   es: {
     pageTitle: "Términos de SMS y Suscripción — DetencionDefensa.com",
@@ -135,7 +135,7 @@ const COPY = {
     programName: (
       <>
         Notificaciones de Caso y Emergencia de DetencionDefensa.com, operado por{" "}
-        <strong className="text-[#f6efe1]">DetencionDefensa.com, Inc.</strong>
+        <strong className="text-[#f6efe1]">DETENCIONDEFENSACOM, INC.</strong>
       </>
     ),
     optInTitle: "Cómo Suscribirse",
@@ -151,7 +151,7 @@ const COPY = {
       </>
     ),
     optInQuote:
-      '"Acepto recibir mensajes de texto de DetencionDefensa.com, Inc. al número móvil que proporcioné, incluyendo mi código de activación de un solo uso y notificaciones de caso de emergencia relacionadas con mi cuenta. Pueden aplicarse tarifas de mensajes y datos. La frecuencia de los mensajes varía. Responda STOP para cancelar la suscripción o HELP para obtener ayuda. Consulte nuestros Términos de SMS y Política de Privacidad."',
+      '"Acepto recibir mensajes de texto de DETENCIONDEFENSACOM, INC. al número móvil que proporcioné, incluyendo mi código de activación de un solo uso y notificaciones de caso de emergencia relacionadas con mi cuenta. Pueden aplicarse tarifas de mensajes y datos. La frecuencia de los mensajes varía. Responda STOP para cancelar la suscripción o HELP para obtener ayuda. Consulte nuestros Términos de SMS y Política de Privacidad."',
     optInFooter:
       "Al enviar el formulario de admisión con esta casilla marcada, usted otorga su consentimiento expreso por escrito para recibir los mensajes de SMS descritos a continuación.",
     typesTitle: "Tipos de Mensajes que Recibirá",
@@ -211,7 +211,7 @@ const COPY = {
     contactTitle: "Contacto",
     contact: (
       <>
-        DetencionDefensa.com, Inc.
+        DETENCIONDEFENSACOM, INC.
         <br />
         Correo electrónico:{" "}
         <a className="text-[#e8a04a] underline" href="mailto:legal@detenciondefensa.com">
@@ -224,7 +224,7 @@ const COPY = {
         </a>
       </>
     ),
-    copyright: "© 2026 DetencionDefensa.com, Inc.",
+    copyright: "© 2026 DETENCIONDEFENSACOM, INC.",
   },
   ht: {
     pageTitle: "Kondisyon SMS ak Enskripsyon — DetencionDefensa.com",
@@ -233,7 +233,7 @@ const COPY = {
     programName: (
       <>
         Notifikasyon Ka ak Ijans DetencionDefensa.com, opere pa{" "}
-        <strong className="text-[#f6efe1]">DetencionDefensa.com, Inc.</strong>
+        <strong className="text-[#f6efe1]">DETENCIONDEFENSACOM, INC.</strong>
       </>
     ),
     optInTitle: "Kijan pou Enskri",
@@ -248,7 +248,7 @@ const COPY = {
       </>
     ),
     optInQuote:
-      '"Mwen dakò pou resevwa mesaj tèks nan men DetencionDefensa.com, Inc. nan nimewo selilè mwen bay la, ki gen ladan kòd aktivasyon inik mwen an ak notifikasyon ka ijans ki gen rapò ak kont mwen an. Ka gen frè mesaj ak done ki aplike. Frekans mesaj yo varye. Reponn STOP pou dezabòne oswa HELP pou èd. Gade Kondisyon SMS ak Politik Konfidansyalite nou yo."',
+      '"Mwen dakò pou resevwa mesaj tèks nan men DETENCIONDEFENSACOM, INC. nan nimewo selilè mwen bay la, ki gen ladan kòd aktivasyon inik mwen an ak notifikasyon ka ijans ki gen rapò ak kont mwen an. Ka gen frè mesaj ak done ki aplike. Frekans mesaj yo varye. Reponn STOP pou dezabòne oswa HELP pou èd. Gade Kondisyon SMS ak Politik Konfidansyalite nou yo."',
     optInFooter:
       "Lè w soumèt fòm admisyon an ak bwat sa a kliken, ou bay konsantman ekri eksprè ou pou resevwa mesaj SMS ki dekri anba a.",
     typesTitle: "Kalite Mesaj Ou Pral Resevwa",
@@ -307,7 +307,7 @@ const COPY = {
     contactTitle: "Kontak",
     contact: (
       <>
-        DetencionDefensa.com, Inc.
+        DETENCIONDEFENSACOM, INC.
         <br />
         Imèl:{" "}
         <a className="text-[#e8a04a] underline" href="mailto:legal@detenciondefensa.com">
@@ -320,7 +320,7 @@ const COPY = {
         </a>
       </>
     ),
-    copyright: "© 2026 DetencionDefensa.com, Inc.",
+    copyright: "© 2026 DETENCIONDEFENSACOM, INC.",
   },
 } as const;
 

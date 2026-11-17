@@ -96,7 +96,7 @@ export const BUSINESS_SITE_COPY: Record<Lang, BusinessSiteCopy> = {
     text: "Text 305-773-7737", ai: "Ask the AI helper", disclosureTitle: "Important information",
     disclosures: [
       "Business value results are rough estimates from the numbers you enter. They are not appraisals, offers, or promises of a sale. A licensed broker or qualified valuation professional should review the business and its records.",
-      "DetencionDefensa.com, Inc. provides website technology, administration, development, distribution, and maintenance. It is not a law firm. Legal services and legal review are provided by Sorrentino Law Firm PLLC. Using this site does not make the firm your lawyer. Paid legal and structuring services are separate from the free tools.",
+      "DETENCIONDEFENSACOM, INC. provides website technology, administration, development, distribution, and maintenance. It is not a law firm. Legal services and legal review are provided by Sorrentino Law Firm PLLC. Using this site does not make the firm your lawyer. Paid legal and structuring services are separate from the free tools.",
       "Trust and company documents may be drafted with AI and are reviewed by an attorney before use. Company, EIN, payment-account, registered-agent, director, and broker services may involve separate agreements and third-party approval or fees.",
     ],
   },
@@ -131,7 +131,7 @@ export const BUSINESS_SITE_COPY: Record<Lang, BusinessSiteCopy> = {
     text: "Texto al 305-773-7737", ai: "Pregunte al ayudante AI", disclosureTitle: "Información importante",
     disclosures: [
       "Los valores son estimados basados en los números que usted escribe. No son valuaciones formales, ofertas ni promesas de venta. Un corredor con licencia o un profesional de valuaciones debe revisar el negocio y sus registros.",
-      "DetencionDefensa.com, Inc. da servicios de tecnología, administración, desarrollo, distribución y mantenimiento del sitio. No es un bufete de abogados. Sorrentino Law Firm PLLC da los servicios legales y hace la revisión legal. Usar este sitio no hace que el bufete sea su abogado. Los servicios legales y de estructura se cobran aparte de las herramientas gratis.",
+      "DETENCIONDEFENSACOM, INC. da servicios de tecnología, administración, desarrollo, distribución y mantenimiento del sitio. No es un bufete de abogados. Sorrentino Law Firm PLLC da los servicios legales y hace la revisión legal. Usar este sitio no hace que el bufete sea su abogado. Los servicios legales y de estructura se cobran aparte de las herramientas gratis.",
       "Los documentos del fideicomiso y de la compañía pueden prepararse con AI y un abogado los revisa antes de usarlos. La compañía, el EIN, la cuenta de pagos, el agente registrado, el director y el corredor pueden necesitar acuerdos, aprobaciones o pagos aparte.",
     ],
   },
@@ -166,7 +166,7 @@ export const BUSINESS_SITE_COPY: Record<Lang, BusinessSiteCopy> = {
     text: "Voye mesaj nan 305-773-7737", ai: "Poze èd AI a yon kesyon", disclosureTitle: "Enfòmasyon enpòtan",
     disclosures: [
       "Valè yo se estimasyon ki soti nan chif ou mete yo. Se pa evalyasyon ofisyèl, òf, oswa pwomès vant. Yon koutye ki gen lisans oswa yon pwofesyonèl nan evalyasyon dwe revize biznis la ak rejis li yo.",
-      "DetencionDefensa.com, Inc. bay teknoloji sit wèb la, administrasyon, devlopman, distribisyon ak antreten. Se pa yon biwo avoka. Sorrentino Law Firm PLLC bay sèvis legal ak revizyon legal. Sèvi ak sit sa a pa fè biwo a tounen avoka ou. Sèvis legal ak estrikti yo peye apa zouti gratis yo.",
+      "DETENCIONDEFENSACOM, INC. bay teknoloji sit wèb la, administrasyon, devlopman, distribisyon ak antreten. Se pa yon biwo avoka. Sorrentino Law Firm PLLC bay sèvis legal ak revizyon legal. Sèvi ak sit sa a pa fè biwo a tounen avoka ou. Sèvis legal ak estrikti yo peye apa zouti gratis yo.",
       "Yo ka prepare papye fidisi ak konpani yo ak AI epi yon avoka revize yo anvan yo sèvi ak yo. Konpani, EIN, kont peman, ajan anrejistre, direktè ak koutye ka mande kontra, apwobasyon oswa frè apa.",
     ],
   },

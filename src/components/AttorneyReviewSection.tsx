@@ -150,10 +150,10 @@ const COPY = {
   en: {
     tag: "Two Roles · One Packet · No Fee",
     heading: "The Company types your forms. The Firm controls the legal work. One packet, no charge.",
-    sub: "Sorrentino Law Firm PLLC operates this site under license from DetencionDefensa.com, Inc. The Company is the technology operator only. The Firm has sole control of all legal services, and the service is free during the community crisis.",
+    sub: "Sorrentino Law Firm PLLC operates this site under license from DETENCIONDEFENSACOM, INC. The Company is the technology operator only. The Firm has sole control of all legal services, and the service is free during the community crisis.",
     checkpoints: [
       {
-        stage: "Role 1 · DetencionDefensa.com, Inc.",
+        stage: "Role 1 · DETENCIONDEFENSACOM, INC.",
         title: "We translate and type your answers",
         body: "You answer simple questions. As the Firm's disclosed agent, we translate them into English and type them onto your habeas corpus form, then deliver them securely. That is all we do. We are not a law firm, we give no legal advice, and we are not your lawyer.",
       },
@@ -170,10 +170,10 @@ const COPY = {
     tag: "Dos Funciones · Un Paquete · Sin Costo",
     heading:
       "La empresa escribe sus formas. La Firma controla el trabajo legal. Un paquete, sin cargo.",
-    sub: "Sorrentino Law Firm PLLC opera este sitio bajo licencia de DetencionDefensa.com, Inc. La empresa es únicamente el operador tecnológico. La Firma tiene el control exclusivo de todos los servicios legales, y el servicio es gratuito durante la crisis comunitaria.",
+    sub: "Sorrentino Law Firm PLLC opera este sitio bajo licencia de DETENCIONDEFENSACOM, INC. La empresa es únicamente el operador tecnológico. La Firma tiene el control exclusivo de todos los servicios legales, y el servicio es gratuito durante la crisis comunitaria.",
     checkpoints: [
       {
-        stage: "Función 1 · DetencionDefensa.com, Inc.",
+        stage: "Función 1 · DETENCIONDEFENSACOM, INC.",
         title: "Traducimos y escribimos sus respuestas",
         body: "Usted contesta preguntas fáciles. Como agente divulgado de la Firma, las traducimos al inglés y las escribimos en su forma de habeas corpus, y luego las entregamos de forma segura. Eso es todo lo que hacemos. No somos una firma de abogados, no damos asesoría legal y no somos su abogado.",
       },
@@ -189,10 +189,10 @@ const COPY = {
   ht: {
     tag: "De Wòl · Yon Pake · San Frè",
     heading: "Konpayi an ekri fòm yo. Kabinè a kontwole travay legal la. Yon pake, san frè.",
-    sub: "Se Sorrentino Law Firm PLLC k ap opere sit sa a anba yon lisans DetencionDefensa.com, Inc. bay. Konpayi an se sèlman operatè teknoloji a. Kabinè a gen kontwòl total sou tout sèvis legal, epi sèvis la gratis pandan kriz kominotè a.",
+    sub: "Se Sorrentino Law Firm PLLC k ap opere sit sa a anba yon lisans DETENCIONDEFENSACOM, INC. bay. Konpayi an se sèlman operatè teknoloji a. Kabinè a gen kontwòl total sou tout sèvis legal, epi sèvis la gratis pandan kriz kominotè a.",
     checkpoints: [
       {
-        stage: "Wòl 1 · DetencionDefensa.com, Inc.",
+        stage: "Wòl 1 · DETENCIONDEFENSACOM, INC.",
         title: "Nou tradui epi ekri repons ou yo",
         body: "Ou reponn kèk kesyon fasil. Kòm ajan deklare Kabinè a, nou tradui yo an Angle epi ekri yo sou fòm habeas corpus ou, epi nou livre yo an sekirite. Se sa sèlman nou fè. Nou pa yon kabinè avoka, nou pa bay konsèy legal, epi nou pa avoka w.",
       },

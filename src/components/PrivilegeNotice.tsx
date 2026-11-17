@@ -6,15 +6,7 @@ import {
   type DiscLang,
 } from "@/lib/operating-disclosure";
 
-/**
- * Attorney-client privilege panel (disclosed-agent / Kovel model).
- *
- * The Company collects intake only as the Firm's disclosed agent, under the
- * Firm's supervision and confidentiality obligations, so case communications
- * are the Firm's client information and privilege attaches through the Firm.
- * Scope line keeps the claim accurate: privilege covers case communications,
- * not general browsing or marketing pages.
- */
+/** Uses the shared conditional privilege and confidentiality disclosures. */
 export function PrivilegeNotice({
   lang,
   variant = "dark",

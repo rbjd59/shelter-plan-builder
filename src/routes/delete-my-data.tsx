@@ -38,7 +38,7 @@ const COPY = {
     home: "← Home",
     pageTitle: "Delete My Data",
     appAndDeveloper:
-      "This page applies to DetencionDefensa SOS, developed and published by Nestor J. Bittelman on behalf of DetencionDefensa.com, Inc.",
+      "This page applies to DetencionDefensa SOS, developed and published by Nestor J. Bittelman on behalf of DETENCIONDEFENSACOM, INC.",
     intro:
       "You can request that we delete all personal information associated with your DetencionDefensa account at any time.",
     step1Title: "1. Send us a request",
@@ -59,14 +59,14 @@ const COPY = {
     step4Title: "4. Timing",
     step4Text:
       "We will confirm your request within 48 hours and complete deletion within 7 days, unless we are required by law to keep certain records longer. Accounts and personal data that remain inactive and are not subject to a legal hold are automatically deleted within 90 days.",
-    footer: "Sorrentino Law Firm PLLC operates this site under license from DetencionDefensa.com, Inc. and provides all legal services. DetencionDefensa.com, Inc. is strictly the technology developer and operator of the typing, translation, and emergency delivery system; it is not a law firm and gives no legal advice.",
+    footer: "Sorrentino Law Firm PLLC operates this site under license from DETENCIONDEFENSACOM, INC. and provides all legal services. DETENCIONDEFENSACOM, INC. is strictly the technology developer and operator of the typing, translation, and emergency delivery system; it is not a law firm and gives no legal advice.",
     copyright: "© 2026 DetencionDefensa",
   },
   es: {
     home: "← Inicio",
     pageTitle: "Eliminar mis datos",
     appAndDeveloper:
-      "Esta página aplica a DetencionDefensa SOS, desarrollada y publicada por Nestor J. Bittelman en nombre de DetencionDefensa.com, Inc.",
+      "Esta página aplica a DetencionDefensa SOS, desarrollada y publicada por Nestor J. Bittelman en nombre de DETENCIONDEFENSACOM, INC.",
     intro:
       "Puede solicitar que eliminemos toda la información personal asociada con su cuenta de DetencionDefensa en cualquier momento.",
     step1Title: "1. Envíenos una solicitud",
@@ -87,14 +87,14 @@ const COPY = {
     step4Title: "4. Plazo",
     step4Text:
       "Confirmaremos su solicitud dentro de 48 horas y completaremos la eliminación dentro de 7 días, a menos que la ley nos exija conservar ciertos registros por más tiempo. Las cuentas y los datos personales que permanezcan inactivos y no estén sujetos a una retención legal se eliminan automáticamente dentro de 90 días.",
-    footer: "Sorrentino Law Firm PLLC opera este sitio bajo licencia de DetencionDefensa.com, Inc. y presta todos los servicios legales. DetencionDefensa.com, Inc. es estrictamente el desarrollador tecnológico y operador del sistema de mecanografía, traducción y entrega de emergencia; no es una firma de abogados y no brinda asesoría legal.",
+    footer: "Sorrentino Law Firm PLLC opera este sitio bajo licencia de DETENCIONDEFENSACOM, INC. y presta todos los servicios legales. DETENCIONDEFENSACOM, INC. es estrictamente el desarrollador tecnológico y operador del sistema de mecanografía, traducción y entrega de emergencia; no es una firma de abogados y no brinda asesoría legal.",
     copyright: "© 2026 DetencionDefensa",
   },
   ht: {
     home: "← Akèy",
     pageTitle: "Efase done mwen yo",
     appAndDeveloper:
-      "Paj sa a aplike a DetencionDefensa SOS, ki devlope e ki pibliye pa Nestor J. Bittelman pou kont DetencionDefensa.com, Inc.",
+      "Paj sa a aplike a DetencionDefensa SOS, ki devlope e ki pibliye pa Nestor J. Bittelman pou kont DETENCIONDEFENSACOM, INC.",
     intro:
       "Ou ka mande nou efase tout enfòmasyon pèsonèl ki asosye ak kont DetencionDefensa ou a nenpòt lè.",
     step1Title: "1. Voye yon demann ban nou",
@@ -115,7 +115,7 @@ const COPY = {
     step4Title: "4. Tan",
     step4Text:
       "N ap konfime demann ou nan lespas 48 èdtan e n ap fin efase done yo nan 7 jou, eksepte si lalwa egzije nou konsève sèten dosye pi lontan. Kont ak done pèsonèl ki rete inaktif e ki pa sijè a yon kenbe legal efase otomatikman nan 90 jou.",
-    footer: "Se Sorrentino Law Firm PLLC k ap opere sit sa a anba yon lisans DetencionDefensa.com, Inc. bay, epi se li ki bay tout sèvis legal. DetencionDefensa.com, Inc. se sèlman devlopè teknoloji a ak operatè sistèm daktilografi, tradiksyon, ak livrezon dijans lan; li pa yon kabinè avoka epi li pa bay konsèy legal.",
+    footer: "Se Sorrentino Law Firm PLLC k ap opere sit sa a anba yon lisans DETENCIONDEFENSACOM, INC. bay, epi se li ki bay tout sèvis legal. DETENCIONDEFENSACOM, INC. se sèlman devlopè teknoloji a ak operatè sistèm daktilografi, tradiksyon, ak livrezon dijans lan; li pa yon kabinè avoka epi li pa bay konsèy legal.",
     copyright: "© 2026 DetencionDefensa",
   },
 } as const;

@@ -150,7 +150,7 @@ const CHROME: Record<Lang, Chrome> = {
     notarySig: "Notary public signature",
     notarySeal: "Notary seal / commission expires",
     disclaimer:
-      "DetencionDefensa.com, Inc. is a Delaware corporation. It is not a law firm and does not provide legal advice. This is a blank template based on public statutory models. Requirements vary by state; two witnesses and a notary are required for a Florida power of attorney (Fla. Stat. 709.2105). Have this reviewed by a licensed attorney in your state.",
+      "DETENCIONDEFENSACOM, INC. is a Delaware corporation. It is not a law firm and does not provide legal advice. This is a blank template based on public statutory models. Requirements vary by state; two witnesses and a notary are required for a Florida power of attorney (Fla. Stat. 709.2105). Have this reviewed by a licensed attorney in your state.",
   },
   es: {
     signature: "FIRMA DEL OTORGANTE",
@@ -164,7 +164,7 @@ const CHROME: Record<Lang, Chrome> = {
     notarySig: "Firma del notario público",
     notarySeal: "Sello notarial / vencimiento de la comisión",
     disclaimer:
-      "DetencionDefensa.com, Inc. es una corporación de Delaware. No es un bufete de abogados y no brinda asesoría legal. Esta es una plantilla en blanco basada en modelos legales públicos. Los requisitos varían por estado; un poder notarial de Florida requiere dos testigos y un notario (Fla. Stat. 709.2105). Haga que un abogado con licencia en su estado lo revise.",
+      "DETENCIONDEFENSACOM, INC. es una corporación de Delaware. No es un bufete de abogados y no brinda asesoría legal. Esta es una plantilla en blanco basada en modelos legales públicos. Los requisitos varían por estado; un poder notarial de Florida requiere dos testigos y un notario (Fla. Stat. 709.2105). Haga que un abogado con licencia en su estado lo revise.",
   },
   ht: {
     signature: "SIYATI MOUN KI BAY POUVWA A",
@@ -178,7 +178,7 @@ const CHROME: Record<Lang, Chrome> = {
     notarySig: "Siyati notè piblik",
     notarySeal: "So notè / dat komisyon an ekspire",
     disclaimer:
-      "DetencionDefensa.com, Inc. se yon konpayi Delaware. Li pa yon kabinè avoka e li pa bay konsèy legal. Sa a se yon modèl vid ki baze sou modèl legal piblik. Egzijans yo varye pa eta; yon pouvwa avoka Florid mande de temwen ak yon notè (Fla. Stat. 709.2105). Fè yon avoka ki gen lisans nan eta w revize l.",
+      "DETENCIONDEFENSACOM, INC. se yon konpayi Delaware. Li pa yon kabinè avoka e li pa bay konsèy legal. Sa a se yon modèl vid ki baze sou modèl legal piblik. Egzijans yo varye pa eta; yon pouvwa avoka Florid mande de temwen ak yon notè (Fla. Stat. 709.2105). Fè yon avoka ki gen lisans nan eta w revize l.",
   },
 };
 

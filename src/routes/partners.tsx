@@ -206,7 +206,7 @@ function PartnersPage() {
       </Section>
 
       <footer className="border-t border-white/8 py-10 text-center text-xs text-white/40 font-mono">
-        <div>Operated by Sorrentino Law Firm PLLC under license from DetencionDefensa.com, Inc. · The Company is the technology operator only and is not a law firm</div>
+        <div>Operated by Sorrentino Law Firm PLLC under license from DETENCIONDEFENSACOM, INC. · The Company is the technology operator only and is not a law firm</div>
       </footer>
     </div>
   );

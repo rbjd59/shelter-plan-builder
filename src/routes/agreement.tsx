@@ -1,3 +1,4 @@
+import { OPERATING_NOTICE, PRIVILEGE_NOTICE, PRIVILEGE_SCOPE, HOME_TRUST_AD_NOTICE } from "@/lib/operating-disclosure";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
@@ -31,10 +32,10 @@ const T = {
     sub: "Please scroll through and read BOTH agreements below. The checkbox will activate once you have scrolled to the end.",
     tosTitle: "Terms of Service — DetencionDefensa.com",
     tos: [
-      "Sorrentino Law Firm PLLC operates this site under license from DetencionDefensa.com, Inc. and provides all legal services. DetencionDefensa.com, Inc. is strictly the technology developer and website/app operator: it is not a law firm, it gives no legal advice, and it does not direct or control any legal service.",
+      "Sorrentino Law Firm PLLC operates this site under license from DETENCIONDEFENSACOM, INC. and provides all legal services. DETENCIONDEFENSACOM, INC. is strictly the technology developer and website/app operator: it is not a law firm, it gives no legal advice, and it does not direct or control any legal service.",
       "We prepare standard federal court forms (AO 242 Petition for Writ of Habeas Corpus under 28 U.S.C. § 2241 and AO 240 In Forma Pauperis) using information that YOU provide.",
       "You are responsible for reviewing every form, choosing your own legal grounds, signing, and filing with the proper U.S. District Court. We do not file on your behalf.",
-      "DetencionDefensa.com, Inc. is not your lawyer. Its staff collect, translate, and type your information only as the disclosed agent of Sorrentino Law Firm PLLC and under the Firm's supervision and confidentiality obligations, so your intake is the Firm's client information and attorney-client privilege attaches through the Firm. Your limited attorney-client relationship is with the Firm, as described in the Limited Retainer Agreement below.",
+          PRIVILEGE_NOTICE.en + " " + PRIVILEGE_SCOPE.en,
       "All fees paid to DetencionDefensa.com are for document translation, typing, and preparation services and are non-refundable once forms are prepared.",
       "If you need legal advice, you should consult a licensed attorney.",
       "By continuing, you agree these Terms of Service govern your use of DetencionDefensa.com.",
@@ -45,7 +46,7 @@ const T = {
       "The scope of representation is strictly LIMITED to: (a) reviewing the AO 242 and AO 240 forms prepared from your intake answers before they are delivered to you, and (b) completing and mailing the prepared forms to the appropriate facility if you are detained.",
       "Attorney does NOT represent you in immigration court, removal proceedings, bond hearings, or any other matter outside the limited scope above.",
       "An attorney-client relationship with the Attorney — and only with the Attorney, not with DetencionDefensa.com — is created solely for the limited scope described above. Information you provide that is reviewed by the Attorney within that limited scope is protected by attorney-client privilege. Nothing here creates an attorney-client relationship with DetencionDefensa.com.",
-      "The Attorney's flat fee for this limited representation is paid separately by DetencionDefensa.com, Inc., not by you, and is never taken from or pooled with any amount you pay the company. Any amount you pay DetencionDefensa.com is for software, translation, typing, and storage — it is not a legal fee and is not paid to the Attorney. All such fees are currently waived because of the community crisis. Documents are prepared and reviewed at no charge and are non-refundable once review begins.",
+      "The Attorney's flat fee for this limited representation is paid separately by DETENCIONDEFENSACOM, INC., not by you, and is never taken from or pooled with any amount you pay the company. Any amount you pay DetencionDefensa.com is for software, translation, typing, and storage — it is not a legal fee and is not paid to the Attorney. All such fees are currently waived because of the community crisis. Documents are prepared and reviewed at no charge and are non-refundable once review begins.",
       "You may terminate this limited representation at any time in writing. Attorney may withdraw consistent with the Florida Rules of Professional Conduct.",
       "By continuing, you acknowledge you have read this Limited Retainer Agreement and agree to its terms.",
     ],
@@ -60,10 +61,10 @@ const T = {
     sub: "Lea ambos acuerdos abajo. La casilla se activará cuando llegue al final.",
     tosTitle: "Términos del Servicio — DetencionDefensa.com",
     tos: [
-      "Sorrentino Law Firm PLLC opera este sitio bajo licencia de DetencionDefensa.com, Inc. y presta todos los servicios legales. DetencionDefensa.com, Inc. es estrictamente el desarrollador tecnológico y operador del sitio y de la aplicación: no es una firma de abogados, no brinda asesoramiento legal y no dirige ni controla ningún servicio legal.",
+      "Sorrentino Law Firm PLLC opera este sitio bajo licencia de DETENCIONDEFENSACOM, INC. y presta todos los servicios legales. DETENCIONDEFENSACOM, INC. es estrictamente el desarrollador tecnológico y operador del sitio y de la aplicación: no es una firma de abogados, no brinda asesoramiento legal y no dirige ni controla ningún servicio legal.",
       "Preparamos formularios federales estándar (AO 242 Petición de Habeas Corpus bajo 28 U.S.C. § 2241 y AO 240 In Forma Pauperis) usando la información que USTED nos proporciona.",
       "Usted es responsable de revisar cada formulario, elegir sus propios motivos legales, firmar y presentarlo ante el Tribunal de Distrito de EE.UU. correspondiente. Nosotros no presentamos por usted.",
-      "DetencionDefensa.com, Inc. no es su abogado. Su personal recopila, traduce y mecanografía su información únicamente como agente divulgado de Sorrentino Law Firm PLLC y bajo la supervisión y las obligaciones de confidencialidad de la Firma, por lo que su admisión es información de cliente de la Firma y el privilegio abogado-cliente se aplica a través de la Firma. Su relación abogado-cliente limitada es con la Firma, como se describe en el Acuerdo Limitado de Retención abajo.",
+          PRIVILEGE_NOTICE.es + " " + PRIVILEGE_SCOPE.es,
       "Todas las tarifas pagadas a DetencionDefensa.com son por servicios de traducción, mecanografía y preparación de documentos y no son reembolsables una vez preparados los formularios.",
       "Si necesita consejo legal, debe consultar a un abogado licenciado.",
       "Al continuar, usted acepta que estos Términos del Servicio rigen su uso de DetencionDefensa.com.",
@@ -74,7 +75,7 @@ const T = {
       "El alcance de la representación se limita estrictamente a: (a) revisar los formularios AO 242 y AO 240 preparados con sus respuestas antes de entregárselos, y (b) completar y enviar por correo los formularios preparados al centro correspondiente si usted es detenido.",
       "El Abogado NO lo representa en tribunal de inmigración, procedimientos de remoción, audiencias de fianza ni ningún otro asunto fuera del alcance limitado anterior.",
       "Se crea una relación abogado-cliente con el Abogado — y solo con el Abogado, no con DetencionDefensa.com — únicamente para el alcance limitado descrito. La información que usted proporciona y que el Abogado revisa dentro de ese alcance limitado está protegida por el privilegio abogado-cliente. Nada de esto crea una relación abogado-cliente con DetencionDefensa.com.",
-      "La tarifa fija del Abogado por esta representación limitada la paga por separado DetencionDefensa.com, Inc., no usted, y nunca se toma ni se mezcla con ninguna cantidad que usted le pague a la empresa. Cualquier cantidad que usted pague a DetencionDefensa.com es por software, traducción, mecanografía y almacenamiento — no es un honorario legal y no se le paga al Abogado. Todas esas tarifas están exoneradas actualmente por la crisis comunitaria. Los documentos se preparan y revisan sin cargo y no son reembolsables una vez iniciada la revisión.",
+      "La tarifa fija del Abogado por esta representación limitada la paga por separado DETENCIONDEFENSACOM, INC., no usted, y nunca se toma ni se mezcla con ninguna cantidad que usted le pague a la empresa. Cualquier cantidad que usted pague a DetencionDefensa.com es por software, traducción, mecanografía y almacenamiento — no es un honorario legal y no se le paga al Abogado. Todas esas tarifas están exoneradas actualmente por la crisis comunitaria. Los documentos se preparan y revisan sin cargo y no son reembolsables una vez iniciada la revisión.",
       "Usted puede terminar esta representación limitada en cualquier momento por escrito. El Abogado puede retirarse conforme a las Reglas de Conducta Profesional de Florida.",
       "Al continuar, reconoce que ha leído este Acuerdo Limitado de Retención y acepta sus términos.",
     ],
@@ -89,10 +90,10 @@ const T = {
     sub: "Tanpri li toulède akò yo anba a. Kazye a ap aktive lè w rive nan fen an.",
     tosTitle: "Tèm Sèvis la — DetencionDefensa.com",
     tos: [
-      "Se Sorrentino Law Firm PLLC k ap opere sit sa a anba yon lisans DetencionDefensa.com, Inc. bay, epi se li ki bay tout sèvis legal. DetencionDefensa.com, Inc. se sèlman devlopè teknoloji a ak operatè sit la ak aplikasyon an: li pa yon kabinè avoka, li pa bay konsèy legal, epi li pa dirije ni kontwole okenn sèvis legal.",
+      "Se Sorrentino Law Firm PLLC k ap opere sit sa a anba yon lisans DETENCIONDEFENSACOM, INC. bay, epi se li ki bay tout sèvis legal. DETENCIONDEFENSACOM, INC. se sèlman devlopè teknoloji a ak operatè sit la ak aplikasyon an: li pa yon kabinè avoka, li pa bay konsèy legal, epi li pa dirije ni kontwole okenn sèvis legal.",
       "Nou prepare fòm federal estanda (AO 242 Petisyon Habeas Corpus dapre 28 U.S.C. § 2241 ak AO 240 In Forma Pauperis) ak enfòmasyon OU bay.",
       "Ou responsab pou revize chak fòm, chwazi rezon legal pa w, siyen, epi depoze l nan Tribinal Distri Etazini ki apwopriye a. Nou pa depoze pou ou.",
-      "DetencionDefensa.com, Inc. se pa avoka w. Anplwaye li yo kolekte, tradui epi ekri enfòmasyon w sèlman kòm ajan deklare Sorrentino Law Firm PLLC epi anba sipèvizyon ak obligasyon konfidansyalite Kabinè a, konsa admisyon w se enfòmasyon kliyan Kabinè a epi privilèj avoka-kliyan aplike atravè Kabinè a. Relasyon avoka-kliyan limite ou a se ak Kabinè a, jan Akò Retansyon Limite anba a dekri l.",
+          PRIVILEGE_NOTICE.ht + " " + PRIVILEGE_SCOPE.ht,
       "Tout frè ou peye DetencionDefensa.com se pou sèvis tradiksyon, tap, ak preparasyon dokiman epi pa ranbousab yon fwa fòm yo prepare.",
       "Si w bezwen konsèy legal, konsilte yon avoka ki gen lisans.",
       "Lè w kontinye, ou dakò ke Tèm Sèvis sa yo gouvène itilizasyon ou nan DetencionDefensa.com.",
@@ -103,7 +104,7 @@ const T = {
       "Pòte reprezantasyon an LIMITE strikteman a: (a) revize fòm AO 242 ak AO 240 yo prepare ak repons ou yo anvan yo livre yo ba ou, ak (b) ranpli epi voye fòm yo nan adrès sant lan si yo detni w.",
       "Avoka a PA reprezante w nan tribinal imigrasyon, pwosedi depòtasyon, odyans kosyon, oswa nenpòt lòt zafè andeyò pòte limite anwo a.",
       "Yon relasyon avoka-kliyan ak Avoka a — e sèlman ak Avoka a, pa ak DetencionDefensa.com — kreye sèlman pou pòte limite ki dekri a. Enfòmasyon ou bay ke Avoka a revize anndan pòte limite sa a pwoteje pa privilèj avoka-kliyan. Anyen isit la pa kreye yon relasyon avoka-kliyan ak DetencionDefensa.com.",
-      "Frè fiks Avoka a pou reprezantasyon limite sa a peye separeman pa DetencionDefensa.com, Inc., se pa ou ki peye l, e li pa janm pran nan oswa melanje ak kèlkeswa lajan ou peye konpayi an. Nenpòt lajan ou peye DetencionDefensa.com se pou lojisyèl, tradiksyon, tap, ak depo — se pa yon frè legal e yo pa peye Avoka a avè l. Tout frè sa yo anile kounye a akòz kriz kominotè a. Dokiman yo prepare ak revize san frè epi pa ranbousab yon fwa revizyon an kòmanse.",
+      "Frè fiks Avoka a pou reprezantasyon limite sa a peye separeman pa DETENCIONDEFENSACOM, INC., se pa ou ki peye l, e li pa janm pran nan oswa melanje ak kèlkeswa lajan ou peye konpayi an. Nenpòt lajan ou peye DetencionDefensa.com se pou lojisyèl, tradiksyon, tap, ak depo — se pa yon frè legal e yo pa peye Avoka a avè l. Tout frè sa yo anile kounye a akòz kriz kominotè a. Dokiman yo prepare ak revize san frè epi pa ranbousab yon fwa revizyon an kòmanse.",
       "Ou ka mete fen nan reprezantasyon limite sa a nenpòt lè alekri. Avoka a ka retire l konfòmeman ak Règ Konduit Pwofesyonèl Florida.",
       "Lè w kontinye, ou rekonèt ou li Akò Retansyon Limite sa a epi dakò ak tèm li yo.",
     ],

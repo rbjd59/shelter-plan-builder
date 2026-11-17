@@ -76,6 +76,7 @@ import { Route as AdminAdminTriggersRouteImport } from './routes/_admin/admin.tr
 import { Route as AdminAdminWebhooksRouteImport } from './routes/_admin/admin.webhooks'
 import { Route as AuthenticatedAdminAppBuildsRouteImport } from './routes/_authenticated/admin.app-builds'
 import { Route as AuthenticatedCaseIdRouteImport } from './routes/_authenticated/case.$id'
+import { Route as AuthenticatedVideoChatThreadIdRouteImport } from './routes/_authenticated/video-chat.$threadId'
 import { Route as FirmFirmDetainedRouteImport } from './routes/_firm/firm.detained'
 import { Route as FirmFirmLeadsRouteImport } from './routes/_firm/firm.leads'
 import { Route as FirmFirmQueueRouteImport } from './routes/_firm/firm.queue'
@@ -83,6 +84,7 @@ import { Route as ApiPublicAppTriggerRouteImport } from './routes/api/public/app
 import { Route as ApiPublicAppUpdateRequestRouteImport } from './routes/api/public/app-update-request'
 import { Route as ApiPublicMailFromCheckRouteImport } from './routes/api/public/mail-from-check'
 import { Route as ApiPublicSendAdminInviteRouteImport } from './routes/api/public/send-admin-invite'
+import { Route as ApiPublicVideoQuestionsRouteImport } from './routes/api/public/video-questions'
 import { Route as LovableEmailEventsRouteImport } from './routes/lovable/email/events'
 import { Route as AdminAdminClientsIdRouteImport } from './routes/_admin/admin.clients.$id'
 import { Route as FirmFirmDetainedIdRouteImport } from './routes/_firm/firm.detained.$id'
@@ -440,6 +442,12 @@ const AuthenticatedCaseIdRoute = AuthenticatedCaseIdRouteImport.update({
   path: '/case/$id',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedVideoChatThreadIdRoute =
+  AuthenticatedVideoChatThreadIdRouteImport.update({
+    id: '/video-chat/$threadId',
+    path: '/video-chat/$threadId',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const FirmFirmDetainedRoute = FirmFirmDetainedRouteImport.update({
   id: '/firm/detained',
   path: '/firm/detained',
@@ -477,6 +485,11 @@ const ApiPublicSendAdminInviteRoute =
     path: '/api/public/send-admin-invite',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicVideoQuestionsRoute = ApiPublicVideoQuestionsRouteImport.update({
+  id: '/api/public/video-questions',
+  path: '/api/public/video-questions',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LovableEmailEventsRoute = LovableEmailEventsRouteImport.update({
   id: '/lovable/email/events',
   path: '/lovable/email/events',
@@ -668,6 +681,7 @@ export interface FileRoutesByFullPath {
   '/admin/webhooks': typeof AdminAdminWebhooksRoute
   '/admin/app-builds': typeof AuthenticatedAdminAppBuildsRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
+  '/video-chat/$threadId': typeof AuthenticatedVideoChatThreadIdRoute
   '/firm/detained': typeof FirmFirmDetainedRouteWithChildren
   '/firm/leads': typeof FirmFirmLeadsRoute
   '/firm/queue': typeof FirmFirmQueueRoute
@@ -675,6 +689,7 @@ export interface FileRoutesByFullPath {
   '/api/public/app-update-request': typeof ApiPublicAppUpdateRequestRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
   '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
+  '/api/public/video-questions': typeof ApiPublicVideoQuestionsRoute
   '/lovable/email/events': typeof LovableEmailEventsRoute
   '/admin/clients/$id': typeof AdminAdminClientsIdRoute
   '/firm/detained/$id': typeof FirmFirmDetainedIdRoute
@@ -764,6 +779,7 @@ export interface FileRoutesByTo {
   '/admin/webhooks': typeof AdminAdminWebhooksRoute
   '/admin/app-builds': typeof AuthenticatedAdminAppBuildsRoute
   '/case/$id': typeof AuthenticatedCaseIdRoute
+  '/video-chat/$threadId': typeof AuthenticatedVideoChatThreadIdRoute
   '/firm/detained': typeof FirmFirmDetainedRouteWithChildren
   '/firm/leads': typeof FirmFirmLeadsRoute
   '/firm/queue': typeof FirmFirmQueueRoute
@@ -771,6 +787,7 @@ export interface FileRoutesByTo {
   '/api/public/app-update-request': typeof ApiPublicAppUpdateRequestRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
   '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
+  '/api/public/video-questions': typeof ApiPublicVideoQuestionsRoute
   '/lovable/email/events': typeof LovableEmailEventsRoute
   '/admin/clients/$id': typeof AdminAdminClientsIdRoute
   '/firm/detained/$id': typeof FirmFirmDetainedIdRoute
@@ -864,6 +881,7 @@ export interface FileRoutesById {
   '/_admin/admin/webhooks': typeof AdminAdminWebhooksRoute
   '/_authenticated/admin/app-builds': typeof AuthenticatedAdminAppBuildsRoute
   '/_authenticated/case/$id': typeof AuthenticatedCaseIdRoute
+  '/_authenticated/video-chat/$threadId': typeof AuthenticatedVideoChatThreadIdRoute
   '/_firm/firm/detained': typeof FirmFirmDetainedRouteWithChildren
   '/_firm/firm/leads': typeof FirmFirmLeadsRoute
   '/_firm/firm/queue': typeof FirmFirmQueueRoute
@@ -871,6 +889,7 @@ export interface FileRoutesById {
   '/api/public/app-update-request': typeof ApiPublicAppUpdateRequestRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
   '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
+  '/api/public/video-questions': typeof ApiPublicVideoQuestionsRoute
   '/lovable/email/events': typeof LovableEmailEventsRoute
   '/_admin/admin/clients/$id': typeof AdminAdminClientsIdRoute
   '/_firm/firm/detained/$id': typeof FirmFirmDetainedIdRoute
@@ -962,6 +981,7 @@ export interface FileRouteTypes {
     | '/admin/webhooks'
     | '/admin/app-builds'
     | '/case/$id'
+    | '/video-chat/$threadId'
     | '/firm/detained'
     | '/firm/leads'
     | '/firm/queue'
@@ -969,6 +989,7 @@ export interface FileRouteTypes {
     | '/api/public/app-update-request'
     | '/api/public/mail-from-check'
     | '/api/public/send-admin-invite'
+    | '/api/public/video-questions'
     | '/lovable/email/events'
     | '/admin/clients/$id'
     | '/firm/detained/$id'
@@ -1058,6 +1079,7 @@ export interface FileRouteTypes {
     | '/admin/webhooks'
     | '/admin/app-builds'
     | '/case/$id'
+    | '/video-chat/$threadId'
     | '/firm/detained'
     | '/firm/leads'
     | '/firm/queue'
@@ -1065,6 +1087,7 @@ export interface FileRouteTypes {
     | '/api/public/app-update-request'
     | '/api/public/mail-from-check'
     | '/api/public/send-admin-invite'
+    | '/api/public/video-questions'
     | '/lovable/email/events'
     | '/admin/clients/$id'
     | '/firm/detained/$id'
@@ -1157,6 +1180,7 @@ export interface FileRouteTypes {
     | '/_admin/admin/webhooks'
     | '/_authenticated/admin/app-builds'
     | '/_authenticated/case/$id'
+    | '/_authenticated/video-chat/$threadId'
     | '/_firm/firm/detained'
     | '/_firm/firm/leads'
     | '/_firm/firm/queue'
@@ -1164,6 +1188,7 @@ export interface FileRouteTypes {
     | '/api/public/app-update-request'
     | '/api/public/mail-from-check'
     | '/api/public/send-admin-invite'
+    | '/api/public/video-questions'
     | '/lovable/email/events'
     | '/_admin/admin/clients/$id'
     | '/_firm/firm/detained/$id'
@@ -1242,6 +1267,7 @@ export interface RootRouteChildren {
   ApiPublicAppUpdateRequestRoute: typeof ApiPublicAppUpdateRequestRoute
   ApiPublicMailFromCheckRoute: typeof ApiPublicMailFromCheckRoute
   ApiPublicSendAdminInviteRoute: typeof ApiPublicSendAdminInviteRoute
+  ApiPublicVideoQuestionsRoute: typeof ApiPublicVideoQuestionsRoute
   LovableEmailEventsRoute: typeof LovableEmailEventsRoute
   ApiPublicAppActivateRoute: typeof ApiPublicAppActivateRoute
   ApiPublicAppActivatedRoute: typeof ApiPublicAppActivatedRoute
@@ -1734,6 +1760,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCaseIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/video-chat/$threadId': {
+      id: '/_authenticated/video-chat/$threadId'
+      path: '/video-chat/$threadId'
+      fullPath: '/video-chat/$threadId'
+      preLoaderRoute: typeof AuthenticatedVideoChatThreadIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_firm/firm/detained': {
       id: '/_firm/firm/detained'
       path: '/firm/detained'
@@ -1781,6 +1814,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/send-admin-invite'
       fullPath: '/api/public/send-admin-invite'
       preLoaderRoute: typeof ApiPublicSendAdminInviteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/video-questions': {
+      id: '/api/public/video-questions'
+      path: '/api/public/video-questions'
+      fullPath: '/api/public/video-questions'
+      preLoaderRoute: typeof ApiPublicVideoQuestionsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lovable/email/events': {
@@ -2010,6 +2050,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedMiAppRoute: typeof AuthenticatedMiAppRoute
   AuthenticatedAdminAppBuildsRoute: typeof AuthenticatedAdminAppBuildsRoute
   AuthenticatedCaseIdRoute: typeof AuthenticatedCaseIdRoute
+  AuthenticatedVideoChatThreadIdRoute: typeof AuthenticatedVideoChatThreadIdRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
@@ -2018,6 +2059,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedMiAppRoute: AuthenticatedMiAppRoute,
   AuthenticatedAdminAppBuildsRoute: AuthenticatedAdminAppBuildsRoute,
   AuthenticatedCaseIdRoute: AuthenticatedCaseIdRoute,
+  AuthenticatedVideoChatThreadIdRoute: AuthenticatedVideoChatThreadIdRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
@@ -2106,6 +2148,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicAppUpdateRequestRoute: ApiPublicAppUpdateRequestRoute,
   ApiPublicMailFromCheckRoute: ApiPublicMailFromCheckRoute,
   ApiPublicSendAdminInviteRoute: ApiPublicSendAdminInviteRoute,
+  ApiPublicVideoQuestionsRoute: ApiPublicVideoQuestionsRoute,
   LovableEmailEventsRoute: LovableEmailEventsRoute,
   ApiPublicAppActivateRoute: ApiPublicAppActivateRoute,
   ApiPublicAppActivatedRoute: ApiPublicAppActivatedRoute,

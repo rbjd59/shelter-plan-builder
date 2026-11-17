@@ -1,5 +1,9 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
+## November 17 — compliance and video questions
+- [ ] Synchronize company, privilege, trust payment and hero disclosures in EN/ES/HT; text-only, no changes to payments or existing business/callback features.
+- [ ] Add Claude question boxes beneath all homepage videos with multiple account-saved conversations and real conversation links.
+
 ## November 17 — complete service client files
 - [x] Add shared client-file follow-ups and 60/30/15-minute paralegal reminders, document checklist and package preparation on both boards. Saved/cancelled callback verified; signed reminder endpoint verified with no due calls, actual reminder delivery still unverified.
 - [x] Research Clear Capital home-equity/origination products; provide real product/contact links and track valuation/title requests without inventing provider access.

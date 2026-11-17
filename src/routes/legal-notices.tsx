@@ -1,3 +1,4 @@
+import { OPERATING_NOTICE, PRIVILEGE_NOTICE, PRIVILEGE_SCOPE, HOME_TRUST_AD_NOTICE } from "@/lib/operating-disclosure";
 import { createFileRoute } from "@tanstack/react-router";
 import { useLang } from "@/context/LanguageContext";
 import { FIRM, COMPANY } from "@/lib/firm-info";
@@ -9,13 +10,13 @@ export const Route = createFileRoute("/legal-notices")({
       {
         name: "description",
         content:
-          "Ownership, operation, advertising, and pro bono disclosures for DetencionDefensa.com, Inc. and Sorrentino Law Firm PLLC.",
+          "Ownership, operation, advertising, and pro bono disclosures for DETENCIONDEFENSACOM, INC. and Sorrentino Law Firm PLLC.",
       },
       { property: "og:title", content: "Legal Notices & Disclosures — DetencionDefensa.com" },
       {
         property: "og:description",
         content:
-          "Ownership, operation, advertising, and pro bono disclosures for DetencionDefensa.com, Inc. and Sorrentino Law Firm PLLC.",
+          "Ownership, operation, advertising, and pro bono disclosures for DETENCIONDEFENSACOM, INC. and Sorrentino Law Firm PLLC.",
       },
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary" },
@@ -42,7 +43,7 @@ const COPY: Record<"en" | "es" | "ht", { title: string; updated: string; section
         h: "2. Ownership and operation (license)",
         p: [
           `This website and the app are owned by ${COMPANY.legalName} and are operated by ${FIRM.legalName} under a written license and services agreement. The Firm has editorial and operational control over all legal-facing content and is solely responsible for the legal function.`,
-          `${COMPANY.legalName} receives a fixed license fee that does not vary with the number of clients, the value of any matter, or any fee collected. The Company does not share in any legal fee.`,
+          OPERATING_NOTICE.en,
         ],
       },
       {
@@ -72,7 +73,7 @@ const COPY: Record<"en" | "es" | "ht", { title: string; updated: string; section
       {
         h: "7. Data handling and zero retention",
         p: [
-          "Intake information is collected for the Firm as its disclosed agent so that attorney-client privilege attaches to the intake channel. After the case bundle is transmitted to the Firm, the Company purges the client file from its systems and retains only an activation code and timestamps.",
+          PRIVILEGE_NOTICE.en + " " + PRIVILEGE_SCOPE.en,
           "The app does not track your location and does not report where you are. It sends only the alert you choose to send.",
         ],
       },
@@ -81,7 +82,7 @@ const COPY: Record<"en" | "es" | "ht", { title: string; updated: string; section
         p: [
           "The hiring of a lawyer is an important decision that should not be based solely upon advertisements. Before you decide, ask the lawyer to send you free written information about their qualifications and experience.",
           "No result is guaranteed. Past results do not predict future outcomes. Every case is different.",
-          "Advertisements on this site for Save My Home Trust and related products are paid or bartered advertising for a separate, non-legal service. They are not a legal recommendation, and you are never required to use any advertised service or any particular attorney.",
+          HOME_TRUST_AD_NOTICE.en,
         ],
       },
       {
@@ -113,7 +114,7 @@ const COPY: Record<"en" | "es" | "ht", { title: string; updated: string; section
         h: "2. Propiedad y operación (licencia)",
         p: [
           `Este sitio web y la aplicación son propiedad de ${COMPANY.legalName} y son operados por ${FIRM.legalName} bajo un acuerdo escrito de licencia y servicios. La Firma tiene control editorial y operativo sobre todo el contenido legal y es la única responsable de la función legal.`,
-          `${COMPANY.legalName} recibe una tarifa de licencia fija que no varía según la cantidad de clientes, el valor de ningún asunto ni ningún honorario cobrado. La empresa no participa en ningún honorario legal.`,
+          OPERATING_NOTICE.es,
         ],
       },
       {
@@ -143,7 +144,7 @@ const COPY: Record<"en" | "es" | "ht", { title: string; updated: string; section
       {
         h: "7. Manejo de datos y retención cero",
         p: [
-          "La información de admisión se recopila para la Firma como su agente divulgado, de modo que el privilegio abogado-cliente cubra el canal de admisión. Después de transmitir el paquete a la Firma, la empresa elimina el archivo del cliente de sus sistemas y conserva únicamente un código de activación y las marcas de tiempo.",
+          PRIVILEGE_NOTICE.es + " " + PRIVILEGE_SCOPE.es,
           "La aplicación no rastrea su ubicación ni informa dónde está. Solo envía la alerta que usted decide enviar.",
         ],
       },
@@ -152,7 +153,7 @@ const COPY: Record<"en" | "es" | "ht", { title: string; updated: string; section
         p: [
           "La contratación de un abogado es una decisión importante que no debe basarse únicamente en anuncios. Antes de decidir, pídale al abogado información escrita gratuita sobre sus calificaciones y experiencia.",
           "No se garantiza ningún resultado. Los resultados pasados no predicen resultados futuros. Cada caso es diferente.",
-          "Los anuncios en este sitio sobre Save My Home Trust y productos relacionados son publicidad pagada o intercambiada de un servicio separado que no es legal. No son una recomendación legal, y usted nunca está obligado a usar ningún servicio anunciado ni ningún abogado en particular.",
+          HOME_TRUST_AD_NOTICE.es,
         ],
       },
       {
@@ -184,7 +185,7 @@ const COPY: Record<"en" | "es" | "ht", { title: string; updated: string; section
         h: "2. Pwopriyete ak operasyon (lisans)",
         p: [
           `Sit sa a ak aplikasyon an se pwopriyete ${COMPANY.legalName} epi se ${FIRM.legalName} k ap opere yo anba yon akò lisans ak sèvis ekri. Kabinè a gen kontwòl editoryal ak operasyonèl sou tout kontni legal epi li sèl responsab fonksyon legal la.`,
-          `${COMPANY.legalName} resevwa yon frè lisans fiks ki pa chanje selon kantite kliyan, valè yon dosye, oswa okenn frè yo kolekte. Konpayi an pa patisipe nan okenn frè legal.`,
+          OPERATING_NOTICE.ht,
         ],
       },
       {
@@ -214,7 +215,7 @@ const COPY: Record<"en" | "es" | "ht", { title: string; updated: string; section
       {
         h: "7. Jesyon done ak zewo retansyon",
         p: [
-          "Nou kolekte enfòmasyon admisyon pou kabinè a kòm ajan divilge li, konsa privilèj avoka-kliyan kouvri kanal admisyon an. Apre nou voye pakè a bay kabinè a, konpayi an efase dosye kliyan an nan sistèm li epi li kenbe sèlman yon kòd aktivasyon ak dat.",
+          PRIVILEGE_NOTICE.ht + " " + PRIVILEGE_SCOPE.ht,
           "Aplikasyon an pa swiv kote ou ye epi li pa rapòte kote ou ye. Li voye sèlman alèt ou chwazi voye a.",
         ],
       },
@@ -223,7 +224,7 @@ const COPY: Record<"en" | "es" | "ht", { title: string; updated: string; section
         p: [
           "Anboche yon avoka se yon desizyon enpòtan ki pa dwe baze sèlman sou piblisite. Anvan ou deside, mande avoka a voye ba ou enfòmasyon ekri gratis sou kalifikasyon ak eksperyans li.",
           "Pa gen okenn rezilta garanti. Rezilta pase pa predi rezilta fiti. Chak dosye diferan.",
-          "Piblisite sou sit sa a pou Save My Home Trust ak pwodwi ki gen rapò se piblisite peye oswa echanje pou yon sèvis separe ki pa legal. Se pa yon rekòmandasyon legal, epi ou pa janm oblije itilize okenn sèvis ki anonse ni okenn avoka an patikilye.",
+          HOME_TRUST_AD_NOTICE.ht,
         ],
       },
       {

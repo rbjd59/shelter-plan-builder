@@ -1,3 +1,4 @@
+import { OPERATING_NOTICE, ROLE_NOTICE, PRIVILEGE_NOTICE, PRIVILEGE_SCOPE } from "@/lib/operating-disclosure";
 import { useState } from "react";
 
 type Lang = "en" | "es" | "ht";
@@ -5,11 +6,10 @@ type Lang = "en" | "es" | "ht";
 const T = {
   en: {
     title: "Before you continue — please read & agree",
-    intro:
-      "Sorrentino Law Firm PLLC operates this site under license from DetencionDefensa.com, Inc. The Firm provides all legal services. Before continuing, please confirm you understand the following:",
+    intro: OPERATING_NOTICE.en,
     items: [
-      "DetencionDefensa.com, Inc. is strictly the technology developer and website/app operator. It is not a law firm, gives no legal advice, and does not control any legal service. Sorrentino Law Firm PLLC has sole control of all legal work.",
-      "Your intake is collected by the Company only as the Firm's disclosed agent, so your information is the Firm's client information and attorney-client privilege attaches through the Firm.",
+      ROLE_NOTICE.en,
+      PRIVILEGE_NOTICE.en + " " + PRIVILEGE_SCOPE.en,
       "An attorney-client relationship with the Firm begins only when the Firm accepts your matter and you sign its limited-scope engagement letter.",
       "The Firm reviews and approves your federal court forms (AO 242 Petition for Writ of Habeas Corpus under 28 U.S.C. § 2241 and AO 240 In Forma Pauperis), prepared from information YOU provide.",
       "The engagement is limited in scope: you sign and file your own documents with the proper court. No one appears in court for you unless the Firm separately agrees in writing.",
@@ -22,11 +22,10 @@ const T = {
   },
   es: {
     title: "Antes de continuar — lea y acepte",
-    intro:
-      "Sorrentino Law Firm PLLC opera este sitio bajo licencia de DetencionDefensa.com, Inc. La Firma presta todos los servicios legales. Antes de continuar, confirme que entiende lo siguiente:",
+    intro: OPERATING_NOTICE.es,
     items: [
-      "DetencionDefensa.com, Inc. es estrictamente el desarrollador tecnológico y operador del sitio y de la aplicación. No es una firma de abogados, no brinda asesoramiento legal y no controla ningún servicio legal. Sorrentino Law Firm PLLC tiene el control exclusivo de todo el trabajo legal.",
-      "Su información de admisión es recopilada por la empresa únicamente como agente divulgado de la Firma, por lo que su información es información de cliente de la Firma y el privilegio abogado-cliente se aplica a través de la Firma.",
+      ROLE_NOTICE.es,
+      PRIVILEGE_NOTICE.es + " " + PRIVILEGE_SCOPE.es,
       "La relación abogado-cliente con la Firma comienza únicamente cuando la Firma acepta su asunto y usted firma su carta de contratación de alcance limitado.",
       "La Firma revisa y aprueba sus formularios federales (AO 242 Petición de Habeas Corpus bajo 28 U.S.C. § 2241 y AO 240 In Forma Pauperis), preparados con la información que USTED proporciona.",
       "La representación es de alcance limitado: usted firma y presenta sus propios documentos ante el tribunal. Nadie comparece en el tribunal por usted a menos que la Firma lo acuerde por escrito por separado.",
@@ -39,11 +38,10 @@ const T = {
   },
   ht: {
     title: "Anvan ou kontinye — li epi dakò",
-    intro:
-      "Se Sorrentino Law Firm PLLC k ap opere sit sa a anba yon lisans DetencionDefensa.com, Inc. bay. Kabinè a bay tout sèvis legal yo. Anvan w kontinye, konfime ou konprann sa ki annapre yo:",
+    intro: OPERATING_NOTICE.ht,
     items: [
-      "DetencionDefensa.com, Inc. se sèlman devlopè teknoloji a ak operatè sit la ak aplikasyon an. Li pa yon kabinè avoka, li pa bay konsèy legal, epi li pa kontwole okenn sèvis legal. Sorrentino Law Firm PLLC gen kontwòl total sou tout travay legal.",
-      "Se konpayi an ki kolekte enfòmasyon admisyon w, men sèlman kòm ajan deklare Kabinè a, konsa enfòmasyon w se enfòmasyon kliyan Kabinè a epi privilèj avoka-kliyan aplike atravè Kabinè a.",
+      ROLE_NOTICE.ht,
+      PRIVILEGE_NOTICE.ht + " " + PRIVILEGE_SCOPE.ht,
       "Relasyon avoka-kliyan ak Kabinè a kòmanse sèlman lè Kabinè a aksepte dosye w epi ou siyen lèt angajman limite li a.",
       "Kabinè a revize epi apwouve fòm federal ou yo (AO 242 Petisyon Habeas Corpus dapre 28 U.S.C. § 2241 ak AO 240 In Forma Pauperis), ki prepare ak enfòmasyon OU bay.",
       "Angajman an gen yon sijè limite: ou siyen epi depoze pwòp dokiman ou nan tribinal la. Pèsonn pa parèt nan tribinal pou ou sof si Kabinè a dakò separeman alekri.",

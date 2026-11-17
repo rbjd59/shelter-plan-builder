@@ -326,7 +326,7 @@ export async function buildMemorandumOfLawPdf(
   w.paragraph("_________________________________");
   w.paragraph("Rosario Sorrentino, Esq.");
   w.paragraph("Counsel for Petitioner");
-  w.paragraph("DetencionDefensa.com, Inc.");
+  w.paragraph("DETENCIONDEFENSACOM, INC.");
   w.paragraph(`Dated: ${need("", "date")}`);
 
   return await doc.save();
