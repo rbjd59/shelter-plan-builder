@@ -1,7 +1,7 @@
 import { PDFDocument } from "pdf-lib";
 import fontkit from "@pdf-lib/fontkit";
-import regularFontBytes from "@/assets/forms/DejaVuSans.ttf?arraybuffer";
-import boldFontBytes from "@/assets/forms/DejaVuSans-Bold.ttf?arraybuffer";
+import regularFontB64 from "@/assets/forms/DejaVuSans.ttf.b64";
+import boldFontB64 from "@/assets/forms/DejaVuSans-Bold.ttf.b64";
 import { CHECKLISTS, LIMITED_POWERS, EXCLUDED_POWERS, type ServiceKind } from "./service-file";
 import { businessTrustDetails, BUSINESS_TRUST_FEE } from "./business-trust";
 import {
@@ -10,6 +10,15 @@ import {
   type BusinessTrustLanguage,
 } from "./business-trust-forms";
 import { FIRM } from "./firm-info";
+
+function fontBytes(base64: string): Uint8Array {
+  if (typeof Buffer !== "undefined") return new Uint8Array(Buffer.from(base64, "base64"));
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let index = 0; index < binary.length; index += 1) bytes[index] = binary.charCodeAt(index);
+  return bytes;
+}
+
 export async function textPacket(
   title: string,
   sections: { heading: string; lines: string[]; pageBreak?: boolean }[],
@@ -17,8 +26,8 @@ export async function textPacket(
 ) {
   const pdf = await PDFDocument.create();
   pdf.registerFontkit(fontkit);
-  const font = await pdf.embedFont(regularFontBytes, { subset: true });
-  const bold = await pdf.embedFont(boldFontBytes, { subset: true });
+  const font = await pdf.embedFont(fontBytes(regularFontB64), { subset: true });
+  const bold = await pdf.embedFont(fontBytes(boldFontB64), { subset: true });
   pdf.setTitle(title);
   pdf.setAuthor(FIRM.legalName);
   let page = pdf.addPage([612, 792]);
