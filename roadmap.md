@@ -1,5 +1,9 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
+## November 17 — approved homepage and business-domain tidy-up
+- [x] Job 1: preserve homepage section order; add the translated hero start button, shorten only the hero notice, keep full disclosures on legal notices/footer, make walkthrough language switching explicit, use light-only styling and align existing section spacing/buttons.
+- [ ] Job 2: route both business hosts to the existing business page with its own branding and defense cross-link; add the trilingual corporation/trust/agent/director explanation and separate-agreement conflict disclosure.
+
 ## November 17 — business conversion video revision
 - [x] Write EN/ES/HT narration centered on guided conversion-program signup, corporate setup, phone-based job/payment records and hands-on assistance; do not build operating tools or invent tier prices, sale values or payment-provider guarantees.
 - [ ] Record and replace the three business videos with the revised script — waiting for owner approval of the proposed-service wording before recording; preserve one male narrator and quiet or no music.

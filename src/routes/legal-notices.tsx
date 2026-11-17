@@ -1,4 +1,4 @@
-import { OPERATING_NOTICE, PRIVILEGE_NOTICE, PRIVILEGE_SCOPE, HOME_TRUST_AD_NOTICE } from "@/lib/operating-disclosure";
+import { OPERATING_NOTICE, PRIVILEGE_NOTICE, PRIVILEGE_SCOPE, HOME_TRUST_AD_NOTICE, LANGUAGE_EDITION_NOTICE } from "@/lib/operating-disclosure";
 import { createFileRoute } from "@tanstack/react-router";
 import { useLang } from "@/context/LanguageContext";
 import { FIRM, COMPANY } from "@/lib/firm-info";
@@ -44,6 +44,7 @@ const COPY: Record<"en" | "es" | "ht", { title: string; updated: string; section
         p: [
           `This website and the app are owned by ${COMPANY.legalName} and are operated by ${FIRM.legalName} under a written license and services agreement. The Firm has editorial and operational control over all legal-facing content and is solely responsible for the legal function.`,
           OPERATING_NOTICE.en,
+          LANGUAGE_EDITION_NOTICE.en,
         ],
       },
       {
@@ -115,6 +116,7 @@ const COPY: Record<"en" | "es" | "ht", { title: string; updated: string; section
         p: [
           `Este sitio web y la aplicación son propiedad de ${COMPANY.legalName} y son operados por ${FIRM.legalName} bajo un acuerdo escrito de licencia y servicios. La Firma tiene control editorial y operativo sobre todo el contenido legal y es la única responsable de la función legal.`,
           OPERATING_NOTICE.es,
+          LANGUAGE_EDITION_NOTICE.es,
         ],
       },
       {
@@ -186,6 +188,7 @@ const COPY: Record<"en" | "es" | "ht", { title: string; updated: string; section
         p: [
           `Sit sa a ak aplikasyon an se pwopriyete ${COMPANY.legalName} epi se ${FIRM.legalName} k ap opere yo anba yon akò lisans ak sèvis ekri. Kabinè a gen kontwòl editoryal ak operasyonèl sou tout kontni legal epi li sèl responsab fonksyon legal la.`,
           OPERATING_NOTICE.ht,
+          LANGUAGE_EDITION_NOTICE.ht,
         ],
       },
       {

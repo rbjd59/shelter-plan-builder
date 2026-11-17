@@ -1,4 +1,4 @@
-import { OPERATING_NOTICE, PRIVILEGE_NOTICE, PRIVILEGE_SCOPE, LANGUAGE_EDITION_NOTICE } from "@/lib/operating-disclosure";
+import { OPERATING_NOTICE } from "@/lib/operating-disclosure";
 import { useState } from "react";
 import { Menu, X, Play, Smartphone, Home, ShieldCheck, Building2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,9 @@ const COPY = {
     heroPoints: ["Tenga un plan claro.", "Entienda sus opciones.", "Conozca los riesgos."],
     heroSub: "Lo arriesgó todo para venir a Estados Unidos, comprar una casa, crear un negocio y pagar los estudios de sus hijos. Y hoy, todo está en riesgo. Antes de gastar un centavo más en una estrategia... Sepa dónde está realmente hoy. No se deje engañar por notarios ni consultores que no son abogados.",
     watchVideoCta: "Vea el video.",
+    startFree: "Comience su plan gratis",
+    shortNotice: "DetencionDefensa es una plataforma de tecnología licenciada a Sorrentino Law Firm, PLLC, que presta todos los servicios legales.",
+    readFullNotice: "Lea el aviso completo",
     plan: "Plan de protección ante detención ICE ",
     wasPrice: "$199",
     freeText: "Gratis",
@@ -42,6 +45,9 @@ const COPY = {
     heroPoints: ["Get a clear plan.", "Understand your options.", "Know the risks."],
     heroSub: "You risked everything to come to America, to buy a home, to build a business, to put your kids through school. And today, it's all at risk. Before you spend another penny on a strategy... Know where you really stand today. Don't be fooled by notarios or consultants who are not lawyers.",
     watchVideoCta: "Watch the video.",
+    startFree: "Start my free plan",
+    shortNotice: "DetencionDefensa is a technology platform licensed to Sorrentino Law Firm, PLLC, which provides all legal services.",
+    readFullNotice: "Read the full notice",
     plan: "ICE detention protection plan ",
     wasPrice: "$199",
     freeText: "Free",
@@ -66,6 +72,9 @@ const COPY = {
     heroPoints: ["Jwenn yon plan klè.", "Konprann opsyon ou yo.", "Konnen risk yo."],
     heroSub: "Ou te riske tout sa ou genyen pou vini Ozetazini, achte yon kay, bati yon biznis epi peye lekòl pou pitit ou yo. E jodi a, tout bagay an danje. Anvan ou depanse yon lòt kòb nan yon estrateji... Konnen ki kote ou kanpe toutbon jodi a. Pa kite notè oswa konsiltan ki pa avoka twonpe w.",
     watchVideoCta: "Gade videyo a.",
+    startFree: "Kòmanse plan gratis ou",
+    shortNotice: "DetencionDefensa se yon platfòm teknoloji ki gen lisans pou Sorrentino Law Firm, PLLC, epi se kabinè a ki bay tout sèvis legal yo.",
+    readFullNotice: "Li avi a an konplè",
     plan: "Plan pwoteksyon pou arestasyon ICE ",
     wasPrice: "$199",
     freeText: "Gratis",
@@ -87,7 +96,7 @@ const COPY = {
   },
 } satisfies Record<
   Lang,
-  { heroTitle: string; heroPoints: string[]; heroSub: string; watchVideoCta: string; plan: string; wasPrice: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; employerHeading: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; homeBox: string; homeBoxHeading: string; homeBoxBody: string; disclaimer: string }
+  { heroTitle: string; heroPoints: string[]; heroSub: string; watchVideoCta: string; startFree: string; shortNotice: string; readFullNotice: string; plan: string; wasPrice: string; freeText: string; tagline: string; btn1: string; btn2: string; watchVideo: string; secBoxHeading: string; secBoxBody: string; secBoxBtn: string; employerHeading: string; appBoxHeading: string; appBoxBody: string; appBoxBtn: string; homeBox: string; homeBoxHeading: string; homeBoxBody: string; disclaimer: string }
 >;
 
 
@@ -128,11 +137,14 @@ export default function HeroIntro() {
           </h1>
           <p className="home-hero-tagline">{t.heroSub}</p>
           <p className="home-hero-free">{t.freeText}</p>
-          <a className="home-hero-watch" href="#how-it-works-video"><Play size={20} />{t.watchVideoCta}</a>
+          <div className="home-hero-actions">
+            <a className="home-hero-start" href={`/checkout?lang=${lang}`}>{t.startFree}</a>
+            <a className="home-hero-watch" href="#how-it-works-video"><Play size={20} />{t.watchVideoCta}</a>
+          </div>
           <p className="home-hero-languages"><ShieldCheck size={20} /> Español · English · Kreyòl</p>
         </div>
       </section>
-      <div className="home-notices home-container"><ShieldCheck className="home-notice-icon" /><div><p>{PRIVILEGE_NOTICE[lang]}</p><p>{PRIVILEGE_SCOPE[lang]}</p><p>{t.disclaimer}</p><p>{LANGUAGE_EDITION_NOTICE[lang]}</p></div></div>
+      <div className="home-notices home-container"><ShieldCheck className="home-notice-icon" /><p>{t.shortNotice} <a href={`/legal-notices?lang=${lang}`}>{t.readFullNotice}</a></p></div>
     </main>
   </>;
 }

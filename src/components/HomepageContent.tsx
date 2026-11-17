@@ -2,12 +2,17 @@ import { useEffect, useRef } from "react";
 import { HOMEPAGE_SECTIONS } from "@/lib/homepage-sections";
 import { Building2, Scale, UserRound, Gavel, ShieldCheck, Zap, Wallet, Languages, Smartphone, BadgeCheck } from "lucide-react";
 import { createRoot } from "react-dom/client";
+import { useLang } from "@/context/LanguageContext";
 
 export function HomepageSection({ section }: { section: keyof typeof HOMEPAGE_SECTIONS }) {
   const ref = useRef<HTMLDivElement>(null);
+  const { lang } = useLang();
   useEffect(() => {
     const root = ref.current;
     if (!root) return;
+    root.querySelectorAll<HTMLElement>("[data-en], [data-es], [data-ht]").forEach((node) => {
+      node.hidden = !node.hasAttribute(`data-${lang}`);
+    });
     const roots: ReturnType<typeof createRoot>[] = [];
     const icons = section === "roles" ? [Building2, Scale, UserRound, Gavel] : section === "features" ? [ShieldCheck, Zap, Wallet, Languages, Smartphone, BadgeCheck] : [];
     root.querySelectorAll(section === "roles" ? ".who" : ".kf-icon").forEach((node, i) => {
@@ -28,6 +33,6 @@ export function HomepageSection({ section }: { section: keyof typeof HOMEPAGE_SE
     };
     root.addEventListener("click", click);
     return () => { root.removeEventListener("click", click); roots.forEach(item => item.unmount()); };
-  }, [section]);
+  }, [section, lang]);
   return <div className={`home-preserved home-preserved-${section}`} ref={ref} dangerouslySetInnerHTML={{ __html: HOMEPAGE_SECTIONS[section] }} />;
 }
