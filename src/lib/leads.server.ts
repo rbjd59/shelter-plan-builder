@@ -11,7 +11,6 @@ const FROM = "info@gohomesooner.com";
 const SENDER_DOMAIN = "notify.gohomesooner.com";
 
 // Sign-ups / inquiries go to info@. Legal review traffic goes to legal@.
-const COMPANY_INBOX = "info@detenciondefensa.com";
 const FIRM_INBOX = "legal@detenciondefensa.com";
 
 export type LeadInput = {
@@ -91,7 +90,16 @@ export async function createLead(input: LeadInput): Promise<{ id: string }> {
     `<p style="font-family:system-ui;font-size:12px;color:#666">This is an inquiry only. No attorney-client relationship is formed until Sorrentino Law Firm PLLC accepts the matter in writing.</p>`;
   const text = lines.map(([k, v]) => `${k}: ${v}`).join("\n") + `\n\n${row.message ?? ""}`;
 
-  await enqueue(COMPANY_INBOX, `New lead — ${row.full_name}`, html, text, "lead-company");
+  const { notifyNewLead } = await import("./lead-notify.server");
+  await notifyNewLead(id, {
+    source: row.source,
+    fullName: row.full_name,
+    phone: row.phone,
+    email: row.email,
+    need: row.need,
+    city: row.city,
+    language: row.language,
+  });
   await enqueue(FIRM_INBOX, `New lead for firm review — ${row.full_name}`, html, text, "lead-firm");
 
   await supabaseAdmin

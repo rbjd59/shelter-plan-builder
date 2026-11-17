@@ -1,18 +1,10 @@
 import { createServerFn } from "@tanstack/react-start";
-import { BUSINESS_INTAKE_ASSIGNEE, businessIntakeSchema } from "./business-intake";
+import { businessIntakeSchema } from "./business-intake";
 
 export const submitBusinessIntake = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => businessIntakeSchema.parse(input))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: assignee, error: staffError } = await supabaseAdmin
-      .from("user_roles")
-      .select("user_id")
-      .eq("user_id", BUSINESS_INTAKE_ASSIGNEE.userId)
-      .eq("role", "admin")
-      .maybeSingle();
-    if (staffError || !assignee)
-      throw new Error("The assigned team member is unavailable. Please call us.");
     const { data: existing, error: lookupError } = await supabaseAdmin
       .from("leads")
       .select("id")
@@ -46,29 +38,22 @@ export const submitBusinessIntake = createServerFn({ method: "POST" })
       need: data.work,
       message: details,
       source: "business-call-intake",
-      status: "routed",
-      routed_to: assignee.user_id,
-      routed_at: new Date().toISOString(),
-      assigned_note: `Assigned to ${BUSINESS_INTAKE_ASSIGNEE.name}`,
+      status: "new",
     });
     if (error) throw new Error("Could not save request.");
     let notified = false;
     try {
-      const { sendTemplateEmail } = await import("./email-templates/send-email");
-      const result = await sendTemplateEmail(
-        "business-call-request",
-        BUSINESS_INTAKE_ASSIGNEE.email,
-        {
-          templateData: {
-            name: data.fullName,
-            phone: data.phone,
-            language: data.language,
-            details: `${details}\nCity: ${data.city}\nEmail: ${data.email}\nRequest: ${data.requestId}`,
-          },
-          idempotencyKey: `business-call-${data.requestId}`,
-        },
-      );
-      notified = result.sent;
+      const { notifyNewLead } = await import("./lead-notify.server");
+      notified = await notifyNewLead(data.requestId, {
+        source: "business-call-intake",
+        fullName: data.fullName,
+        phone: data.phone,
+        email: data.email || null,
+        need: data.work,
+        city: data.city || null,
+        bestTime: data.bestTime,
+        language: data.language,
+      });
     } catch {
       console.error("Business call notification failed; saved request remains in lead inbox", {
         id: data.requestId,

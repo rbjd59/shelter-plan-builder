@@ -1,3 +1,4 @@
+import { LEAD_NOTIFY_EMAIL } from "../lead-notify";
 import { Html, Head, Body, Container, Heading, Text, Link } from "@react-email/components";
 import type { TemplateEntry } from "./registry";
 
@@ -35,5 +36,5 @@ function BusinessCallRequest({
 export const template = {
   component: BusinessCallRequest,
   subject: "Business call request assigned to you",
-  to: "rbjd59@detenciondefensa.com",
+  to: LEAD_NOTIFY_EMAIL,
 } satisfies TemplateEntry;

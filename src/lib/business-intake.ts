@@ -2,8 +2,6 @@ import { z } from "zod";
 
 export const BUSINESS_INTAKE_ASSIGNEE = {
   name: "Ricky Bitelman-Behar JD",
-  userId: "e4561f24-6366-4257-9510-8ff666ec7210",
-  email: "rbjd59@detenciondefensa.com",
 };
 
 export const businessIntakeSchema = z.object({

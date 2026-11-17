@@ -12,7 +12,7 @@ const input = {
 describe("Business call intake", () => {
   it("assigns requests to the owner-confirmed real team member", () => {
     expect(BUSINESS_INTAKE_ASSIGNEE.name).toBe("Ricky Bitelman-Behar JD");
-    expect(BUSINESS_INTAKE_ASSIGNEE.userId).toBe("e4561f24-6366-4257-9510-8ff666ec7210");
+    expect(BUSINESS_INTAKE_ASSIGNEE).not.toHaveProperty("email");
   });
   it.each(["en", "es", "ht"])("accepts %s without an account or email", (language) => {
     expect(businessIntakeSchema.parse({ ...input, language }).email).toBe("");
