@@ -52,7 +52,6 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as VenuesRouteImport } from './routes/venues'
 import { Route as VideosRouteImport } from './routes/videos'
-import { Route as AdminAdminRouteImport } from './routes/_admin/admin'
 import { Route as AuthenticatedCasesRouteImport } from './routes/_authenticated/cases'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedMiAppRouteImport } from './routes/_authenticated/mi-app'
@@ -64,11 +63,11 @@ import { Route as ReadinessReviewRouteImport } from './routes/readiness/review'
 import { Route as ReadinessSignRouteImport } from './routes/readiness/sign'
 import { Route as ReadinessStartRouteImport } from './routes/readiness/start'
 import { Route as TrackTokenRouteImport } from './routes/track.$token'
+import { Route as AdminAdminIndexRouteImport } from './routes/_admin/admin.index'
 import { Route as AdminAdminActivationsRouteImport } from './routes/_admin/admin.activations'
 import { Route as AdminAdminAlertsRouteImport } from './routes/_admin/admin.alerts'
 import { Route as AdminAdminAppReleaseRouteImport } from './routes/_admin/admin.app-release'
 import { Route as AdminAdminAppStoreRouteImport } from './routes/_admin/admin.app-store'
-import { Route as AdminAdminClientsRouteImport } from './routes/_admin/admin.clients'
 import { Route as AdminAdminDeliveriesRouteImport } from './routes/_admin/admin.deliveries'
 import { Route as AdminAdminEmailsRouteImport } from './routes/_admin/admin.emails'
 import { Route as AdminAdminInviteCodesRouteImport } from './routes/_admin/admin.invite-codes'
@@ -91,6 +90,7 @@ import { Route as ApiPublicSendAdminInviteRouteImport } from './routes/api/publi
 import { Route as ApiPublicTrustPackageRouteImport } from './routes/api/public/trust-package'
 import { Route as ApiPublicVideoQuestionsRouteImport } from './routes/api/public/video-questions'
 import { Route as LovableEmailEventsRouteImport } from './routes/lovable/email/events'
+import { Route as AdminAdminClientsIndexRouteImport } from './routes/_admin/admin.clients.index'
 import { Route as AdminAdminClientsIdRouteImport } from './routes/_admin/admin.clients.$id'
 import { Route as FirmFirmDetainedIdRouteImport } from './routes/_firm/firm.detained.$id'
 import { Route as FirmFirmPacketIdRouteImport } from './routes/_firm/firm.packet.$id'
@@ -326,11 +326,6 @@ const VideosRoute = VideosRouteImport.update({
   path: '/videos',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminAdminRoute = AdminAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => AdminRoute,
-} as any)
 const AuthenticatedCasesRoute = AuthenticatedCasesRouteImport.update({
   id: '/cases',
   path: '/cases',
@@ -386,70 +381,70 @@ const TrackTokenRoute = TrackTokenRouteImport.update({
   path: '/track/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminAdminIndexRoute = AdminAdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminAdminActivationsRoute = AdminAdminActivationsRouteImport.update({
-  id: '/activations',
-  path: '/activations',
-  getParentRoute: () => AdminAdminRoute,
+  id: '/admin/activations',
+  path: '/admin/activations',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminAdminAlertsRoute = AdminAdminAlertsRouteImport.update({
-  id: '/alerts',
-  path: '/alerts',
-  getParentRoute: () => AdminAdminRoute,
+  id: '/admin/alerts',
+  path: '/admin/alerts',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminAdminAppReleaseRoute = AdminAdminAppReleaseRouteImport.update({
-  id: '/app-release',
-  path: '/app-release',
-  getParentRoute: () => AdminAdminRoute,
+  id: '/admin/app-release',
+  path: '/admin/app-release',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminAdminAppStoreRoute = AdminAdminAppStoreRouteImport.update({
-  id: '/app-store',
-  path: '/app-store',
-  getParentRoute: () => AdminAdminRoute,
-} as any)
-const AdminAdminClientsRoute = AdminAdminClientsRouteImport.update({
-  id: '/clients',
-  path: '/clients',
-  getParentRoute: () => AdminAdminRoute,
+  id: '/admin/app-store',
+  path: '/admin/app-store',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminAdminDeliveriesRoute = AdminAdminDeliveriesRouteImport.update({
-  id: '/deliveries',
-  path: '/deliveries',
-  getParentRoute: () => AdminAdminRoute,
+  id: '/admin/deliveries',
+  path: '/admin/deliveries',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminAdminEmailsRoute = AdminAdminEmailsRouteImport.update({
-  id: '/emails',
-  path: '/emails',
-  getParentRoute: () => AdminAdminRoute,
+  id: '/admin/emails',
+  path: '/admin/emails',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminAdminInviteCodesRoute = AdminAdminInviteCodesRouteImport.update({
-  id: '/invite-codes',
-  path: '/invite-codes',
-  getParentRoute: () => AdminAdminRoute,
+  id: '/admin/invite-codes',
+  path: '/admin/invite-codes',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminAdminLeadsRoute = AdminAdminLeadsRouteImport.update({
-  id: '/leads',
-  path: '/leads',
-  getParentRoute: () => AdminAdminRoute,
+  id: '/admin/leads',
+  path: '/admin/leads',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminAdminRemindersRoute = AdminAdminRemindersRouteImport.update({
-  id: '/reminders',
-  path: '/reminders',
-  getParentRoute: () => AdminAdminRoute,
+  id: '/admin/reminders',
+  path: '/admin/reminders',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminAdminRolesRoute = AdminAdminRolesRouteImport.update({
-  id: '/roles',
-  path: '/roles',
-  getParentRoute: () => AdminAdminRoute,
+  id: '/admin/roles',
+  path: '/admin/roles',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminAdminTriggersRoute = AdminAdminTriggersRouteImport.update({
-  id: '/triggers',
-  path: '/triggers',
-  getParentRoute: () => AdminAdminRoute,
+  id: '/admin/triggers',
+  path: '/admin/triggers',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminAdminWebhooksRoute = AdminAdminWebhooksRouteImport.update({
-  id: '/webhooks',
-  path: '/webhooks',
-  getParentRoute: () => AdminAdminRoute,
+  id: '/admin/webhooks',
+  path: '/admin/webhooks',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AuthenticatedAdminAppBuildsRoute =
   AuthenticatedAdminAppBuildsRouteImport.update({
@@ -525,10 +520,15 @@ const LovableEmailEventsRoute = LovableEmailEventsRouteImport.update({
   path: '/lovable/email/events',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminAdminClientsIndexRoute = AdminAdminClientsIndexRouteImport.update({
+  id: '/admin/clients/',
+  path: '/admin/clients/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminAdminClientsIdRoute = AdminAdminClientsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AdminAdminClientsRoute,
+  id: '/admin/clients/$id',
+  path: '/admin/clients/$id',
+  getParentRoute: () => AdminRoute,
 } as any)
 const FirmFirmDetainedIdRoute = FirmFirmDetainedIdRouteImport.update({
   id: '/$id',
@@ -687,7 +687,6 @@ export interface FileRoutesByFullPath {
   '/unsubscribe': typeof UnsubscribeRoute
   '/venues': typeof VenuesRoute
   '/videos': typeof VideosRoute
-  '/admin': typeof AdminAdminRouteWithChildren
   '/cases': typeof AuthenticatedCasesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/mi-app': typeof AuthenticatedMiAppRoute
@@ -703,7 +702,6 @@ export interface FileRoutesByFullPath {
   '/admin/alerts': typeof AdminAdminAlertsRoute
   '/admin/app-release': typeof AdminAdminAppReleaseRoute
   '/admin/app-store': typeof AdminAdminAppStoreRoute
-  '/admin/clients': typeof AdminAdminClientsRouteWithChildren
   '/admin/deliveries': typeof AdminAdminDeliveriesRoute
   '/admin/emails': typeof AdminAdminEmailsRoute
   '/admin/invite-codes': typeof AdminAdminInviteCodesRoute
@@ -726,6 +724,7 @@ export interface FileRoutesByFullPath {
   '/api/public/trust-package': typeof ApiPublicTrustPackageRoute
   '/api/public/video-questions': typeof ApiPublicVideoQuestionsRoute
   '/lovable/email/events': typeof LovableEmailEventsRoute
+  '/admin/': typeof AdminAdminIndexRoute
   '/admin/clients/$id': typeof AdminAdminClientsIdRoute
   '/firm/detained/$id': typeof FirmFirmDetainedIdRoute
   '/firm/packet/$id': typeof FirmFirmPacketIdRoute
@@ -748,6 +747,7 @@ export interface FileRoutesByFullPath {
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
+  '/admin/clients/': typeof AdminAdminClientsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -790,7 +790,6 @@ export interface FileRoutesByTo {
   '/unsubscribe': typeof UnsubscribeRoute
   '/venues': typeof VenuesRoute
   '/videos': typeof VideosRoute
-  '/admin': typeof AdminAdminRouteWithChildren
   '/cases': typeof AuthenticatedCasesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/mi-app': typeof AuthenticatedMiAppRoute
@@ -806,7 +805,6 @@ export interface FileRoutesByTo {
   '/admin/alerts': typeof AdminAdminAlertsRoute
   '/admin/app-release': typeof AdminAdminAppReleaseRoute
   '/admin/app-store': typeof AdminAdminAppStoreRoute
-  '/admin/clients': typeof AdminAdminClientsRouteWithChildren
   '/admin/deliveries': typeof AdminAdminDeliveriesRoute
   '/admin/emails': typeof AdminAdminEmailsRoute
   '/admin/invite-codes': typeof AdminAdminInviteCodesRoute
@@ -829,6 +827,7 @@ export interface FileRoutesByTo {
   '/api/public/trust-package': typeof ApiPublicTrustPackageRoute
   '/api/public/video-questions': typeof ApiPublicVideoQuestionsRoute
   '/lovable/email/events': typeof LovableEmailEventsRoute
+  '/admin': typeof AdminAdminIndexRoute
   '/admin/clients/$id': typeof AdminAdminClientsIdRoute
   '/firm/detained/$id': typeof FirmFirmDetainedIdRoute
   '/firm/packet/$id': typeof FirmFirmPacketIdRoute
@@ -851,6 +850,7 @@ export interface FileRoutesByTo {
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
+  '/admin/clients': typeof AdminAdminClientsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -897,7 +897,6 @@ export interface FileRoutesById {
   '/unsubscribe': typeof UnsubscribeRoute
   '/venues': typeof VenuesRoute
   '/videos': typeof VideosRoute
-  '/_admin/admin': typeof AdminAdminRouteWithChildren
   '/_authenticated/cases': typeof AuthenticatedCasesRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/mi-app': typeof AuthenticatedMiAppRoute
@@ -913,7 +912,6 @@ export interface FileRoutesById {
   '/_admin/admin/alerts': typeof AdminAdminAlertsRoute
   '/_admin/admin/app-release': typeof AdminAdminAppReleaseRoute
   '/_admin/admin/app-store': typeof AdminAdminAppStoreRoute
-  '/_admin/admin/clients': typeof AdminAdminClientsRouteWithChildren
   '/_admin/admin/deliveries': typeof AdminAdminDeliveriesRoute
   '/_admin/admin/emails': typeof AdminAdminEmailsRoute
   '/_admin/admin/invite-codes': typeof AdminAdminInviteCodesRoute
@@ -936,6 +934,7 @@ export interface FileRoutesById {
   '/api/public/trust-package': typeof ApiPublicTrustPackageRoute
   '/api/public/video-questions': typeof ApiPublicVideoQuestionsRoute
   '/lovable/email/events': typeof LovableEmailEventsRoute
+  '/_admin/admin/': typeof AdminAdminIndexRoute
   '/_admin/admin/clients/$id': typeof AdminAdminClientsIdRoute
   '/_firm/firm/detained/$id': typeof FirmFirmDetainedIdRoute
   '/_firm/firm/packet/$id': typeof FirmFirmPacketIdRoute
@@ -958,6 +957,7 @@ export interface FileRoutesById {
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
+  '/_admin/admin/clients/': typeof AdminAdminClientsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -1002,7 +1002,6 @@ export interface FileRouteTypes {
     | '/unsubscribe'
     | '/venues'
     | '/videos'
-    | '/admin'
     | '/cases'
     | '/dashboard'
     | '/mi-app'
@@ -1018,7 +1017,6 @@ export interface FileRouteTypes {
     | '/admin/alerts'
     | '/admin/app-release'
     | '/admin/app-store'
-    | '/admin/clients'
     | '/admin/deliveries'
     | '/admin/emails'
     | '/admin/invite-codes'
@@ -1041,6 +1039,7 @@ export interface FileRouteTypes {
     | '/api/public/trust-package'
     | '/api/public/video-questions'
     | '/lovable/email/events'
+    | '/admin/'
     | '/admin/clients/$id'
     | '/firm/detained/$id'
     | '/firm/packet/$id'
@@ -1063,6 +1062,7 @@ export interface FileRouteTypes {
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/transactional/preview'
+    | '/admin/clients/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -1105,7 +1105,6 @@ export interface FileRouteTypes {
     | '/unsubscribe'
     | '/venues'
     | '/videos'
-    | '/admin'
     | '/cases'
     | '/dashboard'
     | '/mi-app'
@@ -1121,7 +1120,6 @@ export interface FileRouteTypes {
     | '/admin/alerts'
     | '/admin/app-release'
     | '/admin/app-store'
-    | '/admin/clients'
     | '/admin/deliveries'
     | '/admin/emails'
     | '/admin/invite-codes'
@@ -1144,6 +1142,7 @@ export interface FileRouteTypes {
     | '/api/public/trust-package'
     | '/api/public/video-questions'
     | '/lovable/email/events'
+    | '/admin'
     | '/admin/clients/$id'
     | '/firm/detained/$id'
     | '/firm/packet/$id'
@@ -1166,6 +1165,7 @@ export interface FileRouteTypes {
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/transactional/preview'
+    | '/admin/clients'
   id:
     | '__root__'
     | '/'
@@ -1211,7 +1211,6 @@ export interface FileRouteTypes {
     | '/unsubscribe'
     | '/venues'
     | '/videos'
-    | '/_admin/admin'
     | '/_authenticated/cases'
     | '/_authenticated/dashboard'
     | '/_authenticated/mi-app'
@@ -1227,7 +1226,6 @@ export interface FileRouteTypes {
     | '/_admin/admin/alerts'
     | '/_admin/admin/app-release'
     | '/_admin/admin/app-store'
-    | '/_admin/admin/clients'
     | '/_admin/admin/deliveries'
     | '/_admin/admin/emails'
     | '/_admin/admin/invite-codes'
@@ -1250,6 +1248,7 @@ export interface FileRouteTypes {
     | '/api/public/trust-package'
     | '/api/public/video-questions'
     | '/lovable/email/events'
+    | '/_admin/admin/'
     | '/_admin/admin/clients/$id'
     | '/_firm/firm/detained/$id'
     | '/_firm/firm/packet/$id'
@@ -1272,6 +1271,7 @@ export interface FileRouteTypes {
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/transactional/preview'
+    | '/_admin/admin/clients/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -1657,13 +1657,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VideosRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_admin/admin': {
-      id: '/_admin/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminAdminRouteImport
-      parentRoute: typeof AdminRoute
-    }
     '/_authenticated/cases': {
       id: '/_authenticated/cases'
       path: '/cases'
@@ -1741,96 +1734,96 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TrackTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_admin/admin/': {
+      id: '/_admin/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminAdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_admin/admin/activations': {
       id: '/_admin/admin/activations'
-      path: '/activations'
+      path: '/admin/activations'
       fullPath: '/admin/activations'
       preLoaderRoute: typeof AdminAdminActivationsRouteImport
-      parentRoute: typeof AdminAdminRoute
+      parentRoute: typeof AdminRoute
     }
     '/_admin/admin/alerts': {
       id: '/_admin/admin/alerts'
-      path: '/alerts'
+      path: '/admin/alerts'
       fullPath: '/admin/alerts'
       preLoaderRoute: typeof AdminAdminAlertsRouteImport
-      parentRoute: typeof AdminAdminRoute
+      parentRoute: typeof AdminRoute
     }
     '/_admin/admin/app-release': {
       id: '/_admin/admin/app-release'
-      path: '/app-release'
+      path: '/admin/app-release'
       fullPath: '/admin/app-release'
       preLoaderRoute: typeof AdminAdminAppReleaseRouteImport
-      parentRoute: typeof AdminAdminRoute
+      parentRoute: typeof AdminRoute
     }
     '/_admin/admin/app-store': {
       id: '/_admin/admin/app-store'
-      path: '/app-store'
+      path: '/admin/app-store'
       fullPath: '/admin/app-store'
       preLoaderRoute: typeof AdminAdminAppStoreRouteImport
-      parentRoute: typeof AdminAdminRoute
-    }
-    '/_admin/admin/clients': {
-      id: '/_admin/admin/clients'
-      path: '/clients'
-      fullPath: '/admin/clients'
-      preLoaderRoute: typeof AdminAdminClientsRouteImport
-      parentRoute: typeof AdminAdminRoute
+      parentRoute: typeof AdminRoute
     }
     '/_admin/admin/deliveries': {
       id: '/_admin/admin/deliveries'
-      path: '/deliveries'
+      path: '/admin/deliveries'
       fullPath: '/admin/deliveries'
       preLoaderRoute: typeof AdminAdminDeliveriesRouteImport
-      parentRoute: typeof AdminAdminRoute
+      parentRoute: typeof AdminRoute
     }
     '/_admin/admin/emails': {
       id: '/_admin/admin/emails'
-      path: '/emails'
+      path: '/admin/emails'
       fullPath: '/admin/emails'
       preLoaderRoute: typeof AdminAdminEmailsRouteImport
-      parentRoute: typeof AdminAdminRoute
+      parentRoute: typeof AdminRoute
     }
     '/_admin/admin/invite-codes': {
       id: '/_admin/admin/invite-codes'
-      path: '/invite-codes'
+      path: '/admin/invite-codes'
       fullPath: '/admin/invite-codes'
       preLoaderRoute: typeof AdminAdminInviteCodesRouteImport
-      parentRoute: typeof AdminAdminRoute
+      parentRoute: typeof AdminRoute
     }
     '/_admin/admin/leads': {
       id: '/_admin/admin/leads'
-      path: '/leads'
+      path: '/admin/leads'
       fullPath: '/admin/leads'
       preLoaderRoute: typeof AdminAdminLeadsRouteImport
-      parentRoute: typeof AdminAdminRoute
+      parentRoute: typeof AdminRoute
     }
     '/_admin/admin/reminders': {
       id: '/_admin/admin/reminders'
-      path: '/reminders'
+      path: '/admin/reminders'
       fullPath: '/admin/reminders'
       preLoaderRoute: typeof AdminAdminRemindersRouteImport
-      parentRoute: typeof AdminAdminRoute
+      parentRoute: typeof AdminRoute
     }
     '/_admin/admin/roles': {
       id: '/_admin/admin/roles'
-      path: '/roles'
+      path: '/admin/roles'
       fullPath: '/admin/roles'
       preLoaderRoute: typeof AdminAdminRolesRouteImport
-      parentRoute: typeof AdminAdminRoute
+      parentRoute: typeof AdminRoute
     }
     '/_admin/admin/triggers': {
       id: '/_admin/admin/triggers'
-      path: '/triggers'
+      path: '/admin/triggers'
       fullPath: '/admin/triggers'
       preLoaderRoute: typeof AdminAdminTriggersRouteImport
-      parentRoute: typeof AdminAdminRoute
+      parentRoute: typeof AdminRoute
     }
     '/_admin/admin/webhooks': {
       id: '/_admin/admin/webhooks'
-      path: '/webhooks'
+      path: '/admin/webhooks'
       fullPath: '/admin/webhooks'
       preLoaderRoute: typeof AdminAdminWebhooksRouteImport
-      parentRoute: typeof AdminAdminRoute
+      parentRoute: typeof AdminRoute
     }
     '/_authenticated/admin/app-builds': {
       id: '/_authenticated/admin/app-builds'
@@ -1930,12 +1923,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LovableEmailEventsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_admin/admin/clients/': {
+      id: '/_admin/admin/clients/'
+      path: '/admin/clients'
+      fullPath: '/admin/clients/'
+      preLoaderRoute: typeof AdminAdminClientsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_admin/admin/clients/$id': {
       id: '/_admin/admin/clients/$id'
-      path: '/$id'
+      path: '/admin/clients/$id'
       fullPath: '/admin/clients/$id'
       preLoaderRoute: typeof AdminAdminClientsIdRouteImport
-      parentRoute: typeof AdminAdminClientsRoute
+      parentRoute: typeof AdminRoute
     }
     '/_firm/firm/detained/$id': {
       id: '/_firm/firm/detained/$id'
@@ -2087,23 +2087,11 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface AdminAdminClientsRouteChildren {
-  AdminAdminClientsIdRoute: typeof AdminAdminClientsIdRoute
-}
-
-const AdminAdminClientsRouteChildren: AdminAdminClientsRouteChildren = {
-  AdminAdminClientsIdRoute: AdminAdminClientsIdRoute,
-}
-
-const AdminAdminClientsRouteWithChildren =
-  AdminAdminClientsRoute._addFileChildren(AdminAdminClientsRouteChildren)
-
-interface AdminAdminRouteChildren {
+interface AdminRouteChildren {
   AdminAdminActivationsRoute: typeof AdminAdminActivationsRoute
   AdminAdminAlertsRoute: typeof AdminAdminAlertsRoute
   AdminAdminAppReleaseRoute: typeof AdminAdminAppReleaseRoute
   AdminAdminAppStoreRoute: typeof AdminAdminAppStoreRoute
-  AdminAdminClientsRoute: typeof AdminAdminClientsRouteWithChildren
   AdminAdminDeliveriesRoute: typeof AdminAdminDeliveriesRoute
   AdminAdminEmailsRoute: typeof AdminAdminEmailsRoute
   AdminAdminInviteCodesRoute: typeof AdminAdminInviteCodesRoute
@@ -2112,14 +2100,16 @@ interface AdminAdminRouteChildren {
   AdminAdminRolesRoute: typeof AdminAdminRolesRoute
   AdminAdminTriggersRoute: typeof AdminAdminTriggersRoute
   AdminAdminWebhooksRoute: typeof AdminAdminWebhooksRoute
+  AdminAdminIndexRoute: typeof AdminAdminIndexRoute
+  AdminAdminClientsIdRoute: typeof AdminAdminClientsIdRoute
+  AdminAdminClientsIndexRoute: typeof AdminAdminClientsIndexRoute
 }
 
-const AdminAdminRouteChildren: AdminAdminRouteChildren = {
+const AdminRouteChildren: AdminRouteChildren = {
   AdminAdminActivationsRoute: AdminAdminActivationsRoute,
   AdminAdminAlertsRoute: AdminAdminAlertsRoute,
   AdminAdminAppReleaseRoute: AdminAdminAppReleaseRoute,
   AdminAdminAppStoreRoute: AdminAdminAppStoreRoute,
-  AdminAdminClientsRoute: AdminAdminClientsRouteWithChildren,
   AdminAdminDeliveriesRoute: AdminAdminDeliveriesRoute,
   AdminAdminEmailsRoute: AdminAdminEmailsRoute,
   AdminAdminInviteCodesRoute: AdminAdminInviteCodesRoute,
@@ -2128,18 +2118,9 @@ const AdminAdminRouteChildren: AdminAdminRouteChildren = {
   AdminAdminRolesRoute: AdminAdminRolesRoute,
   AdminAdminTriggersRoute: AdminAdminTriggersRoute,
   AdminAdminWebhooksRoute: AdminAdminWebhooksRoute,
-}
-
-const AdminAdminRouteWithChildren = AdminAdminRoute._addFileChildren(
-  AdminAdminRouteChildren,
-)
-
-interface AdminRouteChildren {
-  AdminAdminRoute: typeof AdminAdminRouteWithChildren
-}
-
-const AdminRouteChildren: AdminRouteChildren = {
-  AdminAdminRoute: AdminAdminRouteWithChildren,
+  AdminAdminIndexRoute: AdminAdminIndexRoute,
+  AdminAdminClientsIdRoute: AdminAdminClientsIdRoute,
+  AdminAdminClientsIndexRoute: AdminAdminClientsIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)

@@ -3,6 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { getMyAdminStatus } from "@/lib/admin.functions";
 
 export const Route = createFileRoute("/_admin")({
+  // The session lives in browser storage, so the admin gate must run in the browser.
+  ssr: false,
   beforeLoad: async () => {
     const { data, error } = await supabase.auth.getUser();
     if (error || !data.user) throw redirect({ to: "/login" });

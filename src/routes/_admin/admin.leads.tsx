@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { listLeads, updateLead } from "@/lib/leads.functions";
+import { useState } from "react";
+import { assignLead, listLeads, updateLead } from "@/lib/leads.functions";
 
 export const Route = createFileRoute("/_admin/admin/leads")({
   component: LeadsPage,
@@ -15,6 +16,35 @@ function LeadsPage() {
     mutationFn: (v: { id: string; status: (typeof STATUSES)[number] }) => updateLead({ data: v }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["leads"] }),
   });
+  const [notice, setNotice] = useState<string | null>(null);
+  const assign = useMutation({
+    mutationFn: (v: { id: string; assigneeId: string }) => assignLead({ data: v }),
+    onSuccess: (r) => {
+      setNotice(
+        r.notified ? `Assigned to ${r.assignee} and emailed them.` : `Assigned to ${r.assignee}.`,
+      );
+      qc.invalidateQueries({ queryKey: ["leads"] });
+    },
+    onError: (e) => setNotice((e as Error).message),
+  });
+  const [filter, setFilter] = useState<"all" | "business" | "mine" | "unassigned">("business");
+  const canAssign = (data?.roles ?? []).some((r) => r === "admin" || r === "firm");
+  const staffEmail = (id: string | null) => data?.staff.find((s) => s.userId === id)?.email;
+  const leads = (data?.leads ?? []).filter((l) =>
+    filter === "business"
+      ? l.source === "business-call-intake"
+      : filter === "mine"
+        ? l.routed_to === data?.me
+        : filter === "unassigned"
+          ? !l.routed_to
+          : true,
+  );
+  const FILTERS = [
+    ["business", "Business calls"],
+    ["mine", "Assigned to me"],
+    ["unassigned", "Unassigned"],
+    ["all", "All leads"],
+  ] as const;
 
   return (
     <div className="space-y-4">
@@ -27,6 +57,23 @@ function LeadsPage() {
         </p>
       </div>
 
+      <div className="flex flex-wrap gap-2">
+        {FILTERS.map(([k, label]) => (
+          <button
+            key={k}
+            onClick={() => setFilter(k)}
+            className={`rounded-full border px-3 py-1 text-xs ${filter === k ? "border-amber-500 bg-amber-50 font-semibold text-amber-700" : "border-slate-300 text-slate-600"}`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {notice && (
+        <p role="status" className="text-sm text-slate-700">
+          {notice}
+        </p>
+      )}
       {isLoading && <p className="text-sm text-slate-500">Loading…</p>}
       {error && <p className="text-sm text-red-600">{(error as Error).message}</p>}
 
@@ -45,7 +92,7 @@ function LeadsPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
-            {(data?.leads ?? []).map((l) => (
+            {leads.map((l) => (
               <tr key={l.id}>
                 <td className="whitespace-nowrap px-4 py-2 text-slate-600">
                   {new Date(l.created_at).toLocaleString()}
@@ -59,10 +106,33 @@ function LeadsPage() {
                 <td className="px-4 py-2 uppercase text-slate-600">{l.language}</td>
                 <td className="max-w-xs px-4 py-2 text-slate-600">
                   {l.need ?? "—"}
-                  {l.message ? <div className="mt-1 text-xs text-slate-500">{l.message}</div> : null}
+                  {l.message ? (
+                    <div className="mt-1 text-xs text-slate-500">{l.message}</div>
+                  ) : null}
                 </td>
                 <td className="px-4 py-2 text-slate-600">{l.source}</td>
-                <td className="max-w-xs px-4 py-2 text-muted-foreground">{l.assigned_note ?? "—"}</td>
+                <td className="px-4 py-2 text-slate-600">
+                  {canAssign ? (
+                    <select
+                      aria-label={`Assign ${l.full_name}`}
+                      value={l.routed_to ?? ""}
+                      disabled={assign.isPending}
+                      onChange={(e) =>
+                        e.target.value && assign.mutate({ id: l.id, assigneeId: e.target.value })
+                      }
+                      className="rounded border border-slate-300 px-2 py-1 text-xs"
+                    >
+                      <option value="">Unassigned</option>
+                      {data?.staff.map((m) => (
+                        <option key={m.userId} value={m.userId}>
+                          {m.email}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    (staffEmail(l.routed_to) ?? "Unassigned")
+                  )}
+                </td>
                 <td className="px-4 py-2">
                   <select
                     value={l.status}
@@ -82,7 +152,7 @@ function LeadsPage() {
             ))}
           </tbody>
         </table>
-        {data && data.leads.length === 0 && (
+        {data && leads.length === 0 && (
           <p className="px-4 py-6 text-sm text-slate-500">No leads yet.</p>
         )}
       </div>

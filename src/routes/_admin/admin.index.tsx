@@ -5,7 +5,7 @@ import { useState } from "react";
 import { getDashboardStats } from "@/lib/admin.functions";
 import { fireTestDemoClient } from "@/lib/admin-demo.functions";
 
-export const Route = createFileRoute("/_admin/admin")({
+export const Route = createFileRoute("/_admin/admin/")({
   component: Dashboard,
 });
 
