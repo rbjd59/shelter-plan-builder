@@ -111,6 +111,7 @@ import { Route as ApiPublicEmergencyActivateRouteImport } from './routes/api/pub
 import { Route as ApiPublicEmergencyTestMirrorRouteImport } from './routes/api/public/emergency/test-mirror'
 import { Route as ApiPublicFormsBlankRouteImport } from './routes/api/public/forms/blank'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
+import { Route as ApiPublicTwilioInboundSmsRouteImport } from './routes/api/public/twilio/inbound-sms'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
@@ -635,6 +636,12 @@ const ApiPublicPaymentsWebhookRoute =
     path: '/api/public/payments/webhook',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicTwilioInboundSmsRoute =
+  ApiPublicTwilioInboundSmsRouteImport.update({
+    id: '/api/public/twilio/inbound-sms',
+    path: '/api/public/twilio/inbound-sms',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const LovableEmailAuthPreviewRoute = LovableEmailAuthPreviewRouteImport.update({
   id: '/lovable/email/auth/preview',
   path: '/lovable/email/auth/preview',
@@ -751,6 +758,7 @@ export interface FileRoutesByFullPath {
   '/api/public/emergency/test-mirror': typeof ApiPublicEmergencyTestMirrorRoute
   '/api/public/forms/blank': typeof ApiPublicFormsBlankRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
+  '/api/public/twilio/inbound-sms': typeof ApiPublicTwilioInboundSmsRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -855,6 +863,7 @@ export interface FileRoutesByTo {
   '/api/public/emergency/test-mirror': typeof ApiPublicEmergencyTestMirrorRoute
   '/api/public/forms/blank': typeof ApiPublicFormsBlankRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
+  '/api/public/twilio/inbound-sms': typeof ApiPublicTwilioInboundSmsRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -963,6 +972,7 @@ export interface FileRoutesById {
   '/api/public/emergency/test-mirror': typeof ApiPublicEmergencyTestMirrorRoute
   '/api/public/forms/blank': typeof ApiPublicFormsBlankRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
+  '/api/public/twilio/inbound-sms': typeof ApiPublicTwilioInboundSmsRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -1069,6 +1079,7 @@ export interface FileRouteTypes {
     | '/api/public/emergency/test-mirror'
     | '/api/public/forms/blank'
     | '/api/public/payments/webhook'
+    | '/api/public/twilio/inbound-sms'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/transactional/preview'
@@ -1173,6 +1184,7 @@ export interface FileRouteTypes {
     | '/api/public/emergency/test-mirror'
     | '/api/public/forms/blank'
     | '/api/public/payments/webhook'
+    | '/api/public/twilio/inbound-sms'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/transactional/preview'
@@ -1280,6 +1292,7 @@ export interface FileRouteTypes {
     | '/api/public/emergency/test-mirror'
     | '/api/public/forms/blank'
     | '/api/public/payments/webhook'
+    | '/api/public/twilio/inbound-sms'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/transactional/preview'
@@ -1361,6 +1374,7 @@ export interface RootRouteChildren {
   ApiPublicEmergencyTestMirrorRoute: typeof ApiPublicEmergencyTestMirrorRoute
   ApiPublicFormsBlankRoute: typeof ApiPublicFormsBlankRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
+  ApiPublicTwilioInboundSmsRoute: typeof ApiPublicTwilioInboundSmsRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
@@ -2082,6 +2096,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicPaymentsWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/twilio/inbound-sms': {
+      id: '/api/public/twilio/inbound-sms'
+      path: '/api/public/twilio/inbound-sms'
+      fullPath: '/api/public/twilio/inbound-sms'
+      preLoaderRoute: typeof ApiPublicTwilioInboundSmsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lovable/email/auth/preview': {
       id: '/lovable/email/auth/preview'
       path: '/lovable/email/auth/preview'
@@ -2273,6 +2294,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicEmergencyTestMirrorRoute: ApiPublicEmergencyTestMirrorRoute,
   ApiPublicFormsBlankRoute: ApiPublicFormsBlankRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
+  ApiPublicTwilioInboundSmsRoute: ApiPublicTwilioInboundSmsRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,

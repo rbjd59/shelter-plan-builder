@@ -1386,6 +1386,7 @@ export type Database = {
       }
       live_chat_conversations: {
         Row: {
+          alerted_phone: string | null
           assigned_name: string | null
           assigned_to: string | null
           callback_at: string | null
@@ -1393,6 +1394,7 @@ export type Database = {
           created_at: string
           id: string
           language: string
+          last_alert_at: string | null
           status: string
           updated_at: string
           visitor_key_hash: string
@@ -1400,6 +1402,7 @@ export type Database = {
           visitor_phone: string | null
         }
         Insert: {
+          alerted_phone?: string | null
           assigned_name?: string | null
           assigned_to?: string | null
           callback_at?: string | null
@@ -1407,6 +1410,7 @@ export type Database = {
           created_at?: string
           id?: string
           language: string
+          last_alert_at?: string | null
           status?: string
           updated_at?: string
           visitor_key_hash: string
@@ -1414,6 +1418,7 @@ export type Database = {
           visitor_phone?: string | null
         }
         Update: {
+          alerted_phone?: string | null
           assigned_name?: string | null
           assigned_to?: string | null
           callback_at?: string | null
@@ -1421,6 +1426,7 @@ export type Database = {
           created_at?: string
           id?: string
           language?: string
+          last_alert_at?: string | null
           status?: string
           updated_at?: string
           visitor_key_hash?: string

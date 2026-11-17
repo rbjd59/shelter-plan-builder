@@ -311,7 +311,7 @@ export default function VideoQuestionBox() {
     const openFromHash = () => {
       if (window.location.hash === "#schedule-call") {
         document.getElementById("process-questions")?.scrollIntoView({ behavior: "smooth" });
-        void begin("callback");
+        void begin("chat");
       }
     };
     openFromHash();
@@ -332,8 +332,6 @@ export default function VideoQuestionBox() {
         </div>
         <div className="home-contact-actions">
           <Button asChild size="lg"><a href={`tel:${BUSINESS_PARALEGAL_PHONE}`}><Phone />{copy.call}</a></Button>
-          <Button asChild variant="outline" size="lg"><a href={`sms:${BUSINESS_PARALEGAL_PHONE}`} onClick={(e) => { if (!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) { e.preventDefault(); void begin("chat"); } }}>{copy.text}</a></Button>
-          <Button variant="outline" size="lg" disabled={busy} onClick={() => void begin("callback")}><CalendarDays />{copy.schedule}</Button>
           <Button variant="secondary" size="lg" disabled={busy} onClick={() => void begin("chat")}><MessageCircle />{copy.live}</Button>
         </div>
         {error && <p role="alert" className="home-contact-error">{error}</p>}
@@ -351,7 +349,6 @@ export default function VideoQuestionBox() {
                 catch (cause) { setError(cause instanceof Error ? cause.message : copy.error); }
                 finally { setBusy(false); }
               }} disabled={busy}>{copy.yesAi}</Button>
-              <Button variant="outline" onClick={() => setScreen("callback")}>{copy.noAi}</Button>
               <Button variant="ghost" onClick={() => setShowFallback(false)}>{copy.wait}</Button>
             </div>
           </div>}

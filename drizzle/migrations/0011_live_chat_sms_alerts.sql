@@ -1,0 +1,2 @@
+ALTER TABLE public.live_chat_conversations ADD COLUMN IF NOT EXISTS alerted_phone text, ADD COLUMN IF NOT EXISTS last_alert_at timestamptz;
+CREATE INDEX IF NOT EXISTS live_chat_conversations_alerted_idx ON public.live_chat_conversations(alerted_phone, last_alert_at DESC);

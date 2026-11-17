@@ -88,6 +88,12 @@ export const Route = createFileRoute("/api/public/live-chat")({
         if (input.action === "message") {
           if (existing.conversation.status === "ai")
             return Response.json({ error: "Use the AI assistant below." }, { status: 409 });
+          try {
+            const { maybeAlertStaff } = await import("@/lib/live-chat-sms.server");
+            await maybeAlertStaff(db, existing.conversation, input.text);
+          } catch (alertError) {
+            console.error("[live-chat] staff alert failed", alertError);
+          }
           const { error } = await db.from("live_chat_messages").insert({
             conversation_id: input.id,
             sender: "visitor",
