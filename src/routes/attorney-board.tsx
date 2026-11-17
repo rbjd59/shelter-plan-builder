@@ -106,6 +106,11 @@ function AttorneyBoard({ pin }: { pin: string }) {
             detentions come first, then files whose forms are complete and waiting
             on your review.
           </p>
+          <div className="mt-3">
+            <Link to="/attorney-trust-review" className="text-sm font-semibold text-amber-700 underline">
+              Business trust attorney approvals →
+            </Link>
+          </div>
           <div className="mt-2 flex flex-wrap gap-2 text-xs font-semibold">
             <span className="rounded-full bg-red-600 px-2.5 py-1 text-white">
               {counts.active} live detention{counts.active === 1 ? "" : "s"}

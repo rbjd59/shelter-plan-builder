@@ -1,5 +1,8 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
+## November 17 — business trust attorney approval
+- [ ] Preserve each trilingual business trust draft and its exact client-fact snapshot; add a law-firm-only review queue for final legal terms, requested changes, approval and immutable execution-copy PDFs. Record the reviewing attorney and source draft, keep prior drafts unchanged, and expose approved packets through the existing client-file PDF email flow. Test generation, authorization and approval state transitions.
+
 ## November 17 — homepage video audio quality
 - [ ] Diagnose all nine homepage voiceovers; preserve every script, visual, position and original file. Regenerate only confirmed chunked-audio cases as continuous takes, use the current English voice, Venezuelan Spanish and genuine Haitian Creole, verify full playback, then switch only the affected homepage media references. Run the complete tests.
 

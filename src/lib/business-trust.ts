@@ -3,6 +3,52 @@ import type { BusinessTrustLanguage } from "./business-trust-forms";
 
 export const BUSINESS_MONTHLY_FEE = 199;
 export const BUSINESS_TRUST_FEE = 899;
+
+function isValidCalendarDate(value: string) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const date = new Date(`${value}T00:00:00.000Z`);
+  return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value;
+}
+
+const attorneyTerm = (max = 12000) => z.string().trim().max(max).default("");
+export const businessTrustAttorneyTermsSchema = z.object({
+  reviewerName: attorneyTerm(200),
+  reviewerBarNumber: attorneyTerm(100),
+  governingLaw: attorneyTerm(200),
+  effectiveDate: z
+    .string()
+    .refine((value) => value === "" || isValidCalendarDate(value), "Choose a valid effective date.")
+    .default(""),
+  amendmentAndRevocation: attorneyTerm(),
+  distributions: attorneyTerm(),
+  trusteePowers: attorneyTerm(),
+  compensationAndExpenses: attorneyTerm(),
+  incapacityAndSuccession: attorneyTerm(),
+  executionRequirements: attorneyTerm(),
+  transferTerms: attorneyTerm(),
+});
+export type BusinessTrustAttorneyTerms = z.infer<typeof businessTrustAttorneyTermsSchema>;
+export const emptyBusinessTrustAttorneyTerms = businessTrustAttorneyTermsSchema.parse({});
+
+const requiredTerm = (label: string) =>
+  z.string().trim().min(2, `${label} is required.`).max(12000);
+export const businessTrustApprovalTermsSchema = businessTrustAttorneyTermsSchema.extend({
+  reviewerName: requiredTerm("Attorney name").max(200),
+  reviewerBarNumber: requiredTerm("Bar number or jurisdiction").max(100),
+  governingLaw: requiredTerm("Governing law").max(200),
+  effectiveDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Choose the effective date.")
+    .refine(isValidCalendarDate, "Choose a valid effective date."),
+  amendmentAndRevocation: requiredTerm("Amendment and revocation terms"),
+  distributions: requiredTerm("Distribution terms"),
+  trusteePowers: requiredTerm("Trustee powers"),
+  compensationAndExpenses: requiredTerm("Compensation and expense terms"),
+  incapacityAndSuccession: requiredTerm("Incapacity and succession terms"),
+  executionRequirements: requiredTerm("Execution requirements"),
+  transferTerms: requiredTerm("Transfer terms"),
+});
+
 export const businessFileSchema = z
   .object({
     name: z.string().max(200).default(""),

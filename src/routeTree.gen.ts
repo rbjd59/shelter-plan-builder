@@ -18,6 +18,7 @@ import { Route as AltRouteImport } from './routes/alt'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AttorneyRouteImport } from './routes/attorney'
 import { Route as AttorneyBoardRouteImport } from './routes/attorney-board'
+import { Route as AttorneyTrustReviewRouteImport } from './routes/attorney-trust-review'
 import { Route as BusinessRouteImport } from './routes/business'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as ComingSoonRouteImport } from './routes/coming-soon'
@@ -152,6 +153,11 @@ const AttorneyRoute = AttorneyRouteImport.update({
 const AttorneyBoardRoute = AttorneyBoardRouteImport.update({
   id: '/attorney-board',
   path: '/attorney-board',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AttorneyTrustReviewRoute = AttorneyTrustReviewRouteImport.update({
+  id: '/attorney-trust-review',
+  path: '/attorney-trust-review',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BusinessRoute = BusinessRouteImport.update({
@@ -641,6 +647,7 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRoute
   '/attorney': typeof AttorneyRoute
   '/attorney-board': typeof AttorneyBoardRoute
+  '/attorney-trust-review': typeof AttorneyTrustReviewRoute
   '/business': typeof BusinessRoute
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
@@ -742,6 +749,7 @@ export interface FileRoutesByTo {
   '/app': typeof AppRoute
   '/attorney': typeof AttorneyRoute
   '/attorney-board': typeof AttorneyBoardRoute
+  '/attorney-trust-review': typeof AttorneyTrustReviewRoute
   '/business': typeof BusinessRoute
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
@@ -847,6 +855,7 @@ export interface FileRoutesById {
   '/app': typeof AppRoute
   '/attorney': typeof AttorneyRoute
   '/attorney-board': typeof AttorneyBoardRoute
+  '/attorney-trust-review': typeof AttorneyTrustReviewRoute
   '/business': typeof BusinessRoute
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
@@ -950,6 +959,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/attorney'
     | '/attorney-board'
+    | '/attorney-trust-review'
     | '/business'
     | '/checkout'
     | '/coming-soon'
@@ -1051,6 +1061,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/attorney'
     | '/attorney-board'
+    | '/attorney-trust-review'
     | '/business'
     | '/checkout'
     | '/coming-soon'
@@ -1155,6 +1166,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/attorney'
     | '/attorney-board'
+    | '/attorney-trust-review'
     | '/business'
     | '/checkout'
     | '/coming-soon'
@@ -1260,6 +1272,7 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRoute
   AttorneyRoute: typeof AttorneyRoute
   AttorneyBoardRoute: typeof AttorneyBoardRoute
+  AttorneyTrustReviewRoute: typeof AttorneyTrustReviewRoute
   BusinessRoute: typeof BusinessRoute
   CheckoutRoute: typeof CheckoutRoute
   ComingSoonRoute: typeof ComingSoonRoute
@@ -1391,6 +1404,13 @@ declare module '@tanstack/react-router' {
       path: '/attorney-board'
       fullPath: '/attorney-board'
       preLoaderRoute: typeof AttorneyBoardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/attorney-trust-review': {
+      id: '/attorney-trust-review'
+      path: '/attorney-trust-review'
+      fullPath: '/attorney-trust-review'
+      preLoaderRoute: typeof AttorneyTrustReviewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/business': {
@@ -2165,6 +2185,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRoute,
   AttorneyRoute: AttorneyRoute,
   AttorneyBoardRoute: AttorneyBoardRoute,
+  AttorneyTrustReviewRoute: AttorneyTrustReviewRoute,
   BusinessRoute: BusinessRoute,
   CheckoutRoute: CheckoutRoute,
   ComingSoonRoute: ComingSoonRoute,

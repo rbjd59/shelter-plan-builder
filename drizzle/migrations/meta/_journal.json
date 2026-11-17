@@ -57,6 +57,20 @@
       "when": 1794900079477,
       "tag": "0007_create_live_chat_inbox",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1794904761219,
+      "tag": "0008_business_trust_attorney_review",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1794904801249,
+      "tag": "0009_business_trust_packet_snapshots",
+      "breakpoints": true
     }
   ]
 }

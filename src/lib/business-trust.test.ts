@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   businessFileSchema,
+  businessTrustApprovalTermsSchema,
   businessTrustDetails,
   isTrustDocument,
   BUSINESS_TRUST_FEE,
@@ -92,4 +93,22 @@ describe("business client packages", () => {
       expect(text).toMatch(/Do not sign|NO FIRMAR|PA SIYEN/);
     },
   );
+  it("requires every final legal term before an attorney can issue an execution copy", () => {
+    expect(businessTrustApprovalTermsSchema.safeParse({}).success).toBe(false);
+    expect(
+      businessTrustApprovalTermsSchema.safeParse({
+        reviewerName: "Rosario Kyle Sorrentino, Esq.",
+        reviewerBarNumber: "Florida Bar No. 1049132",
+        governingLaw: "Florida law",
+        effectiveDate: "2026-11-17",
+        amendmentAndRevocation: "Signed written amendment delivered to the Trustee.",
+        distributions: "Distribute under Schedule B.",
+        trusteePowers: "Manage contracts, records and approved expenses.",
+        compensationAndExpenses: "Reasonable documented expenses only.",
+        incapacityAndSuccession: "Successor acts after written proof of incapacity.",
+        executionRequirements: "Two witnesses and a Florida notary.",
+        transferTerms: "Separate signed assignment of the full ownership interest.",
+      }).success,
+    ).toBe(true);
+  });
 });

@@ -8,7 +8,13 @@ import {
   businessTrustFormSections,
   businessTrustPdfCopy,
   type BusinessTrustLanguage,
+  type BusinessTrustFormValues,
 } from "./business-trust-forms";
+import {
+  businessTrustApprovedFormSections,
+  businessTrustApprovedPdfCopy,
+} from "./business-trust-approved-forms";
+import type { BusinessTrustAttorneyTerms } from "./business-trust";
 import { FIRM } from "./firm-info";
 
 function fontBytes(base64: string): Uint8Array {
@@ -22,8 +28,12 @@ function fontBytes(base64: string): Uint8Array {
 export async function textPacket(
   title: string,
   sections: { heading: string; lines: string[]; pageBreak?: boolean }[],
-  options?: { draftNotice?: string; pageLabel?: string },
+  options?: { draftNotice?: string; notice?: string; pageLabel?: string },
 ) {
+  const notice =
+    options?.notice ??
+    options?.draftNotice ??
+    "DRAFT - Attorney review required before signing or use.";
   const pdf = await PDFDocument.create();
   pdf.registerFontkit(fontkit);
   const font = await pdf.embedFont(fontBytes(regularFontB64), { subset: true });
@@ -55,7 +65,7 @@ export async function textPacket(
     if (current) draw();
   };
   line(title, true);
-  line(options?.draftNotice ?? "DRAFT - Attorney review required before signing or use.");
+  line(notice);
   for (const section of sections) {
     if (section.pageBreak || y < 110) {
       page = pdf.addPage([612, 792]);
@@ -66,10 +76,12 @@ export async function textPacket(
   }
   const pages = pdf.getPages();
   pages.forEach((p, index) => {
-    p.drawText(
-      `${options?.draftNotice ?? "ATTORNEY-REVIEW DRAFT"} · ${options?.pageLabel ?? "Page"} ${index + 1} / ${pages.length}`,
-      { x: 54, y: 30, size: 8, font },
-    );
+    p.drawText(`${notice} · ${options?.pageLabel ?? "Page"} ${index + 1} / ${pages.length}`, {
+      x: 54,
+      y: 30,
+      size: 8,
+      font,
+    });
   });
   return pdf.save();
 }
@@ -218,17 +230,15 @@ export async function servicePacket(
         ]),
   ]);
 }
-export async function businessTrustPacket(
+function businessTrustValues(
   client: { full_name: string | null; answers: unknown },
   file: Record<string, unknown>,
-  language: BusinessTrustLanguage = "en",
-) {
+  blank: string,
+): BusinessTrustFormValues {
   const business = businessTrustDetails(client, file);
-  const copy = businessTrustPdfCopy(language);
-  const value = (v: unknown) =>
-    v === "" || v === null || v === undefined ? copy.blank : String(v);
+  const value = (v: unknown) => (v === "" || v === null || v === undefined ? blank : String(v));
   const answers = (client.answers ?? {}) as Record<string, unknown>;
-  const sections = businessTrustFormSections(language, {
+  return {
     clientName: value(client.full_name),
     businessName: value(business.name),
     entity: value(business.entity),
@@ -244,9 +254,35 @@ export async function businessTrustPacket(
     startDate: value(business.startDate),
     paymentPlan: value(business.paymentPlan),
     trustFee: BUSINESS_TRUST_FEE,
-  });
-  return textPacket(`${copy.title} — ${value(client.full_name)}`, sections, {
+  };
+}
+
+export async function businessTrustPacket(
+  client: { full_name: string | null; answers: unknown },
+  file: Record<string, unknown>,
+  language: BusinessTrustLanguage = "en",
+) {
+  const copy = businessTrustPdfCopy(language);
+  const values = businessTrustValues(client, file, copy.blank);
+  const sections = businessTrustFormSections(language, values);
+  return textPacket(`${copy.title} — ${values.clientName}`, sections, {
     draftNotice: copy.draft,
+    pageLabel: copy.page,
+  });
+}
+
+export async function approvedBusinessTrustPacket(
+  client: { full_name: string | null; answers: unknown },
+  file: Record<string, unknown>,
+  language: BusinessTrustLanguage,
+  terms: BusinessTrustAttorneyTerms,
+  approvedAt: string,
+) {
+  const copy = businessTrustApprovedPdfCopy(language);
+  const values = businessTrustValues(client, file, "[not supplied]");
+  const sections = businessTrustApprovedFormSections(language, values, terms, approvedAt);
+  return textPacket(`${copy.title} — ${values.clientName}`, sections, {
+    notice: copy.notice,
     pageLabel: copy.page,
   });
 }

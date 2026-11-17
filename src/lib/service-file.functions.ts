@@ -7,12 +7,9 @@ import {
   normalizeBusinessTrustLanguage,
   trustDocumentLanguage,
 } from "./business-trust";
-import {
-  BUSINESS_TRUST_LANGUAGES,
-  languageNames,
-} from "./business-trust-forms";
+import { BUSINESS_TRUST_LANGUAGES, languageNames } from "./business-trust-forms";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { Database } from "@/integrations/supabase/types";
+import type { Database, Json } from "@/integrations/supabase/types";
 const reference = z.object({ id: z.string().uuid(), source: z.enum(["assessment", "app"]) });
 async function staff(context: { supabase: SupabaseClient<Database>; userId: string }) {
   const { data, error } = await context.supabase.rpc("has_role", {
@@ -40,13 +37,17 @@ export const getServiceFile = createServerFn({ method: "POST" })
       data.source === "assessment"
         ? await supabaseAdmin
             .from("assessment_documents")
-            .select("id,title,review_status,created_at,document_type")
+            .select(
+              "id,title,review_status,review_notes,attorney_reviewed_at,source_document_id,created_at,document_type",
+            )
             .eq("assessment_id", data.id)
             .in("document_type", ["service_trust", "service_business_trust"])
             .order("created_at", { ascending: false })
         : await supabaseAdmin
             .from("client_documents")
-            .select("id,title,review_status,created_at,document_type")
+            .select(
+              "id,title,review_status,review_notes,attorney_reviewed_at,source_document_id,created_at,document_type",
+            )
             .eq("client_id", data.id)
             .in("document_type", ["service_trust", "service_business_trust"])
             .order("created_at", { ascending: false });
@@ -206,6 +207,15 @@ export const generateServicePacket = createServerFn({ method: "POST" })
         document_type: `service_${data.kind}`,
         content: b64,
         review_status: "draft_pending_review",
+        packet_input:
+          data.kind === "business_trust"
+            ? (JSON.parse(
+                JSON.stringify({
+                  client: { full_name: client.full_name, answers: client.answers },
+                  file,
+                }),
+              ) as Json)
+            : {},
       });
       if (error) throw new Error(error.message);
     } else {
@@ -215,6 +225,15 @@ export const generateServicePacket = createServerFn({ method: "POST" })
         document_type: `service_${data.kind}`,
         content: b64,
         review_status: "draft_pending_review",
+        packet_input:
+          data.kind === "business_trust"
+            ? (JSON.parse(
+                JSON.stringify({
+                  client: { full_name: client.full_name, answers: client.answers },
+                  file,
+                }),
+              ) as Json)
+            : {},
         send_on_alert: false,
       });
       if (error) throw new Error(error.message);

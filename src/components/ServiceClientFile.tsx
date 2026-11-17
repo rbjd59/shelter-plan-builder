@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
-import { CalendarDays, Download, Mail, Phone, Save } from "lucide-react";
+import { CalendarDays, Download, FileCheck2, Mail, Phone, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   getServiceFile,
@@ -124,12 +124,20 @@ export default function ServiceClientFile({
     <section className="space-y-5 border-t border-border pt-5 text-foreground">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <h3 className="text-lg font-bold">Client file · calls and documents</h3>
-        <Button asChild variant="outline">
-          <a href="tel:+13057737737">
-            <Phone />
-            Call paralegal
-          </a>
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Button asChild variant="outline">
+            <a href="/attorney-trust-review">
+              <FileCheck2 />
+              Attorney approval queue
+            </a>
+          </Button>
+          <Button asChild variant="outline">
+            <a href="tel:+13057737737">
+              <Phone />
+              Call paralegal
+            </a>
+          </Button>
+        </div>
       </header>
       <div className="flex flex-wrap gap-2">
         {(Object.keys(CHECKLISTS) as ServiceKind[]).map((k) => (
@@ -413,16 +421,23 @@ export default function ServiceClientFile({
                     variant="outline"
                     disabled={busy}
                     onClick={() =>
-                      void work(async () => {
-                        const result = await sendTrust({
-                          data: { id, source, documentId: doc.id },
-                        });
-                        if (!result.sent) throw new Error("Client has opted out of app emails.");
-                      }, "Trust PDF download link sent to the client. Inbox receipt is not confirmed.")
+                      void work(
+                        async () => {
+                          const result = await sendTrust({
+                            data: { id, source, documentId: doc.id },
+                          });
+                          if (!result.sent) throw new Error("Client has opted out of app emails.");
+                        },
+                        doc.review_status === "approved"
+                          ? "Approved trust PDF download link sent to the client. Inbox receipt is not confirmed."
+                          : "Trust draft PDF download link sent to the client. Inbox receipt is not confirmed.",
+                      )
                     }
                   >
                     <Mail />
-                    Email trust PDF
+                    {doc.review_status === "approved"
+                      ? "Email approved trust PDF"
+                      : "Email trust draft PDF"}
                   </Button>
                 </li>
               ))}

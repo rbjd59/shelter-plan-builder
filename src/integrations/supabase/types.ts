@@ -200,31 +200,49 @@ export type Database = {
       assessment_documents: {
         Row: {
           assessment_id: string
+          attorney_reviewed_at: string | null
+          attorney_reviewed_by: string | null
+          attorney_terms: Json
           content: string
           created_at: string
           document_type: string
           id: string
+          packet_input: Json
+          review_notes: string | null
           review_status: string
+          source_document_id: string | null
           title: string
           updated_at: string
         }
         Insert: {
           assessment_id: string
+          attorney_reviewed_at?: string | null
+          attorney_reviewed_by?: string | null
+          attorney_terms?: Json
           content: string
           created_at?: string
           document_type?: string
           id?: string
+          packet_input?: Json
+          review_notes?: string | null
           review_status?: string
+          source_document_id?: string | null
           title: string
           updated_at?: string
         }
         Update: {
           assessment_id?: string
+          attorney_reviewed_at?: string | null
+          attorney_reviewed_by?: string | null
+          attorney_terms?: Json
           content?: string
           created_at?: string
           document_type?: string
           id?: string
+          packet_input?: Json
+          review_notes?: string | null
           review_status?: string
+          source_document_id?: string | null
           title?: string
           updated_at?: string
         }
@@ -603,6 +621,7 @@ export type Database = {
           ai_model: string | null
           attorney_reviewed_at: string | null
           attorney_reviewed_by: string | null
+          attorney_terms: Json
           client_id: string
           content: string
           created_at: string
@@ -610,9 +629,11 @@ export type Database = {
           from_app: boolean
           id: string
           loaded_at: string
+          packet_input: Json
           review_notes: string | null
           review_status: string
           send_on_alert: boolean
+          source_document_id: string | null
           storage_path: string | null
           stripe_session_id: string | null
           title: string
@@ -622,6 +643,7 @@ export type Database = {
           ai_model?: string | null
           attorney_reviewed_at?: string | null
           attorney_reviewed_by?: string | null
+          attorney_terms?: Json
           client_id: string
           content: string
           created_at?: string
@@ -629,9 +651,11 @@ export type Database = {
           from_app?: boolean
           id?: string
           loaded_at?: string
+          packet_input?: Json
           review_notes?: string | null
           review_status?: string
           send_on_alert?: boolean
+          source_document_id?: string | null
           storage_path?: string | null
           stripe_session_id?: string | null
           title: string
@@ -641,6 +665,7 @@ export type Database = {
           ai_model?: string | null
           attorney_reviewed_at?: string | null
           attorney_reviewed_by?: string | null
+          attorney_terms?: Json
           client_id?: string
           content?: string
           created_at?: string
@@ -648,9 +673,11 @@ export type Database = {
           from_app?: boolean
           id?: string
           loaded_at?: string
+          packet_input?: Json
           review_notes?: string | null
           review_status?: string
           send_on_alert?: boolean
+          source_document_id?: string | null
           storage_path?: string | null
           stripe_session_id?: string | null
           title?: string
