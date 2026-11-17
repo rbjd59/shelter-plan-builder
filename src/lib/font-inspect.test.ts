@@ -1,5 +1,7 @@
-import { it } from "vitest";
-import bytes from "@/assets/forms/DejaVuSans.ttf?inline";
-it("inspect", () => {
-  console.log("FONT", typeof bytes, Object.prototype.toString.call(bytes), (bytes as ArrayBuffer).byteLength, String(bytes).slice(0,100));
+import { expect, it } from "vitest";
+import fontSource from "@/assets/forms/DejaVuSans.ttf?inline";
+
+it("loads the inline font asset as a nonempty string", () => {
+  expect(typeof fontSource).toBe("string");
+  expect(fontSource.length).toBeGreaterThan(0);
 });
