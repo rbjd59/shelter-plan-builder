@@ -15,6 +15,13 @@
       "when": 1794888424200,
       "tag": "0001_expand_assessment_scheduling_and_family_packets",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794892884703,
+      "tag": "0002_add_assessment_accounts_and_saved_progress",
+      "breakpoints": true
     }
   ]
 }

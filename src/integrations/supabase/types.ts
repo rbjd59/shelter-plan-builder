@@ -235,6 +235,68 @@ export type Database = {
           },
         ]
       }
+      assessment_drafts: {
+        Row: {
+          answers: Json
+          contacts: Json
+          created_at: string
+          current_step: number
+          email: string
+          full_name: string
+          help_requested: string[]
+          language: string
+          phone: string
+          reminder_sent_at: string | null
+          sms_consent: boolean
+          sms_consent_at: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          answers?: Json
+          contacts?: Json
+          created_at?: string
+          current_step?: number
+          email?: string
+          full_name?: string
+          help_requested?: string[]
+          language?: string
+          phone?: string
+          reminder_sent_at?: string | null
+          sms_consent?: boolean
+          sms_consent_at?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          answers?: Json
+          contacts?: Json
+          created_at?: string
+          current_step?: number
+          email?: string
+          full_name?: string
+          help_requested?: string[]
+          language?: string
+          phone?: string
+          reminder_sent_at?: string | null
+          sms_consent?: boolean
+          sms_consent_at?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assessment_drafts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       assessments: {
         Row: {
           access_token_hash: string | null
@@ -255,6 +317,7 @@ export type Database = {
           results: Json
           status: string
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           access_token_hash?: string | null
@@ -275,6 +338,7 @@ export type Database = {
           results?: Json
           status?: string
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           access_token_hash?: string | null
@@ -295,8 +359,17 @@ export type Database = {
           results?: Json
           status?: string
           updated_at?: string
+          user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "assessments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       attorney_actions: {
         Row: {
