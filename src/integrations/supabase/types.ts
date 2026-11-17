@@ -194,6 +194,57 @@ export type Database = {
         }
         Relationships: []
       }
+      assessments: {
+        Row: {
+          answers: Json
+          authorization_signed_at: string | null
+          authorization_signed_name: string | null
+          created_at: string
+          email: string | null
+          full_name: string | null
+          help_requested: string[]
+          id: string
+          language: string
+          paralegal_call_at: string | null
+          phone: string | null
+          results: Json
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          answers?: Json
+          authorization_signed_at?: string | null
+          authorization_signed_name?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          help_requested?: string[]
+          id?: string
+          language?: string
+          paralegal_call_at?: string | null
+          phone?: string | null
+          results?: Json
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          answers?: Json
+          authorization_signed_at?: string | null
+          authorization_signed_name?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          help_requested?: string[]
+          id?: string
+          language?: string
+          paralegal_call_at?: string | null
+          phone?: string | null
+          results?: Json
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       attorney_actions: {
         Row: {
           action: string

@@ -3339,3 +3339,36 @@ body:has(.home-redesign)::before, body:has(.home-redesign)::after { display: non
  body:not(.splash-active) .home-redesign .nlf-roles-grid { grid-template-columns: 1fr !important; }
  body:not(.splash-active) .home-redesign .footer-grid { grid-template-columns: 1fr 1fr !important; }
 }
+
+/* Homepage assessment (check-the-box questionnaire) */
+.home-redesign .asmt { padding: 2.5rem 1rem; background: var(--home-surface); }
+.home-redesign .asmt-wrap { max-width: 760px; margin: 0 auto; }
+.home-redesign .asmt-h { text-align: center; color: var(--home-navy); font-size: clamp(1.6rem, 4vw, 2.2rem); margin: 0 0 1rem; }
+.home-redesign .asmt-card { border: 2px solid var(--home-border); border-radius: 16px; padding: 1.5rem; box-shadow: var(--home-shadow); }
+.home-redesign .asmt-big { font-size: 1.2rem; }
+.home-redesign .asmt-progress { color: var(--home-muted); margin: 0; font-weight: 700; }
+.home-redesign .asmt-title { color: var(--home-navy); font-size: 1.5rem; margin: .25rem 0 1rem; }
+.home-redesign .asmt-q { border: 0; border-top: 1px solid var(--home-border); padding: 1rem 0; margin: 0; }
+.home-redesign .asmt-q legend { font-weight: 700; font-size: 1.15rem; padding-top: 1rem; margin-bottom: .6rem; }
+.home-redesign .asmt-opts { display: grid; gap: .5rem; }
+.home-redesign .asmt-opt { display: flex; align-items: center; gap: .75rem; text-align: left; padding: .85rem 1rem; border: 2px solid var(--home-border); border-radius: 12px; background: var(--home-surface); font-size: 1.1rem; cursor: pointer; color: var(--home-text); }
+.home-redesign .asmt-opt.on { border-color: var(--home-blue); background: color-mix(in srgb, var(--home-blue) 10%, transparent); }
+.home-redesign .asmt-box { width: 1.6rem; height: 1.6rem; flex: none; border: 2px solid var(--home-blue); border-radius: 6px; display: grid; place-items: center; font-weight: 900; color: var(--home-blue); }
+.home-redesign .asmt-help { margin-top: .6rem; background: none; border: 2px dashed var(--home-amber); border-radius: 999px; padding: .4rem 1rem; font-size: 1rem; cursor: pointer; color: var(--home-navy); }
+.home-redesign .asmt-help.on { background: var(--home-amber); border-style: solid; }
+.home-redesign .asmt-input, .home-redesign .asmt-row input { width: 100%; padding: .8rem; font-size: 1.1rem; border: 2px solid var(--home-border); border-radius: 10px; }
+.home-redesign .asmt-row { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin-bottom: .5rem; }
+.home-redesign .asmt-agree { display: flex; gap: .75rem; align-items: flex-start; font-size: 1.05rem; margin-bottom: .75rem; }
+.home-redesign .asmt-agree input { width: 1.6rem; height: 1.6rem; flex: none; }
+.home-redesign .asmt-nav { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
+.home-redesign .asmt-go { background: var(--home-amber); color: var(--home-navy); font-weight: 800; font-size: 1.2rem; padding: .9rem 2rem; border: 0; border-radius: 999px; cursor: pointer; }
+.home-redesign .asmt-go:disabled { opacity: .45; cursor: not-allowed; }
+.home-redesign .asmt-back { background: none; border: 2px solid var(--home-border); border-radius: 999px; padding: .8rem 1.4rem; font-size: 1.05rem; cursor: pointer; }
+.home-redesign .asmt-err { color: var(--home-emergency); font-weight: 700; }
+.home-redesign .asmt-video { width: 100%; border-radius: 12px; margin: .75rem 0; background: var(--home-navy); }
+.home-redesign .asmt-res { border: 2px solid var(--home-border); border-radius: 12px; padding: .9rem 1rem; margin-bottom: .75rem; }
+.home-redesign .asmt-res-top { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.home-redesign .asmt-res-top b { color: var(--home-blue); }
+.home-redesign .asmt-next { background: color-mix(in srgb, var(--home-amber) 15%, transparent); border-radius: 12px; padding: 1rem; }
+.home-redesign .asmt-disc { font-size: .85rem; color: var(--home-muted); border-top: 1px solid var(--home-border); margin-top: 1rem; padding-top: 1rem; }
+@media (max-width: 560px) { .home-redesign .asmt-row { grid-template-columns: 1fr; } }

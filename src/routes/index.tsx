@@ -5,6 +5,7 @@ import { PaidSolutions } from "@/components/ProblemSolutionSection";
 import HowItWorksVideoSection from "@/components/HowItWorksVideoSection";
 import AdVideoSection from "@/components/AdVideoSection";
 import SecurityVideoSection from "@/components/SecurityVideoSection";
+import AssessmentSection from "@/components/AssessmentSection";
 
 const DEFENDER_HOSTS = new Set([
   "defendermicasa.com",
@@ -60,6 +61,7 @@ export const Route = createFileRoute("/")({
     <div className="home-redesign">
       <HeroIntro />
       <div className="home-video-section"><HowItWorksVideoSection /></div>
+      <AssessmentSection />
       <VideoHub />
       <HeroCallToAction />
       <HomepageSection section="steps" />

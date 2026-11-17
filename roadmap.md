@@ -80,3 +80,10 @@
 - [x] app-trigger now logs the reason for every 400 (schema issues / body keys).
 - [ ] Client activation email: logs show `sent` to proseforms@atomicmail.io and njbittelman@gmail.com — check spam/atomicmail delivery; sender domain still notify.gohomesooner.com.
 - [ ] NEEDS PUBLISH for all of the above.
+
+## November 17 — homepage questionnaire
+- [x] Process Overview v2 video (EN/ES/HT) on homepage; tap-to-answer questionnaire below it with "I need help" buttons, scoring (stay 0–15% / over 15%, come-back bars, habeas, Save My Home 60%/120-day rule, $899 trust, Save My Business trades), Save My Home video then business step, results page, document authorization, 2-day paralegal call, disclosures.
+- [ ] Spanish and Haitian Creole wording for the questionnaire (English only now; needs professional translation).
+- [ ] Save My Business video (not made yet; a link to savemybusiness.com shows instead).
+- [ ] Show questionnaire results on the attorney/company boards and send the 24-hour report email.
+- [ ] Remove one test entry ("Test Person") from saved questionnaires.
