@@ -1,4 +1,6 @@
-import posterAsset from "@/assets/home-how-poster.jpg.asset.json";
+import enPoster from "@/assets/process-overview-cover-en.jpg";
+import esPoster from "@/assets/process-overview-cover-es.jpg";
+import htPoster from "@/assets/process-overview-cover-ht.jpg";
 import { useRef, useState, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import { useLang } from "@/context/LanguageContext";
@@ -8,11 +10,12 @@ import htAsset from "@/assets/videos/process-overview-ht-v2.mp4.asset.json";
 import { PlayOverlay } from "@/components/AdVideoSection";
 
 const SRC: Record<string, string> = { en: enAsset.url, es: esAsset.url, ht: htAsset.url };
+const POSTER = { en: enPoster, es: esPoster, ht: htPoster };
 
 const HEADING: Record<string, string> = {
-  en: "Process Overview",
-  es: "Resumen del Proceso",
-  ht: "Apèsi sou Pwosesis la",
+  en: "How it works",
+  es: "Cómo funciona",
+  ht: "Kijan li mache",
 };
 
 const CTA: Record<string, string> = {
@@ -91,7 +94,9 @@ export default function HowItWorksVideoSection() {
             playsInline
             {...({ "webkit-playsinline": "true" } as Record<string, string>)}
             preload="none"
-            poster={posterAsset.url}
+            poster={POSTER[lang]}
+            aria-label={HEADING[lang]}
+            onPlay={() => setStarted(true)}
             style={{
               width: "100%",
               height: "100%",
