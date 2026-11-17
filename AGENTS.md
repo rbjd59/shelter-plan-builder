@@ -1,4 +1,5 @@
 # Form generation
+- Trust package emails reference an immutable client-document ID using an expiring signed download capability; only authenticated admins may generate or email packages, and drafts remain clearly non-executable.
 - Service-client operations require authenticated admin authorization; never use the shared board PIN to authorize new service-file edits, callback assignments or email sends.
 - Store operational callback schedules separately from sending infrastructure; managed reminders use per-callback idempotency keys and respect cancellation.
 - Keep simple family PDF generation separate from detention litigation forms, and keep real-estate authority out of family powers; trust agreement drafts remain incomplete and non-executable until state-specific attorney terms and transfer documents are approved.

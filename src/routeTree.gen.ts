@@ -84,6 +84,7 @@ import { Route as ApiPublicAppTriggerRouteImport } from './routes/api/public/app
 import { Route as ApiPublicAppUpdateRequestRouteImport } from './routes/api/public/app-update-request'
 import { Route as ApiPublicMailFromCheckRouteImport } from './routes/api/public/mail-from-check'
 import { Route as ApiPublicSendAdminInviteRouteImport } from './routes/api/public/send-admin-invite'
+import { Route as ApiPublicTrustPackageRouteImport } from './routes/api/public/trust-package'
 import { Route as ApiPublicVideoQuestionsRouteImport } from './routes/api/public/video-questions'
 import { Route as LovableEmailEventsRouteImport } from './routes/lovable/email/events'
 import { Route as AdminAdminClientsIdRouteImport } from './routes/_admin/admin.clients.$id'
@@ -485,6 +486,11 @@ const ApiPublicSendAdminInviteRoute =
     path: '/api/public/send-admin-invite',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicTrustPackageRoute = ApiPublicTrustPackageRouteImport.update({
+  id: '/api/public/trust-package',
+  path: '/api/public/trust-package',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicVideoQuestionsRoute = ApiPublicVideoQuestionsRouteImport.update({
   id: '/api/public/video-questions',
   path: '/api/public/video-questions',
@@ -689,6 +695,7 @@ export interface FileRoutesByFullPath {
   '/api/public/app-update-request': typeof ApiPublicAppUpdateRequestRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
   '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
+  '/api/public/trust-package': typeof ApiPublicTrustPackageRoute
   '/api/public/video-questions': typeof ApiPublicVideoQuestionsRoute
   '/lovable/email/events': typeof LovableEmailEventsRoute
   '/admin/clients/$id': typeof AdminAdminClientsIdRoute
@@ -787,6 +794,7 @@ export interface FileRoutesByTo {
   '/api/public/app-update-request': typeof ApiPublicAppUpdateRequestRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
   '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
+  '/api/public/trust-package': typeof ApiPublicTrustPackageRoute
   '/api/public/video-questions': typeof ApiPublicVideoQuestionsRoute
   '/lovable/email/events': typeof LovableEmailEventsRoute
   '/admin/clients/$id': typeof AdminAdminClientsIdRoute
@@ -889,6 +897,7 @@ export interface FileRoutesById {
   '/api/public/app-update-request': typeof ApiPublicAppUpdateRequestRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
   '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
+  '/api/public/trust-package': typeof ApiPublicTrustPackageRoute
   '/api/public/video-questions': typeof ApiPublicVideoQuestionsRoute
   '/lovable/email/events': typeof LovableEmailEventsRoute
   '/_admin/admin/clients/$id': typeof AdminAdminClientsIdRoute
@@ -989,6 +998,7 @@ export interface FileRouteTypes {
     | '/api/public/app-update-request'
     | '/api/public/mail-from-check'
     | '/api/public/send-admin-invite'
+    | '/api/public/trust-package'
     | '/api/public/video-questions'
     | '/lovable/email/events'
     | '/admin/clients/$id'
@@ -1087,6 +1097,7 @@ export interface FileRouteTypes {
     | '/api/public/app-update-request'
     | '/api/public/mail-from-check'
     | '/api/public/send-admin-invite'
+    | '/api/public/trust-package'
     | '/api/public/video-questions'
     | '/lovable/email/events'
     | '/admin/clients/$id'
@@ -1188,6 +1199,7 @@ export interface FileRouteTypes {
     | '/api/public/app-update-request'
     | '/api/public/mail-from-check'
     | '/api/public/send-admin-invite'
+    | '/api/public/trust-package'
     | '/api/public/video-questions'
     | '/lovable/email/events'
     | '/_admin/admin/clients/$id'
@@ -1267,6 +1279,7 @@ export interface RootRouteChildren {
   ApiPublicAppUpdateRequestRoute: typeof ApiPublicAppUpdateRequestRoute
   ApiPublicMailFromCheckRoute: typeof ApiPublicMailFromCheckRoute
   ApiPublicSendAdminInviteRoute: typeof ApiPublicSendAdminInviteRoute
+  ApiPublicTrustPackageRoute: typeof ApiPublicTrustPackageRoute
   ApiPublicVideoQuestionsRoute: typeof ApiPublicVideoQuestionsRoute
   LovableEmailEventsRoute: typeof LovableEmailEventsRoute
   ApiPublicAppActivateRoute: typeof ApiPublicAppActivateRoute
@@ -1816,6 +1829,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicSendAdminInviteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/trust-package': {
+      id: '/api/public/trust-package'
+      path: '/api/public/trust-package'
+      fullPath: '/api/public/trust-package'
+      preLoaderRoute: typeof ApiPublicTrustPackageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/video-questions': {
       id: '/api/public/video-questions'
       path: '/api/public/video-questions'
@@ -2148,6 +2168,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicAppUpdateRequestRoute: ApiPublicAppUpdateRequestRoute,
   ApiPublicMailFromCheckRoute: ApiPublicMailFromCheckRoute,
   ApiPublicSendAdminInviteRoute: ApiPublicSendAdminInviteRoute,
+  ApiPublicTrustPackageRoute: ApiPublicTrustPackageRoute,
   ApiPublicVideoQuestionsRoute: ApiPublicVideoQuestionsRoute,
   LovableEmailEventsRoute: LovableEmailEventsRoute,
   ApiPublicAppActivateRoute: ApiPublicAppActivateRoute,

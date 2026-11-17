@@ -6,6 +6,7 @@
 - [ ] Restore a compact final emergency-app intake with contacts, qualified defense-plan details, checked form drafts and delivery/download handoff; verify existing work before extending it.
 
 ## November 17 — complete service client files
+- [x] Wire client-specific Save My Home Trust draft PDFs to both client-file types with staff email controls and seven-day private download links. Assessment-file generation/reload/email send and capability download verified; two PDF pages inspected and raw estimate data/internal partner terms removed. Inbox receipt and final attorney-approved execution documents are not confirmed.
 - [x] Add shared client-file follow-ups and 60/30/15-minute paralegal reminders, document checklist and package preparation on both boards. Saved/cancelled callback verified; signed reminder endpoint verified with no due calls, actual reminder delivery still unverified.
 - [x] Research Clear Capital home-equity/origination products; provide real product/contact links and track valuation/title requests without inventing provider access.
 - [x] Generate attorney-review trust agreement drafts and simple limited family authority, school, paycheck and vehicle letters; exclude all real-estate powers from family authority. Family PDF saved/downloaded and notes read back after refresh; trusts remain incomplete attorney-review drafts.
