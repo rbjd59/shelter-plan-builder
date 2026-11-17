@@ -1,5 +1,9 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
+## November 17 — business conversion video revision
+- [x] Write EN/ES/HT narration centered on guided conversion-program signup, corporate setup, phone-based job/payment records and hands-on assistance; do not build operating tools or invent tier prices, sale values or payment-provider guarantees.
+- [ ] Record and replace the three business videos with the revised script — waiting for owner approval of the proposed-service wording before recording; preserve one male narrator and quiet or no music.
+
 ## November 17 — homepage contact and business-site repair
 - [ ] Center and visually unify the content below the videos; replace the automatic AI box with a call-first live chat, staff fallback, callback choices and optional AI help in EN/ES/HT.
 - [ ] Repair Save My Home call/start controls and route Do Not Forget Your Business to its own trilingual website rather than the Detención Defensa homepage; verify desktop/mobile and all three languages.
