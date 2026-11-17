@@ -8,7 +8,6 @@ import enAsset from "@/assets/videos/process-overview-en-v2.mp4.asset.json";
 import esAsset from "@/assets/videos/process-overview-es-v2.mp4.asset.json";
 import htAsset from "@/assets/videos/process-overview-ht-v2.mp4.asset.json";
 import { PlayOverlay } from "@/components/AdVideoSection";
-import VideoQuestionBox from "@/components/VideoQuestionBox";
 
 const SRC: Record<string, string> = { en: enAsset.url, es: esAsset.url, ht: htAsset.url };
 const POSTER = { en: enPoster, es: esPoster, ht: htPoster };
@@ -127,7 +126,6 @@ export default function HowItWorksVideoSection() {
         >
           {CTA[lang] ?? CTA.en}
         </Link>
-        <VideoQuestionBox topic="overview" />
       </div>
     </section>
   );

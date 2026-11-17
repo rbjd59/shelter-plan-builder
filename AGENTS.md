@@ -13,6 +13,8 @@
 - Account registration may carry only allowlisted non-secret signup fields in intake_signup metadata; passwords stay transient and email confirmation must complete before authenticated draft saving.
 
 # Homepage presentation
+- Use one anonymous, session-only process-help conversation before account setup; keep existing authenticated saved conversations private and separate from public help.
+- Disable raw-HTML parsing in homepage chat answers; streaming Markdown must not invoke the incompatible HTML parser or inject model HTML.
 - Keep optional homepage service-video previews click-to-play and separate from automatic qualified-result playback; this prevents simultaneous audio while keeping account setup below the previews.
 - Overview video covers and labels must switch with the same language as the video source, so a localized recording never appears behind an unrelated-language cover.
 - Keep the homepage arrangement scoped to `.home-redesign` and reuse verbatim exported HTML sections; isolated styles prevent redesigns from changing intake, staff or legal workflows.

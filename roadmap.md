@@ -2,7 +2,8 @@
 
 ## November 17 — compliance and video questions
 - [ ] Synchronize company, privilege, trust payment and hero disclosures in EN/ES/HT; text-only, no changes to payments or existing business/callback features.
-- [ ] Add Claude question boxes beneath all homepage videos with multiple account-saved conversations and real conversation links.
+- [x] Replace per-video question boxes with one EN/ES/HT Claude process-help box below the business video and above account setup; anonymous English Claude response and mobile fit verified; saved private conversations remain separate.
+- [ ] Restore a compact final emergency-app intake with contacts, qualified defense-plan details, checked form drafts and delivery/download handoff; verify existing work before extending it.
 
 ## November 17 — complete service client files
 - [x] Add shared client-file follow-ups and 60/30/15-minute paralegal reminders, document checklist and package preparation on both boards. Saved/cancelled callback verified; signed reminder endpoint verified with no due calls, actual reminder delivery still unverified.
