@@ -1,5 +1,9 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
+## November 17 — homepage contact and business-site repair
+- [ ] Center and visually unify the content below the videos; replace the automatic AI box with a call-first live chat, staff fallback, callback choices and optional AI help in EN/ES/HT.
+- [ ] Repair Save My Home call/start controls and route Do Not Forget Your Business to its own trilingual website rather than the Detención Defensa homepage; verify desktop/mobile and all three languages.
+
 ## November 17 — compliance and video questions
 - [ ] Synchronize company, privilege, trust payment and hero disclosures in EN/ES/HT; text-only, no changes to payments or existing business/callback features.
 - [x] Replace per-video question boxes with one EN/ES/HT Claude process-help box below the business video and above account setup; anonymous English Claude response and mobile fit verified; saved private conversations remain separate.

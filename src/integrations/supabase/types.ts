@@ -1357,6 +1357,83 @@ export type Database = {
         }
         Relationships: []
       }
+      live_chat_conversations: {
+        Row: {
+          assigned_name: string | null
+          assigned_to: string | null
+          callback_at: string | null
+          callback_timezone: string | null
+          created_at: string
+          id: string
+          language: string
+          status: string
+          updated_at: string
+          visitor_key_hash: string
+          visitor_name: string | null
+          visitor_phone: string | null
+        }
+        Insert: {
+          assigned_name?: string | null
+          assigned_to?: string | null
+          callback_at?: string | null
+          callback_timezone?: string | null
+          created_at?: string
+          id?: string
+          language: string
+          status?: string
+          updated_at?: string
+          visitor_key_hash: string
+          visitor_name?: string | null
+          visitor_phone?: string | null
+        }
+        Update: {
+          assigned_name?: string | null
+          assigned_to?: string | null
+          callback_at?: string | null
+          callback_timezone?: string | null
+          created_at?: string
+          id?: string
+          language?: string
+          status?: string
+          updated_at?: string
+          visitor_key_hash?: string
+          visitor_name?: string | null
+          visitor_phone?: string | null
+        }
+        Relationships: []
+      }
+      live_chat_messages: {
+        Row: {
+          body: string
+          conversation_id: string
+          created_at: string
+          id: number
+          sender: string
+        }
+        Insert: {
+          body: string
+          conversation_id: string
+          created_at?: string
+          id?: never
+          sender: string
+        }
+        Update: {
+          body?: string
+          conversation_id?: string
+          created_at?: string
+          id?: never
+          sender?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "live_chat_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "live_chat_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       page_views: {
         Row: {
           city: string | null

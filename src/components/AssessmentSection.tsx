@@ -23,9 +23,9 @@ import { firstResultPhase, afterHomeVideo, afterBusinessVideo, type Phase } from
 const HOME_VIDEO: Record<string, string> = { en: homeVideo.url, es: homeVideoEs.url, ht: homeVideoHt.url };
 const BUSINESS_VIDEO = { en: businessVideo.url, es: businessVideoEs.url, ht: businessVideoHt.url };
 const BUSINESS_COPY = {
-  en: { title: "Good news: you qualify for Save My Business", intro: "We can help you plan to sell your business, run it from another country, or have your family run it.", more: "Save My Business", next: "Next: choose a business call →" },
-  es: { title: "Buenas noticias: puede usar Save My Business", intro: "Podemos ayudarle a planear la venta de su negocio, manejarlo desde otro país o dejar que su familia lo maneje.", more: "Save My Business", next: "Siguiente: elija una llamada para su negocio →" },
-  ht: { title: "Bon nouvèl: ou ka sèvi ak Save My Business", intro: "Nou ka ede w planifye pou vann biznis ou, dirije l depi yon lòt peyi, oswa kite fanmi w dirije l.", more: "Save My Business", next: "Apre sa: chwazi yon apèl pou biznis ou →" },
+  en: { title: "Good news: you qualify for Do Not Forget Your Business", intro: "We can help you plan to sell your business, run it from another country, or have your family run it.", more: "Do Not Forget Your Business", next: "Next: choose a business call →" },
+  es: { title: "Buenas noticias: puede usar Do Not Forget Your Business", intro: "Podemos ayudarle a planear la venta de su negocio, manejarlo desde otro país o dejar que su familia lo maneje.", more: "Do Not Forget Your Business", next: "Siguiente: elija una llamada para su negocio →" },
+  ht: { title: "Bon nouvèl: ou ka sèvi ak Do Not Forget Your Business", intro: "Nou ka ede w planifye pou vann biznis ou, dirije l depi yon lòt peyi, oswa kite fanmi w dirije l.", more: "Do Not Forget Your Business", next: "Apre sa: chwazi yon apèl pou biznis ou →" },
 };
 const money = (v: number) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(v);
 
@@ -204,17 +204,17 @@ export default function AssessmentSection() {
   return (
     <section id="assessment" className="asmt">
       <div className="asmt-wrap">
-        <h2 className="asmt-h">{laterVideo ? "Save My Home + Save My Business" : !user ? (lang === "es" ? "Paso 1: Cree su cuenta" : lang === "ht" ? "Etap 1: Kreye kont ou" : "Step 1: Set up your account") : (lang === "es" ? "Paso 2: Responda las preguntas" : lang === "ht" ? "Etap 2: Reponn kesyon yo" : "Step 2: Answer the questions")}</h2>
+        <h2 className="asmt-h">{laterVideo ? "Save My Home + Do Not Forget Your Business" : !user ? (lang === "es" ? "Paso 1: Cree su cuenta" : lang === "ht" ? "Etap 1: Kreye kont ou" : "Step 1: Set up your account") : (lang === "es" ? "Paso 2: Responda las preguntas" : lang === "ht" ? "Etap 2: Reponn kesyon yo" : "Step 2: Answer the questions")}</h2>
 
         {phase === "q" && laterVideo && <div className="asmt-card">
           <p>{lang === "es" ? "Mire ambos videos. Sus respuestas están guardadas para cuando quiera continuar." : lang === "ht" ? "Gade tou de videyo yo. Repons ou yo sove pou lè ou vle kontinye." : "Watch both videos. Your answers are saved for when you want to continue."}</p>
           {laterVideo === "home" ? <>
             <h3 className="asmt-title">Save My Home</h3>
             <AssessmentVideo src={HOME_VIDEO[lang] ?? HOME_VIDEO.en} lang={lang} title="Save My Home" onEnded={() => setLaterVideo("business")} />
-            <Button className="asmt-go h-auto whitespace-normal" onClick={() => setLaterVideo("business")}>{lang === "es" ? "Siguiente: Save My Business →" : lang === "ht" ? "Apre sa: Save My Business →" : "Next: Save My Business →"}</Button>
+            <Button className="asmt-go h-auto whitespace-normal" onClick={() => setLaterVideo("business")}>{lang === "es" ? "Siguiente: Do Not Forget Your Business →" : lang === "ht" ? "Apre sa: Do Not Forget Your Business →" : "Next: Do Not Forget Your Business →"}</Button>
           </> : <>
-            <h3 className="asmt-title">Save My Business</h3>
-            <AssessmentVideo src={BUSINESS_VIDEO[lang]} lang={lang} title="Save My Business" onEnded={() => { setLaterVideo(null); setStep(-1); }} />
+            <h3 className="asmt-title">Do Not Forget Your Business</h3>
+            <AssessmentVideo src={BUSINESS_VIDEO[lang]} lang={lang} title="Do Not Forget Your Business" onEnded={() => { setLaterVideo(null); setStep(-1); }} />
             <Button className="asmt-go h-auto whitespace-normal" onClick={() => { setLaterVideo(null); setStep(resumeStep); }}>{lang === "es" ? "Responder las preguntas ahora →" : lang === "ht" ? "Reponn kesyon yo kounye a →" : "Answer the questions now →"}</Button>
           </>}
         </div>}
@@ -270,16 +270,16 @@ export default function AssessmentSection() {
         {phase === "homeVideo" && <div className="asmt-card">
           <h3 className="asmt-title">Good news: you qualify for Save My Home</h3><p>Watch this short video first.</p>
           <AssessmentVideo src={HOME_VIDEO[lang] ?? HOME_VIDEO.en} lang={lang} title="Save My Home" onEnded={() => setPhase(afterHomeVideo(r))} />
-          <Button className="asmt-go h-auto whitespace-normal" onClick={() => setPhase(afterHomeVideo(r))}>{r.business ? (lang === "es" ? "Siguiente: Save My Business →" : lang === "ht" ? "Apre sa: Save My Business →" : "Next: Save My Business →") : "Next: choose a home call →"}</Button>
+          <Button className="asmt-go h-auto whitespace-normal" onClick={() => setPhase(afterHomeVideo(r))}>{r.business ? (lang === "es" ? "Siguiente: Do Not Forget Your Business →" : lang === "ht" ? "Apre sa: Do Not Forget Your Business →" : "Next: Do Not Forget Your Business →") : "Next: choose a home call →"}</Button>
         </div>}
         {phase === "homeSchedule" && <Scheduler title="Save My Home: choose your call" intro="Pick a day and time to talk about your home trust and home loan. We will also send you a list of home papers to gather." documents={["Home deed", "Latest statement for every home loan", "Home insurance and property tax bills", "HOA bill, if you have one", "Photos of the home and anything that needs repair"]} busy={scheduleBusy} error={err} onChoose={(iso) => chooseAppointment("home", iso)} />}
         {phase === "bizVideo" && <div className="asmt-card">
           <h3 className="asmt-title">{businessCopy.title}</h3><p>{businessCopy.intro}</p>
-          <AssessmentVideo src={BUSINESS_VIDEO[lang]} lang={lang} title="Save My Business" onEnded={() => setPhase(afterBusinessVideo(r))} />
-          <p><a href={withLang("https://savemybusiness.com", lang)} target="_blank" rel="noopener noreferrer">{businessCopy.more} ↗</a></p>
+          <AssessmentVideo src={BUSINESS_VIDEO[lang]} lang={lang} title="Do Not Forget Your Business" onEnded={() => setPhase(afterBusinessVideo(r))} />
+          <p><a href={withLang("https://donotforgetyourbusiness.com/business", lang)} target="_blank" rel="noopener noreferrer">{businessCopy.more} ↗</a></p>
           <Button className="asmt-go h-auto whitespace-normal" onClick={() => setPhase(afterBusinessVideo(r))}>{r.home === "save_my_home" ? (lang === "es" ? "Siguiente: elija una llamada para su casa →" : lang === "ht" ? "Apre sa: chwazi yon apèl pou kay ou →" : "Next: choose a home call →") : businessCopy.next}</Button>
         </div>}
-        {phase === "bizSchedule" && <Scheduler title="Save My Business: choose your call" intro="Pick a day and time to talk with a paralegal about selling your business, running it from another country, or having your family run it." documents={["A list of customers and repeat jobs", "A list of workers and what they do", "Money records, receipts, or bank statements", "LLC or corporation papers, if you have them", "A list of vehicles, tools, and equipment"]} busy={scheduleBusy} error={err} onChoose={(iso) => chooseAppointment("business", iso)} />}
+        {phase === "bizSchedule" && <Scheduler title="Do Not Forget Your Business: choose your call" intro="Pick a day and time to talk with a paralegal about selling your business, running it from another country, or having your family run it." documents={["A list of customers and repeat jobs", "A list of workers and what they do", "Money records, receipts, or bank statements", "LLC or corporation papers, if you have them", "A list of vehicles, tools, and equipment"]} busy={scheduleBusy} error={err} onChoose={(iso) => chooseAppointment("business", iso)} />}
 
         {phase === "report" && saved && <div className="asmt-card">
           <h3 className="asmt-title">Your results</h3>
@@ -288,14 +288,14 @@ export default function AssessmentSection() {
           <Row t="If ICE holds me — habeas corpus" v={{ prequalified: "Yes, you pre-qualify. We will prepare it for free.", not_eligible: "Not eligible", review: "Attorney must check" }[r.habeas]} reasons={r.habeasReasons} />
           <Row t="My home" v={{ save_my_home: "Save My Home trust + home loan (HELOC)", trust_899: "$899 home trust", none: "Not needed" }[r.home]} reasons={r.homeReasons} />
           {a.ownHome === "yes" && <PropertyResult estimate={saved.propertyEstimate} address={typeof a.homeAddress === "string" ? a.homeAddress : ""} />}
-          <Row t="My business" v={r.business ? "Save My Business trust + company" : "Not now"} reasons={r.businessReasons} />
+          <Row t="My business" v={r.business ? "Do Not Forget Your Business trust + company" : "Not now"} reasons={r.businessReasons} />
           {r.business && saved.businessReportUrl && <div className="asmt-q asmt-next"><b>Your business report</b><p>See your value range, marketing plan and document list.</p><p><a className="asmt-link-button" href={saved.businessReportUrl}>Open my business report →</a></p><p>{saved.businessEmailSent ? "✓ We emailed the report link to you." : "The report email is not confirmed. You can open the report here."}</p></div>}
           <div className="asmt-q"><b>Yes, we can help you.</b><ul>{r.home !== "none" && <li>We can set up a trust so your family keeps your home.</li>}{r.home !== "none" && <li>We can help you rent, sell, or get a home loan through independent licensed people.</li>}{r.business && <li>We can make your business a company owned by a trust.</li>}<li>We can make your family papers and give you the free emergency app.</li></ul></div>
           <div className="asmt-q asmt-next"><b>Your family forms</b><p>{saved.familyPacketReady ? "We prepared your family-form packet and put the draft in your file for attorney review." : "We saved your answers. Our team will prepare your family-form packet for attorney review."}</p><p>After review, we will email the forms. Download and print them. Sign them in front of a notary. Keep the signed papers in a safe place and tell your trusted person where they are.</p></div>
           <div className="asmt-q"><b>Please gather these documents:</b><ul>{r.documents.map((d) => <li key={d}>{d}</li>)}</ul><p>Don't have them? That's okay. We can find them for you.</p></div>
           {(appointments.home || appointments.business) && <div className="asmt-q"><b>Your calls</b><ul>{appointments.home && <li>Home: {new Date(appointments.home).toLocaleString()}</li>}{appointments.business && <li>Business: {new Date(appointments.business).toLocaleString()}</li>}</ul></div>}
           <div className="asmt-q asmt-next"><p>📧 Attorney Rosario Sorrentino will review your answers. Your full report will be emailed to you in the next <b>24 hours</b> with your next steps.</p><p>📞 A paralegal will call you on <b>{new Date(saved.callAt).toLocaleDateString(lang === "en" ? "en-US" : lang === "es" ? "es-US" : "fr-HT", { weekday: "long", month: "long", day: "numeric" })}</b> to help you get your documents.</p></div>
-          {r.business && <div className="asmt-q"><b>Talk to the business team</b><p><a className="asmt-link-button" href={`/business-call?lang=${lang}`}>Call or text a paralegal →</a> <a className="asmt-link-button" href={`/business-chat?lang=${lang}`}>Ask the AI a question →</a></p></div>}
+          {r.business && <div className="asmt-q"><b>Talk to the business team</b><p><a className="asmt-link-button" href="tel:+13057737737">Call 305-773-7737 →</a> <a className="asmt-link-button" href="sms:+13057737737">Text a paralegal →</a> <a className="asmt-link-button" href={withLang("https://donotforgetyourbusiness.com/business", lang)}>Open Do Not Forget Your Business →</a></p></div>}
           <div className="asmt-q"><b>Last step: get the emergency app</b><ol><li>Open the app download page.</li><li>Follow the steps for your phone.</li><li>Keep your activation code and private PIN safe.</li><li>Test the app before there is an emergency.</li></ol><p><a className="asmt-link-button" href={`/get-app?lang=${lang}`}>Get the app →</a></p></div>
           <Disclosures />
         </div>}

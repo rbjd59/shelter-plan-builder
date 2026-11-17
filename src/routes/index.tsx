@@ -5,6 +5,7 @@ import HowItWorksVideoSection from "@/components/HowItWorksVideoSection";
 import AssessmentSection from "@/components/AssessmentSection";
 import HomeServiceVideos from "@/components/HomeServiceVideos";
 import VideoQuestionBox from "@/components/VideoQuestionBox";
+import { BUSINESS_HOSTS } from "@/lib/business-config";
 
 const DEFENDER_HOSTS = new Set([
   "defendermicasa.com",
@@ -19,6 +20,12 @@ export const Route = createFileRoute("/")({
   beforeLoad: ({ location }) => {
     if (typeof window !== "undefined") {
       const host = window.location.hostname.toLowerCase();
+      if (BUSINESS_HOSTS.has(host)) {
+        throw redirect({
+          to: "/business",
+          search: { lang: new URL(location.href, window.location.origin).searchParams.get("lang") ?? undefined },
+        });
+      }
       if (DEFENDER_HOSTS.has(host)) {
         throw redirect({ to: "/coming-soon" });
       }
@@ -26,6 +33,12 @@ export const Route = createFileRoute("/")({
     try {
       const url = new URL(location.href, "http://localhost");
       const host = url.hostname.toLowerCase();
+      if (BUSINESS_HOSTS.has(host)) {
+        throw redirect({
+          to: "/business",
+          search: { lang: url.searchParams.get("lang") ?? undefined },
+        });
+      }
       if (DEFENDER_HOSTS.has(host)) {
         throw redirect({ to: "/coming-soon" });
       }

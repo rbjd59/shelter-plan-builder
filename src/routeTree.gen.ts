@@ -18,6 +18,7 @@ import { Route as AltRouteImport } from './routes/alt'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AttorneyRouteImport } from './routes/attorney'
 import { Route as AttorneyBoardRouteImport } from './routes/attorney-board'
+import { Route as BusinessRouteImport } from './routes/business'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as ComingSoonRouteImport } from './routes/coming-soon'
 import { Route as CompanyBoardRouteImport } from './routes/company-board'
@@ -82,6 +83,7 @@ import { Route as FirmFirmLeadsRouteImport } from './routes/_firm/firm.leads'
 import { Route as FirmFirmQueueRouteImport } from './routes/_firm/firm.queue'
 import { Route as ApiPublicAppTriggerRouteImport } from './routes/api/public/app-trigger'
 import { Route as ApiPublicAppUpdateRequestRouteImport } from './routes/api/public/app-update-request'
+import { Route as ApiPublicLiveChatRouteImport } from './routes/api/public/live-chat'
 import { Route as ApiPublicMailFromCheckRouteImport } from './routes/api/public/mail-from-check'
 import { Route as ApiPublicSendAdminInviteRouteImport } from './routes/api/public/send-admin-invite'
 import { Route as ApiPublicTrustPackageRouteImport } from './routes/api/public/trust-package'
@@ -150,6 +152,11 @@ const AttorneyRoute = AttorneyRouteImport.update({
 const AttorneyBoardRoute = AttorneyBoardRouteImport.update({
   id: '/attorney-board',
   path: '/attorney-board',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BusinessRoute = BusinessRouteImport.update({
+  id: '/business',
+  path: '/business',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CheckoutRoute = CheckoutRouteImport.update({
@@ -475,6 +482,11 @@ const ApiPublicAppUpdateRequestRoute =
     path: '/api/public/app-update-request',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicLiveChatRoute = ApiPublicLiveChatRouteImport.update({
+  id: '/api/public/live-chat',
+  path: '/api/public/live-chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicMailFromCheckRoute = ApiPublicMailFromCheckRouteImport.update({
   id: '/api/public/mail-from-check',
   path: '/api/public/mail-from-check',
@@ -629,6 +641,7 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRoute
   '/attorney': typeof AttorneyRoute
   '/attorney-board': typeof AttorneyBoardRoute
+  '/business': typeof BusinessRoute
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
   '/company-board': typeof CompanyBoardRoute
@@ -693,6 +706,7 @@ export interface FileRoutesByFullPath {
   '/firm/queue': typeof FirmFirmQueueRoute
   '/api/public/app-trigger': typeof ApiPublicAppTriggerRoute
   '/api/public/app-update-request': typeof ApiPublicAppUpdateRequestRoute
+  '/api/public/live-chat': typeof ApiPublicLiveChatRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
   '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
   '/api/public/trust-package': typeof ApiPublicTrustPackageRoute
@@ -728,6 +742,7 @@ export interface FileRoutesByTo {
   '/app': typeof AppRoute
   '/attorney': typeof AttorneyRoute
   '/attorney-board': typeof AttorneyBoardRoute
+  '/business': typeof BusinessRoute
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
   '/company-board': typeof CompanyBoardRoute
@@ -792,6 +807,7 @@ export interface FileRoutesByTo {
   '/firm/queue': typeof FirmFirmQueueRoute
   '/api/public/app-trigger': typeof ApiPublicAppTriggerRoute
   '/api/public/app-update-request': typeof ApiPublicAppUpdateRequestRoute
+  '/api/public/live-chat': typeof ApiPublicLiveChatRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
   '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
   '/api/public/trust-package': typeof ApiPublicTrustPackageRoute
@@ -831,6 +847,7 @@ export interface FileRoutesById {
   '/app': typeof AppRoute
   '/attorney': typeof AttorneyRoute
   '/attorney-board': typeof AttorneyBoardRoute
+  '/business': typeof BusinessRoute
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
   '/company-board': typeof CompanyBoardRoute
@@ -895,6 +912,7 @@ export interface FileRoutesById {
   '/_firm/firm/queue': typeof FirmFirmQueueRoute
   '/api/public/app-trigger': typeof ApiPublicAppTriggerRoute
   '/api/public/app-update-request': typeof ApiPublicAppUpdateRequestRoute
+  '/api/public/live-chat': typeof ApiPublicLiveChatRoute
   '/api/public/mail-from-check': typeof ApiPublicMailFromCheckRoute
   '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
   '/api/public/trust-package': typeof ApiPublicTrustPackageRoute
@@ -932,6 +950,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/attorney'
     | '/attorney-board'
+    | '/business'
     | '/checkout'
     | '/coming-soon'
     | '/company-board'
@@ -996,6 +1015,7 @@ export interface FileRouteTypes {
     | '/firm/queue'
     | '/api/public/app-trigger'
     | '/api/public/app-update-request'
+    | '/api/public/live-chat'
     | '/api/public/mail-from-check'
     | '/api/public/send-admin-invite'
     | '/api/public/trust-package'
@@ -1031,6 +1051,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/attorney'
     | '/attorney-board'
+    | '/business'
     | '/checkout'
     | '/coming-soon'
     | '/company-board'
@@ -1095,6 +1116,7 @@ export interface FileRouteTypes {
     | '/firm/queue'
     | '/api/public/app-trigger'
     | '/api/public/app-update-request'
+    | '/api/public/live-chat'
     | '/api/public/mail-from-check'
     | '/api/public/send-admin-invite'
     | '/api/public/trust-package'
@@ -1133,6 +1155,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/attorney'
     | '/attorney-board'
+    | '/business'
     | '/checkout'
     | '/coming-soon'
     | '/company-board'
@@ -1197,6 +1220,7 @@ export interface FileRouteTypes {
     | '/_firm/firm/queue'
     | '/api/public/app-trigger'
     | '/api/public/app-update-request'
+    | '/api/public/live-chat'
     | '/api/public/mail-from-check'
     | '/api/public/send-admin-invite'
     | '/api/public/trust-package'
@@ -1236,6 +1260,7 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRoute
   AttorneyRoute: typeof AttorneyRoute
   AttorneyBoardRoute: typeof AttorneyBoardRoute
+  BusinessRoute: typeof BusinessRoute
   CheckoutRoute: typeof CheckoutRoute
   ComingSoonRoute: typeof ComingSoonRoute
   CompanyBoardRoute: typeof CompanyBoardRoute
@@ -1277,6 +1302,7 @@ export interface RootRouteChildren {
   TrackTokenRoute: typeof TrackTokenRoute
   ApiPublicAppTriggerRoute: typeof ApiPublicAppTriggerRoute
   ApiPublicAppUpdateRequestRoute: typeof ApiPublicAppUpdateRequestRoute
+  ApiPublicLiveChatRoute: typeof ApiPublicLiveChatRoute
   ApiPublicMailFromCheckRoute: typeof ApiPublicMailFromCheckRoute
   ApiPublicSendAdminInviteRoute: typeof ApiPublicSendAdminInviteRoute
   ApiPublicTrustPackageRoute: typeof ApiPublicTrustPackageRoute
@@ -1365,6 +1391,13 @@ declare module '@tanstack/react-router' {
       path: '/attorney-board'
       fullPath: '/attorney-board'
       preLoaderRoute: typeof AttorneyBoardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/business': {
+      id: '/business'
+      path: '/business'
+      fullPath: '/business'
+      preLoaderRoute: typeof BusinessRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/checkout': {
@@ -1815,6 +1848,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicAppUpdateRequestRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/live-chat': {
+      id: '/api/public/live-chat'
+      path: '/api/public/live-chat'
+      fullPath: '/api/public/live-chat'
+      preLoaderRoute: typeof ApiPublicLiveChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/mail-from-check': {
       id: '/api/public/mail-from-check'
       path: '/api/public/mail-from-check'
@@ -2125,6 +2165,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRoute,
   AttorneyRoute: AttorneyRoute,
   AttorneyBoardRoute: AttorneyBoardRoute,
+  BusinessRoute: BusinessRoute,
   CheckoutRoute: CheckoutRoute,
   ComingSoonRoute: ComingSoonRoute,
   CompanyBoardRoute: CompanyBoardRoute,
@@ -2166,6 +2207,7 @@ const rootRouteChildren: RootRouteChildren = {
   TrackTokenRoute: TrackTokenRoute,
   ApiPublicAppTriggerRoute: ApiPublicAppTriggerRoute,
   ApiPublicAppUpdateRequestRoute: ApiPublicAppUpdateRequestRoute,
+  ApiPublicLiveChatRoute: ApiPublicLiveChatRoute,
   ApiPublicMailFromCheckRoute: ApiPublicMailFromCheckRoute,
   ApiPublicSendAdminInviteRoute: ApiPublicSendAdminInviteRoute,
   ApiPublicTrustPackageRoute: ApiPublicTrustPackageRoute,

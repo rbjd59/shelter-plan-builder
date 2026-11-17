@@ -298,7 +298,7 @@ export const emailTrustPackage = createServerFn({ method: "POST" })
       templateData: {
         name: client.full_name,
         packageKind: result.data.document_type === "service_business_trust" ? "business" : "home",
-        language: client.language === "es" ? "es" : client.language === "ht" ? "ht" : "en",
+        language: trustDocumentLanguage(result.data.title, client.language),
         downloadUrl: `https://detenciondefensa.com/api/public/trust-package?${params}`,
       },
       idempotencyKey: `trust-package-${data.source}-${data.documentId}-${Math.floor(Date.now() / (24 * 60 * 60 * 1000))}`,

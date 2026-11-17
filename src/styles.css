@@ -3341,6 +3341,122 @@ body:has(.home-redesign)::before, body:has(.home-redesign)::after { display: non
  body:not(.splash-active) .home-redesign .footer-grid { grid-template-columns: 1fr 1fr !important; }
 }
 
+/* Centered homepage contact, live staff chat and callback choices. */
+.home-redesign .home-contact-section { padding: 56px 24px; background: var(--home-soft); text-align: center; }
+.home-redesign .home-contact-card { width: 100%; max-width: 940px; margin: 0 auto; padding: 36px; border: 1px solid var(--home-border); border-radius: 16px; background: var(--home-surface); box-shadow: var(--home-shadow); }
+.home-redesign .home-contact-heading { max-width: 700px; margin: 0 auto 26px; text-align: center; }
+.home-redesign .home-contact-heading > svg { width: 32px; height: 32px; margin: 0 auto 14px; color: var(--home-blue); }
+.home-redesign .home-contact-heading h2 { margin-bottom: 12px !important; text-align: center !important; }
+.home-redesign .home-contact-heading p { color: var(--home-muted); }
+.home-redesign .home-contact-actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px; margin: 16px 0; }
+.home-redesign .home-contact-actions :is(a,button) { min-height: 48px; height: auto; white-space: normal; padding: 12px 20px; border: 1px solid var(--home-blue); border-radius: 8px; background: var(--home-surface); color: var(--home-navy); font-size: 15px; }
+.home-redesign .home-contact-actions > :first-child { background: var(--home-amber); border-color: var(--home-amber); }
+.home-redesign .home-contact-error { margin: 16px auto; color: var(--home-emergency); font-weight: 700; }
+.home-redesign .home-live-panel, .home-redesign .home-callback-panel, .home-redesign .home-ai-panel { max-width: 700px; margin: 26px auto 0; padding-top: 24px; border-top: 1px solid var(--home-border); }
+.home-redesign .home-hold-message, .home-redesign .home-joined-message { padding: 14px; border-radius: 10px; background: var(--home-soft); color: var(--home-navy); font-weight: 600; }
+.home-redesign .home-fallback { margin: 16px 0; padding: 20px; border: 1px solid var(--home-border); border-radius: 12px; background: var(--home-soft); }
+.home-redesign .home-fallback p { margin-bottom: 8px; }
+.home-redesign .home-staff-messages { max-height: 320px; overflow-y: auto; margin: 18px 0; text-align: left; }
+.home-redesign .home-staff-messages p { max-width: 85%; margin: 8px 0; padding: 10px 14px; border-radius: 12px; }
+.home-redesign .home-visitor-reply { margin-left: auto !important; background: var(--home-navy); color: var(--home-surface); }
+.home-redesign .home-staff-reply { margin-right: auto !important; background: var(--home-soft); border: 1px solid var(--home-border); }
+.home-redesign .home-staff-compose { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 10px; margin: 16px 0; text-align: left; }
+.home-redesign .home-staff-compose textarea, .home-redesign .home-callback-form input { width: 100%; padding: 12px; border: 1px solid var(--home-border); border-radius: 8px; background: var(--home-surface); color: var(--home-text); font: inherit; }
+.home-redesign .home-callback-form { display: grid; gap: 16px; max-width: 520px; margin: auto; text-align: left; }
+.home-redesign .home-callback-form label { font-weight: 600; }
+.home-redesign .home-callback-form input { display: block; margin-top: 6px; }
+.home-redesign .home-callback-confirmation > svg { margin: 0 auto 12px; color: var(--home-blue); }
+.home-redesign .home-callback-confirmation p { margin-bottom: 12px; }
+@media (max-width: 767px) {
+  .home-redesign .home-contact-section { padding: 42px 20px; }
+  .home-redesign .home-contact-card { padding: 24px 18px; }
+  .home-redesign .home-contact-actions { flex-direction: column; align-items: stretch; }
+  .home-redesign .home-contact-actions :is(a,button) { width: 100%; }
+  .home-redesign .home-staff-compose { grid-template-columns: 1fr; }
+}
+
+/* Do Not Forget Your Business — separate business website. */
+.business-site { --business-ink: #17352d; --business-green: #235947; --business-light: #eef4ed; --business-gold: #e4ad45; --business-paper: #fffdf7; --business-muted: #52635c; --business-border: #d7e0d6; background: var(--business-paper); color: var(--business-ink); font-family: 'Public Sans', sans-serif; font-size: 17px; line-height: 1.65; min-height: 100vh; }
+.business-site * { min-width: 0; }
+.business-site :is(h1,h2,h3) { font-family: 'Source Serif 4', Georgia, serif; line-height: 1.18; color: var(--business-ink); }
+.business-site h1 { font-size: clamp(40px, 5vw, 64px); margin-bottom: 22px; }
+.business-site h2 { font-size: clamp(29px, 3.5vw, 42px); margin-bottom: 18px; }
+.business-site h3 { font-size: 23px; margin: 20px 0 10px; }
+.business-site :is(a,button):focus-visible { outline: 3px solid var(--business-gold); outline-offset: 4px; }
+.business-skip { position: absolute; top: -100px; left: 16px; z-index: 20; background: var(--business-paper); padding: 12px; }
+.business-skip:focus { top: 12px; }
+.business-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; max-width: 1280px; margin: auto; padding: 18px 32px; border-bottom: 1px solid var(--business-border); }
+.business-brand { display: flex; align-items: center; gap: 10px; color: var(--business-ink); font-weight: 800; line-height: 1.15; text-decoration: none; }
+.business-brand svg { width: 36px; height: 36px; color: var(--business-green); }
+.business-header nav { display: flex; gap: 22px; }
+.business-header nav a { color: var(--business-ink); font-size: 14px; font-weight: 600; text-decoration: none; }
+.business-languages { display: flex; gap: 5px; }
+.business-languages button { min-height: 42px; padding: 8px 10px; border: 1px solid var(--business-border); border-radius: 7px; background: transparent; color: var(--business-ink); cursor: pointer; }
+.business-languages button[aria-pressed=true] { background: var(--business-ink); color: var(--business-paper); }
+.business-hero { display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 56px; max-width: 1200px; margin: auto; padding: 64px 32px; }
+.business-hero > img { width: 100%; height: 470px; object-fit: cover; border-radius: 140px 16px 140px 16px; }
+.business-eyebrow { color: var(--business-green); font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 18px; }
+.business-hero-body { max-width: 620px; font-size: 20px; color: var(--business-muted); }
+.business-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.business-actions :is(a,button) { height: auto; min-height: 50px; white-space: normal; padding: 12px 20px; border: 1px solid var(--business-green); border-radius: 8px; background: var(--business-green); color: var(--business-paper); font-size: 15px; }
+.business-actions :is(a[href^="tel"],a[href^="sms"]) { background: var(--business-paper); color: var(--business-green); }
+.business-note { margin-top: 18px; color: var(--business-muted); font-size: 14px; }
+.business-band { padding: 64px max(32px, calc((100% - 1136px) / 2)); border-top: 1px solid var(--business-border); }
+.business-centered { text-align: center; }
+.business-centered > p { max-width: 760px; margin: 0 auto 20px; }
+.business-goal-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin: 28px 0; }
+.business-goal-row span { padding: 12px 20px; border-radius: 999px; background: var(--business-ink); color: var(--business-paper); }
+.business-trades { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 1000px; margin: 24px auto; }
+.business-trades span { padding: 7px 12px; border: 1px solid var(--business-border); border-radius: 7px; background: var(--business-light); font-size: 14px; }
+.business-calculator { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; background: var(--business-light); }
+.business-calculator > div > svg { width: 34px; height: 34px; color: var(--business-green); margin-bottom: 20px; }
+.business-calculator form { display: grid; gap: 15px; padding: 28px; border-radius: 16px; background: var(--business-paper); box-shadow: 0 14px 40px rgb(23 53 45 / 9%); }
+.business-calculator label { font-weight: 700; }
+.business-calculator :is(input,select) { display: block; width: 100%; margin-top: 5px; padding: 12px; border: 1px solid var(--business-border); border-radius: 8px; background: var(--business-paper); color: var(--business-ink); font: inherit; }
+.business-calculator form > button { min-height: 48px; padding: 12px 20px; border: 0; border-radius: 8px; background: var(--business-green); color: var(--business-paper); font-weight: 700; }
+.business-value-result { padding: 18px; border-radius: 10px; background: var(--business-light); text-align: center; }
+.business-value-result strong { display: block; color: var(--business-green); font-family: 'Source Serif 4',serif; font-size: 30px; }
+.business-value-result p { margin-top: 8px; font-size: 13px; }
+.business-section-title { max-width: 780px; margin-bottom: 30px; }
+.business-steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 18px; }
+.business-steps article { padding: 22px; border-top: 3px solid var(--business-gold); background: var(--business-light); }
+.business-steps article > span { color: var(--business-green); font-family: 'Source Serif 4',serif; font-size: 30px; }
+.business-steps p, .business-cost-grid p { color: var(--business-muted); font-size: 15px; }
+.business-cost-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 18px; }
+.business-cost-grid article { padding: 26px; border: 1px solid var(--business-border); border-radius: 12px; }
+.business-cost-grid article > strong { display: block; color: var(--business-green); font-family: 'Source Serif 4',serif; font-size: 46px; }
+.business-cost-grid ul { margin-top: 18px; list-style: none; }
+.business-cost-grid li { display: flex; gap: 8px; margin: 9px 0; }
+.business-cost-grid li svg { flex: none; width: 18px; color: var(--business-green); }
+.business-help { padding: 56px 32px; background: var(--business-ink); color: var(--business-paper); text-align: center; }
+.business-help h2 { color: var(--business-paper); }
+.business-help .business-actions { justify-content: center; }
+.business-disclosures { max-width: 960px; margin: auto; padding: 48px 32px; }
+.business-disclosures h2 { font-size: 28px; }
+.business-disclosures p { margin: 14px 0; color: var(--business-muted); font-size: 13px; }
+.business-disclosures a { display: inline-block; margin-top: 12px; color: var(--business-green); font-weight: 700; }
+@media (max-width: 980px) {
+  .business-header { flex-wrap: wrap; }
+  .business-header nav { order: 3; width: 100%; justify-content: center; flex-wrap: wrap; }
+  .business-hero { grid-template-columns: 1fr; }
+  .business-hero > img { height: 380px; border-radius: 80px 16px; }
+  .business-steps { grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 640px) {
+  .business-header { padding: 14px 18px; justify-content: center; }
+  .business-header nav { display: none; }
+  .business-languages { width: 100%; }
+  .business-languages button { flex: 1; }
+  .business-hero, .business-band { padding: 42px 20px; }
+  .business-hero { gap: 34px; }
+  .business-hero > img { height: 300px; }
+  .business-actions { flex-direction: column; }
+  .business-actions :is(a,button) { width: 100%; }
+  .business-calculator, .business-cost-grid { grid-template-columns: 1fr; gap: 28px; }
+  .business-calculator form { padding: 20px; }
+  .business-steps { grid-template-columns: 1fr; }
+}
+
 /* Homepage assessment (check-the-box questionnaire) */
 .home-redesign .asmt { padding: 2.5rem 1rem; background: var(--home-surface); }
 .home-redesign .asmt-wrap { max-width: 760px; margin: 0 auto; }

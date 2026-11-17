@@ -4,6 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import PinAccessGate from "@/components/PinAccessGate";
 import AssessmentBoardList from "@/components/AssessmentBoardList";
+import StaffLiveChatInbox from "@/components/StaffLiveChatInbox";
 import {
   pinListCompanyBoard,
   pinCompanyLocateFile,
@@ -89,6 +90,7 @@ function CompanyBoard({ pin }: { pin: string }) {
           </div>
         </div>
 
+        <StaffLiveChatInbox />
         <AssessmentBoardList pin={pin} />
 
         {rows.length === 0 ? (

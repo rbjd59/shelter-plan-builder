@@ -50,6 +50,13 @@
       "when": 1794896952317,
       "tag": "0006_video_question_conversations",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1794900079477,
+      "tag": "0007_create_live_chat_inbox",
+      "breakpoints": true
     }
   ]
 }

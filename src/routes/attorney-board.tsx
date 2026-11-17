@@ -6,6 +6,7 @@ import { useState } from "react";
 import PinAccessGate from "@/components/PinAccessGate";
 import AssessmentBoardList from "@/components/AssessmentBoardList";
 import ServiceClientFile from '@/components/ServiceClientFile';
+import StaffLiveChatInbox from '@/components/StaffLiveChatInbox';
 import {
   pinListAttorneyBoard,
   pinGetAttorneyClient,
@@ -115,6 +116,7 @@ function AttorneyBoard({ pin }: { pin: string }) {
           </div>
         </header>
 
+        <StaffLiveChatInbox />
         <AssessmentBoardList pin={pin} />
 
         <div className="w-full overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm">

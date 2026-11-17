@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
-import { Play } from "lucide-react";
+import { Phone, Play } from "lucide-react";
+import { BUSINESS_PARALEGAL_PHONE, BUSINESS_PARALEGAL_PHONE_DISPLAY } from "@/lib/business-config";
 import { Button } from "@/components/ui/button";
 import { useLang, type Lang } from "@/context/LanguageContext";
 import { withLang } from "@/lib/outbound-lang";
@@ -47,8 +48,10 @@ function ServiceVideo({ kind, lang }: { kind: "home" | "business"; lang: Lang })
           <span><Play size={32} aria-hidden="true" /></span>
         </Button>}
       </div>
-      <div className="mt-6 flex justify-center">
-        <Button asChild size="lg"><a href={withLang(kind === "home" ? "https://savemyhometrust.com/trust" : "https://donotforgetyourbusiness.com", lang)}>{copy.start}</a></Button>
+      <div className="mt-6 flex flex-wrap justify-center gap-3">
+        <Button asChild size="lg"><a href={withLang(kind === "home" ? "https://savemyhometrust.com/trust" : "https://donotforgetyourbusiness.com/business", lang)}>{copy.start}</a></Button>
+        <Button asChild size="lg" variant="outline"><a href={`tel:${BUSINESS_PARALEGAL_PHONE}`}><Phone />{lang === "es" ? `Llame al ${BUSINESS_PARALEGAL_PHONE_DISPLAY}` : lang === "ht" ? `Rele ${BUSINESS_PARALEGAL_PHONE_DISPLAY}` : `Call ${BUSINESS_PARALEGAL_PHONE_DISPLAY}`}</a></Button>
+        <Button asChild size="lg" variant="outline"><a href="#process-questions">{lang === "es" ? "Programe una llamada" : lang === "ht" ? "Pwograme yon apèl" : "Set up a call"}</a></Button>
       </div>
       {kind === "home" && <p className="home-business-disclosure">{FIRM.legalName} · {FIRM.city}</p>}
     </div>
