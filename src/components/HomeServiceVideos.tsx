@@ -49,9 +49,9 @@ function ServiceVideo({ kind, lang }: { kind: "home" | "business"; lang: Lang })
         </Button>}
       </div>
       <div className="mt-6 flex flex-wrap justify-center gap-3">
-        <Button asChild size="lg"><a href={withLang(kind === "home" ? "https://savemyhometrust.com/trust" : "https://donotforgetyourbusiness.com/business", lang)}>{copy.start}</a></Button>
+        <Button asChild size="lg"><a href={kind === "home" ? withLang("https://savemyhometrust.com/trust", lang) : `/business?lang=${lang}`}>{copy.start}</a></Button>
         <Button asChild size="lg" variant="outline"><a href={`tel:${BUSINESS_PARALEGAL_PHONE}`}><Phone />{lang === "es" ? `Llame al ${BUSINESS_PARALEGAL_PHONE_DISPLAY}` : lang === "ht" ? `Rele ${BUSINESS_PARALEGAL_PHONE_DISPLAY}` : `Call ${BUSINESS_PARALEGAL_PHONE_DISPLAY}`}</a></Button>
-        <Button asChild size="lg" variant="outline"><a href="#process-questions">{lang === "es" ? "Programe una llamada" : lang === "ht" ? "Pwograme yon apèl" : "Set up a call"}</a></Button>
+        <Button asChild size="lg" variant="outline"><a href="#schedule-call">{lang === "es" ? "Programe una llamada" : lang === "ht" ? "Pwograme yon apèl" : "Set up a call"}</a></Button>
       </div>
       {kind === "home" && <p className="home-business-disclosure">{FIRM.legalName} · {FIRM.city}</p>}
     </div>

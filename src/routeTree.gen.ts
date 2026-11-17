@@ -55,6 +55,7 @@ import { Route as VideosRouteImport } from './routes/videos'
 import { Route as AuthenticatedCasesRouteImport } from './routes/_authenticated/cases'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedMiAppRouteImport } from './routes/_authenticated/mi-app'
+import { Route as AuthenticatedStaffChatRouteImport } from './routes/_authenticated/staff-chat'
 import { Route as AlertaTokenRouteImport } from './routes/alerta.$token'
 import { Route as AttorneyFormsClientIdRouteImport } from './routes/attorney-forms.$clientId'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
@@ -339,6 +340,11 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
 const AuthenticatedMiAppRoute = AuthenticatedMiAppRouteImport.update({
   id: '/mi-app',
   path: '/mi-app',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedStaffChatRoute = AuthenticatedStaffChatRouteImport.update({
+  id: '/staff-chat',
+  path: '/staff-chat',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AlertaTokenRoute = AlertaTokenRouteImport.update({
@@ -690,6 +696,7 @@ export interface FileRoutesByFullPath {
   '/cases': typeof AuthenticatedCasesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/mi-app': typeof AuthenticatedMiAppRoute
+  '/staff-chat': typeof AuthenticatedStaffChatRoute
   '/alerta/$token': typeof AlertaTokenRoute
   '/attorney-forms/$clientId': typeof AttorneyFormsClientIdRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -793,6 +800,7 @@ export interface FileRoutesByTo {
   '/cases': typeof AuthenticatedCasesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/mi-app': typeof AuthenticatedMiAppRoute
+  '/staff-chat': typeof AuthenticatedStaffChatRoute
   '/alerta/$token': typeof AlertaTokenRoute
   '/attorney-forms/$clientId': typeof AttorneyFormsClientIdRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -900,6 +908,7 @@ export interface FileRoutesById {
   '/_authenticated/cases': typeof AuthenticatedCasesRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/mi-app': typeof AuthenticatedMiAppRoute
+  '/_authenticated/staff-chat': typeof AuthenticatedStaffChatRoute
   '/alerta/$token': typeof AlertaTokenRoute
   '/attorney-forms/$clientId': typeof AttorneyFormsClientIdRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -1005,6 +1014,7 @@ export interface FileRouteTypes {
     | '/cases'
     | '/dashboard'
     | '/mi-app'
+    | '/staff-chat'
     | '/alerta/$token'
     | '/attorney-forms/$clientId'
     | '/auth/callback'
@@ -1108,6 +1118,7 @@ export interface FileRouteTypes {
     | '/cases'
     | '/dashboard'
     | '/mi-app'
+    | '/staff-chat'
     | '/alerta/$token'
     | '/attorney-forms/$clientId'
     | '/auth/callback'
@@ -1214,6 +1225,7 @@ export interface FileRouteTypes {
     | '/_authenticated/cases'
     | '/_authenticated/dashboard'
     | '/_authenticated/mi-app'
+    | '/_authenticated/staff-chat'
     | '/alerta/$token'
     | '/attorney-forms/$clientId'
     | '/auth/callback'
@@ -1678,6 +1690,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMiAppRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/staff-chat': {
+      id: '/_authenticated/staff-chat'
+      path: '/staff-chat'
+      fullPath: '/staff-chat'
+      preLoaderRoute: typeof AuthenticatedStaffChatRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/alerta/$token': {
       id: '/alerta/$token'
       path: '/alerta/$token'
@@ -2129,6 +2148,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedCasesRoute: typeof AuthenticatedCasesRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedMiAppRoute: typeof AuthenticatedMiAppRoute
+  AuthenticatedStaffChatRoute: typeof AuthenticatedStaffChatRoute
   AuthenticatedAdminAppBuildsRoute: typeof AuthenticatedAdminAppBuildsRoute
   AuthenticatedCaseIdRoute: typeof AuthenticatedCaseIdRoute
   AuthenticatedVideoChatThreadIdRoute: typeof AuthenticatedVideoChatThreadIdRoute
@@ -2138,6 +2158,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedCasesRoute: AuthenticatedCasesRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedMiAppRoute: AuthenticatedMiAppRoute,
+  AuthenticatedStaffChatRoute: AuthenticatedStaffChatRoute,
   AuthenticatedAdminAppBuildsRoute: AuthenticatedAdminAppBuildsRoute,
   AuthenticatedCaseIdRoute: AuthenticatedCaseIdRoute,
   AuthenticatedVideoChatThreadIdRoute: AuthenticatedVideoChatThreadIdRoute,

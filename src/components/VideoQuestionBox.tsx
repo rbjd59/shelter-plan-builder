@@ -307,6 +307,19 @@ export default function VideoQuestionBox() {
     return () => { active = false; window.clearInterval(interval); window.clearTimeout(fallback); };
   }, [session, screen]);
 
+  useEffect(() => {
+    const openFromHash = () => {
+      if (window.location.hash === "#schedule-call") {
+        document.getElementById("process-questions")?.scrollIntoView({ behavior: "smooth" });
+        void begin("callback");
+      }
+    };
+    openFromHash();
+    window.addEventListener("hashchange", openFromHash);
+    return () => window.removeEventListener("hashchange", openFromHash);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const staffActive = view?.conversation.status === "active";
   const callbackAt = view?.conversation.callback_at;
   return (
@@ -319,7 +332,7 @@ export default function VideoQuestionBox() {
         </div>
         <div className="home-contact-actions">
           <Button asChild size="lg"><a href={`tel:${BUSINESS_PARALEGAL_PHONE}`}><Phone />{copy.call}</a></Button>
-          <Button asChild variant="outline" size="lg"><a href={`sms:${BUSINESS_PARALEGAL_PHONE}`}>{copy.text}</a></Button>
+          <Button asChild variant="outline" size="lg"><a href={`sms:${BUSINESS_PARALEGAL_PHONE}`} onClick={(e) => { if (!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) { e.preventDefault(); void begin("chat"); } }}>{copy.text}</a></Button>
           <Button variant="outline" size="lg" disabled={busy} onClick={() => void begin("callback")}><CalendarDays />{copy.schedule}</Button>
           <Button variant="secondary" size="lg" disabled={busy} onClick={() => void begin("chat")}><MessageCircle />{copy.live}</Button>
         </div>
