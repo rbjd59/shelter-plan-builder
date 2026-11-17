@@ -82,6 +82,13 @@
 - [ ] Client activation email: logs show `sent` to proseforms@atomicmail.io and njbittelman@gmail.com — check spam/atomicmail delivery; sender domain still notify.gohomesooner.com.
 - [ ] NEEDS PUBLISH for all of the above.
 
+## November 17 — Do Not Forget Your Business
+- [ ] Replace Save My Business branding and destination with Do Not Forget Your Business / donotforgetyourbusiness.com throughout the Detención Defensa flow; link qualifying results and the business video to the new site.
+- [ ] Build the original trilingual Do Not Forget Your Business website for owners leaving the US: simple value guidance, marketable trades, free pricing/client/job/invoice/receipt tools, business records, sale/run-from-abroad/family-run paths, document checklist and clear next steps.
+- [ ] Explain the proposed paid setup plainly: $199/month to start, $899 trust payable monthly, Florida C-corporation filing cost and registered-agent fee separate, local director $50/month, and a signed broker agreement with a 10% sale commission; do not imply third-party prices or guaranteed business value.
+- [ ] Research Jobber, Mowbook and business-sale marketplaces for feature ideas only; write original copy and tools rather than copying protected text, designs or data.
+- [ ] Add the promised immediate paralegal call/text button and trilingual AI help, and connect the business report/dashboard work already in progress.
+
 ## November 17 — business reports and support
 - [ ] Build a trilingual client business report with a transparent value range, marketing plan and document checklist; link qualifying results to it and email the report link to the client and attorney.
 - [ ] Add a business valuation tool and business call page; provide immediate call and text buttons for the paralegal at 305-773-7737.
