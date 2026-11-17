@@ -5,7 +5,7 @@ import { FIRM, COMPANY } from "@/lib/firm-info";
 import { LegalDisclaimerFooter } from "@/components/LegalDisclaimerFooter";
 
 export const Route = createFileRoute("/attorney")({
-  validateSearch: (search: Record<string, unknown>) => ({
+  validateSearch: (search: Record<string, unknown>): { lang?: string } => ({
     lang: typeof search.lang === "string" ? search.lang : undefined,
   }),
   head: () => ({
