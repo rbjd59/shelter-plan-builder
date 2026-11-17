@@ -8,8 +8,20 @@ import { useLang } from "@/context/LanguageContext";
 import homeVideo from "@/assets/videos/protect-what-you-built-en.mp4.asset.json";
 import homeVideoEs from "@/assets/videos/protect-what-you-built-es.mp4.asset.json";
 import homeVideoHt from "@/assets/videos/protect-what-you-built-ht.mp4.asset.json";
+import businessVideo from "@/assets/videos/save-my-business-en-v1.mp4.asset.json";
+import businessVideoEs from "@/assets/videos/save-my-business-es-v1.mp4.asset.json";
+import businessVideoHt from "@/assets/videos/save-my-business-ht-v1.mp4.asset.json";
+import AssessmentVideo from "@/components/AssessmentVideo";
+import { Button } from "@/components/ui/button";
+import { withLang } from "@/lib/outbound-lang";
 
 const HOME_VIDEO: Record<string, string> = { en: homeVideo.url, es: homeVideoEs.url, ht: homeVideoHt.url };
+const BUSINESS_VIDEO = { en: businessVideo.url, es: businessVideoEs.url, ht: businessVideoHt.url };
+const BUSINESS_COPY = {
+  en: { title: "Good news: you qualify for Save My Business", intro: "We can help you plan to sell your business, run it from another country, or have your family run it.", more: "Save My Business", next: "Next: choose a business call →" },
+  es: { title: "Buenas noticias: puede usar Save My Business", intro: "Podemos ayudarle a planear la venta de su negocio, manejarlo desde otro país o dejar que su familia lo maneje.", more: "Save My Business", next: "Siguiente: elija una llamada para su negocio →" },
+  ht: { title: "Bon nouvèl: ou ka sèvi ak Save My Business", intro: "Nou ka ede w planifye pou vann biznis ou, dirije l depi yon lòt peyi, oswa kite fanmi w dirije l.", more: "Save My Business", next: "Apre sa: chwazi yon apèl pou biznis ou →" },
+};
 const money = (v: number) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(v);
 
 type Phase = "q" | "homeVideo" | "homeSchedule" | "bizVideo" | "bizSchedule" | "report";
@@ -90,6 +102,7 @@ export default function AssessmentSection() {
   };
 
   const r = saved?.results ?? score(a);
+  const businessCopy = BUSINESS_COPY[lang];
 
   return (
     <section id="assessment" className="asmt">
@@ -160,7 +173,7 @@ export default function AssessmentSection() {
           <div className="asmt-card">
             <h3 className="asmt-title">Good news: you qualify for Save My Home</h3>
             <p>Watch this short video first.</p>
-            <video src={HOME_VIDEO[lang] ?? HOME_VIDEO.en} controls autoPlay playsInline onEnded={() => setPhase("homeSchedule")} className="asmt-video" />
+            <AssessmentVideo src={HOME_VIDEO[lang] ?? HOME_VIDEO.en} lang={lang} title="Save My Home" onEnded={() => setPhase("homeSchedule")} />
             <button className="asmt-go" onClick={() => setPhase("homeSchedule")}>Next: choose a home call →</button>
           </div>
         )}
@@ -176,10 +189,11 @@ export default function AssessmentSection() {
         )}
         {phase === "bizVideo" && (
           <div className="asmt-card">
-            <h3 className="asmt-title">Good news: you qualify for Save My Business</h3>
-            <p>We can put your business in a trust and make it a company you can sell, run from another country, or have your family run.</p>
-            <p>The Save My Business video is being made. You can learn more now at <a href="https://savemybusiness.com" target="_blank" rel="noopener noreferrer">savemybusiness.com</a>.</p>
-            <button className="asmt-go" onClick={() => setPhase("bizSchedule")}>Next: choose a business call →</button>
+            <h3 className="asmt-title">{businessCopy.title}</h3>
+            <p>{businessCopy.intro}</p>
+            <AssessmentVideo src={BUSINESS_VIDEO[lang]} lang={lang} title="Save My Business" onEnded={() => setPhase("bizSchedule")} />
+            <p><a href={withLang("https://savemybusiness.com", lang)} target="_blank" rel="noopener noreferrer">{businessCopy.more} ↗</a></p>
+            <Button className="asmt-go h-auto whitespace-normal" onClick={() => setPhase("bizSchedule")}>{businessCopy.next}</Button>
           </div>
         )}
         {phase === "bizSchedule" && (

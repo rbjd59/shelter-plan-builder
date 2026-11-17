@@ -88,7 +88,7 @@
 - [ ] Business: collect monthly income, workers, time in business, weekly/repeat customers, advertising, company type, records, and sell/run-from-abroad/family-run goal; send qualified cases to the business board.
 - [ ] Automatic sale/rent estimates: no property-data provider is connected. Keep a server-side RentCast-ready lookup and Zillow address link as fallback; do not invent a home value.
 - [ ] Spanish and Haitian Creole wording for the questionnaire (English only now; needs professional translation).
-- [ ] Save My Business video (not made yet; a link to savemybusiness.com shows instead).
+- [x] November 17: matching Save My Business videos in English (2:29), Spanish (3:04) and Haitian Creole (3:05), CDN-hosted. Real qualifying submissions verified audible autoplay in each language, video-end → business call scheduling → report, plus mobile layout and localized sound fallback. One male voice, music 30 dB below narration; audio checked by measurement/AI transcription, not direct human listening. Spanish/Creole translations and Creole accent still need native-speaker review. Not published.
 - [ ] Show questionnaire results and family-form drafts on the attorney/company boards and send the 24-hour report email.
 - [ ] Customer login/password creation and instant app provisioning remain to be connected to the existing authenticated intake; do not collect or store plaintext passwords in the public assessment.
 - [ ] Remove one test entry ("Test Person") from saved questionnaires.
