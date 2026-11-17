@@ -103,8 +103,8 @@
       awaiting location data").
 - [ ] Locate fill-in → auto-populate all forms incl. Memorandum of Law → attorney board shows
       "Forms completed — ready for review and mailing" → approve → mailing packet PDF.
-- [ ] Confirm callback number: 534-202-6852 is not a valid US number (no 534 area code).
-      Currently sending 305-337-7713; override with `CONTACT_CALLBACK_NUMBER`.
+- [x] Callback number confirmed by owner: one public number, 305-337-7713 (the old
+      534-202-6852 was invalid — no 534 area code). `CONTACT_CALLBACK_NUMBER` still overrides.
 
 ## Sep 3 2026 — app bug reports
 - [x] App "Send my info" returns 400 "could not send" (api/public/app-update-request)
@@ -135,7 +135,7 @@
 
 ## November 17 — business reports and support
 - [ ] Build a trilingual client business report with a transparent value range, marketing plan and document checklist; link qualifying results to it and email the report link to the client and attorney.
-- [ ] Add a business valuation tool and business call page; provide immediate call and text buttons for the paralegal at 305-773-7737.
+- [ ] Add a business valuation tool and business call page; provide immediate call and text buttons for the paralegal at 305-337-7713.
 - [ ] Put complete contact, questionnaire, property, business, report, appointment and family-form information on the attorney and company dashboards.
 - [ ] Add a trilingual AI question box with clear limits and server-only AI access; preserve the selected language.
 - [ ] Finish account sign-up, saved questionnaire progress, later-path Home → Business videos and one unfinished-assessment reminder from the preceding request; verify all flows together.

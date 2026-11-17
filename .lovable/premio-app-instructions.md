@@ -34,7 +34,7 @@ On submit, Lovable generates the **activation code** (1 letter + 4 digits, e.g. 
 **2. To each emergency contact — email + SMS (one message each, no attachments)**
 > "[CLIENT NAME] has activated an emergency app on his/her phone. If he/she is detained,
 > you will be notified by SMS and email. If he/she does not cancel within 2 hours,
-> contact detenciondefensa.com or call (534) 202-6852."
+> contact detenciondefensa.com or call 305-337-7713."
 
 **3. To the client only — a second email: the self-help / family packet**
 Contains everything that used to sit inside the app:
@@ -100,7 +100,7 @@ Lovable sends, once:
    > "[CLIENT NAME] has triggered his/her emergency app. If he/she does not cancel it,
    > contact detenciondefensa.com. If you were given a sealed package of documents from
    > [CLIENT NAME], open it after 2 hours and begin searching for him/her and his/her
-   > vehicle. Contact detenciondefensa.com / (534) 202-6852."
+   > vehicle. Contact detenciondefensa.com / 305-337-7713."
 5. If the client is enrolled in the **home trust program**, the company board is flagged so
    the trust program is notified that the client has been detained.
 

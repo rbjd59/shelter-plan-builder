@@ -25,10 +25,10 @@ export const ATTORNEY_EMAIL = "intake@sorrentinolawfirm.com";
 export const ATTORNEY_BOARD_EMAIL = "legal@detenciondefensa.com";
 
 const COMPANY_PHONE = process.env.ADMIN_ALERT_PHONE || "+13053377713";
-// Callback number printed in every contact message. NOTE: 534-202-6852 has no
-// Live voice line answered by the company's assistant. Confirmed by the owner:
-// this number is for calls only and must NEVER be used as an SMS destination.
-const CALLBACK_NUMBER = process.env.CONTACT_CALLBACK_NUMBER || "534-202-6852";
+// Callback number printed in every contact message. The owner confirmed one
+// public number: 305-337-7713. It is for calls only and must NEVER be used as
+// an SMS destination.
+const CALLBACK_NUMBER = process.env.CONTACT_CALLBACK_NUMBER || "305-337-7713";
 
 
 const ATTORNEY_PHONE = process.env.ATTORNEY_ALERT_PHONE || null;
