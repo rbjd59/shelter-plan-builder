@@ -9,7 +9,18 @@ export const processQuestionSchema = z
         z.object({
           id: z.string().max(200),
           role: z.enum(["user", "assistant"]),
-          parts: z.array(z.object({ type: z.literal("text"), text: z.string().max(4000) })).max(10),
+          parts: z
+            .array(
+              z.union([
+                z.object({ type: z.literal("text"), text: z.string().max(4000) }),
+                z.object({ type: z.literal("reasoning"), text: z.string().max(16000) }),
+                z.object({ type: z.literal("step-start") }),
+              ]),
+            )
+            .max(20)
+            .transform((parts) =>
+              parts.filter((part): part is { type: "text"; text: string } => part.type === "text"),
+            ),
         }),
       )
       .min(1)
