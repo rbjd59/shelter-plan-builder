@@ -70,7 +70,7 @@ export default function AssessmentSection() {
             {visible.map((q) => (
               <fieldset key={q.id} className="asmt-q">
                 <legend>{q.q}</legend>
-                {q.opts && <div className="asmt-opts">{q.opts.map((o) => {
+                {q.opts && <div className={`asmt-opts${q.grid ? " asmt-grid" : ""}`}>{q.opts.map((o) => {
                   const on = q.multi ? Array.isArray(a[q.id]) && (a[q.id] as string[]).includes(o.v) : a[q.id] === o.v;
                   return <button type="button" key={o.v} aria-pressed={on} className={`asmt-opt${on ? " on" : ""}`} onClick={() => pick(q, o.v)}><span className="asmt-box">{on ? "✓" : ""}</span>{o.l}</button>;
                 })}</div>}
@@ -125,7 +125,7 @@ export default function AssessmentSection() {
           <div className="asmt-card">
             <h3 className="asmt-title">Your results</h3>
             <Row t="Can I stay?" v={r.stayBand === "high" ? "Over 15% chance" : "0% – 15% chance"} reasons={r.stayReasons} />
-            <Row t="Can I come back later?" v={{ none: "Usually no waiting time", "3yr": "3-year wait", "10yr": "10-year wait", permanent: "Cannot come back (permanent bar)", unknown: "We need to check" }[r.reentryBar]} reasons={r.reentryReasons} />
+            <Row t="Can I come back later?" v={{ none: "Usually no waiting time", "3yr": "3-year wait", "5yr": "5-year wait", "10yr": "10-year wait", "20yr": "20-year wait", permanent: "Cannot come back (permanent bar)", unknown: "We need to check" }[r.reentryBar]} reasons={r.reentryReasons} />
             <Row t="If ICE holds me — habeas corpus" v={{ prequalified: "Yes, you pre-qualify. We will prepare it for free.", not_eligible: "Not eligible", review: "Attorney must check" }[r.habeas]} reasons={r.habeasReasons} />
             <Row t="My home" v={{ save_my_home: "Save My Home trust + home loan (HELOC)", trust_899: "$899 home trust", none: "Not needed" }[r.home]} reasons={r.homeReasons} />
             <Row t="My business" v={r.business ? "Save My Business trust + company" : "Not now"} reasons={r.businessReasons} />

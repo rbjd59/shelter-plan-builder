@@ -3372,3 +3372,4 @@ body:has(.home-redesign)::before, body:has(.home-redesign)::after { display: non
 .home-redesign .asmt-next { background: color-mix(in srgb, var(--home-amber) 15%, transparent); border-radius: 12px; padding: 1rem; }
 .home-redesign .asmt-disc { font-size: .85rem; color: var(--home-muted); border-top: 1px solid var(--home-border); margin-top: 1rem; padding-top: 1rem; }
 @media (max-width: 560px) { .home-redesign .asmt-row { grid-template-columns: 1fr; } }
+.home-redesign .asmt-grid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
