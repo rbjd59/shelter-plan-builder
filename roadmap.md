@@ -9,6 +9,7 @@
 
 ## November 17 — homepage video audio quality
 - [ ] Diagnose all nine homepage voiceovers; preserve every script, visual, position and original file. Regenerate only confirmed chunked-audio cases as continuous takes, use the current English voice, Venezuelan Spanish and genuine Haitian Creole, verify full playback, then switch only the affected homepage media references. Run the complete tests.
+- Resume checkpoint: Business v2 EN/ES/HT passed fresh complete decode, identical-video-stream and unmuted browser-end checks; Save My Home originals decoded unchanged; PDF 2/2 and full suite 135/135 passed. Process Overview exact scripts and continuous takes recovered and preserved as CDN assets; rebuilt aligned candidates introduced 1–7 s pauses and were rejected, so originals stay active. Remaining: a better caption-aligned audio edit and native ES/HT listening review. See docs/homepage-audio-quality.md and docs/process-overview-audio-source.json; no publication performed.
 
 ## November 17 — approved homepage and business-domain tidy-up
 - [x] Job 1: preserve homepage section order; add the translated hero start button, shorten only the hero notice, keep full disclosures on legal notices/footer, make walkthrough language switching explicit, use light-only styling and align existing section spacing/buttons.

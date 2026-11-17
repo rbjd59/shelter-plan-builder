@@ -1,0 +1,1773 @@
+{
+ "source": "Reconstructed: scripts verbatim from build session (script_v2.py, now deleted); section boundaries measured by scene-cut detection on the v2 MP4s (frame-accurate, 24 fps); caption cue times reconstructed with the original algorithm (speech starts 0.40 s after section start; speech length = section duration - 0.40 - tail (0.70, final section 2.50), accurate to about ±0.02 s; cues split by sentence then commas at 90/105 chars; cue length proportional to (chars+8); each cue ends 0.04 s early). Captions were burned in (ASS, Public Sans 46 px, bottom-center, MarginV 56, max 2 lines wrapped near 54 chars), so no caption track exists in the MP4.",
+ "build_constants": {
+  "fps": 24,
+  "lead_s": 0.4,
+  "tail_s": 0.7,
+  "final_tail_s": 2.5,
+  "tempo": {
+   "en": 1.05,
+   "es": 1.08,
+   "ht": 1.1
+  },
+  "silence_trim": "silenceremove start_threshold=-45dB, internal pauses >0.3s cut to 0.25s"
+ },
+ "languages": {
+  "en": {
+   "file": "/mnt/documents/media/videos/process-overview-en-v2.mp4",
+   "total_duration_s": 253.083333,
+   "current_voice": "OpenAI gpt-4o-mini-tts / verse (all languages in v2)",
+   "regeneration_voice": {
+    "provider": "OpenAI via Lovable AI Gateway",
+    "model": "openai/gpt-4o-mini-tts",
+    "voice": "verse",
+    "note": "keep current"
+   },
+   "sections": [
+    {
+     "id": "s00",
+     "visual": "title0",
+     "slide_title": "Detención Defensa",
+     "start_s": 0.0,
+     "duration_s": 12.583,
+     "end_s": 12.583,
+     "speech_start_s": 0.4,
+     "speech_duration_s_approx": 11.483,
+     "script": "Welcome to Detención Defensa, with Sorrentino Law Firm. We work with realtors, mortgage brokers, and business brokers. We built this website to help you make a plan.",
+     "caption_cues": [
+      {
+       "start": 0.4,
+       "end": 4.229,
+       "text": "Welcome to Detención Defensa, with Sorrentino Law Firm."
+      },
+      {
+       "start": 4.269,
+       "end": 8.527,
+       "text": "We work with realtors, mortgage brokers, and business brokers."
+      },
+      {
+       "start": 8.567,
+       "end": 11.843,
+       "text": "We built this website to help you make a plan."
+      }
+     ]
+    },
+    {
+     "id": "s01",
+     "visual": "home",
+     "slide_title": "Where do you stand today?",
+     "start_s": 12.583,
+     "duration_s": 8.125,
+     "end_s": 20.708,
+     "speech_start_s": 12.983,
+     "speech_duration_s_approx": 7.025,
+     "script": "Where do you stand today? What are your choices? How do you protect your family, your home, and your business? Here is how it works.",
+     "caption_cues": [
+      {
+       "start": 12.983,
+       "end": 14.383,
+       "text": "Where do you stand today?"
+      },
+      {
+       "start": 14.423,
+       "end": 15.692,
+       "text": "What are your choices?"
+      },
+      {
+       "start": 15.732,
+       "end": 18.703,
+       "text": "How do you protect your family, your home, and your business?"
+      },
+      {
+       "start": 18.743,
+       "end": 19.968,
+       "text": "Here is how it works."
+      }
+     ]
+    },
+    {
+     "id": "s02",
+     "visual": "families",
+     "slide_title": "Know where you stand",
+     "start_s": 20.708,
+     "duration_s": 8.042,
+     "end_s": 28.75,
+     "speech_start_s": 21.108,
+     "speech_duration_s_approx": 6.942,
+     "script": "You worked hard for everything you have. Before you spend money on any plan, learn where you really stand.",
+     "caption_cues": [
+      {
+       "start": 21.108,
+       "end": 23.822,
+       "text": "You worked hard for everything you have."
+      },
+      {
+       "start": 23.862,
+       "end": 28.01,
+       "text": "Before you spend money on any plan, learn where you really stand."
+      }
+     ]
+    },
+    {
+     "id": "s03",
+     "visual": "step1",
+     "slide_title": "If ICE comes: stay calm",
+     "start_s": 28.75,
+     "duration_s": 11.833,
+     "end_s": 40.583,
+     "speech_start_s": 29.15,
+     "speech_duration_s_approx": 10.733,
+     "script": "Step one. If ICE comes to you, stay calm. Do not run. Do not fight or push. That can put you in danger, and it can lead to new charges.",
+     "caption_cues": [
+      {
+       "start": 29.15,
+       "end": 30.177,
+       "text": "Step one."
+      },
+      {
+       "start": 30.217,
+       "end": 32.625,
+       "text": "If ICE comes to you, stay calm."
+      },
+      {
+       "start": 32.665,
+       "end": 33.818,
+       "text": "Do not run."
+      },
+      {
+       "start": 33.858,
+       "end": 35.638,
+       "text": "Do not fight or push."
+      },
+      {
+       "start": 35.678,
+       "end": 39.843,
+       "text": "That can put you in danger, and it can lead to new charges."
+      }
+     ]
+    },
+    {
+     "id": "s04",
+     "visual": "intake",
+     "slide_title": "Fill out the questions",
+     "start_s": 40.583,
+     "duration_s": 21.167,
+     "end_s": 61.75,
+     "speech_start_s": 40.983,
+     "speech_duration_s_approx": 20.067,
+     "script": "Step two. Fill out the questions. Tell us when you came, your country, your papers, any court orders, and if you have TPS. I will review your answers myself. Your answers help us determine whether additional immigration defense is appropriate, or whether you should plan for self-deportation or deportation.",
+     "caption_cues": [
+      {
+       "start": 40.983,
+       "end": 41.918,
+       "text": "Step two."
+      },
+      {
+       "start": 41.958,
+       "end": 43.695,
+       "text": "Fill out the questions."
+      },
+      {
+       "start": 43.735,
+       "end": 49.199,
+       "text": "Tell us when you came, your country, your papers, any court orders, and if you have TPS."
+      },
+      {
+       "start": 49.239,
+       "end": 51.607,
+       "text": "I will review your answers myself."
+      },
+      {
+       "start": 51.647,
+       "end": 56.939,
+       "text": "Your answers help us determine whether additional immigration defense is appropriate,"
+      },
+      {
+       "start": 56.979,
+       "end": 61.01,
+       "text": "or whether you should plan for self-deportation or deportation."
+      }
+     ]
+    },
+    {
+     "id": "s05",
+     "visual": "review",
+     "slide_title": "An honest answer, by email",
+     "start_s": 61.75,
+     "duration_s": 21.708,
+     "end_s": 83.458,
+     "speech_start_s": 62.15,
+     "speech_duration_s_approx": 20.608,
+     "script": "Then we give you an honest answer about where you stand and what we can do. You will get an email that explains your options and next steps: staying, leaving, or more immigration defense. Our team offers this help at a discount. Filling out the website does not make us your lawyers. That starts when we agree to work together.",
+     "caption_cues": [
+      {
+       "start": 62.15,
+       "end": 66.733,
+       "text": "Then we give you an honest answer about where you stand and what we can do."
+      },
+      {
+       "start": 66.773,
+       "end": 71.746,
+       "text": "You will get an email that explains your options and next steps: staying, leaving,"
+      },
+      {
+       "start": 71.786,
+       "end": 73.751,
+       "text": "or more immigration defense."
+      },
+      {
+       "start": 73.791,
+       "end": 76.424,
+       "text": "Our team offers this help at a discount."
+      },
+      {
+       "start": 76.464,
+       "end": 79.878,
+       "text": "Filling out the website does not make us your lawyers."
+      },
+      {
+       "start": 79.918,
+       "end": 82.718,
+       "text": "That starts when we agree to work together."
+      }
+     ]
+    },
+    {
+     "id": "s06",
+     "visual": "property",
+     "slide_title": "Your home",
+     "start_s": 83.458,
+     "duration_s": 31.333,
+     "end_s": 114.792,
+     "speech_start_s": 83.858,
+     "speech_duration_s_approx": 30.233,
+     "script": "Step three. Your home. The value in your home can help pay for moving, bills, taxes, or legal help. The questions ask about your home and mortgage, and we review them. Your choices may include an approved loan, selling, renting, letting family live there, or putting it in a trust. A loan adds debt. A trust does not erase your mortgage, and no plan can promise protection from creditors. We will send you to Save My Home to learn more.",
+     "caption_cues": [
+      {
+       "start": 83.858,
+       "end": 84.967,
+       "text": "Step three."
+      },
+      {
+       "start": 85.007,
+       "end": 86.056,
+       "text": "Your home."
+      },
+      {
+       "start": 86.096,
+       "end": 91.135,
+       "text": "The value in your home can help pay for moving, bills, taxes, or legal help."
+      },
+      {
+       "start": 91.175,
+       "end": 95.67,
+       "text": "The questions ask about your home and mortgage, and we review them."
+      },
+      {
+       "start": 95.71,
+       "end": 101.414,
+       "text": "Your choices may include an approved loan, selling, renting, letting family live there,"
+      },
+      {
+       "start": 101.454,
+       "end": 103.41,
+       "text": "or putting it in a trust."
+      },
+      {
+       "start": 103.45,
+       "end": 104.921,
+       "text": "A loan adds debt."
+      },
+      {
+       "start": 104.961,
+       "end": 110.726,
+       "text": "A trust does not erase your mortgage, and no plan can promise protection from creditors."
+      },
+      {
+       "start": 110.766,
+       "end": 114.052,
+       "text": "We will send you to Save My Home to learn more."
+      }
+     ]
+    },
+    {
+     "id": "s07",
+     "visual": "business",
+     "slide_title": "Your business",
+     "start_s": 114.792,
+     "duration_s": 27.292,
+     "end_s": 142.083,
+     "speech_start_s": 115.192,
+     "speech_duration_s_approx": 26.192,
+     "script": "Step four. Your business. Your gardening, landscaping, plumbing, handyman, or pool customers can be worth real money. We can help set up a corporation owned by a trust. That can help you sell the business, transfer it, or have someone run it while you still own it, even from another country, where the law allows. Results are not guaranteed. We will send you to Save My Business, at SaveMyBusiness.com.",
+     "caption_cues": [
+      {
+       "start": 115.192,
+       "end": 116.146,
+       "text": "Step four."
+      },
+      {
+       "start": 116.186,
+       "end": 117.362,
+       "text": "Your business."
+      },
+      {
+       "start": 117.402,
+       "end": 120.456,
+       "text": "Your gardening, landscaping, plumbing, handyman,"
+      },
+      {
+       "start": 120.496,
+       "end": 123.219,
+       "text": "or pool customers can be worth real money."
+      },
+      {
+       "start": 123.259,
+       "end": 126.424,
+       "text": "We can help set up a corporation owned by a trust."
+      },
+      {
+       "start": 126.464,
+       "end": 129.574,
+       "text": "That can help you sell the business, transfer it,"
+      },
+      {
+       "start": 129.614,
+       "end": 134.049,
+       "text": "or have someone run it while you still own it, even from another country,"
+      },
+      {
+       "start": 134.089,
+       "end": 135.652,
+       "text": "where the law allows."
+      },
+      {
+       "start": 135.692,
+       "end": 137.586,
+       "text": "Results are not guaranteed."
+      },
+      {
+       "start": 137.626,
+       "end": 141.343,
+       "text": "We will send you to Save My Business, at SaveMyBusiness.com."
+      }
+     ]
+    },
+    {
+     "id": "s08",
+     "visual": "habeas",
+     "slide_title": "If you are detained",
+     "start_s": 142.083,
+     "duration_s": 28.708,
+     "end_s": 170.792,
+     "speech_start_s": 142.483,
+     "speech_duration_s_approx": 27.608,
+     "script": "Step five. If you are detained, we look at whether there are grounds to challenge the detention in federal court. This is called habeas corpus. A judge decides if holding you is legal. It does not promise release, and you could be detained again later. If you qualify for our document offer, we prepare the papers at no charge, so you can file them yourself. This is called pro se. It is not the same as us going to court for you.",
+     "caption_cues": [
+      {
+       "start": 142.483,
+       "end": 143.435,
+       "text": "Step five."
+      },
+      {
+       "start": 143.475,
+       "end": 144.978,
+       "text": "If you are detained,"
+      },
+      {
+       "start": 145.018,
+       "end": 149.883,
+       "text": "we look at whether there are grounds to challenge the detention in federal court."
+      },
+      {
+       "start": 149.923,
+       "end": 151.922,
+       "text": "This is called habeas corpus."
+      },
+      {
+       "start": 151.962,
+       "end": 154.567,
+       "text": "A judge decides if holding you is legal."
+      },
+      {
+       "start": 154.607,
+       "end": 158.7,
+       "text": "It does not promise release, and you could be detained again later."
+      },
+      {
+       "start": 158.74,
+       "end": 163.218,
+       "text": "If you qualify for our document offer, we prepare the papers at no charge,"
+      },
+      {
+       "start": 163.258,
+       "end": 165.313,
+       "text": "so you can file them yourself."
+      },
+      {
+       "start": 165.353,
+       "end": 166.966,
+       "text": "This is called pro se."
+      },
+      {
+       "start": 167.006,
+       "end": 170.052,
+       "text": "It is not the same as us going to court for you."
+      }
+     ]
+    },
+    {
+     "id": "s09",
+     "visual": "family",
+     "slide_title": "Family papers",
+     "start_s": 170.792,
+     "duration_s": 31.875,
+     "end_s": 202.667,
+     "speech_start_s": 171.192,
+     "speech_duration_s_approx": 30.775,
+     "script": "Step six. Get your family papers ready. Your A-number. Who can care for your children, talk to the school, and make medical choices. Who can pay bills, handle your home, and hire a lawyer for you. And your car information, so someone can ask to get your car back if it is towed. We put together the family papers that apply to you, at no charge. Download them, check them, print, and sign. Get them witnessed or notarized if needed. Keep them safe, and tell someone you trust where they are.",
+     "caption_cues": [
+      {
+       "start": 171.192,
+       "end": 172.083,
+       "text": "Step six."
+      },
+      {
+       "start": 172.123,
+       "end": 174.109,
+       "text": "Get your family papers ready."
+      },
+      {
+       "start": 174.149,
+       "end": 175.313,
+       "text": "Your A-number."
+      },
+      {
+       "start": 175.353,
+       "end": 179.968,
+       "text": "Who can care for your children, talk to the school, and make medical choices."
+      },
+      {
+       "start": 180.008,
+       "end": 183.856,
+       "text": "Who can pay bills, handle your home, and hire a lawyer for you."
+      },
+      {
+       "start": 183.896,
+       "end": 188.73,
+       "text": "And your car information, so someone can ask to get your car back if it is towed."
+      },
+      {
+       "start": 188.77,
+       "end": 192.782,
+       "text": "We put together the family papers that apply to you, at no charge."
+      },
+      {
+       "start": 192.822,
+       "end": 195.575,
+       "text": "Download them, check them, print, and sign."
+      },
+      {
+       "start": 195.615,
+       "end": 198.313,
+       "text": "Get them witnessed or notarized if needed."
+      },
+      {
+       "start": 198.353,
+       "end": 201.927,
+       "text": "Keep them safe, and tell someone you trust where they are."
+      }
+     ]
+    },
+    {
+     "id": "s10",
+     "visual": "app",
+     "slide_title": "Get the emergency app",
+     "start_s": 202.667,
+     "duration_s": 18.292,
+     "end_s": 220.958,
+     "speech_start_s": 203.067,
+     "speech_duration_s_approx": 17.192,
+     "script": "Step seven. Download the free emergency app, and set it up now, before you need it. Add your emergency contacts. If it is safe, press and hold the SOS button. It sends your phone's location at that moment, and alerts your contacts and our response team.",
+     "caption_cues": [
+      {
+       "start": 203.067,
+       "end": 204.13,
+       "text": "Step seven."
+      },
+      {
+       "start": 204.17,
+       "end": 208.719,
+       "text": "Download the free emergency app, and set it up now, before you need it."
+      },
+      {
+       "start": 208.759,
+       "end": 210.809,
+       "text": "Add your emergency contacts."
+      },
+      {
+       "start": 210.849,
+       "end": 213.888,
+       "text": "If it is safe, press and hold the SOS button."
+      },
+      {
+       "start": 213.928,
+       "end": 217.024,
+       "text": "It sends your phone's location at that moment,"
+      },
+      {
+       "start": 217.064,
+       "end": 220.218,
+       "text": "and alerts your contacts and our response team."
+      }
+     ]
+    },
+    {
+     "id": "s11",
+     "visual": "applimits",
+     "slide_title": "Where you were, not tracking",
+     "start_s": 220.958,
+     "duration_s": 14.833,
+     "end_s": 235.792,
+     "speech_start_s": 221.358,
+     "speech_duration_s_approx": 13.733,
+     "script": "That location shows where you were when you pressed the button. It helps us start looking. It does not follow your car after it is towed, and it does not track ICE. Our team checks the detention records that are available to help find you.",
+     "caption_cues": [
+      {
+       "start": 221.358,
+       "end": 224.957,
+       "text": "That location shows where you were when you pressed the button."
+      },
+      {
+       "start": 224.997,
+       "end": 226.699,
+       "text": "It helps us start looking."
+      },
+      {
+       "start": 226.739,
+       "end": 230.85,
+       "text": "It does not follow your car after it is towed, and it does not track ICE."
+      },
+      {
+       "start": 230.89,
+       "end": 235.052,
+       "text": "Our team checks the detention records that are available to help find you."
+      }
+     ]
+    },
+    {
+     "id": "s12",
+     "visual": "cta",
+     "slide_title": "Fill out the questions today",
+     "start_s": 235.792,
+     "duration_s": 17.292,
+     "end_s": 253.083,
+     "speech_start_s": 236.192,
+     "speech_duration_s_approx": 14.392,
+     "script": "Here is what to do. Fill out the questions today. I will review your answers. You will get an email with an honest answer and your next steps. Then download the app, and visit Save My Home or Save My Business if they fit you.",
+     "caption_cues": [
+      {
+       "start": 236.192,
+       "end": 237.64,
+       "text": "Here is what to do."
+      },
+      {
+       "start": 237.68,
+       "end": 239.681,
+       "text": "Fill out the questions today."
+      },
+      {
+       "start": 239.721,
+       "end": 241.611,
+       "text": "I will review your answers."
+      },
+      {
+       "start": 241.651,
+       "end": 245.581,
+       "text": "You will get an email with an honest answer and your next steps."
+      },
+      {
+       "start": 245.621,
+       "end": 250.543,
+       "text": "Then download the app, and visit Save My Home or Save My Business if they fit you."
+      }
+     ]
+    }
+   ]
+  },
+  "es": {
+   "file": "/mnt/documents/media/videos/process-overview-es-v2.mp4",
+   "total_duration_s": 300.375,
+   "current_voice": "OpenAI gpt-4o-mini-tts / verse (all languages in v2)",
+   "regeneration_voice": {
+    "provider": "ElevenLabs",
+    "voice": "César Augusto (Venezuelan male)",
+    "voice_id": "hAUJJty85xYTBnGyEWzw",
+    "note": "planned regeneration; not yet used"
+   },
+   "sections": [
+    {
+     "id": "s00",
+     "visual": "title0",
+     "slide_title": "Detención Defensa",
+     "start_s": 0.0,
+     "duration_s": 15.333,
+     "end_s": 15.333,
+     "speech_start_s": 0.4,
+     "speech_duration_s_approx": 14.233,
+     "script": "Bienvenido a Detención Defensa, con Sorrentino Law Firm. Trabajamos con agentes inmobiliarios, corredores hipotecarios y corredores de negocios. Creamos este sitio web para ayudarle a hacer un plan.",
+     "caption_cues": [
+      {
+       "start": 0.4,
+       "end": 4.501,
+       "text": "Bienvenido a Detención Defensa, con Sorrentino Law Firm."
+      },
+      {
+       "start": 4.541,
+       "end": 10.647,
+       "text": "Trabajamos con agentes inmobiliarios, corredores hipotecarios y corredores de negocios."
+      },
+      {
+       "start": 10.687,
+       "end": 14.593,
+       "text": "Creamos este sitio web para ayudarle a hacer un plan."
+      }
+     ]
+    },
+    {
+     "id": "s01",
+     "visual": "home",
+     "slide_title": "¿Dónde está usted hoy?",
+     "start_s": 15.333,
+     "duration_s": 9.25,
+     "end_s": 24.583,
+     "speech_start_s": 15.733,
+     "speech_duration_s_approx": 8.15,
+     "script": "¿Dónde está usted hoy? ¿Cuáles son sus opciones? ¿Cómo protege a su familia, su casa y su negocio? Así es como funciona.",
+     "caption_cues": [
+      {
+       "start": 15.733,
+       "end": 17.334,
+       "text": "¿Dónde está usted hoy?"
+      },
+      {
+       "start": 17.374,
+       "end": 19.139,
+       "text": "¿Cuáles son sus opciones?"
+      },
+      {
+       "start": 19.179,
+       "end": 22.257,
+       "text": "¿Cómo protege a su familia, su casa y su negocio?"
+      },
+      {
+       "start": 22.297,
+       "end": 23.843,
+       "text": "Así es como funciona."
+      }
+     ]
+    },
+    {
+     "id": "s02",
+     "visual": "families",
+     "slide_title": "Sepa dónde está",
+     "start_s": 24.583,
+     "duration_s": 9.583,
+     "end_s": 34.167,
+     "speech_start_s": 24.983,
+     "speech_duration_s_approx": 8.483,
+     "script": "Usted trabajó duro por todo lo que tiene. Antes de gastar dinero en cualquier plan, sepa dónde está de verdad.",
+     "caption_cues": [
+      {
+       "start": 24.983,
+       "end": 28.269,
+       "text": "Usted trabajó duro por todo lo que tiene."
+      },
+      {
+       "start": 28.309,
+       "end": 33.427,
+       "text": "Antes de gastar dinero en cualquier plan, sepa dónde está de verdad."
+      }
+     ]
+    },
+    {
+     "id": "s03",
+     "visual": "step1",
+     "slide_title": "Si llega ICE: mantenga la calma",
+     "start_s": 34.167,
+     "duration_s": 13.875,
+     "end_s": 48.042,
+     "speech_start_s": 34.567,
+     "speech_duration_s_approx": 12.775,
+     "script": "Paso uno. Si ICE se le acerca, mantenga la calma. No corra. No pelee ni empuje. Eso puede ponerle en peligro, y puede traerle nuevos cargos.",
+     "caption_cues": [
+      {
+       "start": 34.567,
+       "end": 35.761,
+       "text": "Paso uno."
+      },
+      {
+       "start": 35.801,
+       "end": 39.172,
+       "text": "Si ICE se le acerca, mantenga la calma."
+      },
+      {
+       "start": 39.212,
+       "end": 40.406,
+       "text": "No corra."
+      },
+      {
+       "start": 40.446,
+       "end": 42.366,
+       "text": "No pelee ni empuje."
+      },
+      {
+       "start": 42.406,
+       "end": 47.302,
+       "text": "Eso puede ponerle en peligro, y puede traerle nuevos cargos."
+      }
+     ]
+    },
+    {
+     "id": "s04",
+     "visual": "intake",
+     "slide_title": "Responda las preguntas",
+     "start_s": 48.042,
+     "duration_s": 25.083,
+     "end_s": 73.125,
+     "speech_start_s": 48.442,
+     "speech_duration_s_approx": 23.983,
+     "script": "Paso dos. Responda las preguntas. Díganos cuándo llegó, su país, sus papeles, cualquier orden de la corte, y si tiene TPS. Yo mismo revisaré sus respuestas. Sus respuestas nos ayudan a determinar si una defensa migratoria adicional es apropiada, o si usted debe planificar para la autodeportación o la deportación.",
+     "caption_cues": [
+      {
+       "start": 48.442,
+       "end": 49.544,
+       "text": "Paso dos."
+      },
+      {
+       "start": 49.584,
+       "end": 51.626,
+       "text": "Responda las preguntas."
+      },
+      {
+       "start": 51.666,
+       "end": 58.076,
+       "text": "Díganos cuándo llegó, su país, sus papeles, cualquier orden de la corte, y si tiene TPS."
+      },
+      {
+       "start": 58.116,
+       "end": 60.83,
+       "text": "Yo mismo revisaré sus respuestas."
+      },
+      {
+       "start": 60.87,
+       "end": 67.279,
+       "text": "Sus respuestas nos ayudan a determinar si una defensa migratoria adicional es apropiada,"
+      },
+      {
+       "start": 67.319,
+       "end": 72.385,
+       "text": "o si usted debe planificar para la autodeportación o la deportación."
+      }
+     ]
+    },
+    {
+     "id": "s05",
+     "visual": "review",
+     "slide_title": "Una respuesta honesta, por correo",
+     "start_s": 73.125,
+     "duration_s": 25.5,
+     "end_s": 98.625,
+     "speech_start_s": 73.525,
+     "speech_duration_s_approx": 24.4,
+     "script": "Luego le damos una respuesta honesta sobre dónde está y qué podemos hacer. Recibirá un correo electrónico que explica sus opciones y los próximos pasos: quedarse, irse, o más defensa migratoria. Nuestro equipo ofrece esta ayuda con descuento. Llenar el sitio web no nos convierte en sus abogados. Eso empieza cuando acordamos trabajar juntos.",
+     "caption_cues": [
+      {
+       "start": 73.525,
+       "end": 78.682,
+       "text": "Luego le damos una respuesta honesta sobre dónde está y qué podemos hacer."
+      },
+      {
+       "start": 78.722,
+       "end": 84.703,
+       "text": "Recibirá un correo electrónico que explica sus opciones y los próximos pasos: quedarse,"
+      },
+      {
+       "start": 84.743,
+       "end": 87.174,
+       "text": "irse, o más defensa migratoria."
+      },
+      {
+       "start": 87.214,
+       "end": 90.66,
+       "text": "Nuestro equipo ofrece esta ayuda con descuento."
+      },
+      {
+       "start": 90.7,
+       "end": 94.526,
+       "text": "Llenar el sitio web no nos convierte en sus abogados."
+      },
+      {
+       "start": 94.566,
+       "end": 97.885,
+       "text": "Eso empieza cuando acordamos trabajar juntos."
+      }
+     ]
+    },
+    {
+     "id": "s06",
+     "visual": "property",
+     "slide_title": "Su casa",
+     "start_s": 98.625,
+     "duration_s": 38.792,
+     "end_s": 137.417,
+     "speech_start_s": 99.025,
+     "speech_duration_s_approx": 37.692,
+     "script": "Paso tres. Su casa. El valor de su casa puede ayudar a pagar la mudanza, las cuentas, los impuestos o la ayuda legal. Las preguntas piden datos de su casa y su hipoteca, y nosotros los revisamos. Sus opciones pueden incluir un préstamo aprobado, vender, alquilar, dejar que su familia viva allí, o ponerla en un fideicomiso. Un préstamo añade deuda. Un fideicomiso no borra su hipoteca, y ningún plan puede prometer protección contra acreedores. Le enviaremos a Salve Mi Casa para saber más.",
+     "caption_cues": [
+      {
+       "start": 99.025,
+       "end": 100.177,
+       "text": "Paso tres."
+      },
+      {
+       "start": 100.217,
+       "end": 101.237,
+       "text": "Su casa."
+      },
+      {
+       "start": 101.277,
+       "end": 106.073,
+       "text": "El valor de su casa puede ayudar a pagar la mudanza, las cuentas,"
+      },
+      {
+       "start": 106.113,
+       "end": 108.656,
+       "text": "los impuestos o la ayuda legal."
+      },
+      {
+       "start": 108.696,
+       "end": 114.287,
+       "text": "Las preguntas piden datos de su casa y su hipoteca, y nosotros los revisamos."
+      },
+      {
+       "start": 114.327,
+       "end": 119.255,
+       "text": "Sus opciones pueden incluir un préstamo aprobado, vender, alquilar,"
+      },
+      {
+       "start": 119.295,
+       "end": 123.759,
+       "text": "dejar que su familia viva allí, o ponerla en un fideicomiso."
+      },
+      {
+       "start": 123.799,
+       "end": 125.879,
+       "text": "Un préstamo añade deuda."
+      },
+      {
+       "start": 125.919,
+       "end": 128.794,
+       "text": "Un fideicomiso no borra su hipoteca,"
+      },
+      {
+       "start": 128.834,
+       "end": 133.166,
+       "text": "y ningún plan puede prometer protección contra acreedores."
+      },
+      {
+       "start": 133.206,
+       "end": 136.677,
+       "text": "Le enviaremos a Salve Mi Casa para saber más."
+      }
+     ]
+    },
+    {
+     "id": "s07",
+     "visual": "business",
+     "slide_title": "Su negocio",
+     "start_s": 137.417,
+     "duration_s": 34.958,
+     "end_s": 172.375,
+     "speech_start_s": 137.817,
+     "speech_duration_s_approx": 33.858,
+     "script": "Paso cuatro. Su negocio. Sus clientes de jardinería, paisajismo, plomería, mantenimiento o piscinas pueden valer dinero de verdad. Podemos ayudarle a crear una corporación que sea propiedad de un fideicomiso. Eso puede ayudarle a vender el negocio, transferirlo, o tener a alguien que lo maneje mientras usted sigue siendo el dueño, incluso desde otro país, donde la ley lo permita. Los resultados no están garantizados. Le enviaremos a Salve Mi Negocio, en SaveMyBusiness.com.",
+     "caption_cues": [
+      {
+       "start": 137.817,
+       "end": 139.012,
+       "text": "Paso cuatro."
+      },
+      {
+       "start": 139.052,
+       "end": 140.186,
+       "text": "Su negocio."
+      },
+      {
+       "start": 140.226,
+       "end": 143.708,
+       "text": "Sus clientes de jardinería, paisajismo, plomería,"
+      },
+      {
+       "start": 143.748,
+       "end": 147.601,
+       "text": "mantenimiento o piscinas pueden valer dinero de verdad."
+      },
+      {
+       "start": 147.641,
+       "end": 152.852,
+       "text": "Podemos ayudarle a crear una corporación que sea propiedad de un fideicomiso."
+      },
+      {
+       "start": 152.892,
+       "end": 156.621,
+       "text": "Eso puede ayudarle a vender el negocio, transferirlo,"
+      },
+      {
+       "start": 156.661,
+       "end": 161.379,
+       "text": "o tener a alguien que lo maneje mientras usted sigue siendo el dueño,"
+      },
+      {
+       "start": 161.419,
+       "end": 164.9,
+       "text": "incluso desde otro país, donde la ley lo permita."
+      },
+      {
+       "start": 164.94,
+       "end": 167.681,
+       "text": "Los resultados no están garantizados."
+      },
+      {
+       "start": 167.721,
+       "end": 171.635,
+       "text": "Le enviaremos a Salve Mi Negocio, en SaveMyBusiness.com."
+      }
+     ]
+    },
+    {
+     "id": "s08",
+     "visual": "habeas",
+     "slide_title": "Si lo detienen",
+     "start_s": 172.375,
+     "duration_s": 29.792,
+     "end_s": 202.167,
+     "speech_start_s": 172.775,
+     "speech_duration_s_approx": 28.692,
+     "script": "Paso cinco. Si lo detienen, revisamos si hay motivos para impugnar la detención en la corte federal. Esto se llama hábeas corpus. Un juez decide si detenerle es legal. No promete la liberación, y podrían detenerle otra vez más tarde. Si califica para nuestra oferta de documentos, preparamos los papeles sin costo, para que usted los presente por su cuenta. Esto se llama pro se. No es lo mismo que nosotros vayamos a la corte por usted.",
+     "caption_cues": [
+      {
+       "start": 172.775,
+       "end": 173.823,
+       "text": "Paso cinco."
+      },
+      {
+       "start": 173.863,
+       "end": 179.321,
+       "text": "Si lo detienen, revisamos si hay motivos para impugnar la detención en la corte federal."
+      },
+      {
+       "start": 179.361,
+       "end": 181.383,
+       "text": "Esto se llama hábeas corpus."
+      },
+      {
+       "start": 181.423,
+       "end": 183.96,
+       "text": "Un juez decide si detenerle es legal."
+      },
+      {
+       "start": 184.0,
+       "end": 188.14,
+       "text": "No promete la liberación, y podrían detenerle otra vez más tarde."
+      },
+      {
+       "start": 188.18,
+       "end": 193.18,
+       "text": "Si califica para nuestra oferta de documentos, preparamos los papeles sin costo,"
+      },
+      {
+       "start": 193.22,
+       "end": 196.043,
+       "text": "para que usted los presente por su cuenta."
+      },
+      {
+       "start": 196.083,
+       "end": 197.704,
+       "text": "Esto se llama pro se."
+      },
+      {
+       "start": 197.744,
+       "end": 201.427,
+       "text": "No es lo mismo que nosotros vayamos a la corte por usted."
+      }
+     ]
+    },
+    {
+     "id": "s09",
+     "visual": "family",
+     "slide_title": "Documentos de la familia",
+     "start_s": 202.167,
+     "duration_s": 37.917,
+     "end_s": 240.083,
+     "speech_start_s": 202.567,
+     "speech_duration_s_approx": 36.817,
+     "script": "Paso seis. Prepare los documentos de su familia. Su número A. Quién puede cuidar a sus hijos, hablar con la escuela y tomar decisiones médicas. Quién puede pagar las cuentas, encargarse de su casa y contratar un abogado por usted. Y los datos de su auto, para que alguien pueda pedir que se lo devuelvan si lo remolcan. Preparamos sin costo los documentos familiares que le aplican. Descárguelos, revíselos, imprímalos y fírmelos. Hágalos firmar ante testigos o notario si hace falta. Guárdelos en un lugar seguro, y dígale a alguien de confianza dónde están.",
+     "caption_cues": [
+      {
+       "start": 202.567,
+       "end": 203.579,
+       "text": "Paso seis."
+      },
+      {
+       "start": 203.619,
+       "end": 206.208,
+       "text": "Prepare los documentos de su familia."
+      },
+      {
+       "start": 206.248,
+       "end": 207.377,
+       "text": "Su número A."
+      },
+      {
+       "start": 207.417,
+       "end": 212.578,
+       "text": "Quién puede cuidar a sus hijos, hablar con la escuela y tomar decisiones médicas."
+      },
+      {
+       "start": 212.618,
+       "end": 218.071,
+       "text": "Quién puede pagar las cuentas, encargarse de su casa y contratar un abogado por usted."
+      },
+      {
+       "start": 218.111,
+       "end": 223.682,
+       "text": "Y los datos de su auto, para que alguien pueda pedir que se lo devuelvan si lo remolcan."
+      },
+      {
+       "start": 223.722,
+       "end": 227.772,
+       "text": "Preparamos sin costo los documentos familiares que le aplican."
+      },
+      {
+       "start": 227.812,
+       "end": 230.987,
+       "text": "Descárguelos, revíselos, imprímalos y fírmelos."
+      },
+      {
+       "start": 231.027,
+       "end": 234.551,
+       "text": "Hágalos firmar ante testigos o notario si hace falta."
+      },
+      {
+       "start": 234.591,
+       "end": 239.343,
+       "text": "Guárdelos en un lugar seguro, y dígale a alguien de confianza dónde están."
+      }
+     ]
+    },
+    {
+     "id": "s10",
+     "visual": "app",
+     "slide_title": "Descargue la app de emergencia",
+     "start_s": 240.083,
+     "duration_s": 21.875,
+     "end_s": 261.958,
+     "speech_start_s": 240.483,
+     "speech_duration_s_approx": 20.775,
+     "script": "Paso siete. Descargue la aplicación de emergencia gratuita, y configúrela ahora, antes de necesitarla. Agregue a sus contactos de emergencia. Si es seguro, mantenga presionado el botón SOS. Envía la ubicación de su teléfono en ese momento, y avisa a sus contactos y a nuestro equipo de respuesta.",
+     "caption_cues": [
+      {
+       "start": 240.483,
+       "end": 241.608,
+       "text": "Paso siete."
+      },
+      {
+       "start": 241.648,
+       "end": 247.613,
+       "text": "Descargue la aplicación de emergencia gratuita, y configúrela ahora, antes de necesitarla."
+      },
+      {
+       "start": 247.653,
+       "end": 250.432,
+       "text": "Agregue a sus contactos de emergencia."
+      },
+      {
+       "start": 250.472,
+       "end": 253.803,
+       "text": "Si es seguro, mantenga presionado el botón SOS."
+      },
+      {
+       "start": 253.843,
+       "end": 257.296,
+       "text": "Envía la ubicación de su teléfono en ese momento,"
+      },
+      {
+       "start": 257.336,
+       "end": 261.218,
+       "text": "y avisa a sus contactos y a nuestro equipo de respuesta."
+      }
+     ]
+    },
+    {
+     "id": "s11",
+     "visual": "applimits",
+     "slide_title": "Dónde estaba, no rastreo",
+     "start_s": 261.958,
+     "duration_s": 18.167,
+     "end_s": 280.125,
+     "speech_start_s": 262.358,
+     "speech_duration_s_approx": 17.067,
+     "script": "Esa ubicación muestra dónde estaba usted cuando presionó el botón. Nos ayuda a empezar a buscar. No sigue su auto después de que lo remolcan, y no rastrea a ICE. Nuestro equipo revisa los registros de detención disponibles para ayudar a encontrarle.",
+     "caption_cues": [
+      {
+       "start": 262.358,
+       "end": 266.861,
+       "text": "Esa ubicación muestra dónde estaba usted cuando presionó el botón."
+      },
+      {
+       "start": 266.901,
+       "end": 269.133,
+       "text": "Nos ayuda a empezar a buscar."
+      },
+      {
+       "start": 269.173,
+       "end": 273.553,
+       "text": "No sigue su auto después de que lo remolcan, y no rastrea a ICE."
+      },
+      {
+       "start": 273.593,
+       "end": 279.385,
+       "text": "Nuestro equipo revisa los registros de detención disponibles para ayudar a encontrarle."
+      }
+     ]
+    },
+    {
+     "id": "s12",
+     "visual": "cta",
+     "slide_title": "Responda las preguntas hoy",
+     "start_s": 280.125,
+     "duration_s": 20.25,
+     "end_s": 300.375,
+     "speech_start_s": 280.525,
+     "speech_duration_s_approx": 17.35,
+     "script": "Esto es lo que debe hacer. Responda las preguntas hoy. Yo revisaré sus respuestas. Recibirá un correo con una respuesta honesta y sus próximos pasos. Luego descargue la aplicación, y visite Salve Mi Casa o Salve Mi Negocio si le corresponden.",
+     "caption_cues": [
+      {
+       "start": 280.525,
+       "end": 282.555,
+       "text": "Esto es lo que debe hacer."
+      },
+      {
+       "start": 282.595,
+       "end": 284.686,
+       "text": "Responda las preguntas hoy."
+      },
+      {
+       "start": 284.726,
+       "end": 286.816,
+       "text": "Yo revisaré sus respuestas."
+      },
+      {
+       "start": 286.856,
+       "end": 291.321,
+       "text": "Recibirá un correo con una respuesta honesta y sus próximos pasos."
+      },
+      {
+       "start": 291.361,
+       "end": 293.634,
+       "text": "Luego descargue la aplicación,"
+      },
+      {
+       "start": 293.674,
+       "end": 297.835,
+       "text": "y visite Salve Mi Casa o Salve Mi Negocio si le corresponden."
+      }
+     ]
+    }
+   ]
+  },
+  "ht": {
+   "file": "/mnt/documents/media/videos/process-overview-ht-v2.mp4",
+   "total_duration_s": 297.583333,
+   "current_voice": "OpenAI gpt-4o-mini-tts / verse (all languages in v2)",
+   "regeneration_voice": {
+    "provider": "ElevenLabs",
+    "voice": "Wesly",
+    "voice_id": "PEjMkBhSB6492eADs4Ew",
+    "note": "planned regeneration; not yet used"
+   },
+   "sections": [
+    {
+     "id": "s00",
+     "visual": "title0",
+     "slide_title": "Detención Defensa",
+     "start_s": 0.0,
+     "duration_s": 16.542,
+     "end_s": 16.542,
+     "speech_start_s": 0.4,
+     "speech_duration_s_approx": 15.442,
+     "script": "Byenveni nan Detención Defensa, ak Sorrentino Law Firm. Nou travay ak ajan imobilye, koutye ipotèk, ak koutye biznis. Nou fè sit entènèt sa a pou ede w fè yon plan.",
+     "caption_cues": [
+      {
+       "start": 0.4,
+       "end": 5.59,
+       "text": "Byenveni nan Detención Defensa, ak Sorrentino Law Firm."
+      },
+      {
+       "start": 5.63,
+       "end": 11.319,
+       "text": "Nou travay ak ajan imobilye, koutye ipotèk, ak koutye biznis."
+      },
+      {
+       "start": 11.359,
+       "end": 15.802,
+       "text": "Nou fè sit entènèt sa a pou ede w fè yon plan."
+      }
+     ]
+    },
+    {
+     "id": "s01",
+     "visual": "home",
+     "slide_title": "Ki kote ou kanpe jodi a?",
+     "start_s": 16.542,
+     "duration_s": 11.333,
+     "end_s": 27.875,
+     "speech_start_s": 16.942,
+     "speech_duration_s_approx": 10.233,
+     "script": "Ki kote ou kanpe jodi a? Ki chwa ou genyen? Kijan pou pwoteje fanmi ou, kay ou, ak biznis ou? Men kijan sa mache.",
+     "caption_cues": [
+      {
+       "start": 16.942,
+       "end": 19.208,
+       "text": "Ki kote ou kanpe jodi a?"
+      },
+      {
+       "start": 19.248,
+       "end": 21.081,
+       "text": "Ki chwa ou genyen?"
+      },
+      {
+       "start": 21.121,
+       "end": 25.189,
+       "text": "Kijan pou pwoteje fanmi ou, kay ou, ak biznis ou?"
+      },
+      {
+       "start": 25.229,
+       "end": 27.135,
+       "text": "Men kijan sa mache."
+      }
+     ]
+    },
+    {
+     "id": "s02",
+     "visual": "families",
+     "slide_title": "Konnen ki kote ou kanpe",
+     "start_s": 27.875,
+     "duration_s": 9.583,
+     "end_s": 37.458,
+     "speech_start_s": 28.275,
+     "speech_duration_s_approx": 8.483,
+     "script": "Ou travay di pou tout sa ou genyen. Anvan ou depanse lajan sou nenpòt plan, aprann ki kote ou vrèman kanpe.",
+     "caption_cues": [
+      {
+       "start": 28.275,
+       "end": 31.225,
+       "text": "Ou travay di pou tout sa ou genyen."
+      },
+      {
+       "start": 31.265,
+       "end": 36.718,
+       "text": "Anvan ou depanse lajan sou nenpòt plan, aprann ki kote ou vrèman kanpe."
+      }
+     ]
+    },
+    {
+     "id": "s03",
+     "visual": "step1",
+     "slide_title": "Si ICE vini: rete kalm",
+     "start_s": 37.458,
+     "duration_s": 12.375,
+     "end_s": 49.833,
+     "speech_start_s": 37.858,
+     "speech_duration_s_approx": 11.275,
+     "script": "Etap en. Si ICE vin jwenn ou, rete kalm. Pa kouri. Pa goumen, pa pouse. Sa ka mete w an danje, epi li ka mennen nouvo akizasyon.",
+     "caption_cues": [
+      {
+       "start": 37.858,
+       "end": 38.918,
+       "text": "Etap en."
+      },
+      {
+       "start": 38.958,
+       "end": 41.6,
+       "text": "Si ICE vin jwenn ou, rete kalm."
+      },
+      {
+       "start": 41.64,
+       "end": 42.768,
+       "text": "Pa kouri."
+      },
+      {
+       "start": 42.808,
+       "end": 44.693,
+       "text": "Pa goumen, pa pouse."
+      },
+      {
+       "start": 44.733,
+       "end": 49.093,
+       "text": "Sa ka mete w an danje, epi li ka mennen nouvo akizasyon."
+      }
+     ]
+    },
+    {
+     "id": "s04",
+     "visual": "intake",
+     "slide_title": "Reponn kesyon yo",
+     "start_s": 49.833,
+     "duration_s": 25.167,
+     "end_s": 75,
+     "speech_start_s": 50.233,
+     "speech_duration_s_approx": 24.067,
+     "script": "Etap de. Reponn kesyon yo. Di nou ki lè ou te rive, peyi ou, papye ou, nenpòt lòd tribinal, epi si ou gen TPS. Se mwen menm ki pral revize repons ou yo. Repons ou yo ede nou detèmine si yon defans imigrasyon anplis apwopriye, oswa si ou ta dwe planifye pou oto-depòtasyon oswa depòtasyon.",
+     "caption_cues": [
+      {
+       "start": 50.233,
+       "end": 51.357,
+       "text": "Etap de."
+      },
+      {
+       "start": 51.397,
+       "end": 53.174,
+       "text": "Reponn kesyon yo."
+      },
+      {
+       "start": 53.214,
+       "end": 59.791,
+       "text": "Di nou ki lè ou te rive, peyi ou, papye ou, nenpòt lòd tribinal, epi si ou gen TPS."
+      },
+      {
+       "start": 59.831,
+       "end": 63.354,
+       "text": "Se mwen menm ki pral revize repons ou yo."
+      },
+      {
+       "start": 63.394,
+       "end": 69.17,
+       "text": "Repons ou yo ede nou detèmine si yon defans imigrasyon anplis apwopriye,"
+      },
+      {
+       "start": 69.21,
+       "end": 74.26,
+       "text": "oswa si ou ta dwe planifye pou oto-depòtasyon oswa depòtasyon."
+      }
+     ]
+    },
+    {
+     "id": "s05",
+     "visual": "review",
+     "slide_title": "Yon repons onèt, pa imèl",
+     "start_s": 75,
+     "duration_s": 25.417,
+     "end_s": 100.417,
+     "speech_start_s": 75.4,
+     "speech_duration_s_approx": 24.317,
+     "script": "Apre sa, n ap ba ou yon repons onèt sou ki kote ou kanpe ak sa nou ka fè. W ap resevwa yon imèl ki eksplike opsyon ou yo ak pwochen etap yo: rete, ale, oswa plis defans imigrasyon. Ekip nou an ofri èd sa a ak rabè. Ranpli sit entènèt la pa fè nou tounen avoka ou. Sa kòmanse lè nou dakò pou nou travay ansanm.",
+     "caption_cues": [
+      {
+       "start": 75.4,
+       "end": 80.956,
+       "text": "Apre sa, n ap ba ou yon repons onèt sou ki kote ou kanpe ak sa nou ka fè."
+      },
+      {
+       "start": 80.996,
+       "end": 86.828,
+       "text": "W ap resevwa yon imèl ki eksplike opsyon ou yo ak pwochen etap yo: rete, ale,"
+      },
+      {
+       "start": 86.868,
+       "end": 89.314,
+       "text": "oswa plis defans imigrasyon."
+      },
+      {
+       "start": 89.354,
+       "end": 92.147,
+       "text": "Ekip nou an ofri èd sa a ak rabè."
+      },
+      {
+       "start": 92.187,
+       "end": 96.015,
+       "text": "Ranpli sit entènèt la pa fè nou tounen avoka ou."
+      },
+      {
+       "start": 96.055,
+       "end": 99.677,
+       "text": "Sa kòmanse lè nou dakò pou nou travay ansanm."
+      }
+     ]
+    },
+    {
+     "id": "s06",
+     "visual": "property",
+     "slide_title": "Kay ou",
+     "start_s": 100.417,
+     "duration_s": 35.333,
+     "end_s": 135.75,
+     "speech_start_s": 100.817,
+     "speech_duration_s_approx": 34.233,
+     "script": "Etap twa. Kay ou. Valè kay ou ka ede peye demenajman, bòdwo, taks, oswa èd legal. Kesyon yo mande enfòmasyon sou kay ou ak ipotèk ou, epi nou revize yo. Chwa ou yo ka gen ladan yon prè ki apwouve, vann, lwe, kite fanmi ou rete ladan l, oswa mete l nan yon trust. Yon prè ajoute dèt. Yon trust pa efase ipotèk ou, epi okenn plan pa ka pwomèt pwoteksyon kont kreyansye. N ap voye w sou Save My Home pou aprann plis.",
+     "caption_cues": [
+      {
+       "start": 100.817,
+       "end": 101.997,
+       "text": "Etap twa."
+      },
+      {
+       "start": 102.037,
+       "end": 103.073,
+       "text": "Kay ou."
+      },
+      {
+       "start": 103.113,
+       "end": 108.169,
+       "text": "Valè kay ou ka ede peye demenajman, bòdwo, taks, oswa èd legal."
+      },
+      {
+       "start": 108.209,
+       "end": 113.767,
+       "text": "Kesyon yo mande enfòmasyon sou kay ou ak ipotèk ou, epi nou revize yo."
+      },
+      {
+       "start": 113.807,
+       "end": 120.226,
+       "text": "Chwa ou yo ka gen ladan yon prè ki apwouve, vann, lwe, kite fanmi ou rete ladan l,"
+      },
+      {
+       "start": 120.266,
+       "end": 122.666,
+       "text": "oswa mete l nan yon trust."
+      },
+      {
+       "start": 122.706,
+       "end": 124.604,
+       "text": "Yon prè ajoute dèt."
+      },
+      {
+       "start": 124.644,
+       "end": 131.206,
+       "text": "Yon trust pa efase ipotèk ou, epi okenn plan pa ka pwomèt pwoteksyon kont kreyansye."
+      },
+      {
+       "start": 131.246,
+       "end": 135.01,
+       "text": "N ap voye w sou Save My Home pou aprann plis."
+      }
+     ]
+    },
+    {
+     "id": "s07",
+     "visual": "business",
+     "slide_title": "Biznis ou",
+     "start_s": 135.75,
+     "duration_s": 30.792,
+     "end_s": 166.542,
+     "speech_start_s": 136.15,
+     "speech_duration_s_approx": 29.692,
+     "script": "Etap kat. Biznis ou. Kliyan ou yo nan jadinaj, amenajman teren, plonbri, reparasyon, oswa pisin ka vo vrè lajan. Nou ka ede w mete sou pye yon kòporasyon ki posede pa yon trust. Sa ka ede w vann biznis la, transfere l, oswa gen yon moun k ap fè l mache pandan ou toujou mèt li, menm nan yon lòt peyi, kote lalwa pèmèt. Rezilta yo pa garanti. N ap voye w sou Save My Business, nan SaveMyBusiness.com.",
+     "caption_cues": [
+      {
+       "start": 136.15,
+       "end": 137.184,
+       "text": "Etap kat."
+      },
+      {
+       "start": 137.224,
+       "end": 138.321,
+       "text": "Biznis ou."
+      },
+      {
+       "start": 138.361,
+       "end": 142.806,
+       "text": "Kliyan ou yo nan jadinaj, amenajman teren, plonbri, reparasyon,"
+      },
+      {
+       "start": 142.846,
+       "end": 145.018,
+       "text": "oswa pisin ka vo vrè lajan."
+      },
+      {
+       "start": 145.058,
+       "end": 149.566,
+       "text": "Nou ka ede w mete sou pye yon kòporasyon ki posede pa yon trust."
+      },
+      {
+       "start": 149.606,
+       "end": 152.598,
+       "text": "Sa ka ede w vann biznis la, transfere l,"
+      },
+      {
+       "start": 152.638,
+       "end": 158.221,
+       "text": "oswa gen yon moun k ap fè l mache pandan ou toujou mèt li, menm nan yon lòt peyi,"
+      },
+      {
+       "start": 158.261,
+       "end": 159.8,
+       "text": "kote lalwa pèmèt."
+      },
+      {
+       "start": 159.84,
+       "end": 161.695,
+       "text": "Rezilta yo pa garanti."
+      },
+      {
+       "start": 161.735,
+       "end": 165.802,
+       "text": "N ap voye w sou Save My Business, nan SaveMyBusiness.com."
+      }
+     ]
+    },
+    {
+     "id": "s08",
+     "visual": "habeas",
+     "slide_title": "Si yo arete w",
+     "start_s": 166.542,
+     "duration_s": 30.458,
+     "end_s": 197,
+     "speech_start_s": 166.942,
+     "speech_duration_s_approx": 29.358,
+     "script": "Etap senk. Si yo arete w, nou gade si gen rezon pou konteste detansyon an nan tribinal federal. Sa rele habeas corpus. Yon jij deside si yo gen dwa kenbe w. Li pa pwomèt liberasyon, epi yo ka arete w ankò pita. Si ou kalifye pou òf dokiman nou an, nou prepare papye yo san frè, pou ou ka depoze yo poukont ou. Sa rele pro se. Se pa menm bagay ak nou ale nan tribinal pou ou.",
+     "caption_cues": [
+      {
+       "start": 166.942,
+       "end": 168.108,
+       "text": "Etap senk."
+      },
+      {
+       "start": 168.148,
+       "end": 174.275,
+       "text": "Si yo arete w, nou gade si gen rezon pou konteste detansyon an nan tribinal federal."
+      },
+      {
+       "start": 174.315,
+       "end": 176.286,
+       "text": "Sa rele habeas corpus."
+      },
+      {
+       "start": 176.326,
+       "end": 179.302,
+       "text": "Yon jij deside si yo gen dwa kenbe w."
+      },
+      {
+       "start": 179.342,
+       "end": 183.391,
+       "text": "Li pa pwomèt liberasyon, epi yo ka arete w ankò pita."
+      },
+      {
+       "start": 183.431,
+       "end": 188.351,
+       "text": "Si ou kalifye pou òf dokiman nou an, nou prepare papye yo san frè,"
+      },
+      {
+       "start": 188.391,
+       "end": 190.965,
+       "text": "pou ou ka depoze yo poukont ou."
+      },
+      {
+       "start": 191.005,
+       "end": 192.506,
+       "text": "Sa rele pro se."
+      },
+      {
+       "start": 192.546,
+       "end": 196.26,
+       "text": "Se pa menm bagay ak nou ale nan tribinal pou ou."
+      }
+     ]
+    },
+    {
+     "id": "s09",
+     "visual": "family",
+     "slide_title": "Papye fanmi",
+     "start_s": 197,
+     "duration_s": 38.125,
+     "end_s": 235.125,
+     "speech_start_s": 197.4,
+     "speech_duration_s_approx": 37.025,
+     "script": "Etap sis. Prepare papye fanmi ou. Nimewo A ou. Ki moun ki ka okipe pitit ou, pale ak lekòl la, epi pran desizyon medikal. Ki moun ki ka peye bòdwo, okipe kay ou, epi anboche yon avoka pou ou. Ak enfòmasyon machin ou, pou yon moun ka mande pou yo remèt li si yo remòke l. Nou prepare papye fanmi ki aplike pou ou yo san frè. Telechaje yo, verifye yo, enprime yo, epi siyen yo. Fè temwen oswa notè siyen yo si sa nesesè. Sere yo byen, epi di yon moun ou fè konfyans kote yo ye.",
+     "caption_cues": [
+      {
+       "start": 197.4,
+       "end": 198.513,
+       "text": "Etap sis."
+      },
+      {
+       "start": 198.553,
+       "end": 200.615,
+       "text": "Prepare papye fanmi ou."
+      },
+      {
+       "start": 200.655,
+       "end": 201.971,
+       "text": "Nimewo A ou."
+      },
+      {
+       "start": 202.011,
+       "end": 207.532,
+       "text": "Ki moun ki ka okipe pitit ou, pale ak lekòl la, epi pran desizyon medikal."
+      },
+      {
+       "start": 207.572,
+       "end": 212.753,
+       "text": "Ki moun ki ka peye bòdwo, okipe kay ou, epi anboche yon avoka pou ou."
+      },
+      {
+       "start": 212.793,
+       "end": 218.585,
+       "text": "Ak enfòmasyon machin ou, pou yon moun ka mande pou yo remèt li si yo remòke l."
+      },
+      {
+       "start": 218.625,
+       "end": 222.654,
+       "text": "Nou prepare papye fanmi ki aplike pou ou yo san frè."
+      },
+      {
+       "start": 222.694,
+       "end": 226.655,
+       "text": "Telechaje yo, verifye yo, enprime yo, epi siyen yo."
+      },
+      {
+       "start": 226.695,
+       "end": 230.045,
+       "text": "Fè temwen oswa notè siyen yo si sa nesesè."
+      },
+      {
+       "start": 230.085,
+       "end": 234.385,
+       "text": "Sere yo byen, epi di yon moun ou fè konfyans kote yo ye."
+      }
+     ]
+    },
+    {
+     "id": "s10",
+     "visual": "app",
+     "slide_title": "Telechaje aplikasyon ijans lan",
+     "start_s": 235.125,
+     "duration_s": 21.125,
+     "end_s": 256.25,
+     "speech_start_s": 235.525,
+     "speech_duration_s_approx": 20.025,
+     "script": "Etap sèt. Telechaje aplikasyon ijans gratis la, epi konfigire l kounye a, anvan ou bezwen l. Mete kontak ijans ou yo. Si pa gen danje, peze epi kenbe bouton SOS la. Li voye pozisyon telefòn ou nan moman sa a, epi li avèti kontak ou yo ak ekip repons nou an.",
+     "caption_cues": [
+      {
+       "start": 235.525,
+       "end": 236.62,
+       "text": "Etap sèt."
+      },
+      {
+       "start": 236.66,
+       "end": 242.627,
+       "text": "Telechaje aplikasyon ijans gratis la, epi konfigire l kounye a, anvan ou bezwen l."
+      },
+      {
+       "start": 242.667,
+       "end": 244.763,
+       "text": "Mete kontak ijans ou yo."
+      },
+      {
+       "start": 244.803,
+       "end": 248.368,
+       "text": "Si pa gen danje, peze epi kenbe bouton SOS la."
+      },
+      {
+       "start": 248.408,
+       "end": 251.772,
+       "text": "Li voye pozisyon telefòn ou nan moman sa a,"
+      },
+      {
+       "start": 251.812,
+       "end": 255.51,
+       "text": "epi li avèti kontak ou yo ak ekip repons nou an."
+      }
+     ]
+    },
+    {
+     "id": "s11",
+     "visual": "applimits",
+     "slide_title": "Kote ou te ye, se pa swivi",
+     "start_s": 256.25,
+     "duration_s": 19.042,
+     "end_s": 275.292,
+     "speech_start_s": 256.65,
+     "speech_duration_s_approx": 17.942,
+     "script": "Pozisyon sa a montre kote ou te ye lè ou te peze bouton an. Li ede nou kòmanse chèche. Li pa swiv machin ou apre yo remòke l, epi li pa swiv ICE. Ekip nou an tcheke dosye detansyon ki disponib yo pou ede jwenn ou.",
+     "caption_cues": [
+      {
+       "start": 256.65,
+       "end": 261.577,
+       "text": "Pozisyon sa a montre kote ou te ye lè ou te peze bouton an."
+      },
+      {
+       "start": 261.617,
+       "end": 264.098,
+       "text": "Li ede nou kòmanse chèche."
+      },
+      {
+       "start": 264.138,
+       "end": 268.991,
+       "text": "Li pa swiv machin ou apre yo remòke l, epi li pa swiv ICE."
+      },
+      {
+       "start": 269.031,
+       "end": 274.552,
+       "text": "Ekip nou an tcheke dosye detansyon ki disponib yo pou ede jwenn ou."
+      }
+     ]
+    },
+    {
+     "id": "s12",
+     "visual": "cta",
+     "slide_title": "Reponn kesyon yo jodi a",
+     "start_s": 275.292,
+     "duration_s": 22.292,
+     "end_s": 297.583,
+     "speech_start_s": 275.692,
+     "speech_duration_s_approx": 19.392,
+     "script": "Men sa pou w fè. Reponn kesyon yo jodi a. Mwen pral revize repons ou yo. W ap resevwa yon imèl ak yon repons onèt ak pwochen etap ou yo. Apre sa, telechaje aplikasyon an, epi vizite Save My Home oswa Save My Business si yo bon pou ou.",
+     "caption_cues": [
+      {
+       "start": 275.692,
+       "end": 277.332,
+       "text": "Men sa pou w fè."
+      },
+      {
+       "start": 277.372,
+       "end": 279.572,
+       "text": "Reponn kesyon yo jodi a."
+      },
+      {
+       "start": 279.612,
+       "end": 282.232,
+       "text": "Mwen pral revize repons ou yo."
+      },
+      {
+       "start": 282.272,
+       "end": 287.203,
+       "text": "W ap resevwa yon imèl ak yon repons onèt ak pwochen etap ou yo."
+      },
+      {
+       "start": 287.243,
+       "end": 290.073,
+       "text": "Apre sa, telechaje aplikasyon an,"
+      },
+      {
+       "start": 290.113,
+       "end": 295.043,
+       "text": "epi vizite Save My Home oswa Save My Business si yo bon pou ou."
+      }
+     ]
+    }
+   ]
+  }
+ }
+}
