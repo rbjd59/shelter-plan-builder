@@ -40,6 +40,7 @@ function LeadsPage() {
               <th className="px-4 py-2">Lang</th>
               <th className="px-4 py-2">Needs</th>
               <th className="px-4 py-2">Source</th>
+              <th className="px-4 py-2">Assigned to</th>
               <th className="px-4 py-2">Status</th>
             </tr>
           </thead>
@@ -61,6 +62,7 @@ function LeadsPage() {
                   {l.message ? <div className="mt-1 text-xs text-slate-500">{l.message}</div> : null}
                 </td>
                 <td className="px-4 py-2 text-slate-600">{l.source}</td>
+                <td className="max-w-xs px-4 py-2 text-muted-foreground">{l.assigned_note ?? "—"}</td>
                 <td className="px-4 py-2">
                   <select
                     value={l.status}

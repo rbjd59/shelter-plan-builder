@@ -20,6 +20,7 @@ import { Route as AttorneyRouteImport } from './routes/attorney'
 import { Route as AttorneyBoardRouteImport } from './routes/attorney-board'
 import { Route as AttorneyTrustReviewRouteImport } from './routes/attorney-trust-review'
 import { Route as BusinessRouteImport } from './routes/business'
+import { Route as BusinessIntakeRouteImport } from './routes/business-intake'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as ComingSoonRouteImport } from './routes/coming-soon'
 import { Route as CompanyBoardRouteImport } from './routes/company-board'
@@ -163,6 +164,11 @@ const AttorneyTrustReviewRoute = AttorneyTrustReviewRouteImport.update({
 const BusinessRoute = BusinessRouteImport.update({
   id: '/business',
   path: '/business',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BusinessIntakeRoute = BusinessIntakeRouteImport.update({
+  id: '/business-intake',
+  path: '/business-intake',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CheckoutRoute = CheckoutRouteImport.update({
@@ -649,6 +655,7 @@ export interface FileRoutesByFullPath {
   '/attorney-board': typeof AttorneyBoardRoute
   '/attorney-trust-review': typeof AttorneyTrustReviewRoute
   '/business': typeof BusinessRoute
+  '/business-intake': typeof BusinessIntakeRoute
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
   '/company-board': typeof CompanyBoardRoute
@@ -751,6 +758,7 @@ export interface FileRoutesByTo {
   '/attorney-board': typeof AttorneyBoardRoute
   '/attorney-trust-review': typeof AttorneyTrustReviewRoute
   '/business': typeof BusinessRoute
+  '/business-intake': typeof BusinessIntakeRoute
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
   '/company-board': typeof CompanyBoardRoute
@@ -857,6 +865,7 @@ export interface FileRoutesById {
   '/attorney-board': typeof AttorneyBoardRoute
   '/attorney-trust-review': typeof AttorneyTrustReviewRoute
   '/business': typeof BusinessRoute
+  '/business-intake': typeof BusinessIntakeRoute
   '/checkout': typeof CheckoutRoute
   '/coming-soon': typeof ComingSoonRoute
   '/company-board': typeof CompanyBoardRoute
@@ -961,6 +970,7 @@ export interface FileRouteTypes {
     | '/attorney-board'
     | '/attorney-trust-review'
     | '/business'
+    | '/business-intake'
     | '/checkout'
     | '/coming-soon'
     | '/company-board'
@@ -1063,6 +1073,7 @@ export interface FileRouteTypes {
     | '/attorney-board'
     | '/attorney-trust-review'
     | '/business'
+    | '/business-intake'
     | '/checkout'
     | '/coming-soon'
     | '/company-board'
@@ -1168,6 +1179,7 @@ export interface FileRouteTypes {
     | '/attorney-board'
     | '/attorney-trust-review'
     | '/business'
+    | '/business-intake'
     | '/checkout'
     | '/coming-soon'
     | '/company-board'
@@ -1274,6 +1286,7 @@ export interface RootRouteChildren {
   AttorneyBoardRoute: typeof AttorneyBoardRoute
   AttorneyTrustReviewRoute: typeof AttorneyTrustReviewRoute
   BusinessRoute: typeof BusinessRoute
+  BusinessIntakeRoute: typeof BusinessIntakeRoute
   CheckoutRoute: typeof CheckoutRoute
   ComingSoonRoute: typeof ComingSoonRoute
   CompanyBoardRoute: typeof CompanyBoardRoute
@@ -1418,6 +1431,13 @@ declare module '@tanstack/react-router' {
       path: '/business'
       fullPath: '/business'
       preLoaderRoute: typeof BusinessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/business-intake': {
+      id: '/business-intake'
+      path: '/business-intake'
+      fullPath: '/business-intake'
+      preLoaderRoute: typeof BusinessIntakeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/checkout': {
@@ -2187,6 +2207,7 @@ const rootRouteChildren: RootRouteChildren = {
   AttorneyBoardRoute: AttorneyBoardRoute,
   AttorneyTrustReviewRoute: AttorneyTrustReviewRoute,
   BusinessRoute: BusinessRoute,
+  BusinessIntakeRoute: BusinessIntakeRoute,
   CheckoutRoute: CheckoutRoute,
   ComingSoonRoute: ComingSoonRoute,
   CompanyBoardRoute: CompanyBoardRoute,

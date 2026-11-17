@@ -3466,6 +3466,17 @@ body:has(.home-redesign)::before, body:has(.home-redesign)::after { display: non
 }
 
 /* Homepage assessment (check-the-box questionnaire) */
+.business-intake-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; }
+.business-intake h1 { font-size: 44px; }
+.business-intake form { display: grid; gap: 16px; padding: 24px; background: var(--business-light); border: 1px solid var(--business-border); border-radius: 8px; }
+.business-intake label { font-size: 15px; font-weight: 700; }
+.business-intake :is(input:not([type=checkbox]),textarea) { display: block; width: 100%; margin-top: 6px; padding: 12px; border: 1px solid var(--business-border); border-radius: 6px; background: var(--business-paper); color: var(--business-ink); font: inherit; }
+.business-intake-consent { display: flex; gap: 10px; align-items: start; }
+.business-intake-consent input { margin-top: 5px; }
+.business-intake form > button { background: var(--business-green); color: var(--business-paper); min-height: 48px; white-space: normal; }
+.business-intake-result { background: var(--business-light); padding: 28px; border-radius: 8px; align-self: start; }
+@media (max-width: 760px) { .business-intake-layout { grid-template-columns: 1fr; gap: 28px; } .business-intake h1 { font-size: 36px; } }
+
 .home-redesign .asmt { padding: 56px 24px; background: var(--home-surface); }
 .home-redesign .asmt-wrap { max-width: 760px; margin: 0 auto; }
 .home-redesign .asmt-h { text-align: center; color: var(--home-navy); font-size: clamp(1.6rem, 4vw, 2.2rem); margin: 0 0 22px; }

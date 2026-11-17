@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { BriefcaseBusiness, Calculator, Check, Phone, MessageSquareText } from "lucide-react";
 import { useLang, type Lang } from "@/context/LanguageContext";
 import { BUSINESS_SITE_COPY, TRADES } from "@/lib/business-site-content";
@@ -6,6 +7,7 @@ import { BUSINESS_PARALEGAL_PHONE, BUSINESS_PARALEGAL_PHONE_DISPLAY } from "@/li
 import { calculateBusinessValue } from "@/lib/assessment/business-report";
 import { Button } from "@/components/ui/button";
 import ownerImage from "@/assets/business-owner-hero.jpg";
+import { BUSINESS_INTAKE_COPY } from "@/lib/business-intake";
 
 const money = (value: number) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(value);
 
@@ -31,7 +33,7 @@ export default function BusinessSite() {
       <a className="business-skip" href="#value">{c.skip}</a>
       <header className="business-header">
         <a href="/business" className="business-brand"><BriefcaseBusiness aria-hidden="true" /><span>Do Not Forget<br />Your Business</span></a>
-        <nav aria-label="Business"><a href="#value">{c.navValue}</a><a href="#tools">{c.navTools}</a><a href="#help">{c.navHelp}</a><a href="#costs">{c.navCosts}</a></nav>
+        <nav aria-label="Business"><a href="#value">{c.navValue}</a><a href="#tools">{c.navTools}</a><a href="#help">{c.navHelp}</a><a href="#costs">{c.navCosts}</a><Link to="/business-intake" search={{ lang }}>{BUSINESS_INTAKE_COPY[lang].send}</Link></nav>
         <div className="business-languages" aria-label="Language">{(["en", "es", "ht"] as Lang[]).map((language) => <button key={language} type="button" aria-pressed={lang === language} onClick={() => setLang(language)}>{language === "en" ? "English" : language === "es" ? "Español" : "Kreyòl"}</button>)}</div>
       </header>
       <section className="business-hero">
@@ -53,7 +55,7 @@ export default function BusinessSite() {
       <section id="tools" className="business-band"><div className="business-section-title"><h2>{c.planTitle}</h2><p>{c.planBody}</p></div><div className="business-steps">{c.steps.map((step, index) => <article key={step.title}><span>{index + 1}</span><h3>{step.title}</h3><p>{step.body}</p></article>)}</div></section>
       <section className="business-band business-structure" aria-labelledby="business-structure-title"><div className="business-section-title"><h2 id="business-structure-title">{c.structureTitle}</h2></div><div className="business-steps">{c.structureSteps.map((step, index) => <article key={step.title}><span>{index + 1}</span><h3>{step.title}</h3><p>{step.body}</p></article>)}</div><p className="business-structure-note">{c.structureNote}</p></section>
       <section id="costs" className="business-band business-costs"><div className="business-section-title"><h2>{c.costsTitle}</h2><p>{c.costsBody}</p></div><div className="business-cost-grid"><article><strong>{c.monthlyPrice}</strong><h3>{c.monthlyLabel}</h3><ul>{c.included.map((item) => <li key={item}><Check />{item}</li>)}</ul></article><article><h3>{c.trustTitle}</h3><p>{c.trustBody}</p></article><article><h3>{c.directorTitle}</h3><p>{c.directorBody}</p></article><article><h3>{c.brokerTitle}</h3><p>{c.brokerBody}</p></article></div><p className="business-note">{c.costsNote}</p></section>
-      <section id="help" className="business-help"><h2>{c.helpTitle}</h2><p>{c.helpBody}</p><div className="business-actions"><Button asChild size="lg"><a href={`tel:${BUSINESS_PARALEGAL_PHONE}`}><Phone />{c.call} · {BUSINESS_PARALEGAL_PHONE_DISPLAY}</a></Button><Button asChild variant="outline" size="lg"><a href={`sms:${BUSINESS_PARALEGAL_PHONE}`}><MessageSquareText />{c.text}</a></Button><Button asChild variant="outline" size="lg"><a href={`https://detenciondefensa.com/?lang=${lang}#process-questions`}>{lang === "es" ? "Programe una llamada" : lang === "ht" ? "Pwograme yon apèl" : "Set up a call"}</a></Button></div></section>
+      <section id="help" className="business-help"><h2>{c.helpTitle}</h2><p>{c.helpBody}</p><div className="business-actions"><Button asChild size="lg"><a href={`tel:${BUSINESS_PARALEGAL_PHONE}`}><Phone />{c.call} · {BUSINESS_PARALEGAL_PHONE_DISPLAY}</a></Button><Button asChild variant="outline" size="lg"><a href={`sms:${BUSINESS_PARALEGAL_PHONE}`}><MessageSquareText />{c.text}</a></Button><Button asChild variant="outline" size="lg"><Link to="/business-intake" search={{ lang }}>{BUSINESS_INTAKE_COPY[lang].send}</Link></Button></div></section>
       <section className="business-disclosures"><h2>{c.disclosureTitle}</h2>{c.disclosures.map((item) => <p key={item}>{item}</p>)}<a href={`https://detenciondefensa.com/?lang=${lang}`}>{c.defenseLink} →</a></section>
     </main>
   );
