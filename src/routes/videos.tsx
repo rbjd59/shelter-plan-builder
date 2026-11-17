@@ -3,8 +3,16 @@ import NarrativeVideoSection from "@/components/NarrativeVideoSection";
 import AdVideoSection from "@/components/AdVideoSection";
 import EmployerVideoSection from "@/components/EmployerVideoSection";
 import { useLang } from "@/context/LanguageContext";
+import AssessmentVideo from "@/components/AssessmentVideo";
+import businessEn from "@/assets/videos/save-my-business-en-v1.mp4.asset.json";
+import businessEs from "@/assets/videos/save-my-business-es-v1.mp4.asset.json";
+import businessHt from "@/assets/videos/save-my-business-ht-v1.mp4.asset.json";
 
 export const Route = createFileRoute("/videos")({
+  validateSearch: (search: Record<string, unknown>): { lang?: string } => {
+    const lang = search.lang;
+    return lang === "en" || lang === "es" || lang === "ht" ? { lang } : {};
+  },
   head: () => ({
     meta: [
       { title: "Videos — DetencionDefensa.com" },
@@ -39,6 +47,7 @@ const BACK: Record<string, string> = {
 
 function VideosPage() {
   const { lang } = useLang();
+  const businessVideos = { en: businessEn.url, es: businessEs.url, ht: businessHt.url };
   return (
     <main style={{ background: "#0d2c54", minHeight: "100vh", paddingBottom: "2rem" }}>
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "1.25rem 1rem 0" }}>
@@ -54,6 +63,12 @@ function VideosPage() {
           {BACK[lang] ?? BACK.en}
         </Link>
       </div>
+      <section id="save-my-business" className="home-redesign">
+        <div className="asmt"><div className="asmt-wrap">
+          <h1 className="asmt-title">Save My Business</h1>
+          <AssessmentVideo src={businessVideos[lang]} lang={lang} title="Save My Business" onEnded={() => {}} />
+        </div></div>
+      </section>
       <NarrativeVideoSection />
       <AdVideoSection />
       <EmployerVideoSection />

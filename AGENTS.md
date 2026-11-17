@@ -14,3 +14,4 @@
 - Keep related business-offering copy in the language-aware paid-solutions area and use `withLang` for outbound links so homepage language selection carries through without altering existing videos.
 - Keep process-overview media language-specific and CDN-hosted, with original how-it-works media available in the video library; large video files must not enter the repository.
 - Use the shared assessment video player for qualified-service videos: attempt audible autoplay, offer a localized play control when browsers block it, and advance only on video end or an explicit next action.
+- Keep qualification-based video transitions in the tested assessment video-flow module so home and business videos play consecutively before scheduling; expose the same business media in the video library for previews without creating an assessment.

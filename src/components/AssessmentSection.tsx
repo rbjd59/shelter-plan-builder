@@ -14,6 +14,7 @@ import businessVideoHt from "@/assets/videos/save-my-business-ht-v1.mp4.asset.js
 import AssessmentVideo from "@/components/AssessmentVideo";
 import { Button } from "@/components/ui/button";
 import { withLang } from "@/lib/outbound-lang";
+import { firstResultPhase, afterHomeVideo, afterBusinessVideo, type Phase } from "@/lib/assessment/video-flow";
 
 const HOME_VIDEO: Record<string, string> = { en: homeVideo.url, es: homeVideoEs.url, ht: homeVideoHt.url };
 const BUSINESS_VIDEO = { en: businessVideo.url, es: businessVideoEs.url, ht: businessVideoHt.url };
@@ -24,7 +25,6 @@ const BUSINESS_COPY = {
 };
 const money = (v: number) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(v);
 
-type Phase = "q" | "homeVideo" | "homeSchedule" | "bizVideo" | "bizSchedule" | "report";
 type Saved = {
   assessmentId: string;
   accessToken: string;
@@ -75,7 +75,7 @@ export default function AssessmentSection() {
       const answers = { ...a, contacts: contacts.filter((c) => c.n || c.p).map((c) => `${c.n} — ${c.p}`) };
       const r = await submit({ data: { language: lang, answers, help, signedName: signed } });
       setSaved(r);
-      setPhase(r.results.home === "save_my_home" ? "homeVideo" : r.results.business ? "bizVideo" : "report");
+      setPhase(firstResultPhase(r.results));
       scrollTop();
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Something went wrong.");
@@ -91,7 +91,7 @@ export default function AssessmentSection() {
     try {
       const result = await schedule({ data: { assessmentId: saved.assessmentId, accessToken: saved.accessToken, kind, appointmentAt } });
       setAppointments((p) => ({ ...p, [kind]: result.appointmentAt }));
-      if (kind === "home") setPhase(saved.results.business ? "bizVideo" : "report");
+      if (kind === "home") setPhase(saved.results.business ? "bizSchedule" : "report");
       else setPhase("report");
       scrollTop();
     } catch (e) {
@@ -173,8 +173,8 @@ export default function AssessmentSection() {
           <div className="asmt-card">
             <h3 className="asmt-title">Good news: you qualify for Save My Home</h3>
             <p>Watch this short video first.</p>
-            <AssessmentVideo src={HOME_VIDEO[lang] ?? HOME_VIDEO.en} lang={lang} title="Save My Home" onEnded={() => setPhase("homeSchedule")} />
-            <button className="asmt-go" onClick={() => setPhase("homeSchedule")}>Next: choose a home call →</button>
+            <AssessmentVideo src={HOME_VIDEO[lang] ?? HOME_VIDEO.en} lang={lang} title="Save My Home" onEnded={() => setPhase(afterHomeVideo(r))} />
+            <Button className="asmt-go h-auto whitespace-normal" onClick={() => setPhase(afterHomeVideo(r))}>{r.business ? (lang === "es" ? "Siguiente: Save My Business →" : lang === "ht" ? "Apre sa: Save My Business →" : "Next: Save My Business →") : "Next: choose a home call →"}</Button>
           </div>
         )}
         {phase === "homeSchedule" && (
@@ -191,9 +191,9 @@ export default function AssessmentSection() {
           <div className="asmt-card">
             <h3 className="asmt-title">{businessCopy.title}</h3>
             <p>{businessCopy.intro}</p>
-            <AssessmentVideo src={BUSINESS_VIDEO[lang]} lang={lang} title="Save My Business" onEnded={() => setPhase("bizSchedule")} />
+            <AssessmentVideo src={BUSINESS_VIDEO[lang]} lang={lang} title="Save My Business" onEnded={() => setPhase(afterBusinessVideo(r))} />
             <p><a href={withLang("https://savemybusiness.com", lang)} target="_blank" rel="noopener noreferrer">{businessCopy.more} ↗</a></p>
-            <Button className="asmt-go h-auto whitespace-normal" onClick={() => setPhase("bizSchedule")}>{businessCopy.next}</Button>
+            <Button className="asmt-go h-auto whitespace-normal" onClick={() => setPhase(afterBusinessVideo(r))}>{r.home === "save_my_home" ? (lang === "es" ? "Siguiente: elija una llamada para su casa →" : lang === "ht" ? "Apre sa: chwazi yon apèl pou kay ou →" : "Next: choose a home call →") : businessCopy.next}</Button>
           </div>
         )}
         {phase === "bizSchedule" && (
