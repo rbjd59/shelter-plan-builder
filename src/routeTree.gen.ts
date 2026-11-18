@@ -45,6 +45,7 @@ import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as PastorsRouteImport } from './routes/pastors'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as QualifyRouteImport } from './routes/qualify'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RetainerRouteImport } from './routes/retainer'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as SecurityFaqRouteImport } from './routes/security-faq'
@@ -297,6 +298,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const QualifyRoute = QualifyRouteImport.update({
   id: '/qualify',
   path: '/qualify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RetainerRoute = RetainerRouteImport.update({
@@ -730,6 +736,7 @@ export interface FileRoutesByFullPath {
   '/pastors': typeof PastorsRoute
   '/privacy': typeof PrivacyRoute
   '/qualify': typeof QualifyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/retainer': typeof RetainerRoute
   '/security': typeof SecurityRoute
   '/security-faq': typeof SecurityFaqRoute
@@ -841,6 +848,7 @@ export interface FileRoutesByTo {
   '/pastors': typeof PastorsRoute
   '/privacy': typeof PrivacyRoute
   '/qualify': typeof QualifyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/retainer': typeof RetainerRoute
   '/security': typeof SecurityRoute
   '/security-faq': typeof SecurityFaqRoute
@@ -956,6 +964,7 @@ export interface FileRoutesById {
   '/pastors': typeof PastorsRoute
   '/privacy': typeof PrivacyRoute
   '/qualify': typeof QualifyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/retainer': typeof RetainerRoute
   '/security': typeof SecurityRoute
   '/security-faq': typeof SecurityFaqRoute
@@ -1069,6 +1078,7 @@ export interface FileRouteTypes {
     | '/pastors'
     | '/privacy'
     | '/qualify'
+    | '/reset-password'
     | '/retainer'
     | '/security'
     | '/security-faq'
@@ -1180,6 +1190,7 @@ export interface FileRouteTypes {
     | '/pastors'
     | '/privacy'
     | '/qualify'
+    | '/reset-password'
     | '/retainer'
     | '/security'
     | '/security-faq'
@@ -1294,6 +1305,7 @@ export interface FileRouteTypes {
     | '/pastors'
     | '/privacy'
     | '/qualify'
+    | '/reset-password'
     | '/retainer'
     | '/security'
     | '/security-faq'
@@ -1409,6 +1421,7 @@ export interface RootRouteChildren {
   PastorsRoute: typeof PastorsRoute
   PrivacyRoute: typeof PrivacyRoute
   QualifyRoute: typeof QualifyRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   RetainerRoute: typeof RetainerRoute
   SecurityRoute: typeof SecurityRoute
   SecurityFaqRoute: typeof SecurityFaqRoute
@@ -1711,6 +1724,13 @@ declare module '@tanstack/react-router' {
       path: '/qualify'
       fullPath: '/qualify'
       preLoaderRoute: typeof QualifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/retainer': {
@@ -2376,6 +2396,7 @@ const rootRouteChildren: RootRouteChildren = {
   PastorsRoute: PastorsRoute,
   PrivacyRoute: PrivacyRoute,
   QualifyRoute: QualifyRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   RetainerRoute: RetainerRoute,
   SecurityRoute: SecurityRoute,
   SecurityFaqRoute: SecurityFaqRoute,

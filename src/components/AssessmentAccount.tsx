@@ -16,6 +16,7 @@ const COPY = {
     signedIn: "Signed in as", signout: "Sign out", questions: "Answer the questions →", later: "I’ll answer later",
     sms: "Yes, send me one text if I leave my questions unfinished. Message and data rates may apply. Reply STOP to stop.",
     reminder: "We will send one reminder if you leave your questions unfinished.", saving: "Saving…",
+    forgot: "Forgot your password?", resetSent: "If this email has an account, we sent a link to set a new password. Check your inbox and spam folder.", needEmail: "Type your email first.", exists: "You already have an account with this email. Sign in below, or tap “Forgot your password?”", badLogin: "That email and password do not match. Try again or tap “Forgot your password?”",
   },
   es: {
     signupTitle: "Cree su cuenta", signinTitle: "Entre a su cuenta",
@@ -26,6 +27,7 @@ const COPY = {
     signedIn: "Entró como", signout: "Salir", questions: "Responder las preguntas →", later: "Responderé más tarde",
     sms: "Sí, envíenme un texto si dejo las preguntas sin terminar. Pueden aplicar cargos. Responda STOP para dejar de recibirlos.",
     reminder: "Enviaremos un recordatorio si deja las preguntas sin terminar.", saving: "Guardando…",
+    forgot: "¿Olvidó su contraseña?", resetSent: "Si este correo tiene cuenta, le enviamos un enlace para crear una nueva contraseña. Revise su correo y la carpeta de spam.", needEmail: "Escriba su correo primero.", exists: "Ya tiene una cuenta con este correo. Entre abajo o toque “¿Olvidó su contraseña?”", badLogin: "El correo y la contraseña no coinciden. Intente otra vez o toque “¿Olvidó su contraseña?”",
   },
   ht: {
     signupTitle: "Kreye kont ou", signinTitle: "Konekte nan kont ou",
@@ -36,6 +38,7 @@ const COPY = {
     signedIn: "Ou konekte kòm", signout: "Dekonekte", questions: "Reponn kesyon yo →", later: "M ap reponn pita",
     sms: "Wi, voye yon mesaj ba mwen si m pa fini kesyon yo. Operatè a ka pran frè. Reponn STOP pou sispann.",
     reminder: "N ap voye yon rapèl si ou pa fini kesyon yo.", saving: "K ap sove…",
+    forgot: "Ou bliye modpas ou?", resetSent: "Si imèl sa a gen yon kont, nou voye yon lyen pou chwazi yon nouvo modpas. Tcheke imèl ou ak dosye spam.", needEmail: "Ekri imèl ou anvan.", exists: "Ou gen yon kont deja ak imèl sa a. Konekte anba a, oswa peze “Ou bliye modpas ou?”", badLogin: "Imèl la ak modpas la pa mache ansanm. Eseye ankò oswa peze “Ou bliye modpas ou?”",
   },
 } as const;
 
@@ -66,7 +69,7 @@ export default function AssessmentAccount({ lang, user, onUser, details, onDetai
     try {
       if (mode === "signin") {
         const { data, error: signInError } = await supabase.auth.signInWithPassword({ email: details.email.trim(), password });
-        if (signInError) throw signInError;
+        if (signInError) { if (/invalid login/i.test(signInError.message)) { setAuthError(t.badLogin); return; } throw signInError; }
         onUser(data.user);
       } else {
         const { data, error: signUpError } = await supabase.auth.signUp({
@@ -81,7 +84,10 @@ export default function AssessmentAccount({ lang, user, onUser, details, onDetai
             }) },
           },
         });
-        if (signUpError) throw signUpError;
+        if (signUpError) {
+          if (/already registered|already exists/i.test(signUpError.message)) { setMode("signin"); setAuthError(t.exists); return; }
+          throw signUpError;
+        }
         if (data.session) onUser(data.user);
         else setAuthNotice(t.confirm);
       }
@@ -89,6 +95,16 @@ export default function AssessmentAccount({ lang, user, onUser, details, onDetai
     } catch (cause) {
       setAuthError(cause instanceof Error ? cause.message : "Please check your information and try again.");
     } finally { setAuthBusy(false); }
+  };
+
+  const forgot = async () => {
+    setAuthError(""); setAuthNotice("");
+    const email = details.email.trim();
+    if (!email) { setAuthError(t.needEmail); return; }
+    setAuthBusy(true);
+    const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/reset-password?lang=${lang}` });
+    setAuthBusy(false);
+    if (resetError) setAuthError(resetError.message); else setAuthNotice(t.resetSent);
   };
 
   if (!user) return <>
@@ -106,6 +122,7 @@ export default function AssessmentAccount({ lang, user, onUser, details, onDetai
       <div className="asmt-entry-actions">
         <button className="asmt-go" disabled={authBusy}>{authBusy ? t.working : mode === "signup" ? t.signup : t.signin}</button>
         <button type="button" className="asmt-skip" onClick={() => { setMode(mode === "signup" ? "signin" : "signup"); setAuthError(""); setAuthNotice(""); }}>{mode === "signup" ? t.toSignin : t.toSignup}</button>
+        {mode === "signin" && <button type="button" className="asmt-skip" disabled={authBusy} onClick={forgot}>{t.forgot}</button>}
       </div>
     </form>
   </>;
