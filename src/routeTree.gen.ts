@@ -27,7 +27,9 @@ import { Route as CompanyBoardRouteImport } from './routes/company-board'
 import { Route as ConfigurarRouteImport } from './routes/configurar'
 import { Route as ContactoRouteImport } from './routes/contacto'
 import { Route as DagRouteImport } from './routes/dag'
+import { Route as DealersRouteImport } from './routes/dealers'
 import { Route as DeleteMyDataRouteImport } from './routes/delete-my-data'
+import { Route as DontLoseYourCarRouteImport } from './routes/dont-lose-your-car'
 import { Route as DownloadRouteImport } from './routes/download'
 import { Route as FamilyFormsRouteImport } from './routes/family-forms'
 import { Route as FirmarRouteImport } from './routes/firmar'
@@ -35,7 +37,9 @@ import { Route as GetAppRouteImport } from './routes/get-app'
 import { Route as IntakeRouteImport } from './routes/intake'
 import { Route as LegalNoticesRouteImport } from './routes/legal-notices'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as NoPierdasTuCarroRouteImport } from './routes/no-pierdas-tu-carro'
 import { Route as OwnPropertyRouteImport } from './routes/own-property'
+import { Route as PaPediMachinOuRouteImport } from './routes/pa-pedi-machin-ou'
 import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as PastorsRouteImport } from './routes/pastors'
 import { Route as PrivacyRouteImport } from './routes/privacy'
@@ -203,9 +207,19 @@ const DagRoute = DagRouteImport.update({
   path: '/dag',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DealersRoute = DealersRouteImport.update({
+  id: '/dealers',
+  path: '/dealers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DeleteMyDataRoute = DeleteMyDataRouteImport.update({
   id: '/delete-my-data',
   path: '/delete-my-data',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DontLoseYourCarRoute = DontLoseYourCarRouteImport.update({
+  id: '/dont-lose-your-car',
+  path: '/dont-lose-your-car',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DownloadRoute = DownloadRouteImport.update({
@@ -243,9 +257,19 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NoPierdasTuCarroRoute = NoPierdasTuCarroRouteImport.update({
+  id: '/no-pierdas-tu-carro',
+  path: '/no-pierdas-tu-carro',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OwnPropertyRoute = OwnPropertyRouteImport.update({
   id: '/own-property',
   path: '/own-property',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaPediMachinOuRoute = PaPediMachinOuRouteImport.update({
+  id: '/pa-pedi-machin-ou',
+  path: '/pa-pedi-machin-ou',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PartnersRoute = PartnersRouteImport.update({
@@ -675,7 +699,9 @@ export interface FileRoutesByFullPath {
   '/configurar': typeof ConfigurarRoute
   '/contacto': typeof ContactoRoute
   '/dag': typeof DagRoute
+  '/dealers': typeof DealersRoute
   '/delete-my-data': typeof DeleteMyDataRoute
+  '/dont-lose-your-car': typeof DontLoseYourCarRoute
   '/download': typeof DownloadRoute
   '/family-forms': typeof FamilyFormsRoute
   '/firmar': typeof FirmarRoute
@@ -683,7 +709,9 @@ export interface FileRoutesByFullPath {
   '/intake': typeof IntakeRoute
   '/legal-notices': typeof LegalNoticesRoute
   '/login': typeof LoginRoute
+  '/no-pierdas-tu-carro': typeof NoPierdasTuCarroRoute
   '/own-property': typeof OwnPropertyRoute
+  '/pa-pedi-machin-ou': typeof PaPediMachinOuRoute
   '/partners': typeof PartnersRoute
   '/pastors': typeof PastorsRoute
   '/privacy': typeof PrivacyRoute
@@ -780,7 +808,9 @@ export interface FileRoutesByTo {
   '/configurar': typeof ConfigurarRoute
   '/contacto': typeof ContactoRoute
   '/dag': typeof DagRoute
+  '/dealers': typeof DealersRoute
   '/delete-my-data': typeof DeleteMyDataRoute
+  '/dont-lose-your-car': typeof DontLoseYourCarRoute
   '/download': typeof DownloadRoute
   '/family-forms': typeof FamilyFormsRoute
   '/firmar': typeof FirmarRoute
@@ -788,7 +818,9 @@ export interface FileRoutesByTo {
   '/intake': typeof IntakeRoute
   '/legal-notices': typeof LegalNoticesRoute
   '/login': typeof LoginRoute
+  '/no-pierdas-tu-carro': typeof NoPierdasTuCarroRoute
   '/own-property': typeof OwnPropertyRoute
+  '/pa-pedi-machin-ou': typeof PaPediMachinOuRoute
   '/partners': typeof PartnersRoute
   '/pastors': typeof PastorsRoute
   '/privacy': typeof PrivacyRoute
@@ -889,7 +921,9 @@ export interface FileRoutesById {
   '/configurar': typeof ConfigurarRoute
   '/contacto': typeof ContactoRoute
   '/dag': typeof DagRoute
+  '/dealers': typeof DealersRoute
   '/delete-my-data': typeof DeleteMyDataRoute
+  '/dont-lose-your-car': typeof DontLoseYourCarRoute
   '/download': typeof DownloadRoute
   '/family-forms': typeof FamilyFormsRoute
   '/firmar': typeof FirmarRoute
@@ -897,7 +931,9 @@ export interface FileRoutesById {
   '/intake': typeof IntakeRoute
   '/legal-notices': typeof LegalNoticesRoute
   '/login': typeof LoginRoute
+  '/no-pierdas-tu-carro': typeof NoPierdasTuCarroRoute
   '/own-property': typeof OwnPropertyRoute
+  '/pa-pedi-machin-ou': typeof PaPediMachinOuRoute
   '/partners': typeof PartnersRoute
   '/pastors': typeof PastorsRoute
   '/privacy': typeof PrivacyRoute
@@ -996,7 +1032,9 @@ export interface FileRouteTypes {
     | '/configurar'
     | '/contacto'
     | '/dag'
+    | '/dealers'
     | '/delete-my-data'
+    | '/dont-lose-your-car'
     | '/download'
     | '/family-forms'
     | '/firmar'
@@ -1004,7 +1042,9 @@ export interface FileRouteTypes {
     | '/intake'
     | '/legal-notices'
     | '/login'
+    | '/no-pierdas-tu-carro'
     | '/own-property'
+    | '/pa-pedi-machin-ou'
     | '/partners'
     | '/pastors'
     | '/privacy'
@@ -1101,7 +1141,9 @@ export interface FileRouteTypes {
     | '/configurar'
     | '/contacto'
     | '/dag'
+    | '/dealers'
     | '/delete-my-data'
+    | '/dont-lose-your-car'
     | '/download'
     | '/family-forms'
     | '/firmar'
@@ -1109,7 +1151,9 @@ export interface FileRouteTypes {
     | '/intake'
     | '/legal-notices'
     | '/login'
+    | '/no-pierdas-tu-carro'
     | '/own-property'
+    | '/pa-pedi-machin-ou'
     | '/partners'
     | '/pastors'
     | '/privacy'
@@ -1209,7 +1253,9 @@ export interface FileRouteTypes {
     | '/configurar'
     | '/contacto'
     | '/dag'
+    | '/dealers'
     | '/delete-my-data'
+    | '/dont-lose-your-car'
     | '/download'
     | '/family-forms'
     | '/firmar'
@@ -1217,7 +1263,9 @@ export interface FileRouteTypes {
     | '/intake'
     | '/legal-notices'
     | '/login'
+    | '/no-pierdas-tu-carro'
     | '/own-property'
+    | '/pa-pedi-machin-ou'
     | '/partners'
     | '/pastors'
     | '/privacy'
@@ -1318,7 +1366,9 @@ export interface RootRouteChildren {
   ConfigurarRoute: typeof ConfigurarRoute
   ContactoRoute: typeof ContactoRoute
   DagRoute: typeof DagRoute
+  DealersRoute: typeof DealersRoute
   DeleteMyDataRoute: typeof DeleteMyDataRoute
+  DontLoseYourCarRoute: typeof DontLoseYourCarRoute
   DownloadRoute: typeof DownloadRoute
   FamilyFormsRoute: typeof FamilyFormsRoute
   FirmarRoute: typeof FirmarRoute
@@ -1326,7 +1376,9 @@ export interface RootRouteChildren {
   IntakeRoute: typeof IntakeRoute
   LegalNoticesRoute: typeof LegalNoticesRoute
   LoginRoute: typeof LoginRoute
+  NoPierdasTuCarroRoute: typeof NoPierdasTuCarroRoute
   OwnPropertyRoute: typeof OwnPropertyRoute
+  PaPediMachinOuRoute: typeof PaPediMachinOuRoute
   PartnersRoute: typeof PartnersRoute
   PastorsRoute: typeof PastorsRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -1508,11 +1560,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DagRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dealers': {
+      id: '/dealers'
+      path: '/dealers'
+      fullPath: '/dealers'
+      preLoaderRoute: typeof DealersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/delete-my-data': {
       id: '/delete-my-data'
       path: '/delete-my-data'
       fullPath: '/delete-my-data'
       preLoaderRoute: typeof DeleteMyDataRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dont-lose-your-car': {
+      id: '/dont-lose-your-car'
+      path: '/dont-lose-your-car'
+      fullPath: '/dont-lose-your-car'
+      preLoaderRoute: typeof DontLoseYourCarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/download': {
@@ -1564,11 +1630,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/no-pierdas-tu-carro': {
+      id: '/no-pierdas-tu-carro'
+      path: '/no-pierdas-tu-carro'
+      fullPath: '/no-pierdas-tu-carro'
+      preLoaderRoute: typeof NoPierdasTuCarroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/own-property': {
       id: '/own-property'
       path: '/own-property'
       fullPath: '/own-property'
       preLoaderRoute: typeof OwnPropertyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pa-pedi-machin-ou': {
+      id: '/pa-pedi-machin-ou'
+      path: '/pa-pedi-machin-ou'
+      fullPath: '/pa-pedi-machin-ou'
+      preLoaderRoute: typeof PaPediMachinOuRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/partners': {
@@ -2237,7 +2317,9 @@ const rootRouteChildren: RootRouteChildren = {
   ConfigurarRoute: ConfigurarRoute,
   ContactoRoute: ContactoRoute,
   DagRoute: DagRoute,
+  DealersRoute: DealersRoute,
   DeleteMyDataRoute: DeleteMyDataRoute,
+  DontLoseYourCarRoute: DontLoseYourCarRoute,
   DownloadRoute: DownloadRoute,
   FamilyFormsRoute: FamilyFormsRoute,
   FirmarRoute: FirmarRoute,
@@ -2245,7 +2327,9 @@ const rootRouteChildren: RootRouteChildren = {
   IntakeRoute: IntakeRoute,
   LegalNoticesRoute: LegalNoticesRoute,
   LoginRoute: LoginRoute,
+  NoPierdasTuCarroRoute: NoPierdasTuCarroRoute,
   OwnPropertyRoute: OwnPropertyRoute,
+  PaPediMachinOuRoute: PaPediMachinOuRoute,
   PartnersRoute: PartnersRoute,
   PastorsRoute: PastorsRoute,
   PrivacyRoute: PrivacyRoute,

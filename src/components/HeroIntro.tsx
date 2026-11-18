@@ -117,6 +117,7 @@ export default function HeroIntro() {
         <nav className={`home-nav ${open ? "is-open" : ""}`} aria-label="Main">
           <a href="#how-it-works-video" onClick={() => setOpen(false)}>{lang === "es" ? "Cómo funciona" : lang === "en" ? "How it works" : "Kijan li mache"}</a>
           <a href="/videos">{lang === "ht" ? "Videyo" : "Videos"}</a>
+          <a href={`/no-pierdas-tu-carro?lang=${lang}`} onClick={() => setOpen(false)}>{lang === "es" ? "Su carro" : lang === "en" ? "Vehicle" : "Machin ou"}</a>
           <a href="/attorney">{lang === "es" ? "Abogado" : lang === "en" ? "Attorney" : "Avoka"}</a>
         </nav>
         <div className="home-languages" role="group" aria-label="Language">

@@ -1,8 +1,9 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
 ## November 17 — Don't Lose Your Car, Part 1
-- [ ] Add the trilingual vehicle-program page and aliases, homepage card, navigation, dealer page and interest form, SEO/sitemap entries, and program video with script.
-- [ ] Verify the public pages, intake vehicle flag, dealer submission/notification, language switching, video playback, full tests and build; publish nothing.
+- 2026-11-17: Added Don't Lose Your Car vehicle program page, dealer page, and video. Pending: Sorrentino review of agreements; FL motor vehicle broker licensing question on the per-car dealer fee (Fla. Stat. 320.27); domains dontloseyourcar.com / nopierdastucarro.com not yet registered — do not link to them.
+- [x] Add the trilingual vehicle-program page and aliases, homepage card, navigation, dealer page and interest form, SEO/sitemap entries, and program video with script.
+- [x] Verify all public routes and aliases in EN/ES/HT, intake `vehicle=1` links, dealer save plus staff email/SMS log, language switching, video playback, mobile fit, 270 tests and build; no failed browser requests. Test lead removed after verification; nothing published. Spanish and Kreyòl narration still need native-speaker review.
 - [ ] Part 2: add the intake checkbox and forms packet after the owner's next message; attorney review and Florida dealer-fee licensing review remain pending.
 
 ## Business call-request intake

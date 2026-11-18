@@ -79,6 +79,10 @@ export function LegalDisclaimerFooter() {
           <Link to="/contacto" style={{ color: "#a1a1aa", textDecoration: "underline" }}>
             {t.contact}
           </Link>
+          {" · "}
+          <Link to="/dealers" search={{ lang: lang === "es" ? "es" : "en" }} style={{ color: "#a1a1aa", textDecoration: "underline" }}>
+            {t.forDealers}
+          </Link>
         </p>
 
         <div
@@ -112,6 +116,7 @@ const COPY = {
     privacy: "Privacy",
     legalNotices: "Legal notices & disclosures",
     contact: "Contact",
+    forDealers: "For dealers",
   },
   es: {
     companyHeading: "Propietario de la plataforma SaaS y proveedor de tecnología y datos",
@@ -129,6 +134,7 @@ const COPY = {
     privacy: "Privacidad",
     legalNotices: "Avisos legales y divulgaciones",
     contact: "Contacto",
+    forDealers: "Para concesionarios",
   },
   ht: {
     companyHeading: "Pwopriyetè platfòm SaaS ak founisè teknoloji ak done",
@@ -146,5 +152,6 @@ const COPY = {
     privacy: "Konfidansyalite",
     legalNotices: "Avi legal ak divilgasyon",
     contact: "Kontak",
+    forDealers: "Pou konsesyonè yo",
   },
 } as const;

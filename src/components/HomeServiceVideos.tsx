@@ -13,6 +13,7 @@ import homeHt from "@/assets/videos/protect-what-you-built-ht.mp4.asset.json";
 import businessEn from "@/assets/videos/save-my-business-en-v2.mp4.asset.json";
 import businessEs from "@/assets/videos/save-my-business-es-v2.mp4.asset.json";
 import businessHt from "@/assets/videos/save-my-business-ht-v2.mp4.asset.json";
+import VehicleHomeCard from "./VehicleHomeCard";
 
 const VIDEOS = {
   home: { en: homeEn.url, es: homeEs.url, ht: homeHt.url },
@@ -63,5 +64,6 @@ export default function HomeServiceVideos() {
   return <div className="home-video-section">
     <ServiceVideo key={`home-${lang}`} kind="home" lang={lang} />
     <ServiceVideo key={`business-${lang}`} kind="business" lang={lang} />
+    <VehicleHomeCard lang={lang} />
   </div>;
 }
