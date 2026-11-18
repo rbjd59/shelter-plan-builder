@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { getStripeEnvironment } from "@/lib/stripe";
+import VehiclePacketDownloads from "@/components/VehiclePacketDownloads";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({ meta: [{ title: "Your account — DetencionDefensa.com" }] }),
@@ -60,6 +61,7 @@ function DashboardPage() {
 
         <h1 style={{ fontSize: 32, fontWeight: 700, marginBottom: 8, fontFamily: "Fraunces, serif" }}>Your account</h1>
         <p style={{ color: "#a8a59a", marginBottom: 32, fontSize: 14 }}>{email}</p>
+        <VehiclePacketDownloads />
 
         {loading ? (
           <p>Loading…</p>

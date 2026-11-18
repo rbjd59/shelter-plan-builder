@@ -18,11 +18,16 @@ import { ArrowRight, ArrowLeft } from "lucide-react";
 import { canStartQuestionnaire, signupDetails } from "@/lib/intake-signup";
 import { readSiteLang } from "@/lib/site-lang";
 import { resolveIntakeGate } from "@/lib/intake-gate";
+import VehicleIntakeSection from "@/components/intake/VehicleIntakeSection";
+import { createVehicleEnrollment } from "@/lib/vehicle-enrollment.functions";
+import { vehicleFromAnswers } from "@/lib/vehicle-rescue";
+import { downloadPdfFromBase64 } from "@/components/PdfPreviewDialog";
 
 
 const searchSchema = z.object({
   session_id: z.string().optional(),
   lang: z.enum(["en", "es", "ht"]).catch("es"),
+  vehicle: z.coerce.number().int().max(1).optional(),
 });
 
 export const Route = createFileRoute("/intake")({
@@ -224,7 +229,7 @@ const UI = {
 } as const;
 
 function IntakePage() {
-  const { session_id, lang } = Route.useSearch();
+  const { session_id, lang, vehicle } = Route.useSearch();
   const navigate = useNavigate();
   const [resolvedLang, setResolvedLang] = useState<Lang | null>(null);
 
@@ -245,7 +250,7 @@ function IntakePage() {
     });
 
     if (decision.kind === "rewrite") {
-      navigate({ to: "/intake", search: { lang: decision.lang }, replace: true });
+      navigate({ to: "/intake", search: { lang: decision.lang, vehicle }, replace: true });
       return;
     }
     if (decision.kind === "agreement") {
@@ -264,14 +269,15 @@ function IntakePage() {
   }, [resolvedLang]);
 
   if (!resolvedLang) return null;
-  return <IntakeInner sessionId={session_id} L={resolvedLang} ui={UI[resolvedLang]} />;
+  return <IntakeInner sessionId={session_id} L={resolvedLang} ui={UI[resolvedLang]} vehicleRequested={vehicle === 1} />;
 }
 
 
 
-function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | undefined; L: Lang; ui: typeof UI[Lang] }) {
+function IntakeInner({ sessionId: _session_id, L, ui, vehicleRequested }: { sessionId: string | undefined; L: Lang; ui: typeof UI[Lang]; vehicleRequested: boolean }) {
 
   const submitFn = useServerFn(submitDemoIntake);
+  const vehicleEnrollmentFn = useServerFn(createVehicleEnrollment);
   const webhookFn = useServerFn(notifyIntakeWebhook);
   const smsNotifyFn = useServerFn(sendIntakeNotifications);
   const loadDraftFn = useServerFn(loadIntakeDraft);
@@ -281,7 +287,9 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
   const [status, setStatus] = useState<"ready" | "submitting" | "done" | "error">("ready");
   const [errMsg, setErrMsg] = useState("");
   const [inviteCode, setInviteCode] = useState<string | null>(null);
-  const [answers, setAnswers] = useState<Record<string, string | boolean>>({ addon_asset_protection: true });
+  const [answers, setAnswers] = useState<Record<string, string | boolean>>({ addon_asset_protection: true, has_vehicle: vehicleRequested, vehicle_title_connector: "and", vehicle_title_holder: "owner", vehicle_proceeds: "designated_contact", vehicle_agent_type: "family" });
+  const [vehiclePacket, setVehiclePacket] = useState<{ pdfB64: string; filename: string } | null>(null);
+  const [vehiclePacketError, setVehiclePacketError] = useState("");
   const [englishAnswers, setEnglishAnswers] = useState<Record<string, string>>({});
   const [approvals, setApprovals] = useState<Record<string, boolean>>({});
   const [smsConsent, setSmsConsent] = useState(false);
@@ -337,7 +345,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
           return;
         }
         skipNextSaveRef.current = true;
-        setAnswers(draft.answers);
+        setAnswers({ ...draft.answers, ...(vehicleRequested ? { has_vehicle: true } : {}) });
         setEnglishAnswers(draft.englishAnswers);
         setApprovals(draft.approvals);
         setDraftLoaded(true);
@@ -406,6 +414,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
     }
     setStatus("submitting");
     try {
+      if (answers.has_vehicle) vehicleFromAnswers(answers);
       // Merge: English-approved values overwrite native values for PDF filling;
       // preserve the native originals under "<key>__native" for record copies.
       const merged: Record<string, string | boolean> = {
@@ -445,6 +454,20 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
         : null;
       const canonicalCode = submission.activationCode ?? webhookResult?.inviteCode ?? null;
       if (canonicalCode) setInviteCode(canonicalCode);
+      if (merged.has_vehicle) {
+        try {
+          const packet = await vehicleEnrollmentFn({ data: {
+            intakeSessionId,
+            language: L,
+            ownerName: String(merged.full_name ?? ""),
+            vehicle: vehicleFromAnswers(merged),
+          } });
+          setVehiclePacket({ pdfB64: packet.pdfB64, filename: packet.filename });
+        } catch (vehicleError) {
+          console.error("Vehicle enrollment failed:", vehicleError);
+          setVehiclePacketError(text("Your plan was saved, but the vehicle packet needs staff assistance. Call 305-337-7713.", "Su plan se guardó, pero el paquete del vehículo necesita ayuda del personal. Llame al 305-337-7713.", "Plan ou anrejistre, men pakè machin nan bezwen èd pèsonèl. Rele 305-337-7713."));
+        }
+      }
       // Fire-and-forget SMS notifications (client confirmation + staff alert).
        const contactPhoneRaw = typeof merged.client_mobile === "string" ? merged.client_mobile : null;
       const contactNameRaw = typeof merged.full_name === "string" ? merged.full_name : null;
@@ -624,6 +647,13 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
           </ol>
         </div>
 
+        {vehiclePacket && <div style={{ background: "#1a2436", border: "1px solid #e8a04a", padding: 20, borderRadius: 10, marginTop: 24 }}>
+          <h2 style={{ margin: "0 0 12px", fontSize: 18, color: "#fff5d6" }}>{text("Your Vehicle Rescue Packet", "Su Paquete de Rescate de Vehículo", "Pakè Rekiperasyon Machin Ou")}</h2>
+          <p style={{ color: "#e8a04a", fontSize: 13 }}>{text("DRAFT — PENDING ATTORNEY APPROVAL — DO NOT SIGN", "BORRADOR — PENDIENTE DE APROBACIÓN DEL ABOGADO — NO FIRMAR", "BOUYON — AP TANN APOUBASYON AVOKA — PA SIYEN")}</p>
+          <Button type="button" onClick={() => downloadPdfFromBase64(vehiclePacket.filename, vehiclePacket.pdfB64)}>{text("Download vehicle packet PDF", "Descargar el PDF del vehículo", "Telechaje PDF machin nan")}</Button>
+        </div>}
+        {vehiclePacketError && <p role="alert" style={{ color: "#ffcf8a", marginTop: 20 }}>{vehiclePacketError}</p>}
+
         {/* Draft forms */}
         <div style={{ marginTop: 24 }}>
           <h2 style={{ margin: "0 0 10px", fontSize: 16, fontWeight: 700, color: "#fff5d6" }}>{T.formsTitle}</h2>
@@ -649,7 +679,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
   return (
     <div style={wrap}>
       <div style={container}>
-        <LangSwitcher current={L} />
+        <LangSwitcher current={L} vehicleRequested={vehicleRequested} />
         <h1 style={{ fontSize: 32, fontWeight: 700, marginBottom: 8, fontFamily: "Fraunces, serif", overflowWrap: "anywhere" }}>{ui.title}</h1>
         <nav aria-label={text("Intake stages", "Etapas", "Etap yo")} className="intake-stage-navigation">
           <span aria-current={stage === "signup" ? "step" : undefined}>{text("Signup & consent", "Registro y consentimiento", "Enskripsyon ak konsantman")}</span>
@@ -776,6 +806,8 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
           })}
 
 
+          <VehicleIntakeSection lang={L} answers={answers} setAnswers={setAnswers} />
+
           {/* Family preparedness forms — sent by separate email, not in the app */}
           <section style={{ marginBottom: 32, background: "#1a2436", padding: 24, borderRadius: 6, borderLeft: "4px solid #e8a04a" }}>
             <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 6 }}>
@@ -823,7 +855,7 @@ function IntakeInner({ sessionId: _session_id, L, ui }: { sessionId: string | un
   );
 }
 
-function LangSwitcher({ current }: { current: Lang }) {
+function LangSwitcher({ current, vehicleRequested }: { current: Lang; vehicleRequested: boolean }) {
   const labels: Record<Lang, string> = { es: "Español", en: "English", ht: "Kreyòl" };
   const langs: Lang[] = ["es", "en", "ht"];
   const btn = (active: boolean): React.CSSProperties => ({
@@ -840,7 +872,7 @@ function LangSwitcher({ current }: { current: Lang }) {
   return (
     <div style={{ display: "flex", gap: 8, marginBottom: 16, justifyContent: "flex-end" }}>
       {langs.map((l) => (
-        <Link key={l} to="/intake" search={{ lang: l }} style={btn(l === current)}>
+        <Link key={l} to="/intake" search={{ lang: l, vehicle: vehicleRequested ? 1 : undefined }} style={btn(l === current)}>
           {l.toUpperCase()} · {labels[l]}
         </Link>
       ))}

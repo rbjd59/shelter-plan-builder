@@ -51,6 +51,14 @@ export default function VehicleProgramPage() {
 
         <section className="vehicle-band vehicle-tint"><div className="vehicle-section-heading"><h2>{c.signingTitle}</h2><p>{c.signingIntro}</p></div><div className="vehicle-signing">{c.signing.map((document) => <article key={document.title}><FileCheck2 aria-hidden="true" /><div><h3>{document.title}</h3><p>{document.body}</p></div></article>)}</div></section>
 
+        <section id="vehicle-documents" className="vehicle-band">
+          <div className="vehicle-section-heading"><h2>{lang === "es" ? "Vea los documentos" : lang === "ht" ? "Gade dokiman yo" : "See the documents"}</h2><p>{lang === "es" ? "Descargue una muestra en blanco con la marca de agua de borrador. El acuerdo para concesionarios también está en revisión." : lang === "ht" ? "Telechaje yon egzanp vid avèk mak BOUYON. Akò pou konsesyonè a an revizyon tou." : "Download a blank DRAFT-watermarked sample. The dealer agreement is also under attorney review."}</p></div>
+          <div className="vehicle-actions">
+            <Button asChild size="lg"><a href="/forms/vehicle/vehicle-rescue-packet-sample.pdf" download><FileCheck2 aria-hidden="true" />{lang === "es" ? "Descargar paquete de muestra" : lang === "ht" ? "Telechaje egzanp pakè a" : "Download sample Vehicle Rescue Packet"}</a></Button>
+            <Button asChild size="lg" variant="outline"><a href="/forms/vehicle/dealer-participation-agreement"><FileCheck2 aria-hidden="true" />{lang === "es" ? "Acuerdo para concesionarios (borrador)" : lang === "ht" ? "Akò konsesyonè (bouyon)" : "Dealer Participation Agreement (draft)"}</a></Button>
+          </div>
+        </section>
+
         <section id="vehicle-faq" className="vehicle-band"><div className="vehicle-section-heading"><h2>{c.faqTitle}</h2></div><div className="vehicle-faqs">{c.faqs.map((faq) => <details key={faq.q}><summary>{faq.q}</summary><p>{faq.a}</p></details>)}</div></section>
 
         <section className="vehicle-band vehicle-final"><h2>{c.finalTitle}</h2><p>{c.finalBody}</p><VehicleCta compact /><a className="vehicle-dealer-link" href={`/dealers?lang=${lang === "ht" ? "en" : lang}`}>{c.dealerLink} →</a></section>

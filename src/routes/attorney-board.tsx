@@ -106,9 +106,12 @@ function AttorneyBoard({ pin }: { pin: string }) {
             detentions come first, then files whose forms are complete and waiting
             on your review.
           </p>
-          <div className="mt-3">
+          <div className="mt-3 flex flex-wrap gap-4">
             <Link to="/attorney-trust-review" className="text-sm font-semibold text-amber-700 underline">
               Business trust attorney approvals →
+            </Link>
+            <Link to="/attorney-vehicle-review" className="text-sm font-semibold text-amber-700 underline">
+              Vehicle packet attorney approvals →
             </Link>
           </div>
           <div className="mt-2 flex flex-wrap gap-2 text-xs font-semibold">

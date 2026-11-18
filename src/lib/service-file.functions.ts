@@ -41,7 +41,7 @@ export const getServiceFile = createServerFn({ method: "POST" })
               "id,title,review_status,review_notes,attorney_reviewed_at,source_document_id,created_at,document_type",
             )
             .eq("assessment_id", data.id)
-            .in("document_type", ["service_trust", "service_business_trust"])
+            .in("document_type", ["service_trust", "service_business_trust", "service_vehicle_rescue"])
             .order("created_at", { ascending: false })
         : await supabaseAdmin
             .from("client_documents")
@@ -49,10 +49,16 @@ export const getServiceFile = createServerFn({ method: "POST" })
               "id,title,review_status,review_notes,attorney_reviewed_at,source_document_id,created_at,document_type",
             )
             .eq("client_id", data.id)
-            .in("document_type", ["service_trust", "service_business_trust"])
+            .in("document_type", ["service_trust", "service_business_trust", "service_vehicle_rescue"])
             .order("created_at", { ascending: false });
     if (documents.error) throw new Error(documents.error.message);
-    return { client, callbacks: callbacks ?? [], trustDocuments: documents.data };
+    const { data: vehicleEnrollments, error: vehicleError } = await supabaseAdmin
+      .from("vehicle_rescue_enrollments")
+      .select("id,owner_name,language,vehicle_data,review_status,draft_document_id,approved_document_id,created_at")
+      .eq(data.source === "assessment" ? "assessment_id" : "app_client_id", data.id)
+      .order("created_at", { ascending: false });
+    if (vehicleError) throw new Error(vehicleError.message);
+    return { client, callbacks: callbacks ?? [], trustDocuments: documents.data, vehicleEnrollments: vehicleEnrollments ?? [] };
   });
 const fileSchema = z.object({
   notes: z.string().max(12000).default(""),
@@ -246,6 +252,19 @@ export const generateServicePacket = createServerFn({ method: "POST" })
           : `${data.kind}-preparation-draft.pdf`,
     };
   });
+export const downloadServiceVehiclePacket = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator(reference.extend({ documentId: z.string().uuid() }))
+  .handler(async ({ data, context }) => {
+    await staff(context);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const result = data.source === "assessment"
+      ? await supabaseAdmin.from("assessment_documents").select("title,content").eq("id", data.documentId).eq("assessment_id", data.id).eq("document_type", "service_vehicle_rescue").single()
+      : await supabaseAdmin.from("client_documents").select("title,content").eq("id", data.documentId).eq("client_id", data.id).eq("document_type", "service_vehicle_rescue").single();
+    if (result.error || !result.data) throw new Error("Vehicle PDF not found in this client file.");
+    return { pdfB64: result.data.content, filename: `${result.data.title.replace(/[^a-z0-9_-]+/gi, "-")}.pdf` };
+  });
+
 export const emailClientChecklist = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator(
@@ -289,14 +308,14 @@ export const emailTrustPackage = createServerFn({ method: "POST" })
             .select("id,title,content,document_type")
             .eq("id", data.documentId)
             .eq("assessment_id", data.id)
-            .in("document_type", ["service_trust", "service_business_trust"])
+            .in("document_type", ["service_trust", "service_business_trust", "service_vehicle_rescue"])
             .single()
         : await supabaseAdmin
             .from("client_documents")
             .select("id,title,content,document_type")
             .eq("id", data.documentId)
             .eq("client_id", data.id)
-            .in("document_type", ["service_trust", "service_business_trust"])
+            .in("document_type", ["service_trust", "service_business_trust", "service_vehicle_rescue"])
             .single();
     if (result.error || !result.data) throw new Error("Trust PDF not found in this client file.");
     if (!isTrustDocument(result.data.document_type)) throw new Error("Trust PDF not found.");

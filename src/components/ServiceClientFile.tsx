@@ -11,6 +11,7 @@ import {
   generateServicePacket,
   emailClientChecklist,
   emailTrustPackage,
+  downloadServiceVehiclePacket,
 } from "@/lib/service-file.functions";
 import { CHECKLISTS, type ServiceKind } from "@/lib/service-file";
 import {
@@ -65,6 +66,7 @@ export default function ServiceClientFile({
   const generate = useServerFn(generateServicePacket);
   const email = useServerFn(emailClientChecklist);
   const sendTrust = useServerFn(emailTrustPackage);
+  const downloadVehicle = useServerFn(downloadServiceVehiclePacket);
   const [file, setFile] = useState<FileValues | null>(null);
   const [kind, setKind] = useState<ServiceKind>("heloc");
   const [status, setStatus] = useState("");
@@ -355,6 +357,15 @@ export default function ServiceClientFile({
           </div>
         </div>
       )}
+      <div className="border-t border-border pt-4">
+        <h4 className="font-semibold">Don't Lose Your Car · vehicle enrollments and PDFs</h4>
+        {data.vehicleEnrollments.length === 0 && <p className="text-sm text-muted-foreground">No vehicle enrollment in this client file.</p>}
+        {data.vehicleEnrollments.map((enrollment) => {
+          const vehicle = enrollment.vehicle_data as { year?: string; make?: string; model?: string; vin?: string };
+          return <div key={enrollment.id} className="mt-2 rounded border border-border p-3 text-sm"><strong>{vehicle.year} {vehicle.make} {vehicle.model}</strong> · VIN {vehicle.vin} · {enrollment.review_status}</div>;
+        })}
+        <ul className="divide-y divide-border">{data.trustDocuments.filter((doc) => doc.document_type === "service_vehicle_rescue").map((doc) => <li key={doc.id} className="flex flex-wrap items-center justify-between gap-3 py-3 text-sm"><span>{doc.title} · {doc.review_status}</span><Button variant="outline" disabled={busy} onClick={() => void work(async () => { const result = await downloadVehicle({ data: { id, source, documentId: doc.id } }); downloadPdfFromBase64(result.filename, result.pdfB64); }, "Vehicle PDF downloaded.")}><Download />Download vehicle PDF</Button></li>)}</ul>
+      </div>
       <div className="flex flex-wrap gap-2">
         <Button disabled={busy} onClick={() => void work(saveCurrent, "Client file saved.")}>
           <Save />

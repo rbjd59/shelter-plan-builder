@@ -1967,6 +1967,69 @@ export type Database = {
         }
         Relationships: []
       }
+      vehicle_rescue_enrollments: {
+        Row: {
+          app_client_id: string | null
+          approved_document_id: string | null
+          assessment_id: string | null
+          created_at: string
+          draft_document_id: string | null
+          id: string
+          intake_session_id: string
+          language: string
+          owner_name: string
+          review_status: string
+          updated_at: string
+          user_id: string | null
+          vehicle_data: Json
+        }
+        Insert: {
+          app_client_id?: string | null
+          approved_document_id?: string | null
+          assessment_id?: string | null
+          created_at?: string
+          draft_document_id?: string | null
+          id?: string
+          intake_session_id: string
+          language?: string
+          owner_name: string
+          review_status?: string
+          updated_at?: string
+          user_id?: string | null
+          vehicle_data?: Json
+        }
+        Update: {
+          app_client_id?: string | null
+          approved_document_id?: string | null
+          assessment_id?: string | null
+          created_at?: string
+          draft_document_id?: string | null
+          id?: string
+          intake_session_id?: string
+          language?: string
+          owner_name?: string
+          review_status?: string
+          updated_at?: string
+          user_id?: string | null
+          vehicle_data?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vehicle_rescue_enrollments_app_client_id_fkey"
+            columns: ["app_client_id"]
+            isOneToOne: false
+            referencedRelation: "app_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vehicle_rescue_enrollments_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "assessments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       video_question_threads: {
         Row: {
           blocked_reason: string | null

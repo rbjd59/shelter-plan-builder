@@ -19,6 +19,7 @@ import { Route as AppRouteImport } from './routes/app'
 import { Route as AttorneyRouteImport } from './routes/attorney'
 import { Route as AttorneyBoardRouteImport } from './routes/attorney-board'
 import { Route as AttorneyTrustReviewRouteImport } from './routes/attorney-trust-review'
+import { Route as AttorneyVehicleReviewRouteImport } from './routes/attorney-vehicle-review'
 import { Route as BusinessRouteImport } from './routes/business'
 import { Route as BusinessIntakeRouteImport } from './routes/business-intake'
 import { Route as CheckoutRouteImport } from './routes/checkout'
@@ -94,6 +95,7 @@ import { Route as ApiPublicMailFromCheckRouteImport } from './routes/api/public/
 import { Route as ApiPublicSendAdminInviteRouteImport } from './routes/api/public/send-admin-invite'
 import { Route as ApiPublicTrustPackageRouteImport } from './routes/api/public/trust-package'
 import { Route as ApiPublicVideoQuestionsRouteImport } from './routes/api/public/video-questions'
+import { Route as FormsVehicleDealerParticipationAgreementRouteImport } from './routes/forms/vehicle/dealer-participation-agreement'
 import { Route as LovableEmailEventsRouteImport } from './routes/lovable/email/events'
 import { Route as AdminAdminClientsIndexRouteImport } from './routes/_admin/admin.clients.index'
 import { Route as AdminAdminClientsIdRouteImport } from './routes/_admin/admin.clients.$id'
@@ -165,6 +167,11 @@ const AttorneyBoardRoute = AttorneyBoardRouteImport.update({
 const AttorneyTrustReviewRoute = AttorneyTrustReviewRouteImport.update({
   id: '/attorney-trust-review',
   path: '/attorney-trust-review',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AttorneyVehicleReviewRoute = AttorneyVehicleReviewRouteImport.update({
+  id: '/attorney-vehicle-review',
+  path: '/attorney-vehicle-review',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BusinessRoute = BusinessRouteImport.update({
@@ -546,6 +553,12 @@ const ApiPublicVideoQuestionsRoute = ApiPublicVideoQuestionsRouteImport.update({
   path: '/api/public/video-questions',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FormsVehicleDealerParticipationAgreementRoute =
+  FormsVehicleDealerParticipationAgreementRouteImport.update({
+    id: '/forms/vehicle/dealer-participation-agreement',
+    path: '/forms/vehicle/dealer-participation-agreement',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const LovableEmailEventsRoute = LovableEmailEventsRouteImport.update({
   id: '/lovable/email/events',
   path: '/lovable/email/events',
@@ -691,6 +704,7 @@ export interface FileRoutesByFullPath {
   '/attorney': typeof AttorneyRoute
   '/attorney-board': typeof AttorneyBoardRoute
   '/attorney-trust-review': typeof AttorneyTrustReviewRoute
+  '/attorney-vehicle-review': typeof AttorneyVehicleReviewRoute
   '/business': typeof BusinessRoute
   '/business-intake': typeof BusinessIntakeRoute
   '/checkout': typeof CheckoutRoute
@@ -765,6 +779,7 @@ export interface FileRoutesByFullPath {
   '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
   '/api/public/trust-package': typeof ApiPublicTrustPackageRoute
   '/api/public/video-questions': typeof ApiPublicVideoQuestionsRoute
+  '/forms/vehicle/dealer-participation-agreement': typeof FormsVehicleDealerParticipationAgreementRoute
   '/lovable/email/events': typeof LovableEmailEventsRoute
   '/admin/': typeof AdminAdminIndexRoute
   '/admin/clients/$id': typeof AdminAdminClientsIdRoute
@@ -800,6 +815,7 @@ export interface FileRoutesByTo {
   '/attorney': typeof AttorneyRoute
   '/attorney-board': typeof AttorneyBoardRoute
   '/attorney-trust-review': typeof AttorneyTrustReviewRoute
+  '/attorney-vehicle-review': typeof AttorneyVehicleReviewRoute
   '/business': typeof BusinessRoute
   '/business-intake': typeof BusinessIntakeRoute
   '/checkout': typeof CheckoutRoute
@@ -874,6 +890,7 @@ export interface FileRoutesByTo {
   '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
   '/api/public/trust-package': typeof ApiPublicTrustPackageRoute
   '/api/public/video-questions': typeof ApiPublicVideoQuestionsRoute
+  '/forms/vehicle/dealer-participation-agreement': typeof FormsVehicleDealerParticipationAgreementRoute
   '/lovable/email/events': typeof LovableEmailEventsRoute
   '/admin': typeof AdminAdminIndexRoute
   '/admin/clients/$id': typeof AdminAdminClientsIdRoute
@@ -913,6 +930,7 @@ export interface FileRoutesById {
   '/attorney': typeof AttorneyRoute
   '/attorney-board': typeof AttorneyBoardRoute
   '/attorney-trust-review': typeof AttorneyTrustReviewRoute
+  '/attorney-vehicle-review': typeof AttorneyVehicleReviewRoute
   '/business': typeof BusinessRoute
   '/business-intake': typeof BusinessIntakeRoute
   '/checkout': typeof CheckoutRoute
@@ -987,6 +1005,7 @@ export interface FileRoutesById {
   '/api/public/send-admin-invite': typeof ApiPublicSendAdminInviteRoute
   '/api/public/trust-package': typeof ApiPublicTrustPackageRoute
   '/api/public/video-questions': typeof ApiPublicVideoQuestionsRoute
+  '/forms/vehicle/dealer-participation-agreement': typeof FormsVehicleDealerParticipationAgreementRoute
   '/lovable/email/events': typeof LovableEmailEventsRoute
   '/_admin/admin/': typeof AdminAdminIndexRoute
   '/_admin/admin/clients/$id': typeof AdminAdminClientsIdRoute
@@ -1024,6 +1043,7 @@ export interface FileRouteTypes {
     | '/attorney'
     | '/attorney-board'
     | '/attorney-trust-review'
+    | '/attorney-vehicle-review'
     | '/business'
     | '/business-intake'
     | '/checkout'
@@ -1098,6 +1118,7 @@ export interface FileRouteTypes {
     | '/api/public/send-admin-invite'
     | '/api/public/trust-package'
     | '/api/public/video-questions'
+    | '/forms/vehicle/dealer-participation-agreement'
     | '/lovable/email/events'
     | '/admin/'
     | '/admin/clients/$id'
@@ -1133,6 +1154,7 @@ export interface FileRouteTypes {
     | '/attorney'
     | '/attorney-board'
     | '/attorney-trust-review'
+    | '/attorney-vehicle-review'
     | '/business'
     | '/business-intake'
     | '/checkout'
@@ -1207,6 +1229,7 @@ export interface FileRouteTypes {
     | '/api/public/send-admin-invite'
     | '/api/public/trust-package'
     | '/api/public/video-questions'
+    | '/forms/vehicle/dealer-participation-agreement'
     | '/lovable/email/events'
     | '/admin'
     | '/admin/clients/$id'
@@ -1245,6 +1268,7 @@ export interface FileRouteTypes {
     | '/attorney'
     | '/attorney-board'
     | '/attorney-trust-review'
+    | '/attorney-vehicle-review'
     | '/business'
     | '/business-intake'
     | '/checkout'
@@ -1319,6 +1343,7 @@ export interface FileRouteTypes {
     | '/api/public/send-admin-invite'
     | '/api/public/trust-package'
     | '/api/public/video-questions'
+    | '/forms/vehicle/dealer-participation-agreement'
     | '/lovable/email/events'
     | '/_admin/admin/'
     | '/_admin/admin/clients/$id'
@@ -1358,6 +1383,7 @@ export interface RootRouteChildren {
   AttorneyRoute: typeof AttorneyRoute
   AttorneyBoardRoute: typeof AttorneyBoardRoute
   AttorneyTrustReviewRoute: typeof AttorneyTrustReviewRoute
+  AttorneyVehicleReviewRoute: typeof AttorneyVehicleReviewRoute
   BusinessRoute: typeof BusinessRoute
   BusinessIntakeRoute: typeof BusinessIntakeRoute
   CheckoutRoute: typeof CheckoutRoute
@@ -1410,6 +1436,7 @@ export interface RootRouteChildren {
   ApiPublicSendAdminInviteRoute: typeof ApiPublicSendAdminInviteRoute
   ApiPublicTrustPackageRoute: typeof ApiPublicTrustPackageRoute
   ApiPublicVideoQuestionsRoute: typeof ApiPublicVideoQuestionsRoute
+  FormsVehicleDealerParticipationAgreementRoute: typeof FormsVehicleDealerParticipationAgreementRoute
   LovableEmailEventsRoute: typeof LovableEmailEventsRoute
   ApiPublicAppActivateRoute: typeof ApiPublicAppActivateRoute
   ApiPublicAppActivatedRoute: typeof ApiPublicAppActivatedRoute
@@ -1502,6 +1529,13 @@ declare module '@tanstack/react-router' {
       path: '/attorney-trust-review'
       fullPath: '/attorney-trust-review'
       preLoaderRoute: typeof AttorneyTrustReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/attorney-vehicle-review': {
+      id: '/attorney-vehicle-review'
+      path: '/attorney-vehicle-review'
+      fullPath: '/attorney-vehicle-review'
+      preLoaderRoute: typeof AttorneyVehicleReviewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/business': {
@@ -2029,6 +2063,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicVideoQuestionsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/forms/vehicle/dealer-participation-agreement': {
+      id: '/forms/vehicle/dealer-participation-agreement'
+      path: '/forms/vehicle/dealer-participation-agreement'
+      fullPath: '/forms/vehicle/dealer-participation-agreement'
+      preLoaderRoute: typeof FormsVehicleDealerParticipationAgreementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lovable/email/events': {
       id: '/lovable/email/events'
       path: '/lovable/email/events'
@@ -2309,6 +2350,7 @@ const rootRouteChildren: RootRouteChildren = {
   AttorneyRoute: AttorneyRoute,
   AttorneyBoardRoute: AttorneyBoardRoute,
   AttorneyTrustReviewRoute: AttorneyTrustReviewRoute,
+  AttorneyVehicleReviewRoute: AttorneyVehicleReviewRoute,
   BusinessRoute: BusinessRoute,
   BusinessIntakeRoute: BusinessIntakeRoute,
   CheckoutRoute: CheckoutRoute,
@@ -2361,6 +2403,8 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicSendAdminInviteRoute: ApiPublicSendAdminInviteRoute,
   ApiPublicTrustPackageRoute: ApiPublicTrustPackageRoute,
   ApiPublicVideoQuestionsRoute: ApiPublicVideoQuestionsRoute,
+  FormsVehicleDealerParticipationAgreementRoute:
+    FormsVehicleDealerParticipationAgreementRoute,
   LovableEmailEventsRoute: LovableEmailEventsRoute,
   ApiPublicAppActivateRoute: ApiPublicAppActivateRoute,
   ApiPublicAppActivatedRoute: ApiPublicAppActivatedRoute,

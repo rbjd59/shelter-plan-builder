@@ -70,9 +70,7 @@ function AttorneyTrustReviewPage() {
               approved execution copy. Earlier drafts are never overwritten.
             </p>
           </div>
-          <Button asChild variant="outline">
-            <Link to="/">Home</Link>
-          </Button>
+          <div className="flex gap-2"><Button asChild variant="outline"><Link to="/attorney-vehicle-review">Vehicle approvals</Link></Button><Button asChild variant="outline"><Link to="/">Home</Link></Button></div>
         </header>
 
         {queue.error && (

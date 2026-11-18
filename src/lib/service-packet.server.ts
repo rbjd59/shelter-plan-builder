@@ -1,4 +1,4 @@
-import { PDFDocument } from "pdf-lib";
+import { PDFDocument, degrees, rgb } from "pdf-lib";
 import fontkit from "@pdf-lib/fontkit";
 import regularFontB64 from "@/assets/forms/DejaVuSans.ttf.b64";
 import boldFontB64 from "@/assets/forms/DejaVuSans-Bold.ttf.b64";
@@ -28,7 +28,7 @@ function fontBytes(base64: string): Uint8Array {
 export async function textPacket(
   title: string,
   sections: { heading: string; lines: string[]; pageBreak?: boolean }[],
-  options?: { draftNotice?: string; notice?: string; pageLabel?: string },
+  options?: { draftNotice?: string; notice?: string; pageLabel?: string; watermark?: boolean },
 ) {
   const notice =
     options?.notice ??
@@ -76,6 +76,23 @@ export async function textPacket(
   }
   const pages = pdf.getPages();
   pages.forEach((p, index) => {
+    if (options?.watermark) {
+      const maxHeaderWidth = 504;
+      let headerSize = 9;
+      while (bold.widthOfTextAtSize(notice, headerSize) > maxHeaderWidth && headerSize > 6) headerSize -= 0.5;
+      p.drawText(notice, { x: 54, y: 770, size: headerSize, font: bold, color: rgb(0.65, 0.05, 0.05) });
+      let watermarkSize = 34;
+      while (bold.widthOfTextAtSize(notice, watermarkSize) > 650 && watermarkSize > 15) watermarkSize -= 1;
+      p.drawText(notice, {
+        x: 48,
+        y: 350,
+        size: watermarkSize,
+        font: bold,
+        color: rgb(0.75, 0.08, 0.08),
+        opacity: 0.13,
+        rotate: degrees(38),
+      });
+    }
     p.drawText(`${notice} · ${options?.pageLabel ?? "Page"} ${index + 1} / ${pages.length}`, {
       x: 54,
       y: 30,
