@@ -1,5 +1,10 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
+## November 17 — Don't Lose Your Car, Part 1
+- [ ] Add the trilingual vehicle-program page and aliases, homepage card, navigation, dealer page and interest form, SEO/sitemap entries, and program video with script.
+- [ ] Verify the public pages, intake vehicle flag, dealer submission/notification, language switching, video playback, full tests and build; publish nothing.
+- [ ] Part 2: add the intake checkbox and forms packet after the owner's next message; attorney review and Florida dealer-fee licensing review remain pending.
+
 ## Business call-request intake
 - [x] Add EN/ES/HT business intake and save requests with owner-confirmed Ricky Bitelman-Behar JD assignment. Browser submission, saved assignment, email send, language switching and mobile fit verified; 135 tests pass.
 - [ ] Verify signed-in lead inbox visually — current admin access redirects the owner test session to /dashboard; saved request and assignment verified directly, notification send confirmed.
