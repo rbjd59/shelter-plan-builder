@@ -91,7 +91,7 @@ async function logSms(opts: {
   metadata?: Record<string, unknown>;
 }) {
   try {
-    await supabaseAdmin.from("sms_send_log" as never).insert({
+    const { error } = await supabaseAdmin.from("sms_send_log" as never).insert({
       recipient_phone: opts.to,
       purpose: opts.purpose,
       body_preview: opts.body.slice(0, 200),
@@ -100,6 +100,7 @@ async function logSms(opts: {
       error_message: opts.error ?? null,
       metadata: opts.metadata ?? {},
     } as never);
+    if (error) console.error("[twilio-sms] log insert failed", error.message);
   } catch (e) {
     console.error("[twilio-sms] log insert failed", e);
   }

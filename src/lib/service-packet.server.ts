@@ -155,7 +155,7 @@ export async function familyPacket(answers: Record<string, unknown>, name: strin
     {
       heading: "Keep your papers safe",
       lines: [
-        "After the attorney checks them, print and sign as directed with the required witnesses and notary. Keep originals safe. Give your trusted person a copy. Call 305-337-7713 if you need help.",
+        "After the attorney checks them, print and sign as directed with the required witnesses and notary. Keep originals safe. Give your trusted person a copy. Call +13057737713 if you need help.",
       ],
     },
   ]);

@@ -168,7 +168,7 @@ const LIVE_COPY = {
   en: {
     heading: "Have questions before you set up your account?",
     intro: "Talk with our team about the process. You do not need an account.",
-    call: "Call 305-337-7713",
+    call: "Call +13057737713",
     text: "Text us",
     schedule: "Set up a call",
     live: "Start live chat",
@@ -196,7 +196,7 @@ const LIVE_COPY = {
   es: {
     heading: "¿Tiene preguntas antes de crear su cuenta?",
     intro: "Hable con nuestro equipo sobre el proceso. No necesita una cuenta.",
-    call: "Llame al 305-337-7713",
+    call: "Llame al +13057737713",
     text: "Envíenos un texto",
     schedule: "Programe una llamada",
     live: "Empiece el chat en vivo",
@@ -224,7 +224,7 @@ const LIVE_COPY = {
   ht: {
     heading: "Ou gen kesyon anvan ou kreye kont ou?",
     intro: "Pale ak ekip nou an sou pwosesis la. Ou pa bezwen yon kont.",
-    call: "Rele 305-337-7713",
+    call: "Rele +13057737713",
     text: "Voye mesaj bay nou",
     schedule: "Pwograme yon apèl",
     live: "Kòmanse chat an dirèk",

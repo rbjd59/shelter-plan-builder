@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { alertText, processInboundSms, shortRef, shouldAlert, twilioSignature, type InboundDb } from "./live-chat-sms";
+import { alertText, DEFAULT_STAFF_PHONE, staffPhone, processInboundSms, shortRef, shouldAlert, twilioSignature, type InboundDb } from "./live-chat-sms";
 
 const TOKEN = "test-auth-token";
 const URL_ = "https://example.com/api/public/twilio/inbound-sms";
-const STAFF = "+13053377713";
+const STAFF = "+13057737713";
 const A = "aaaaaa11-0000-4000-8000-000000000001";
 const B = "bbbbbb22-0000-4000-8000-000000000002";
 
@@ -14,7 +14,7 @@ function fakeDb() {
     findByRef: async (ref) => convs.find((c) => shortRef(c.id) === ref) ?? null,
     findLatestAlerted: async () => convs[1],
     insertStaffMessage: async (id, body) => { messages.push({ id, body }); },
-    markActive: async (id) => { convs.find((c) => c.id === id)!.status = "active"; },
+    markActive: async (id) => { const conv = convs.find((c) => c.id === id); if (conv) conv.status = "active"; },
   };
   return { db, convs, messages };
 }
@@ -26,6 +26,10 @@ async function send(params: Record<string, string>, opts: { badSig?: boolean } =
 }
 
 describe("live chat SMS alerts", () => {
+  it("defaults staff alerts and inbound authorization to the corrected owner number", () => {
+    expect(DEFAULT_STAFF_PHONE).toBe("+13057737713");
+    expect(staffPhone(undefined)).toBe("+13057737713");
+  });
   it("alerts once per burst: first message, not again within 10 minutes, again after 10+", () => {
     const now = Date.parse("2026-11-17T17:00:00Z");
     expect(shouldAlert(null, now)).toBe(true);

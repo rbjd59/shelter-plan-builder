@@ -53,8 +53,8 @@ async function press(el: HTMLElement, label: string) {
 describe("attorney page language switcher", () => {
   it("shows the site callback number and Kreyòl in the languages served", async () => {
     const { el } = await mount("/attorney?lang=en");
-    expect(el.textContent).toContain("305-337-7713");
-    expect(el.innerHTML).toContain("tel:+13053377713");
+    expect(el.textContent).toContain("+13057737713");
+    expect(el.innerHTML).toContain("tel:+13057737713");
     expect(el.textContent).toContain("Languages served");
     expect(el.textContent).toContain("EN · ES · HT · IT");
     expect(el.textContent).not.toContain("561-757-0338");
@@ -68,7 +68,7 @@ describe("attorney page language switcher", () => {
     expect(el.textContent).toContain("Avoka moun reyèl sou chak");
     expect(el.textContent).toContain("Lang nou sèvi");
     expect(el.textContent).toContain("kreyòl ayisyen");
-    expect(el.textContent).toContain("305-337-7713");
+    expect(el.textContent).toContain("+13057737713");
     expect(el.textContent).not.toContain("Human attorneys on every");
     expect(router.state.location.search).toMatchObject({ lang: "ht" });
   });
@@ -80,7 +80,7 @@ describe("attorney page language switcher", () => {
     expect(el.textContent).toContain("Abogados de verdad en cada");
     expect(el.textContent).toContain("Idiomas que atendemos");
     expect(el.textContent).toContain("kreòl haitiano");
-    expect(el.textContent).toContain("305-337-7713");
+    expect(el.textContent).toContain("+13057737713");
     expect(el.textContent).not.toContain("Avoka moun reyèl sou chak");
     expect(router.state.location.search).toMatchObject({ lang: "es" });
   });

@@ -1,5 +1,5 @@
 // Live-chat SMS alert + reply-by-text logic. Pure/injectable so it can be tested without a database.
-export const DEFAULT_STAFF_PHONE = "+13053377713";
+export const DEFAULT_STAFF_PHONE = "+13057737713";
 export const ALERT_GAP_MS = 10 * 60 * 1000;
 
 export function staffPhone(env: string | undefined) {

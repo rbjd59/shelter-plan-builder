@@ -134,7 +134,7 @@ export default function ServiceClientFile({
             </a>
           </Button>
           <Button asChild variant="outline">
-            <a href="tel:+13053377713">
+            <a href="tel:+13057737713">
               <Phone />
               Call paralegal
             </a>

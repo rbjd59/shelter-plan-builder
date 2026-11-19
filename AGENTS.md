@@ -8,6 +8,7 @@
 - Keep memo caption columns width-constrained and wrap variable text, so long client and custodian names do not overlap the case-number column.
 
 # Phone activation
+- Keep visitor chat alerts before message insertion, using the shared staff-phone resolver for outbound and inbound SMS; check database and sender errors so notification failures cannot disappear silently.
 - Business call requests use the existing private leads inbox with a validated real-account assignment saved at submission; public forms cannot choose an assignee or email recipient, and contact requests do not create paid services or confirmed appointments.
 - Phone apps exchange activation codes through `/api/public/app/activate`, never direct activation database RPCs; keep those RPCs server-only to preserve the client-data boundary.
 

@@ -42,8 +42,8 @@ const MUTED = "#5b6478";
 const BORDER = "#e6e3dc";
 
 // Single public company callback number, the same one used across the site.
-const SITE_PHONE_DISPLAY = "305-337-7713";
-const SITE_PHONE_TEL = "+13053377713";
+const SITE_PHONE_DISPLAY = "+13057737713";
+const SITE_PHONE_TEL = "+13057737713";
 const LANGUAGES_SERVED = "EN · ES · HT · IT";
 
 const LANGS: { id: Lang; label: string }[] = [
