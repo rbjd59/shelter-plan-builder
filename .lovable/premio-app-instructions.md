@@ -34,7 +34,7 @@ On submit, Lovable generates the **activation code** (1 letter + 4 digits, e.g. 
 **2. To each emergency contact — email + SMS (one message each, no attachments)**
 > "[CLIENT NAME] has activated an emergency app on his/her phone. If he/she is detained,
 > you will be notified by SMS and email. If he/she does not cancel within 2 hours,
-> contact detenciondefensa.com or call +13057737713."
+> contact detenciondefensa.com or call +13053377713."
 
 **3. To the client only — a second email: the self-help / family packet**
 Contains everything that used to sit inside the app:
@@ -95,12 +95,12 @@ Lovable sends, once:
 
 1. **alerts@detenciondefensa.com** — full alert with all case data.
 2. **Sorrentino Law Firm (intake@sorrentinolawfirm.com)** — same alert.
-3. **SMS to +13057737713** — "TRIGGERED: [NAME], code [CODE]."
+3. **SMS to +13053377713** — "TRIGGERED: [NAME], code [CODE]."
 4. **Each emergency contact — email + SMS:**
    > "[CLIENT NAME] has triggered his/her emergency app. If he/she does not cancel it,
    > contact detenciondefensa.com. If you were given a sealed package of documents from
    > [CLIENT NAME], open it after 2 hours and begin searching for him/her and his/her
-   > vehicle. Contact detenciondefensa.com / +13057737713."
+   > vehicle. Contact detenciondefensa.com / +13053377713."
 5. If the client is enrolled in the **home trust program**, the company board is flagged so
    the trust program is notified that the client has been detained.
 
@@ -108,7 +108,7 @@ Boards: the attorney board pushes the full record to the company board, and the 
 workflow begins.
 
 ### On cancel (PIN entered)
-Cancellation notice to the same list — contacts, alerts@, Sorrentino, SMS +13057737713.
+Cancellation notice to the same list — contacts, alerts@, Sorrentino, SMS +13053377713.
 Nothing else.
 
 ---
