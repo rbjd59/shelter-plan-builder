@@ -156,7 +156,7 @@ export const assignLead = createServerFn({ method: "POST" })
     if (row.routed_to !== assignee.userId) {
       try {
         const { sendTemplateEmail } = await import("./email-templates/send-email");
-        const r = await sendTemplateEmail("lead-assigned", assignee.email, {
+        const r = await sendTemplateEmail("lead-assigned", (await import("./lead-notify")).ASSIGNMENT_NOTIFY_EMAIL, {
           templateData: {
             name: row.full_name,
             phone: row.phone ?? "",

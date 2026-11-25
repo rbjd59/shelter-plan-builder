@@ -465,7 +465,7 @@ function IntakeInner({ sessionId: _session_id, L, ui, vehicleRequested }: { sess
           setVehiclePacket({ pdfB64: packet.pdfB64, filename: packet.filename });
         } catch (vehicleError) {
           console.error("Vehicle enrollment failed:", vehicleError);
-          setVehiclePacketError(text("Your plan was saved, but the vehicle packet needs staff assistance. Call +13057737713.", "Su plan se guardó, pero el paquete del vehículo necesita ayuda del personal. Llame al +13057737713.", "Plan ou anrejistre, men pakè machin nan bezwen èd pèsonèl. Rele +13057737713."));
+          setVehiclePacketError(text("Your plan was saved, but the vehicle packet needs staff assistance. Call (305) 337-7713.", "Su plan se guardó, pero el paquete del vehículo necesita ayuda del personal. Llame al (305) 337-7713.", "Plan ou anrejistre, men pakè machin nan bezwen èd pèsonèl. Rele (305) 337-7713."));
         }
       }
       // Fire-and-forget SMS notifications (client confirmation + staff alert).

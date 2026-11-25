@@ -46,3 +46,6 @@ export function buildLeadNotification(l: LeadNotice) {
 <p style="margin:16px 0 0;"><a href="${STAFF_LEADS_URL}">Open the staff leads page</a></p></div>`;
   return { to: LEAD_NOTIFY_EMAIL, subject, text, html };
 }
+
+/** Recipient for lead-assignment and business call-request notifications. */
+export const ASSIGNMENT_NOTIFY_EMAIL = "legal@detenciondefensa.com";

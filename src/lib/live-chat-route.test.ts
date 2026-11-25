@@ -62,8 +62,8 @@ describe("visitor message and staff SMS route integration", () => {
   it("sends the first alert before inserting and sends once per burst, then again at 10 minutes", async () => {
     expect((await message()).status).toBe(200);
     expect(m.events).toEqual(["sms", "insert"]);
-    expect(m.sendSms).toHaveBeenCalledWith(expect.objectContaining({ to: "+13057737713", purpose: "live_chat_alert" }));
-    expect(m.conv.alerted_phone).toBe("+13057737713");
+    expect(m.sendSms).toHaveBeenCalledWith(expect.objectContaining({ to: "+13053377713", purpose: "live_chat_alert" }));
+    expect(m.conv.alerted_phone).toBe("+13053377713");
     await message();
     expect(m.sendSms).toHaveBeenCalledTimes(1);
     for (const msg of m.messages) msg.created_at = new Date(Date.now() - 600000).toISOString();
@@ -74,7 +74,7 @@ describe("visitor message and staff SMS route integration", () => {
   it("validates an incoming signature and makes the staff reply available to visitor polling", async () => {
     await message();
     vi.stubEnv("TWILIO_AUTH_TOKEN", "synthetic-test-token");
-    const params = { From: "+13057737713", Body: "Ref AAAAAA Hola, le ayudo" };
+    const params = { From: "+13053377713", Body: "Ref AAAAAA Hola, le ayudo" };
     const signature = await twilioSignature("synthetic-test-token", url, params);
     const response = await handlers(inbound).POST({ request: new Request(url, {
       method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded", "X-Twilio-Signature": signature }, body: new URLSearchParams(params),

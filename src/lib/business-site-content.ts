@@ -104,7 +104,7 @@ export const BUSINESS_SITE_COPY: Record<Lang, BusinessSiteCopy> = {
     brokerTitle: "10% if a broker sells the business", brokerBody: "You must sign a separate broker agreement before the business is listed. If it sells, the commission is 10% of the sale price. The agreement explains who provides broker services and when payment is due.",
     costsNote: "No sale or business value is guaranteed. You do not have to buy a trust, company setup, director, or broker service to use the free tools.",
     helpTitle: "Talk to a real person now.", helpBody: "Tell us what work you do and what you want to happen to your business. We speak English, Spanish, and Haitian Creole.",
-    text: "Text +13057737713", ai: "Ask the AI helper", disclosureTitle: "Important information",
+    text: "Text (305) 337-7713", ai: "Ask the AI helper", disclosureTitle: "Important information",
     disclosures: [
       "Business value results are rough estimates from the numbers you enter. They are not appraisals, offers, or promises of a sale. A licensed broker or qualified valuation professional should review the business and its records.",
       "DETENCIONDEFENSACOM, INC. provides website technology, administration, development, distribution, and maintenance. It is not a law firm. Legal services and legal review are provided by Sorrentino Law Firm PLLC. Using this site does not make the firm your lawyer. Paid legal and structuring services are separate from the free tools.",
@@ -147,7 +147,7 @@ export const BUSINESS_SITE_COPY: Record<Lang, BusinessSiteCopy> = {
     brokerTitle: "10% si un corredor vende el negocio", brokerBody: "Debe firmar un acuerdo de corredor antes de poner el negocio a la venta. Si se vende, la comisión es 10% del precio de venta. El acuerdo explica quién da el servicio y cuándo se paga.",
     costsNote: "No garantizamos una venta ni un valor. No tiene que comprar un fideicomiso, una compañía, un director o un corredor para usar las herramientas gratis.",
     helpTitle: "Hable con una persona ahora.", helpBody: "Díganos qué trabajo hace y qué quiere que pase con su negocio. Hablamos inglés, español y criollo haitiano.",
-    text: "Texto al +13057737713", ai: "Pregunte al ayudante AI", disclosureTitle: "Información importante",
+    text: "Texto al (305) 337-7713", ai: "Pregunte al ayudante AI", disclosureTitle: "Información importante",
     disclosures: [
       "Los valores son estimados basados en los números que usted escribe. No son valuaciones formales, ofertas ni promesas de venta. Un corredor con licencia o un profesional de valuaciones debe revisar el negocio y sus registros.",
       "DETENCIONDEFENSACOM, INC. da servicios de tecnología, administración, desarrollo, distribución y mantenimiento del sitio. No es un bufete de abogados. Sorrentino Law Firm PLLC da los servicios legales y hace la revisión legal. Usar este sitio no hace que el bufete sea su abogado. Los servicios legales y de estructura se cobran aparte de las herramientas gratis.",
@@ -190,7 +190,7 @@ export const BUSINESS_SITE_COPY: Record<Lang, BusinessSiteCopy> = {
     brokerTitle: "10% si yon koutye vann biznis la", brokerBody: "Ou dwe siyen yon kontra koutye apa anvan yo mete biznis la pou vann. Si li vann, komisyon an se 10% pri vant la. Kontra a di ki moun ki bay sèvis koutye a ak ki lè pou peye.",
     costsNote: "Nou pa garanti vant oswa valè biznis la. Ou pa oblije achte fidisi, konpani, direktè oswa sèvis koutye pou sèvi ak zouti gratis yo.",
     helpTitle: "Pale ak yon moun kounye a.", helpBody: "Di nou ki travay ou fè ak sa ou vle ki rive biznis ou. Nou pale angle, panyòl ak kreyòl ayisyen.",
-    text: "Voye mesaj nan +13057737713", ai: "Poze èd AI a yon kesyon", disclosureTitle: "Enfòmasyon enpòtan",
+    text: "Voye mesaj nan (305) 337-7713", ai: "Poze èd AI a yon kesyon", disclosureTitle: "Enfòmasyon enpòtan",
     disclosures: [
       "Valè yo se estimasyon ki soti nan chif ou mete yo. Se pa evalyasyon ofisyèl, òf, oswa pwomès vant. Yon koutye ki gen lisans oswa yon pwofesyonèl nan evalyasyon dwe revize biznis la ak rejis li yo.",
       "DETENCIONDEFENSACOM, INC. bay teknoloji sit wèb la, administrasyon, devlopman, distribisyon ak antreten. Se pa yon biwo avoka. Sorrentino Law Firm PLLC bay sèvis legal ak revizyon legal. Sèvi ak sit sa a pa fè biwo a tounen avoka ou. Sèvis legal ak estrikti yo peye apa zouti gratis yo.",

@@ -24,11 +24,11 @@ export const COMPANY_ALERTS_EMAIL = "alerts@detenciondefensa.com";
 export const ATTORNEY_EMAIL = "intake@sorrentinolawfirm.com";
 export const ATTORNEY_BOARD_EMAIL = "legal@detenciondefensa.com";
 
-const COMPANY_PHONE = process.env.ADMIN_ALERT_PHONE || "+13057737713";
+const COMPANY_PHONE = process.env.ADMIN_ALERT_PHONE || "+13053377713";
 // Callback number printed in every contact message. The owner confirmed one
-// public number: +13057737713. It is for calls only and must NEVER be used as
+// public number: +13053377713. It is for calls only and must NEVER be used as
 // an SMS destination.
-const CALLBACK_NUMBER = process.env.CONTACT_CALLBACK_NUMBER || "+13057737713";
+const CALLBACK_NUMBER = process.env.CONTACT_CALLBACK_NUMBER || "+13053377713";
 
 
 const ATTORNEY_PHONE = process.env.ATTORNEY_ALERT_PHONE || null;

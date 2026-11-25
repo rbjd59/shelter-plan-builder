@@ -3,7 +3,7 @@ import { alertText, DEFAULT_STAFF_PHONE, staffPhone, processInboundSms, shortRef
 
 const TOKEN = "test-auth-token";
 const URL_ = "https://example.com/api/public/twilio/inbound-sms";
-const STAFF = "+13057737713";
+const STAFF = "+13053377713";
 const A = "aaaaaa11-0000-4000-8000-000000000001";
 const B = "bbbbbb22-0000-4000-8000-000000000002";
 
@@ -27,8 +27,8 @@ async function send(params: Record<string, string>, opts: { badSig?: boolean } =
 
 describe("live chat SMS alerts", () => {
   it("defaults staff alerts and inbound authorization to the corrected owner number", () => {
-    expect(DEFAULT_STAFF_PHONE).toBe("+13057737713");
-    expect(staffPhone(undefined)).toBe("+13057737713");
+    expect(DEFAULT_STAFF_PHONE).toBe("+13053377713");
+    expect(staffPhone(undefined)).toBe("+13053377713");
   });
   it("alerts once per burst: first message, not again within 10 minutes, again after 10+", () => {
     const now = Date.parse("2026-11-17T17:00:00Z");

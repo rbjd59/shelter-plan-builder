@@ -1,8 +1,9 @@
 # Roadmap — app is notify-only, Lovable owns all sending
 
+- [x] Nov 25: business line corrected to +13053377713; assignment emails go to legal@detenciondefensa.com.
 ## November 19 — approved phone and live-chat SMS fixes
-- [x] Correct company/contact source references to +13057737713 and the saved company client-contact row; preserve historical SMS logs and the case-tracking contact snapshot. Preview first-message SMS accepted by Twilio and logged as live_chat_alert; existing ordering already calls maybeAlertStaff before insert. Add explicit sender/history/tracking/logging error reporting and route-level burst/reply/polling regression coverage. Full suite: 281/281; preview build OK. Remove both verification chats; retain audit logs. No publication.
-- [ ] Complete real SMS reply verification: TWILIO_AUTH_TOKEN is missing and the published webhook returns 503. Set the Twilio account Auth Token in Project Settings → Secrets; review ADMIN_ALERT_PHONE (present, value not inspected) and set it to the corrected number. LIVE_CHAT_STAFF_PHONE and CONTACT_CALLBACK_NUMBER are absent and use corrected defaults. Twilio's existing SMS-capable number already uses POST https://detenciondefensa.com/api/public/twilio/inbound-sms. Signature/authorized-sender/reply-to-ref/visitor-polling tests pass, but physical delivery and a real incoming reply remain unverified until credentials and an owner-approved publication are completed.
+- [x] Correct company/contact source references to +13053377713 and the saved company client-contact row; preserve historical SMS logs and the case-tracking contact snapshot. Preview first-message SMS accepted by Twilio and logged as live_chat_alert; existing ordering already calls maybeAlertStaff before insert. Add explicit sender/history/tracking/logging error reporting and route-level burst/reply/polling regression coverage. Full suite: 281/281; preview build OK. Remove both verification chats; retain audit logs. No publication.
+- [ ] Complete real SMS reply verification: TWILIO_AUTH_TOKEN is missing and the published webhook returns 503. Set the Twilio account Auth Token in Project Settings → Secrets; review ADMIN_ALERT_PHONE (present, value not inspected); leave it unchanged — 305-337-7713 (+13053377713) is the correct business line. LIVE_CHAT_STAFF_PHONE and CONTACT_CALLBACK_NUMBER are absent and use corrected defaults. Twilio's existing SMS-capable number already uses POST https://detenciondefensa.com/api/public/twilio/inbound-sms. Signature/authorized-sender/reply-to-ref/visitor-polling tests pass, but physical delivery and a real incoming reply remain unverified until credentials and an owner-approved publication are completed.
 
 ## November 17 — Don't Lose Your Car, Part 1
 - 2026-11-17: Added Don't Lose Your Car vehicle program page, dealer page, and video. Pending: Sorrentino review of agreements; FL motor vehicle broker licensing question on the per-car dealer fee (Fla. Stat. 320.27); domains dontloseyourcar.com / nopierdastucarro.com not yet registered — do not link to them.
@@ -116,7 +117,7 @@
       awaiting location data").
 - [ ] Locate fill-in → auto-populate all forms incl. Memorandum of Law → attorney board shows
       "Forms completed — ready for review and mailing" → approve → mailing packet PDF.
-- [x] Callback number confirmed by owner: one public number, +13057737713 (the old
+- [x] Callback number confirmed by owner: one public number, +13053377713 (the old
       534-202-6852 was invalid — no 534 area code). `CONTACT_CALLBACK_NUMBER` still overrides.
 
 ## Sep 3 2026 — app bug reports
@@ -148,7 +149,7 @@
 
 ## November 17 — business reports and support
 - [ ] Build a trilingual client business report with a transparent value range, marketing plan and document checklist; link qualifying results to it and email the report link to the client and attorney.
-- [ ] Add a business valuation tool and business call page; provide immediate call and text buttons for the paralegal at +13057737713.
+- [ ] Add a business valuation tool and business call page; provide immediate call and text buttons for the paralegal at +13053377713.
 - [ ] Put complete contact, questionnaire, property, business, report, appointment and family-form information on the attorney and company dashboards.
 - [ ] Add a trilingual AI question box with clear limits and server-only AI access; preserve the selected language.
 - [ ] Finish account sign-up, saved questionnaire progress, later-path Home → Business videos and one unfinished-assessment reminder from the preceding request; verify all flows together.
